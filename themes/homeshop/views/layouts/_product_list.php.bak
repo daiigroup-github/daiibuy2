@@ -1,0 +1,131 @@
+<div class="row">
+	<!-- Heading -->
+	<div class="col-lg-12 col-md-12 col-sm-12">
+
+		<div class="carousel-heading">
+			<h4><?php echo $title; ?></h4>
+		</div>
+
+	</div>
+	<!-- /Heading -->
+</div>
+
+<div class="row">
+	<?php /*
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="category-heading">
+			<select class="chosen-select">
+				<option>Product name</option>
+				<option>Product name</option>
+				<option>Product name</option>
+				<option>Product name</option>
+			</select>
+			<select class="chosen-select">
+				<option>Select manufacturer</option>
+				<option>Product name</option>
+				<option>Product name</option>
+				<option>Product name</option>
+			</select>
+
+			<div class="category-buttons">
+				<a href="category_v1.html"><i class="icons icon-th-3 active-button"></i></a>
+				<a href="category_v2.html"><i class="icons icon-th-list-4"></i></a>
+			</div>
+		</div>
+	</div>
+    */?>
+
+	<div class="col-lg-6 col-md-6 col-sm-6">
+		<div class="category-results">
+			<p>Results 1-6 of 6</p>
+
+			<p>Show
+				<select class="chosen-select">
+					<option>1</option>
+					<option>2</option>
+					<option>6</option>
+					<option>P10</option>
+				</select>
+				per page
+			</p>
+		</div>
+	</div>
+
+	<div class="col-lg-6 col-md-6 col-sm-6">
+		<?php
+		/*
+		<div class="pagination">
+			<a href="#">
+				<div class="previous"><i class="icons icon-left-dir"></i></div>
+			</a>
+			<a href="#">
+				<div class="page-button">1</div>
+			</a>
+			<a href="#">
+				<div class="page-button">2</div>
+			</a>
+			<a href="#">
+				<div class="page-button">3</div>
+			</a>
+			<a href="#">
+				<div class="next"><i class="icons icon-right-dir"></i></div>
+			</a>
+		</div>
+		*/?>
+		<?php
+		/*
+		$this->widget('ext.pager.Pager', array('pages'=>$pages,
+		                                             'htmlOptions'=>array('class'=>'pagination'),
+		                                             'header'=>'',
+		                                             'prevPageLabel'=>'<',
+		                                             'nextPageLabel'=>'>',
+		                                             'firstPageLabel'=>'<<',
+		                                             'lastPageLabel'=>'>>',
+		                                             'id'=>'linkPager'
+		));
+		*/
+		?>
+	</div>
+
+</div>
+
+	<?php /*foreach($items as $item):?>
+		<?php $this->renderPartial('//layouts/_product_item', ['item'=>$item]);?>
+	<?php endforeach;*/?>
+
+	<?php $this->widget('ext.listView.ListView', array(
+		'dataProvider'=>$dataProvider,
+		'itemView'=>'//layouts/_product_item',
+	    'pagerCssClass'=>'pagination',
+	    //'enablePagination'=>false,
+	    //'ajaxUpdate'=>false,
+	    'id'=>'resultHolder',
+	    'pager'=>array(
+		    'class'=>'ext.Pager.Pager',
+	        'htmlOptions'=>array(
+		        'class'=>'pagination'
+	        ),
+	        'header'=>'',
+	        'prevPageLabel'=>'<',
+	        'nextPageLabel'=>'>',
+	        'firstPageLabel'=>'<<',
+	        'lastPageLabel'=>'>>',
+
+	    ),
+	    'summaryCssClass'=>'category-results',
+	    'summaryText'=>'<p>Display {start}-{end}</p>'
+	)); ?>
+
+<?php /*Yii::app()->clientScript->registerScript('linkPager', "
+	$(document).ready(function(){
+		$('#linkPager a').each(function(){
+			$(this).click(function(ev){
+				ev.preventDefault();
+				alert(this.href);
+				$.get(this.href,{ajax:true},function(html){
+					$('#resultHolder').html(html);
+				});
+			});
+		});
+	});
+");*/?>
