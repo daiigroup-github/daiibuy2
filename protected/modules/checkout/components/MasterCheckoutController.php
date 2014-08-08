@@ -2,12 +2,11 @@
 
 class MasterCheckoutController extends MasterController
 {
-	public function init()
-	{
-		parent::init();
+    public function init()
+    {
+        parent::init();
 
-		$this->nav = array(
-			/*
+        $this->nav = array(/*
 			array(
 				'url'=>'#',
 				'color'=>'green',
@@ -38,75 +37,75 @@ class MasterCheckoutController extends MasterController
 				'description'=>'Company Profile'
 			),
 			*/
-		);
+        );
 
-		$this->sideBarCategories = array(
-			'title'=>'Madrid Categories',
-		    'items'=>array(
-				array(
-					'link'=>'Madrid 1',
-				    'url'=>'#'
-				),
-				array(
-					'link'=>'Madrid 2',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'Madrid 3',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'Madrid 4',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'Madrid 5',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'Madrid 6',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'Madrid 7',
-					'url'=>'#',
-				    'items'=>array(
+        $this->sideBarCategories = array(
+            'title' => 'Madrid Categories',
+            'items' => array(
+                array(
+                    'link' => 'Madrid 1',
+                    'url' => '#'
+                ),
+                array(
+                    'link' => 'Madrid 2',
+                    'url' => '#'
+                ),
+                array(
+                    'link' => 'Madrid 3',
+                    'url' => '#'
+                ),
+                array(
+                    'link' => 'Madrid 4',
+                    'url' => '#'
+                ),
+                array(
+                    'link' => 'Madrid 5',
+                    'url' => '#'
+                ),
+                array(
+                    'link' => 'Madrid 6',
+                    'url' => '#'
+                ),
+                array(
+                    'link' => 'Madrid 7',
+                    'url' => '#',
+                    'items' => array(
 
-					    array(
-						    'link'=>'Madrid sub 1',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 2',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 3',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 4',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 5',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 6',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 7',
-						    'url'=>'#'
-					    ),
-					    array(
-						    'link'=>'Madrid sub 8',
-						    'url'=>'#'
-					    ),
-				    ),
-				),
-		    )
-		);
-	}
+                        array(
+                            'link' => 'Madrid sub 1',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 2',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 3',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 4',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 5',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 6',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 7',
+                            'url' => '#'
+                        ),
+                        array(
+                            'link' => 'Madrid sub 8',
+                            'url' => '#'
+                        ),
+                    ),
+                ),
+            )
+        );
+    }
 }

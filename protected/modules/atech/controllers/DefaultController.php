@@ -2,8 +2,8 @@
 
 class DefaultController extends MasterController
 {
-	public function actionIndex()
-	{
-		$this->render('index');
-	}
+    public function actionIndex()
+    {
+        $this->render('index');
+    }
 }

@@ -1,3 +1,8 @@
 /assets
 protected/runtime
 /nbproject
+/.idea
+images/fenzer
+images/madrid
+images/upload
+.idea/php.xml

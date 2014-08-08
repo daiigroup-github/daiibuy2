@@ -2,15 +2,15 @@
 
 class DefaultController extends MasterFenzerController
 {
-	public function actionIndex()
-	{
-		$title = 'Fenzer';
+    public function actionIndex()
+    {
+        $title = 'Fenzer';
 
-		//pager
-		$items = $this->showSanitary();
+        //pager
+        $items = $this->showCategory();
 
-		$dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
-		$template = "<div class='row'>
+        $dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
+        $template = "<div class='row'>
 			<div class='col-lg-6 col-md-6 col-sm-6'>{summary}</div>\n
 			<div class='col-lg-6 col-md-6 col-sm-6'>{pager}</div>\n
 		</div>
@@ -22,10 +22,14 @@ class DefaultController extends MasterFenzerController
 			<div class='col-lg-6 col-md-6 col-sm-6'>{pager}</div>\n
 		</div>";
 
-		$this->render('index', array('title' => $title,
-		                             'dataProvider' => $dataProvider,
-		                             'itemView'=>'//layouts/_product_item2',
-		                             'template'=>$template
-		));
-	}
+        $data = array();
+
+        $this->render('index', array(
+            'title' => $title,
+            'dataProvider' => $dataProvider,
+            'itemView' => '//layouts/_product_item2',
+            'template' => $template,
+            'items' => $items,
+        ));
+    }
 }

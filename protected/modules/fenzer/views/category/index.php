@@ -1,16 +1,9 @@
 <?php
-/* @var $this CategoryController */
+/* @var $this ProductController */
 
 $this->breadcrumbs = array(
-	'Category',
+    'Product',
 );
 ?>
-<?php $this->renderPartial('//layouts/_product_list', array('title' => $title,
-                                                            'dataProvider' => $dataProvider,
-                                                            'itemView' => $itemView,
-                                                            'template'=>$template,
-)); ?>
 
-<?php
-//$this->widget('CLinkPager', array('pages'=>$pages));
-?>
+<?php $this->renderPartial('//layouts/_product_single', array('product' => $product)); ?>

@@ -4,7 +4,7 @@ function include(url){
 	"use strict";
 	//document.write('<script src="'+ url + '" type="text/javascript"></script>');
 	if(window.location.host === 'dev')
-		document.write('<script src="http://dev/DaiiBuy/v2/www/' + url + '" type="text/javascript"></script>');
+		document.write('<script src="http://dev/daiibuy2/' + url + '" type="text/javascript"></script>');
 	else
 		document.write('<script src="' + window.location.origin + url + '" type="text/javascript"></script>');
 }
@@ -89,11 +89,13 @@ $(document).ready(function(){
 	
 	
 	/* Twitter WIdget */
+    /*
 	$('#twitter-widget').tweet({
 		modpath: 'twitter/',
 		count: 2,
-		loading_text: 'loading twitter feed...',
+		loading_text: 'loading twitter feed...'
 	})
+	*/
 
 	
 	

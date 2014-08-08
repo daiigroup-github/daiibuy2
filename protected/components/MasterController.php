@@ -22,6 +22,11 @@ class MasterController extends Controller
 	public $province;
 
 
+    //category
+    public $cat1 = array();
+    public $cat2 = array();
+
+
 	public function init()
 	{
 		parent::init();
