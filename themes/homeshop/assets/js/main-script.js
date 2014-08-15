@@ -977,7 +977,11 @@ $(document).ready(function(){
 		
 		$(element).find('.arrow-down').click(function(){
 			var value = parseInt(input.val());
-			input.val(value-1);
+
+            if(value-1 < 0)
+                input.val(0);
+            else
+			    input.val(value-1);
 		});
 		
 		input.keypress(function(e){

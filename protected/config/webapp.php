@@ -39,10 +39,10 @@ return CMap::mergeArray(
 							'css/owl.carousel.css',
 							'css/owl.theme.css',
 							'css/chosen.css',
-						    'css/custom.css',
 						    'css/jquery.fancybox.css',
 						    'select2/select2.css',
-						    'select2/select2-bootstrap.css'
+						    'select2/select2-bootstrap.css',
+						    'css/custom.css',
 						),
 						'js' => array(
 							'js/modernizr.min.js',

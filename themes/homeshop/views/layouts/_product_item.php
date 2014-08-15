@@ -22,7 +22,7 @@ $data = [
     <div class="product-image">
         <?php //<img src="img/products/sample1.jpg" alt="Product1">?>
         <?php echo CHtml::image($data['image'], $data['title']); ?>
-        <?php if($data['isQuickView']):?>
+        <?php if(isset($data['isQuickView'])):?>
         <a href="<?php echo $data['url']; ?>" class="product-hover">
             <i class="icons icon-eye-1"></i> Quick View
         </a>

@@ -19,16 +19,19 @@ class CategoryController extends MasterFenzerController
                 'l' => 100.00,
             ),
             'weight' => 80.50,
-            'price' => 300,
-            'pricePromotion' => 280,
             'productId' => 1,
             'options' => array(
                 array('option1'),
                 array('option2'),
             ),
             'images' => $images,
-            'description'=>'Control simulated sensors like battery, GPS, and accelerometer with a the user-friendly interface.<br /><br />Powerful command line tools allow you to build complex tests.',
+            'description' => 'Control simulated sensors like battery, GPS, and accelerometer with a the user-friendly interface.<br /><br />Powerful command line tools allow you to build complex tests.',
             'tabs' => array(
+                array(
+                    'title' => 'Items',
+                    'detail' => 'No items',
+                    'id' => 'items'
+                ),
                 array(
                     'title' => 'Description',
                     'detail' => 'Detail Tab1'

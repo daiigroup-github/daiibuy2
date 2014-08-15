@@ -50,12 +50,14 @@
                 <?php endif; ?>
 
                 <span class="price">
-					<?php if ($product['pricePromotion']): ?>
+                <?php if (isset($product['price'])): ?>
+                    <?php if ($product['pricePromotion']): ?>
                         <del><?php echo $product['price']; ?></del> <?php echo $product['pricePromotion']; ?>
                     <?php else: ?>
                         <?php echo $product['price']; ?>
                     <?php endif; ?>
                     บาท
+                <?php endif; ?>
 				</span>
 
                 <table class="product-actions-single">
@@ -94,13 +96,14 @@
                     </tr>
                 </table>
 
+                <?php if(isset($product['actions'])):?>
                 <div class="product-actions">
-								<span class="add-to-cart">
-									<span class="action-wrapper">
-										<i class="icons icon-basket-2"></i>
-										<span class="action-name">Add to cart</span>
-									</span>
-								</span>
+			        <span class="add-to-cart">
+                        <span class="action-wrapper">
+							<i class="icons icon-basket-2"></i>
+							<span class="action-name">Add to cart</span>
+						</span>
+					</span>
 					<span class="add-to-favorites">
 						<span class="action-wrapper">
 							<i class="icons icon-heart-empty"></i>
@@ -124,6 +127,7 @@
                     */
                     ?>
                 </div>
+                <?php endif;?>
                 <br/>
             </div>
 
@@ -132,50 +136,7 @@
     </div>
     <!-- /Product -->
 
-    <!-- Product Tabs -->
-    <?php
-    //Prepare Tab
-    $i = 1;
-    $tabHeading = '';
-    $tabContent = '';
-    foreach ($product['tabs'] as $tab) {
-        $title = $tab['title'];
-        //$tabHeading .= "<a href=\"#tab$i\" class=\"button big\">$title</a> ";
-        $tabHeading .= CHtml::link($tab['title'] . ' ', '#tab' . $i, array('class' => 'button big')) . ' ';
-        $tabContent .= '<div id="tab' . $i . '">' . $tab['detail'] . '</div>';
-        $i++;
-    }
-    ?>
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="tabs">
-                <div class="tab-heading">
-                    <?php /*
-					<a href="#tab1" class="button big">Description</a>
-					<a href="#tab2" class="button big">Reviews</a>
-					<a href="#tab3" class="button big">Comments</a>
-                    */
-                    ?>
-                    <?php echo $tabHeading; ?>
-                </div>
-
-                <div class="page-content tab-content">
-                    <?php /*
-					<div id="tab1">
-						Tab1
-					</div>
-					<div id="tab2">
-						Tab2
-					</div>
-					<div id="tab3">
-						Tab3
-					</div>
-                    */
-                    ?>
-                    <?php echo $tabContent; ?>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Product tabs -->
+    <?php $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs'])); ?>
 
 </div>

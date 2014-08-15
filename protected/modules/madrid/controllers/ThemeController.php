@@ -46,7 +46,8 @@ class ThemeController extends MasterMadridController
                 'price' => rand(1000, 99999),
                 'buttons' => [
                     'favorites'
-                ]
+                ],
+                'isQuickView'=>true
             ];
 
             $i++;

@@ -67,4 +67,20 @@ class ProductController extends MasterFenzerController
         );
     }
     */
+
+    public function actionShowItems()
+    {
+        if(isset($_POST)){
+            $res = array();
+
+            $res = array(
+                'kt'=>'Kurtumm',
+                'tk'=>'Taklong'
+            );
+
+            $this->writeToFile('/tmp/showItems', print_r($_POST, true));
+
+            echo CJSON::encode($_POST);
+        }
+    }
 }

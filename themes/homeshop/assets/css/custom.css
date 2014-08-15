@@ -46,8 +46,35 @@ table th.actions{
 	width: 200px;
 }
 
-
 /* ========================= */
-/*            Modal          */
+/*  product actions single   */
 /* ========================= */
+table.product-actions-single{
+    width:100%;
+}
 
+table.product-actions-single td:first-child{
+    width:20%;
+    text-align: right;
+}
+
+form .full-width{
+    width: 100%;
+}
+
+
+.numeric-input input.form-control{
+    width:100%;
+    height:42px!important;
+    display:inline-block;
+}
+
+
+.numeric-input>span{
+    position:absolute;
+    top:3px;
+    right:8px;
+    cursor:pointer;
+    color:#7a8188;
+    float: right;
+}
