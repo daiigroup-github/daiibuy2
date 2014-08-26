@@ -6,34 +6,36 @@ class MasterFenzerController extends MasterController
     {
         parent::init();
 
+        Yii::app()->clientScript->registerCSSFile(Yii::app()->theme->baseUrl.'/assets/css/fenzer.css');
+
         $this->nav = array(
             array(
                 'url' => '#',
                 'color' => 'green',
-                'caption' => 'Madrid Tile',
+                'caption' => 'M-WALL',
                 'description' => 'Description'
             ),
             array(
                 'url' => '#',
                 'color' => 'blue',
-                'caption' => 'Madrid Sanitary',
+                'caption' => 'DOUBLE-S',
                 'description' => 'Description'
             ),
             array(
                 'url' => '#',
                 'color' => 'red',
-                'caption' => 'Tile Theme',
+                'caption' => 'SANDY',
                 'description' => 'Description'
             ),
             array(
                 'url' => '#',
                 'color' => 'orange',
-                'caption' => 'Sanitary Set',
+                'caption' => 'BRICKS',
                 'description' => 'Description'
             ),
             array(
                 'url' => '#',
-                'caption' => 'About Madrid',
+                'caption' => 'ABOUT FENZER',
                 'description' => 'Company Profile'
             ),
         );

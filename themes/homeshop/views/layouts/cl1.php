@@ -1,7 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: NPR
- * Date: 6/8/14 AD
- * Time: 8:00 PM
- */ 
+<?php $this->beginContent('//layouts/container');?>
+    <!-- Content -->
+    <div class="row content">
+        <!-- Main Content -->
+        <section class="main-content col-lg-12 col-md-12 col-sm-12">
+            <?php echo $content;?>
+        </section>
+        <!-- /Main Content -->
+    </div>
+    <!-- /Content -->
+<?php $this->endContent();?>

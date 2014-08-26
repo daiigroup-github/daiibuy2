@@ -1,15 +1,16 @@
 <?php
 
-class CategoryController extends MasterFenzerController
+class CategoryController extends MasterGinzahomeController
 {
+    public $layout = '//layouts/cl1';
     public function actionIndex($id)
     {
         $images = [];
-        foreach ($this->scanDir(Yii::app()->basePath . '/../images/fenzer') as $k => $image) {
-            $images[$k] = Yii::app()->baseUrl . '/images/fenzer/' . $image;
+        foreach ($this->scanDir(Yii::app()->basePath . '/../images/ginzahome') as $k => $image) {
+            $images[$k] = Yii::app()->baseUrl . '/images/ginzahome/' . $image;
         }
         $product = array(
-            'title' => 'Madrid Sanitary #' . $id,
+            'title' => 'Ginza Home :: บ้าน 2 ชั้น',
             'code' => 'PBS173',
             'category' => 'Sanitary',
             'stock' => '20',
@@ -47,21 +48,7 @@ class CategoryController extends MasterFenzerController
             ),
         );
 
-        $items = array();
-
-        for ($i = 0; $i < 6; $i++) {
-            $items[$i] = array(
-                'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
-                'name' => 'Fenzer '.$i,
-                'price' => rand(100,500),
-                'qty' => rand(1,100),
-            );
-        }
-
-        $this->render('index', array(
-            'product' => $product,
-            'items' => $items
-        ));
+        $this->render('index', array('product' => $product));
     }
 
     // Uncomment the following methods and override them if needed

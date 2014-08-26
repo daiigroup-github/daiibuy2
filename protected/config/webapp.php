@@ -42,6 +42,7 @@ return CMap::mergeArray(
 						    'css/jquery.fancybox.css',
 						    'select2/select2.css',
 						    'select2/select2-bootstrap.css',
+                            'font-awesome/css/font-awesome.min.css',
 						    'css/custom.css',
 						),
 						'js' => array(
@@ -74,7 +75,9 @@ return CMap::mergeArray(
 		'modules' => array( // uncomment the following to enable the Gii tool
 			'checkout',
 			'fenzer',
-			'madrid'
+			'madrid',
+            'atechwindow',
+            'ginzahome'
 		),
 		'params' => array( // this is used in contact page
 		),

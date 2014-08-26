@@ -1,0 +1,19 @@
+table.fenzer-items td:first-child {
+    width: 100px;
+}
+
+table.fenzer-items td:last-child {
+    width: 80px;
+}
+
+table.fenzer-items td:nth-child(3), table.fenzer-items td:nth-child(5) {
+    width: 100px;
+    text-align: right;
+}
+
+table.fenzer-items td:nth-child(4) {
+    width: 120px;
+}
+table.fenzer-items tr td {
+    vertical-align: middle;
+}

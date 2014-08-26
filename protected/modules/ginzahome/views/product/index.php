@@ -7,6 +7,17 @@ $this->breadcrumbs = array(
 ?>
 
 <?php //$this->renderPartial('//layouts/_product_single', array('product' => $product)); ?>
+<div class="row">
+    <!-- Heading -->
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
+        <div class="carousel-heading">
+            <h4><?php echo $product['title']; ?></h4>
+        </div>
+
+    </div>
+    <!-- /Heading -->
+</div>
 
 <div id="product-single">
 
@@ -25,18 +36,8 @@ $this->breadcrumbs = array(
             <div class="col-lg-7 col-md-7 col-sm-7 product-single-info">
 
                 <h2><?php echo $product['title']; ?></h2>
-                <?php
-                /*
-                <div class="rating-box">
-                    <div class="rating readonly-rating" data-score="4"></div>
-                    <span>3 Review(s)</span>
-                </div>
-                */
-                ?>
 
                 <?php $this->renderPartial('//layouts/_product_description', array('description' => $product['description'])); ?>
-
-                <span class="price"></span>
 
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
@@ -46,29 +47,41 @@ $this->breadcrumbs = array(
                     'htmlOptions' => array(
                         'class' => 'form-horizontal',
                         'role' => 'form',
-                        'onSubmit' => 'js:return(false);'
+                        'onSubmit'=>'js:return(false);'
                     ),
                 ));
                 ?>
 
                 <div class="form-group">
-                    <label for="h" class="col-sm-2 control-label">Height</label>
+                    <label for="h" class="col-sm-4 control-label">Booking Price</label>
+                    <div class="col-sm-7">
+                        <input type="text" value="100,000 บาท" class="form-control price" disabled />
+                    </div>
+                </div>
 
-                    <div class="col-sm-9">
+                <div class="form-group">
+                    <label for="h" class="col-sm-4 control-label">Contact Price</label>
+                    <div class="col-sm-7">
+                        <input type="text" value="2,600,000 บาท" class="form-control price" disabled />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="h" class="col-sm-4 control-label">Color</label>
+                    <div class="col-sm-7">
                         <select class="form-control" name="h" id="h">
-                            <option value="2.25">2.25 เมตร</option>
-                            <option value="2.50">2.50 เมตร</option>
-                            <option value="2.75">2.75 เมตร</option>
+                            <option value="1">Silver</option>
+                            <option value="2">Blue</option>
+                            <option value="3">White</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="h" class="col-sm-2 control-label">Length</label>
-
-                    <div class="col-sm-9">
+                    <label for="h" class="col-sm-4 control-label">Amount</label>
+                    <div class="col-sm-7">
                         <div class="numeric-input full-width">
-                            <input type="text" value="100" class="form-control" name="l"/>
+                            <input type="text" value="1" class="form-control" name="l" />
                             <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
                             <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
                         </div>
@@ -76,12 +89,12 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-4 col-sm-8">
                         <?php echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/showItems'), array(
-                            'dataType' => 'json',
-                            'method' => 'POST',
-                            'data' => 'js:$("#fenzerForm").serialize()',
-                            'success' => 'js:function(data){
+                            'dataType'=>'json',
+                            'method'=>'POST',
+                            'data'=>'js:$("#fenzerForm").serialize()',
+                            'success'=>'js:function(data){
                                 var d = "<ul>";
                                 d += "<li>Height : "+data.h+"</li>";
                                 d += "<li>Length : "+data.l+"</li>";
@@ -89,10 +102,7 @@ $this->breadcrumbs = array(
 
                                 $("#items").html(d);
                             }',
-                        ), array(
-                            'class' => 'btn btn-default',
-                            'id' => 'fenzerQuery'
-                        ));?>
+                        ), array('class'=>'btn btn-default', 'id'=>'fenzerQuery'));?>
                     </div>
                 </div>
 
@@ -139,47 +149,13 @@ $this->breadcrumbs = array(
     <!-- /Product -->
 
     <!-- Product tabs -->
+    <?php $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs'])); ?>
 
-
-</div>
-
-<div class="page-content">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <table class="table table-bordered fenzer-items">
-                <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Qty</th>
-                    <th>Amount</th>
-                    <th>Actions</th>
-                </tr>
-                <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td><?php echo $item['code']; ?></td>
-                        <td><?php echo $item['name']; ?></td>
-                        <td><?php echo number_format($item['price'], 2); ?></td>
-                        <td>
-                            <div class="numeric-input full-width">
-                                <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
-                                <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
-                                <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
-                            </div>
-                        </td>
-                        <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
-                        <td class="text-center">
-                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-    </div>
 </div>
 
 <?php
 Yii::app()->clientScript->registerScript('catIndex', "
+    $('#h').select2();
 ", CClientScript::POS_READY);
 ?>
 
