@@ -1,10 +1,11 @@
 <?php
 
-class DefaultController extends MasterFenzerController
+class DefaultController extends MasterAtechwindowController
 {
     public $layout = '//layouts/cl1';
-    public function actionIndex()
-    {
+
+	public function actionIndex()
+	{
         $title = 'Fenzer';
 
         //pager
@@ -32,5 +33,5 @@ class DefaultController extends MasterFenzerController
             'template' => $template,
             'items' => $items,
         ));
-    }
+	}
 }

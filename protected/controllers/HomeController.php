@@ -5,7 +5,7 @@ class HomeController extends MasterController
 	public $layout = '//layouts/home';
 	public function actionIndex()
 	{
-		$suppliers = array('atech' => 'Atech Window',
+		$suppliers = array('atechwindow' => 'Atech Window',
 		                   'fenzer' => 'Fenzer',
 		                   'ginzahome' => 'Ginza Home',
 		                   'madrid' => 'Madrid Bathroom',

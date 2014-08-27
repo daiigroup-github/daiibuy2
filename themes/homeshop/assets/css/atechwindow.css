@@ -1,0 +1,29 @@
+table.atechwindow-items td:first-child {
+    width: 80px;
+}
+
+table.atechwindow-items td:last-child {
+    width: 80px;
+}
+
+table.atechwindow-items td:nth-child(3) {
+    text-align: left;
+}
+
+table.atechwindow-items td:nth-child(6){
+    width: 100px;
+    text-align: right;
+}
+
+table.atechwindow-items td:nth-child(4) {
+    width: 120px;
+}
+
+table.atechwindow-items tr td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+table.atechwindow-items tr td .numeric-input {
+    width: 60px;
+}
