@@ -1914,7 +1914,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 	-o-opacity:0;
 	transition:opacity 0.3s;
 	-webkit-transition:opacity 0.3s;
-	-moz-transition.:opacity 0.3s;
+	-moz-transition:opacity 0.3s;
 	-ms-transition:opacity 0.3s;
 	-o-transition:opacity 0.3s;
 }
@@ -1934,7 +1934,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 	-o-opacity:0;
 	transition:opacity 0.3s;
 	-webkit-transition:opacity 0.3s;
-	-moz-transition.:opacity 0.3s;
+	-moz-transition:opacity 0.3s;
 	-ms-transition:opacity 0.3s;
 	-o-transition:opacity 0.3s;
 }
@@ -2166,7 +2166,7 @@ input[type="checkbox"]:checked + label.color-checkbox{
 	margin-bottom:30px;
 }
 
-.subcategory project-info{
+.subcategory .project-info{
 	padding:10px 0;	
 }
 
