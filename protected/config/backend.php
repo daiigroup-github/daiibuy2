@@ -1,5 +1,5 @@
 <?php
-
+$params = require dirname(__FILE__) . '/params.php';
 return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
         'components' => array(
             'clientScript' => array(
@@ -22,7 +22,8 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
                             //'bootstrap/css/font-awesome.min.css',
                         ),
                         'js' => array(
-                            'bootstrap/js/bootstrap.min.js',),
+                            'bootstrap/js/bootstrap.min.js',
+                        ),
                         'depends' => array(
                             'jquery'
                         ),
@@ -47,3 +48,4 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
         'defaultController' => 'backoffice/login'
     )
 );
+

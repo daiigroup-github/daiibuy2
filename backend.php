@@ -1,7 +1,8 @@
 <?php
-$params = require dirname(__FILE__).'/protected/config/params.php';
+$params = require dirname(__FILE__) . '/protected/config/params.php';
+
 // change the following paths if necessary
-$yii=dirname(__FILE__).$params['framework'];
+$yii = dirname(__FILE__) . $params['framework'];
 $config = dirname(__FILE__) . '/protected/config/backend.php';
 
 // remove the following lines when in production mode
