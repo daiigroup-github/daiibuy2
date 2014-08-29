@@ -56,21 +56,25 @@
 ?>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#">Project name</a>
-		</div>
-		<div class="navbar-collapse collapse">
-			<?php
-			$this->widget('zii.widgets.CMenu', $this->nav);
-			?>
-		</div>
-		<!--/.nav-collapse -->
-	</div>
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <?php
+            $this->widget('zii.widgets.CMenu', array(
+                'items' => $this->nav,
+                'encodeLabel' => false,
+                'htmlOptions' => array('class' => 'nav navbar-nav'),
+            ));
+            ?>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
 </div>
