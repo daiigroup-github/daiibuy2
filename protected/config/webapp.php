@@ -77,7 +77,8 @@ return CMap::mergeArray(
 			'fenzer',
 			'madrid',
             'atechwindow',
-            'ginzahome'
+            'ginzahome',
+            'myfile',
 		),
 		'params' => array( // this is used in contact page
 		),
