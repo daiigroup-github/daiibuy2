@@ -1,9 +1,11 @@
 <?php
 
-class DefaultController extends Controller
+class DefaultController extends xxController
 {
+
 	public function actionIndex()
 	{
 		$this->render('index');
 	}
+
 }
