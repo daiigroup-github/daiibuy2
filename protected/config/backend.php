@@ -4,7 +4,8 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
 		'components'=>array(),
 		'modules'=>array(
 			// uncomment the following to enable the Gii tool
-			'admin', /*
+			'admin',
+			'backoffice', /*
 		  'gii'=>array(
 		  'class'=>'system.gii.GiiModule',
 		  'password'=>'Enter Your Password Here',
