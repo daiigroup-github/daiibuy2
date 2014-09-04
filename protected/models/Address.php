@@ -1,6 +1,6 @@
 <?php
 
-class Province extends ProvinceMaster
+class Address extends AddressMaster
 {
     /**
      * Returns the static model of the specified AR class.
@@ -19,7 +19,7 @@ class Province extends ProvinceMaster
 
     public function rules()
     {
-        return CMap::mergeArray(parent::rules(), array(//code here
+        return CMap::mergeArray(parent::rules(), array( //code here
         ));
     }
 
@@ -31,7 +31,7 @@ class Province extends ProvinceMaster
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return CMap::mergeArray(parent::relations(), array(//code here
+        return CMap::mergeArray(parent::relations(), array( //code here
         ));
     }
 
@@ -41,7 +41,7 @@ class Province extends ProvinceMaster
 
     public function attributeLabels()
     {
-        return Cmap::mergeArray(parent::attributeLabels(), array(//code here
+        return Cmap::mergeArray(parent::attributeLabels(), array( //code here
         ));
     }
 

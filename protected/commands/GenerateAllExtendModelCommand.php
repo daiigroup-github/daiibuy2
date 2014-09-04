@@ -7,7 +7,7 @@ class GenerateAllExtendModelCommand extends CConsoleCommand
 	{
 		$modelExtendPath = Yii::app()->basePath . '/components/ModelExtend.txt';
 
-		if($handle = opendir(Yii::app()->basePath . '/models'))
+		if($handle = opendir(Yii::app()->basePath . '/models/_master'))
 		{
 
 			/* This is the correct way to loop over the directory. */

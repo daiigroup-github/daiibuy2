@@ -1,6 +1,6 @@
 <?php
 
-class Province extends ProvinceMaster
+class Amphur extends AmphurMaster
 {
     /**
      * Returns the static model of the specified AR class.

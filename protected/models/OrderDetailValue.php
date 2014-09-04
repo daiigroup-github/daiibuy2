@@ -1,6 +1,6 @@
 <?php
 
-class Province extends ProvinceMaster
+class OrderDetailValue extends OrderDetailValueMaster
 {
     /**
      * Returns the static model of the specified AR class.

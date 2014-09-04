@@ -175,6 +175,18 @@ $this->breadcrumbs = array(
                 <?php endforeach; ?>
             </table>
         </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 col-md-offset-9">
+
+            <div class="product-actions">
+		        <span class="add-to-cart">
+                    <span class="action-wrapper">
+					    <i class="fa fa-shopping-cart"></i>
+						<span class="action-name">Add to cart</span>
+					</span>
+				</span>
+            </div>
+        </div>
     </div>
 </div>
 

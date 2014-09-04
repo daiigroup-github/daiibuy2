@@ -1,6 +1,6 @@
 <?php
 
-class Province extends ProvinceMaster
+class Configuration extends ConfigurationMaster
 {
     /**
      * Returns the static model of the specified AR class.

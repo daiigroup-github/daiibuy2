@@ -1,6 +1,6 @@
 <?php
 
-class Province extends ProvinceMaster
+class ProductSpec extends ProductSpecMaster
 {
     /**
      * Returns the static model of the specified AR class.
