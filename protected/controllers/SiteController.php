@@ -10,14 +10,14 @@ class SiteController extends MasterController
 	{
 		return array(
 			// captcha action renders the CAPTCHA image displayed on the contact page
-			'captcha' => array(
-				'class' => 'CCaptchaAction',
-				'backColor' => 0xFFFFFF,
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
 			),
 			// page action renders "static" pages stored under 'protected/views/site/pages'
 			// They can be accessed via: index.php?r=site/page&view=FileName
-			'page' => array(
-				'class' => 'CViewAction',
+			'page'=>array(
+				'class'=>'CViewAction',
 			),
 		);
 	}
@@ -70,7 +70,8 @@ class SiteController extends MasterController
 				$this->refresh();
 			}
 		}
-		$this->render('contact', array('model' => $model));
+		$this->render('contact', array(
+			'model'=>$model));
 	}
 
 	/**
@@ -78,9 +79,7 @@ class SiteController extends MasterController
 	 */
 	public function actionLogin()
 	{
-		$this->layout = '//layouts/login';
 		$model = new LoginForm;
-
 		// if it is ajax validation request
 		if(isset($_POST['ajax']) && $_POST['ajax'] === 'login-form')
 		{
@@ -94,10 +93,16 @@ class SiteController extends MasterController
 			$model->attributes = $_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
+				if(User::model()->findByPk(Yii::app()->user->id)->isFirstLogin == 1)
+					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
+				else
+				{
+					$this->redirect(Yii::app()->user->returnUrl);
+				}
 		}
 		// display the login form
-		$this->render('login', array('model' => $model));
+		$this->render('login', array(
+			'model'=>$model));
 	}
 
 	/**
@@ -114,5 +119,5 @@ class SiteController extends MasterController
 		$this->writeToFile('/tmp/province', print_r($_POST, true));
 		echo CJSON::encode($_POST);
 	}
-}
 
+}

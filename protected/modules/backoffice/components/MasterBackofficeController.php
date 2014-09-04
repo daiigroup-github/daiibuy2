@@ -40,13 +40,13 @@ class MasterBackofficeController extends MasterController
 			array(
 				'label'=>'Login',
 				'url'=>array(
-					'/site/login'),
+					'login/index'),
 				'visible'=>Yii::app()->user->isGuest
 			),
 			array(
 				'label'=>'Logout (' . Yii::app()->user->name . ')',
 				'url'=>array(
-					'/site/logout'
+					'login/logout'
 				),
 				'visible'=>!Yii::app()->user->isGuest
 			)
