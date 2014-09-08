@@ -12,6 +12,8 @@ class BackofficeModule extends CWebModule
 			'backoffice.models.*',
 			'backoffice.components.*',
 		));
+
+        $this->defaultController = 'login';
 	}
 
 	public function beforeControllerAction($controller, $action)

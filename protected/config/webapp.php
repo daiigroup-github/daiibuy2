@@ -83,6 +83,10 @@ return CMap::mergeArray(
 		'params' => array( // this is used in contact page
 		),
 		'theme'=>'homeshop',
-	    'defaultController'=>'home'
+	    'defaultController'=>'home',
+        // autoloading model and component classes
+        'import' => array(
+            'application.models._master.*',
+        ),
 	)
 );

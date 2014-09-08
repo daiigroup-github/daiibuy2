@@ -19,7 +19,7 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
                         'baseUrl' => $params['assets'],
                         'css' => array(
                             'bootstrap/css/bootstrap.min.css',
-                            //'bootstrap/css/font-awesome.min.css',
+                            'font-awesome/css/font-awesome.min.css',
                         ),
                         'js' => array(
                             'bootstrap/js/bootstrap.min.js',
@@ -40,12 +40,14 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
         'modules' => array(
             // uncomment the following to enable the Gii tool
             'backoffice',
-            'admin',
         ),
         'params' => array( // this is used in contact page
         ),
         //'theme' => '',
-        'defaultController' => 'backoffice/login'
+        // autoloading model and component classes
+        'import' => array(
+            'application.models._master.*',
+        ),
     )
 );
 
