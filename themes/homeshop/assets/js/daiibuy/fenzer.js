@@ -1,0 +1,28 @@
+/**
+ * Created by NPR on 8/13/14.
+ */
+var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin;
+
+/**
+ * Fenzer Category
+ */
+$('.removeProductItem').live('click', function () {
+    if (confirm('Remove This Item'))
+        $(this).parent().parent().fadeOut(500, function(){$(this).remove();});
+});
+
+$('#addToCartFenzer').live('click', function () {
+    if (confirm('Add To Cart?')) {
+        $.ajax({
+            type: 'POST',
+            url: baseUrl + 'fenzer/product/addToCart',
+            dataType: 'json',
+            data: $('#productItemsForm').serialize()
+        }).done(function (data) {
+            alert(data.result);
+            /**
+             * redirect to cart url
+             */
+        });
+    }
+});
