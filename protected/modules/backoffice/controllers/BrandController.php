@@ -82,8 +82,8 @@ class BrandController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['Brand'];
-
-				$folderImage = 'folderName';
+				$model->supplierId = Yii::app()->user->id;
+				$folderImage = 'brand';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -97,6 +97,8 @@ class BrandController extends MasterBackofficeController
 				{
 					$model->image = null;
 				}
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
 
 				if($model->save())
 				{
@@ -165,7 +167,7 @@ class BrandController extends MasterBackofficeController
 			{
 				$model->attributes = $_POST['Brand'];
 
-				$folderimage = 'folderName';
+				$folderimage = 'brand';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -173,12 +175,13 @@ class BrandController extends MasterBackofficeController
 					$imgType = $imgType[count($imgType) - 1];
 					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
 					$imagePath{$columnName} = '/../' . $imageUrl;
-					$model->image = \imageUrl;
+					$model->image = $imageUrl;
 				}
 				else
 				{
 					$model->image = $oldimage;
 				}
+				$model->updateDateTime = new CDbExpression("NOW()");
 
 				if($model->save())
 				{

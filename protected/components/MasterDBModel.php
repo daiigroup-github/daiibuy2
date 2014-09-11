@@ -1,6 +1,6 @@
 <?php
 
-class MasterDBModel extends MasterCActiveRecord
+class MasterDBModel extends MasterDBModel
 {
 
 	//change db to your db connection name
@@ -9,12 +9,12 @@ class MasterDBModel extends MasterCActiveRecord
 
 	public function getDbConnection()
 	{
-		if (self::$db !== null)
+		if(self::$db !== null)
 			return self::$db;
 		else
 		{
 			self::$db = Yii::app()->db;
-			if (self::$db instanceof CDbConnection)
+			if(self::$db instanceof CDbConnection)
 			{
 				self::$db->setActive(true);
 				return self::$db;
@@ -25,4 +25,3 @@ class MasterDBModel extends MasterCActiveRecord
 	}
 
 }
-

@@ -1,20 +1,16 @@
 <?php
 
 /**
- * This is the model class for table "brand".
+ * This is the model class for table "price_group".
  *
- * The followings are the available columns in table 'brand':
- * @property string $brandId
- * @property string $supplierId
- * @property string $title
- * @property string $description
- * @property string $image
- * @property integer $sortOrder
+ * The followings are the available columns in table 'price_group':
+ * @property string $priceGroupId
+ * @property string $priceGroupName
+ * @property string $priceRate
  * @property integer $status
- * @property string $createDateTime
- * @property string $updateDateTime
+ * @property string $supplierId
  */
-class BrandMaster extends MasterCActiveRecord
+class PriceGroupMaster extends MasterCActiveRecord
 {
 
 	/**
@@ -22,7 +18,7 @@ class BrandMaster extends MasterCActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'brand';
+		return 'price_group';
 	}
 
 	/**
@@ -34,31 +30,28 @@ class BrandMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array(
-				'supplierId, title, createDateTime, updateDateTime',
+				'priceGroupName, priceRate, supplierId',
 				'required'),
 			array(
-				'sortOrder, status',
+				'status',
 				'numerical',
 				'integerOnly'=>true),
 			array(
+				'priceGroupName',
+				'length',
+				'max'=>40),
+			array(
+				'priceRate',
+				'length',
+				'max'=>15),
+			array(
 				'supplierId',
 				'length',
-				'max'=>20),
-			array(
-				'title',
-				'length',
-				'max'=>200),
-			array(
-				'image',
-				'length',
-				'max'=>255),
-			array(
-				'description',
-				'safe'),
+				'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array(
-				'brandId, supplierId, title, description, image, sortOrder, status, createDateTime, updateDateTime, searchText',
+				'priceGroupId, priceGroupName, priceRate, status, supplierId, searchText',
 				'safe',
 				'on'=>'search'),
 		);
@@ -81,15 +74,11 @@ class BrandMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'brandId'=>'Brand',
-			'supplierId'=>'Supplier',
-			'title'=>'Title',
-			'description'=>'Description',
-			'image'=>'Image',
-			'sortOrder'=>'Sort Order',
+			'priceGroupId'=>'Price Group',
+			'priceGroupName'=>'Price Group Name',
+			'priceRate'=>'Price Rate',
 			'status'=>'Status',
-			'createDateTime'=>'Create Date Time',
-			'updateDateTime'=>'Update Date Time',
+			'supplierId'=>'Supplier',
 		);
 	}
 
@@ -113,26 +102,18 @@ class BrandMaster extends MasterCActiveRecord
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->brandId = $this->searchText;
-			$this->supplierId = $this->searchText;
-			$this->title = $this->searchText;
-			$this->description = $this->searchText;
-			$this->image = $this->searchText;
-			$this->sortOrder = $this->searchText;
+			$this->priceGroupId = $this->searchText;
+			$this->priceGroupName = $this->searchText;
+			$this->priceRate = $this->searchText;
 			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
+			$this->supplierId = $this->searchText;
 		}
 
-		$criteria->compare('brandId', $this->brandId, true, 'OR');
-		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
-		$criteria->compare('title', $this->title, true, 'OR');
-		$criteria->compare('description', $this->description, true, 'OR');
-		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('sortOrder', $this->sortOrder);
+		$criteria->compare('priceGroupId', $this->priceGroupId, true, 'OR');
+		$criteria->compare('priceGroupName', $this->priceGroupName, true, 'OR');
+		$criteria->compare('priceRate', $this->priceRate, true, 'OR');
 		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -143,7 +124,7 @@ class BrandMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return BrandMaster the static model class
+	 * @return PriceGroupMaster the static model class
 	 */
 	public static function model($className = __CLASS__)
 	{

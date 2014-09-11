@@ -25,7 +25,6 @@ class LoginController extends MasterBackofficeController
 					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
 				else
 				{
-					throw new Exception(Yii::app()->request->urlReferrer);
 					$this->redirect(Yii::app()->request->urlReferrer);
 				}
 		}

@@ -5,13 +5,14 @@
  *
  * The followings are the available columns in table 'category':
  * @property string $categoryId
+ * @property string $brandModelId
  * @property string $title
  * @property string $description
  * @property string $image
  * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
- * @property string $updateDatetime
+ * @property string $updateDateTime
  *
  * The followings are the available model relations:
  * @property CategoryToSub[] $categoryToSubs
@@ -36,14 +37,15 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, createDateTime, updateDatetime', 'required'),
+			array('brandModelId, title, createDateTime, updateDateTime', 'required'),
 			array('sortOrder, status', 'numerical', 'integerOnly'=>true),
+			array('brandModelId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('categoryId, title, description, image, sortOrder, status, createDateTime, updateDatetime, searchText', 'safe', 'on'=>'search'),
+			array('categoryId, brandModelId, title, description, image, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,13 +70,14 @@ class CategoryMaster extends MasterCActiveRecord
 	{
 		return array(
 			'categoryId' => 'Category',
+			'brandModelId' => 'Brand Model',
 			'title' => 'Title',
 			'description' => 'Description',
 			'image' => 'Image',
 			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
-			'updateDatetime' => 'Update Datetime',
+			'updateDateTime' => 'Update Date Time',
 		);
 	}
 
@@ -99,23 +102,25 @@ class CategoryMaster extends MasterCActiveRecord
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->categoryId = $this->searchText;
+			$this->brandModelId = $this->searchText;
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 			$this->image = $this->searchText;
 			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
-			$this->updateDatetime = $this->searchText;
+			$this->updateDateTime = $this->searchText;
 		}
 
 		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
+		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('image',$this->image,true, 'OR');
 		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
-		$criteria->compare('updateDatetime',$this->updateDatetime,true, 'OR');
+		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

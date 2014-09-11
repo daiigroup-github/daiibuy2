@@ -22,6 +22,33 @@ class MasterBackofficeController extends MasterController
 				'url'=>array(
 					'user/index')
 			),
+			array(
+				'label'=>'PriceList',
+				'url'=>array(
+					'/backoffice/priceGroup',
+				)),
+//			array(
+//				'label'=>'Setting',
+//				'url'=>array(
+//					'#'),
+////				'active'=>$this->id == 'controllerId',
+//				'items'=>array(
+//					array(
+//						'label'=>'PriceList',
+//						'url'=>array(
+//							'/backoffice/pricelist',
+//							'id'=>1)),
+////					array(
+////						'label'=>'Sub 2',
+////						'url'=>array(
+////							'/brand/view',
+////							'id'=>2)),
+//				),
+//				'itemOptions'=>array(
+//					'class'=>'dropdown'),
+//				'submenuOptions'=>array(
+//					'class'=>'dropdown-menu'),
+//			),
 //            array(
 //                'label' => 'Home',
 //                'url' => array('/site/index')

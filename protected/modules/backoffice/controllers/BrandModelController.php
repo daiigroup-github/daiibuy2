@@ -71,7 +71,10 @@ class BrandModelController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new BrandModel;
-
+		if(isset($_GET["brandId"]))
+		{
+			$model->brandId = $_GET["brandId"];
+		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -82,8 +85,10 @@ class BrandModelController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['BrandModel'];
-
-				$folderImage = 'folderName';
+				$model->supplierId = Yii::app()->user->id;
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
+				$folderImage = 'brandModel';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -164,8 +169,8 @@ class BrandModelController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['BrandModel'];
-
-				$folderimage = 'folderName';
+				$model->updateDateTime = new CDbExpression("NOW()");
+				$folderimage = 'brandModel';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -259,6 +264,11 @@ class BrandModelController extends MasterBackofficeController
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['BrandModel']))
 			$model->attributes = $_GET['BrandModel'];
+
+		if(isset($_GET["brandId"]))
+		{
+			$model->brandId = $_GET["brandId"];
+		}
 
 		$this->render('index', array(
 			'model'=>$model,

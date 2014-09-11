@@ -71,7 +71,10 @@ class CategoryController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new Category;
-
+		if(isset($_GET["brandModelId"]))
+		{
+			$model->brandModelId = $_GET["brandModelId"];
+		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -82,8 +85,9 @@ class CategoryController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['Category'];
-
-				$folderImage = 'folderName';
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
+				$folderImage = 'category';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -164,8 +168,8 @@ class CategoryController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['Category'];
-
-				$folderimage = 'folderName';
+				$model->updateDateTime = new CDbExpression("NOW()");
+				$folderimage = 'category';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -257,6 +261,10 @@ class CategoryController extends MasterBackofficeController
 	{
 		$model = new Category('search');
 		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET["brandModelId"]))
+		{
+			$model->brandModelId = $_GET["brandModelId"];
+		}
 		if(isset($_GET['Category']))
 			$model->attributes = $_GET['Category'];
 
