@@ -47,20 +47,8 @@ class CategoryController extends MasterFenzerController
             ),
         );
 
-        $items = array();
-
-        for ($i = 0; $i < 6; $i++) {
-            $items[$i] = array(
-                'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
-                'name' => 'Fenzer '.$i,
-                'price' => rand(100,500),
-                'qty' => rand(1,100),
-            );
-        }
-
         $this->render('index', array(
             'product' => $product,
-            'items' => $items
         ));
     }
 

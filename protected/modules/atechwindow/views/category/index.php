@@ -40,7 +40,7 @@ $this->breadcrumbs = array(
 
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'fenzerForm',
+                    'id' => 'atechWindowForm',
                     //'enableClientValidation' => true,
                     //'clientOptions' => array('validateOnSubmit' => true,),
                     'htmlOptions' => array(
@@ -66,21 +66,17 @@ $this->breadcrumbs = array(
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <?php echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/showItems'), array(
-                            'dataType' => 'json',
+                        <?php echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/searchProductItems'), array(
+                            'dataType' => 'html',
                             'method' => 'POST',
-                            'data' => 'js:$("#fenzerForm").serialize()',
+                            'data' => 'js:$("#atechWindowForm").serialize()',
                             'success' => 'js:function(data){
-                                var d = "<ul>";
-                                d += "<li>Height : "+data.h+"</li>";
-                                d += "<li>Length : "+data.l+"</li>";
-                                d += "</ul>";
-
-                                $("#items").html(d);
+                                $("#productItems").html(data);
+                                $("#showProduct").show();
                             }',
                         ), array(
                             'class' => 'btn btn-default',
-                            'id' => 'fenzerQuery'
+                            'id' => 'searchProductItems'
                         ));?>
                     </div>
                 </div>
@@ -132,7 +128,7 @@ $this->breadcrumbs = array(
 
 </div>
 
-<div class="page-content">
+<div class="page-content" id="showProduct">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <table class="table table-bordered atechwindow-items">
@@ -146,29 +142,22 @@ $this->breadcrumbs = array(
                     <th>Qty</th>
                     <th>Actions</th>
                 </tr>
-                <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td><?php echo $item['model']; ?></td>
-                        <td><?php echo $item['code']; ?></td>
-                        <td><?php echo $item['name']; ?></td>
-                        <td><?php echo $item['size']; ?></td>
-                        <td><?php echo $item['color']; ?></td>
-                        <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
-                        <td>
-                            <div class="numeric-input full-width">
-                                <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
-                                <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
-                                <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i></a>
-                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <tbody id="productItems"></tbody>
             </table>
         </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 col-md-offset-9">
+
+            <div class="product-actions">
+		        <span class="add-to-cart">
+                    <span class="action-wrapper">
+					    <i class="fa fa-shopping-cart"></i>
+						<span class="action-name">View cart</span>
+					</span>
+				</span>
+            </div>
+        </div>
+
     </div>
 </div>
 

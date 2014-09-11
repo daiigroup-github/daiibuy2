@@ -71,24 +71,8 @@ class CategoryController extends MasterAtechwindowController
             ),
         );
 
-        $items = array();
-
-        for ($i = 0; $i < rand(3, 9); $i++) {
-            $items[$i] = array(
-                'model' => 'Model ' . $i,
-                'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
-                'name' => 'Atech Window ' . $i,
-                'size' => $sizes[rand(0,5)],
-                'color' => $colors[rand(0,4)],
-                'price' => rand(100, 500),
-                'qty' => 1,
-
-            );
-        }
-
         $this->render('index', array(
             'product' => $product,
-            'items' => $items
         ));
     }
 

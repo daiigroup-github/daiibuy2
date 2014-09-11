@@ -77,21 +77,17 @@ $this->breadcrumbs = array(
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <?php echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/showItems'), array(
-                            'dataType' => 'json',
+                        <?php echo CHtml::ajaxLink('<i class="fa fa-calculator"></i> Calculate', $this->createAbsoluteUrl('product/calculateProductItems'), array(
+                            'dataType' => 'html',
                             'method' => 'POST',
                             'data' => 'js:$("#fenzerForm").serialize()',
                             'success' => 'js:function(data){
-                                var d = "<ul>";
-                                d += "<li>Height : "+data.h+"</li>";
-                                d += "<li>Length : "+data.l+"</li>";
-                                d += "</ul>";
-
-                                $("#items").html(d);
+                                $("#showProduct").show();
+                                $("#productItems").html(data);
                             }',
                         ), array(
                             'class' => 'btn btn-default',
-                            'id' => 'fenzerQuery'
+                            'id' => 'calculateProductItems',
                         ));?>
                     </div>
                 </div>
@@ -143,9 +139,21 @@ $this->breadcrumbs = array(
 
 </div>
 
-<div class="page-content">
+<div class="page-content" id="showProduct">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
+            <?php
+            /**
+             * เพิ่มรายการสินค้า
+             */
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'productItemsForm',
+                //'enableClientValidation' => true,
+                //'clientOptions' => array('validateOnSubmit' => true,),
+                'htmlOptions' => array(
+                ),
+            ));
+            ?>
             <table class="table table-bordered fenzer-items">
                 <tr>
                     <th>Code</th>
@@ -155,34 +163,67 @@ $this->breadcrumbs = array(
                     <th>Amount</th>
                     <th>Actions</th>
                 </tr>
-                <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td><?php echo $item['code']; ?></td>
-                        <td><?php echo $item['name']; ?></td>
-                        <td><?php echo number_format($item['price'], 2); ?></td>
-                        <td>
-                            <div class="numeric-input full-width">
-                                <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
-                                <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
-                                <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
-                            </div>
-                        </td>
-                        <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
-                        <td class="text-center">
-                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <tbody id="productItems"></tbody>
             </table>
+            <?php $this->endWidget(); ?>
         </div>
+
+        <?php
+        /**
+         * เพิ่มรายการสินค้า
+         */
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'addProductItemForm',
+            //'enableClientValidation' => true,
+            //'clientOptions' => array('validateOnSubmit' => true,),
+            'htmlOptions' => array(
+            ),
+        ));
+        ?>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="alert alert-info">
+                <div class="row">
+                    <div class="col-md-5">
+                        <select class="from-control" name="cat1" id="">
+                            <option value="">เสา</option>
+                            <option value="">แผ่น</option>
+                            <option value="">ฐานราก</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <select class="form-control" name="product" id="">
+                            <option value="">product1</option>
+                            <option value="">product2</option>
+                            <option value="">product3</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <?php echo CHtml::ajaxLink('<i class="fa fa-plus"></i> เพิ่มรายการ', $this->createAbsoluteUrl('product/addProductItem'), array(
+                            'dataType' => 'html',
+                            'method' => 'POST',
+                            'data' => 'js:$("#addProductForm").serialize()',
+                            'success' => 'js:function(data){
+                                $("#productItems").append($(data).hide().fadeIn(1000));
+                                //$("#productItems").append(data);
+                                //$(data).hide().appendTo("#productItems").fadeIn(1000);
+                            }',
+                        ), array(
+                            'class' => 'form-control btn btn-default',
+                            'id' => 'addProductItem',
+                        ));?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php $this->endWidget(); ?>
 
         <div class="col-lg-3 col-md-3 col-sm-3 col-md-offset-9">
 
             <div class="product-actions">
-		        <span class="add-to-cart">
+		        <span class="add-to-cart" id="addToCartFenzer">
                     <span class="action-wrapper">
-					    <i class="fa fa-shopping-cart"></i>
-						<span class="action-name">Add to cart</span>
+					    <i class="fa fa-money"></i>
+						<span class="action-name" >Check out</span>
 					</span>
 				</span>
             </div>

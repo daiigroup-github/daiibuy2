@@ -7,6 +7,7 @@ class MasterFenzerController extends MasterController
         parent::init();
 
         Yii::app()->clientScript->registerCSSFile(Yii::app()->theme->baseUrl.'/assets/css/fenzer.css');
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/assets/js/daiibuy/fenzer.js');
 
         $this->nav = array(
             array(

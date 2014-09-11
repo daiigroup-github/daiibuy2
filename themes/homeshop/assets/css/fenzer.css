@@ -25,3 +25,10 @@ span.add-to-cart{
 span.add-to-cart:hover{
     background:#31b0d5;
 }
+
+/*
+Fenzer Category
+*/
+#showProduct{
+    display: none;
+}

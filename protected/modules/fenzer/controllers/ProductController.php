@@ -68,19 +68,98 @@ class ProductController extends MasterFenzerController
     }
     */
 
-    public function actionShowItems()
+    public function actionCalculateProductItems()
     {
-        if(isset($_POST)){
-            $res = array();
-
-            $res = array(
-                'kt'=>'Kurtumm',
-                'tk'=>'Taklong'
-            );
+        if (isset($_POST)) {
+            $res = '';
 
             $this->writeToFile('/tmp/showItems', print_r($_POST, true));
 
-            echo CJSON::encode($_POST);
+            $items = array();
+
+            for ($i = 0; $i < 6; $i++) {
+                $items[$i] = array(
+                    'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
+                    'name' => 'Fenzer ' . $i,
+                    'price' => rand(100, 500),
+                    'qty' => rand(1, 100),
+                );
+            }
+
+            foreach ($items as $item) {
+                $res .= '<tr>' .
+                    '<td>' . $item['code'] . '</td>' .
+                    '<td>' . $item['name'] . '</td>' .
+                    '<td>' . number_format($item['price'], 2) . '</td>' .
+                    '<td>' .
+                    '<div class="numeric-input full-width">' .
+                    '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
+                    '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
+                    '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
+                    '</div>' .
+                    '</td>' .
+                    '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
+                    '<td><a class="btn btn-danger btn-xs removeProductItem"><i class="fa fa-ban"></i></a></td>' .
+                    '</tr>';
+            }
+            /*
+            <tr>
+                <td><?php echo $item['code']; ?></td>
+                <td><?php echo $item['name']; ?></td>
+                <td><?php echo number_format($item['price'], 2); ?></td>
+                <td>
+                    <div class="numeric-input full-width">
+                        <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
+                        <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
+                        <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
+                    </div>
+                </td>
+                <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
+                <td class="text-center">
+                    <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i></a>
+                </td>
+            </tr>
+            */
+
+            echo $res;
         }
+    }
+
+    public function actionAddProductItem()
+    {
+        if (isset($_POST)) {
+            $item = array(
+                'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
+                'name' => 'Fenzer ' . rand(10,99),
+                'price' => rand(100, 500),
+                'qty' => rand(1, 100),
+            );
+
+            $res = '<tr>' .
+                '<td>' . $item['code'] . '</td>' .
+                '<td>' . $item['name'] . '</td>' .
+                '<td>' . number_format($item['price'], 2) . '</td>' .
+                '<td>' .
+                '<div class="numeric-input full-width">' .
+                '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
+                '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
+                '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
+                '</div>' .
+                '</td>' .
+                '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
+                '<td><a class="btn btn-danger btn-xs" id="removeProductItem"><i class="fa fa-ban"></i></a></td>' .
+                '</tr>';
+
+            echo $res;
+        }
+    }
+
+    public function actionAddToCart()
+    {
+        $this->writeToFile('/tmp/addToCartFenzer', print_r($_POST, true));
+        $res = array();
+        $res['result'] = true;
+
+        echo CJSON::encode($res);
     }
 }

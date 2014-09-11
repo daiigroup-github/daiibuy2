@@ -27,3 +27,10 @@ table.atechwindow-items tr td {
 table.atechwindow-items tr td .numeric-input {
     width: 60px;
 }
+
+/*
+Atech Window Category
+*/
+#showProduct{
+    display: none;
+}
