@@ -1,35 +1,38 @@
 <?php
 
 /**
- * This is the model class for table "order_detail".
+ * This is the model class for table "order_detail_template_field".
  *
- * The followings are the available columns in table 'order_detail':
- * @property string $orderDetailId
- * @property string $orderId
+ * The followings are the available columns in table 'order_detail_template_field':
+ * @property string $orderDetailTemplateFieldId
+ * @property string $orderDetailTemplateId
+ * @property string $title
+ * @property string $description
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property OrderDetailTemplate[] $orderDetailTemplates
+ * @property OrderDetailTemplate $orderDetailTemplate
  * @property OrderDetailValue[] $orderDetailValues
  */
-class OrderDetail extends OrderDetailMaster
+class OrderDetailTemplateField extends OrderDetailTemplateFieldMaster
 {
 
+	/**
+	 * @return string the associated database table name
+	 */
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
 
 	/**
-	 * @return string the associated database table name
-	 */
-
-	/**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
 	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
 		));
@@ -59,27 +62,9 @@ class OrderDetail extends OrderDetailMaster
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 * public function search()
 	 * {
 	 * }
-	 */
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return OrderDetail the static model class
 	 */
 }
