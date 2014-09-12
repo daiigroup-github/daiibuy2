@@ -1,29 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "order_detail_template".
+ * This is the model class for table "order_group_to_order".
  *
- * The followings are the available columns in table 'order_detail_template':
- * @property string $orderDetailTemplateId
- * @property string $orderDetailId
- * @property string $supplierId
- * @property string $title
+ * The followings are the available columns in table 'order_group_to_order':
+ * @property string $id
+ * @property string $orderGroupId
+ * @property string $orderId
+ * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property OrderDetail $orderDetail
- * @property User $supplier
- * @property OrderDetailTemplateField[] $orderDetailTemplateFields
+ * @property OrderGroup $orderGroup
+ * @property Order $order
  */
-class OrderDetailTemplateMaster extends MasterCActiveRecord
+class OrderGroupToOrderMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'order_detail_template';
+		return 'order_group_to_order';
 	}
 
 	/**
@@ -34,15 +33,15 @@ class OrderDetailTemplateMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('orderDetailId, supplierId, title', 'required'),
-			array('orderDetailId, supplierId', 'length', 'max'=>20),
-			array('title', 'length', 'max'=>45),
+			array('orderGroupId, orderId', 'required'),
+			array('status', 'numerical', 'integerOnly'=>true),
+			array('orderGroupId, orderId', 'length', 'max'=>20),
 			array('createDateTime, updateDateTime', 'safe'),
 			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
 			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderDetailTemplateId, orderDetailId, supplierId, title, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
+			array('id, orderGroupId, orderId, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,9 +53,8 @@ class OrderDetailTemplateMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'orderDetail' => array(self::BELONGS_TO, 'OrderDetail', 'orderDetailId'),
-			'supplier' => array(self::BELONGS_TO, 'User', 'supplierId'),
-			'orderDetailTemplateFields' => array(self::HAS_MANY, 'OrderDetailTemplateField', 'orderDetailTemplateId'),
+			'orderGroup' => array(self::BELONGS_TO, 'OrderGroup', 'orderGroupId'),
+			'order' => array(self::BELONGS_TO, 'Order', 'orderId'),
 		);
 	}
 
@@ -66,10 +64,10 @@ class OrderDetailTemplateMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'orderDetailTemplateId' => 'Order Detail Template',
-			'orderDetailId' => 'Order Detail',
-			'supplierId' => 'Supplier',
-			'title' => 'Title',
+			'id' => 'ID',
+			'orderGroupId' => 'Order Group',
+			'orderId' => 'Order',
+			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
 		);
@@ -92,9 +90,9 @@ class OrderDetailTemplateMaster extends MasterCActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-		$criteria->compare('LOWER(orderDetailId)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(supplierId)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(title)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(orderGroupId)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(orderId)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('status',$this->status);
 		$criteria->compare('LOWER(createDateTime)',strtolower($this->searchText),true, 'OR');
 		$criteria->compare('LOWER(updateDateTime)',strtolower($this->searchText),true, 'OR');
 
@@ -106,7 +104,7 @@ class OrderDetailTemplateMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return OrderDetailTemplateMaster the static model class
+	 * @return OrderGroupToOrderMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
