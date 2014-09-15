@@ -17,7 +17,6 @@ $this->breadcrumbs = array(
 	<!-- /Heading -->
 </div>
 <div class="row">
-
 	<?php $i = 0; ?>
 	<?php foreach($suppliers as $key=> $value): ?>
 		<?php
@@ -28,7 +27,7 @@ $this->breadcrumbs = array(
 		<div class="<?php echo $class; ?>">
 			<div class="blog-item">
 
-				<a href="<?php echo Yii::app()->createUrl($key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/supplier/' . $key . '.jpg'); ?>
+				<a href="<?php echo Yii::app()->createUrl($key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $key . '.png'); ?>
 					<div class="button" style="text-align: center;background-clip: border-box;
 						 background-color: rgb(52, 152, 219);"><?php echo $key; ?></div>
 				</a>
