@@ -9,29 +9,31 @@ $form = $this->beginWidget('CActiveForm', array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 	'htmlOptions'=>array(
-		'class'=>'form-search well'
+//		'class'=>'form-search well'
 	),
 	'id'=>'search-form',
 	));
 ?>
-<div class="input-append">
-	<?php
-	echo $form->textField($model, 'searchText', array(
-		'class'=>'input-medium search-query',
-		'placeholder'=>'ชื่อ รายละเอียด'));
+<div class="input-group">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="submit">Search</button>
+	</span>
+	<div class="row">
+		<div class="col-lg-6">
+			<?php
+			echo $form->textField($model, 'searchText', array(
+				'class'=>'form-control'));
+			?>
+		</div>
+		<div class="col-lg-6">
+			<?php
+			echo $form->dropdownList($model, "status", Product::model()->getStatusArray(), array(
+				'prompt'=>'-- เลือกสถานะ --',
+				'class'=>'form-control'));
+			?>
+		</div>
+	</div>
 
-//	if(isset(Yii::app()->user->id) && Yii::app()->user->userType == 4)
-//	{
-//		echo $form->dropdownlist($model, "supplierId", User::model()->findAllSupplierApprovedArray(), array(
-//			"prompt"=>"-- เลือก ผู้ผลิตสินค้า --"));
-//	}
-
-	echo $form->dropdownList($model, "status", Product::model()->getStatusArray(), array(
-		'prompt'=>'-- เลือกสถานะ --'));
-
-	echo CHtml::submitButton('Search', array(
-		'class'=>'btn'));
-	?>
 </div>
 
 <?php $this->endWidget(); ?>

@@ -51,7 +51,6 @@ return false;
 			</div>
 		</div>
 	</div>
-
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'category-to-sub-grid',
@@ -61,14 +60,6 @@ return false;
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
-			array(
-				'name'=>'categoryId',
-				'type'=>'html',
-				'value'=>'Chtml::image(Yii::app()->baseUrl.$data->category->image,"",array("style"=>"width:150px"))."<br>".$data->category->title',
-				'htmlOptions'=>array(
-					"style"=>'width:150px',
-					"class"=>'text-center')
-			),
 			array(
 				'name'=>'subCategoryId',
 				'type'=>'html',
