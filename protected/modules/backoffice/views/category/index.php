@@ -33,7 +33,8 @@ return false;
 	<div class="panel-heading">
 		Manage Categories
 		<div class="pull-right">
-			<?php echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?brandModelId=' . $_GET["brandModelId"]), array(
+			<?php
+			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?brandModelId=' . $_GET["brandModelId"]), array(
 				'class'=>'btn btn-xs btn-primary'));
 			?>
 		</div>
@@ -60,10 +61,17 @@ return false;
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
+			array(
+				'name'=>'image',
+				'type'=>'html',
+				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->image, "", array("style"=>"width:50px"))',
+				'htmlOptions'=>array(
+					'width'=>'50px'
+				)
+			),
 			'categoryId',
 			'title',
 			'description',
-			'image',
 			'sortOrder',
 			'status',
 			/*
@@ -72,6 +80,13 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
+				'template'=>'{view} {update} {delete} {subCat}',
+				'buttons'=>array(
+					'subCat'=>array(
+						'label'=>'<br><u>Sub Category</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
+					)
+				)
 			),
 		),
 	));

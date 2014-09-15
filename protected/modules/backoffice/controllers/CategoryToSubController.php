@@ -70,22 +70,74 @@ class CategoryToSubController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
+		$cat = new Category();
 		$model = new CategoryToSub;
+		if($_GET["categoryId"])
+		{
+			$model->categoryId = $_GET["categoryId"];
+		}
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['CategoryToSub']))
+		if(isset($_POST['Category']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['CategoryToSub'];
-
-				if($model->save())
+				$cat->attributes = $_POST["Category"];
+				$cat->isRoot = 0;
+				$catModel = Category::model()->findByPk($model->categoryId);
+				$cat->brandModelId = $catModel->brandModelId;
+				$cat->createDateTime = new CDbExpression("NOW()");
+				$cat->updateDateTime = new CDbExpression("NOW()");
+				$folderimage = 'subCategory';
+				$image = CUploadedFile::getInstance($cat, 'image');
+				if(isset($image) && !empty($image))
 				{
-					$flag = true;
+					$imgType = explode('.', $image->name);
+					$imgType = $imgType[count($imgType) - 1];
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePathimage = '/../' . $imageUrl;
+					$cat->image = $imageUrl;
+				}
+				else
+				{
+					$cat->image = null;
+				}
+				if($cat->save())
+				{
+					if(isset($image) && !empty($image))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
+						{
+							$flag = true;
+						}
+						else
+						{
+							$flag = false;
+						}
+					}
+					else
+					{
+						$flag = true;
+					}
+
+					$subCatId = Yii::app()->db->lastInsertID;
+					$model->attributes = $_POST['CategoryToSub'];
+					$model->subCategoryId = $subCatId;
+					$model->createDateTime = new CDbExpression("NOW()");
+					$model->updateDateTime = new CDbExpression("NOW()");
+					if($model->save())
+					{
+						$flag = true;
+					}
 				}
 
 				if($flag)
@@ -109,6 +161,7 @@ class CategoryToSubController extends MasterBackofficeController
 
 		$this->render('create', array(
 			'model'=>$model,
+			'cat'=>$cat
 		));
 	}
 
@@ -120,21 +173,64 @@ class CategoryToSubController extends MasterBackofficeController
 	public function actionUpdate($id)
 	{
 		$model = $this->loadModel($id);
-
+		$cat = $model->subCategory;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['CategoryToSub']))
+		if(isset($_POST['Category']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['CategoryToSub'];
+				$oldImage = $cat->image;
+				$cat->attributes = $_POST["Category"];
+				$catModel = Category::model()->findByPk($model->categoryId);
+				$cat->updateDateTime = new CDbExpression("NOW()");
 
-				if($model->save())
+				$folderimage = 'subCategory';
+				$image = CUploadedFile::getInstance($cat, 'image');
+				if(isset($image) && !empty($image))
 				{
-					$flag = true;
+					$imgType = explode('.', $image->name);
+					$imgType = $imgType[count($imgType) - 1];
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePathimage = '/../' . $imageUrl;
+					$cat->image = $imageUrl;
+				}
+				else
+				{
+					$cat->image = $oldImage;
+				}
+				if($cat->save())
+				{
+					if(isset($image) && !empty($image))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
+						{
+							$flag = true;
+						}
+						else
+						{
+							$flag = false;
+						}
+					}
+					else
+					{
+						$flag = true;
+					}
+					$model->attributes = $_POST['CategoryToSub'];
+					$model->updateDateTime = new CDbExpression("NOW()");
+
+					if($model->save())
+					{
+						$flag = true;
+					}
 				}
 
 				if($flag)
@@ -158,6 +254,7 @@ class CategoryToSubController extends MasterBackofficeController
 
 		$this->render('update', array(
 			'model'=>$model,
+			'cat'=>$cat
 		));
 	}
 
@@ -194,6 +291,7 @@ class CategoryToSubController extends MasterBackofficeController
 	{
 		$model = new CategoryToSub('search');
 		$model->unsetAttributes();  // clear any default values
+
 		if(isset($_GET['CategoryToSub']))
 			$model->attributes = $_GET['CategoryToSub'];
 

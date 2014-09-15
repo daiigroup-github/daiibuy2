@@ -175,9 +175,9 @@ class CategoryController extends MasterBackofficeController
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-					$imagePath{$columnName} = '/../' . $imageUrl;
-					$model->image = \imageUrl;
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePathimage = '/../' . $imageUrl;
+					$model->image = $imageUrl;
 				}
 				else
 				{
@@ -261,6 +261,7 @@ class CategoryController extends MasterBackofficeController
 	{
 		$model = new Category('search');
 		$model->unsetAttributes();  // clear any default values
+
 		if(isset($_GET["brandModelId"]))
 		{
 			$model->brandModelId = $_GET["brandModelId"];

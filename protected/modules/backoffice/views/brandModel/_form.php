@@ -16,7 +16,7 @@
 		'enableAjaxValidation'=>false,
 		'htmlOptions'=>array(
 			'class'=>'form-horizontal',
-		//'enctype' => 'multipart/form-data',
+			'enctype'=>'multipart/form-data',
 		),
 	));
 	?>
@@ -96,7 +96,7 @@
 				'class'=>'form-control',
 				'min'=>0));
 			?>
-<?php echo $form->error($model, 'sortOrder'); ?>
+			<?php echo $form->error($model, 'sortOrder'); ?>
 		</div>
 	</div>
 	<div class="form-group">
@@ -109,7 +109,7 @@
 			echo $form->checkBox($model, 'status', array(
 				'class'=>'form-control'));
 			?>
-<?php echo $form->error($model, 'status'); ?>
+			<?php echo $form->error($model, 'status'); ?>
 		</div>
 	</div>
 
@@ -122,6 +122,6 @@
 		</div>
 	</div>
 
-<?php $this->endWidget(); ?>
+	<?php $this->endWidget(); ?>
 
 </div><!-- form -->

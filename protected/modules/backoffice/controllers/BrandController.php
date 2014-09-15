@@ -173,8 +173,8 @@ class BrandController extends MasterBackofficeController
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-					$imagePath{$columnName} = '/../' . $imageUrl;
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePath = '/../' . $imageUrl;
 					$model->image = $imageUrl;
 				}
 				else
@@ -193,7 +193,7 @@ class BrandController extends MasterBackofficeController
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 
-						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePath))
 						{
 							if(isset($oldimage) && !empty($oldimage))
 								unlink(Yii::app()->getBasePath() . '/..' . $oldimage);

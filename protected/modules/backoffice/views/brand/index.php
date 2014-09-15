@@ -61,9 +61,16 @@ return false;
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
+			array(
+				'name'=>'image',
+				'type'=>'html',
+				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->image, "", array("style"=>"width:50px"))',
+				'htmlOptions'=>array(
+					'width'=>'50px'
+				)
+			),
 			'title',
 			'description',
-			'image',
 			'sortOrder',
 			/*
 			  'status',

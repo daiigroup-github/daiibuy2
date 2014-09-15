@@ -88,7 +88,7 @@ class BrandModelController extends MasterBackofficeController
 				$model->supplierId = Yii::app()->user->id;
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderImage = 'brandModel';
+				$folderimage = 'brandModel';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -168,6 +168,7 @@ class BrandModelController extends MasterBackofficeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
+				$columnName = "image";
 				$model->attributes = $_POST['BrandModel'];
 				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderimage = 'brandModel';
@@ -176,9 +177,9 @@ class BrandModelController extends MasterBackofficeController
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-					$imagePath{$columnName} = '/../' . $imageUrl;
-					$model->image = \imageUrl;
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePathimage = '/../' . $imageUrl;
+					$model->image = $imageUrl;
 				}
 				else
 				{
@@ -198,7 +199,7 @@ class BrandModelController extends MasterBackofficeController
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
 						{
 							if(isset($oldimage) && !empty($oldimage))
-								unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
+								@unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
 						}
 						else
 							$flag = false;
