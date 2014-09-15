@@ -5,7 +5,7 @@ class ThemeController extends MasterMadridController
     public function actionIndex()
     {
         $title = 'Tile Theme';
-        $items = $this->showSanitary();
+        $items = $this->showTheme();
 
         $dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
         $dataProvider->pagination->pageSize = 12;
@@ -33,14 +33,16 @@ class ThemeController extends MasterMadridController
         ));
     }
 
-    public function showSanitary()
+    public function showTheme()
     {
         $items = [];
         $i = 1;
-        foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/sanitary') as $file) {
+        foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/tile') as $file) {
+            if(substr($file, 0, 1) == '.') continue;
+
             $items[$i] = [
                 'id' => $i,
-                'image' => Yii::app()->baseUrl . '/images/madrid/sanitary/' . $file,
+                'image' => Yii::app()->baseUrl . '/images/madrid/tile/' . $file,
                 'url' => Yii::app()->createUrl('madrid/product/index/id/' . $i),
                 'title' => substr($file, 0, -4),
                 'price' => rand(1000, 99999),

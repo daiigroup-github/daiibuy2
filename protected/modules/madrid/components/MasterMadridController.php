@@ -117,7 +117,7 @@ class MasterMadridController extends MasterController
         return $files;
     }
 
-    public function showSanitary()
+    public function showSanitary($type = 1)
     {
         /*
         $item = [
@@ -134,12 +134,17 @@ class MasterMadridController extends MasterController
             ],
         ];
         */
+
+        $productType = ($type == 1) ? 'sanitary' : 'tile';
+
         $items = [];
         $i = 1;
-        foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/sanitary') as $file) {
+        foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/'.$productType) as $file) {
+            if(substr($file, 0, 1) == '.') continue;
+
             $items[$i] = [
                 'id' => $i,
-                'image' => Yii::app()->baseUrl . '/images/madrid/sanitary/' . $file,
+                'image' => Yii::app()->baseUrl . '/images/madrid/'.$productType.'/' . $file,
                 'url' => Yii::app()->createUrl('madrid/product/index/id/' . $i),
                 'title' => substr($file, 0, -4),
                 'price' => rand(1000, 99999),

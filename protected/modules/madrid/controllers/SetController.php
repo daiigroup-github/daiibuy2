@@ -5,7 +5,7 @@ class SetController extends MasterMadridController
     public function actionIndex()
     {
         $title = 'Sanitary Set';
-        $items = $this->showSanitary();
+        $items = $this->showSanitarySet();
 
         $dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
         $dataProvider->pagination->pageSize = 12;
@@ -77,11 +77,13 @@ class SetController extends MasterMadridController
         $this->render('detail', array('product' => $product));
     }
 
-    public function showSanitary()
+    public function showSanitarySet()
     {
         $items = [];
         $i = 1;
         foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/sanitary') as $file) {
+            if(substr($file, 0, 1) == '.') continue;
+            
             $items[$i] = [
                 'id' => $i,
                 'image' => Yii::app()->baseUrl . '/images/madrid/sanitary/' . $file,

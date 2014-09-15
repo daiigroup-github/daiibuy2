@@ -6,8 +6,7 @@ class CategoryController extends MasterMadridController
     {
         $title = ($id == 1) ? 'Sanitary' : 'Tile';
 
-        //pager
-        $items = $this->showSanitary();
+        $items = $this->showSanitary($id);
 
         $dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
         $dataProvider->pagination->pageSize = 9;
