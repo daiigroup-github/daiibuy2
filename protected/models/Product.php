@@ -5,10 +5,6 @@
  *
  * The followings are the available columns in table 'product':
  * @property string $productId
- * @property string $supplierId
- * @property string $brandId
- * @property string $brandModelId
- * @property string $categoryId
  * @property string $model
  * @property string $name
  * @property string $isbn
@@ -21,7 +17,7 @@
  * @property string $image
  * @property integer $shipping
  * @property string $price
- * @property string $priceGroupId
+ * @property integer $priceGroupId
  * @property string $points
  * @property string $taxClassId
  * @property string $dateAvailable
@@ -32,24 +28,47 @@
  * @property string $dimensionUnits
  * @property string $metricUnits
  * @property integer $subtract
- * @property string $minimum
+ * @property integer $minimum
  * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
- * @property string $viewed
+ * @property integer $viewed
+ * @property integer $priceGroupId$categoryId
  * @property string $marginId
  * @property string $description
- *
- * The followings are the available model relations:
- * @property Category $category
- * @property User $supplier
- * @property ProductImage[] $productImages
- * @property ProductOption[] $productOptions
- * @property ProductSpecGroup[] $productSpecGroups
+ * @property string $supplierId
+ * @property string $brandId
  */
-class ProductMaster extends MasterCActiveRecord
+class Product extends CActiveRecord
 {
+
+	const STATUS_WAITING_APPROVE = 1;
+	const STATUS_APPROVED = 2;
+	const STATUS_RETURN = 3;
+	const STATUS_REJECT = 4;
+	const STATUS_DELETE = 5;
+	const STATUS_DISABLE = 6;
+	const DIMENSION_MM = 1;
+	const DIMENSION_CM = 2;
+	const DIMENSION_INCH = 3;
+	const DIMENSION_M = 4;
+	const METRIC_GRAMS = 1;
+	const METRIC_KILOGRAMS = 2;
+	const METRIC_TONS = 3;
+
+	public $searchText;
+	public $cartTotal;
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Product the static model class
+	 */
+	public static function model($className = __CLASS__)
+	{
+		return parent::model($className);
+	}
 
 	/**
 	 * @return string the associated database table name
@@ -64,101 +83,63 @@ class ProductMaster extends MasterCActiveRecord
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
+// NOTE: you should only define rules for those attributes that
+// will receive user inputs.
 		return array(
 			array(
-				'supplierId, brandId, brandModelId, categoryId, model, sku, upc, location, quantity, productUnits, stockStatusId, price, priceGroupId, taxClassId, dateAvailable, length, width, height, dimensionUnits, metricUnits, marginId',
-				'required'
-			),
+				'dateAvailable, name, quantity, productUnits, price, categoryId, priceGroupId, description, supplierId, brandId, marginId',
+				'required'),
 			array(
-				'quantity, stockStatusId, shipping, subtract, sortOrder, status',
+				'quantity, shipping, points, subtract, minimum, sortOrder, status, viewed',
 				'numerical',
-				'integerOnly'=>true
-			),
-			array(
-				'supplierId, brandId, brandModelId, categoryId, isbn, taxClassId, marginId',
-				'length',
-				'max'=>20
-			),
+				'integerOnly'=>true),
 			array(
 				'model, sku',
 				'length',
-				'max'=>64
-			),
-			array(
-				'name',
-				'length',
-				'max'=>80
-			),
+				'max'=>64),
 			array(
 				'upc',
 				'length',
-				'max'=>12
-			),
+				'max'=>12),
 			array(
 				'location',
 				'length',
-				'max'=>40
-			),
+				'max'=>128),
+//			array(
+//				'productUnits, dimensionUnits, metricUnits',
+//				'length',
+//				'max' => 45),
 			array(
-				'productUnits, dimensionUnits, metricUnits',
+				'stockStatusId, taxClassId',
 				'length',
-				'max'=>45
-			),
+				'max'=>20),
 			array(
 				'image',
 				'length',
-				'max'=>255
-			),
+				'max'=>255),
 			array(
-				'price, weight, length, width, height',
+				'price, length, width, height',
 				'length',
-				'max'=>15
-			),
+				'max'=>15),
 			array(
-				'priceGroupId',
-				'length',
-				'max'=>10
-			),
+				'createDateTime, updateDateTime, weight, metricUnits, productUnits, dimensionUnits, metricUnits, isbn',
+				'safe'),
+//			array(
+//				'image',
+//				'file',
+//				'allowEmpty' => false,
+//				'on' => 'insert'),
 			array(
-				'points',
-				'length',
-				'max'=>8
-			),
-			array(
-				'minimum',
-				'length',
-				'max'=>11
-			),
-			array(
-				'viewed',
-				'length',
-				'max'=>5
-			),
-			array(
-				'createDateTime, updateDateTime, description',
-				'safe'
-			),
-			array(
-				'createDateTime, updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'insert'
-			),
-			array(
-				'updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'update'
-			),
+				'image',
+				'file',
+				'allowEmpty'=>true,
+				'on'=>'update'),
 			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
+// Please remove those attributes that should not be searched.
 			array(
-				'productId, supplierId, brandId, brandModelId, categoryId, model, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText',
+				'productId, model, sku,productUnits,dimensionUnits,metricUnits, upc, location, quantity, stockStatusId, shipping, price, points, taxClassId, dateAvailable, weight, length, width, height, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, searchText, description, priceGroupId, name',
 				'safe',
-				'on'=>'search'
-			),
+				'on'=>'search'),
 		);
 	}
 
@@ -167,34 +148,43 @@ class ProductMaster extends MasterCActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
+// NOTE: you may need to adjust the relation name and the related
+// class name for the relations automatically generated below.
 		return array(
 			'category'=>array(
 				self::BELONGS_TO,
 				'Category',
-				'categoryId'
-			),
+				'categoryId'),
+			'priceGroup'=>array(
+				self::BELONGS_TO,
+				'PriceGroup',
+				'priceGroupId'),
+			'productAttributeValue'=>array(
+				self::HAS_MANY,
+				'ProductAttributeValue',
+				'productId'),
+			'productPromotion'=>array(
+				self::HAS_ONE,
+				'ProductPromotion',
+				'productId',
+				'order'=>'productPromotionId desc'),
 			'supplier'=>array(
 				self::BELONGS_TO,
 				'User',
-				'supplierId'
-			),
-			'productImages'=>array(
+				'supplierId'),
+			'brand'=>array(
+				self::BELONGS_TO,
+				'ProductBrand',
+				'brandId'),
+			'productImage'=>array(
 				self::HAS_MANY,
 				'ProductImage',
-				'productId'
-			),
-			'productOptions'=>array(
-				self::HAS_MANY,
-				'ProductOption',
-				'productId'
-			),
-			'productSpecGroups'=>array(
-				self::HAS_MANY,
-				'ProductSpecGroup',
-				'productId'
-			),
+				'productId'),
+			'margin'=>array(
+				self::BELONGS_TO,
+				'UserCertificateFile',
+				array(
+					'marginId'=>'id')),
 		);
 	}
 
@@ -204,28 +194,23 @@ class ProductMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'productId'=>'Product',
-			'supplierId'=>'Supplier',
-			'brandId'=>'Brand',
-			'brandModelId'=>'Brand Model',
-			'categoryId'=>'Category',
+			'productId'=>'ID',
 			'model'=>'Model',
-			'name'=>'Name',
-			'isbn'=>'Isbn',
+			'name'=>'ชื่อ',
+			'isbn'=>'รหัสสินค้า',
 			'sku'=>'Sku',
 			'upc'=>'Upc',
 			'location'=>'Location',
-			'quantity'=>'Quantity',
-			'productUnits'=>'Product Units',
+			'quantity'=>'จำนวนคงเหลือ',
+			'productUnits'=>'หน่วย',
 			'stockStatusId'=>'Stock Status',
-			'image'=>'Image',
+			'image'=>'รูปภาพ',
 			'shipping'=>'Shipping',
-			'price'=>'Price',
-			'priceGroupId'=>'Price Group',
-			'points'=>'Points',
+			'price'=>'ราคา',
+			'points'=>'คะแนนสะสม',
 			'taxClassId'=>'Tax Class',
-			'dateAvailable'=>'Date Available',
-			'weight'=>'Weight',
+			'dateAvailable'=>'วันเริ่มขาย',
+			'weight'=>'น้ำหนัก',
 			'length'=>'Length',
 			'width'=>'Width',
 			'height'=>'Height',
@@ -233,125 +218,533 @@ class ProductMaster extends MasterCActiveRecord
 			'metricUnits'=>'Metric Units',
 			'subtract'=>'Subtract',
 			'minimum'=>'Minimum',
-			'sortOrder'=>'Sort Order',
+			'sortOrder'=>'ลำดับ',
 			'status'=>'Status',
 			'createDateTime'=>'Create Date Time',
 			'updateDateTime'=>'Update Date Time',
 			'viewed'=>'Viewed',
+			'categoryId'=>'ประเภท',
 			'marginId'=>'Margin',
-			'description'=>'Description',
+			'searchText'=>'Search',
+			'description'=>'รายละเอียด',
+			'priceGroupId'=>'กลุ่มราคาขาย',
+			'supplierId'=>'Supplier Id',
+			'brandId'=>"ยี่ห้อ",
 		);
 	}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+// Warning: Please modify the following code to remove attributes that
+// should not be searched.
 
 		$criteria = new CDbCriteria;
 
-		if(isset($this->searchText) && !empty($this->searchText))
+		$criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
+		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
+		$criteria->compare("status", $this->status);
+		$criteria->compare("supplierId", $this->supplierId);
+		/*
+		  $criteria->compare('productId',$this->productId,true);
+		  $criteria->compare('quantity',$this->quantity);
+		  $criteria->compare('stockStatusId',$this->stockStatusId,true);
+		  $criteria->compare('shipping',$this->shipping);
+		  $criteria->compare('price',$this->price,true);
+		  $criteria->compare('points',$this->points);
+		  $criteria->compare('dateAvailable',$this->dateAvailable,true);
+		  $criteria->compare('weight',$this->weight,true);
+		  $criteria->compare('length',$this->length,true);
+		  $criteria->compare('width',$this->width,true);
+		  $criteria->compare('height',$this->height,true);
+		  $criteria->compare('status',$this->status);
+		 *
+		 */
+		if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
 		{
-			$this->productId = $this->searchText;
-			$this->supplierId = $this->searchText;
-			$this->brandId = $this->searchText;
-			$this->brandModelId = $this->searchText;
-			$this->categoryId = $this->searchText;
-			$this->model = $this->searchText;
-			$this->name = $this->searchText;
-			$this->isbn = $this->searchText;
-			$this->sku = $this->searchText;
-			$this->upc = $this->searchText;
-			$this->location = $this->searchText;
-			$this->quantity = $this->searchText;
-			$this->productUnits = $this->searchText;
-			$this->stockStatusId = $this->searchText;
-			$this->image = $this->searchText;
-			$this->shipping = $this->searchText;
-			$this->price = $this->searchText;
-			$this->priceGroupId = $this->searchText;
-			$this->points = $this->searchText;
-			$this->taxClassId = $this->searchText;
-			$this->dateAvailable = $this->searchText;
-			$this->weight = $this->searchText;
-			$this->length = $this->searchText;
-			$this->width = $this->searchText;
-			$this->height = $this->searchText;
-			$this->dimensionUnits = $this->searchText;
-			$this->metricUnits = $this->searchText;
-			$this->subtract = $this->searchText;
-			$this->minimum = $this->searchText;
-			$this->sortOrder = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
-			$this->viewed = $this->searchText;
-			$this->marginId = $this->searchText;
-			$this->description = $this->searchText;
+			$user = User::model()->findByPk(Yii::app()->user->id);
+			if($user->type == 3)
+			{
+				$criteria->compare('supplierId', Yii::app()->user->id);
+			}
 		}
-
-		$criteria->compare('productId', $this->productId, true, 'OR');
-		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
-		$criteria->compare('brandId', $this->brandId, true, 'OR');
-		$criteria->compare('brandModelId', $this->brandModelId, true, 'OR');
-		$criteria->compare('categoryId', $this->categoryId, true, 'OR');
-		$criteria->compare('model', $this->model, true, 'OR');
-		$criteria->compare('name', $this->name, true, 'OR');
-		$criteria->compare('isbn', $this->isbn, true, 'OR');
-		$criteria->compare('sku', $this->sku, true, 'OR');
-		$criteria->compare('upc', $this->upc, true, 'OR');
-		$criteria->compare('location', $this->location, true, 'OR');
-		$criteria->compare('quantity', $this->quantity);
-		$criteria->compare('productUnits', $this->productUnits, true, 'OR');
-		$criteria->compare('stockStatusId', $this->stockStatusId);
-		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('shipping', $this->shipping);
-		$criteria->compare('price', $this->price, true, 'OR');
-		$criteria->compare('priceGroupId', $this->priceGroupId, true, 'OR');
-		$criteria->compare('points', $this->points, true, 'OR');
-		$criteria->compare('taxClassId', $this->taxClassId, true, 'OR');
-		$criteria->compare('dateAvailable', $this->dateAvailable, true, 'OR');
-		$criteria->compare('weight', $this->weight, true, 'OR');
-		$criteria->compare('length', $this->length, true, 'OR');
-		$criteria->compare('width', $this->width, true, 'OR');
-		$criteria->compare('height', $this->height, true, 'OR');
-		$criteria->compare('dimensionUnits', $this->dimensionUnits, true, 'OR');
-		$criteria->compare('metricUnits', $this->metricUnits, true, 'OR');
-		$criteria->compare('subtract', $this->subtract);
-		$criteria->compare('minimum', $this->minimum, true, 'OR');
-		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
-		$criteria->compare('viewed', $this->viewed, true, 'OR');
-		$criteria->compare('marginId', $this->marginId, true, 'OR');
-		$criteria->compare('description', $this->description, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return ProductMaster the static model class
-	 */
-	public static function model($className = __CLASS__)
+	public function beforeSave()
 	{
-		return parent::model($className);
+		$this->updateDateTime = new CDbExpression('NOW()');
+
+		return parent::beforeSave();
+	}
+
+	public function getStatusArray()
+	{
+		return array(
+			self::STATUS_WAITING_APPROVE=>'Waiting for Approve',
+			self::STATUS_APPROVED=>'Approved',
+			self::STATUS_RETURN=>'Return to Edit',
+			self::STATUS_REJECT=>'Rejected',
+			self::STATUS_DELETE=>'Delete',
+			self::STATUS_DISABLE=>'Disable',
+		);
+	}
+
+	public function getStatusText()
+	{
+		$statusArray = $this->getStatusArray();
+		return $statusArray[$this->status];
+	}
+
+	public function getMetricUnits()
+	{
+		return array(
+			self::METRIC_GRAMS=>'กรัม',
+			self::METRIC_KILOGRAMS=>'กิโลกรัม',
+			self::METRIC_TONS=>'ตัน',
+		);
+	}
+
+	public function getMetricText()
+	{
+		$metricArray = $this->getMetricUnits();
+		if(isset($metricArray[$this->metricUnits]))
+			return $metricArray[$this->metricUnits];
+		else
+			return "";
+	}
+
+	public function getDimensionUnits()
+	{
+		return array(
+			self::DIMENSION_MM=>'มิลลิเมตร',
+			self::DIMENSION_CM=>'เซนติเมตร',
+			self::DIMENSION_INCH=>'นิ้ว',
+			self::DIMENSION_M=>'เมตร',
+		);
+	}
+
+	public function getDimensionText()
+	{
+		$dimensionArray = $this->getDimensionUnits();
+		if(isset($dimensionArray[$this->dimensionUnits]))
+			return $dimensionArray[$this->dimensionUnits];
+		else
+			return "";
+	}
+
+	public function getBadgeStatus()
+	{
+		switch($this->status)
+		{
+
+			case self::STATUS_APPROVED:
+				$badge = 'badge-success';
+				break;
+			case self::STATUS_RETURN :
+				$badge = 'badge-info';
+				break;
+			case self::STATUS_WAITING_APPROVE || self::STATUS_DISABLE :
+				$badge = 'badge-warning';
+				break;
+			case self::STATUS_DELETE :
+				$badge = 'badge-important';
+				break;
+			case self::STATUS_REJECT :
+				$badge = 'badge-important';
+				break;
+		}
+
+		return '<span class="badge ' . $badge . '">' . $this->getStatusText() . '</span>';
+	}
+
+	public function calTotalCartBySupplier($cart)
+	{
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$products = $cart['products'];
+		$subTotal = 0;
+		$today = date("Y-m-d");
+		foreach($products as $product)
+		{
+			$productModel = $product['productModel'];
+			$productTemp = Product::model()->findByPk($productModel->productId);
+			if(isset($productTemp->productPromotion))
+			{
+
+				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
+				{
+					$productTotalPrice = Product::model()->calProductPromotionTotalPrice($productTemp->productId, $product['qty'], $daiibuy->amphurId);
+				}
+				else
+				{
+					$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->amphurId);
+				}
+			}
+			else
+			{
+				$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->amphurId);
+			}
+			$subTotal += $productTotalPrice;
+		}
+		return $subTotal;
+	}
+
+	public function cartTotal($items, $amphurId)
+	{
+		$cartTotal = 0;
+		$today = date("Y-m-d");
+		foreach($items as $productId=> $qty)
+		{
+
+			if(isset(Product::model()->findByPk($productId)->productPromotion))
+			{
+				$productTemp = Product::model()->findByPk($productId);
+				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
+				{
+					$cartTotal += Product::model()->calProductPromotionTotalPrice($productId, $qty, $amphurId);
+				}
+				else
+				{
+					$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+				}
+			}
+			else
+			{
+				$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+			}
+		}
+
+		return $cartTotal;
+	}
+
+	public function cartSummaryBySupplierId($cart, $amphurId, $supplierId)
+	{
+		$cartTotal = 0;
+		$cartItems = 0;
+		$cartRowTotal = 0;
+
+		foreach($cart as $supplier=> $items)
+		{
+			if($supplier == $supplierId)
+			{
+				$cartTotal += $this->cartSum($items, $amphurId);
+
+				$cartItems += array_sum($items);
+
+				$cartRowTotal += count($items);
+			}
+		}
+
+		return array(
+			'cartTotal'=>$cartTotal,
+			'cartItems'=>$cartItems,
+			'cartRowTotal'=>$cartRowTotal);
+	}
+
+	public function cartSummary($cart, $amphurId)
+	{
+		$cartTotal = 0;
+		$cartItems = 0;
+		$cartRowTotal = 0;
+
+		foreach($cart as $items)
+		{
+			$cartTotal += $this->cartSum($items, $amphurId);
+
+			$cartItems += array_sum($items);
+
+			$cartRowTotal += count($items);
+		}
+
+		return array(
+			'cartTotal'=>$cartTotal,
+			'cartItems'=>$cartItems,
+			'cartRowTotal'=>$cartRowTotal);
+	}
+
+	public function cartSum($items, $amphurId)
+	{
+		$total = 0;
+		$today = date("Y-m-d");
+
+		foreach($items as $productId=> $qty)
+		{
+
+			if(isset(Product::model()->findByPk($productId)->productPromotion))
+			{
+				$productTemp = Product::model()->findByPk($productId);
+				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
+				{
+					$total += Product::model()->calProductPromotionTotalPrice($productId, $qty, $amphurId);
+				}
+				else
+				{
+					$total += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+				}
+			}
+			else
+			{
+				$total += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+			}
+		}
+
+		return $total;
+	}
+
+	public function removeVAT($price)
+	{
+		$result = $price / 1.07;
+		return $result;
+	}
+
+	public function calProductPrice($productId, $amphurId = NULL)
+	{
+		if(!isset($amphurId))
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$amphurId = $daiibuy->amphurId;
+		}
+
+		$product = Product::model()->findByPk($productId);
+//		$price = $this->removeVAT($product->price);
+		$price = $product->price;
+
+
+		$amphurPrice = Price::model()->find("amphurId=:amphurId AND priceGroupId=:priceGroupId", array(
+			":amphurId"=>$amphurId,
+			':priceGroupId'=>$product->priceGroupId));
+
+		if(isset($amphurPrice))
+		{
+			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+		}
+		else
+		{
+			$price = $price * ((100 + $product->priceGroup->priceRate) / 100);
+		}
+
+		return floor($price);
+//		}
+//		else
+//		{
+//			return 0;
+//		}
+	}
+
+	public function calProductPromotionPrice($productId, $amphurId = NULL)
+	{
+		if(!isset($amphurId))
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$amphurId = $daiibuy->amphurId;
+		}
+
+		$product = Product::model()->findByPk($productId);
+//		if(isset($product))
+//		{
+		$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$product->productId));
+
+//		if (isset($productPromotion))
+//		{
+//		$price = $this->removeVAT($productPromotion->price);
+		$price = $productPromotion->price;
+
+//		} else {
+//			$price = $product->price;
+//		}
+
+		$amphurPrice = Price::model()->find("amphurId=:amphurId AND priceGroupId=:priceGroupId", array(
+			":amphurId"=>$amphurId,
+			':priceGroupId'=>$product->priceGroupId));
+
+		if(isset($amphurPrice))
+		{
+			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+		}
+		else
+		{
+			$price = $price * ((100 + $product->priceGroup->priceRate) / 100);
+		}
+
+		return floor($price);
+//		}
+//		else
+//		{
+//			return 0;
+//		}
+	}
+
+	public function calProductPromotionPriceMargin($productId, $amphurId = NULL, $orderModel)
+	{
+		$productPrice = $this->calProductPromotionPrice($productId, $amphurId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']);
+		return $result;
+	}
+
+	public function calProductPriceMargin($productId, $amphurId = NULL, $orderModel)
+	{
+		$productPrice = $this->calProductPrice($productId, $amphurId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']);
+		return $result;
+	}
+
+	public function calProductTotalPrice($productId, $quantity, $amphurId)
+	{
+		return $this->calProductPrice($productId, $amphurId) * $quantity;
+	}
+
+	public function calProductTotalPriceMargin($productId, $quantity, $amphurId, $orderModel)
+	{
+		$productPrice = $this->calProductPrice($productId, $amphurId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
+		return $result;
+	}
+
+	public function calProductPromotionTotalPrice($productId, $quantity, $amphurId)
+	{
+		return $this->calProductPromotionPrice($productId, $amphurId) * $quantity;
+	}
+
+	public function calProductPromotionTotalPriceMargin($productId, $quantity, $amphurId, $orderModel)
+	{
+		$productPrice = $this->calProductPromotionPrice($productId, $amphurId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
+		return $result;
+	}
+
+	public function findAllProductByAmphurIdAndCategoryId($amphurId, $searchText = '', $categoryId = null, $brandId = null)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->with = array(
+			'priceGroup',
+			'priceGroup.price');
+		$criteria->condition = 't.status = 2  AND t.quantity > 0 AND price.amphurId=:amphurId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText))';
+
+		if(isset($categoryId))
+			$criteria->condition .= ' AND categoryId=' . $categoryId;
+
+		if(isset($brandId))
+			$criteria->condition .= ' AND brandId=' . $brandId;
+
+		$criteria->params = array(
+			':amphurId'=>$amphurId,
+			':searchText'=>'%' . $searchText . '%');
+		$criteria->order = 't.productId';
+
+		Controller::writeToFile('/tmp/product', print_r($criteria, true));
+
+		return $this->findAll($criteria);
+	}
+
+	public function findFirstImageProduct($productId)
+	{
+		$productImage = ProductImage::model()->find("productId =:productId AND sortOrder = 1"
+			, array(
+			":productId"=>$productId));
+		if(isset($productImage))
+			return $productImage->image;
+		else
+			return "";
+	}
+
+	public function findAllProductDataByAmphurIdAndCategoryId($amphurId, $searchText = '', $categoryId = null, $brandId = null, $dateNow)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
+		$criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
+		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.amphurId=:amphurId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
+
+		if(isset($categoryId))
+			$criteria->condition .= ' AND t.categoryId=' . $categoryId;
+
+		if(isset($brandId))
+			$criteria->condition .= ' AND t.brandId=' . $brandId;
+
+		$criteria->params = array(
+			':amphurId'=>$amphurId,
+			':searchText'=>'%' . $searchText . '%');
+		$criteria->order = 't.productId';
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>12),
+		));
+	}
+
+	public function findAllProductDataByAmphurIdAndCategoryIdAndSupplierId($amphurId, $searchText = '', $categoryId = null, $brandId = null, $dateNow, $supplierId = null)
+	{
+		$criteria = new CDbCriteria();
+
+		$sort = new CSort('Product');
+		$sort->defaultOrder = 't.createDateTime DESC, t.name DESC';
+		$sort->attributes = array(
+			'createDateTime'=>array(
+				'asc'=>'t.createDateTime ASC',
+				'desc'=>'t.createDateTime DESC',
+			),
+			'name'=>array(
+				'asc'=>'t.name ASC',
+				'desc'=>'t.name DESC',
+			),
+			'price'=>array(
+				'asc'=>'t.price ASC',
+				'desc'=>'t.price DESC',
+			),
+		);
+		$sort->applyOrder($criteria);
+
+		$criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
+		$criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
+		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.amphurId=:amphurId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
+
+//		if (isset($categoryId))
+//			$criteria->condition .= ' AND t.categoryId=' . $categoryId;
+
+		if(isset($brandId))
+			$criteria->condition .= ' AND t.brandId=' . $brandId;
+
+		if(isset($supplierId))
+			$criteria->condition .= ' AND t.supplierId=' . $supplierId;
+
+		$criteria->params = array(
+			':amphurId'=>$amphurId,
+			':searchText'=>'%' . $searchText . '%');
+		//$criteria->order = 't.categoryId =' . $categoryId . " ASC";
+		//$criteria->order = 't.categoryId ASC';
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>12),
+			'sort'=>$sort,
+		));
+	}
+
+	public function behaviors()
+	{
+		return array(
+			'ERememberFiltersBehavior'=>array(
+				'class'=>'application.components.ERememberFiltersBehavior',
+				'defaults'=>array(
+				),
+				/* optional line */
+				'defaultStickOnClear'=>false /* optional line */
+			),);
 	}
 
 }
