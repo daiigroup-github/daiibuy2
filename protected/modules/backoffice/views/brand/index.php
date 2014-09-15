@@ -50,7 +50,6 @@ return false;
 				?>
 			</div>
 		</div>
-	</div>
 
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
@@ -90,7 +89,7 @@ return false;
 		),
 	));
 	?>
+    </div>
 
 </div>
-
 
