@@ -88,4 +88,36 @@ class Category extends CategoryMaster
 		));
 	}
 
+	public function getAllParentCategory($status = 1)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->condition = 'status&:status>0 AND isRoot=1';
+		$criteria->params = array(
+			':status'=>$status);
+
+		$models = Category::model()->findAll($criteria);
+		$res = array(
+			);
+
+		foreach($models as $model)
+		{
+			$res[$model->categoryId] = $model->title;
+
+			//find child
+			$criteria2 = new CDbCriteria();
+			$criteria2->condition = 'status&:status>0 AND isRoot =0';
+			$criteria2->params = array(
+				':status'=>$status);
+
+			$modelChilds = Category::model()->findAll($criteria2);
+
+			foreach($modelChilds as $modelChild)
+			{
+				$res[$modelChild->categoryId] = $model->title . ' > ' . $modelChild->title;
+			}
+		}
+
+		return $res;
+	}
+
 }

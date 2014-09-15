@@ -23,7 +23,7 @@ $this->menu = array(
 			<?php
 			echo CHtml::link('<i class="icon-plus-sign icon-white"></i> เพิ่มสินค้า', array(
 				'create'), array(
-				'class'=>'btn btn-primary'));
+				'class'=>'btn btn-xs btn-primary'));
 			?>
 		</div>
 	</div>

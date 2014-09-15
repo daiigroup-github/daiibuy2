@@ -68,7 +68,7 @@ if(isset($model->status))
 }
 ?>
 <div class="row">
-	<div class="span6">
+	<div class="col-sm-6">
 
 		<div class="control-group">
 			<label class="control-label"><?php echo $form->labelEx($model, 'categoryId'); ?></label>
@@ -103,8 +103,8 @@ if(isset($model->status))
 				<?php
 				if($pBrand == FALSE)
 				{
-					echo $form->dropDownList($model, 'brandId', ProductBrand::model()->getAllBrandBySupplierId(Yii::app()->user->id), array(
-						'prompt'=>'Select Brand'));
+//					echo $form->dropDownList($model, 'brandId', ProductBrand::model()->getAllBrandBySupplierId(Yii::app()->user->id), array(
+//						'prompt'=>'Select Brand'));
 				}
 				else
 				{
@@ -241,7 +241,7 @@ if(isset($model->status))
 
 	</div>
 
-	<div class="span6">
+	<div class="col-sm-6">
 
 		<div class="control-group">
 			<label class="control-label"><?php echo $form->labelEx($model, 'dateAvailable'); ?></label>
@@ -276,8 +276,8 @@ if(isset($model->status))
 				<?php
 				if($pMargin == FALSE)
 				{
-					echo $form->dropdownList($model, "marginId", UserCertificateFile::model()->getUserCertificateFileBySupplierId(Yii::app()->user->id)
-					);
+//					echo $form->dropdownList($model, "marginId", UserCertificateFile::model()->getUserCertificateFileBySupplierId(Yii::app()->user->id)
+//					);
 				}
 				else
 				{
