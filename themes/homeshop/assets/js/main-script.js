@@ -957,7 +957,6 @@ $(document).ready(function(){
 	
 	/* Numeric Input */
 	$('.numeric-input').each(function(){
-		
 		var el = $(this);
 		numericInput(el);
 		
@@ -966,7 +965,6 @@ $(document).ready(function(){
 	
 	/* Numeric Input */
 	function numericInput(el){
-		
 		var element = el;
 		var input = $(element).find('input');
 		

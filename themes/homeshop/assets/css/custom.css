@@ -78,3 +78,7 @@ form .full-width{
     color:#7a8188;
     float: right;
 }
+
+input[type="number"].form-control{
+    width:100%;
+}

@@ -2,6 +2,7 @@
 
 class MasterCheckoutController extends MasterController
 {
+    public $layout = '//layouts/cl1';
     public function init()
     {
         parent::init();

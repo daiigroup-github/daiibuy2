@@ -123,6 +123,7 @@ class ProductController extends MasterAtechwindowController
                     '<td><a class="btn btn-info btn-xs addToCart" data-productid="'.$item['code'].'"><i class="fa fa-shopping-cart"></i></a></td>' .
                     '</tr>';
             }
+
             /**
              * <?php foreach ($items as $item): ?>
             <tr>

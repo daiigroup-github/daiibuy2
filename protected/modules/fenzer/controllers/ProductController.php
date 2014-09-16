@@ -92,11 +92,14 @@ class ProductController extends MasterFenzerController
                     '<td>' . $item['name'] . '</td>' .
                     '<td>' . number_format($item['price'], 2) . '</td>' .
                     '<td>' .
+                    '<input type="number" class="form-control full-width" value="'.$item['qty'].'" />'.
+                    /*
                     '<div class="numeric-input full-width">' .
                     '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
                     '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
                     '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
                     '</div>' .
+                    */
                     '</td>' .
                     '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
                     '<td><a class="btn btn-danger btn-xs removeProductItem"><i class="fa fa-ban"></i></a></td>' .
@@ -139,12 +142,14 @@ class ProductController extends MasterFenzerController
                 '<td>' . $item['code'] . '</td>' .
                 '<td>' . $item['name'] . '</td>' .
                 '<td>' . number_format($item['price'], 2) . '</td>' .
-                '<td>' .
+                '<td>' .'<input type="number" />'.
+                /*
                 '<div class="numeric-input full-width">' .
                 '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
                 '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
                 '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
                 '</div>' .
+                */
                 '</td>' .
                 '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
                 '<td><a class="btn btn-danger btn-xs" id="removeProductItem"><i class="fa fa-ban"></i></a></td>' .

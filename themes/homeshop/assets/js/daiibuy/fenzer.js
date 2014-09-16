@@ -26,3 +26,16 @@ $('#addToCartFenzer').live('click', function () {
         });
     }
 });
+
+/**
+ * only number can press in input type number
+ */
+$(document).ready(function(){
+    $('input[type=number]').live('keypress', function(evt) {
+        if (evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+            return false;
+        }
+    });
+});

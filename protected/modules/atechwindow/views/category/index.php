@@ -73,6 +73,42 @@ $this->breadcrumbs = array(
                             'success' => 'js:function(data){
                                 $("#productItems").html(data);
                                 $("#showProduct").show();
+
+                                $(".numeric-input").each(function(){
+		                            var el = $(this);
+		                            numericInput(el);
+                                    alert("aaaa");
+	                            });
+
+	                            /* Numeric Input */
+	                            function numericInput(el){
+		                            var element = el;
+		                            var input = $(element).find("input");
+
+		                            $(element).find(".arrow-up").click(function(){
+			                            var value = parseInt(input.val());
+			                            input.val(value+1);
+		                            });
+
+		                            $(element).find(".arrow-down").click(function(){
+			                            var value = parseInt(input.val());
+
+                                        if(value-1 < 0)
+                                        input.val(0);
+                                    else
+			                        input.val(value-1);
+		                            });
+
+		                            input.keypress(function(e){
+
+			                        var value = parseInt(String.fromCharCode(e.which));
+			                        if(isNaN(value)){
+				                        e.preventDefault();
+			                        }
+
+		                        });
+
+	                            }
                             }',
                         ), array(
                             'class' => 'btn btn-default',
