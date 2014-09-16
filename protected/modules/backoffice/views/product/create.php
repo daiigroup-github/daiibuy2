@@ -18,11 +18,11 @@ $this->menu = array(
 $this->pageHeader = 'เพิ่มสินค้า';
 ?>
 
-<?php
-echo $this->renderPartial('_form', array(
-	'model'=>$model,
-//	'productAttributeModel'=>$productAttributeModel,
-//	'productAttributeValueModel'=>$productAttributeValueModel,
-//	'productPromotion'=>$productPromotion
-));
-?>
+<div class="panel panel-default">
+	<div class="panel-heading">Create Brand</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array(
+			'model'=>$model));
+		?>
+	</div>
+</div>

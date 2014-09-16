@@ -59,4 +59,21 @@ class Brand extends BrandMaster
 	  {
 	  }
 	 */
+	public function getAllBrandBySupplierId($supplierId)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->compare('supplierId', $supplierId);
+
+		$productBrands = $this->findAll($criteria);
+
+		$w = array(
+			);
+		foreach($productBrands as $productBrand)
+		{
+			$w[$productBrand->productBrandId] = $productBrand->name;
+		}
+
+		return $w;
+	}
+
 }

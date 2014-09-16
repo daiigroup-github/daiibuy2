@@ -112,15 +112,15 @@ if($model->status == 3)
 			<label class="control-label"><?php echo $form->labelEx($model, 'margin'); ?></label>
 			<div class="controls">
 				<?php
-				if(isset($model->margin))
-				{
-					echo showImage($model->margin->file, $model->margin->name);
-					echo $model->margin->value;
-				}
-				else
-				{
-					echo "ไม่มี Margin กรุณา Return เพื่อให้ Supplier ปรับปรุง Product";
-				}
+//				if(isset($model->margin))
+//				{
+//					echo showImage($model->margin->file, $model->margin->name);
+//					echo $model->margin->value;
+//				}
+//				else
+//				{
+//					echo "ไม่มี Margin กรุณา Return เพื่อให้ Supplier ปรับปรุง Product";
+//				}
 				?>
 			</div>
 		</div>
@@ -145,12 +145,12 @@ if($model->status == 3)
 							<label class="control-label">กรุณาระบุเหตุผล : </label>
 							<div class="controls">
 								<Textarea id="returnText" rows="4" class="input-xlarge" name="returnRemark"></Textarea>
-																								</div>
-																								</div>
-																								<div class="modal-footer">
-																									<button class="btn btn-primary" name="action" value="return" >Submit</button>
-																								</div>
-																							</div>
+																													</div>
+																													</div>
+																													<div class="modal-footer">
+																														<button class="btn btn-primary" name="action" value="return" >Submit</button>
+																													</div>
+																												</div>
 					<?php
 //echo CHtml::href('Return', array(
 //	'class' => 'btn btn-info', 'href' => '#remarkModal', 'data-toggle' => 'modal', 'role' => 'button', 'name' => 'action', 'value' => 'return'));
@@ -161,25 +161,25 @@ if($model->status == 3)
 //echo CHtml::submitButton('Reject', array(
 //	'class' => 'btn btn-danger', 'name' => 'action', 'value' => 'reject'));
 					?>
-																							<a href="#rejectModal" role="button" class="btn btn-danger" data-toggle="modal">Reject</a>
-																							<!-- Modal -->
-																										<div id="rejectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-																											<div class="modal-header">
-																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">close x</button>
-																												<h3 id="myModalLabel">ไม่อนุมัติ</h3>
-																											</div>
-																											<div class="control-group">
-																												<label class="control-label">กรุณาระบุเหตุผล : </label>
-																												<div class="controls">
-																												<Textarea id="rejectText" rows="4" class="input-xlarge" name="rejectRemark"></Textarea>
-																											</div>
-																											</div>
-																											<div class="modal-footer">
-																												<button class="btn btn-primary" name="action" value="reject" >Submit</button>
-																											</div>
-																										</div>
-																									</div>
-																								</div>
+																												<a href="#rejectModal" role="button" class="btn btn-danger" data-toggle="modal">Reject</a>
+																												<!-- Modal -->
+																															<div id="rejectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+																																<div class="modal-header">
+																																	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">close x</button>
+																																	<h3 id="myModalLabel">ไม่อนุมัติ</h3>
+																																</div>
+																																<div class="control-group">
+																																	<label class="control-label">กรุณาระบุเหตุผล : </label>
+																																	<div class="controls">
+																																	<Textarea id="rejectText" rows="4" class="input-xlarge" name="rejectRemark"></Textarea>
+																																</div>
+																																</div>
+																																<div class="modal-footer">
+																																	<button class="btn btn-primary" name="action" value="reject" >Submit</button>
+																																</div>
+																															</div>
+																														</div>
+																													</div>
 		<?php } ?>
 		<?php $this->endWidget(); ?>
 		<?php
@@ -206,7 +206,7 @@ if($model->status == 3)
 							array(
 								'label'=>'ประเภท',
 								'type'=>'raw',
-								'value'=>$model->category->categoryName,
+								'value'=>$model->category->title,
 							),
 							array(
 								'label'=>'สินค้า',
@@ -250,11 +250,11 @@ if($model->status == 3)
 								'value'=>$model->weight == null ? '-' : $model->weight . ' ' . $model->getMetricText()
 							,
 							),
-							array(
-								'label'=>'Margin',
-								'type'=>'html',
-								'value'=>isset($model->margin) ? $model->margin->value : '-',
-							),
+//							array(
+//								'label'=>'Margin',
+//								'type'=>'html',
+//								'value'=>isset($model->margin) ? $model->margin->value : '-',
+//							),
 						),
 					));
 					?>
@@ -262,26 +262,26 @@ if($model->status == 3)
 				<div class="tab-pane" id="tab2">
 					<?php
 					//product attribute
-					if($model->productAttributeValue):
-
-						$this->widget('zii.widgets.grid.CGridView', array(
-							'dataProvider'=>new CActiveDataProvider('ProductAttributeValue', array(
-								'data'=>$model->productAttributeValue)), //new CArrayDataProvider($model->productAttributeValue, array()),
-							//'filter'=>$model,
-							'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
-							'summaryText'=>'',
-							'columns'=>array(
-								array(
-									'header'=>'Name',
-									'value'=>'isset($data->productAttribute->attributeName)?$data->productAttribute->attributeName:""'
-								),
-								array(
-									'header'=>'Value',
-									'value'=>'isset($data->attributeValue)?$data->attributeValue:""'
-								),
-						)));
-
-					endif;
+//					if($model->productAttributeValue):
+//
+//						$this->widget('zii.widgets.grid.CGridView', array(
+//							'dataProvider'=>new CActiveDataProvider('ProductAttributeValue', array(
+//								'data'=>$model->productAttributeValue)), //new CArrayDataProvider($model->productAttributeValue, array()),
+//							//'filter'=>$model,
+//							'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
+//							'summaryText'=>'',
+//							'columns'=>array(
+//								array(
+//									'header'=>'Name',
+//									'value'=>'isset($data->productAttribute->attributeName)?$data->productAttribute->attributeName:""'
+//								),
+//								array(
+//									'header'=>'Value',
+//									'value'=>'isset($data->attributeValue)?$data->attributeValue:""'
+//								),
+//						)));
+//
+//					endif;
 					?>
 				</div>
 				<div class="tab-pane" id="tab3">

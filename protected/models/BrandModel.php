@@ -36,6 +36,10 @@ class BrandModel extends BrandModelMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
+				'brand'=>array(
+					self::BELONGS_TO,
+					'Brand',
+					'brandId'),
 		));
 	}
 

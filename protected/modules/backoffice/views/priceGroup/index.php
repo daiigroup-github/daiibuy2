@@ -18,42 +18,54 @@ $this->menu = array(
 		'url'=>array(
 			'create')),
 );
-
+Yii::app()->clientScript->registerScript('search', "
+$('#search-form').submit(function(){
+$('#price-group-grid').yiiGridView('update', {
+data: $(this).serialize()
+});
+return false;
+});
+");
 $this->pageHeader = 'Price Group';
 ?>
 
-<div class="btn-toolbar">
-	<div class="btn-group">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Manage Brands
+		<div class="pull-right">
+			<?php
+			echo CHtml::link('<i class="icon-plus-sign"></i> เพิ่มกลุ่มราคา', $this->createUrl('create'), array(
+				'class'=>'btn btn-xs btn-primary'));
+			?>
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<?php
+				$this->renderPartial('_search', array(
+					'model'=>$model,
+				));
+				?>
+			</div>
+		</div>
 		<?php
-		echo CHtml::link('<i class="icon-plus-sign icon-white"></i> เพิ่มกลุ่มราคา', array(
-			'create'), array(
-			'class'=>'btn btn-primary'));
+		$this->widget('zii.widgets.grid.CGridView', array(
+			'id'=>'price-group-grid',
+			'dataProvider'=>$model->search(Yii::app()->user->id),
+			//'filter'=>$model,
+			'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
+			'columns'=>array(
+//		'priceGroupId',
+				'priceGroupName',
+//		'priceRate',
+				'status',
+				array(
+					'class'=>'CButtonColumn',
+				),
+			),
+		));
 		?>
+
 	</div>
 </div>
-
-<div class="search-form" style="display:none">
-	<?php
-	$this->renderPartial('_search', array(
-		'model'=>$model,
-	));
-	?>
-</div><!-- search-form -->
-
-<?php
-$this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'price-group-grid',
-	'dataProvider'=>$model->search(Yii::app()->user->id),
-	//'filter'=>$model,
-	'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
-	'columns'=>array(
-//		'priceGroupId',
-		'priceGroupName',
-//		'priceRate',
-		'status',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-));
-?>

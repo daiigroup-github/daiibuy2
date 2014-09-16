@@ -31,9 +31,6 @@
 	));
 	?>
 
-	<p class="note">
-		Fields with <span class="required">*</span> are required.
-	</p>
 
 	<?php
 //	if($model->status == 3)
@@ -44,15 +41,12 @@
 			กรุณาแก้ไขข้อมูล Product ใหม่ และ บันทึก เพื่อส่ง ข้อมูลกลับให้ ผู้ดูแลระบบ ตรวจสอบอีกครั้ง
 		</div>-->
 	<?php
-//	}
 	echo $form->errorSummary($model, '', '', array(
-		'class'=>'alert alert-error'));
-//echo $form->errorSummary($productPromotion, '', '', array(
-//	'class'=>'alert alert-error'));
+		'class'=>'alert alert-danger'));
 	?>
 	<div class="tabbable"> <!-- Only required for left/right tabs -->
-		<ul class="nav nav-tabs">
-			<li class="active" id="t1"><a href="#tab1" data-toggle="tab">รายละเอียดสินค้า</a></li>
+		<ul class="nav nav-tabs nav-justified">
+			<li class="active" id="t1"><a  href="#tab1" data-toggle="tab">รายละเอียดสินค้า</a></li>
 			<li id="t3"><a href="#tab3" data-toggle="tab">โปรโมชั่น</a></li>
 			<li><a href="#tab2" data-toggle="tab">คุณสมบัติ</a></li>
 		</ul>

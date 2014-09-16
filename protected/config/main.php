@@ -16,6 +16,9 @@ return array(
 		'application.models.*',
 		'application.models._master.*',
 		'application.components.*',
+		'application.helpers.*',
+		'application.extensions.php_barcode128.*',
+		'application.extensions.yii-mail.*',
 	),
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
@@ -48,6 +51,19 @@ return array(
 		 */
 		// uncomment the following to use a MySQL database
 		'db'=>$params['db'],
+		'mail'=>array(
+			'class'=>'application.extensions.yii-mail.YiiMail',
+			'transportType'=>'smtp', // change to 'php' when running in real domain.
+//'viewPath' => 'application.views.mail',
+			'logging'=>true,
+			'dryRun'=>false,
+			'transportOptions'=>array(
+				'host'=>'smtp.gmail.com', //if not work, try smtp.googlemail.com
+				'username'=>'kamon.p@daiigroup.com',
+				'password'=>'84888488ab',
+				'port'=>'465',
+				'encryption'=>'ssl',
+			),),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -73,5 +89,6 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+		'sendEmail'=>FALSE,
 	),
 );

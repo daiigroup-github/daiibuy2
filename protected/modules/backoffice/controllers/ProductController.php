@@ -152,7 +152,13 @@ class ProductController extends MasterBackofficeController
 			$model->attributes = $_POST['Product'];
 			$model->createDateTime = new CDbExpression('NOW()');
 			$model->supplierId = Yii::app()->user->id;
-			$productHistory->userId = $model->supplierId;
+			if(isset($_POST["Product"]["categoryId"]))
+			{
+				$catModel = Category::model()->findByPk($_POST["Product"]["categoryId"]);
+				$model->brandModelId = $catModel->brandModelId;
+				$model->brandId = $catModel->brandModel->brandId;
+			}
+//			$productHistory->userId = $model->supplierId;
 //			$uploadFile = CUploadedFile::getInstance($model, 'image');
 //			if ($uploadFile) {
 //                              $fileName = uniqid() . '_' . $uploadFile->name;
@@ -166,7 +172,7 @@ class ProductController extends MasterBackofficeController
 				if($model->save())
 				{
 					$productId = Yii::app()->db->lastInsertID;
-					$productHistory->productId = $productId;
+//					$productHistory->productId = $productId;
 					$uploadFile = CUploadedFile::getInstancesByName('images');
 					if($uploadFile && count($uploadFile) > 0)
 					{
@@ -182,6 +188,8 @@ class ProductController extends MasterBackofficeController
 								$productImage->productId = $productId;
 								$productImage->image = '/images/product/' . $fileName;
 								$productImage->sortOrder = $i;
+								$productImage->createDateTime = new CDbExpression("NOW()");
+								$productImage->updateDateTime = new CDbExpression("NOW()");
 								if(!$productImage->save())
 								{
 									$flag = FALSE;
@@ -273,19 +281,21 @@ class ProductController extends MasterBackofficeController
 
 				if($flag)
 				{
-					$productHistory->description = "Create";
-					$productHistory->createDateTime = new CDbExpression('NOW()');
-					$productHistory->save();
+//					$productHistory->description = "Create";
+//					$productHistory->createDateTime = new CDbExpression('NOW()');
+//					$productHistory->save();
 
 
 					$transaction->commit();
 
-					//sent mail
-					$emailObj = new Email();
-					$sentMail = new EmailSend();
-					$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
-					$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
-					$sentMail->mailAddNewProductToAdmin($emailObj);
+					if(Yii::app()->params["sendEmail"])
+					{
+						//send mail
+						$emailObj = new Email();
+						$sentMail = new EmailSend();
+						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
+						$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
+						$sentMail->mailAddNewProductToAdmin($emailObj);
 
 
 //						$emailObj = new Email();
@@ -294,7 +304,7 @@ class ProductController extends MasterBackofficeController
 //						$emailObj->Setmail($userId, null , $this->model->supplierId,
 //								null, $productId, $documentUrl);
 //						$sentMail->mailAddNewProductCompleted($emailObj);
-
+					}
 					$this->redirect(array(
 						'view',
 						'id'=>$model->productId));
@@ -306,7 +316,10 @@ class ProductController extends MasterBackofficeController
 			}
 			catch(Exception $e)
 			{
-				$transaction->rollback();
+				if($transaction->active)
+				{
+					$transaction->rollback();
+				}
 				throw new Exception($e->getMessage());
 			}
 		}

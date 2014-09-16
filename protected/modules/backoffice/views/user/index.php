@@ -74,11 +74,11 @@ if(isset(Yii::app()->user->id))
 				),
 				'firstname',
 				'lastname',
-				array(
-					'name'=>'บริษัท',
-					'type'=>'raw',
-					'value'=>'$data->showUserCompany($data->userId)',
-				),
+//				array(
+//					'name'=>'บริษัท',
+//					'type'=>'raw',
+//					'value'=>'isset($data->showUserCompany($data->userId))?$data->showUserCompany($data->userId):"-"',
+//				),
 				'telephone',
 				'createDateTime',
 				//'fax',

@@ -56,7 +56,7 @@ class PriceGroup extends PriceGroupMaster
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array(
-				'priceGroupId, priceGroupName, priceRate, status',
+				'priceGroupId, priceGroupName, priceRate, status, searchText',
 				'safe',
 				'on'=>'search'),
 		);
@@ -105,7 +105,16 @@ class PriceGroup extends PriceGroupMaster
 		// should not be searched.
 
 		$criteria = new CDbCriteria;
-		$criteria->compare('priceGroupName', $this->priceGroupName, true);
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+//			$this->priceGroupId = $this->searchText;
+			$this->priceGroupName = $this->searchText;
+//			$this->priceRate = $this->searchText;
+//			$this->status = $this->searchText;
+		}
+		$criteria->compare('priceGroupId', $this->priceGroupId, true, 'OR');
+		$criteria->compare('priceGroupName', $this->priceGroupName, true, 'OR');
+		$criteria->compare('priceRate', $this->priceRate, true, 'OR');
 		$criteria->compare('status', $this->status);
 		if(isset($supplierId))
 		{

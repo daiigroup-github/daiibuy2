@@ -87,7 +87,7 @@ class Product extends CActiveRecord
 // will receive user inputs.
 		return array(
 			array(
-				'dateAvailable, name, quantity, productUnits, price, categoryId, priceGroupId, description, supplierId, brandId, marginId',
+				'dateAvailable, name, quantity, productUnits, price, categoryId, priceGroupId, description, supplierId, brandId, brandModelId, sortOrder',
 				'required'),
 			array(
 				'quantity, shipping, points, subtract, minimum, sortOrder, status, viewed',
@@ -195,7 +195,7 @@ class Product extends CActiveRecord
 	{
 		return array(
 			'productId'=>'ID',
-			'model'=>'Model',
+			'brandModelId'=>'รุ่น',
 			'name'=>'ชื่อ',
 			'isbn'=>'รหัสสินค้า',
 			'sku'=>'Sku',

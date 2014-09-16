@@ -224,7 +224,9 @@ class PriceGroupController extends MasterBackofficeController
 		$model = new PriceGroup('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['PriceGroup']))
+		{
 			$model->attributes = $_GET['PriceGroup'];
+		}
 
 		$this->render('index', array(
 			'model'=>$model,

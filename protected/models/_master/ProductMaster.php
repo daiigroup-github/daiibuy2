@@ -50,7 +50,6 @@
  */
 class ProductMaster extends MasterCActiveRecord
 {
-
 	/**
 	 * @return string the associated database table name
 	 */
@@ -67,98 +66,24 @@ class ProductMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array(
-				'supplierId, brandId, brandModelId, categoryId, model, sku, upc, location, quantity, productUnits, stockStatusId, price, priceGroupId, taxClassId, dateAvailable, length, width, height, dimensionUnits, metricUnits, marginId',
-				'required'
-			),
-			array(
-				'quantity, stockStatusId, shipping, subtract, sortOrder, status',
-				'numerical',
-				'integerOnly'=>true
-			),
-			array(
-				'supplierId, brandId, brandModelId, categoryId, isbn, taxClassId, marginId',
-				'length',
-				'max'=>20
-			),
-			array(
-				'model, sku',
-				'length',
-				'max'=>64
-			),
-			array(
-				'name',
-				'length',
-				'max'=>80
-			),
-			array(
-				'upc',
-				'length',
-				'max'=>12
-			),
-			array(
-				'location',
-				'length',
-				'max'=>40
-			),
-			array(
-				'productUnits, dimensionUnits, metricUnits',
-				'length',
-				'max'=>45
-			),
-			array(
-				'image',
-				'length',
-				'max'=>255
-			),
-			array(
-				'price, weight, length, width, height',
-				'length',
-				'max'=>15
-			),
-			array(
-				'priceGroupId',
-				'length',
-				'max'=>10
-			),
-			array(
-				'points',
-				'length',
-				'max'=>8
-			),
-			array(
-				'minimum',
-				'length',
-				'max'=>11
-			),
-			array(
-				'viewed',
-				'length',
-				'max'=>5
-			),
-			array(
-				'createDateTime, updateDateTime, description',
-				'safe'
-			),
-			array(
-				'createDateTime, updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'insert'
-			),
-			array(
-				'updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'update'
-			),
+			array('supplierId, brandId, brandModelId, categoryId, model, sku, upc, location, quantity, productUnits, stockStatusId, price, priceGroupId, taxClassId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
+			array('quantity, stockStatusId, shipping, subtract, sortOrder, status', 'numerical', 'integerOnly'=>true),
+			array('supplierId, brandId, brandModelId, categoryId, isbn, taxClassId, marginId', 'length', 'max'=>20),
+			array('model, sku', 'length', 'max'=>64),
+			array('name', 'length', 'max'=>80),
+			array('upc', 'length', 'max'=>12),
+			array('location', 'length', 'max'=>40),
+			array('productUnits, dimensionUnits, metricUnits', 'length', 'max'=>45),
+			array('image', 'length', 'max'=>255),
+			array('price, weight, length, width, height', 'length', 'max'=>15),
+			array('priceGroupId', 'length', 'max'=>10),
+			array('points', 'length', 'max'=>8),
+			array('minimum', 'length', 'max'=>11),
+			array('viewed', 'length', 'max'=>5),
+			array('createDateTime, description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array(
-				'productId, supplierId, brandId, brandModelId, categoryId, model, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText',
-				'safe',
-				'on'=>'search'
-			),
+			array('productId, supplierId, brandId, brandModelId, categoryId, model, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -170,31 +95,11 @@ class ProductMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category'=>array(
-				self::BELONGS_TO,
-				'Category',
-				'categoryId'
-			),
-			'supplier'=>array(
-				self::BELONGS_TO,
-				'User',
-				'supplierId'
-			),
-			'productImages'=>array(
-				self::HAS_MANY,
-				'ProductImage',
-				'productId'
-			),
-			'productOptions'=>array(
-				self::HAS_MANY,
-				'ProductOption',
-				'productId'
-			),
-			'productSpecGroups'=>array(
-				self::HAS_MANY,
-				'ProductSpecGroup',
-				'productId'
-			),
+			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
+			'supplier' => array(self::BELONGS_TO, 'User', 'supplierId'),
+			'productImages' => array(self::HAS_MANY, 'ProductImage', 'productId'),
+			'productOptions' => array(self::HAS_MANY, 'ProductOption', 'productId'),
+			'productSpecGroups' => array(self::HAS_MANY, 'ProductSpecGroup', 'productId'),
 		);
 	}
 
@@ -204,42 +109,42 @@ class ProductMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'productId'=>'Product',
-			'supplierId'=>'Supplier',
-			'brandId'=>'Brand',
-			'brandModelId'=>'Brand Model',
-			'categoryId'=>'Category',
-			'model'=>'Model',
-			'name'=>'Name',
-			'isbn'=>'Isbn',
-			'sku'=>'Sku',
-			'upc'=>'Upc',
-			'location'=>'Location',
-			'quantity'=>'Quantity',
-			'productUnits'=>'Product Units',
-			'stockStatusId'=>'Stock Status',
-			'image'=>'Image',
-			'shipping'=>'Shipping',
-			'price'=>'Price',
-			'priceGroupId'=>'Price Group',
-			'points'=>'Points',
-			'taxClassId'=>'Tax Class',
-			'dateAvailable'=>'Date Available',
-			'weight'=>'Weight',
-			'length'=>'Length',
-			'width'=>'Width',
-			'height'=>'Height',
-			'dimensionUnits'=>'Dimension Units',
-			'metricUnits'=>'Metric Units',
-			'subtract'=>'Subtract',
-			'minimum'=>'Minimum',
-			'sortOrder'=>'Sort Order',
-			'status'=>'Status',
-			'createDateTime'=>'Create Date Time',
-			'updateDateTime'=>'Update Date Time',
-			'viewed'=>'Viewed',
-			'marginId'=>'Margin',
-			'description'=>'Description',
+			'productId' => 'Product',
+			'supplierId' => 'Supplier',
+			'brandId' => 'Brand',
+			'brandModelId' => 'Brand Model',
+			'categoryId' => 'Category',
+			'model' => 'Model',
+			'name' => 'Name',
+			'isbn' => 'Isbn',
+			'sku' => 'Sku',
+			'upc' => 'Upc',
+			'location' => 'Location',
+			'quantity' => 'Quantity',
+			'productUnits' => 'Product Units',
+			'stockStatusId' => 'Stock Status',
+			'image' => 'Image',
+			'shipping' => 'Shipping',
+			'price' => 'Price',
+			'priceGroupId' => 'Price Group',
+			'points' => 'Points',
+			'taxClassId' => 'Tax Class',
+			'dateAvailable' => 'Date Available',
+			'weight' => 'Weight',
+			'length' => 'Length',
+			'width' => 'Width',
+			'height' => 'Height',
+			'dimensionUnits' => 'Dimension Units',
+			'metricUnits' => 'Metric Units',
+			'subtract' => 'Subtract',
+			'minimum' => 'Minimum',
+			'sortOrder' => 'Sort Order',
+			'status' => 'Status',
+			'createDateTime' => 'Create Date Time',
+			'updateDateTime' => 'Update Date Time',
+			'viewed' => 'Viewed',
+			'marginId' => 'Margin',
+			'description' => 'Description',
 		);
 	}
 
@@ -259,7 +164,7 @@ class ProductMaster extends MasterCActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria = new CDbCriteria;
+		$criteria=new CDbCriteria;
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
@@ -301,42 +206,42 @@ class ProductMaster extends MasterCActiveRecord
 			$this->description = $this->searchText;
 		}
 
-		$criteria->compare('productId', $this->productId, true, 'OR');
-		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
-		$criteria->compare('brandId', $this->brandId, true, 'OR');
-		$criteria->compare('brandModelId', $this->brandModelId, true, 'OR');
-		$criteria->compare('categoryId', $this->categoryId, true, 'OR');
-		$criteria->compare('model', $this->model, true, 'OR');
-		$criteria->compare('name', $this->name, true, 'OR');
-		$criteria->compare('isbn', $this->isbn, true, 'OR');
-		$criteria->compare('sku', $this->sku, true, 'OR');
-		$criteria->compare('upc', $this->upc, true, 'OR');
-		$criteria->compare('location', $this->location, true, 'OR');
-		$criteria->compare('quantity', $this->quantity);
-		$criteria->compare('productUnits', $this->productUnits, true, 'OR');
-		$criteria->compare('stockStatusId', $this->stockStatusId);
-		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('shipping', $this->shipping);
-		$criteria->compare('price', $this->price, true, 'OR');
-		$criteria->compare('priceGroupId', $this->priceGroupId, true, 'OR');
-		$criteria->compare('points', $this->points, true, 'OR');
-		$criteria->compare('taxClassId', $this->taxClassId, true, 'OR');
-		$criteria->compare('dateAvailable', $this->dateAvailable, true, 'OR');
-		$criteria->compare('weight', $this->weight, true, 'OR');
-		$criteria->compare('length', $this->length, true, 'OR');
-		$criteria->compare('width', $this->width, true, 'OR');
-		$criteria->compare('height', $this->height, true, 'OR');
-		$criteria->compare('dimensionUnits', $this->dimensionUnits, true, 'OR');
-		$criteria->compare('metricUnits', $this->metricUnits, true, 'OR');
-		$criteria->compare('subtract', $this->subtract);
-		$criteria->compare('minimum', $this->minimum, true, 'OR');
-		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
-		$criteria->compare('viewed', $this->viewed, true, 'OR');
-		$criteria->compare('marginId', $this->marginId, true, 'OR');
-		$criteria->compare('description', $this->description, true, 'OR');
+		$criteria->compare('productId',$this->productId,true, 'OR');
+		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
+		$criteria->compare('brandId',$this->brandId,true, 'OR');
+		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
+		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
+		$criteria->compare('model',$this->model,true, 'OR');
+		$criteria->compare('name',$this->name,true, 'OR');
+		$criteria->compare('isbn',$this->isbn,true, 'OR');
+		$criteria->compare('sku',$this->sku,true, 'OR');
+		$criteria->compare('upc',$this->upc,true, 'OR');
+		$criteria->compare('location',$this->location,true, 'OR');
+		$criteria->compare('quantity',$this->quantity);
+		$criteria->compare('productUnits',$this->productUnits,true, 'OR');
+		$criteria->compare('stockStatusId',$this->stockStatusId);
+		$criteria->compare('image',$this->image,true, 'OR');
+		$criteria->compare('shipping',$this->shipping);
+		$criteria->compare('price',$this->price,true, 'OR');
+		$criteria->compare('priceGroupId',$this->priceGroupId,true, 'OR');
+		$criteria->compare('points',$this->points,true, 'OR');
+		$criteria->compare('taxClassId',$this->taxClassId,true, 'OR');
+		$criteria->compare('dateAvailable',$this->dateAvailable,true, 'OR');
+		$criteria->compare('weight',$this->weight,true, 'OR');
+		$criteria->compare('length',$this->length,true, 'OR');
+		$criteria->compare('width',$this->width,true, 'OR');
+		$criteria->compare('height',$this->height,true, 'OR');
+		$criteria->compare('dimensionUnits',$this->dimensionUnits,true, 'OR');
+		$criteria->compare('metricUnits',$this->metricUnits,true, 'OR');
+		$criteria->compare('subtract',$this->subtract);
+		$criteria->compare('minimum',$this->minimum,true, 'OR');
+		$criteria->compare('sortOrder',$this->sortOrder);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
+		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
+		$criteria->compare('viewed',$this->viewed,true, 'OR');
+		$criteria->compare('marginId',$this->marginId,true, 'OR');
+		$criteria->compare('description',$this->description,true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -349,9 +254,8 @@ class ProductMaster extends MasterCActiveRecord
 	 * @param string $className active record class name.
 	 * @return ProductMaster the static model class
 	 */
-	public static function model($className = __CLASS__)
+	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
 }

@@ -2,7 +2,6 @@
 
 class UserController extends MasterBackofficeController
 {
-
 	/**
 	 * @return array action filters
 	 */
@@ -12,11 +11,10 @@ class UserController extends MasterBackofficeController
 //			'rights', // perform access control for CRUD operations
 //		);
 //	}
-
-	public function allowedActions()
-	{
-		return 'DistributorSlideShowByAmphurId,dynamicUserType,checkEmail';
-	}
+//	public function allowedActions()
+//	{
+//		return 'DistributorSlideShowByAmphurId,dynamicUserType,checkEmail';
+//	}
 
 	/**
 	 * Displays a particular model.
