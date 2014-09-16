@@ -13,9 +13,14 @@ class MasterBackofficeController extends MasterController
 
 		$this->nav = array(
 			array(
-				'label'=>'Product',
+				'label'=>'Brand',
 				'url'=>array(
 					'brand/index')
+			),
+			array(
+				'label'=>'Product',
+				'url'=>array(
+					'product/index')
 			),
 			array(
 				'label'=>'User',

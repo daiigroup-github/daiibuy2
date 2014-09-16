@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="span4">
-        <div class="control-group">
-            <label class="control-label"><?php echo $form->labelEx($model, 'dateStart'); ?></label>
-            <div class="controls">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="control-label col-sm-4"><?php echo $form->labelEx($model, 'dateStart'); ?></label>
+            <div class="col-sm-8">
 				<?php
 				$this->widget('zii.widgets.jui.CJuiDatePicker', array(
 					'model'=>$model,
@@ -17,26 +17,24 @@
 				));
 				?>
 
-				<?php echo $form->error($model, 'dateStart'); ?>
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label"><?php echo $form->labelEx($model, 'price'); ?></label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="control-label col-sm-4"><?php echo $form->labelEx($model, 'price'); ?></label>
+            <div class="col-sm-8">
 				<?php
 				echo $form->textField($model, 'price', array(
 				));
 				?>
-				<?php echo $form->error($model, 'price'); ?>
             </div>
         </div>
     </div>
 
-    <div class="span6">
-        <div class="control-group">
-            <label class="control-label"><?php echo $form->labelEx($model, 'dateEnd'); ?></label>
-            <div class="controls">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="control-label col-sm-4"><?php echo $form->labelEx($model, 'dateEnd'); ?></label>
+            <div class="col-sm-4">
 				<?php
 				$this->widget('zii.widgets.jui.CJuiDatePicker', array(
 					'model'=>$model,
@@ -51,7 +49,6 @@
 				));
 				?>
 
-				<?php echo $form->error($model, 'dateEnd'); ?>
             </div>
         </div>
     </div>

@@ -33,7 +33,8 @@ $this->pageHeader = 'Update Product ' . $model->productId;
 <?php
 echo $this->renderPartial('_form', array(
 	'model'=>$model,
-	'productAttributeModel'=>$productAttributeModel,
-	'productAttributeValueModel'=>$productAttributeValueModel,
-	'productPromotion'=>$productPromotion));
+//	'productAttributeModel'=>$productAttributeModel,
+//	'productAttributeValueModel'=>$productAttributeValueModel,
+	'productPromotion'=>$productPromotion
+));
 ?>

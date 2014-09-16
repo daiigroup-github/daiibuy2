@@ -70,9 +70,9 @@
 			</div>
 			<div class="tab-pane" id="tab3">
 				<?php
-//			$this->renderPartial('_form_promotion', array(
-//				'model'=>$productPromotion,
-//				'form'=>$form,));
+				$this->renderPartial('_form_promotion', array(
+					'model'=>$productPromotion,
+					'form'=>$form,));
 				?>
 			</div>
 		</div>

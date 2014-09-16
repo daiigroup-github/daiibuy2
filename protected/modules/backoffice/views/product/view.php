@@ -34,8 +34,8 @@ $this->pageHeader = 'View Product #' . $model->productId;
 if($model->status == 3)
 {
 	?>
-	<div class="row-fluid">
-		<div class="span12">
+	<div class="row">
+		<div class="col-sm-12">
 			<div class="alert alert-danger">
 				กรุณาแก้ไขข้อมูล Product ใหม่ และ บันทึก เพื่อส่ง ข้อมูลกลับให้ ผู้ดูแลระบบ ตรวจสอบอีกครั้ง
 			</div>
@@ -75,8 +75,8 @@ if($model->status == 3)
 	</div>
 </div>
 
-<div class="row-fluid">
-	<div class="span4">
+<div class="row">
+	<div class="col-sm-4">
 		<?php
 //                 $this->beginWidget('galleria',array(
 //                'options' => array(//galleria options
@@ -85,14 +85,16 @@ if($model->status == 3)
 //                    )
 //                ));
 		?>
-		<div class="row span12" >
-			<?php
-			$this->renderPartial("productImage", array(
-				'model'=>$model));
-			?>
+		<div class="row" >
+			<div class="col-sm-12">
+				<?php
+				$this->renderPartial("productImage", array(
+					'model'=>$model));
+				?>
+			</div>
 		</div>
 	</div>
-	<div class="span8">
+	<div class="col-sm-8">
 		<?php
 		/*
 		 * Approve form
@@ -108,10 +110,12 @@ if($model->status == 3)
 		));
 		?>
 
-		<div class="control-group">
-			<label class="control-label"><?php echo $form->labelEx($model, 'margin'); ?></label>
-			<div class="controls">
-				<?php
+		<!--<div class="control-group">-->
+		<!--<label class="control-label">-->
+		<?php echo $form->labelEx($model, 'margin'); ?>
+		<!--</label>-->
+		<!--<div class="controls">-->
+		<?php
 //				if(isset($model->margin))
 //				{
 //					echo showImage($model->margin->file, $model->margin->name);
@@ -121,9 +125,9 @@ if($model->status == 3)
 //				{
 //					echo "ไม่มี Margin กรุณา Return เพื่อให้ Supplier ปรับปรุง Product";
 //				}
-				?>
-			</div>
-		</div>
+		?>
+		<!--</div>-->
+		<!--</div>-->
 		<?php
 		if($model->status == 1 && Yii::app()->user->userType == 4)
 		{
@@ -145,12 +149,12 @@ if($model->status == 3)
 							<label class="control-label">กรุณาระบุเหตุผล : </label>
 							<div class="controls">
 								<Textarea id="returnText" rows="4" class="input-xlarge" name="returnRemark"></Textarea>
-																													</div>
-																													</div>
-																													<div class="modal-footer">
-																														<button class="btn btn-primary" name="action" value="return" >Submit</button>
-																													</div>
-																												</div>
+																																				</div>
+																																				</div>
+																																				<div class="modal-footer">
+																																					<button class="btn btn-primary" name="action" value="return" >Submit</button>
+																																				</div>
+																																			</div>
 					<?php
 //echo CHtml::href('Return', array(
 //	'class' => 'btn btn-info', 'href' => '#remarkModal', 'data-toggle' => 'modal', 'role' => 'button', 'name' => 'action', 'value' => 'return'));
@@ -161,25 +165,25 @@ if($model->status == 3)
 //echo CHtml::submitButton('Reject', array(
 //	'class' => 'btn btn-danger', 'name' => 'action', 'value' => 'reject'));
 					?>
-																												<a href="#rejectModal" role="button" class="btn btn-danger" data-toggle="modal">Reject</a>
-																												<!-- Modal -->
-																															<div id="rejectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-																																<div class="modal-header">
-																																	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">close x</button>
-																																	<h3 id="myModalLabel">ไม่อนุมัติ</h3>
-																																</div>
-																																<div class="control-group">
-																																	<label class="control-label">กรุณาระบุเหตุผล : </label>
-																																	<div class="controls">
-																																	<Textarea id="rejectText" rows="4" class="input-xlarge" name="rejectRemark"></Textarea>
-																																</div>
-																																</div>
-																																<div class="modal-footer">
-																																	<button class="btn btn-primary" name="action" value="reject" >Submit</button>
-																																</div>
-																															</div>
-																														</div>
-																													</div>
+																																			<a href="#rejectModal" role="button" class="btn btn-danger" data-toggle="modal">Reject</a>
+																																			<!-- Modal -->
+																																						<div id="rejectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+																																							<div class="modal-header">
+																																								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">close x</button>
+																																								<h3 id="myModalLabel">ไม่อนุมัติ</h3>
+																																							</div>
+																																							<div class="control-group">
+																																								<label class="control-label">กรุณาระบุเหตุผล : </label>
+																																								<div class="controls">
+																																								<Textarea id="rejectText" rows="4" class="input-xlarge" name="rejectRemark"></Textarea>
+																																							</div>
+																																							</div>
+																																							<div class="modal-footer">
+																																								<button class="btn btn-primary" name="action" value="reject" >Submit</button>
+																																							</div>
+																																						</div>
+																																					</div>
+																																				</div>
 		<?php } ?>
 		<?php $this->endWidget(); ?>
 		<?php

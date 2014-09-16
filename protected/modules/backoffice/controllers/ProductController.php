@@ -142,7 +142,7 @@ class ProductController extends MasterBackofficeController
 		$model = new Product;
 //		$productAttributeModel = new ProductAttribute;
 //		$productAttributeValueModel = new ProductAttributeValue;
-//		$productPromotion = new ProductPromotion();
+		$productPromotion = new ProductPromotion();
 //		$productHistory = new ProductHistory();
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
@@ -152,6 +152,7 @@ class ProductController extends MasterBackofficeController
 			$model->attributes = $_POST['Product'];
 			$model->createDateTime = new CDbExpression('NOW()');
 			$model->supplierId = Yii::app()->user->id;
+			$model->status = 2;
 			if(isset($_POST["Product"]["categoryId"]))
 			{
 				$catModel = Category::model()->findByPk($_POST["Product"]["categoryId"]);
@@ -328,7 +329,7 @@ class ProductController extends MasterBackofficeController
 			'model'=>$model,
 //			'productAttributeModel'=>$productAttributeModel,
 //			'productAttributeValueModel'=>$productAttributeValueModel,
-//			'productPromotion'=>$productPromotion
+			'productPromotion'=>$productPromotion
 		));
 	}
 
@@ -345,27 +346,31 @@ class ProductController extends MasterBackofficeController
 			$this->redirect(array(
 				"index"));
 		}
-		$productAttributeModel = new ProductAttribute;
-		$productAttributeValueModel = new ProductAttributeValue;
-		//$productPromotion = ProductPromotion::model()->findByPk('productId='.$id);
+//		$productAttributeModel = new ProductAttribute;
+//		$productAttributeValueModel = new ProductAttributeValue;
 		$productPromotion = ProductPromotion::model()->find("productId = :productId order by productPromotionId desc", array(
 			":productId"=>$id));
 		$productPromotion = (isset($model->productPromotion)) ? $model->productPromotion : new ProductPromotion();
-
-
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
 		if(isset($_POST['Product']))
 		{
 			$model->attributes = $_POST['Product'];
+			$productPromotion->attributes = $_POST['ProductPromotion'];
 //			$uploadFile = CUploadedFile::getInstance($model, 'image');
 //			if ($uploadFile) {
 //				$fileName = uniqid() . '_' . $uploadFile->name;
 //				$model->image = '/images/product/' . $fileName;
 //			}
+			if(isset($_POST["Product"]["categoryId"]))
+			{
+				$catModel = Category::model()->findByPk($_POST["Product"]["categoryId"]);
+				$model->brandModelId = $catModel->brandModelId;
+				$model->brandId = $catModel->brandModel->brandId;
+			}
 			if($model->status == 3)
 			{
-				$model->status = 1;
+				$model->status = 2;
 			}
 			$flag = true;
 			//$model->status = 1; //change to Wait for approve
@@ -427,7 +432,6 @@ class ProductController extends MasterBackofficeController
 
 					if(isset($_POST['ProductPromotion']))
 					{
-						$productPromotion->attributes = $_POST['ProductPromotion'];
 						$productPromotion->dateStart = $_POST['ProductPromotion']['dateStart'];
 						$productPromotion->dateEnd = $_POST['ProductPromotion']['dateEnd'];
 						$productPromotion->productId = $model->productId;
@@ -474,11 +478,7 @@ class ProductController extends MasterBackofficeController
 
 
 
-//							if(isset($_POST['ProductAttributeValue']))
-						if(!ProductAttributeValue::model()->deleteAll('productId=' . $id))
-						{
-
-						}
+//						if(isset($_POST['ProductAttributeValue']))
 //								{
 //
 //								$this->writeToFile('/tmp/promotion', print_r(true, true));
@@ -486,6 +486,10 @@ class ProductController extends MasterBackofficeController
 //								}
 						if(isset($_POST['ProductAttributeValue']))
 						{
+							if(!ProductAttributeValue::model()->deleteAll('productId=' . $id))
+							{
+								$flag = FALSE;
+							}
 							foreach($_POST['ProductAttributeValue'] as $productAttributeValue)
 							{
 								$productAttributeValueModel = new ProductAttributeValue;
@@ -504,12 +508,12 @@ class ProductController extends MasterBackofficeController
 						{
 							//throw new Exception(333);
 							//save history
-							$productHistory = new ProductHistory();
-							$productHistory->userId = $model->supplierId;
-							$productHistory->productId = $model->productId;
-							$productHistory->description = "Update";
-							$productHistory->createDateTime = new CDbExpression('NOW()');
-							$productHistory->save();
+//							$productHistory = new ProductHistory();
+//							$productHistory->userId = $model->supplierId;
+//							$productHistory->productId = $model->productId;
+//							$productHistory->description = "Update";
+//							$productHistory->createDateTime = new CDbExpression('NOW()');
+//							$productHistory->save();
 
 							$transaction->commit();
 
@@ -552,8 +556,8 @@ class ProductController extends MasterBackofficeController
 
 		$this->render('update', array(
 			'model'=>$model,
-			'productAttributeModel'=>$productAttributeModel,
-			'productAttributeValueModel'=>$productAttributeValueModel,
+//			'productAttributeModel'=>$productAttributeModel,
+//			'productAttributeValueModel'=>$productAttributeValueModel,
 			'productPromotion'=>$productPromotion
 		));
 	}

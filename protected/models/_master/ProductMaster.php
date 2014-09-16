@@ -9,7 +9,6 @@
  * @property string $brandId
  * @property string $brandModelId
  * @property string $categoryId
- * @property string $model
  * @property string $name
  * @property string $isbn
  * @property string $sku
@@ -66,11 +65,11 @@ class ProductMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, brandId, brandModelId, categoryId, model, sku, upc, location, quantity, productUnits, stockStatusId, price, priceGroupId, taxClassId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
+			array('supplierId, brandId, brandModelId, categoryId, quantity, productUnits, stockStatusId, price, priceGroupId, taxClassId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
 			array('quantity, stockStatusId, shipping, subtract, sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('supplierId, brandId, brandModelId, categoryId, isbn, taxClassId, marginId', 'length', 'max'=>20),
-			array('model, sku', 'length', 'max'=>64),
 			array('name', 'length', 'max'=>80),
+			array('sku', 'length', 'max'=>64),
 			array('upc', 'length', 'max'=>12),
 			array('location', 'length', 'max'=>40),
 			array('productUnits, dimensionUnits, metricUnits', 'length', 'max'=>45),
@@ -83,7 +82,7 @@ class ProductMaster extends MasterCActiveRecord
 			array('createDateTime, description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('productId, supplierId, brandId, brandModelId, categoryId, model, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText', 'safe', 'on'=>'search'),
+			array('productId, supplierId, brandId, brandModelId, categoryId, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -114,7 +113,6 @@ class ProductMaster extends MasterCActiveRecord
 			'brandId' => 'Brand',
 			'brandModelId' => 'Brand Model',
 			'categoryId' => 'Category',
-			'model' => 'Model',
 			'name' => 'Name',
 			'isbn' => 'Isbn',
 			'sku' => 'Sku',
@@ -173,7 +171,6 @@ class ProductMaster extends MasterCActiveRecord
 			$this->brandId = $this->searchText;
 			$this->brandModelId = $this->searchText;
 			$this->categoryId = $this->searchText;
-			$this->model = $this->searchText;
 			$this->name = $this->searchText;
 			$this->isbn = $this->searchText;
 			$this->sku = $this->searchText;
@@ -211,7 +208,6 @@ class ProductMaster extends MasterCActiveRecord
 		$criteria->compare('brandId',$this->brandId,true, 'OR');
 		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
 		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
-		$criteria->compare('model',$this->model,true, 'OR');
 		$criteria->compare('name',$this->name,true, 'OR');
 		$criteria->compare('isbn',$this->isbn,true, 'OR');
 		$criteria->compare('sku',$this->sku,true, 'OR');

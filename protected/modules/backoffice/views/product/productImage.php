@@ -29,13 +29,13 @@ $cs->registerCssFile($baseUrl . '/js/fancyBox/source/helpers/jquery.fancybox-thu
 </script>
 <?php
 $i = 1;
-foreach($model->productImage as $proImage)
+foreach($model->productImages as $proImage)
 {
 	if($i == 1)
 	{
 		//$imgClass = "fancyFrame img-polaroid";
-		$imgClass = "img-polaroid";
-		$imgStyle = "";
+		$imgClass = "img-rounded";
+		$imgStyle = "width:100%;height:200px";
 		$imgClick = "";
 		$imgId = "main-image";
 		$imgUrl = Yii::app()->request->baseUrl . $proImage->image;
@@ -46,7 +46,7 @@ foreach($model->productImage as $proImage)
 	}
 	else
 	{
-		$imgClass = "img-rounded span4";
+		$imgClass = "img-rounded col-sm-4";
 		$imgStyle = "width:65px";
 		$imgClick = "changeImage(this)";
 		$imgId = "image" . $proImage->productImageId;
@@ -60,7 +60,7 @@ foreach($model->productImage as $proImage)
 	if($i == 1)
 	{
 		echo "<hr>";
-		$imgClass = "img-rounded span4";
+		$imgClass = "img-rounded col-sm-4";
 		$imgStyle = "width:65px";
 		$imgClick = "changeImage(this)";
 		$imgId = "image" . $proImage->productImageId;

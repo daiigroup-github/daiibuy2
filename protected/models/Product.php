@@ -40,13 +40,15 @@
  * @property string $supplierId
  * @property string $brandId
  */
-class Product extends CActiveRecord
+class Product extends ProductMaster
 {
 
-	const STATUS_WAITING_APPROVE = 1;
+//	const STATUS_WAITING_APPROVE = 1;
+//	const STATUS_APPROVED = 2;
+//	const STATUS_RETURN = 3;
+//	const STATUS_REJECT = 4;
+//	const STATUS_DELETE = 5;
 	const STATUS_APPROVED = 2;
-	const STATUS_RETURN = 3;
-	const STATUS_REJECT = 4;
 	const STATUS_DELETE = 5;
 	const STATUS_DISABLE = 6;
 	const DIMENSION_MM = 1;
@@ -71,76 +73,18 @@ class Product extends CActiveRecord
 	}
 
 	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'product';
-	}
-
-	/**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
 	{
 // NOTE: you should only define rules for those attributes that
 // will receive user inputs.
-		return array(
-			array(
-				'dateAvailable, name, quantity, productUnits, price, categoryId, priceGroupId, description, supplierId, brandId, brandModelId, sortOrder',
-				'required'),
-			array(
-				'quantity, shipping, points, subtract, minimum, sortOrder, status, viewed',
-				'numerical',
-				'integerOnly'=>true),
-			array(
-				'model, sku',
-				'length',
-				'max'=>64),
-			array(
-				'upc',
-				'length',
-				'max'=>12),
-			array(
-				'location',
-				'length',
-				'max'=>128),
-//			array(
-//				'productUnits, dimensionUnits, metricUnits',
-//				'length',
-//				'max' => 45),
-			array(
-				'stockStatusId, taxClassId',
-				'length',
-				'max'=>20),
-			array(
-				'image',
-				'length',
-				'max'=>255),
-			array(
-				'price, length, width, height',
-				'length',
-				'max'=>15),
-			array(
-				'createDateTime, updateDateTime, weight, metricUnits, productUnits, dimensionUnits, metricUnits, isbn',
-				'safe'),
-//			array(
-//				'image',
-//				'file',
-//				'allowEmpty' => false,
-//				'on' => 'insert'),
-			array(
-				'image',
-				'file',
-				'allowEmpty'=>true,
-				'on'=>'update'),
-			// The following rule is used by search().
-// Please remove those attributes that should not be searched.
-			array(
-				'productId, model, sku,productUnits,dimensionUnits,metricUnits, upc, location, quantity, stockStatusId, shipping, price, points, taxClassId, dateAvailable, weight, length, width, height, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, searchText, description, priceGroupId, name',
-				'safe',
-				'on'=>'search'),
-		);
+		return CMap::mergeArray(parent::rules(), array(
+				//code here
+				array(
+					'dateAvailable, name, quantity, productUnits, price, categoryId, priceGroupId, description, supplierId, brandId, brandModelId, sortOrder',
+					'required'),
+		));
 	}
 
 	/**
@@ -150,42 +94,31 @@ class Product extends CActiveRecord
 	{
 // NOTE: you may need to adjust the relation name and the related
 // class name for the relations automatically generated below.
-		return array(
-			'category'=>array(
-				self::BELONGS_TO,
-				'Category',
-				'categoryId'),
-			'priceGroup'=>array(
-				self::BELONGS_TO,
-				'PriceGroup',
-				'priceGroupId'),
-			'productAttributeValue'=>array(
-				self::HAS_MANY,
-				'ProductAttributeValue',
-				'productId'),
-			'productPromotion'=>array(
-				self::HAS_ONE,
-				'ProductPromotion',
-				'productId',
-				'order'=>'productPromotionId desc'),
-			'supplier'=>array(
-				self::BELONGS_TO,
-				'User',
-				'supplierId'),
-			'brand'=>array(
-				self::BELONGS_TO,
-				'ProductBrand',
-				'brandId'),
-			'productImage'=>array(
-				self::HAS_MANY,
-				'ProductImage',
-				'productId'),
-			'margin'=>array(
-				self::BELONGS_TO,
-				'UserCertificateFile',
-				array(
-					'marginId'=>'id')),
-		);
+		return CMap::mergeArray(parent::relations(), array(
+				//code here
+				'priceGroup'=>array(
+					self::BELONGS_TO,
+					'PriceGroup',
+					'priceGroupId'),
+				'productAttributeValue'=>array(
+					self::HAS_MANY,
+					'ProductAttributeValue',
+					'productId'),
+				'productPromotion'=>array(
+					self::HAS_ONE,
+					'ProductPromotion',
+					'productId',
+					'order'=>'productPromotionId desc'),
+				'brand'=>array(
+					self::BELONGS_TO,
+					'ProductBrand',
+					'brandId'),
+				'margin'=>array(
+					self::BELONGS_TO,
+					'UserCertificateFile',
+					array(
+						'marginId'=>'id')),
+		));
 	}
 
 	/**
@@ -193,44 +126,45 @@ class Product extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return array(
-			'productId'=>'ID',
-			'brandModelId'=>'รุ่น',
-			'name'=>'ชื่อ',
-			'isbn'=>'รหัสสินค้า',
-			'sku'=>'Sku',
-			'upc'=>'Upc',
-			'location'=>'Location',
-			'quantity'=>'จำนวนคงเหลือ',
-			'productUnits'=>'หน่วย',
-			'stockStatusId'=>'Stock Status',
-			'image'=>'รูปภาพ',
-			'shipping'=>'Shipping',
-			'price'=>'ราคา',
-			'points'=>'คะแนนสะสม',
-			'taxClassId'=>'Tax Class',
-			'dateAvailable'=>'วันเริ่มขาย',
-			'weight'=>'น้ำหนัก',
-			'length'=>'Length',
-			'width'=>'Width',
-			'height'=>'Height',
-			'dimensionUnits'=>'Dimension Units',
-			'metricUnits'=>'Metric Units',
-			'subtract'=>'Subtract',
-			'minimum'=>'Minimum',
-			'sortOrder'=>'ลำดับ',
-			'status'=>'Status',
-			'createDateTime'=>'Create Date Time',
-			'updateDateTime'=>'Update Date Time',
-			'viewed'=>'Viewed',
-			'categoryId'=>'ประเภท',
-			'marginId'=>'Margin',
-			'searchText'=>'Search',
-			'description'=>'รายละเอียด',
-			'priceGroupId'=>'กลุ่มราคาขาย',
-			'supplierId'=>'Supplier Id',
-			'brandId'=>"ยี่ห้อ",
-		);
+
+		return CMap::mergeArray(parent::attributeLabels(), array(
+				'productId'=>'ID',
+				'brandModelId'=>'รุ่น',
+				'name'=>'ชื่อ',
+				'isbn'=>'รหัสสินค้า',
+				'sku'=>'Sku',
+				'upc'=>'Upc',
+				'location'=>'Location',
+				'quantity'=>'จำนวนคงเหลือ',
+				'productUnits'=>'หน่วย',
+				'stockStatusId'=>'Stock Status',
+				'image'=>'รูปภาพ',
+				'shipping'=>'Shipping',
+				'price'=>'ราคา',
+				'points'=>'คะแนนสะสม',
+				'taxClassId'=>'Tax Class',
+				'dateAvailable'=>'วันเริ่มขาย',
+				'weight'=>'น้ำหนัก',
+				'length'=>'Length',
+				'width'=>'Width',
+				'height'=>'Height',
+				'dimensionUnits'=>'Dimension Units',
+				'metricUnits'=>'Metric Units',
+				'subtract'=>'Subtract',
+				'minimum'=>'Minimum',
+				'sortOrder'=>'ลำดับ',
+				'status'=>'Status',
+				'createDateTime'=>'Create Date Time',
+				'updateDateTime'=>'Update Date Time',
+				'viewed'=>'Viewed',
+				'categoryId'=>'ประเภท',
+				'marginId'=>'Margin',
+				'searchText'=>'Search',
+				'description'=>'รายละเอียด',
+				'priceGroupId'=>'กลุ่มราคาขาย',
+				'supplierId'=>'Supplier Id',
+				'brandId'=>"ยี่ห้อ",
+		));
 	}
 
 	/**
@@ -287,10 +221,10 @@ class Product extends CActiveRecord
 	public function getStatusArray()
 	{
 		return array(
-			self::STATUS_WAITING_APPROVE=>'Waiting for Approve',
+//			self::STATUS_WAITING_APPROVE=>'Waiting for Approve',
 			self::STATUS_APPROVED=>'Approved',
-			self::STATUS_RETURN=>'Return to Edit',
-			self::STATUS_REJECT=>'Rejected',
+//			self::STATUS_RETURN=>'Return to Edit',
+//			self::STATUS_REJECT=>'Rejected',
 			self::STATUS_DELETE=>'Delete',
 			self::STATUS_DISABLE=>'Disable',
 		);
@@ -345,7 +279,7 @@ class Product extends CActiveRecord
 		{
 
 			case self::STATUS_APPROVED:
-				$badge = 'badge-success';
+				$badge = 'label label-success';
 				break;
 			case self::STATUS_RETURN :
 				$badge = 'badge-info';
