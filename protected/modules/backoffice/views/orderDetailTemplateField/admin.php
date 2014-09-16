@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Create OrderDetailTemplateField', 'url'=>array('create')),
-	array('label'=>'Manage OrderDetailTemplateField', 'url'=>array('index')),
+	array('label'=>'Manage OrderDetailTemplateField', 'url'=>array('admin')),
 );
 ?>
 

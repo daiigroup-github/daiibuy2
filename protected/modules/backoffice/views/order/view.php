@@ -8,40 +8,32 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Order', 'url'=>array('admin')),
+	array('label'=>'List Order', 'url'=>array('index')),
 	array('label'=>'Create Order', 'url'=>array('create')),
 	array('label'=>'Update Order', 'url'=>array('update', 'id'=>$model->orderId)),
 	array('label'=>'Delete Order', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->orderId),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Order', 'url'=>array('index')),
+	array('label'=>'Manage Order', 'url'=>array('admin')),
 );
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>View Order #<?php echo $model->orderId; ?></h3>
-	</div>
-	<div class="module-option clearfix">
-		<div class="btn-group pull-right">
-			<?php echo CHtml::link('<i class="icon-plus-sign"></i>', $this->createUrl('create'), array('class'=>'btn btn-small btn-primary'));?>
-			<?php echo CHtml::link('<i class="icon-edit"></i>', $this->createUrl('update', array('id'=>$model->orderId)), array('class'=>'btn btn-small btn-warning'));?>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		View Order #<?php echo $model->orderId; ?>		<div class="pull-right">
+			<?php echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array('class'=>'btn btn-xs btn-primary'));?>
 		</div>
 	</div>
-	<div class="module-body">
-		<?php $this->widget('zii.widgets.CDetailView', array(
-			'data'=>$model,
-			'htmlOptions'=>array('class'=>'table table-striped table-border table-hover', 'style'=>'margin-top:20px;'),
-			'attributes'=>array(
-				'supplierId',
+	<?php $this->widget('zii.widgets.CDetailView', array(
+		'data'=>$model,
+		'htmlOptions'=>array('class'=>'table table-bordered table-striped table-hover'),
+		'attributes'=>array(
+			'orderId',
+		'supplierId',
 		'title',
 		'type',
-		array(
-					'name'=>'status',
-					'type'=>'raw',
-					'value'=>$model->getStatusText($model->status),
-					),
+		'status',
 		'createDateTime',
 		'updateDateTime',
-			),
-		)); ?>
-	</div>
+		),
+	)); ?>
 </div>

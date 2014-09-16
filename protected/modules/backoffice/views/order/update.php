@@ -9,17 +9,17 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Order', 'url'=>array('admin')),
+	array('label'=>'List Order', 'url'=>array('index')),
 	array('label'=>'Create Order', 'url'=>array('create')),
 	array('label'=>'View Order', 'url'=>array('view', 'id'=>$model->orderId)),
-	array('label'=>'Manage Order', 'url'=>array('index')),
+	array('label'=>'Manage Order', 'url'=>array('admin')),
 );
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>Update Order <?php echo $model->orderId; ?></h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Update Order <?php echo $model->orderId; ?>	</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
 	</div>
-	<div class="module-body">
-		<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>	</div>
 </div>

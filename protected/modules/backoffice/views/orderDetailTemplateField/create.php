@@ -8,15 +8,14 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List OrderDetailTemplateField', 'url'=>array('admin')),
-	array('label'=>'Manage OrderDetailTemplateField', 'url'=>array('index')),
+	array('label'=>'List OrderDetailTemplateField', 'url'=>array('index')),
+	array('label'=>'Manage OrderDetailTemplateField', 'url'=>array('admin')),
 );
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>Create OrderDetailTemplateField</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">Create OrderDetailTemplateField</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
 	</div>
-	<div class="module-body">
-		<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>	</div>
 </div>

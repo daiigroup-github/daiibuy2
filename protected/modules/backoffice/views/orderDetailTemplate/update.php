@@ -9,17 +9,17 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List OrderDetailTemplate', 'url'=>array('admin')),
+	array('label'=>'List OrderDetailTemplate', 'url'=>array('index')),
 	array('label'=>'Create OrderDetailTemplate', 'url'=>array('create')),
 	array('label'=>'View OrderDetailTemplate', 'url'=>array('view', 'id'=>$model->orderDetailTemplateId)),
-	array('label'=>'Manage OrderDetailTemplate', 'url'=>array('index')),
+	array('label'=>'Manage OrderDetailTemplate', 'url'=>array('admin')),
 );
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>Update OrderDetailTemplate <?php echo $model->orderDetailTemplateId; ?></h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Update OrderDetailTemplate <?php echo $model->orderDetailTemplateId; ?>	</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
 	</div>
-	<div class="module-body">
-		<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>	</div>
 </div>

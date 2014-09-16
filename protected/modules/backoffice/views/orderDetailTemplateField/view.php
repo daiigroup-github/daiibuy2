@@ -8,35 +8,31 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List OrderDetailTemplateField', 'url'=>array('admin')),
+	array('label'=>'List OrderDetailTemplateField', 'url'=>array('index')),
 	array('label'=>'Create OrderDetailTemplateField', 'url'=>array('create')),
 	array('label'=>'Update OrderDetailTemplateField', 'url'=>array('update', 'id'=>$model->orderDetailTemplateFieldId)),
 	array('label'=>'Delete OrderDetailTemplateField', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->orderDetailTemplateFieldId),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage OrderDetailTemplateField', 'url'=>array('index')),
+	array('label'=>'Manage OrderDetailTemplateField', 'url'=>array('admin')),
 );
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>View OrderDetailTemplateField #<?php echo $model->orderDetailTemplateFieldId; ?></h3>
-	</div>
-	<div class="module-option clearfix">
-		<div class="btn-group pull-right">
-			<?php echo CHtml::link('<i class="icon-plus-sign"></i>', $this->createUrl('create'), array('class'=>'btn btn-small btn-primary'));?>
-			<?php echo CHtml::link('<i class="icon-edit"></i>', $this->createUrl('update', array('id'=>$model->orderDetailTemplateFieldId)), array('class'=>'btn btn-small btn-warning'));?>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		View OrderDetailTemplateField #<?php echo $model->orderDetailTemplateFieldId; ?>		<div class="pull-right">
+			<?php echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array('class'=>'btn btn-xs btn-primary'));?>
 		</div>
 	</div>
-	<div class="module-body">
-		<?php $this->widget('zii.widgets.CDetailView', array(
-			'data'=>$model,
-			'htmlOptions'=>array('class'=>'table table-striped table-border table-hover', 'style'=>'margin-top:20px;'),
-			'attributes'=>array(
-				'orderDetailTemplateId',
+	<?php $this->widget('zii.widgets.CDetailView', array(
+		'data'=>$model,
+		'htmlOptions'=>array('class'=>'table table-bordered table-striped table-hover'),
+		'attributes'=>array(
+			'orderDetailTemplateFieldId',
+		'orderDetailTemplateId',
 		'title',
-		'description:html',
+		'description',
 		'createDateTime',
 		'updateDateTime',
-			),
-		)); ?>
-	</div>
+		),
+	)); ?>
 </div>

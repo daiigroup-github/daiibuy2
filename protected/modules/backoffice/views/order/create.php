@@ -8,15 +8,14 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Order', 'url'=>array('admin')),
-	array('label'=>'Manage Order', 'url'=>array('index')),
+	array('label'=>'List Order', 'url'=>array('index')),
+	array('label'=>'Manage Order', 'url'=>array('admin')),
 );
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>Create Order</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">Create Order</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
 	</div>
-	<div class="module-body">
-		<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>	</div>
 </div>

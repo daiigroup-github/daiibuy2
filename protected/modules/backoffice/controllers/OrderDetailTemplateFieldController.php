@@ -1,12 +1,12 @@
 <?php
 
-class OrderDetailTemplateFieldController extends MasterController
+class OrderDetailTemplateFieldController extends MasterBackofficeController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column1';
+	public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -81,13 +81,12 @@ class OrderDetailTemplateFieldController extends MasterController
 			try
 			{
 				$model->attributes=$_POST['OrderDetailTemplateField'];
-				
-								
-				if($model->save())				
+
+				if($model->save())
 				{
-									$flag = true;
-								}
-			
+					$flag = true;
+				}
+
 				if($flag)
 				{
 					$transaction->commit();
@@ -103,7 +102,7 @@ class OrderDetailTemplateFieldController extends MasterController
 				throw new Exception($e->getMessage());
 				$transaction->rollback();
 			}
-				
+
 		}
 
 		$this->render('create',array(
@@ -125,18 +124,17 @@ class OrderDetailTemplateFieldController extends MasterController
 
 		if(isset($_POST['OrderDetailTemplateField']))
 		{
-						$flag = false;
+			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
 				$model->attributes=$_POST['OrderDetailTemplateField'];
-				
-								
-				if($model->save())				
+
+				if($model->save())
 				{
 					$flag = true;
-								}
-				
+				}
+
 				if($flag)
 				{
 					$transaction->commit();
