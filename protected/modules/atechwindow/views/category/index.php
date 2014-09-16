@@ -77,7 +77,6 @@ $this->breadcrumbs = array(
                                 $(".numeric-input").each(function(){
 		                            var el = $(this);
 		                            numericInput(el);
-                                    alert("aaaa");
 	                            });
 
 	                            /* Numeric Input */
@@ -94,20 +93,17 @@ $this->breadcrumbs = array(
 			                            var value = parseInt(input.val());
 
                                         if(value-1 < 0)
-                                        input.val(0);
-                                    else
-			                        input.val(value-1);
+                                            input.val(0);
+                                        else
+			                            input.val(value-1);
 		                            });
 
 		                            input.keypress(function(e){
-
-			                        var value = parseInt(String.fromCharCode(e.which));
-			                        if(isNaN(value)){
-				                        e.preventDefault();
-			                        }
-
-		                        });
-
+			                            var value = parseInt(String.fromCharCode(e.which));
+			                            if(isNaN(value)){
+				                            e.preventDefault();
+			                            }
+		                            });
 	                            }
                             }',
                         ), array(
