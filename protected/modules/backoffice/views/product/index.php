@@ -58,8 +58,9 @@ $this->menu = array(
 				'type'=>'html',
 				'value'=>'"$data->name<br />".
 				"Last Update : $data->updateDateTime<br />".
-				"veiws : $data->viewed<br />".
-				$data->getBadgeStatus()',
+				"veiws : $data->viewed<br />"
+				//.$data->getBadgeStatus()
+				',
 			),
 			array(
 				'header'=>'Qty',
@@ -82,12 +83,17 @@ $this->menu = array(
 			),
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {approve}',
+				//'template'=>'{view} {update} {delete} {approve}',
+				'template'=>'{view} {update} {delete} {option}',
 				'buttons'=>array(
-					'approve'=>array(
-						'label'=>(true) ? '<i class="icon-thumbs-down"></i>' : '',
-						'url'=>'Yii::app()->createUrl("admin/product/update", array("id"=>$data->productId))'
-					),
+//					'approve'=>array(
+//						'label'=>'<br><u>Approve</u>',
+//						'url'=>'Yii::app()->createUrl("admin/product/update", array("id"=>$data->productId))'
+//					),
+					'option'=>array(
+						'label'=>'<br><u>Option</u>',
+						'url'=>'Yii::app()->createUrl("backoffice/productOptionGroup/index?productId=".$data->productId)'
+					)
 				),
 			),
 		),

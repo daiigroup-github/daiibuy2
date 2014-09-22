@@ -106,13 +106,13 @@ if($model->status == 3)
 			'enableAjaxValidation'=>true,
 			'htmlOptions'=>array(
 				'enctype'=>'multipart/form-data',
-				'class'=>'form-horizontal well'),
+				'class'=>'form-horizontal '),
 		));
 		?>
 
 		<!--<div class="control-group">-->
 		<!--<label class="control-label">-->
-		<?php echo $form->labelEx($model, 'margin'); ?>
+		<?php // echo $form->labelEx($model, 'margin'); ?>
 		<!--</label>-->
 		<!--<div class="controls">-->
 		<?php
@@ -149,12 +149,12 @@ if($model->status == 3)
 							<label class="control-label">กรุณาระบุเหตุผล : </label>
 							<div class="controls">
 								<Textarea id="returnText" rows="4" class="input-xlarge" name="returnRemark"></Textarea>
-																																				</div>
-																																				</div>
-																																				<div class="modal-footer">
-																																					<button class="btn btn-primary" name="action" value="return" >Submit</button>
-																																				</div>
-																																			</div>
+																																							</div>
+																																							</div>
+																																							<div class="modal-footer">
+																																								<button class="btn btn-primary" name="action" value="return" >Submit</button>
+																																							</div>
+																																						</div>
 					<?php
 //echo CHtml::href('Return', array(
 //	'class' => 'btn btn-info', 'href' => '#remarkModal', 'data-toggle' => 'modal', 'role' => 'button', 'name' => 'action', 'value' => 'return'));
@@ -165,25 +165,25 @@ if($model->status == 3)
 //echo CHtml::submitButton('Reject', array(
 //	'class' => 'btn btn-danger', 'name' => 'action', 'value' => 'reject'));
 					?>
-																																			<a href="#rejectModal" role="button" class="btn btn-danger" data-toggle="modal">Reject</a>
-																																			<!-- Modal -->
-																																						<div id="rejectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-																																							<div class="modal-header">
-																																								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">close x</button>
-																																								<h3 id="myModalLabel">ไม่อนุมัติ</h3>
+																																						<a href="#rejectModal" role="button" class="btn btn-danger" data-toggle="modal">Reject</a>
+																																						<!-- Modal -->
+																																									<div id="rejectModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+																																										<div class="modal-header">
+																																											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">close x</button>
+																																											<h3 id="myModalLabel">ไม่อนุมัติ</h3>
+																																										</div>
+																																										<div class="control-group">
+																																											<label class="control-label">กรุณาระบุเหตุผล : </label>
+																																											<div class="controls">
+																																											<Textarea id="rejectText" rows="4" class="input-xlarge" name="rejectRemark"></Textarea>
+																																										</div>
+																																										</div>
+																																										<div class="modal-footer">
+																																											<button class="btn btn-primary" name="action" value="reject" >Submit</button>
+																																										</div>
+																																									</div>
+																																								</div>
 																																							</div>
-																																							<div class="control-group">
-																																								<label class="control-label">กรุณาระบุเหตุผล : </label>
-																																								<div class="controls">
-																																								<Textarea id="rejectText" rows="4" class="input-xlarge" name="rejectRemark"></Textarea>
-																																							</div>
-																																							</div>
-																																							<div class="modal-footer">
-																																								<button class="btn btn-primary" name="action" value="reject" >Submit</button>
-																																							</div>
-																																						</div>
-																																					</div>
-																																				</div>
 		<?php } ?>
 		<?php $this->endWidget(); ?>
 		<?php
@@ -207,11 +207,11 @@ if($model->status == 3)
 							'class'=>'table table-striped table-hover'
 						),
 						'attributes'=>array(
-							array(
-								'label'=>'ประเภท',
-								'type'=>'raw',
-								'value'=>$model->category->title,
-							),
+//							array(
+//								'label'=>'ประเภท',
+//								'type'=>'raw',
+//								'value'=>$model->category->title,
+//							),
 							array(
 								'label'=>'สินค้า',
 								'type'=>'raw',

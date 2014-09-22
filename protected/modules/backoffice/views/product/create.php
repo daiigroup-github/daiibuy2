@@ -24,7 +24,9 @@ $this->pageHeader = 'เพิ่มสินค้า';
 		<?php
 		$this->renderPartial('_form', array(
 			'model'=>$model,
-			'productPromotion'=>$productPromotion));
+			'productPromotion'=>$productPromotion,
+			'productOption'=>$productOption,
+			'productOptionGroup'=>$productOptionGroup));
 		?>
 	</div>
 </div>

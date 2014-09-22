@@ -65,7 +65,7 @@ class ProductMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, brandId, brandModelId, categoryId, quantity, productUnits, stockStatusId, price, priceGroupId, taxClassId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
+			array('supplierId, quantity, productUnits, price, priceGroupId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
 			array('quantity, stockStatusId, shipping, subtract, sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('supplierId, brandId, brandModelId, categoryId, isbn, taxClassId, marginId', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>80),

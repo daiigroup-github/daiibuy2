@@ -140,9 +140,9 @@ class ProductController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new Product;
-//		$productAttributeModel = new ProductAttribute;
-//		$productAttributeValueModel = new ProductAttributeValue;
 		$productPromotion = new ProductPromotion();
+		$productOptionGroup = new ProductOptionGroup();
+		$productOption = new ProductOption();
 //		$productHistory = new ProductHistory();
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
@@ -159,6 +159,8 @@ class ProductController extends MasterBackofficeController
 				$model->brandModelId = $catModel->brandModelId;
 				$model->brandId = $catModel->brandModel->brandId;
 			}
+			$model->createDateTime = new CDbExpression("NOW()");
+			$model->updateDateTime = new CDbExpression("NOW()");
 //			$productHistory->userId = $model->supplierId;
 //			$uploadFile = CUploadedFile::getInstance($model, 'image');
 //			if ($uploadFile) {
@@ -327,9 +329,9 @@ class ProductController extends MasterBackofficeController
 
 		$this->render('create', array(
 			'model'=>$model,
-//			'productAttributeModel'=>$productAttributeModel,
-//			'productAttributeValueModel'=>$productAttributeValueModel,
-			'productPromotion'=>$productPromotion
+			'productPromotion'=>$productPromotion,
+			'productOption'=>$productOption,
+			'productOptionGroup'=>$productOptionGroup
 		));
 	}
 
@@ -341,6 +343,9 @@ class ProductController extends MasterBackofficeController
 	public function actionUpdate($id)
 	{
 		$model = $this->loadModel($id);
+		$productOptionGroup = new ProductOptionGroup();
+		$productOptionGroup->productId = $model->productId;
+		$productOption = new ProductOption();
 		if(isset(Yii::app()->user) && Yii::app()->user->id != $model->supplierId && Yii::app()->user->userType != 4)
 		{
 			$this->redirect(array(
@@ -556,8 +561,8 @@ class ProductController extends MasterBackofficeController
 
 		$this->render('update', array(
 			'model'=>$model,
-//			'productAttributeModel'=>$productAttributeModel,
-//			'productAttributeValueModel'=>$productAttributeValueModel,
+			'productOption'=>$productOption,
+			'productOptionGroup'=>$productOptionGroup,
 			'productPromotion'=>$productPromotion
 		));
 	}

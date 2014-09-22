@@ -1,31 +1,31 @@
 <?php
 
 /**
- * This is the model class for table "product_option".
+ * This is the model class for table "product_option_group".
  *
- * The followings are the available columns in table 'product_option':
- * @property string $productOptionId
- * @property string $productIOptionGroupd
+ * The followings are the available columns in table 'product_option_group':
+ * @property string $productOptionGroupId
+ * @property string $productId
  * @property string $title
  * @property string $description
  * @property string $image
- * @property string $priceValue
- * @property string $pricePercent
+ * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property ProductOptionGroup $productIOptionGroupd0
+ * @property ProductOption[] $productOptions
+ * @property Product $product
  */
-class ProductOptionMaster extends MasterCActiveRecord
+class ProductOptionGroupMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'product_option';
+		return 'product_option_group';
 	}
 
 	/**
@@ -36,17 +36,15 @@ class ProductOptionMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('productIOptionGroupd, title, createDateTime, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
-			array('productIOptionGroupd', 'length', 'max'=>20),
+			array('productId, title, createDateTime, updateDateTime', 'required'),
+			array('sortOrder, status', 'numerical', 'integerOnly'=>true),
+			array('productId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
-			array('priceValue', 'length', 'max'=>15),
-			array('pricePercent', 'length', 'max'=>5),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('productOptionId, productIOptionGroupd, title, description, image, priceValue, pricePercent, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('productOptionGroupId, productId, title, description, image, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,7 +56,8 @@ class ProductOptionMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'productIOptionGroupd0' => array(self::BELONGS_TO, 'ProductOptionGroup', 'productIOptionGroupd'),
+			'productOptions' => array(self::HAS_MANY, 'ProductOption', 'productIOptionGroupd'),
+			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
 		);
 	}
 
@@ -68,13 +67,12 @@ class ProductOptionMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'productOptionId' => 'Product Option',
-			'productIOptionGroupd' => 'Product Ioption Groupd',
+			'productOptionGroupId' => 'Product Option Group',
+			'productId' => 'Product',
 			'title' => 'Title',
 			'description' => 'Description',
 			'image' => 'Image',
-			'priceValue' => 'Price Value',
-			'pricePercent' => 'Price Percent',
+			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -101,25 +99,23 @@ class ProductOptionMaster extends MasterCActiveRecord
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->productOptionId = $this->searchText;
-			$this->productIOptionGroupd = $this->searchText;
+			$this->productOptionGroupId = $this->searchText;
+			$this->productId = $this->searchText;
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 			$this->image = $this->searchText;
-			$this->priceValue = $this->searchText;
-			$this->pricePercent = $this->searchText;
+			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('productOptionId',$this->productOptionId,true, 'OR');
-		$criteria->compare('productIOptionGroupd',$this->productIOptionGroupd,true, 'OR');
+		$criteria->compare('productOptionGroupId',$this->productOptionGroupId,true, 'OR');
+		$criteria->compare('productId',$this->productId,true, 'OR');
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('image',$this->image,true, 'OR');
-		$criteria->compare('priceValue',$this->priceValue,true, 'OR');
-		$criteria->compare('pricePercent',$this->pricePercent,true, 'OR');
+		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
@@ -133,7 +129,7 @@ class ProductOptionMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ProductOptionMaster the static model class
+	 * @return ProductOptionGroupMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

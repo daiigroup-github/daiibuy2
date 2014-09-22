@@ -82,8 +82,22 @@ class Product extends ProductMaster
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
 				array(
-					'dateAvailable, name, quantity, productUnits, price, categoryId, priceGroupId, description, supplierId, brandId, brandModelId, sortOrder',
+					'dateAvailable, name, quantity, productUnits, price, priceGroupId, description, supplierId, sortOrder',
 					'required'),
+//				array(
+//					'createDateTime, updateDateTime',
+//					'default',
+//					'value'=>new CDbExpression('NOW()'),
+//					'setOnEmpty'=>false,
+//					'on'=>'insert'
+//				),
+//				array(
+//					'updateDateTime',
+//					'default',
+//					'value'=>new CDbExpression('NOW()'),
+//					'setOnEmpty'=>false,
+//					'on'=>'update'
+//				),
 		));
 	}
 

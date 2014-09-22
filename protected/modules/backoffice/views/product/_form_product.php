@@ -76,32 +76,32 @@ if(isset($model->status))
 
 		<div class="form-group">
 			<?php
-			echo $form->labelEx($model, 'categoryId', array(
-				'class'=>'col-sm-3 control-label'));
+//			echo $form->labelEx($model, 'categoryId', array(
+//				'class'=>'col-sm-3 control-label'));
 			?>
 			<div class="col-sm-9">
 				<?php
 				if(!$pCat)
 				{
-					echo $form->dropDownList($model, 'categoryId', Category::model()->getAllParentCategory(), array(
-						'prompt'=>'----- Select Category ----',
-						'class'=>'form-control'));
+//					echo $form->dropDownList($model, 'categoryId', Category::model()->getAllParentCategory(), array(
+//						'prompt'=>'----- Select Category ----',
+//						'class'=>'form-control'));
 				}
 				else
 				{
-					$str = "";
-					if(isset($model->category->parent))
-					{
-						$str .= $model->category->parent->categoryName . "->";
-					}
-					if(isset($model->category))
-					{
-						$str .= $model->category->categoryName;
-					}
-					echo $str;
+//					$str = "";
+//					if(isset($model->category->parent))
+//					{
+//						$str .= $model->category->parent->categoryName . "->";
+//					}
+//					if(isset($model->category))
+//					{
+//						$str .= $model->category->categoryName;
+//					}
+//					echo $str;
 				}
 				?>
-				<?php echo $form->error($model, 'categoryId'); ?>
+				<?php // echo $form->error($model, 'categoryId'); ?>
 			</div>
 		</div>
 

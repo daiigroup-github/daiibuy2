@@ -1,6 +1,6 @@
 <?php
 
-class BrandController extends MasterBackofficeController
+class ProductOptionGroupController extends MasterBackofficeController
 {
 
 	/**
@@ -70,20 +70,20 @@ class BrandController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
-		$model = new Brand;
+		$model = new ProductOptionGroup;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Brand']))
+		if(isset($_POST['ProductOptionGroup']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['Brand'];
-				$model->supplierId = Yii::app()->user->id;
-				$folderimage = 'brand';
+				$model->attributes = $_POST['ProductOptionGroup'];
+
+				$folderImage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -97,8 +97,6 @@ class BrandController extends MasterBackofficeController
 				{
 					$model->image = null;
 				}
-				$model->createDateTime = new CDbExpression("NOW()");
-				$model->updateDateTime = new CDbExpression("NOW()");
 
 				if($model->save())
 				{
@@ -127,7 +125,7 @@ class BrandController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'view',
-						'id'=>$model->brandId));
+						'id'=>$model->productOptionGroupId));
 				}
 				else
 				{
@@ -158,30 +156,29 @@ class BrandController extends MasterBackofficeController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Brand']))
+		if(isset($_POST['ProductOptionGroup']))
 		{
 			$oldimage = $model->image;
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['Brand'];
+				$model->attributes = $_POST['ProductOptionGroup'];
 
-				$folderimage = 'brand';
+				$folderimage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-					$imagePath = '/../' . $imageUrl;
-					$model->image = $imageUrl;
+					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePath{$columnName} = '/../' . $imageUrl;
+					$model->image = \imageUrl;
 				}
 				else
 				{
 					$model->image = $oldimage;
 				}
-				$model->updateDateTime = new CDbExpression("NOW()");
 
 				if($model->save())
 				{
@@ -193,7 +190,7 @@ class BrandController extends MasterBackofficeController
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 
-						if($image->saveAs(Yii::app()->getBasePath() . $imagePath))
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
 						{
 							if(isset($oldimage) && !empty($oldimage))
 								unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
@@ -208,7 +205,7 @@ class BrandController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'view',
-						'id'=>$model->brandId));
+						'id'=>$model->productOptionGroupId));
 				}
 				else
 				{
@@ -247,7 +244,7 @@ class BrandController extends MasterBackofficeController
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider = new CActiveDataProvider('Brand');
+		$dataProvider = new CActiveDataProvider('ProductOptionGroup');
 		$this->render('admin', array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -258,10 +255,14 @@ class BrandController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-		$model = new Brand('search');
+		$model = new ProductOptionGroup('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Brand']))
-			$model->attributes = $_GET['Brand'];
+		if(isset($_GET["productId"]))
+		{
+			$model->productId = $_GET["productId"];
+		}
+		if(isset($_GET['ProductOptionGroup']))
+			$model->attributes = $_GET['ProductOptionGroup'];
 
 		$this->render('index', array(
 			'model'=>$model,
@@ -272,12 +273,12 @@ class BrandController extends MasterBackofficeController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Brand the loaded model
+	 * @return ProductOptionGroup the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model = Brand::model()->findByPk($id);
+		$model = ProductOptionGroup::model()->findByPk($id);
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
@@ -285,11 +286,11 @@ class BrandController extends MasterBackofficeController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Brand $model the model to be validated
+	 * @param ProductOptionGroup $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax'] === 'brand-form')
+		if(isset($_POST['ajax']) && $_POST['ajax'] === 'product-option-group-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
