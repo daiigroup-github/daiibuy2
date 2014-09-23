@@ -1,6 +1,6 @@
 <?php
-/* @var $this ProductOptionController */
-/* @var $model ProductOption */
+/* @var $this ProductSpecGroupController */
+/* @var $model ProductSpecGroup */
 /* @var $form CActiveForm */
 ?>
 
@@ -8,7 +8,7 @@
 
 	<?php
 	$form = $this->beginWidget('CActiveForm', array(
-		'id'=>'product-option-form',
+		'id'=>'product-spec-group-form',
 		// Please note: When you enable ajax validation, make sure the corresponding
 		// controller action is handling ajax validation correctly.
 		// There is a call to performAjaxValidation() commented in generated controller code.
@@ -30,12 +30,12 @@
 
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'productOptionGroupId', array(
+		echo $form->labelEx($model, 'productId', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
-			<?php echo isset($model->productOptionGroup) ? $model->productOptionGroup->title : "-"; ?>
-			<?php echo $form->error($model, 'productOptionGroupId'); ?>
+			<?php echo isset($model->product) ? $model->product->name : "-"; ?>
+			<?php echo $form->error($model, 'productId'); ?>
 		</div>
 	</div>
 	<div class="form-group">
@@ -90,34 +90,24 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'priceValue', array(
+		echo $form->labelEx($model, 'parentId', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
 			<?php
-			echo $form->numberField($model, 'priceValue', array(
-				'size'=>15,
-				'maxlength'=>15,
-				'class'=>'form-control'));
+			echo isset($model->parent) ? $model->parent->title : "Is Parent";
 			?>
-			<?php echo $form->error($model, 'priceValue'); ?>
+			<?php echo $form->error($model, 'parentId'); ?>
 		</div>
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'pricePercent', array(
+		echo $form->labelEx($model, 'type', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
-			<?php
-			echo $form->numberField($model, 'pricePercent', array(
-				'size'=>5,
-				'maxlength'=>5,
-				'class'=>'form-control',
-				'step'=>'any',
-				'min'=>0));
-			?>
-			<?php echo $form->error($model, 'pricePercent'); ?>
+			<?php echo $model->getProductSpecGroupArrayText($model->type); ?>
+			<?php echo $form->error($model, 'type'); ?>
 		</div>
 	</div>
 	<div class="form-group">

@@ -1,6 +1,6 @@
 <?php
-/* @var $this ProductOptionController */
-/* @var $model ProductOption */
+/* @var $this ProductSpecController */
+/* @var $model ProductSpec */
 /* @var $form CActiveForm */
 ?>
 
@@ -8,7 +8,7 @@
 
 	<?php
 	$form = $this->beginWidget('CActiveForm', array(
-		'id'=>'product-option-form',
+		'id'=>'product-spec-form',
 		// Please note: When you enable ajax validation, make sure the corresponding
 		// controller action is handling ajax validation correctly.
 		// There is a call to performAjaxValidation() commented in generated controller code.
@@ -30,12 +30,12 @@
 
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'productOptionGroupId', array(
+		echo $form->labelEx($model, 'productSpecGroupId', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
-			<?php echo isset($model->productOptionGroup) ? $model->productOptionGroup->title : "-"; ?>
-			<?php echo $form->error($model, 'productOptionGroupId'); ?>
+<?php echo isset($model->productSpecGroup) ? $model->productSpecGroup->title : "-"; ?>
+<?php echo $form->error($model, 'productSpecGroupId'); ?>
 		</div>
 	</div>
 	<div class="form-group">
@@ -50,14 +50,14 @@
 				'maxlength'=>200,
 				'class'=>'form-control'));
 			?>
-			<?php echo $form->error($model, 'title'); ?>
+		<?php echo $form->error($model, 'title'); ?>
 		</div>
 	</div>
 	<div class="form-group">
-		<?php
-		echo $form->labelEx($model, 'description', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
+			<?php
+			echo $form->labelEx($model, 'description', array(
+				'class'=>'col-sm-2 control-label'));
+			?>
 		<div class="col-sm-10">
 			<?php
 			echo $form->textArea($model, 'description', array(
@@ -65,14 +65,14 @@
 				'cols'=>50,
 				'class'=>'form-control'));
 			?>
-			<?php echo $form->error($model, 'description'); ?>
+		<?php echo $form->error($model, 'description'); ?>
 		</div>
 	</div>
 	<div class="form-group">
-		<?php
-		echo $form->labelEx($model, 'image', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
+			<?php
+			echo $form->labelEx($model, 'image', array(
+				'class'=>'col-sm-2 control-label'));
+			?>
 		<div class="col-sm-10">
 			<?php
 			if($this->action->id == 'update')
@@ -85,64 +85,32 @@
 				'maxlength'=>255,
 				'class'=>'form-control'));
 			?>
-			<?php echo $form->error($model, 'image'); ?>
+		<?php echo $form->error($model, 'image'); ?>
 		</div>
 	</div>
 	<div class="form-group">
-		<?php
-		echo $form->labelEx($model, 'priceValue', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
-		<div class="col-sm-10">
 			<?php
-			echo $form->numberField($model, 'priceValue', array(
-				'size'=>15,
-				'maxlength'=>15,
-				'class'=>'form-control'));
+			echo $form->labelEx($model, 'status', array(
+				'class'=>'col-sm-2 control-label'));
 			?>
-			<?php echo $form->error($model, 'priceValue'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php
-		echo $form->labelEx($model, 'pricePercent', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
 		<div class="col-sm-10">
-			<?php
-			echo $form->numberField($model, 'pricePercent', array(
-				'size'=>5,
-				'maxlength'=>5,
-				'class'=>'form-control',
-				'step'=>'any',
-				'min'=>0));
-			?>
-			<?php echo $form->error($model, 'pricePercent'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php
-		echo $form->labelEx($model, 'status', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
-		<div class="col-sm-10">
-			<?php
-			echo $form->checkBox($model, 'status', array(
-				'class'=>'form-control'));
-			?>
+<?php
+echo $form->checkBox($model, 'status', array(
+	'class'=>'form-control'));
+?>
 			<?php echo $form->error($model, 'status'); ?>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-9">
-			<?php
-			echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
-				'class'=>'btn btn-primary'));
-			?>
+<?php
+echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
+	'class'=>'btn btn-primary'));
+?>
 		</div>
 	</div>
 
-	<?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
 </div><!-- form -->

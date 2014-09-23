@@ -84,7 +84,7 @@ $this->menu = array(
 			array(
 				'class'=>'CButtonColumn',
 				//'template'=>'{view} {update} {delete} {approve}',
-				'template'=>'{view} {update} {delete} {option}',
+				'template'=>'{view} {update} {delete} {option} {detail} {spec}',
 				'buttons'=>array(
 //					'approve'=>array(
 //						'label'=>'<br><u>Approve</u>',
@@ -93,6 +93,14 @@ $this->menu = array(
 					'option'=>array(
 						'label'=>'<br><u>Option</u>',
 						'url'=>'Yii::app()->createUrl("backoffice/productOptionGroup/index?productId=".$data->productId)'
+					),
+					'detail'=>array(
+						'label'=>'<br><u>Detail</u>',
+						'url'=>'Yii::app()->createUrl("backoffice/productSpecGroup/index?productId=".$data->productId."&type=1")'
+					),
+					'spec'=>array(
+						'label'=>'<br><u>Spec</u>',
+						'url'=>'Yii::app()->createUrl("backoffice/productSpecGroup/index?productId=".$data->productId."&type=2")'
 					)
 				),
 			),

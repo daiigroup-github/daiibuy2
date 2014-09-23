@@ -1,6 +1,6 @@
 <?php
 
-class ProductOptionController extends MasterBackofficeController
+class ProductSpecController extends MasterBackofficeController
 {
 
 	/**
@@ -70,30 +70,31 @@ class ProductOptionController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
-		$model = new ProductOption;
-		if(isset($_GET["productOptionGroupId"]))
+		$model = new ProductSpec;
+		if(isset($_GET["productSpecGroupId"]))
 		{
-			$model->productOptionGroupId = $_GET["productOptionGroupId"];
+			$model->productSpecGroupId = $_GET["productSpecGroupId"];
 		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['ProductOption']))
+		if(isset($_POST['ProductSpec']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['ProductOption'];
+				$model->attributes = $_POST['ProductSpec'];
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderImage = 'productOption';
+
+				$folderimage = 'productSpec';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folderImage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
 					$imagePathimage = '/../' . $imageUrl;
 					$model->image = $imageUrl;
 				}
@@ -106,9 +107,9 @@ class ProductOptionController extends MasterBackofficeController
 				{
 					if(isset($image) && !empty($image))
 					{
-						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderImage))
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
 						{
-							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderImage, 0777);
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
@@ -129,7 +130,7 @@ class ProductOptionController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'index',
-						'productOptionGroupId'=>$model->productOptionGroupId));
+						'productSpecGroupId'=>$model->productSpecGroupId));
 				}
 				else
 				{
@@ -160,16 +161,17 @@ class ProductOptionController extends MasterBackofficeController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['ProductOption']))
+		if(isset($_POST['ProductSpec']))
 		{
 			$oldimage = $model->image;
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['ProductOption'];
+				$model->attributes = $_POST['ProductSpec'];
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderimage = 'productOption';
+
+				$folderimage = 'productSpec';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -209,7 +211,7 @@ class ProductOptionController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'index',
-						'productOptionGroupId'=>$model->productOptionGroupId));
+						'productSpecGroupId'=>$model->productSpecGroupId));
 				}
 				else
 				{
@@ -248,7 +250,7 @@ class ProductOptionController extends MasterBackofficeController
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider = new CActiveDataProvider('ProductOption');
+		$dataProvider = new CActiveDataProvider('ProductSpec');
 		$this->render('admin', array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -259,15 +261,14 @@ class ProductOptionController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-		$model = new ProductOption('search');
+		$model = new ProductSpec('search');
 		$model->unsetAttributes();  // clear any default values
-
-		if(isset($_GET["productOptionGroupId"]))
+		if(isset($_GET["productSpecGroupId"]))
 		{
-			$model->productOptionGroupId = $_GET["productOptionGroupId"];
+			$model->productSpecGroupId = $_GET["productSpecGroupId"];
 		}
-		if(isset($_GET['ProductOption']))
-			$model->attributes = $_GET['ProductOption'];
+		if(isset($_GET['ProductSpec']))
+			$model->attributes = $_GET['ProductSpec'];
 
 		$this->render('index', array(
 			'model'=>$model,
@@ -278,12 +279,12 @@ class ProductOptionController extends MasterBackofficeController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return ProductOption the loaded model
+	 * @return ProductSpec the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model = ProductOption::model()->findByPk($id);
+		$model = ProductSpec::model()->findByPk($id);
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
@@ -291,11 +292,11 @@ class ProductOptionController extends MasterBackofficeController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param ProductOption $model the model to be validated
+	 * @param ProductSpec $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax'] === 'product-option-form')
+		if(isset($_POST['ajax']) && $_POST['ajax'] === 'product-spec-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

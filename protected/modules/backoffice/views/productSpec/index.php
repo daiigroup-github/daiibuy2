@@ -1,40 +1,40 @@
 <?php
-/* @var $this ProductOptionGroupController */
-/* @var $model ProductOptionGroup */
+/* @var $this ProductSpecController */
+/* @var $model ProductSpec */
 
 $this->breadcrumbs = array(
-	'Product Option Groups'=>array(
+	'Product Specs'=>array(
 		'index'),
 	'Manage',
 );
 
 $this->menu = array(
 	array(
-		'label'=>'List ProductOptionGroup',
+		'label'=>'List ProductSpec',
 		'url'=>array(
 			'index')),
 	array(
-		'label'=>'Create ProductOptionGroup',
+		'label'=>'Create ProductSpec',
 		'url'=>array(
 			'create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('#search-form').submit(function(){
-$('#product-option-group-grid').yiiGridView('update', {
+$('#product-spec-grid').yiiGridView('update', {
 data: $(this).serialize()
 });
 return false;
 });
 ");
 ?>
-
+<h3><?php echo isset($model->productSpecGroup) ? $model->productSpecGroup->title : "-" ?>Specification</h3>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Product Option Groups
+		Manage Product Specs
 		<div class="pull-right">
 			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?productId=' . $_GET["productId"]), array(
+			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?productSpecGroupId=' . $model->productSpecGroupId), array(
 				'class'=>'btn btn-xs btn-primary'));
 			?>
 		</div>
@@ -51,10 +51,10 @@ return false;
 			</div>
 		</div>
 	</div>
-	<h3><?php echo $model->product->name; ?></h3>
+
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
-		'id'=>'product-option-group-grid',
+		'id'=>'product-spec-grid',
 		'dataProvider'=>$model->search(),
 //			'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-hover',
@@ -72,21 +72,13 @@ return false;
 			),
 			'title',
 			'description',
-			'sortOrder',
+			'status',
 			/*
-			  'status',
 			  'createDateTime',
 			  'updateDateTime',
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {items}',
-				'buttons'=>array(
-					'items'=>array(
-						'label'=>'<br><u>Items</u>',
-						'url'=>'Yii::app()->createUrl("backoffice/productOption?productOptionGroupId=".$data->productOptionGroupId)'
-					)
-				)
 			),
 		),
 	));

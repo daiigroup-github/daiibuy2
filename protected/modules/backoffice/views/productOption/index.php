@@ -61,9 +61,17 @@ return false;
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
+			array(
+				'header'=>'Image',
+				'name'=>'image',
+				'type'=>'html',
+				'value'=>'CHtml::image(Yii::app()->request->baseUrl.$data->image, "image", array("style"=>"width:100px;"))',
+				'htmlOptions'=>array(
+					'style'=>'width:100px'
+				)
+			),
 			'title',
 			'description',
-			'image',
 			'priceValue',
 			/*
 			  'pricePercent',

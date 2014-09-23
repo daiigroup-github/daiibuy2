@@ -87,7 +87,7 @@ class ProductOptionGroupController extends MasterBackofficeController
 				$model->attributes = $_POST['ProductOptionGroup'];
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderImage = 'folderName';
+				$folderImage = 'productOptionGroup';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -169,15 +169,15 @@ class ProductOptionGroupController extends MasterBackofficeController
 			{
 				$model->attributes = $_POST['ProductOptionGroup'];
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderimage = 'folderName';
+				$folderimage = 'productOptionGroup';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-					$imagePath{$columnName} = '/../' . $imageUrl;
-					$model->image = \imageUrl;
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePathimage = '/../' . $imageUrl;
+					$model->image = $imageUrl;
 				}
 				else
 				{

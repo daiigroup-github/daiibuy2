@@ -1,27 +1,27 @@
 <?php
-/* @var $this ProductOptionGroupController */
-/* @var $model ProductOptionGroup */
+/* @var $this ProductSpecGroupController */
+/* @var $model ProductSpecGroup */
 
 $this->breadcrumbs = array(
-	'Product Option Groups'=>array(
+	'Product Spec Groups'=>array(
 		'index'),
 	'Manage',
 );
 
 $this->menu = array(
 	array(
-		'label'=>'List ProductOptionGroup',
+		'label'=>'List ProductSpecGroup',
 		'url'=>array(
 			'index')),
 	array(
-		'label'=>'Create ProductOptionGroup',
+		'label'=>'Create ProductSpecGroup',
 		'url'=>array(
 			'create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('#search-form').submit(function(){
-$('#product-option-group-grid').yiiGridView('update', {
+$('#product-spec-group-grid').yiiGridView('update', {
 data: $(this).serialize()
 });
 return false;
@@ -31,10 +31,10 @@ return false;
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Product Option Groups
+		Manage Product Spec Groups
 		<div class="pull-right">
 			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?productId=' . $_GET["productId"]), array(
+			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?productId=' . $model->productId . "&type=" . $model->type . "&parentId=" . $model->parentId), array(
 				'class'=>'btn btn-xs btn-primary'));
 			?>
 		</div>
@@ -51,10 +51,10 @@ return false;
 			</div>
 		</div>
 	</div>
-	<h3><?php echo $model->product->name; ?></h3>
+	<h3><?php echo isset($model->product) ? $model->product->name : "-"; ?> Spec Group</h3>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
-		'id'=>'product-option-group-grid',
+		'id'=>'product-spec-group-grid',
 		'dataProvider'=>$model->search(),
 //			'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-hover',
@@ -72,19 +72,24 @@ return false;
 			),
 			'title',
 			'description',
-			'sortOrder',
+			'parentId',
 			/*
+			  'type',
 			  'status',
 			  'createDateTime',
 			  'updateDateTime',
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {items}',
+				'template'=>'{view} {update} {delete} {child} {item}',
 				'buttons'=>array(
-					'items'=>array(
-						'label'=>'<br><u>Items</u>',
-						'url'=>'Yii::app()->createUrl("backoffice/productOption?productOptionGroupId=".$data->productOptionGroupId)'
+					'child'=>array(
+						'label'=>'<br><u>Child</u>',
+						'url'=>'Yii::app()->createUrl("backoffice/productSpecGroup?parentId=".$data->productSpecGroupId)'
+					),
+					'item'=>array(
+						'label'=>'<br><u>Item</u>',
+						'url'=>'Yii::app()->createUrl("backoffice/productSpec?productSpecGroupId=".$data->productSpecGroupId)'
 					)
 				)
 			),
