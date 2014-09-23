@@ -71,7 +71,10 @@ class ProductOptionGroupController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new ProductOptionGroup;
-
+		if(isset($_GET["productId"]))
+		{
+			$model->productId = $_GET["productId"];
+		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -82,14 +85,15 @@ class ProductOptionGroupController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['ProductOptionGroup'];
-
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderImage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imageUrl = '/images/' . $folderImage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
 					$imagePathimage = '/../' . $imageUrl;
 					$model->image = $imageUrl;
 				}
@@ -102,9 +106,9 @@ class ProductOptionGroupController extends MasterBackofficeController
 				{
 					if(isset($image) && !empty($image))
 					{
-						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderImage))
 						{
-							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderImage, 0777);
 						}
 
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
@@ -124,8 +128,8 @@ class ProductOptionGroupController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->productOptionGroupId));
+						'index',
+						'productId'=>$model->productId));
 				}
 				else
 				{
@@ -164,7 +168,7 @@ class ProductOptionGroupController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['ProductOptionGroup'];
-
+				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderimage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
@@ -204,8 +208,8 @@ class ProductOptionGroupController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->productOptionGroupId));
+						'index',
+						'productId'=>$model->productId));
 				}
 				else
 				{

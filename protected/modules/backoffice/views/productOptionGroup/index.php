@@ -61,7 +61,7 @@ return false;
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
-			'productOptionGroupId',
+//			'productOptionGroupId',
 			'title',
 			'description',
 			'image',
@@ -73,6 +73,13 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
+				'template'=>'{view} {update} {delete} {items}',
+				'buttons'=>array(
+					'items'=>array(
+						'label'=>'<br><u>Items</u>',
+						'url'=>'Yii::app()->createUrl("backoffice/productOption?productOptionGroupId=".$data->productOptionGroupId)'
+					)
+				)
 			),
 		),
 	));

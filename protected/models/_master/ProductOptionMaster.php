@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'product_option':
  * @property string $productOptionId
- * @property string $productIOptionGroupd
+ * @property string $productOptionGroupId
  * @property string $title
  * @property string $description
  * @property string $image
@@ -16,7 +16,7 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property ProductOptionGroup $productIOptionGroupd0
+ * @property ProductOptionGroup $productOptionGroup
  */
 class ProductOptionMaster extends MasterCActiveRecord
 {
@@ -36,9 +36,9 @@ class ProductOptionMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('productIOptionGroupd, title, createDateTime, updateDateTime', 'required'),
+			array('productOptionGroupId, title, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
-			array('productIOptionGroupd', 'length', 'max'=>20),
+			array('productOptionGroupId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('priceValue', 'length', 'max'=>15),
@@ -46,7 +46,7 @@ class ProductOptionMaster extends MasterCActiveRecord
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('productOptionId, productIOptionGroupd, title, description, image, priceValue, pricePercent, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('productOptionId, productOptionGroupId, title, description, image, priceValue, pricePercent, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,7 +58,7 @@ class ProductOptionMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'productIOptionGroupd0' => array(self::BELONGS_TO, 'ProductOptionGroup', 'productIOptionGroupd'),
+			'productOptionGroup' => array(self::BELONGS_TO, 'ProductOptionGroup', 'productOptionGroupId'),
 		);
 	}
 
@@ -69,7 +69,7 @@ class ProductOptionMaster extends MasterCActiveRecord
 	{
 		return array(
 			'productOptionId' => 'Product Option',
-			'productIOptionGroupd' => 'Product Ioption Groupd',
+			'productOptionGroupId' => 'Product Option Group',
 			'title' => 'Title',
 			'description' => 'Description',
 			'image' => 'Image',
@@ -102,7 +102,7 @@ class ProductOptionMaster extends MasterCActiveRecord
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->productOptionId = $this->searchText;
-			$this->productIOptionGroupd = $this->searchText;
+			$this->productOptionGroupId = $this->searchText;
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 			$this->image = $this->searchText;
@@ -114,7 +114,7 @@ class ProductOptionMaster extends MasterCActiveRecord
 		}
 
 		$criteria->compare('productOptionId',$this->productOptionId,true, 'OR');
-		$criteria->compare('productIOptionGroupd',$this->productIOptionGroupd,true, 'OR');
+		$criteria->compare('productOptionGroupId',$this->productOptionGroupId,true, 'OR');
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('image',$this->image,true, 'OR');

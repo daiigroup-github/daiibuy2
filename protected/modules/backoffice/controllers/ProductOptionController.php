@@ -71,7 +71,10 @@ class ProductOptionController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new ProductOption;
-
+		if(isset($_GET["productOptionGroupId"]))
+		{
+			$model->productOptionGroupId = $_GET["productOptionGroupId"];
+		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -82,7 +85,8 @@ class ProductOptionController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['ProductOption'];
-
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderImage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
@@ -124,8 +128,8 @@ class ProductOptionController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->productOptionId));
+						'index',
+						'productOptionGroupId'=>$model->productOptionGroupId));
 				}
 				else
 				{
@@ -164,7 +168,7 @@ class ProductOptionController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['ProductOption'];
-
+				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderimage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
@@ -204,8 +208,8 @@ class ProductOptionController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->productOptionId));
+						'index',
+						'productOptionGroupId'=>$model->productOptionGroupId));
 				}
 				else
 				{
@@ -257,6 +261,11 @@ class ProductOptionController extends MasterBackofficeController
 	{
 		$model = new ProductOption('search');
 		$model->unsetAttributes();  // clear any default values
+
+		if(isset($_GET["productOptionGroupId"]))
+		{
+			$model->productOptionGroupId = $_GET["productOptionGroupId"];
+		}
 		if(isset($_GET['ProductOption']))
 			$model->attributes = $_GET['ProductOption'];
 
