@@ -6,6 +6,9 @@ class MasterMadridController extends MasterController
     {
         parent::init();
 
+        Yii::app()->clientScript->registerCSSFile(Yii::app()->baseUrl.'/css/madrid.css');
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/madrid.js');
+
         $this->nav = array(
             array(
                 'url' => 'madrid/category/index/id/2',

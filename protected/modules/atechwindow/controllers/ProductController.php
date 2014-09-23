@@ -71,6 +71,7 @@ class ProductController extends MasterAtechwindowController
     public function actionSearchProductItems()
     {
         if (isset($_POST)) {
+            sleep(2);
             $res = '';
 
             $colors = array(

@@ -6,4 +6,4 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<?php $this->renderPartial('//layouts/_product_single', array('product' => $product)); ?>
+<?php $this->renderPartial('_product_single', array('product' => $product)); ?>

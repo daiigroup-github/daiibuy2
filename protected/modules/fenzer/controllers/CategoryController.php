@@ -8,8 +8,8 @@ class CategoryController extends MasterFenzerController
         foreach ($this->scanDir(Yii::app()->basePath . '/../images/fenzer') as $k => $image) {
             $images[$k] = Yii::app()->baseUrl . '/images/fenzer/' . $image;
         }
-        $product = array(
-            'title' => 'Madrid Sanitary #' . $id,
+
+        $product = array('title' => 'Madrid Sanitary #' . $id,
             'code' => 'PBS173',
             'category' => 'Sanitary',
             'stock' => '20',

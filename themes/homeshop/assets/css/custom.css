@@ -82,3 +82,7 @@ form .full-width{
 input[type="number"].form-control{
     width:100%;
 }
+
+i.spinner {
+    display: none;
+}

@@ -6,9 +6,8 @@ function include(url){
 	if(window.location.host === 'dev')
 		document.write('<script src="http://dev/daiibuy2/' + url + '" type="text/javascript"></script>');
 	else
-		document.write('<script src="' + window.location.origin + url + '" type="text/javascript"></script>');
+		document.write('<script src="' + window.location.origin + '/' + url + '" type="text/javascript"></script>');
 }
-
 
 include('themes/homeshop/assets/twitter/jquery.tweet.js'); // Twitter widget */
 include('themes/homeshop/assets/js/tinynav.min.js'); // Tiny nav

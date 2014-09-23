@@ -6,8 +6,8 @@ class MasterAtechwindowController extends MasterController
     {
         parent::init();
 
-        Yii::app()->clientScript->registerCSSFile(Yii::app()->theme->baseUrl.'/assets/css/atechwindow.css');
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/assets/js/daiibuy/atechwindow.js');
+        Yii::app()->clientScript->registerCSSFile(Yii::app()->baseUrl.'/css/atechwindow.css');
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/atechwindow.js');
 
         $this->nav = array(
             array(

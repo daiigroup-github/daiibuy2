@@ -45,7 +45,7 @@ $this->breadcrumbs = array(
                     //'enableClientValidation' => true,
                     //'clientOptions' => array('validateOnSubmit' => true,),
                     'htmlOptions' => array(
-                        'class' => 'form-horizontal',
+                        'class' => 'form-horizontal product-actions-single',
                         'role' => 'form',
                         'onSubmit'=>'js:return(false);'
                     ),
@@ -69,11 +69,7 @@ $this->breadcrumbs = array(
                 <div class="form-group">
                     <label for="h" class="col-sm-4 control-label">Color</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="h" id="h">
-                            <option value="1">Silver</option>
-                            <option value="2">Blue</option>
-                            <option value="3">White</option>
-                        </select>
+                        <?php echo CHtml::dropDownList('h', '', array('Silver', 'Blue', 'White'), array('class'=>'chosen-select-full-width', 'prompt'=>'-- Select --'));?>
                     </div>
                 </div>
 
@@ -88,58 +84,17 @@ $this->breadcrumbs = array(
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-4 col-sm-8">
-                        <?php echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/showItems'), array(
-                            'dataType'=>'json',
-                            'method'=>'POST',
-                            'data'=>'js:$("#fenzerForm").serialize()',
-                            'success'=>'js:function(data){
-                                var d = "<ul>";
-                                d += "<li>Height : "+data.h+"</li>";
-                                d += "<li>Length : "+data.l+"</li>";
-                                d += "</ul>";
-
-                                $("#items").html(d);
-                            }',
-                        ), array('class'=>'btn btn-default', 'id'=>'fenzerQuery'));?>
-                    </div>
-                </div>
-
-                <?php $this->endWidget(); ?>
-
-                <?php if (isset($product['actions'])): ?>
-                    <div class="product-actions">
+                <div class="product-actions">
 			        <span class="add-to-cart">
                         <span class="action-wrapper">
-							<i class="icons icon-basket-2"></i>
+							<i class="icons fa fa-shopping-cart"></i>
 							<span class="action-name">Add to cart</span>
 						</span>
 					</span>
-					<span class="add-to-favorites">
-						<span class="action-wrapper">
-							<i class="icons icon-heart-empty"></i>
-							<span class="action-name">Add to wishlist</span>
-						</span>
-					</span>
-                        <?php
-                        /*
-                            <span class="add-to-compare">
-                                <span class="action-wrapper">
-                                    <i class="icons icon-docs"></i>
-                                    <span class="action-name">Add to compare</span>
-                                </span>
-                            </span>
-                            <span class="green product-action">
-                                <span class="action-wrapper">
-                                    <i class="icons icon-info"></i>
-                                    <span class="action-name">Ask a question</span>
-                                </span>
-                            </span>
-                        */
-                        ?>
-                    </div>
-                <?php endif; ?>
+                </div>
+                <?php $this->endWidget(); ?>
+
+
                 <br/>
             </div>
 
@@ -155,7 +110,6 @@ $this->breadcrumbs = array(
 
 <?php
 Yii::app()->clientScript->registerScript('catIndex', "
-    $('#h').select2();
 ", CClientScript::POS_READY);
 ?>
 

@@ -51,15 +51,11 @@ $this->breadcrumbs = array(
                 ));
                 ?>
 
-                <div class="form-group">
+                <div class="form-group product-actions-single">
                     <label for="h" class="col-sm-2 control-label">Height</label>
 
                     <div class="col-sm-9">
-                        <select class="form-control" name="h" id="h">
-                            <option value="2.25">2.25 เมตร</option>
-                            <option value="2.50">2.50 เมตร</option>
-                            <option value="2.75">2.75 เมตร</option>
-                        </select>
+                        <?php echo CHtml::dropDownList('h', '', array('2.5', '2.75', '3.00'), array('class'=>'chosen-select-full-width'));?>
                     </div>
                 </div>
 
@@ -81,6 +77,7 @@ $this->breadcrumbs = array(
                             'dataType' => 'html',
                             'method' => 'POST',
                             'data' => 'js:$("#fenzerForm").serialize()',
+                            'beforeSend'=>'js:function(){$("#spinner").css("display","inline-block");}',
                             'success' => 'js:function(data){
                                 $("#showProduct").show();
                                 $("#productItems").html(data);
@@ -116,11 +113,14 @@ $this->breadcrumbs = array(
 			                            }
 		                            });
 	                            }
+	                            $("#spinner").hide();
                             }',
                         ), array(
                             'class' => 'btn btn-default',
                             'id' => 'calculateProductItems',
                         ));?>
+
+                        <i class="fa fa-spinner fa-spin spinner" id="spinner"></i>
                     </div>
                 </div>
 

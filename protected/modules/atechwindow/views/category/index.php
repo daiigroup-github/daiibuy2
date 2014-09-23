@@ -52,13 +52,13 @@ $this->breadcrumbs = array(
                 ?>
 
                 <?php foreach ($product['options'] as $option): ?>
-                    <div class="form-group">
+                    <div class="form-group product-actions-single">
                         <label for="h" class="col-sm-2 control-label"><?php echo $option['title']; ?></label>
 
                         <div class="col-sm-9">
                             <?php
                             //$form->dropDownList();
-                            echo CHtml::dropDownList($option['title'], '', $option['items'], array('class' => 'form-control'));
+                            echo CHtml::dropDownList($option['title'], '', $option['items'], array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
                             ?>
                         </div>
                     </div>
@@ -70,6 +70,7 @@ $this->breadcrumbs = array(
                             'dataType' => 'html',
                             'method' => 'POST',
                             'data' => 'js:$("#atechWindowForm").serialize()',
+                            'beforeSend'=>'js:function(){$("#spinner").css("display","inline-block");}',
                             'success' => 'js:function(data){
                                 $("#productItems").html(data);
                                 $("#showProduct").show();
@@ -105,48 +106,19 @@ $this->breadcrumbs = array(
 			                            }
 		                            });
 	                            }
+
+	                            $("#spinner").hide();
                             }',
                         ), array(
                             'class' => 'btn btn-default',
                             'id' => 'searchProductItems'
                         ));?>
+                        <i class="fa fa-spinner fa-spin spinner" id="spinner"></i>
                     </div>
                 </div>
 
                 <?php $this->endWidget(); ?>
 
-                <?php if (isset($product['actions'])): ?>
-                    <div class="product-actions">
-			        <span class="add-to-cart">
-                        <span class="action-wrapper">
-							<i class="icons icon-basket-2"></i>
-							<span class="action-name">Add to cart</span>
-						</span>
-					</span>
-					<span class="add-to-favorites">
-						<span class="action-wrapper">
-							<i class="icons icon-heart-empty"></i>
-							<span class="action-name">Add to wishlist</span>
-						</span>
-					</span>
-                        <?php
-                        /*
-                            <span class="add-to-compare">
-                                <span class="action-wrapper">
-                                    <i class="icons icon-docs"></i>
-                                    <span class="action-name">Add to compare</span>
-                                </span>
-                            </span>
-                            <span class="green product-action">
-                                <span class="action-wrapper">
-                                    <i class="icons icon-info"></i>
-                                    <span class="action-name">Ask a question</span>
-                                </span>
-                            </span>
-                        */
-                        ?>
-                    </div>
-                <?php endif; ?>
                 <br/>
             </div>
 
