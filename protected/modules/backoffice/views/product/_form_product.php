@@ -371,7 +371,8 @@ if(isset($model->status))
 						array(
 							'class'=>'IndexColumn'),
 						array(
-							'class'=>'SortColumn'),
+							'class'=>'SortColumn',
+							'url'=>'backoffice/productImage/sortOrder'),
 						array(
 							'name'=>'image',
 							'type'=>'html',

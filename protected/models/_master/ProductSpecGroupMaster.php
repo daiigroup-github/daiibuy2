@@ -11,6 +11,7 @@
  * @property string $image
  * @property string $parentId
  * @property integer $type
+ * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -38,14 +39,14 @@ class ProductSpecGroupMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('productId, title, type, createDateTime, updateDateTime', 'required'),
-			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('type, sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('productId, parentId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('productSpecGroupId, productId, title, description, image, parentId, type, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('productSpecGroupId, productId, title, description, image, parentId, type, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,6 +76,7 @@ class ProductSpecGroupMaster extends MasterCActiveRecord
 			'image' => 'Image',
 			'parentId' => 'Parent',
 			'type' => 'Type',
+			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -108,6 +110,7 @@ class ProductSpecGroupMaster extends MasterCActiveRecord
 			$this->image = $this->searchText;
 			$this->parentId = $this->searchText;
 			$this->type = $this->searchText;
+			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -120,6 +123,7 @@ class ProductSpecGroupMaster extends MasterCActiveRecord
 		$criteria->compare('image',$this->image,true, 'OR');
 		$criteria->compare('parentId',$this->parentId,true, 'OR');
 		$criteria->compare('type',$this->type);
+		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

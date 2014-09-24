@@ -77,8 +77,9 @@ class ProductSpecGroupController extends MasterBackofficeController
 			$model->type = $_GET["type"];
 			$model->parentId = 0;
 		}
-		if(isset($_GET["parentId"]))
+		if(isset($_GET["parentId"]) && $_GET["parentId"] != 0)
 		{
+
 			$group = $this->loadModel($_GET["parentId"]);
 			$model->productId = $group->productId;
 			$model->type = $group->type;
@@ -140,15 +141,12 @@ class ProductSpecGroupController extends MasterBackofficeController
 					if(!isset($model->parentId))
 					{
 						$this->redirect(array(
-							'index',
-							'productId'=>$model->productId,
-							'type'=>$model->type));
+							'index?productId=' . $model->productId . "&type=" . $model->type));
 					}
 					else
 					{
 						$this->redirect(array(
-							'index',
-							'parentId'=>$model->parentId,));
+							'index?parentId=' . $model->parentId,));
 					}
 				}
 				else
@@ -229,9 +227,7 @@ class ProductSpecGroupController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'index',
-						'productId'=>$model->productId,
-						'type'=>$model->type));
+						'index?productId=' . $model->productId . "&type=" . $model->type));
 				}
 				else
 				{

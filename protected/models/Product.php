@@ -222,6 +222,9 @@ class Product extends ProductMaster
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'sortOrder ASC'
+			)
 		));
 	}
 

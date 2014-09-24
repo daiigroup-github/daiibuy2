@@ -62,6 +62,12 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
+				'class'=>'sortColumn',
+				'htmlOptions'=>array(
+					'style'=>'width:7%'
+				)
+			),
+			array(
 				'header'=>'Image',
 				'name'=>'image',
 				'type'=>'html',

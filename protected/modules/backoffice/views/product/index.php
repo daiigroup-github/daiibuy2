@@ -45,7 +45,12 @@ $this->menu = array(
 		//'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
 		'columns'=>array(
-			'productId',
+			array(
+				'class'=>'indexColumn'
+			),
+			array(
+				'class'=>'sortColumn',
+			),
 			array(
 				'header'=>'Image',
 				'name'=>'image',

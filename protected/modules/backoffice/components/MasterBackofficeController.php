@@ -321,4 +321,89 @@ class MasterBackofficeController extends MasterController
 		return $strReturn;
 	}
 
+	public function actionSortItem()
+	{
+		$res = array(
+			);
+		if(isset($_GET["action"]))
+			$action = $_GET["action"];
+		if(isset($_GET["id"]))
+			$id = $_GET["id"];
+		if(isset($action) && isset($id))
+		{
+			$model = $this->loadModel($id);
+			if($action == "up")
+			{
+				$model->sortOrder = intval($model->sortOrder) - 1;
+				$existing = $model->find("sortOrder =:sortOrder", array(
+					":sortOrder"=>intval($model->sortOrder)));
+				if(isset($existing))
+				{
+					$existing->sortOrder = $existing->sortOrder + 1;
+					$existing->save(false);
+				}
+			}
+			else if($action == "down")
+			{
+				$model->sortOrder = intval($model->sortOrder) + 1;
+				$existing = $model->find("sortOrder =:sortOrder", array(
+					":sortOrder"=>intval($model->sortOrder)));
+				if(isset($existing))
+				{
+					$existing->sortOrder = $existing->sortOrder - 1;
+					$existing->save(false);
+				}
+			}
+			else if($action == "custom")
+			{
+				$oldSortOrder = $model->sortOrder;
+				$model->sortOrder = intval($_GET["orderIndex"]);
+				if($model->sortOrder > $oldSortOrder)
+				{
+					$morethan = $model->findAll("sortOrder >:oldSortOrder AND sortOrder <=:sortOrder ORDER BY sortOrder ASC", array(
+						":sortOrder"=>$model->sortOrder,
+						":oldSortOrder"=>$oldSortOrder));
+					if(isset($morethan))
+					{
+						foreach($morethan as $item)
+						{
+							$item->sortOrder = $item->sortOrder - 1;
+							$item->save(false);
+						}
+					}
+				}
+				else
+				{
+					$lessthan = $model->findAll("sortOrder <:oldSortOrder AND sortOrder >=:sortOrder ORDER BY sortOrder ASC", array(
+						":sortOrder"=>$model->sortOrder,
+						":oldSortOrder"=>$oldSortOrder));
+					if(isset($lessthan))
+					{
+						foreach($lessthan as $item)
+						{
+							$item->sortOrder = $item->sortOrder + 1;
+							$item->save(false);
+						}
+					}
+				}
+			}
+
+			if($model->save(false))
+			{
+				$res["status"] = 1;
+			}
+			else
+			{
+				throw new Exception(print_r($model->errors, true));
+				$res["status"] = 0;
+			}
+		}
+		else
+		{
+			$res["status"] = 0;
+			$res["error"] = "Parameter Incorrect!!";
+		}
+		echo CJSON::encode($res);
+	}
+
 }
