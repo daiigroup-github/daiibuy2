@@ -62,6 +62,8 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
+				'class'=>'sortColumn'),
+			array(
 				'header'=>'Image',
 				'name'=>'image',
 				'type'=>'html',

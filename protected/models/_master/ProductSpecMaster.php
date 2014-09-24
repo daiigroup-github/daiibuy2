@@ -12,7 +12,7 @@
  * @property string $videoEmbeded
  * @property integer $sortOrder
  * @property integer $spanWidth
- * @property integer $ShowTitleType
+ * @property integer $showTitleType
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -39,14 +39,14 @@ class ProductSpecMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('productSpecGroupId, title, createDateTime, updateDateTime', 'required'),
-			array('sortOrder, spanWidth, ShowTitleType, status', 'numerical', 'integerOnly'=>true),
+			array('sortOrder, spanWidth, showTitleType, status', 'numerical', 'integerOnly'=>true),
 			array('productSpecGroupId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('description, videoEmbeded', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('productSpecId, productSpecGroupId, title, description, image, videoEmbeded, sortOrder, spanWidth, ShowTitleType, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('productSpecId, productSpecGroupId, title, description, image, videoEmbeded, sortOrder, spanWidth, showTitleType, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,7 +76,7 @@ class ProductSpecMaster extends MasterCActiveRecord
 			'videoEmbeded' => 'Video Embeded',
 			'sortOrder' => 'Sort Order',
 			'spanWidth' => 'Span Width',
-			'ShowTitleType' => 'Show Title Type',
+			'showTitleType' => 'Show Title Type',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -111,7 +111,7 @@ class ProductSpecMaster extends MasterCActiveRecord
 			$this->videoEmbeded = $this->searchText;
 			$this->sortOrder = $this->searchText;
 			$this->spanWidth = $this->searchText;
-			$this->ShowTitleType = $this->searchText;
+			$this->showTitleType = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -125,7 +125,7 @@ class ProductSpecMaster extends MasterCActiveRecord
 		$criteria->compare('videoEmbeded',$this->videoEmbeded,true, 'OR');
 		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('spanWidth',$this->spanWidth);
-		$criteria->compare('ShowTitleType',$this->ShowTitleType);
+		$criteria->compare('showTitleType',$this->showTitleType);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

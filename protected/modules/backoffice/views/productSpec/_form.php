@@ -34,8 +34,8 @@
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
-<?php echo isset($model->productSpecGroup) ? $model->productSpecGroup->title : "-"; ?>
-<?php echo $form->error($model, 'productSpecGroupId'); ?>
+			<?php echo isset($model->productSpecGroup) ? $model->productSpecGroup->title : "-"; ?>
+			<?php echo $form->error($model, 'productSpecGroupId'); ?>
 		</div>
 	</div>
 	<div class="form-group">
@@ -50,14 +50,14 @@
 				'maxlength'=>200,
 				'class'=>'form-control'));
 			?>
-		<?php echo $form->error($model, 'title'); ?>
+			<?php echo $form->error($model, 'title'); ?>
 		</div>
 	</div>
 	<div class="form-group">
-			<?php
-			echo $form->labelEx($model, 'description', array(
-				'class'=>'col-sm-2 control-label'));
-			?>
+		<?php
+		echo $form->labelEx($model, 'description', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
 		<div class="col-sm-10">
 			<?php
 			echo $form->textArea($model, 'description', array(
@@ -65,14 +65,56 @@
 				'cols'=>50,
 				'class'=>'form-control'));
 			?>
-		<?php echo $form->error($model, 'description'); ?>
+			<?php echo $form->error($model, 'description'); ?>
 		</div>
 	</div>
 	<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'videoEmbeded', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
 			<?php
-			echo $form->labelEx($model, 'image', array(
-				'class'=>'col-sm-2 control-label'));
+			echo $form->textArea($model, 'videoEmbeded', array(
+				'rows'=>6,
+				'cols'=>50,
+				'class'=>'form-control'));
 			?>
+			<?php echo $form->error($model, 'videoEmbeded'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'spanWidth', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->numberField($model, 'spanWidth', array(
+				'class'=>'form-control'));
+			?>
+			<?php echo $form->error($model, 'spanWidth'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'showTitleType', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->dropDownList($model, 'showTitleType', ProductSpec::model()->findAllShowTitleType(), array(
+				'class'=>'form-control',
+				'prompt'=>'-- Select Show Title Type --'));
+			?>
+<?php echo $form->error($model, 'showTitleType'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'image', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
 		<div class="col-sm-10">
 			<?php
 			if($this->action->id == 'update')
@@ -85,29 +127,42 @@
 				'maxlength'=>255,
 				'class'=>'form-control'));
 			?>
-		<?php echo $form->error($model, 'image'); ?>
+<?php echo $form->error($model, 'image'); ?>
 		</div>
 	</div>
 	<div class="form-group">
-			<?php
-			echo $form->labelEx($model, 'status', array(
-				'class'=>'col-sm-2 control-label'));
-			?>
+		<?php
+		echo $form->labelEx($model, 'sortOrder', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
 		<div class="col-sm-10">
-<?php
-echo $form->checkBox($model, 'status', array(
-	'class'=>'form-control'));
-?>
-			<?php echo $form->error($model, 'status'); ?>
+			<?php
+			echo $form->numberField($model, 'sortOrder', array(
+				'class'=>'form-control'));
+			?>
+<?php echo $form->error($model, 'sortOrder'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'status', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->checkBox($model, 'status', array(
+				'class'=>'form-control'));
+			?>
+<?php echo $form->error($model, 'status'); ?>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-9">
-<?php
-echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
-	'class'=>'btn btn-primary'));
-?>
+			<?php
+			echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
+				'class'=>'btn btn-primary'));
+			?>
 		</div>
 	</div>
 

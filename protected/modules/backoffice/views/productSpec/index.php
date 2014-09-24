@@ -62,6 +62,12 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
+				'class'=>'sortColumn',
+				'htmlOptions'=>array(
+					'style'=>'width:7%'
+				)
+			),
+			array(
 				'header'=>'Image',
 				'name'=>'image',
 				'type'=>'html',
@@ -72,7 +78,13 @@ return false;
 			),
 			'title',
 			'description',
-			'status',
+			'videoEmbeded',
+			'spanWidth',
+			array(
+				'name'=>'showTitleType',
+				'value'=>'$data->getShowTitleTypeText($data->showTitleType)'
+			),
+//			'status',
 			/*
 			  'createDateTime',
 			  'updateDateTime',

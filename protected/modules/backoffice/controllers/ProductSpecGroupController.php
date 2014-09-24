@@ -138,15 +138,15 @@ class ProductSpecGroupController extends MasterBackofficeController
 				if($flag)
 				{
 					$transaction->commit();
-					if(!isset($model->parentId))
+					if(isset($model->parentId) && $model->parentId != 0)
 					{
 						$this->redirect(array(
-							'index?productId=' . $model->productId . "&type=" . $model->type));
+							'index?parentId=' . $model->parentId,));
 					}
 					else
 					{
 						$this->redirect(array(
-							'index?parentId=' . $model->parentId,));
+							'index?productId=' . $model->productId . "&type=" . $model->type));
 					}
 				}
 				else

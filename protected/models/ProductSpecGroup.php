@@ -94,6 +94,9 @@ class ProductSpecGroup extends ProductSpecGroupMaster
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'sortOrder ASC'
+			)
 		));
 	}
 
