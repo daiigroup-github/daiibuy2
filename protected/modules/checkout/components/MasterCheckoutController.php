@@ -7,6 +7,10 @@ class MasterCheckoutController extends MasterController
     {
         parent::init();
 
+        Yii::app()->clientScript->registerCSSFile(Yii::app()->baseUrl.'/css/checkout.css');
+        //Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/atechwindow.js');
+
+
         $this->nav = array(/*
 			array(
 				'url'=>'#',
