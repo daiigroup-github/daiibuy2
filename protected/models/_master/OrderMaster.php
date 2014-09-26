@@ -5,7 +5,10 @@
  *
  * The followings are the available columns in table 'order':
  * @property string $orderId
+ * @property string $userId
  * @property string $supplierId
+ * @property string $provinceId
+ * @property string $token
  * @property string $title
  * @property integer $type
  * @property integer $status
@@ -36,31 +39,39 @@ class OrderMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array(
-				'supplierId',
-				'required'
-			),
+				'supplierId, provinceId',
+				'required'),
 			array(
 				'type, status',
 				'numerical',
-				'integerOnly'=>true
-			),
+				'integerOnly'=>true),
 			array(
-				'supplierId',
+				'userId, supplierId, provinceId',
 				'length',
-				'max'=>20
-			),
+				'max'=>20),
 			array(
-				'title',
+				'token, title',
 				'length',
-				'max'=>200
-			),
+				'max'=>200),
+			array(
+				'createDateTime, updateDateTime',
+				'safe'),
+			array(
+				'createDateTime, updateDateTime',
+				'default',
+				'value'=>new CDbExpression('NOW()'),
+				'on'=>'insert'),
+			array(
+				'updateDateTime',
+				'default',
+				'value'=>new CDbExpression('NOW()'),
+				'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array(
-				'orderId, supplierId, title, type, status, searchText',
+				'orderId, userId, supplierId, provinceId, token, title, type, status, createDateTime, updateDateTime, searchText',
 				'safe',
-				'on'=>'search'
-			),
+				'on'=>'search'),
 		);
 	}
 
@@ -75,13 +86,15 @@ class OrderMaster extends MasterCActiveRecord
 			'supplier'=>array(
 				self::BELONGS_TO,
 				'User',
-				'supplierId'
-			),
+				'supplierId'),
 			'orderGroupToOrders'=>array(
 				self::HAS_MANY,
 				'OrderGroupToOrder',
-				'orderId'
-			),
+				'orderId'),
+			'orderDetail'=>array(
+				self::HAS_ONE,
+				'OrderDetail',
+				'orderId'),
 		);
 	}
 
@@ -92,7 +105,10 @@ class OrderMaster extends MasterCActiveRecord
 	{
 		return array(
 			'orderId'=>'Order',
+			'userId'=>'User',
 			'supplierId'=>'Supplier',
+			'provinceId'=>'Province',
+			'token'=>'Token',
 			'title'=>'Title',
 			'type'=>'Type',
 			'status'=>'Status',
@@ -118,20 +134,31 @@ class OrderMaster extends MasterCActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria = new CDbCriteria;
+
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->orderId = $this->searchText;
+			$this->userId = $this->searchText;
 			$this->supplierId = $this->searchText;
+			$this->provinceId = $this->searchText;
+			$this->token = $this->searchText;
 			$this->title = $this->searchText;
 			$this->type = $this->searchText;
 			$this->status = $this->searchText;
+			$this->createDateTime = $this->searchText;
+			$this->updateDateTime = $this->searchText;
 		}
 
 		$criteria->compare('orderId', $this->orderId, true, 'OR');
+		$criteria->compare('userId', $this->userId, true, 'OR');
 		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
+		$criteria->compare('provinceId', $this->provinceId, true, 'OR');
+		$criteria->compare('token', $this->token, true, 'OR');
 		$criteria->compare('title', $this->title, true, 'OR');
 		$criteria->compare('type', $this->type);
 		$criteria->compare('status', $this->status);
+		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

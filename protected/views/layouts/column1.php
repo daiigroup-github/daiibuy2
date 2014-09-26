@@ -9,10 +9,11 @@
 <?php require_once 'tpl_header.php'; ?>
 
 <div class="container">
-    <?php echo $content; ?>
+	<?php echo $content; ?>
 </div>
 
 <?php require_once 'tpl_footer.php'; ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/navbar-fixed-top.css'); ?>
 <?php Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/style.css'); ?>
+
 <?php $this->endContent(); ?>

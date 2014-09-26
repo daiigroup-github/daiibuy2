@@ -24,18 +24,19 @@ $this->breadcrumbs = array(
 		<li class="active green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer"; ?>"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
 		<li class="orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/create"; ?>"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
 	</ul>
-	<?php $i = 0; ?>
-	<?php foreach($suppliers as $key=> $value): ?>
-		<div class='col-lg-3 col-md-3 col-sm-12'>
-			<div class="blog-item">
-				<a href="<?php echo Yii::app()->createUrl($key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $key . '.png'); ?>
-					<div class="button" style="text-align: center;background-clip: border-box;
-						 background-color: rgb(52, 152, 219);"><?php echo $value; ?></div>
-				</a>
+	<div style="margin-top: 2%">
+		<?php $i = 0; ?>
+		<?php foreach($myfileArray as $myfile): ?>
+			<div class='col-lg-3 col-md-3 col-sm-12'>
+				<div class="blog-item">
+					<a href="<?php echo Yii::app()->createUrl('/index.php/myfile/fenzer/views/id/' . $myfile->orderId); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $myfile->title . '.png'); ?>
+						<div class="button blue" style="text-align: center;background-clip: border-box;color: white" name="<?php echo $myfile->title; ?>"><?php echo $myfile->title; ?></div>
+					</a>
+				</div>
+
 			</div>
+			<?php $i++; ?>
+		<?php endforeach; ?>
 
-		</div>
-		<?php $i++; ?>
-	<?php endforeach; ?>
-
+	</div>
 </div>

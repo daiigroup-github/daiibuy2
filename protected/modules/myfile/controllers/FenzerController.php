@@ -3,18 +3,19 @@
 class FenzerController extends MasterMyFileController
 {
 
+	public function init()
+	{
+		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
+		parent::init();
+	}
+
 	public function actionIndex()
 	{
 		$this->layout = '//layouts/cl1';
 
-		$suppliers = array(
-			'myfile1'=>'myfile1',
-			'myfile2'=>'myfile2',
-			'myfile3'=>'myfile3',
-			'myfile4'=>'myfile4',
-		);
+		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 176, 1, 1, null);
 		$this->render('index', array(
-			'suppliers'=>$suppliers));
+			'myfileArray'=>$myfileArray));
 	}
 
 	public function actionCreate()
@@ -22,6 +23,21 @@ class FenzerController extends MasterMyFileController
 		$this->layout = '//layouts/cl1';
 
 		$model = new Order;
+		$orderDetailModel = new OrderDetail;
+		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(176);
+		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
+		foreach($orderDetailTemplateField as $field)
+		{
+			$heightField = $field;
+		}
+		$heightArray = array(
+			'1.40-1.60'=>'1.40-1.60',
+			'1.61-1.80'=>'1.61-1.80',
+			'1.81-2.00'=>'1.81-2.00',
+			'2.01-2.40'=>'2.01-2.40',
+			'2.41-2.60'=>'2.41-2.60',
+			'2.61-2.80'=>'2.61-2.80',
+			'2.81-3.00'=>'2.81-3.00');
 
 		// uncomment the following code to enable ajax-based validation
 		/*
@@ -49,8 +65,73 @@ class FenzerController extends MasterMyFileController
 		{
 			$this->render('create', array(
 				'model'=>$model,
+				'orderDetailModel'=>$orderDetailModel,
+				'orderDetailTemplateFieldArray'=>$orderDetailTemplateField,
+				'heightArray'=>$heightArray,
 			));
 		}
+	}
+
+	public function actionShowFenzerProductResultByHeight()
+	{
+		if(isset($_POST['height']))
+		{
+			$value = $_POST['height'];
+		}
+		if(isset($value))
+		{
+			$height = explode("-", $value);
+			$productResult = Category::model()->findAll('brandModelId = ' . $brandModel->brandModelId . ' AND status = 1 AND (height > ' . $height[0] . ' AND height < ' . $height[1] . ')');
+			if(count($productResult) > 0)
+			{
+				echo $this->renderPartial('/fenzer/_product_result', array(
+					'productResult'=>$productResult), TRUE, TRUE);
+			}
+			else
+			{
+				//throw new Exception();
+				echo "<div class='text-center'>ไม่ค้นพบสินค้า.</div>";
+			}
+		}
+	}
+
+	public function actionShowProductSelected()
+	{
+//		throw new Exception(print_r($_REQUEST, true));
+		if(isset($_POST['productId']))
+		{
+			$productId = $_POST['productId'];
+		}
+		if(isset($productId))
+		{
+			$res = Product::model()->find('status = 1 AND productId = ' . $productId);
+			$planImage = ProductImage::model()->find('status = 2 AND productId =' . $productId);
+			$image = ProductImage::model()->find('status = 1 AND productId =' . $productId);
+			echo $this->renderPartial('/fenzer/_product_result_selected', array(
+				'productResultSelected'=>$res,
+				'planImage'=>$planImage->image,
+				'image'=>$image->image), TRUE, TRUE);
+		}
+	}
+
+	public function showProductOrder()
+	{
+		$productId = $_POST['productId'];
+		$height = $_POST['height'];
+		if(isset($_POST['length']) && !empty($_POST['length']))
+		{
+			$length = $_POST['length'];
+		}
+		if(isset($length))
+		{
+			$res = Product::model()->calculateOrderItems($productId, $height, $length);
+		}
+		else
+		{
+			$res = Product::model()->calculateOrderItems($productId, $height, 0);
+		}
+
+		return $res;
 	}
 
 // Uncomment the following methods and override them if needed

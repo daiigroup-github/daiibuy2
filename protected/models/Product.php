@@ -247,11 +247,11 @@ class Product extends ProductMaster
 		);
 	}
 
-	public function getStatusText()
-	{
-		$statusArray = $this->getStatusArray();
-		return $statusArray[$this->status];
-	}
+//	public function getStatusText()
+//	{
+//		$statusArray = $this->getStatusArray();
+//		return $statusArray[$this->status];
+//	}
 
 	public function getMetricUnits()
 	{
@@ -698,4 +698,15 @@ class Product extends ProductMaster
 			),);
 	}
 
+//	public function calculateOrderItems($productId, $length, $provinceId)
+//	{
+//		if($length == 0)
+//		{
+//			$res;
+//		}
+//		else
+//		{
+//
+//		}
+//	}
 }

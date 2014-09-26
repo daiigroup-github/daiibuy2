@@ -6,36 +6,39 @@ var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window
 /**
  * Fenzer Category
  */
-$('.removeProductItem').live('click', function () {
-    if (confirm('Remove This Item'))
-        $(this).parent().parent().fadeOut(500, function(){$(this).remove();});
+$('.removeProductItem').live('click', function() {
+	if (confirm('Remove This Item'))
+		$(this).parent().parent().fadeOut(500, function() {
+			$(this).remove();
+		});
 });
 
-$('#addToCartFenzer').live('click', function () {
-    if (confirm('Add To Cart?')) {
-        $.ajax({
-            type: 'POST',
-            url: baseUrl + 'fenzer/product/addToCart',
-            dataType: 'json',
-            data: $('#productItemsForm').serialize()
-        }).done(function (data) {
-            alert(data.result);
-            /**
-             * redirect to cart url
-             */
-        });
-    }
+$('#addToCartFenzer').live('click', function() {
+	if (confirm('Add To Cart?')) {
+		$.ajax({
+			type: 'POST',
+			url: baseUrl + 'fenzer/product/addToCart',
+			dataType: 'json',
+			data: $('#productItemsForm').serialize()
+		}).done(function(data) {
+			alert(data.result);
+			/**
+			 * redirect to cart url
+			 */
+		});
+	}
 });
 
 /**
  * only number can press in input type number
  */
-$(document).ready(function(){
-    $('input[type=number]').live('keypress', function(evt) {
-        if (evt.which < 48 || evt.which > 57)
-        {
-            evt.preventDefault();
-            return false;
-        }
-    });
+$(document).ready(function() {
+	$('input[type=number]').live('keypress', function(evt) {
+		if (evt.which < 48 || evt.which > 57)
+		{
+			evt.preventDefault();
+			return false;
+		}
+	});
 });
+
