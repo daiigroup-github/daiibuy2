@@ -31,7 +31,7 @@ $(document).ready(function() {
 			type: 'POST',
 			data: {'categoryId': $('#height_input').attr('name'),
 				'length': $('#length_input').attr('value'),
-				'height': $('#height_input').attr('value'),
+				'height': $('#selectHeight').attr('value'),
 			},
 			success: function(data) {
 				$("#order_list").html(data);
@@ -49,7 +49,8 @@ $(document).ready(function() {
 	$(".clickableRow").click(function() {
 		var base_url = window.location.origin;
 		var categoryId = $(this).attr("id");
-		var height = $(this).attr("name");
+		alert(categoryId);
+//		var height = $(this).attr("name");
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/fenzer/showProductSelected',
 			type: 'POST',
@@ -58,7 +59,7 @@ $(document).ready(function() {
 				$("#select_content").html(data);
 			}
 		});
-		$('#height_input')[0].setAttribute('value', height);
+//		$('#height_input')[0].setAttribute('value', height);
 		$('#height_input')[0].setAttribute('name', categoryId);
 		this.setAttribute("class", "clickableRow active");
 	});

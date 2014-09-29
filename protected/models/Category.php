@@ -31,11 +31,11 @@ class Category extends CategoryMaster
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
-				//code here
-				'brandModel'=>array(
-					self::BELONGS_TO,
-					'BrandModel',
-					'brandModelId'),
+//				'Category2s'=>array(
+//					self::MANY_MANY,
+//					'Category',
+//					'brandId',
+//			'condition' => 'isRoot = 1' ),
 		));
 	}
 

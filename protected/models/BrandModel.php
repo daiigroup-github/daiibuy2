@@ -36,10 +36,11 @@ class BrandModel extends BrandModelMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
-				'brand'=>array(
-					self::BELONGS_TO,
-					'Brand',
-					'brandId'),
+//				'Category1s'=>array(
+//					self::MANY_MANY,
+//					'category',
+//					'model_to_category1(brandModelId,category1Id)',
+//			'condition' => 'isRoot = :' ),
 		));
 	}
 

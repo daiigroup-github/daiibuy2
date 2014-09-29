@@ -74,31 +74,43 @@ class FenzerController extends MasterMyFileController
 
 	public function actionShowFenzerProductResultByHeight()
 	{
-		if(isset($_POST['height']))
-		{
-			$value = $_POST['height'];
-		}
-		if(isset($value))
-		{
-			$height = explode("-", $value);
+
+//		if(isset($value))
+//		{
+			$status = 1;
+
 			$brandModel = BrandModel::model()->find('supplierId = 176 AND status = 1');
-			$productResult = Category::model()->findAll('brandModelId = ' . $brandModel->brandModelId . ' AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
-			if(count($productResult) > 0)
+			$cate1Model = $brandModel->with('categorys')->findAll(
+				array('condition'=>'categorys.isRoot = 1 AND categorys.status = 1'
+					));
+
+//			$cate2Model = $cate1Model->with('subCategorys')->findAll(
+//				array('condition'=>'subCategorys.status = 1 AND '
+//					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
+//					'params'=>array(':minHeight'=>$height[0],
+//						':maxHeight'=>$height[1])
+//					));
+
+
+//			$productResult = Category::model()->findAll('brandModelId = ' . $brandModel->brandModelId . ' AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
+			if(count($cate1Model[0]->categorys) > 0)
 			{
 				echo $this->renderPartial('/fenzer/_product_result', array(
-					'productResult'=>$productResult), TRUE, TRUE);
+					'productResult'=>$cate1Model[0]->categorys), TRUE, TRUE);
+//				throw new Exception();
 			}
 			else
 			{
 				//throw new Exception();
 				echo "<div class='text-center'>ไม่ค้นพบสินค้า.</div>";
 			}
-		}
+//		}
 	}
 
 	public function actionShowProductSelected()
 	{
 //		throw new Exception(print_r($_REQUEST, true));
+
 		if(isset($_POST['categoryId']))
 		{
 			$categoryId = $_POST['categoryId'];
@@ -117,19 +129,35 @@ class FenzerController extends MasterMyFileController
 
 	public function actionShowProductOrder()
 	{
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$provinceId = $daiibuy->provinceId;
 		$categoryId = $_POST['categoryId'];
-		$height = $_POST['height'];
+		if(isset($_POST['height']))
+		{
+			$value = $_POST['height'];
+			$height = explode("-", $value);
+		}
 		if(isset($_POST['length']) && !empty($_POST['length']))
 		{
 			$length = $_POST['length'];
 		}
+		$categoryModel = Category::model()->findByPk($categoryId);
+		$cate2 = $categoryModel->with('subCategorys')->findAll(
+				array('condition'=>'subCategorys.status = 1 AND '
+					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
+					'params'=>array(':minHeight'=>$height[0],
+						':maxHeight'=>$height[1])
+					));
+		$productCate2 = $cate2[0]->subCategorys[0];
+
 		if(isset($length))
 		{
-			$res = Product::model()->calculateOrderItems($categoryId, $height, $length);
+			$res = Product::model()->calculateOrderItems($productCate2->categoryId, $length, $provinceId);
 		}
 		else
 		{
-			$res = Product::model()->calculateOrderItems($categoryId, $height, 0);
+			$res = Product::model()->calculateOrderItems($productCate2->categoryId, 0, $provinceId);
 		}
 
 		return $res;

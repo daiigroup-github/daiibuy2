@@ -698,16 +698,24 @@ class Product extends ProductMaster
 			),);
 	}
 
-	public function calculateOrderItems($category, $length, $provinceId)
+	public function calculateOrderItems($category2Id, $length, $provinceId)
 	{
-		$products = Product::model()->findAll('categoryId = '.$category .' AND status = 1');
-		if($length == 0)
+		$products = Product::model()->findAll('category2Id = '.$category2Id .' AND status = 1');
+		$res = array();
+		$res['category2Id'] = $category2Id;
+		$res['items'] = array();
+		foreach($products as $product){
+			$res['items'][$product->productId] = $product;
+			if($length == 0)
 		{
-			$res;
+				//default Qty = 1
+				$res['items']['Qty'] = 1;
 		}
 		else
 		{
-
+				
 		}
+			}
+
 	}
 }
