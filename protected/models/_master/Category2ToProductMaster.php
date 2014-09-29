@@ -1,34 +1,29 @@
 <?php
 
 /**
- * This is the model class for table "category".
+ * This is the model class for table "category2_to_product".
  *
- * The followings are the available columns in table 'category':
- * @property string $categoryId
- * @property string $title
- * @property string $description
- * @property string $image
- * @property integer $sortOrder
- * @property integer $isRoot
+ * The followings are the available columns in table 'category2_to_product':
+ * @property string $id
+ * @property string $category2Id
+ * @property string $productId
+ * @property string $groupName
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property Category2ToProduct[] $category2ToProducts
- * @property CategoryToSub[] $categoryToSubs
- * @property CategoryToSub[] $categoryToSubs1
- * @property ModelToCategory1[] $modelToCategory1s
- * @property Product[] $products
+ * @property Product $product
+ * @property Category $category2
  */
-class CategoryMaster extends MasterCActiveRecord
+class Category2ToProductMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'category';
+		return 'category2_to_product';
 	}
 
 	/**
@@ -39,16 +34,16 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
-			array('sortOrder, isRoot, status', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>200),
-			array('image', 'length', 'max'=>255),
-			array('description, createDateTime, updateDateTime', 'safe'),
+			array('category2Id, productId', 'required'),
+			array('status', 'numerical', 'integerOnly'=>true),
+			array('category2Id, productId', 'length', 'max'=>20),
+			array('groupName', 'length', 'max'=>200),
+			array('createDateTime, updateDateTime', 'safe'),
 			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
 			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('categoryId, title, description, image, sortOrder, isRoot, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, category2Id, productId, groupName, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,11 +55,8 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'category2Id'),
-			'categoryToSubs' => array(self::HAS_MANY, 'CategoryToSub', 'categoryId'),
-			'categoryToSubs1' => array(self::HAS_MANY, 'CategoryToSub', 'subCategoryId'),
-			'modelToCategory1s' => array(self::HAS_MANY, 'ModelToCategory1', 'category1Id'),
-			'products' => array(self::HAS_MANY, 'Product', 'categoryId'),
+			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
+			'category2' => array(self::BELONGS_TO, 'Category', 'category2Id'),
 		);
 	}
 
@@ -74,12 +66,10 @@ class CategoryMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'categoryId' => 'Category',
-			'title' => 'Title',
-			'description' => 'Description',
-			'image' => 'Image',
-			'sortOrder' => 'Sort Order',
-			'isRoot' => 'Is Root',
+			'id' => 'ID',
+			'category2Id' => 'Category2',
+			'productId' => 'Product',
+			'groupName' => 'Group Name',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -106,23 +96,19 @@ class CategoryMaster extends MasterCActiveRecord
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->categoryId = $this->searchText;
-			$this->title = $this->searchText;
-			$this->description = $this->searchText;
-			$this->image = $this->searchText;
-			$this->sortOrder = $this->searchText;
-			$this->isRoot = $this->searchText;
+			$this->id = $this->searchText;
+			$this->category2Id = $this->searchText;
+			$this->productId = $this->searchText;
+			$this->groupName = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
-		$criteria->compare('title',$this->title,true, 'OR');
-		$criteria->compare('description',$this->description,true, 'OR');
-		$criteria->compare('image',$this->image,true, 'OR');
-		$criteria->compare('sortOrder',$this->sortOrder);
-		$criteria->compare('isRoot',$this->isRoot);
+		$criteria->compare('id',$this->id,true, 'OR');
+		$criteria->compare('category2Id',$this->category2Id,true, 'OR');
+		$criteria->compare('productId',$this->productId,true, 'OR');
+		$criteria->compare('groupName',$this->groupName,true, 'OR');
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
@@ -136,7 +122,7 @@ class CategoryMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return CategoryMaster the static model class
+	 * @return Category2ToProductMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

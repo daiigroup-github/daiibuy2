@@ -9,6 +9,7 @@
  * @property string $brandId
  * @property string $brandModelId
  * @property string $categoryId
+ * @property string $categoryId2
  * @property string $name
  * @property string $isbn
  * @property string $sku
@@ -41,10 +42,11 @@
  * @property string $description
  *
  * The followings are the available model relations:
+ * @property Category2ToProduct[] $category2ToProducts
  * @property Category $category
  * @property User $supplier
  * @property ProductImage[] $productImages
- * @property ProductOption[] $productOptions
+ * @property ProductOptionGroup[] $productOptionGroups
  * @property ProductSpecGroup[] $productSpecGroups
  */
 class ProductMaster extends MasterCActiveRecord
@@ -65,9 +67,9 @@ class ProductMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, quantity, productUnits, price, priceGroupId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
+			array('supplierId, quantity, productUnits, price, priceGroupId, dateAvailable, length, width, height, dimensionUnits, metricUnits', 'required'),
 			array('quantity, stockStatusId, shipping, subtract, sortOrder, status', 'numerical', 'integerOnly'=>true),
-			array('supplierId, brandId, brandModelId, categoryId, isbn, taxClassId, marginId', 'length', 'max'=>20),
+			array('supplierId, brandId, brandModelId, categoryId, categoryId2, isbn, taxClassId, marginId', 'length', 'max'=>20),
 			array('name', 'length', 'max'=>80),
 			array('sku', 'length', 'max'=>64),
 			array('upc', 'length', 'max'=>12),
@@ -79,10 +81,12 @@ class ProductMaster extends MasterCActiveRecord
 			array('points', 'length', 'max'=>8),
 			array('minimum', 'length', 'max'=>11),
 			array('viewed', 'length', 'max'=>5),
-			array('createDateTime, description', 'safe'),
+			array('createDateTime, updateDateTime, description', 'safe'),
+			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
+			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('productId, supplierId, brandId, brandModelId, categoryId, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText', 'safe', 'on'=>'search'),
+			array('productId, supplierId, brandId, brandModelId, categoryId, categoryId2, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,10 +98,11 @@ class ProductMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'productId'),
 			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 			'supplier' => array(self::BELONGS_TO, 'User', 'supplierId'),
 			'productImages' => array(self::HAS_MANY, 'ProductImage', 'productId'),
-			'productOptions' => array(self::HAS_MANY, 'ProductOption', 'productId'),
+			'productOptionGroups' => array(self::HAS_MANY, 'ProductOptionGroup', 'productId'),
 			'productSpecGroups' => array(self::HAS_MANY, 'ProductSpecGroup', 'productId'),
 		);
 	}
@@ -113,6 +118,7 @@ class ProductMaster extends MasterCActiveRecord
 			'brandId' => 'Brand',
 			'brandModelId' => 'Brand Model',
 			'categoryId' => 'Category',
+			'categoryId2' => 'Category Id2',
 			'name' => 'Name',
 			'isbn' => 'Isbn',
 			'sku' => 'Sku',
@@ -171,6 +177,7 @@ class ProductMaster extends MasterCActiveRecord
 			$this->brandId = $this->searchText;
 			$this->brandModelId = $this->searchText;
 			$this->categoryId = $this->searchText;
+			$this->categoryId2 = $this->searchText;
 			$this->name = $this->searchText;
 			$this->isbn = $this->searchText;
 			$this->sku = $this->searchText;
@@ -208,6 +215,7 @@ class ProductMaster extends MasterCActiveRecord
 		$criteria->compare('brandId',$this->brandId,true, 'OR');
 		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
 		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
+		$criteria->compare('categoryId2',$this->categoryId2,true, 'OR');
 		$criteria->compare('name',$this->name,true, 'OR');
 		$criteria->compare('isbn',$this->isbn,true, 'OR');
 		$criteria->compare('sku',$this->sku,true, 'OR');
