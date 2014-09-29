@@ -27,5 +27,8 @@ $this->breadcrumbs = array(
 
 </div>
 
+
 <?php $this->renderPartial('_wizard_nav', array('step'=>$step));?>
+
+<?php $this->renderPartial('_step_'.$step, array('userModel'=>$userModel, 'addressModel'=>$addressModel));?>
 

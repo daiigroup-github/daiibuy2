@@ -2,6 +2,7 @@
 
 class User extends UserMaster
 {
+    public $confirmPassword;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -42,6 +43,7 @@ class User extends UserMaster
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 				//code here
+            'confirmPassword' => 'Confirm Password',
 		));
 	}
 
