@@ -81,7 +81,8 @@ class FenzerController extends MasterMyFileController
 		if(isset($value))
 		{
 			$height = explode("-", $value);
-			$productResult = Category::model()->findAll('brandModelId = ' . $brandModel->brandModelId . ' AND status = 1 AND (height > ' . $height[0] . ' AND height < ' . $height[1] . ')');
+			$brandModel = BrandModel::model()->find('supplierId = 176 AND status = 1');
+			$productResult = Category::model()->findAll('brandModelId = ' . $brandModel->brandModelId . ' AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
 			if(count($productResult) > 0)
 			{
 				echo $this->renderPartial('/fenzer/_product_result', array(
@@ -98,25 +99,25 @@ class FenzerController extends MasterMyFileController
 	public function actionShowProductSelected()
 	{
 //		throw new Exception(print_r($_REQUEST, true));
-		if(isset($_POST['productId']))
+		if(isset($_POST['categoryId']))
 		{
-			$productId = $_POST['productId'];
+			$categoryId = $_POST['categoryId'];
 		}
-		if(isset($productId))
+		if(isset($categoryId))
 		{
-			$res = Product::model()->find('status = 1 AND productId = ' . $productId);
-			$planImage = ProductImage::model()->find('status = 2 AND productId =' . $productId);
-			$image = ProductImage::model()->find('status = 1 AND productId =' . $productId);
+			$res = Category::model()->findByPk($categoryId);
+			$planImage = $res->image;
+			$image = $res->image;
 			echo $this->renderPartial('/fenzer/_product_result_selected', array(
 				'productResultSelected'=>$res,
-				'planImage'=>$planImage->image,
-				'image'=>$image->image), TRUE, TRUE);
+				'planImage'=>$planImage,
+				'image'=>$image), TRUE, TRUE);
 		}
 	}
 
-	public function showProductOrder()
+	public function actionShowProductOrder()
 	{
-		$productId = $_POST['productId'];
+		$categoryId = $_POST['categoryId'];
 		$height = $_POST['height'];
 		if(isset($_POST['length']) && !empty($_POST['length']))
 		{
@@ -124,11 +125,11 @@ class FenzerController extends MasterMyFileController
 		}
 		if(isset($length))
 		{
-			$res = Product::model()->calculateOrderItems($productId, $height, $length);
+			$res = Product::model()->calculateOrderItems($categoryId, $height, $length);
 		}
 		else
 		{
-			$res = Product::model()->calculateOrderItems($productId, $height, 0);
+			$res = Product::model()->calculateOrderItems($categoryId, $height, 0);
 		}
 
 		return $res;
