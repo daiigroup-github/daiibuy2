@@ -698,11 +698,11 @@ class Product extends ProductMaster
 			),);
 	}
 
-	public function calculateOrderItems($category2Id, $length, $provinceId)
+	public function calculateOrderItemsQty($categoryId, $length, $provinceId)
 	{
-		$products = Product::model()->findAll('category2Id = '.$category2Id .' AND status = 1');
+		$products = Product::model()->findAll('category2Id = '.$categoryId .' AND status = 1');
 		$res = array();
-		$res['category2Id'] = $category2Id;
+		$res['categoryId'] = $categoryId;
 		$res['items'] = array();
 		foreach($products as $product){
 			$res['items'][$product->productId] = $product;
@@ -713,7 +713,7 @@ class Product extends ProductMaster
 		}
 		else
 		{
-				
+
 		}
 			}
 

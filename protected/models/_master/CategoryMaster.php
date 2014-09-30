@@ -60,12 +60,12 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'category2Id'),
+			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'categoryId'),
 			'categoryToSubs' => array(self::HAS_MANY, 'CategoryToSub', 'categoryId'),
 			'categoryToSubs1' => array(self::HAS_MANY, 'CategoryToSub', 'subCategoryId'),
-			'modelToCategory1s' => array(self::HAS_MANY, 'ModelToCategory1', 'category1Id'),
-			'products' => array(self::MANY_MANY, 'Product','category2_to_product(category2Id,productId)',),
-			'brandModels' => array(self::MANY_MANY, 'BrandModel','model_to_category1(category1Id,brandModelId)',),
+			'modelToCategory1s' => array(self::HAS_MANY, 'ModelToCategory1', 'categoryId'),
+			'products' => array(self::MANY_MANY, 'Product','category2_to_product(categoryId,productId)',),
+			'brandModels' => array(self::MANY_MANY, 'BrandModel','model_to_category1(categoryId,brandModelId)',),
 			'subCategorys' =>array(self::MANY_MANY, 'Category','category_to_sub(categoryId,subCategoryId)'),
 		);
 	}

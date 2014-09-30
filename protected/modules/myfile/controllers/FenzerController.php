@@ -151,14 +151,11 @@ class FenzerController extends MasterMyFileController
 					));
 		$productCate2 = $cate2[0]->subCategorys[0];
 
-		if(isset($length))
+		if(!isset($length))
 		{
-			$res = Product::model()->calculateOrderItems($productCate2->categoryId, $length, $provinceId);
+			$length = 0;
 		}
-		else
-		{
-			$res = Product::model()->calculateOrderItems($productCate2->categoryId, 0, $provinceId);
-		}
+			$res = Product::model()->calculateOrderItemsQty($productCate2->categoryId, $length, $provinceId);
 
 		return $res;
 	}
