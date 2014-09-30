@@ -63,8 +63,7 @@ class CategoryMaster extends MasterCActiveRecord
 			'products' => array(self::MANY_MANY, 'Product','category2_to_product(categoryId,productId)',),
 			'brandModels' => array(self::MANY_MANY, 'BrandModel','model_to_category1(categoryId,brandModelId)',),
 			'subCategorys' =>array(self::MANY_MANY, 'Category','category_to_sub(categoryId,subCategoryId)'),
-			'categoryToSubs' => array(self::HAS_MANY, 'CategoryToSub', 'categoryId'),
-			'categoryToSubs1' => array(self::HAS_MANY, 'CategoryToSub', 'subCategoryId'),
+			'categoryToSubs' => array(self::HAS_MANY, 'CategoryToSub', 'subCategoryId'),
 			'products' => array(self::HAS_MANY, 'Product', 'categoryId'),
 		);
 	}
