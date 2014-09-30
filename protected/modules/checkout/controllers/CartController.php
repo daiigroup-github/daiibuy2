@@ -1,6 +1,6 @@
 <?php
 
-class DefaultController extends MasterCheckoutController
+class CartController extends MasterCheckoutController
 {
     public function actionIndex()
     {
@@ -189,6 +189,6 @@ class DefaultController extends MasterCheckoutController
                 ),
             ),
         );
-        $this->render('index', array('carts' => $carts));
+        $this->render('cart', array('carts' => $carts));
     }
 }

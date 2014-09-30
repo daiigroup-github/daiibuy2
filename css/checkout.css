@@ -1,0 +1,17 @@
+.wizard {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.wizard-success {
+
+}
+
+.wizard-active {
+
+}
+
+.register-account label{
+    position:relative;
+    top:5px;
+}

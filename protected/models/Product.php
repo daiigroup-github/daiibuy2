@@ -247,11 +247,11 @@ class Product extends ProductMaster
 		);
 	}
 
-	public function getStatusText()
-	{
-		$statusArray = $this->getStatusArray();
-		return $statusArray[$this->status];
-	}
+//	public function getStatusText()
+//	{
+//		$statusArray = $this->getStatusArray();
+//		return $statusArray[$this->status];
+//	}
 
 	public function getMetricUnits()
 	{
@@ -698,4 +698,24 @@ class Product extends ProductMaster
 			),);
 	}
 
+	public function calculateOrderItems($category2Id, $length, $provinceId)
+	{
+		$products = Product::model()->findAll('category2Id = '.$category2Id .' AND status = 1');
+		$res = array();
+		$res['category2Id'] = $category2Id;
+		$res['items'] = array();
+		foreach($products as $product){
+			$res['items'][$product->productId] = $product;
+			if($length == 0)
+		{
+				//default Qty = 1
+				$res['items']['Qty'] = 1;
+		}
+		else
+		{
+				
+		}
+			}
+
+	}
 }

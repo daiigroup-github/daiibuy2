@@ -20,10 +20,13 @@ return CMap::mergeArray(
 						'baseUrl'=>$params['assets'],
 						'css'=>array(
 							'bootstrap/css/bootstrap.min.css',
+//							'bootstrap/css/bootstrap-theme.min.css'
 						//'bootstrap/css/font-awesome.min.css',
 						),
 						'js'=>array(
-							'bootstrap/js/bootstrap.min.js',),
+							'bootstrap/js/bootstrap.min.js',
+//							'bootstrap/js/jquery.bootstrap.wizard.min.js',
+						),
 						'depends'=>array(
 							'jquery'
 						),
@@ -61,7 +64,9 @@ return CMap::mergeArray(
 							'js/chosen.jquery.min.js',
 							'js/main-script.js',
 							'select2/select2.js',
-							'jquery/jquery.cookie.js'
+							'jquery/jquery.cookie.js',
+//							'js/html5shiv.min.js',
+//							'js/respond.min.js',
 						),
 						'depends'=>array(
 							'bootstrap'),

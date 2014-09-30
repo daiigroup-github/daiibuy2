@@ -18,6 +18,7 @@
 }
 
 
+/*
 .page-content input{
 	height:40px!important;
 	font-size:14px!important;
@@ -25,6 +26,7 @@
 	padding: 8px 0 0 8px!important;
 	border:1px solid #e6e6e6!important;
 }
+*/
 
 /* ========================= */
 /*        Order table        */
@@ -78,6 +80,7 @@ form .full-width{
     color:#7a8188;
     float: right;
 }
+
 
 input[type="number"].form-control{
     width:100%;

@@ -61,6 +61,33 @@ class Order extends OrderMaster
 		));
 	}
 
+	public function findAllMyFileBySupplierId($userId, $supplierId, $type, $status, $token)
+	{
+		$criteria = new CDbCriteria();
+		if(($this->userId == 0))
+		{
+			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND type = :type AND status = :status';
+			$criteria->params = array(
+				':userId'=>$userId,
+				':supplierId'=>$supplierId,
+				':type'=>$type,
+				':status'=>$status,);
+		}
+		else
+		{
+			$criteria->condition = 'token = :token AND supplierId = :supplierId AND type = :type AND status = :status';
+			$criteria->params = array(
+				':token'=>$token,
+				':supplierId'=>$supplierId,
+				':type'=>$type,
+				':status'=>$status,);
+		}
+
+		$res = $this->findAll($criteria);
+
+		return $res;
+	}
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
