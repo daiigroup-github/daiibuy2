@@ -71,7 +71,7 @@ class CategoryController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new Category;
-		$brandToCat = new ModelToCat1();
+		$brandToCat = new ModelToCategory1();
 
 		if(isset($_GET["brandModelId"]))
 		{
@@ -263,7 +263,7 @@ class CategoryController extends MasterBackofficeController
 	{
 		$model = new Category('search');
 		$model->unsetAttributes();  // clear any default values
-		$brandToCat = new ModelToCat1();
+		$brandToCat = new ModelToCategory1();
 		if(isset($_GET["brandModelId"]))
 		{
 			$brandToCat->brandModelId = $_GET["brandModelId"];

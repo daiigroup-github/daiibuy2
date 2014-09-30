@@ -1,6 +1,6 @@
 <?php
 
-class ModelToCat1 extends ModelToCat1Master
+class Category2ToProduct extends Category2ToProductMaster
 {
 	/**
 	 * Returns the static model of the specified AR class.
