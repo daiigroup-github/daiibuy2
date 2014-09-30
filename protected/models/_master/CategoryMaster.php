@@ -5,7 +5,6 @@
  *
  * The followings are the available columns in table 'category':
  * @property string $categoryId
- * @property string $brandModelId
  * @property string $title
  * @property string $description
  * @property string $image
@@ -38,15 +37,14 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('brandModelId, title, createDateTime, updateDateTime', 'required'),
+			array('title, createDateTime, updateDateTime', 'required'),
 			array('sortOrder, isRoot, status', 'numerical', 'integerOnly'=>true),
-			array('brandModelId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('categoryId, brandModelId, title, description, image, sortOrder, isRoot, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('categoryId, title, description, image, sortOrder, isRoot, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,7 +69,6 @@ class CategoryMaster extends MasterCActiveRecord
 	{
 		return array(
 			'categoryId' => 'Category',
-			'brandModelId' => 'Brand Model',
 			'title' => 'Title',
 			'description' => 'Description',
 			'image' => 'Image',
@@ -104,7 +101,6 @@ class CategoryMaster extends MasterCActiveRecord
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->categoryId = $this->searchText;
-			$this->brandModelId = $this->searchText;
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 			$this->image = $this->searchText;
@@ -116,7 +112,6 @@ class CategoryMaster extends MasterCActiveRecord
 		}
 
 		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
-		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('image',$this->image,true, 'OR');

@@ -51,7 +51,7 @@ return false;
 			</div>
 		</div>
 	</div>
-
+	<h3><?php echo  $model->brand->title; ?></h3>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'brand-model-grid',
@@ -69,11 +69,6 @@ return false;
 					'width'=>'50px'
 				)
 			),
-			array(
-				'name'=>'brandModelId',
-				'value'=>'isset($data->brand)?$data->brand->title:"-"'
-			),
-			'supplierId',
 			'title',
 			'description',
 			'sortOrder',

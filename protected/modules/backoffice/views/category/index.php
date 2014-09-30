@@ -55,7 +55,7 @@ return false;
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'category-grid',
-		'dataProvider'=>$model->search(),
+		'dataProvider'=>$brandToCat->search(),
 //		'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-hover',
 		'columns'=>array(
