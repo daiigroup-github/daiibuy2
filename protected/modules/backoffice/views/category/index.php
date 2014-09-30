@@ -55,7 +55,7 @@ return false;
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'category-grid',
-		'dataProvider'=>$model->search(),
+		'dataProvider'=>$brandToCat->search(),
 //		'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-hover',
 		'columns'=>array(
@@ -64,12 +64,12 @@ return false;
 			array(
 				'name'=>'image',
 				'type'=>'html',
-				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->image, "", array("style"=>"width:50px"))',
+				'value'=>'isset($model->category)?CHtml::image(Yii::app()->baseUrl.$data->category->image, "", array("style"=>"width:50px")):"-"',
 				'htmlOptions'=>array(
 					'width'=>'50px'
 				)
 			),
-			'categoryId',
+			'category1Id',
 			'title',
 			'description',
 			'sortOrder',
@@ -84,7 +84,7 @@ return false;
 				'buttons'=>array(
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?category1Id=".$data->category1Id)'
 					)
 				)
 			),

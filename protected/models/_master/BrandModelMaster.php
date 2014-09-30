@@ -14,6 +14,9 @@
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
+ *
+ * The followings are the available model relations:
+ * @property Brand $brand
  */
 class BrandModelMaster extends MasterCActiveRecord
 {

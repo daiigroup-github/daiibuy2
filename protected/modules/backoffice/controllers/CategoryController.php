@@ -71,9 +71,11 @@ class CategoryController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new Category;
+		$brandToCat = new ModelToCategory1();
+
 		if(isset($_GET["brandModelId"]))
 		{
-			$model->brandModelId = $_GET["brandModelId"];
+			$brandToCat->brandModelId = $_GET["brandModelId"];
 		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -261,16 +263,17 @@ class CategoryController extends MasterBackofficeController
 	{
 		$model = new Category('search');
 		$model->unsetAttributes();  // clear any default values
-
+		$brandToCat = new ModelToCategory1();
 		if(isset($_GET["brandModelId"]))
 		{
-			$model->brandModelId = $_GET["brandModelId"];
+			$brandToCat->brandModelId = $_GET["brandModelId"];
 		}
 		if(isset($_GET['Category']))
 			$model->attributes = $_GET['Category'];
 
 		$this->render('index', array(
-			'model'=>$model,
+			'brandToCat'=>$brandToCat,
+			'model'=>$model
 		));
 	}
 

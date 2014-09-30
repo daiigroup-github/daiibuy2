@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'category2_to_product':
  * @property string $id
- * @property string $category2Id
+ * @property string $categoryId
  * @property string $productId
  * @property string $groupName
  * @property integer $status
@@ -13,8 +13,8 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
+ * @property Category $category
  * @property Product $product
- * @property Category $category2
  */
 class Category2ToProductMaster extends MasterCActiveRecord
 {
@@ -34,16 +34,13 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('category2Id, productId', 'required'),
+			array('categoryId, productId, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
-			array('category2Id, productId', 'length', 'max'=>20),
+			array('categoryId, productId', 'length', 'max'=>20),
 			array('groupName', 'length', 'max'=>200),
-			array('createDateTime, updateDateTime', 'safe'),
-			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
-			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, category2Id, productId, groupName, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, categoryId, productId, groupName, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,8 +52,8 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
-			'category2' => array(self::BELONGS_TO, 'Category', 'category2Id'),
 		);
 	}
 
@@ -67,7 +64,7 @@ class Category2ToProductMaster extends MasterCActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'category2Id' => 'Category2',
+			'categoryId' => 'Category',
 			'productId' => 'Product',
 			'groupName' => 'Group Name',
 			'status' => 'Status',
@@ -97,7 +94,7 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->id = $this->searchText;
-			$this->category2Id = $this->searchText;
+			$this->categoryId = $this->searchText;
 			$this->productId = $this->searchText;
 			$this->groupName = $this->searchText;
 			$this->status = $this->searchText;
@@ -106,7 +103,7 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		}
 
 		$criteria->compare('id',$this->id,true, 'OR');
-		$criteria->compare('category2Id',$this->category2Id,true, 'OR');
+		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
 		$criteria->compare('productId',$this->productId,true, 'OR');
 		$criteria->compare('groupName',$this->groupName,true, 'OR');
 		$criteria->compare('status',$this->status);

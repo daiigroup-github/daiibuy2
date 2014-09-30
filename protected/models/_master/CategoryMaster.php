@@ -15,10 +15,8 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property Category2ToProduct[] $category2ToProducts
  * @property CategoryToSub[] $categoryToSubs
  * @property CategoryToSub[] $categoryToSubs1
- * @property ModelToCategory1[] $modelToCategory1s
  * @property Product[] $products
  */
 class CategoryMaster extends MasterCActiveRecord
@@ -39,13 +37,11 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
+			array('title, createDateTime, updateDateTime', 'required'),
 			array('sortOrder, isRoot, status', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
-			array('description, createDateTime, updateDateTime', 'safe'),
-			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
-			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('categoryId, title, description, image, sortOrder, isRoot, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
@@ -67,6 +63,9 @@ class CategoryMaster extends MasterCActiveRecord
 			'products' => array(self::MANY_MANY, 'Product','category2_to_product(categoryId,productId)',),
 			'brandModels' => array(self::MANY_MANY, 'BrandModel','model_to_category1(categoryId,brandModelId)',),
 			'subCategorys' =>array(self::MANY_MANY, 'Category','category_to_sub(categoryId,subCategoryId)'),
+			'categoryToSubs' => array(self::HAS_MANY, 'CategoryToSub', 'categoryId'),
+			'categoryToSubs1' => array(self::HAS_MANY, 'CategoryToSub', 'subCategoryId'),
+			'products' => array(self::HAS_MANY, 'Product', 'categoryId'),
 		);
 	}
 
