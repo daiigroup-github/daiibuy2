@@ -84,6 +84,14 @@ class FenzerController extends MasterMyFileController
 				array('condition'=>'categorys.isRoot = 1 AND categorys.status = 1'
 					));
 
+			$categoryModel = Category::model()->findByPk($categoryId);
+			$cate2 = $categoryModel->with('subCategorys')->findAll(
+				array('condition'=>'subCategorys.status = 1 AND '
+					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
+					'params'=>array(':minHeight'=>$height[0],
+						':maxHeight'=>$height[1])
+					));
+
 //			$cate2Model = $cate1Model->with('subCategorys')->findAll(
 //				array('condition'=>'subCategorys.status = 1 AND '
 //					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
@@ -129,6 +137,9 @@ class FenzerController extends MasterMyFileController
 
 	public function actionShowProductOrder()
 	{
+		$orderModel = new Order();
+		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(176);
+
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$provinceId = $daiibuy->provinceId;
@@ -155,9 +166,23 @@ class FenzerController extends MasterMyFileController
 		{
 			$length = 0;
 		}
-			$res = Product::model()->calculateOrderItemsQty($productCate2->categoryId, $length, $provinceId);
+		$itemSetArray = Product::model()->calculateItemSetFenzer($productCate2->categoryId, $length, $provinceId);
 
-		return $res;
+		//SAVE NEW ORDER
+		$orderModel->supplierId = 176;
+		$orderModel->provinceId = $provinceId;
+		$orderModel->type = 1;
+		$orderModel->status = 1;
+		$orderModel->createDateTime = new CDbExpression("NOW()");
+		if($orderModel->save()){
+			$orderId = Yii::app()->id->lastInsertID;
+			$orderDetail = new OrderModel();
+			$orderDetail->orderId = $orderId;
+			$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
+			$orderModel->createDateTime = new CDbExpression("NOW()");
+
+		}
+
 	}
 
 // Uncomment the following methods and override them if needed

@@ -331,23 +331,23 @@ class Product extends ProductMaster
 
 				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
 				{
-					$productTotalPrice = Product::model()->calProductPromotionTotalPrice($productTemp->productId, $product['qty'], $daiibuy->amphurId);
+					$productTotalPrice = Product::model()->calProductPromotionTotalPrice($productTemp->productId, $product['qty'], $daiibuy->provinceId);
 				}
 				else
 				{
-					$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->amphurId);
+					$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->provinceId);
 				}
 			}
 			else
 			{
-				$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->amphurId);
+				$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->provinceId);
 			}
 			$subTotal += $productTotalPrice;
 		}
 		return $subTotal;
 	}
 
-	public function cartTotal($items, $amphurId)
+	public function cartTotal($items, $provinceId)
 	{
 		$cartTotal = 0;
 		$today = date("Y-m-d");
@@ -359,23 +359,23 @@ class Product extends ProductMaster
 				$productTemp = Product::model()->findByPk($productId);
 				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
 				{
-					$cartTotal += Product::model()->calProductPromotionTotalPrice($productId, $qty, $amphurId);
+					$cartTotal += Product::model()->calProductPromotionTotalPrice($productId, $qty, $provinceId);
 				}
 				else
 				{
-					$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+					$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
 				}
 			}
 			else
 			{
-				$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+				$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
 			}
 		}
 
 		return $cartTotal;
 	}
 
-	public function cartSummaryBySupplierId($cart, $amphurId, $supplierId)
+	public function cartSummaryBySupplierId($cart, $provinceId, $supplierId)
 	{
 		$cartTotal = 0;
 		$cartItems = 0;
@@ -385,7 +385,7 @@ class Product extends ProductMaster
 		{
 			if($supplier == $supplierId)
 			{
-				$cartTotal += $this->cartSum($items, $amphurId);
+				$cartTotal += $this->cartSum($items, $provinceId);
 
 				$cartItems += array_sum($items);
 
@@ -399,7 +399,7 @@ class Product extends ProductMaster
 			'cartRowTotal'=>$cartRowTotal);
 	}
 
-	public function cartSummary($cart, $amphurId)
+	public function cartSummary($cart, $provinceId)
 	{
 		$cartTotal = 0;
 		$cartItems = 0;
@@ -407,7 +407,7 @@ class Product extends ProductMaster
 
 		foreach($cart as $items)
 		{
-			$cartTotal += $this->cartSum($items, $amphurId);
+			$cartTotal += $this->cartSum($items, $provinceId);
 
 			$cartItems += array_sum($items);
 
@@ -420,7 +420,7 @@ class Product extends ProductMaster
 			'cartRowTotal'=>$cartRowTotal);
 	}
 
-	public function cartSum($items, $amphurId)
+	public function cartSum($items, $provinceId)
 	{
 		$total = 0;
 		$today = date("Y-m-d");
@@ -433,16 +433,16 @@ class Product extends ProductMaster
 				$productTemp = Product::model()->findByPk($productId);
 				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
 				{
-					$total += Product::model()->calProductPromotionTotalPrice($productId, $qty, $amphurId);
+					$total += Product::model()->calProductPromotionTotalPrice($productId, $qty, $provinceId);
 				}
 				else
 				{
-					$total += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+					$total += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
 				}
 			}
 			else
 			{
-				$total += Product::model()->calProductTotalPrice($productId, $qty, $amphurId);
+				$total += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
 			}
 		}
 
@@ -455,13 +455,13 @@ class Product extends ProductMaster
 		return $result;
 	}
 
-	public function calProductPrice($productId, $amphurId = NULL)
+	public function calProductPrice($productId, $provinceId = NULL)
 	{
-		if(!isset($amphurId))
+		if(!isset($provinceId))
 		{
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
-			$amphurId = $daiibuy->amphurId;
+			$provinceId = $daiibuy->$provinceId;
 		}
 
 		$product = Product::model()->findByPk($productId);
@@ -469,11 +469,11 @@ class Product extends ProductMaster
 		$price = $product->price;
 
 
-		$amphurPrice = Price::model()->find("amphurId=:amphurId AND priceGroupId=:priceGroupId", array(
-			":amphurId"=>$amphurId,
+		$$provinceIdPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
-		if(isset($amphurPrice))
+		if(isset($$provinceIdPrice))
 		{
 			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
 		}
@@ -490,13 +490,13 @@ class Product extends ProductMaster
 //		}
 	}
 
-	public function calProductPromotionPrice($productId, $amphurId = NULL)
+	public function calProductPromotionPrice($productId, $provinceId = NULL)
 	{
-		if(!isset($amphurId))
+		if(!isset($provinceId))
 		{
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
-			$amphurId = $daiibuy->amphurId;
+			$provinceId = $daiibuy->provinceId;
 		}
 
 		$product = Product::model()->findByPk($productId);
@@ -514,8 +514,8 @@ class Product extends ProductMaster
 //			$price = $product->price;
 //		}
 
-		$amphurPrice = Price::model()->find("amphurId=:amphurId AND priceGroupId=:priceGroupId", array(
-			":amphurId"=>$amphurId,
+		$amphurPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
 		if(isset($amphurPrice))
@@ -535,55 +535,55 @@ class Product extends ProductMaster
 //		}
 	}
 
-	public function calProductPromotionPriceMargin($productId, $amphurId = NULL, $orderModel)
+	public function calProductPromotionPriceMargin($productId, $provinceId = NULL, $orderModel)
 	{
-		$productPrice = $this->calProductPromotionPrice($productId, $amphurId);
+		$productPrice = $this->calProductPromotionPrice($productId, $provinceId);
 		$margin = $orderModel->getSupplierMarginToDaiiBuy();
 		$result = $productPrice * (100 + $margin['daiiMargin']);
 		return $result;
 	}
 
-	public function calProductPriceMargin($productId, $amphurId = NULL, $orderModel)
+	public function calProductPriceMargin($productId, $provinceId = NULL, $orderModel)
 	{
-		$productPrice = $this->calProductPrice($productId, $amphurId);
+		$productPrice = $this->calProductPrice($productId, $provinceId);
 		$margin = $orderModel->getSupplierMarginToDaiiBuy();
 		$result = $productPrice * (100 + $margin['daiiMargin']);
 		return $result;
 	}
 
-	public function calProductTotalPrice($productId, $quantity, $amphurId)
+	public function calProductTotalPrice($productId, $quantity, $provinceId)
 	{
-		return $this->calProductPrice($productId, $amphurId) * $quantity;
+		return $this->calProductPrice($productId, $provinceId) * $quantity;
 	}
 
-	public function calProductTotalPriceMargin($productId, $quantity, $amphurId, $orderModel)
+	public function calProductTotalPriceMargin($productId, $quantity, $provinceId, $orderModel)
 	{
-		$productPrice = $this->calProductPrice($productId, $amphurId);
+		$productPrice = $this->calProductPrice($productId, $provinceId);
 		$margin = $orderModel->getSupplierMarginToDaiiBuy();
 		$result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
 		return $result;
 	}
 
-	public function calProductPromotionTotalPrice($productId, $quantity, $amphurId)
+	public function calProductPromotionTotalPrice($productId, $quantity, $provinceId)
 	{
-		return $this->calProductPromotionPrice($productId, $amphurId) * $quantity;
+		return $this->calProductPromotionPrice($productId, $provinceId) * $quantity;
 	}
 
-	public function calProductPromotionTotalPriceMargin($productId, $quantity, $amphurId, $orderModel)
+	public function calProductPromotionTotalPriceMargin($productId, $quantity, $provinceId, $orderModel)
 	{
-		$productPrice = $this->calProductPromotionPrice($productId, $amphurId);
+		$productPrice = $this->calProductPromotionPrice($productId, $provinceId);
 		$margin = $orderModel->getSupplierMarginToDaiiBuy();
 		$result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
 		return $result;
 	}
 
-	public function findAllProductByAmphurIdAndCategoryId($amphurId, $searchText = '', $categoryId = null, $brandId = null)
+	public function findAllProductByAmphurIdAndCategoryId($provinceId, $searchText = '', $categoryId = null, $brandId = null)
 	{
 		$criteria = new CDbCriteria();
 		$criteria->with = array(
 			'priceGroup',
 			'priceGroup.price');
-		$criteria->condition = 't.status = 2  AND t.quantity > 0 AND price.amphurId=:amphurId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText))';
+		$criteria->condition = 't.status = 2  AND t.quantity > 0 AND price.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText))';
 
 		if(isset($categoryId))
 			$criteria->condition .= ' AND categoryId=' . $categoryId;
@@ -592,7 +592,7 @@ class Product extends ProductMaster
 			$criteria->condition .= ' AND brandId=' . $brandId;
 
 		$criteria->params = array(
-			':amphurId'=>$amphurId,
+			':provinceId'=>$provinceId,
 			':searchText'=>'%' . $searchText . '%');
 		$criteria->order = 't.productId';
 
@@ -612,12 +612,12 @@ class Product extends ProductMaster
 			return "";
 	}
 
-	public function findAllProductDataByAmphurIdAndCategoryId($amphurId, $searchText = '', $categoryId = null, $brandId = null, $dateNow)
+	public function findAllProductDataByAmphurIdAndCategoryId($provinceId, $searchText = '', $categoryId = null, $brandId = null, $dateNow)
 	{
 		$criteria = new CDbCriteria();
 		$criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
 		$criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
-		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.amphurId=:amphurId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
+		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
 
 		if(isset($categoryId))
 			$criteria->condition .= ' AND t.categoryId=' . $categoryId;
@@ -626,7 +626,7 @@ class Product extends ProductMaster
 			$criteria->condition .= ' AND t.brandId=' . $brandId;
 
 		$criteria->params = array(
-			':amphurId'=>$amphurId,
+			':provinceId'=>$provinceId,
 			':searchText'=>'%' . $searchText . '%');
 		$criteria->order = 't.productId';
 
@@ -637,7 +637,7 @@ class Product extends ProductMaster
 		));
 	}
 
-	public function findAllProductDataByAmphurIdAndCategoryIdAndSupplierId($amphurId, $searchText = '', $categoryId = null, $brandId = null, $dateNow, $supplierId = null)
+	public function findAllProductDataByAmphurIdAndCategoryIdAndSupplierId($provinceId, $searchText = '', $categoryId = null, $brandId = null, $dateNow, $supplierId = null)
 	{
 		$criteria = new CDbCriteria();
 
@@ -661,7 +661,7 @@ class Product extends ProductMaster
 
 		$criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
 		$criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
-		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.amphurId=:amphurId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
+		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
 
 //		if (isset($categoryId))
 //			$criteria->condition .= ' AND t.categoryId=' . $categoryId;
@@ -673,7 +673,7 @@ class Product extends ProductMaster
 			$criteria->condition .= ' AND t.supplierId=' . $supplierId;
 
 		$criteria->params = array(
-			':amphurId'=>$amphurId,
+			':provinceId'=>$provinceId,
 			':searchText'=>'%' . $searchText . '%');
 		//$criteria->order = 't.categoryId =' . $categoryId . " ASC";
 		//$criteria->order = 't.categoryId ASC';
@@ -698,24 +698,51 @@ class Product extends ProductMaster
 			),);
 	}
 
-	public function calculateOrderItemsQty($categoryId, $length, $provinceId)
+	public function calculateItemSetFenzer($categoryId, $length, $provinceId)
 	{
-		$products = Product::model()->findAll('category2Id = '.$categoryId .' AND status = 1');
+		$category = Category::model()->findByPk($categoryId);
+		$height = $category->description;
+		$products = Product::model()->findAll('categoryId = '.$categoryId .' AND status = 1');
 		$res = array();
 		$res['categoryId'] = $categoryId;
-		$res['items'] = array();
+		$res['height'] = $height;
+		$res['length'] = $length;
 		foreach($products as $product){
 			$res['items'][$product->productId] = $product;
 			if($length == 0)
-		{
+			{
 				//default Qty = 1
 				$res['items']['Qty'] = 1;
-		}
-		else
-		{
 
-		}
 			}
+			else
+			{
+				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product,$length, $height);
+			}
+		}
+		throw new Exception;
+		return $res;
+	}
+	public function calculateItemQuantityFenzer($product,$length, $height){
 
+		switch($product->type)
+		{
+			case 1:
+				//
+				break;
+			case 2:
+				//
+				break;
+			case 3:
+				//
+				break;
+			case 4:
+				//
+				break;
+			default:
+				break;
+		}
+
+		return $res;
 	}
 }
