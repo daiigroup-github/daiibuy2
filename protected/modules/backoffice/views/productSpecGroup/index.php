@@ -62,7 +62,7 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
-				'class'=>'sortColumn',
+				'class'=>'SortColumn',
 				'htmlOptions'=>array(
 					'style'=>'width:7%'
 				)

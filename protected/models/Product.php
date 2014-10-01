@@ -82,7 +82,7 @@ class Product extends ProductMaster
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
 				array(
-					'dateAvailable, name, quantity, productUnits, price, priceGroupId, description, supplierId, sortOrder',
+					'dateAvailable, name, quantity, productUnits, price, priceGroupId, supplierId, sortOrder',
 					'required'),
 //				array(
 //					'createDateTime, updateDateTime',
@@ -312,7 +312,7 @@ class Product extends ProductMaster
 				break;
 		}
 
-		return '<span class="badge ' . $badge . '">' . $this->getStatusText() . '</span>';
+		return '<span class="badge ' . $badge . '">' . $this->getStatusText($this->status) . '</span>';
 	}
 
 	public function calTotalCartBySupplier($cart)
@@ -698,6 +698,7 @@ class Product extends ProductMaster
 			),);
 	}
 
+
 	public function calculateItemSetFenzer($categoryId, $length, $provinceId)
 	{
 		$category = Category::model()->findByPk($categoryId);
@@ -713,17 +714,17 @@ class Product extends ProductMaster
 			{
 				//default Qty = 1
 				$res['items']['Qty'] = 1;
-
 			}
 			else
 			{
 				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product,$length, $height);
 			}
 		}
-		throw new Exception;
+//		throw new Exception;
 		return $res;
 	}
-	public function calculateItemQuantityFenzer($product,$length, $height){
+	public function calculateItemQuantityFenzer($product,$length, $height)
+	{
 
 		switch($product->type)
 		{
@@ -746,3 +747,4 @@ class Product extends ProductMaster
 		return $res;
 	}
 }
+

@@ -184,7 +184,7 @@ class ProductController extends MasterBackofficeController
 						{
 							$fileName = uniqid() . '_' . $pic->name;
 							$image = Yii::app()->image->load($pic->getTempName());
-							$image->resize(800, 600);
+							$image->resize(800, 800);
 							if($image->save(Yii::app()->basePath . '/../images/product/' . $fileName))
 							{
 								$productImage = new ProductImage();
@@ -209,8 +209,8 @@ class ProductController extends MasterBackofficeController
 					}
 					else
 					{
-						$flag = FALSE;
-						$model->addError("image", "กรุณาอัพโหลดรูปสำหรับผลิตภัณฑ์");
+//						$flag = FALSE;
+//						$model->addError("image", "กรุณาอัพโหลดรูปสำหรับผลิตภัณฑ์");
 					}
 
 					//product attributes

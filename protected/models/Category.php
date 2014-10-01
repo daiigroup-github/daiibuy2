@@ -124,4 +124,23 @@ class Category extends CategoryMaster
 		return $res;
 	}
 
+	public function findAllCategoryBySupplierId($isRoot = 1, $supplierId)
+	{
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->condition = 'status = 1 AND isRoot=1 AND isRoot = :isRoot AND supplierId = :supplierId';
+		$criteria->params = array(
+			':isRoot'=>$isRoot,
+			':supplierId'=>$supplierId);
+
+		$models = Category::model()->findAll($criteria);
+
+		foreach($models as $item)
+		{
+			$result[$item->categoryId] = $item->title;
+		}
+
+		return $result;
+	}
+
 }

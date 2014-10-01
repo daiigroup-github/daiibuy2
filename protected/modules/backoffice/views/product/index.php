@@ -46,10 +46,10 @@ $this->menu = array(
 		'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
 		'columns'=>array(
 			array(
-				'class'=>'indexColumn'
+				'class'=>'IndexColumn'
 			),
 			array(
-				'class'=>'sortColumn',
+				'class'=>'SortColumn',
 			),
 			array(
 				'header'=>'Image',

@@ -87,9 +87,13 @@ class CategoryController extends MasterBackofficeController
 			try
 			{
 				$model->attributes = $_POST['Category'];
+				if(!Yii::app()->user->isGuest)
+				{
+					$model->supplierId = Yii::app()->user->id;
+				}
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderImage = 'category';
+				$folderimage = 'category';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -106,6 +110,7 @@ class CategoryController extends MasterBackofficeController
 
 				if($model->save())
 				{
+					$categoryId = Yii::app()->db->lastInsertID;
 					if(isset($image) && !empty($image))
 					{
 						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
@@ -123,15 +128,24 @@ class CategoryController extends MasterBackofficeController
 						}
 					}
 					else
+					{
 						$flag = true;
+					}
+
+					if($flag)
+					{
+						if(!$this->actionSaveModelToCategory1($_GET["brandModelId"], $categoryId))
+						{
+							$flag = FALSE;
+						}
+					}
 				}
 
 				if($flag)
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->categoryId));
+						'index?brandModelId=' . $_GET["brandModelId"]));
 				}
 				else
 				{
@@ -302,6 +316,28 @@ class CategoryController extends MasterBackofficeController
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+
+	public function actionSaveModelToCategory1($brandModelId = null, $categoryId = null)
+	{
+//		throw new Exception(print_r($_REQUEST, true));
+		$result = array();
+		$model = new ModelToCategory1();
+		$model->createDateTime = new CDbExpression("NOW()");
+		$model->updateDateTime = new CDbExpression("NOW()");
+		if(!isset($_POST['categoryId']))
+		{
+			$model->brandModelId = $brandModelId;
+			$model->categoryId = $categoryId;
+			return $model->save();
+		}
+		else
+		{
+			$model->brandModelId = $_POST["brandModelId"];
+			$model->categoryId = $_POST["categoryId"];
+			$result["status"] = $model->save();
+			echo CJSON::encode($result);
 		}
 	}
 
