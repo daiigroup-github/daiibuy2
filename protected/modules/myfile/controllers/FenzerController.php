@@ -79,14 +79,19 @@ class FenzerController extends MasterMyFileController
 //		{
 			$status = 1;
 
-			$brandModel = BrandModel::model()->find('supplierId = 176 AND status = 1');
-			$cate1Model = $brandModel->with('categorys')->findAll(
-				array('condition'=>'categorys.isRoot = 1 AND categorys.status = 1'
-					));
+//			$brandModel = BrandModel::model()->find('supplierId = 176 AND status = 1');
+//			$cate1Model = $brandModel->with('categorys')->findAll(
+//				array('condition'=>'categorys.isRoot = 1 AND categorys.status = 1'
+//					));
 
-			$categoryModel = Category::model()->findByPk($categoryId);
-			$cate2 = $categoryModel->with('subCategorys')->findAll(
-				array('condition'=>'subCategorys.status = 1 AND '
+//			$categoryModel = Category::model()->findByPk($categoryId);
+			if(isset($_POST['height']))
+			{
+				$value = $_POST['height'];
+				$height = explode("-", $value);
+			}
+			$cate1Model = Category::model()->with('subCategorys')->findAll(
+				array('condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 176 AND '
 					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
 					'params'=>array(':minHeight'=>$height[0],
 						':maxHeight'=>$height[1])
@@ -100,11 +105,11 @@ class FenzerController extends MasterMyFileController
 //					));
 
 
-//			$productResult = Category::model()->findAll('brandModelId = ' . $brandModel->brandModelId . ' AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
-			if(count($cate1Model[0]->categorys) > 0)
+			$productResult = Category::model()->findAll('supplierId = 176 AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
+			if(count($productResult) > 0)
 			{
 				echo $this->renderPartial('/fenzer/_product_result', array(
-					'productResult'=>$cate1Model[0]->categorys), TRUE, TRUE);
+					'productResult'=>$productResult), TRUE, TRUE);
 //				throw new Exception();
 			}
 			else
@@ -175,12 +180,20 @@ class FenzerController extends MasterMyFileController
 		$orderModel->status = 1;
 		$orderModel->createDateTime = new CDbExpression("NOW()");
 		if($orderModel->save()){
-			$orderId = Yii::app()->id->lastInsertID;
+			$orderId = Yii::app()->db->lastInsertID;
 			$orderDetail = new OrderModel();
 			$orderDetail->orderId = $orderId;
 			$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
-			$orderModel->createDateTime = new CDbExpression("NOW()");
-
+			$orderDetail->createDateTime = new CDbExpression("NOW()");
+			if($orderDetail->save()){
+				$orderDetailId = Yii::app()->db->lastInsertID;
+				foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
+				$orderDetailValue = new OrderDetailValue();
+				$orderDetailValue->orderDetailId = $orderDetailId;
+				$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
+				$orderDetailValue->value = $item->title=='height'? $height : $length;
+				}
+			}
 		}
 
 	}
