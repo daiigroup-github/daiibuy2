@@ -10,6 +10,7 @@
  * @property string $groupName
  * @property integer $quantity
  * @property integer $type
+ * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -37,12 +38,12 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('categoryId, productId, createDateTime, updateDateTime', 'required'),
-			array('quantity, type, status', 'numerical', 'integerOnly'=>true),
+			array('quantity, type, sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('categoryId, productId', 'length', 'max'=>20),
 			array('groupName', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, categoryId, productId, groupName, quantity, type, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, categoryId, productId, groupName, quantity, type, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,6 +72,7 @@ class Category2ToProductMaster extends MasterCActiveRecord
 			'groupName' => 'Group Name',
 			'quantity' => 'Quantity',
 			'type' => 'Type',
+			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -103,6 +105,7 @@ class Category2ToProductMaster extends MasterCActiveRecord
 			$this->groupName = $this->searchText;
 			$this->quantity = $this->searchText;
 			$this->type = $this->searchText;
+			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -114,6 +117,7 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		$criteria->compare('groupName',$this->groupName,true, 'OR');
 		$criteria->compare('quantity',$this->quantity);
 		$criteria->compare('type',$this->type);
+		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

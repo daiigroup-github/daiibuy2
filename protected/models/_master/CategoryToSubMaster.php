@@ -9,6 +9,7 @@
  * @property string $subCategoryId
  * @property integer $isTheme
  * @property integer $isSet
+ * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -35,15 +36,12 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('categoryId, subCategoryId', 'required'),
-			array('isTheme, isSet, status', 'numerical', 'integerOnly'=>true),
+			array('categoryId, subCategoryId, createDateTime, updateDateTime', 'required'),
+			array('isTheme, isSet, sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('categoryId, subCategoryId', 'length', 'max'=>20),
-			array('createDateTime, updateDateTime', 'safe'),
-			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
-			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, categoryId, subCategoryId, isTheme, isSet, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, categoryId, subCategoryId, isTheme, isSet, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,6 +69,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 			'subCategoryId' => 'Sub Category',
 			'isTheme' => 'Is Theme',
 			'isSet' => 'Is Set',
+			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -102,6 +101,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 			$this->subCategoryId = $this->searchText;
 			$this->isTheme = $this->searchText;
 			$this->isSet = $this->searchText;
+			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -112,6 +112,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		$criteria->compare('subCategoryId',$this->subCategoryId,true, 'OR');
 		$criteria->compare('isTheme',$this->isTheme);
 		$criteria->compare('isSet',$this->isSet);
+		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
