@@ -294,6 +294,10 @@ class CategoryToSubController extends MasterBackofficeController
 
 		if(isset($_GET['CategoryToSub']))
 			$model->attributes = $_GET['CategoryToSub'];
+		if(isset($_GET["categoryId"]))
+		{
+			$model->categoryId = $_GET["categoryId"];
+		}
 
 		$this->render('index', array(
 			'model'=>$model,

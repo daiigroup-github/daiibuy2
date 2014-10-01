@@ -8,13 +8,15 @@
  * @property string $categoryId
  * @property string $productId
  * @property string $groupName
+ * @property integer $quantity
+ * @property integer $type
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property Category $category
  * @property Product $product
+ * @property Category $category
  */
 class Category2ToProductMaster extends MasterCActiveRecord
 {
@@ -35,12 +37,12 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('categoryId, productId, createDateTime, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
+			array('quantity, type, status', 'numerical', 'integerOnly'=>true),
 			array('categoryId, productId', 'length', 'max'=>20),
 			array('groupName', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, categoryId, productId, groupName, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, categoryId, productId, groupName, quantity, type, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,8 +54,8 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
+			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 		);
 	}
 
@@ -67,6 +69,8 @@ class Category2ToProductMaster extends MasterCActiveRecord
 			'categoryId' => 'Category',
 			'productId' => 'Product',
 			'groupName' => 'Group Name',
+			'quantity' => 'Quantity',
+			'type' => 'Type',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -97,6 +101,8 @@ class Category2ToProductMaster extends MasterCActiveRecord
 			$this->categoryId = $this->searchText;
 			$this->productId = $this->searchText;
 			$this->groupName = $this->searchText;
+			$this->quantity = $this->searchText;
+			$this->type = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -106,6 +112,8 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
 		$criteria->compare('productId',$this->productId,true, 'OR');
 		$criteria->compare('groupName',$this->groupName,true, 'OR');
+		$criteria->compare('quantity',$this->quantity);
+		$criteria->compare('type',$this->type);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
