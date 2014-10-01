@@ -475,7 +475,7 @@ class Product extends ProductMaster
 
 		if(isset($$provinceIdPrice))
 		{
-			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+			$price = $price * ((100 + $provincePrice->priceRate) / 100);
 		}
 		else
 		{
@@ -514,13 +514,13 @@ class Product extends ProductMaster
 //			$price = $product->price;
 //		}
 
-		$amphurPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+		$provincePrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
 			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
-		if(isset($amphurPrice))
+		if(isset($provincePrice))
 		{
-			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+			$price = $price * ((100 + $provincePrice->priceRate) / 100);
 		}
 		else
 		{
@@ -708,21 +708,30 @@ class Product extends ProductMaster
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
+		$noOfSpanSet = round(intval($length)/3);
+
 		foreach($products as $product)
 			{
 			$res['items'][$product->productId] = $product;
-			if($length == 0)
+			if($noOfSpanSet == 0)
 			{
 				//default Qty = 1
 				$res['items']['Qty'] = 1;
 			}
 			else
 			{
-				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product,$length, $height);
+				$res['items']['Qty'] = $this->getItemQuantityFenzer($product)*$noOfSpanSet;
 			}
 		}
 //		throw new Exception;
 		return $res;
+	}
+
+	public function getItemQuantityFenzer($product)
+	{
+		$cat2toProduct = Category2ToProduct::model()->find('productId = '.$product->productId .' AND categoryId = '. $product->categoryId);
+		$res = $cat2toProduct->quantity;
+		return res;
 	}
 }
 
