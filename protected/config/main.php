@@ -19,6 +19,7 @@ return array(
 		'application.helpers.*',
 		'application.extensions.php_barcode128.*',
 		'application.extensions.yii-mail.*',
+		'application.extensions.select2.*',
 	),
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool

@@ -47,7 +47,9 @@ return CMap::mergeArray(require(dirname(__FILE__) . '/main.php'), array(
 		),
 		'modules'=>array(
 			// uncomment the following to enable the Gii tool
-			'backoffice',
+			'backoffice'=>array(
+				'defaultController'=>'product',
+			)
 		),
 		'params'=>array(
 		// this is used in contact page

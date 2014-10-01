@@ -95,7 +95,7 @@
 			<?php echo $form->error($model, 'sortOrder'); ?>
 		</div>
 	</div>
-	<?php if($this->action->controller == "category"): ?>
+	<?php if($this->action->controller->id == "category"): ?>
 		<div class="form-group">
 			<?php
 			echo $form->labelEx($model, 'status', array(
@@ -109,7 +109,6 @@
 				<?php echo $form->error($model, 'status'); ?>
 			</div>
 		</div>
-
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-9">

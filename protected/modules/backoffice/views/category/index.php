@@ -33,10 +33,7 @@ return false;
 	<div class="panel-heading">
 		Manage Categories
 		<div class="pull-right">
-			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?brandModelId=' . $_GET["brandModelId"]), array(
-				'class'=>'btn btn-xs btn-primary'));
-			?>
+
 		</div>
 	</div>
 
@@ -62,17 +59,25 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
+				'class'=>'SortColumn',
+				'url'=>'backoffice/modelToCategory1/sortItem'
+			),
+			array(
 				'name'=>'image',
 				'type'=>'html',
-				'value'=>'isset($model->category)?CHtml::image(Yii::app()->baseUrl.$data->category->image, "", array("style"=>"width:50px")):"-"',
+				'value'=>'isset($data->category)?CHtml::image(Yii::app()->baseUrl.$data->category->image, "", array("style"=>"width:50px")):"-"',
 				'htmlOptions'=>array(
 					'width'=>'50px'
 				)
 			),
-			'category1Id',
-			'title',
-			'description',
-			'sortOrder',
+			array(
+				'name'=>'categoryId',
+				'value'=>'isset($data->category)?$data->category->title:"-"'
+			),
+			array(
+				'name'=>'description',
+				'value'=>'isset($data->category)?$data->category->title:"-"'
+			),
 			'status',
 			/*
 			  'createDateTime',
@@ -84,13 +89,77 @@ return false;
 				'buttons'=>array(
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?category1Id=".$data->category1Id)'
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
 					)
 				)
 			),
 		),
 	));
 	?>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Add New Category or Select Existing
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-6" style="border-right: 1px solid">
+							<h3>Choose Category..</h3>
+							<?php
+							echo Select2::dropDownList("categoryId", "", Category::model()->findAllCategoryBySupplierId(1, Yii::app()->user->id), array(
+								'prompt'=>'-- เลือก Category --',
+								'id'=>'categoryId',
+								'style'=>'max-width:400px;min-width:300px',
+								'select2Options'=>array(
+									'maximumSelectionSize'=>1,
+								),
+							));
+							?>
+							<?php
+							echo CHtml::button("Save Choose Category", array(
+								'class'=>'btn btn-success btn-xs',
+								'onclick'=>'saveChooseCategory()'))
+							?>
+						</div>
+						<div class="col-lg-6">
+							<h3>New Category</h3>
+							<?php
+							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?brandModelId=' . $_GET["brandModelId"]), array(
+								'class'=>'btn btn-xs btn-primary'));
+							?>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				function saveChooseCategory()
+				{
+					$.ajax({
+						type: "POST",
+						dataType: "JSON",
+						url: '<?php echo Yii::app()->createUrl("backoffice/category/saveModelToCategory1"); ?>',
+						beforeSend: function () {
+							if ($("#categoryId").val() == "")
+							{
+								alert("Please Choose Category");
+								return false;
+							}
+						},
+						data: {categoryId: $("#categoryId").val(), brandModelId: <?php echo $_GET["brandModelId"] ?>},
+						success: function (data) {
+							if (data.status)
+							{
+								alert(data);
+								$.fn.yiiGridView.update("category-grid");
+							}
+
+						}
+					});
+				}
+			</script>
+		</div>
+	</div>
 
 </div>
 

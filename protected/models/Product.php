@@ -82,7 +82,7 @@ class Product extends ProductMaster
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
 				array(
-					'dateAvailable, name, quantity, productUnits, price, priceGroupId, description, supplierId, sortOrder',
+					'dateAvailable, name, quantity, productUnits, price, priceGroupId, supplierId, sortOrder',
 					'required'),
 //				array(
 //					'createDateTime, updateDateTime',
@@ -312,7 +312,7 @@ class Product extends ProductMaster
 				break;
 		}
 
-		return '<span class="badge ' . $badge . '">' . $this->getStatusText() . '</span>';
+		return '<span class="badge ' . $badge . '">' . $this->getStatusText($this->status) . '</span>';
 	}
 
 	public function calTotalCartBySupplier($cart)
@@ -700,22 +700,23 @@ class Product extends ProductMaster
 
 	public function calculateOrderItems($category2Id, $length, $provinceId)
 	{
-		$products = Product::model()->findAll('category2Id = '.$category2Id .' AND status = 1');
+		$products = Product::model()->findAll('category2Id = ' . $category2Id . ' AND status = 1');
 		$res = array();
 		$res['category2Id'] = $category2Id;
 		$res['items'] = array();
-		foreach($products as $product){
+		foreach($products as $product)
+		{
 			$res['items'][$product->productId] = $product;
 			if($length == 0)
-		{
+			{
 				//default Qty = 1
 				$res['items']['Qty'] = 1;
-		}
-		else
-		{
-				
-		}
 			}
+			else
+			{
 
+			}
+		}
 	}
+
 }

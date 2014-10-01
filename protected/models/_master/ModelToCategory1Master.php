@@ -7,13 +7,14 @@
  * @property string $id
  * @property string $brandModelId
  * @property string $categoryId
+ * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property Category $category
  * @property BrandModel $brandModel
+ * @property Category $category
  */
 class ModelToCategory1Master extends MasterCActiveRecord
 {
@@ -34,11 +35,11 @@ class ModelToCategory1Master extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('brandModelId, categoryId, createDateTime, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
+			array('sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('brandModelId, categoryId', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, brandModelId, categoryId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, brandModelId, categoryId, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,8 +51,8 @@ class ModelToCategory1Master extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 			'brandModel' => array(self::BELONGS_TO, 'BrandModel', 'brandModelId'),
+			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 		);
 	}
 
@@ -64,6 +65,7 @@ class ModelToCategory1Master extends MasterCActiveRecord
 			'id' => 'ID',
 			'brandModelId' => 'Brand Model',
 			'categoryId' => 'Category',
+			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -93,6 +95,7 @@ class ModelToCategory1Master extends MasterCActiveRecord
 			$this->id = $this->searchText;
 			$this->brandModelId = $this->searchText;
 			$this->categoryId = $this->searchText;
+			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -101,6 +104,7 @@ class ModelToCategory1Master extends MasterCActiveRecord
 		$criteria->compare('id',$this->id,true, 'OR');
 		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
 		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
+		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

@@ -21,12 +21,9 @@ class LoginController extends MasterBackofficeController
 			$model->attributes = $_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				if(User::model()->findByPk(Yii::app()->user->id)->isFirstLogin == 1)
-					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
-				else
-				{
-					$this->redirect(Yii::app()->request->urlReferrer);
-				}
+			{
+				$this->redirect(Yii::app()->baseUrl . "/backend.php/backoffice/default");
+			}
 		}
 
 		$this->render('index', array(
