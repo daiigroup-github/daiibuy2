@@ -708,7 +708,8 @@ class Product extends ProductMaster
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
-		foreach($products as $product){
+		foreach($products as $product)
+			{
 			$res['items'][$product->productId] = $product;
 			if($length == 0)
 			{
@@ -721,29 +722,6 @@ class Product extends ProductMaster
 			}
 		}
 //		throw new Exception;
-		return $res;
-	}
-	public function calculateItemQuantityFenzer($product,$length, $height)
-	{
-
-		switch($product->type)
-		{
-			case 1:
-				//
-				break;
-			case 2:
-				//
-				break;
-			case 3:
-				//
-				break;
-			case 4:
-				//
-				break;
-			default:
-				break;
-		}
-
 		return $res;
 	}
 }
