@@ -57,6 +57,7 @@ class BrandModelMaster extends MasterCActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'brand' => array(self::BELONGS_TO, 'Brand', 'brandId'),
+			'categorys' => array(self::MANY_MANY, 'Category','model_to_category1(brandModelId, categoryId)',)
 		);
 	}
 
