@@ -1,27 +1,27 @@
 <?php
-/* @var $this BrandModelController */
-/* @var $model BrandModel */
+/* @var $this BrandImageController */
+/* @var $model BrandImage */
 
 $this->breadcrumbs = array(
-	'Brand Models'=>array(
+	'Brand Images'=>array(
 		'index'),
 	'Manage',
 );
 
 $this->menu = array(
 	array(
-		'label'=>'List BrandModel',
+		'label'=>'List BrandImage',
 		'url'=>array(
 			'index')),
 	array(
-		'label'=>'Create BrandModel',
+		'label'=>'Create BrandImage',
 		'url'=>array(
 			'create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('#search-form').submit(function(){
-$('#brand-model-grid').yiiGridView('update', {
+$('#brand-image-grid').yiiGridView('update', {
 data: $(this).serialize()
 });
 return false;
@@ -31,7 +31,7 @@ return false;
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Brand Models
+		Manage Brand Images
 		<div class="pull-right">
 			<?php
 			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?brandId=' . $_GET["brandId"]), array(
@@ -51,16 +51,18 @@ return false;
 			</div>
 		</div>
 	</div>
-	<h3><?php echo $model->brand->title; ?></h3>
+	<h3><?php echo isset($model->brand) ? $model->brand->title : "-"; ?></h3>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
-		'id'=>'brand-model-grid',
+		'id'=>'brand-image-grid',
 		'dataProvider'=>$model->search(),
-//		'filter'=>$model,
+//			'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-hover',
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
+			array(
+				'class'=>'SortColumn'),
 			array(
 				'name'=>'image',
 				'type'=>'html',
@@ -71,7 +73,7 @@ return false;
 			),
 			'title',
 			'description',
-			'sortOrder',
+//			'sortOrder',
 			/*
 			  'status',
 			  'createDateTime',
@@ -79,17 +81,6 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {cat} {image}',
-				'buttons'=>array(
-					'cat'=>array(
-						'label'=>'<br><u>Category</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/category?brandModelId=".$data->brandModelId)'
-					),
-					'image'=>array(
-						'label'=>'<br><u>Image</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/brandModelImage?brandModelId=".$data->brandModelId)'
-					)
-				)
 			),
 		),
 	));

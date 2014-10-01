@@ -85,11 +85,15 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {subCat}',
+				'template'=>'{view} {update} {delete} {subCat} {image}',
 				'buttons'=>array(
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
+					),
+					'image'=>array(
+						'label'=>'<br><u>image</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryImage?categoryId=".$data->categoryId)'
 					)
 				)
 			),

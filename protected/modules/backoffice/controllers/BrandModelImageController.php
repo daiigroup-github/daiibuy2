@@ -1,6 +1,6 @@
 <?php
 
-class CategoryController extends MasterBackofficeController
+class BrandModelImageController extends MasterBackofficeController
 {
 
 	/**
@@ -70,30 +70,25 @@ class CategoryController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
-		$model = new Category;
-		$brandToCat = new ModelToCategory1();
-
+		$model = new BrandModelImage;
 		if(isset($_GET["brandModelId"]))
 		{
-			$brandToCat->brandModelId = $_GET["brandModelId"];
+			$model->brandModelId = $_GET["brandModelId"];
 		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Category']))
+		if(isset($_POST['BrandModelImage']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['Category'];
-				if(!Yii::app()->user->isGuest)
-				{
-					$model->supplierId = Yii::app()->user->id;
-				}
+				$model->attributes = $_POST['BrandModelImage'];
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderimage = 'category';
+
+				$folderimage = 'brandModelImage';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
@@ -110,7 +105,6 @@ class CategoryController extends MasterBackofficeController
 
 				if($model->save())
 				{
-					$categoryId = Yii::app()->db->lastInsertID;
 					if(isset($image) && !empty($image))
 					{
 						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
@@ -127,29 +121,17 @@ class CategoryController extends MasterBackofficeController
 							$flag = false;
 						}
 					}
-					else
-					{
-						$flag = true;
-					}
 
 					if($flag)
 					{
-						if(!$this->actionSaveModelToCategory1($_GET["brandModelId"], $categoryId))
-						{
-							$flag = FALSE;
-						}
+						$transaction->commit();
+						$this->redirect(array(
+							'index?brandModelId=' . $_GET["brandModelId"]));
 					}
-				}
-
-				if($flag)
-				{
-					$transaction->commit();
-					$this->redirect(array(
-						'index?brandModelId=' . $_GET["brandModelId"]));
-				}
-				else
-				{
-					$transaction->rollback();
+					else
+					{
+						$transaction->rollback();
+					}
 				}
 			}
 			catch(Exception $e)
@@ -176,22 +158,24 @@ class CategoryController extends MasterBackofficeController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Category']))
+		if(isset($_POST['BrandModelImage']))
 		{
+			$oldbrandModelImageId = $model->brandModelImageId;
 			$oldimage = $model->image;
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['Category'];
+				$model->attributes = $_POST['BrandModelImage'];
 				$model->updateDateTime = new CDbExpression("NOW()");
-				$folderimage = 'category';
+
+				$folderimage = 'brandModelId';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
 					$imagePathimage = '/../' . $imageUrl;
 					$model->image = $imageUrl;
 				}
@@ -263,7 +247,7 @@ class CategoryController extends MasterBackofficeController
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider = new CActiveDataProvider('Category');
+		$dataProvider = new CActiveDataProvider('BrandModelImage');
 		$this->render('admin', array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -274,19 +258,17 @@ class CategoryController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-		$model = new Category('search');
+		$model = new BrandModelImage('search');
 		$model->unsetAttributes();  // clear any default values
-		$brandToCat = new ModelToCategory1();
+		if(isset($_GET['BrandModelImage']))
+			$model->attributes = $_GET['BrandModelImage'];
+
 		if(isset($_GET["brandModelId"]))
 		{
-			$brandToCat->brandModelId = $_GET["brandModelId"];
+			$model->brandModelId = $_GET["brandModelId"];
 		}
-		if(isset($_GET['Category']))
-			$model->attributes = $_GET['Category'];
-
 		$this->render('index', array(
-			'brandToCat'=>$brandToCat,
-			'model'=>$model
+			'model'=>$model,
 		));
 	}
 
@@ -294,12 +276,12 @@ class CategoryController extends MasterBackofficeController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Category the loaded model
+	 * @return BrandModelImage the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model = Category::model()->findByPk($id);
+		$model = BrandModelImage::model()->findByPk($id);
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
@@ -307,36 +289,14 @@ class CategoryController extends MasterBackofficeController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Category $model the model to be validated
+	 * @param BrandModelImage $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax'] === 'category-form')
+		if(isset($_POST['ajax']) && $_POST['ajax'] === 'brand-model-image-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
-		}
-	}
-
-	public function actionSaveModelToCategory1($brandModelId = null, $categoryId = null)
-	{
-//		throw new Exception(print_r($_REQUEST, true));
-		$result = array();
-		$model = new ModelToCategory1();
-		$model->createDateTime = new CDbExpression("NOW()");
-		$model->updateDateTime = new CDbExpression("NOW()");
-		if(!isset($_POST['categoryId']))
-		{
-			$model->brandModelId = $brandModelId;
-			$model->categoryId = $categoryId;
-			return $model->save();
-		}
-		else
-		{
-			$model->brandModelId = $_POST["brandModelId"];
-			$model->categoryId = $_POST["categoryId"];
-			$result["status"] = $model->save();
-			echo CJSON::encode($result);
 		}
 	}
 
