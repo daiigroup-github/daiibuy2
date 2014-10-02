@@ -61,6 +61,8 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
+				'class'=>'SortColumn'),
+			array(
 				'name'=>'subCategoryId',
 				'type'=>'html',
 				'value'=>'Chtml::image(Yii::app()->baseUrl.$data->subCategory->image,"",array("style"=>"width:150px"))."<br>".$data->subCategory->title',
@@ -81,7 +83,7 @@ return false;
 				'buttons'=>array(
 					'product'=>array(
 						'label'=>'<br><u>Product</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/product?categoryId=".$data->subCategoryId)'
+						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?categoryId=".$data->subCategoryId)'
 					),
 					'image'=>array(
 						'label'=>'<br><u>Image</u>',
@@ -105,7 +107,7 @@ return false;
 							<?php
 							echo Select2::dropDownList("categoryId", "", Category::model()->findAllCategoryBySupplierId(0, Yii::app()->user->id), array(
 								'prompt'=>'-- เลือก Category --',
-								'id'=>'categoryId',
+								'id'=>'subCategoryId',
 								'style'=>'max-width:400px;min-width:300px',
 								'select2Options'=>array(
 									'maximumSelectionSize'=>1,
@@ -134,7 +136,7 @@ return false;
 					$.ajax({
 						type: "POST",
 						dataType: "JSON",
-						url: '<?php echo Yii::app()->createUrl("backoffice/category/saveModelToCategory1"); ?>',
+						url: '<?php echo Yii::app()->createUrl("backoffice/categoryToSub/saveCategoryToSub"); ?>',
 						beforeSend: function () {
 							if ($("#categoryId").val() == "")
 							{
@@ -146,8 +148,7 @@ return false;
 						success: function (data) {
 							if (data.status)
 							{
-								alert(data);
-								$.fn.yiiGridView.update("category-grid");
+								$.fn.yiiGridView.update("category-to-sub-grid");
 							}
 
 						}

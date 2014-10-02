@@ -146,7 +146,10 @@ class ProductController extends MasterBackofficeController
 //		$productHistory = new ProductHistory();
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
-
+		if(isset($_GET["categoryId"]))
+		{
+			$model->categoryId = $_GET["categoryId"];
+		}
 		if(isset($_POST['Product']))
 		{
 			$model->attributes = $_POST['Product'];
@@ -625,6 +628,38 @@ class ProductController extends MasterBackofficeController
 		));
 	}
 
+	public function actionIndexCat2()
+	{
+//                if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
+//                {
+//                    $user = User::model()->findByPk(Yii::app()->user->id);
+//                    if($user->type == 1 || $user->type == 2)
+//                    {
+//                        throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
+//                        //$this->redirect(Yii::app()->createUrl("site/index"));
+//                    }
+//                }
+//                else
+//                {
+//                    throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
+//                    //$this->redirect(Yii::app()->createUrl("site/index"));
+//                }
+		$model = new Product('search');
+		$cat2ToProduct = new Category2ToProduct('search');
+		//$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Product']))
+			$model->attributes = $_GET['Product'];
+		if(isset($_GET["categoryId"]))
+		{
+			$cat2ToProduct->categoryId = $_GET["categoryId"];
+		}
+
+		$this->render('index_cat2', array(
+			'model'=>$model,
+			'cat2ToProduct'=>$cat2ToProduct
+		));
+	}
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -694,6 +729,28 @@ class ProductController extends MasterBackofficeController
 					'productAttributeModel'=>$productAttributeModel), true),
 			));
 			exit;
+		}
+	}
+
+	public function actionSaveCategory2toProduct($categoryId = null, $productId = null)
+	{
+//		throw new Exception(print_r($_REQUEST, true));
+		$result = array();
+		$model = new Category2ToProduct();
+		$model->createDateTime = new CDbExpression("NOW()");
+		$model->updateDateTime = new CDbExpression("NOW()");
+		if(!isset($_POST['categoryId']))
+		{
+			$model->categoryId = $categoryId;
+			$model->productId = $subCategoryId;
+			return $model->save();
+		}
+		else
+		{
+			$model->categoryId = $_POST["categoryId"];
+			$model->productId = $_POST["productId"];
+			$result["status"] = $model->save();
+			echo CJSON::encode($result);
 		}
 	}
 

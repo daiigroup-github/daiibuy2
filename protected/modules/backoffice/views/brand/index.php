@@ -61,6 +61,9 @@ return false;
 				array(
 					'class'=>'IndexColumn'),
 				array(
+					'class'=>'SortColumn',
+				),
+				array(
 					'name'=>'image',
 					'type'=>'html',
 					'value'=>'CHtml::image(Yii::app()->baseUrl.$data->image, "", array("style"=>"width:50px"))',
@@ -70,7 +73,6 @@ return false;
 				),
 				'title',
 				'description',
-				'sortOrder',
 				/*
 				  'status',
 				  'createDateTime',

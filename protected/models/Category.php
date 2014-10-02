@@ -31,7 +31,10 @@ class Category extends CategoryMaster
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
-				'subCategorys' => array(self::MANY_MANY, 'Category','category_to_sub(categoryId, subCategoryId)',)
+				'subCategorys'=>array(
+					self::MANY_MANY,
+					'Category',
+					'category_to_sub(categoryId, subCategoryId)',)
 		));
 	}
 
@@ -65,8 +68,6 @@ class Category extends CategoryMaster
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 			$this->image = $this->searchText;
-			$this->sortOrder = $this->searchText;
-			$this->isRoot = 1;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -77,7 +78,6 @@ class Category extends CategoryMaster
 		$criteria->compare('title', $this->title, true, 'OR');
 		$criteria->compare('description', $this->description, true, 'OR');
 		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('sortOrder', $this->sortOrder);
 		$criteria->compare('isRoot', 1);
 		$criteria->compare('status', $this->status);
 		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
@@ -85,6 +85,9 @@ class Category extends CategoryMaster
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'sortOrder ASC'
+			)
 		));
 	}
 
@@ -124,7 +127,7 @@ class Category extends CategoryMaster
 	{
 		$result = array();
 		$criteria = new CDbCriteria();
-		$criteria->condition = 'status = 1 AND isRoot=1 AND isRoot = :isRoot AND supplierId = :supplierId';
+		$criteria->condition = 'status = 1 AND isRoot = :isRoot AND supplierId = :supplierId';
 		$criteria->params = array(
 			':isRoot'=>$isRoot,
 			':supplierId'=>$supplierId);

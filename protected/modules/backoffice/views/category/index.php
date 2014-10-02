@@ -154,7 +154,6 @@ return false;
 						success: function (data) {
 							if (data.status)
 							{
-								alert(data);
 								$.fn.yiiGridView.update("category-grid");
 							}
 

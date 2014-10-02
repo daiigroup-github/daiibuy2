@@ -89,16 +89,16 @@ if(isset($model->status))
 				}
 				else
 				{
-//					$str = "";
-//					if(isset($model->category->parent))
-//					{
-//						$str .= $model->category->parent->categoryName . "->";
-//					}
-//					if(isset($model->category))
-//					{
-//						$str .= $model->category->categoryName;
-//					}
-//					echo $str;
+					$str = "";
+					if(isset($model->category->parent))
+					{
+						$str .= $model->category->parent->categoryName . "->";
+					}
+					if(isset($model->category))
+					{
+						$str .= $model->category->categoryName;
+					}
+					echo $str;
 				}
 				?>
 				<?php // echo $form->error($model, 'categoryId'); ?>

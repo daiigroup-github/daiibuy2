@@ -191,10 +191,17 @@ class Product extends ProductMaster
 // should not be searched.
 
 		$criteria = new CDbCriteria;
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->name = $this->searchText;
+			$this->description = $this->searchText;
+			$this->status = $this->searchText;
+		}
 
+		$criteria->compare("categoryId", $this->categoryId);
 		$criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
 		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
-		$criteria->compare("status", $this->status);
+		$criteria->compare("statuss", $this->status);
 		$criteria->compare("supplierId", $this->supplierId);
 		/*
 		  $criteria->compare('productId',$this->productId,true);
@@ -698,17 +705,17 @@ class Product extends ProductMaster
 			),);
 	}
 
-
 	public function calculateItemSetFenzer($categoryId, $length, $provinceId)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
-		$products = Product::model()->findAll('categoryId = '.$categoryId .' AND status = 1');
+		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
-		foreach($products as $product){
+		foreach($products as $product)
+		{
 			$res['items'][$product->productId] = $product;
 			if($length == 0)
 			{
@@ -717,13 +724,14 @@ class Product extends ProductMaster
 			}
 			else
 			{
-				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product,$length, $height);
+				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product, $length, $height);
 			}
 		}
 //		throw new Exception;
 		return $res;
 	}
-	public function calculateItemQuantityFenzer($product,$length, $height)
+
+	public function calculateItemQuantityFenzer($product, $length, $height)
 	{
 
 		switch($product->type)
@@ -746,5 +754,23 @@ class Product extends ProductMaster
 
 		return $res;
 	}
-}
 
+	public function findAllProductBySupplierId($supplierId)
+	{
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->condition = 'status = 2 AND supplierId = :supplierId';
+		$criteria->params = array(
+			':supplierId'=>$supplierId);
+
+		$models = Product::model()->findAll($criteria);
+
+		foreach($models as $item)
+		{
+			$result[$item->productId] = $item->name;
+		}
+
+		return $result;
+	}
+
+}
