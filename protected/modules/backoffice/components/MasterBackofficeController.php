@@ -406,4 +406,44 @@ class MasterBackofficeController extends MasterController
 		echo CJSON::encode($res);
 	}
 
+	public function checkSupplierAndAdminAccessMenu()
+	{
+		if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
+		{
+			$user = User::model()->findByPk(Yii::app()->user->id);
+			if($user->type == 1 || $user->type == 2)
+			{
+				throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
+				//$this->redirect(Yii::app()->createUrl("site/index"));
+			}
+			else if($user->type == 3)
+			{
+				return Yii::app()->user->id;
+			}
+		}
+		else
+		{
+			throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
+			//$this->redirect(Yii::app()->createUrl("site/index"));
+		}
+	}
+
+	public function checkAdminAccessMenu()
+	{
+		if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
+		{
+			$user = User::model()->findByPk(Yii::app()->user->id);
+			if($user->type == 1 || $user->type == 2 || $user->type == 3)
+			{
+				throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
+				//$this->redirect(Yii::app()->createUrl("site/index"));
+			}
+		}
+		else
+		{
+			throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
+			//$this->redirect(Yii::app()->createUrl("site/index"));
+		}
+	}
+
 }

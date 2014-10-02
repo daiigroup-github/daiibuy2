@@ -38,6 +38,7 @@ class SiteController extends MasterController
 	 */
 	public function actionError()
 	{
+		$this->layout = '//layouts/column1';
 		if($error = Yii::app()->errorHandler->error)
 		{
 			if(Yii::app()->request->isAjaxRequest)

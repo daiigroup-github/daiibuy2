@@ -284,6 +284,10 @@ class ProductController extends MasterBackofficeController
 				{
 					$flag = false;
 				}
+				if($flag)
+				{
+					$this->actionSaveCategory2toProduct($_GET["categoryId"], $productId);
+				}
 
 				if($flag)
 				{
@@ -311,9 +315,18 @@ class ProductController extends MasterBackofficeController
 //								null, $productId, $documentUrl);
 //						$sentMail->mailAddNewProductCompleted($emailObj);
 					}
-					$this->redirect(array(
-						'view',
-						'id'=>$model->productId));
+					if(isset($_GET["categoryId"]))
+					{
+						$this->redirect(array(
+							'indexCat2',
+							'categoryId'=>$model->categoryId));
+					}
+					else
+					{
+						$this->redirect(array(
+							'view',
+							'id'=>$model->productId));
+					}
 				}
 				else
 				{
@@ -532,9 +545,18 @@ class ProductController extends MasterBackofficeController
 							$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
 							$sentMail->mailAddNewProductEditedToAdmin($emailObj);
 
-							$this->redirect(array(
-								'view',
-								'id'=>$model->productId));
+							if(isset($_GET["categoryId"]))
+							{
+								$this->redirect(array(
+									'indexCat2',
+									'categoryId'=>$_GET["categoryId"]));
+							}
+							else
+							{
+								$this->redirect(array(
+									'view',
+									'id'=>$model->productId));
+							}
 						}
 						else
 							$transaction->rollback();
@@ -604,21 +626,8 @@ class ProductController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-//                if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
-//                {
-//                    $user = User::model()->findByPk(Yii::app()->user->id);
-//                    if($user->type == 1 || $user->type == 2)
-//                    {
-//                        throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
-//                        //$this->redirect(Yii::app()->createUrl("site/index"));
-//                    }
-//                }
-//                else
-//                {
-//                    throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
-//                    //$this->redirect(Yii::app()->createUrl("site/index"));
-//                }
 		$model = new Product('search');
+		$model->supplierId = $this->checkSupplierAndAdminAccessMenu();
 		//$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Product']))
 			$model->attributes = $_GET['Product'];
@@ -742,7 +751,7 @@ class ProductController extends MasterBackofficeController
 		if(!isset($_POST['categoryId']))
 		{
 			$model->categoryId = $categoryId;
-			$model->productId = $subCategoryId;
+			$model->productId = $productId;
 			return $model->save();
 		}
 		else

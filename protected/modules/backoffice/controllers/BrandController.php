@@ -259,9 +259,12 @@ class BrandController extends MasterBackofficeController
 	public function actionIndex()
 	{
 		$model = new Brand('search');
+
+
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Brand']))
 			$model->attributes = $_GET['Brand'];
+		$model->supplierId = $this->checkSupplierAndAdminAccessMenu();
 
 		$this->render('index', array(
 			'model'=>$model,

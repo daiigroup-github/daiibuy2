@@ -96,6 +96,9 @@ $this->menu = array(
 //						'label'=>'<br><u>Approve</u>',
 //						'url'=>'Yii::app()->createUrl("admin/product/update", array("id"=>$data->productId))'
 //					),
+					'update'=>array(
+						'url'=>'Yii::app()->createUrl("backoffice/product/update?id=".$data->productId."&categoryId=".$data->categoryId)'
+					),
 					'option'=>array(
 						'label'=>'<br><u>Option</u>',
 						'url'=>'Yii::app()->createUrl("backoffice/productOptionGroup/index?productId=".$data->productId)'
