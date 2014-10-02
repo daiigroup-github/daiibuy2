@@ -13,47 +13,118 @@ class MasterBackofficeController extends MasterController
 
 		$this->nav = array(
 			array(
-				'label'=>'Brand',
+				'label'=>'Product<i class="fa fa-arrow-circle-o-down"></i>',
 				'url'=>array(
-					'brand/index')
+					'#'),
+//				'active'=>$this->id == 'controllerId',
+				'items'=>array(
+					array(
+						'label'=>'Brand',
+						'url'=>array(
+							'/backoffice/brand',
+						)),
+					array(
+						'label'=>'Product',
+						'url'=>array(
+							'product/index')
+					),
+					array(
+						'label'=>'PriceList',
+						'url'=>array(
+							'/backoffice/priceGroup',
+						)),
+//					array(
+//						'label'=>'Sub 2',
+//						'url'=>array(
+//							'/brand/view',
+//							'id'=>2)),
+				),
+				'itemOptions'=>array(
+					'class'=>'dropdown'),
+				'submenuOptions'=>array(
+					'class'=>'dropdown-menu'),
+				'linkOptions'=>array(
+					'class'=>'dropdown-toggle',
+					'data-toggle'=>'dropdown',
+				),
 			),
 			array(
-				'label'=>'Product',
+				'label'=>'Order',
 				'url'=>array(
-					'product/index')
-			),
+					'/backoffice/order',
+				)),
 			array(
 				'label'=>'User',
 				'url'=>array(
 					'user/index')
 			),
 			array(
-				'label'=>'PriceList',
+				'label'=>'ข้อมูลหลัก<i class="fa fa-arrow-circle-o-down"></i>',
 				'url'=>array(
-					'/backoffice/priceGroup',
-				)),
-//			array(
-//				'label'=>'Setting',
-//				'url'=>array(
-//					'#'),
-////				'active'=>$this->id == 'controllerId',
-//				'items'=>array(
+					'#'),
+//				'active'=>$this->id == 'controllerId',
+				'items'=>array(
+					array(
+						'label'=>'Bank',
+						'url'=>array(
+							'/backoffice/bank',
+						)),
+					array(
+						'label'=>'Bank Name',
+						'url'=>array(
+							'/backoffice/bankName',
+						)),
+					array(
+						'label'=>'Content',
+						'url'=>array(
+							'/backoffice/content',
+						)),
+				),
+				'itemOptions'=>array(
+					'class'=>'dropdown'),
+				'submenuOptions'=>array(
+					'class'=>'dropdown-menu'),
+				'linkOptions'=>array(
+					'class'=>'dropdown-toggle',
+					'data-toggle'=>'dropdown',
+				),
+			),
+			array(
+				'label'=>'รายงาน<i class="fa fa-arrow-circle-o-down"></i>',
+				'url'=>array(
+					'#'),
+//				'active'=>$this->id == 'controllerId',
+				'items'=>array(
+					array(
+						'label'=>'รายงานสรุปยอดขาย',
+						'url'=>array(
+							'/backoffice/report/viewSummaryReport',
+						)),
+					array(
+						'label'=>'รายงานยอดค้างชำระผู้ผลิตสินค้า',
+						'url'=>array(
+							'/backoffice/report/viewSupplierReport',
+						)),
 //					array(
-//						'label'=>'PriceList',
+//						'label'=>'รายงานยอดค้างชำระผู้กระจายสินค้า',
 //						'url'=>array(
-//							'/backoffice/pricelist',
-//							'id'=>1)),
-////					array(
-////						'label'=>'Sub 2',
-////						'url'=>array(
-////							'/brand/view',
-////							'id'=>2)),
-//				),
-//				'itemOptions'=>array(
-//					'class'=>'dropdown'),
-//				'submenuOptions'=>array(
-//					'class'=>'dropdown-menu'),
-//			),
+//							'/backoffice/report/viewDealerReport',
+//						)),
+				),
+				'itemOptions'=>array(
+					'class'=>'dropdown'),
+				'submenuOptions'=>array(
+					'class'=>'dropdown-menu'),
+				'linkOptions'=>array(
+					'class'=>'dropdown-toggle',
+					'data-toggle'=>'dropdown',
+				),
+			),
+			array(
+				'label'=>'Configuration',
+				'url'=>array(
+					'/backoffice/configuration',
+				)),
 //            array(
 //                'label' => 'Home',
 //                'url' => array('/site/index')
@@ -423,8 +494,7 @@ class MasterBackofficeController extends MasterController
 		}
 		else
 		{
-			throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
-			//$this->redirect(Yii::app()->createUrl("site/index"));
+			$this->redirect(Yii::app()->createUrl("backoffice/login"));
 		}
 	}
 
@@ -441,8 +511,7 @@ class MasterBackofficeController extends MasterController
 		}
 		else
 		{
-			throw new CHttpException("ไม่สามารถเข้าถึงส่วนนี้ได้");
-			//$this->redirect(Yii::app()->createUrl("site/index"));
+			$this->redirect(Yii::app()->createUrl("backoffice/login"));
 		}
 	}
 

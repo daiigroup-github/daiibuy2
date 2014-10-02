@@ -11,6 +11,8 @@
  * @property string $token
  * @property string $title
  * @property integer $type
+ * @property string $totalIncVAT
+ * @property string $paymentDateTime
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -21,7 +23,6 @@
  */
 class OrderMaster extends MasterCActiveRecord
 {
-
 	/**
 	 * @return string the associated database table name
 	 */
@@ -38,40 +39,15 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array(
-				'supplierId, provinceId',
-				'required'),
-			array(
-				'type, status',
-				'numerical',
-				'integerOnly'=>true),
-			array(
-				'userId, supplierId, provinceId',
-				'length',
-				'max'=>20),
-			array(
-				'token, title',
-				'length',
-				'max'=>200),
-			array(
-				'createDateTime, updateDateTime',
-				'safe'),
-			array(
-				'createDateTime, updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'insert'),
-			array(
-				'updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'update'),
+			array('supplierId, provinceId, createDateTime', 'required'),
+			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('userId, supplierId, provinceId', 'length', 'max'=>20),
+			array('token, title', 'length', 'max'=>200),
+			array('totalIncVAT', 'length', 'max'=>15),
+			array('paymentDateTime, updateDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array(
-				'orderId, userId, supplierId, provinceId, token, title, type, status, createDateTime, updateDateTime, searchText',
-				'safe',
-				'on'=>'search'),
+			array('orderId, userId, supplierId, provinceId, token, title, type, totalIncVAT, paymentDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,18 +59,8 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'supplier'=>array(
-				self::BELONGS_TO,
-				'User',
-				'supplierId'),
-			'orderGroupToOrders'=>array(
-				self::HAS_MANY,
-				'OrderGroupToOrder',
-				'orderId'),
-			'orderDetail'=>array(
-				self::HAS_ONE,
-				'OrderDetail',
-				'orderId'),
+			'supplier' => array(self::BELONGS_TO, 'User', 'supplierId'),
+			'orderGroupToOrders' => array(self::HAS_MANY, 'OrderGroupToOrder', 'orderId'),
 		);
 	}
 
@@ -104,16 +70,18 @@ class OrderMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'orderId'=>'Order',
-			'userId'=>'User',
-			'supplierId'=>'Supplier',
-			'provinceId'=>'Province',
-			'token'=>'Token',
-			'title'=>'Title',
-			'type'=>'Type',
-			'status'=>'Status',
-			'createDateTime'=>'Create Date Time',
-			'updateDateTime'=>'Update Date Time',
+			'orderId' => 'Order',
+			'userId' => 'User',
+			'supplierId' => 'Supplier',
+			'provinceId' => 'Province',
+			'token' => 'Token',
+			'title' => 'Title',
+			'type' => 'Type',
+			'totalIncVAT' => 'Total Inc Vat',
+			'paymentDateTime' => 'Payment Date Time',
+			'status' => 'Status',
+			'createDateTime' => 'Create Date Time',
+			'updateDateTime' => 'Update Date Time',
 		);
 	}
 
@@ -133,7 +101,7 @@ class OrderMaster extends MasterCActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria = new CDbCriteria;
+		$criteria=new CDbCriteria;
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
@@ -144,21 +112,25 @@ class OrderMaster extends MasterCActiveRecord
 			$this->token = $this->searchText;
 			$this->title = $this->searchText;
 			$this->type = $this->searchText;
+			$this->totalIncVAT = $this->searchText;
+			$this->paymentDateTime = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('orderId', $this->orderId, true, 'OR');
-		$criteria->compare('userId', $this->userId, true, 'OR');
-		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
-		$criteria->compare('provinceId', $this->provinceId, true, 'OR');
-		$criteria->compare('token', $this->token, true, 'OR');
-		$criteria->compare('title', $this->title, true, 'OR');
-		$criteria->compare('type', $this->type);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+		$criteria->compare('orderId',$this->orderId,true, 'OR');
+		$criteria->compare('userId',$this->userId,true, 'OR');
+		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
+		$criteria->compare('provinceId',$this->provinceId,true, 'OR');
+		$criteria->compare('token',$this->token,true, 'OR');
+		$criteria->compare('title',$this->title,true, 'OR');
+		$criteria->compare('type',$this->type);
+		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
+		$criteria->compare('paymentDateTime',$this->paymentDateTime,true, 'OR');
+		$criteria->compare('status',$this->status);
+		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
+		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -171,9 +143,8 @@ class OrderMaster extends MasterCActiveRecord
 	 * @param string $className active record class name.
 	 * @return OrderMaster the static model class
 	 */
-	public static function model($className = __CLASS__)
+	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
 }
