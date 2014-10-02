@@ -62,7 +62,7 @@ return false;
 			array(
 				'class'=>'IndexColumn'),
 			array(
-				'class'=>'sortColumn'),
+				'class'=>'SortColumn'),
 			array(
 				'header'=>'Image',
 				'name'=>'image',
