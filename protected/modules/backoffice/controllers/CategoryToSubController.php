@@ -88,8 +88,11 @@ class CategoryToSubController extends MasterBackofficeController
 			{
 				$cat->attributes = $_POST["Category"];
 				$cat->isRoot = 0;
+				if(!Yii::app()->user->isGuest)
+				{
+					$cat->supplierId = Yii::app()->user->id;
+				}
 				$catModel = Category::model()->findByPk($model->categoryId);
-				$cat->brandModelId = $catModel->brandModelId;
 				$cat->createDateTime = new CDbExpression("NOW()");
 				$cat->updateDateTime = new CDbExpression("NOW()");
 				$folderimage = 'subCategory';
@@ -144,8 +147,8 @@ class CategoryToSubController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->id));
+						'index',
+						'categoryId'=>$_GET["categoryId"]));
 				}
 				else
 				{
@@ -237,8 +240,8 @@ class CategoryToSubController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->id));
+						'index',
+						'categoryId'=>$model->categoryId));
 				}
 				else
 				{
@@ -329,6 +332,30 @@ class CategoryToSubController extends MasterBackofficeController
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+
+	public function actionSaveCategorytoSub($categoryId = null, $subCategoryId = null, $isTheme = false, $isSet = false)
+	{
+//		throw new Exception(print_r($_REQUEST, true));
+		$result = array();
+		$model = new CategoryToSub();
+		$model->createDateTime = new CDbExpression("NOW()");
+		$model->updateDateTime = new CDbExpression("NOW()");
+		if(!isset($_POST['categoryId']))
+		{
+			$model->categoryId = $categoryId;
+			$model->subCategoryId = $subCategoryId;
+			$model->isTheme = FALSE;
+			$model->isSet = false;
+			return $model->save();
+		}
+		else
+		{
+			$model->categoryId = $_POST["categoryId"];
+			$model->subCategoryId = $_POST["subCategoryId"];
+			$result["status"] = $model->save();
+			echo CJSON::encode($result);
 		}
 	}
 

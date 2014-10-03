@@ -570,6 +570,7 @@ class UserController extends MasterBackofficeController
 	public function actionIndex()
 	{
 		$model = new User('search');
+		$this->checkAdminAccessMenu();
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['User']))
 			$model->attributes = $_GET['User'];

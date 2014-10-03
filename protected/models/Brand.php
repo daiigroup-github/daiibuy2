@@ -76,4 +76,34 @@ class Brand extends BrandMaster
 		return $w;
 	}
 
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->title = $this->searchText;
+			$this->description = $this->searchText;
+		}
+
+		$criteria->compare('brandId', $this->brandId, true, 'OR');
+		$criteria->compare('supplierId', $this->supplierId);
+		$criteria->compare('title', $this->title, true, 'OR');
+		$criteria->compare('description', $this->description, true, 'OR');
+		$criteria->compare('image', $this->image, true, 'OR');
+		$criteria->compare('sortOrder', $this->sortOrder);
+		$criteria->compare('status', $this->status);
+		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'sortOrder ASC'
+			)
+		));
+	}
+
 }

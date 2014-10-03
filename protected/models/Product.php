@@ -191,10 +191,17 @@ class Product extends ProductMaster
 // should not be searched.
 
 		$criteria = new CDbCriteria;
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->name = $this->searchText;
+			$this->description = $this->searchText;
+			$this->status = $this->searchText;
+		}
 
+		$criteria->compare("categoryId", $this->categoryId);
 		$criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
 		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
-		$criteria->compare("status", $this->status);
+		$criteria->compare("statuss", $this->status);
 		$criteria->compare("supplierId", $this->supplierId);
 		/*
 		  $criteria->compare('productId',$this->productId,true);
@@ -475,7 +482,7 @@ class Product extends ProductMaster
 
 		if(isset($$provinceIdPrice))
 		{
-			$price = $price * ((100 + $provincePrice->priceRate) / 100);
+			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
 		}
 		else
 		{
@@ -514,13 +521,13 @@ class Product extends ProductMaster
 //			$price = $product->price;
 //		}
 
-		$provincePrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+		$amphurPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
 			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
-		if(isset($provincePrice))
+		if(isset($amphurPrice))
 		{
-			$price = $price * ((100 + $provincePrice->priceRate) / 100);
+			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
 		}
 		else
 		{
@@ -698,17 +705,17 @@ class Product extends ProductMaster
 			),);
 	}
 
-
 	public function calculateItemSetFenzer($categoryId, $length, $provinceId)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
-		$products = Product::model()->findAll('categoryId = '.$categoryId .' AND status = 1');
+		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
-		$noOfSpanSet = round(intval($length)/3);
+
+		$noSpanSet = round(intval($length)/3);
 
 		foreach($products as $product)
 			{
@@ -716,14 +723,14 @@ class Product extends ProductMaster
 			$res['items'][$product->productId] = $product;
 
 			//quantity
-			if($noOfSpanSet == 0)
+			if($noSpanSet == 0)
 			{
 				//default Qty = 1
 				$res['items']['Qty'] = 1;
 			}
 			else
 			{
-				$res['items']['Qty'] = $this->getItemQuantityFenzer($product)*$noOfSpanSet;
+				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product, $length, $height);
 			}
 
 			//price
@@ -734,11 +741,46 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function getItemQuantityFenzer($product)
+	public function calculateItemQuantityFenzer($product, $length, $height)
 	{
-		$cat2toProduct = Category2ToProduct::model()->find('productId = '.$product->productId .' AND categoryId = '. $product->categoryId);
-		$res = $cat2toProduct->quantity;
-		return res;
-	}
-}
 
+		switch($product->type)
+		{
+			case 1:
+				//
+				break;
+			case 2:
+				//
+				break;
+			case 3:
+				//
+				break;
+			case 4:
+				//
+				break;
+			default:
+				break;
+		}
+
+		return $res;
+	}
+
+	public function findAllProductBySupplierId($supplierId)
+	{
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->condition = 'status = 2 AND supplierId = :supplierId';
+		$criteria->params = array(
+			':supplierId'=>$supplierId);
+
+		$models = Product::model()->findAll($criteria);
+
+		foreach($models as $item)
+		{
+			$result[$item->productId] = $item->name;
+		}
+
+		return $result;
+	}
+
+}

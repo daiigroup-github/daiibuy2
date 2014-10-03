@@ -146,7 +146,10 @@ class ProductController extends MasterBackofficeController
 //		$productHistory = new ProductHistory();
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
-
+		if(isset($_GET["categoryId"]))
+		{
+			$model->categoryId = $_GET["categoryId"];
+		}
 		if(isset($_POST['Product']))
 		{
 			$model->attributes = $_POST['Product'];
@@ -281,6 +284,10 @@ class ProductController extends MasterBackofficeController
 				{
 					$flag = false;
 				}
+				if($flag)
+				{
+					$this->actionSaveCategory2toProduct($_GET["categoryId"], $productId);
+				}
 
 				if($flag)
 				{
@@ -308,9 +315,18 @@ class ProductController extends MasterBackofficeController
 //								null, $productId, $documentUrl);
 //						$sentMail->mailAddNewProductCompleted($emailObj);
 					}
-					$this->redirect(array(
-						'view',
-						'id'=>$model->productId));
+					if(isset($_GET["categoryId"]))
+					{
+						$this->redirect(array(
+							'indexCat2',
+							'categoryId'=>$model->categoryId));
+					}
+					else
+					{
+						$this->redirect(array(
+							'view',
+							'id'=>$model->productId));
+					}
 				}
 				else
 				{
@@ -529,9 +545,18 @@ class ProductController extends MasterBackofficeController
 							$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
 							$sentMail->mailAddNewProductEditedToAdmin($emailObj);
 
-							$this->redirect(array(
-								'view',
-								'id'=>$model->productId));
+							if(isset($_GET["categoryId"]))
+							{
+								$this->redirect(array(
+									'indexCat2',
+									'categoryId'=>$_GET["categoryId"]));
+							}
+							else
+							{
+								$this->redirect(array(
+									'view',
+									'id'=>$model->productId));
+							}
 						}
 						else
 							$transaction->rollback();
@@ -601,6 +626,19 @@ class ProductController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
+		$model = new Product('search');
+		$model->supplierId = $this->checkSupplierAndAdminAccessMenu();
+		//$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Product']))
+			$model->attributes = $_GET['Product'];
+
+		$this->render('index', array(
+			'model'=>$model,
+		));
+	}
+
+	public function actionIndexCat2()
+	{
 //                if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
 //                {
 //                    $user = User::model()->findByPk(Yii::app()->user->id);
@@ -616,12 +654,18 @@ class ProductController extends MasterBackofficeController
 //                    //$this->redirect(Yii::app()->createUrl("site/index"));
 //                }
 		$model = new Product('search');
+		$cat2ToProduct = new Category2ToProduct('search');
 		//$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Product']))
 			$model->attributes = $_GET['Product'];
+		if(isset($_GET["categoryId"]))
+		{
+			$cat2ToProduct->categoryId = $_GET["categoryId"];
+		}
 
-		$this->render('index', array(
+		$this->render('index_cat2', array(
 			'model'=>$model,
+			'cat2ToProduct'=>$cat2ToProduct
 		));
 	}
 
@@ -694,6 +738,28 @@ class ProductController extends MasterBackofficeController
 					'productAttributeModel'=>$productAttributeModel), true),
 			));
 			exit;
+		}
+	}
+
+	public function actionSaveCategory2toProduct($categoryId = null, $productId = null)
+	{
+//		throw new Exception(print_r($_REQUEST, true));
+		$result = array();
+		$model = new Category2ToProduct();
+		$model->createDateTime = new CDbExpression("NOW()");
+		$model->updateDateTime = new CDbExpression("NOW()");
+		if(!isset($_POST['categoryId']))
+		{
+			$model->categoryId = $categoryId;
+			$model->productId = $productId;
+			return $model->save();
+		}
+		else
+		{
+			$model->categoryId = $_POST["categoryId"];
+			$model->productId = $_POST["productId"];
+			$result["status"] = $model->save();
+			echo CJSON::encode($result);
 		}
 	}
 
