@@ -712,7 +712,10 @@ class Product extends ProductMaster
 
 		foreach($products as $product)
 			{
+			//product
 			$res['items'][$product->productId] = $product;
+
+			//quantity
 			if($noOfSpanSet == 0)
 			{
 				//default Qty = 1
@@ -722,6 +725,10 @@ class Product extends ProductMaster
 			{
 				$res['items']['Qty'] = $this->getItemQuantityFenzer($product)*$noOfSpanSet;
 			}
+
+			//price
+			
+
 		}
 //		throw new Exception;
 		return $res;

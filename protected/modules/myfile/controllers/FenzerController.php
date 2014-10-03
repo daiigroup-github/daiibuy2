@@ -174,28 +174,30 @@ class FenzerController extends MasterMyFileController
 		$itemSetArray = Product::model()->calculateItemSetFenzer($productCate2->categoryId, $length, $provinceId);
 
 		//SAVE NEW ORDER
-		$orderModel->supplierId = 176;
-		$orderModel->provinceId = $provinceId;
-		$orderModel->type = 1;
-		$orderModel->status = 1;
-		$orderModel->createDateTime = new CDbExpression("NOW()");
-		if($orderModel->save()){
-			$orderId = Yii::app()->db->lastInsertID;
-			$orderDetail = new OrderModel();
-			$orderDetail->orderId = $orderId;
-			$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
-			$orderDetail->createDateTime = new CDbExpression("NOW()");
-			if($orderDetail->save()){
-				$orderDetailId = Yii::app()->db->lastInsertID;
-				foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
-				$orderDetailValue = new OrderDetailValue();
-				$orderDetailValue->orderDetailId = $orderDetailId;
-				$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-				$orderDetailValue->value = $item->title=='height'? $height : $length;
-				}
-			}
-		}
-
+//		$orderModel->supplierId = 176;
+//		$orderModel->provinceId = $provinceId;
+//		$orderModel->type = 1;
+//		$orderModel->status = 1;
+//		$orderModel->createDateTime = new CDbExpression("NOW()");
+//		if($orderModel->save()){
+//			$orderId = Yii::app()->db->lastInsertID;
+//			$orderDetail = new OrderModel();
+//			$orderDetail->orderId = $orderId;
+//			$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
+//			$orderDetail->createDateTime = new CDbExpression("NOW()");
+//			if($orderDetail->save()){
+//				$orderDetailId = Yii::app()->db->lastInsertID;
+//				foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
+//				$orderDetailValue = new OrderDetailValue();
+//				$orderDetailValue->orderDetailId = $orderDetailId;
+//				$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
+//				$orderDetailValue->value = $item->title=='height'? $height : $length;
+//				}
+//			}
+//		}
+		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+				'productResult'=>$res,
+				),TRUE, TRUE);
 	}
 
 // Uncomment the following methods and override them if needed
