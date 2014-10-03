@@ -135,6 +135,26 @@ $this->breadcrumbs = array(
 				<div class="row text-left">
 					ประเมินราคา
 				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Height : <?php
+						echo CHtml::textField('height', '', array(
+							'id'=>'height_input',
+							'class'=>'input-lg',
+							'disabled'=>true,));
+						?>
+						เมตร
+					</div>
+					<div class="col-md-6 pull-left">
+						Length : <?php
+						echo CHtml::textField('length', '', array(
+							'id'=>'length_input',
+							'class'=>'input-lg',
+						));
+						?>
+						เมตร
+					</div>
+				</div>
 				<div class="row" id="order_list">
 
 				</div>

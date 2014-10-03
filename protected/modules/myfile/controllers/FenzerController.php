@@ -196,7 +196,7 @@ class FenzerController extends MasterMyFileController
 //			}
 //		}
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
-				'productResult'=>$res,
+				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
 	}
 

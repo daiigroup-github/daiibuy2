@@ -476,13 +476,13 @@ class Product extends ProductMaster
 		$price = $product->price;
 
 
-		$$provinceIdPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+		$provincePrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
 			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
-		if(isset($$provinceIdPrice))
+		if(isset($provincePrice))
 		{
-			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+			$price = $price * ((100 + $provincePrice->priceRate) / 100);
 		}
 		else
 		{
@@ -521,13 +521,13 @@ class Product extends ProductMaster
 //			$price = $product->price;
 //		}
 
-		$amphurPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+		$provincePrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
 			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
-		if(isset($amphurPrice))
+		if(isset($provincePrice))
 		{
-			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+			$price = $price * ((100 + $provincePrice->priceRate) / 100);
 		}
 		else
 		{
@@ -710,34 +710,45 @@ class Product extends ProductMaster
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
 		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
-		$res = array();
+		$res;
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
 
 		$noSpanSet = round(intval($length)/3);
+		$totalPrice = 0.00;
 
 		foreach($products as $product)
 			{
+			$productId = strval($product->productId);
 			//product
-			$res['items'][$product->productId] = $product;
+			$res['items'][$productId] = $product;
 
 			//quantity
 			if($noSpanSet == 0)
 			{
 				//default Qty = 1
-				$res['items']['Qty'] = 1;
+				$res['items'][$productId]['quantity'] = 1;
 			}
 			else
 			{
-				$res['items']['Qty'] = $this->calculateItemQuantityFenzer($product, $length, $height);
+				$res['items'][$productId]['quantity'] = $this->calculateItemQuantityFenzer($product, $length, $height)*$noSpanSet;
 			}
 
 			//price
-			
-
+			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$productId));
+			if(isset($productPromotion)){
+				//promotion price
+				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId) * (($noSpanSet==0)? 1 : $noSpanSet);
+			}else{
+				//normal price
+				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId) * (($noSpanSet==0)? 1 : $noSpanSet);
+			}
+			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
 		}
-//		throw new Exception;
+
+		$res['totalPrice'] = $totalPrice;
 		return $res;
 	}
 
