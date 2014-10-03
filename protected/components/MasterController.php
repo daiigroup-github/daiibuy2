@@ -33,7 +33,6 @@ class MasterController extends Controller
 		$this->cookie = new DaiiBuy();
 		$this->cookie->loadCookie();
 		$this->province = isset($this->cookie['provinceId']) && !empty($this->cookie['provinceId']) ? Province::model()->findByPk($this->cookie['provinceId'])->provinceName : '';
-		$this->writeToFile('/tmp/master', print_r($this->cookie, true));
 	}
 
 	public function writeToFile($filePath, $string, $mode='w+')

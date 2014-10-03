@@ -468,21 +468,20 @@ class Product extends ProductMaster
 		{
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
-			$provinceId = $daiibuy->$provinceId;
+            $provinceId = $daiibuy['provinceId'];
 		}
 
 		$product = Product::model()->findByPk($productId);
-//		$price = $this->removeVAT($product->price);
 		$price = $product->price;
 
 
-		$$provinceIdPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+		$priceModel = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
 			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
 
-		if(isset($$provinceIdPrice))
+		if(isset($priceModel))
 		{
-			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
+			$price = $price * ((100 + $priceModel->priceRate) / 100);
 		}
 		else
 		{
@@ -490,11 +489,6 @@ class Product extends ProductMaster
 		}
 
 		return floor($price);
-//		}
-//		else
-//		{
-//			return 0;
-//		}
 	}
 
 	public function calProductPromotionPrice($productId, $provinceId = NULL)
@@ -503,43 +497,30 @@ class Product extends ProductMaster
 		{
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
-			$provinceId = $daiibuy->provinceId;
+			$provinceId = $daiibuy['provinceId'];
 		}
 
 		$product = Product::model()->findByPk($productId);
-//		if(isset($product))
-//		{
 		$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
-			":productId"=>$product->productId));
+			":productId"=>$productId));
 
-//		if (isset($productPromotion))
-//		{
-//		$price = $this->removeVAT($productPromotion->price);
-		$price = $productPromotion->price;
+        if(isset($productPromotion)) {
+		    $price = $this->removeVAT($productPromotion->price);
+            $price = $productPromotion->price;
+            $amphurPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+                ":provinceId" => $provinceId,
+                ':priceGroupId' => $product->priceGroupId));
 
-//		} else {
-//			$price = $product->price;
-//		}
+            if (isset($amphurPrice)) {
+                $price = $price * ((100 + $amphurPrice->priceRate) / 100);
+            } else {
+                $price = $price * ((100 + $product->priceGroup->priceRate) / 100);
+            }
 
-		$amphurPrice = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
-			":provinceId"=>$provinceId,
-			':priceGroupId'=>$product->priceGroupId));
-
-		if(isset($amphurPrice))
-		{
-			$price = $price * ((100 + $amphurPrice->priceRate) / 100);
-		}
-		else
-		{
-			$price = $price * ((100 + $product->priceGroup->priceRate) / 100);
-		}
-
-		return floor($price);
-//		}
-//		else
-//		{
-//			return 0;
-//		}
+            return floor($price);
+        } else {
+            return 0;
+        }
 	}
 
 	public function calProductPromotionPriceMargin($productId, $provinceId = NULL, $orderModel)

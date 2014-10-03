@@ -6,13 +6,14 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<?php $this->renderPartial('//layouts/_product_row', array(
-    'title' => 'Sanitary',
-    'maxItems' => 3,
-    'moreUrl' => 'madrid/category/index/id/1'
-)); ?>
-<?php $this->renderPartial('//layouts/_product_row', array(
-    'title' => 'Tile',
-    'maxItems' => 3,
-    'moreUrl' => 'madrid/category/index/id/2'
-)); ?>
+<?php
+foreach ($products as $product) {
+    $this->renderPartial('_product_row', array(
+        'title' => 'Sanitary',
+        'maxItems' => 3,
+        'moreUrl'=>$product['moreUrl'],
+        'items' => $product['items'],
+    ));
+}
+?>
+
