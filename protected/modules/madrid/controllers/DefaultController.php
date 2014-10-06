@@ -32,7 +32,7 @@ class DefaultController extends MasterMadridController
             $sanitaryItems[$i]['weight'] = $s->weight;
             $sanitaryItems[$i]['width'] = $s->width;
             $sanitaryItems[$i]['length'] = $s->length;
-            $sanitaryItems[$i]['images'] = array();
+            $sanitaryItems[$i]['images'] = $s->productImages;
             $sanitaryItems[$i]['url'] = $this->createUrl('product/index/id/'.$s->productId);
 
             $i++;
@@ -51,7 +51,7 @@ class DefaultController extends MasterMadridController
             $tileItems[$j]['weight'] = $t->weight;
             $tileItems[$j]['width'] = $t->width;
             $tileItems[$j]['length'] = $t->length;
-            $tileItems[$j]['images'] = array();
+            $tileItems[$j]['images'] = $t->productImages;
             $tileItems[$j]['url'] = $this->createUrl('product/index/id/'.$t->productId);
 
 

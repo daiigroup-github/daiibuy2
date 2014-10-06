@@ -11,6 +11,9 @@ class HomeController extends MasterController
 		                   'madrid' => 'Madrid Bathroom',
 		);
 
+        $suppliers = Supplier::model()->findAll('status=1');
+        shuffle($suppliers);
+
 		$this->render('index', array('suppliers'=>$suppliers));
 	}
 

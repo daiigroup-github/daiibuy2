@@ -5,30 +5,36 @@ class ProductController extends MasterMadridController
     public function actionIndex($id)
     {
         $images = [];
-        foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/sanitary') as $k => $image) {
+        /*foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/sanitary') as $k => $image) {
             $images[$k] = Yii::app()->baseUrl . '/images/madrid/sanitary/' . $image;
+        }*/
+
+        $productModel = Product::model()->findByPk($id);
+
+        foreach($productModel->productImagesSort as $productImage) {
+            $images[] = Yii::app()->baseUrl.$productImage->image;
         }
+
         $product = array(
-            'title' => 'Madrid Sanitary #' . $id,
+            'title' => $productModel->name,
             'code' => 'PBS173',
             'category' => 'Sanitary',
-            'stock' => '20',
+            'stock' => $productModel->quantity,
             'dimension' => array(
-                'w' => 100.00,
-                'h' => 100.00,
-                'l' => 100.00,
+                'w' => $productModel->width,
+                'h' => $productModel->height,
+                'l' => $productModel->length,
             ),
-            'weight' => 80.50,
-            'price' => 300,
-            'pricePromotion' => 280,
-            'productId' => 1,
+            'weight' => $productModel->weight,
+            'price' => $productModel->calProductPrice(),
+            'pricePromotion' => $productModel->calProductPromotionPrice(),
+            'productId' => $productModel->productId,
             'options' => array(
                 array('option1'),
                 array('option2'),
             ),
             'images' => $images,
             'attributes'=>array(
-                'รหัสสินค้า'=>'PBS173',
                 'ประเภท'=>'Sanitary',
                 'จำนวนคงเหลือ'=>'20',
                 'กว้าง x ยาว x สูง'=>'100.00x100.00x100.00'
@@ -49,7 +55,6 @@ class ProductController extends MasterMadridController
                 ),
             ),
         );
-
         $this->render('index', array('product' => $product));
     }
 

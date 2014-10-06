@@ -14,28 +14,37 @@ $data = [
     ],
 ];
 */
+$image = '';
+if (isset($data->productImages)) {
+    foreach ($data->productImages as $productImage) {
+        $image = $productImage->image;
+        break;
+    }
+}
 ?>
 <!-- Product Item -->
 <div
     class="<?php echo ($this->id == 'category') ? 'col-lg-4 col-md-4 col-sm-4' : 'col-lg-3 col-md-3 col-sm-4'; ?> product">
 
     <div class="product-image">
-        <?php //<img src="img/products/sample1.jpg" alt="Product1">?>
-        <?php echo CHtml::image($data['image'], $data['title']); ?>
-        <?php if(isset($data['isQuickView'])):?>
-        <a href="<?php echo $data['url']; ?>" class="product-hover">
-            <i class="icons icon-eye-1"></i> Quick View
-        </a>
+        <?php if(isset($data->productPromotion)):?>
+            <span class="product-tag">Sale</span>
         <?php endif;?>
+        <?php echo CHtml::image(Yii::app()->baseUrl . $image);?>
+        <?php //if (isset($data['isQuickView'])): ?>
+            <a href="<?php echo $this->createUrl('product/index/id/'.$data['productId']); ?>" class="product-hover">
+                <i class="icons icon-eye-1"></i> Quick View
+            </a>
+        <?php //endif; ?>
     </div>
 
     <div class="product-info">
-        <h5><a href="<?php echo $data['url']; ?>"><?php echo $data['title']; ?></a></h5>
+        <h5><a href="<?php echo $this->createUrl('product/index/id/'.$data['productId']); ?>"><?php echo mb_substr($data['name'],0,29,'utf8'); ?></a></h5>
         <?php if (isset($data['price'])): ?>
-            <?php if (isset($data['pricePromotion'])): ?>
-                <span class="price"><del><?php echo number_format($data['price'], 2); ?></del><<?php echo number_format($data['pricePromotion'], 2); ?>/span>
+            <?php if (isset($data->productPromotion)): ?>
+                <span class="price"><del><?php echo number_format($data->price, 2); ?></del><?php echo number_format($data->productPromotion->price, 2); ?></span>
             <?php else: ?>
-                <span class="price"><?php echo number_format($data['price'], 2); ?></span>
+                <span class="price"><?php echo number_format($data->price, 2); ?></span>
             <?php endif; ?>
         <?php endif; ?>
     </div>

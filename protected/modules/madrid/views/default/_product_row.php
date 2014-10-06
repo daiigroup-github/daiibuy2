@@ -30,8 +30,10 @@
                 <div class="product">
 
                     <div class="product-image">
-                        <?php //<span class="product-tag">Sale</span>?>
-                        <img src="themes/homeshop/assets/img/products/sample4.jpg" alt="Product1">
+                        <?php if($item['promotionPrice'] > 0):?>
+                            <span class="product-tag">Sale</span>
+                        <?php endif;?>
+                        <img src="<?php echo Yii::app()->baseUrl.$item['images'][0]->image;?>" alt="Product1">
                         <a href="<?php echo $item['url']; ?>" class="product-hover">
                             <i class="icons icon-eye-1"></i> Quick View
                         </a>
