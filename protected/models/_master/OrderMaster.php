@@ -8,11 +8,14 @@
  * @property string $userId
  * @property string $supplierId
  * @property string $provinceId
+ * @property string $orderNo
  * @property string $token
  * @property string $title
  * @property integer $type
  * @property string $totalIncVAT
  * @property string $paymentDateTime
+ * @property integer $orderStatusId
+ * @property integer $paymentMethod
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -39,15 +42,16 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, provinceId, createDateTime', 'required'),
-			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('supplierId, provinceId, paymentMethod, createDateTime', 'required'),
+			array('type, orderStatusId, paymentMethod, status', 'numerical', 'integerOnly'=>true),
 			array('userId, supplierId, provinceId', 'length', 'max'=>20),
+			array('orderNo', 'length', 'max'=>45),
 			array('token, title', 'length', 'max'=>200),
 			array('totalIncVAT', 'length', 'max'=>15),
 			array('paymentDateTime, updateDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderId, userId, supplierId, provinceId, token, title, type, totalIncVAT, paymentDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderId, userId, supplierId, provinceId, orderNo, token, title, type, totalIncVAT, paymentDateTime, orderStatusId, paymentMethod, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,11 +78,14 @@ class OrderMaster extends MasterCActiveRecord
 			'userId' => 'User',
 			'supplierId' => 'Supplier',
 			'provinceId' => 'Province',
+			'orderNo' => 'Order No',
 			'token' => 'Token',
 			'title' => 'Title',
 			'type' => 'Type',
 			'totalIncVAT' => 'Total Inc Vat',
 			'paymentDateTime' => 'Payment Date Time',
+			'orderStatusId' => 'Order Status',
+			'paymentMethod' => 'Payment Method',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -109,11 +116,14 @@ class OrderMaster extends MasterCActiveRecord
 			$this->userId = $this->searchText;
 			$this->supplierId = $this->searchText;
 			$this->provinceId = $this->searchText;
+			$this->orderNo = $this->searchText;
 			$this->token = $this->searchText;
 			$this->title = $this->searchText;
 			$this->type = $this->searchText;
 			$this->totalIncVAT = $this->searchText;
 			$this->paymentDateTime = $this->searchText;
+			$this->orderStatusId = $this->searchText;
+			$this->paymentMethod = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -123,11 +133,14 @@ class OrderMaster extends MasterCActiveRecord
 		$criteria->compare('userId',$this->userId,true, 'OR');
 		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
 		$criteria->compare('provinceId',$this->provinceId,true, 'OR');
+		$criteria->compare('orderNo',$this->orderNo,true, 'OR');
 		$criteria->compare('token',$this->token,true, 'OR');
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('type',$this->type);
 		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
 		$criteria->compare('paymentDateTime',$this->paymentDateTime,true, 'OR');
+		$criteria->compare('orderStatusId',$this->orderStatusId);
+		$criteria->compare('paymentMethod',$this->paymentMethod);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

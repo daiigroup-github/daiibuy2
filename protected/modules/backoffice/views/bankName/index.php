@@ -29,56 +29,57 @@ $('.search-form').submit(function(){
 ");
 ?>
 
-<div class="module">
-	<div class="module-head">
-		<h3>Manage Bank Names</h3>
-	</div>
-	<div class="module-option clearfix">
-		<div class="pull-left">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Manage Product
+		<div class="pull-right">
 			<?php
-			$this->renderPartial('_search', array(
-				'model'=>$model,
-			));
-			?>
-		</div>
-		<div class="btn-group pull-right">
-			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i>', $this->createUrl('create'), array(
-				'class'=>'btn btn-small btn-primary'));
+			echo CHtml::link('<i class="icon-plus-sign icon-white"></i>  Create', array(
+				'create'), array(
+				'class'=>'btn btn-xs btn-primary'));
 			?>
 		</div>
 	</div>
-	<div class="module-body">
-		<?php
-		$this->widget('zii.widgets.grid.CGridView', array(
-			'id'=>'bank-name-grid',
-			'dataProvider'=>$model->search(),
-			//'filter'=>$model,
-			'itemsCssClass'=>'table table-striped table-bordered',
-			'columns'=>array(
-				array(
-					'class'=>'IndexColumn'),
-				array(
-					'name'=>'logo',
-					'type'=>'html',
-					'htmlOptions'=>array(
-						'style'=>'width:110px'),
-					'value'=>'CHtml::image(Yii::app()->request->baseUrl.$data->logo, "logo", array("style"=>"width:100px;"))',
-				),
-				'title',
-//				'description:html',
-				array(
-					'name'=>'status',
-					'value'=>'$data->getStatusText($data->status)',
-				),
-				'createDateTime',
-				'updateDateTime',
-				array(
-					'class'=>'CButtonColumn',
-				),
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-12">
+				<?php
+				$this->renderPartial('_search', array(
+					'model'=>$model,
+				));
+				?>
+			</div>
+		</div>
+	</div>
+	<?php
+	$this->widget('zii.widgets.grid.CGridView', array(
+		'id'=>'bank-name-grid',
+		'dataProvider'=>$model->search(),
+		//'filter'=>$model,
+		'itemsCssClass'=>'table table-striped table-bordered',
+		'columns'=>array(
+			array(
+				'class'=>'IndexColumn'),
+			array(
+				'name'=>'logo',
+				'type'=>'html',
+				'htmlOptions'=>array(
+					'style'=>'width:110px'),
+				'value'=>'CHtml::image(Yii::app()->request->baseUrl.$data->logo, "logo", array("style"=>"width:100px;"))',
 			),
-		));
-		?>
+			'title',
+//				'description:html',
+			array(
+				'name'=>'status',
+				'value'=>'$data->getStatusText($data->status)',
+			),
+			'createDateTime',
+			'updateDateTime',
+			array(
+				'class'=>'CButtonColumn',
+			),
+		),
+	));
+	?>
 
-	</div>
 </div>

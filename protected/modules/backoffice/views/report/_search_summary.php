@@ -9,39 +9,32 @@ $form = $this->beginWidget('CActiveForm', array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 	'htmlOptions'=>array(
-		'class'=>'form-inline well'
+//		'class'=>'form-inline well'
 	),
 	'id'=>'search-form'
 	));
 ?>
+<div class="input-group">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="submit">Search</button>
+	</span>
+	<div class="row">
+		<div class="col-lg-6">
+			<?php
+			echo $form->dropDownList($model, 'paymentYear', $model->findAllYearSalesArray(), array(
+				"class"=>"form-control",
+				"prompt"=>"--เลือกปี--",));
+			?>
+		</div>
+		<div class="col-lg-6">
+			<?php
+			echo $form->dropDownList($model, 'paymentMonth', $model->findAllMonthSalesArray(), array(
+				"class"=>"form-control",
+				"prompt"=>"--เลือกเดือน--",));
+			?>
+		</div>
+	</div>
 
-<?php
-echo $form->dropDownList($model, 'paymentYear', $model->findAllYearSalesArray(), array(
-	"class"=>"input-large",
-	"prompt"=>"--เลือกปี--",));
-?>
-<?php
-echo $form->dropDownList($model, 'paymentMonth', $model->findAllMonthSalesArray(), array(
-	"class"=>"input-large",
-	"prompt"=>"--เลือกเดือน--",));
-?>
-<!--&nbsp;-->
-<?php
-//echo $form->textField($model, 'orderStatusid', array(
-//	'class' => 'input-small'));
-?>
-<!--&nbsp;-->
-<?php
-//echo $form->textField($model, 'dealerId', array(
-//	'size' => 20,
-//	'maxlength' => 20,
-//	'class' => 'input-small'));
-?>
-&nbsp;
-<?php
-echo CHtml::submitButton('Search', array(
-	'class'=>'btn'));
-?>
 </div>
 
 <?php $this->endWidget(); ?>

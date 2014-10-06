@@ -10,26 +10,25 @@ $form = $this->beginWidget('CActiveForm', array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 	'htmlOptions'=>array(
-		'class'=>'form-search well'
+//		'class'=>'form-search well'
 	),
 	));
 ?>
 
-<div class="input-append">
-	<?php
-	echo $form->textField($model, 'title', array(
-		'size'=>60,
-		'maxlength'=>500,
-		'placeholder'=>'ชื่อ Content'));
-	?>
-	<?php
-	echo $form->textField($model, 'description', array(
-		'placeholder'=>'รายละเอียด'));
-	?>
-	<?php
-	echo CHtml::submitButton('Search', array(
-		'class'=>'btn'));
-	?>
+<div class="input-group">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="submit">Search</button>
+	</span>
+	<div class="row">
+		<div class="col-lg-12">
+			<?php
+			echo $form->textField($model, 'searchText', array(
+				'class'=>'form-control',
+				'placeholder'=>'คำค้น เช่น ชื่อธนาคาร สาขา',));
+			?>
+		</div>
+	</div>
+
 </div>
 
 <?php $this->endWidget(); ?>

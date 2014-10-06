@@ -11,21 +11,24 @@
 		'action'=>Yii::app()->createUrl($this->route),
 		'method'=>'get',
 		'htmlOptions'=>array(
-			'class'=>'form-inline well'
+//			'class'=>'form-inline well'
 		),
 	));
 	?>
+	<div class="input-group">
+		<span class="input-group-btn">
+			<button class="btn btn-default" type="submit">Search</button>
+		</span>
+		<div class="row">
+			<div class="col-lg-12">
+				<?php
+				echo $form->textField($model, 'searchText', array(
+					'class'=>'form-control',
+					'placeholder'=>'คำค้น เช่น ชื่อธนาคาร สาขา',));
+				?>
+			</div>
+		</div>
 
-	<div class="input-append">
-		<?php
-		echo $form->textField($model, 'searchText', array(
-			'size'=>100,
-			'maxlength'=>100,
-			'placeholder'=>'คำค้น เช่น ชื่อธนาคาร สาขา',
-			'class'=>' search-query'));
-		?>
-
-		<?php echo CHtml::submitButton('Search'); ?>
 	</div>
 
 	<?php $this->endWidget(); ?>

@@ -121,11 +121,11 @@ if(isset($model->status))
 
 		<div class="form-group">
 			<?php
-			echo $form->labelEx($model, 'isbn', array(
+			echo $form->labelEx($model, 'code', array(
 				'class'=>'col-sm-3 control-label'));
 			?>
 			<div class="col-sm-9">
-				<?php echo $form->textField($model, 'isbn', $pCode); ?>
+				<?php echo $form->textField($model, 'code', $pCode); ?>
 				<?php echo "<p><font color='#FFCC90' >รหัสสินค้าไม่ควรมีความยาวเกิน 20 ตัวอักษร.</font></p>"; ?>
 				<?php echo $form->error($model, 'name');
 				?>

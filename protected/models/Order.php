@@ -175,10 +175,10 @@ class Order extends OrderMaster
 		$criteria->compare('lastname', $this->lastname, true);
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
-//		$criteria->compare("orderStatusId", ">2");
-//		$criteria->compare("orderStatusId", "<99");
-		$criteria->addCondition(" (orderStatusId = 0 AND userId = " . Yii::app()->user->id . ") OR ( orderStatusId >2 AND orderStatusId < 99) ");
-//$criteria->compare("orderStatusId",2);
+//		$criteria->compare("status", ">2");
+//		$criteria->compare("status", "<99");
+		$criteria->addCondition(" (status = 0 AND userId = " . Yii::app()->user->id . ") OR ( status >2 AND status < 99) ");
+//$criteria->compare("status",2);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
@@ -200,8 +200,8 @@ class Order extends OrderMaster
 		$criteria->compare('lastname', $this->lastname, true);
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
-		$criteria->compare("orderStatusId", ">1");
-		$criteria->compare("orderStatusId", "<99");
+		$criteria->compare("status", ">1");
+		$criteria->compare("status", "<99");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
@@ -216,7 +216,7 @@ class Order extends OrderMaster
 	public function findAllFinanceAdminOrder()
 	{
 		$criteria = new CDbCriteria();
-		$criteria->condition = "orderStatusId in (1 , 4 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98 ) ";
+		$criteria->condition = "status in (1 , 4 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98 ) ";
 		$criteria->compare('invoiceNo', $this->invoiceNo, true);
 		$criteria->compare('orderNo', $this->orderNo, true);
 		$criteria->compare('firstname', $this->firstname, true);
@@ -224,8 +224,8 @@ class Order extends OrderMaster
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
 		$criteria->compare('paymentMethod', $this->paymentMethod, true);
-		$criteria->compare("orderStatusId", ">0");
-		$criteria->compare("orderStatusId", "<99");
+		$criteria->compare("status", ">0");
+		$criteria->compare("status", "<99");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
@@ -240,14 +240,14 @@ class Order extends OrderMaster
 	public function findAllFinanceAdminOrderPay()
 	{
 		$criteria = new CDbCriteria();
-		$criteria->condition = "orderStatusId > 1 AND paymentDateTime is not NULL";
+		$criteria->condition = "status > 1 AND paymentDateTime is not NULL";
 		$criteria->compare('invoiceNo', $this->invoiceNo, true);
 		$criteria->compare('orderNo', $this->orderNo, true);
 		$criteria->compare('firstname', $this->firstname, true);
 		$criteria->compare('lastname', $this->lastname, true);
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
-		$criteria->compare("orderStatusId", ">1");
+		$criteria->compare("status", ">1");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
@@ -453,19 +453,19 @@ class Order extends OrderMaster
 		return $margin;
 	}
 
-	public function getSupplierMarginToDaiiBuy()
-	{
-		$totals = Yii::app()->db->createCommand()
-			->select('value as daiiMargin')
-			->from('order t')
-			->join('order_product op', 't.orderId = op.orderId')
-			->join('user_certificate_file ucf', 'op.marginId = ucf.id')
-			->where('t.orderId=:id', array(
-				':id'=>$this->orderId))
-			->group('t.orderId')
-			->queryRow();
-		return $totals;
-	}
+//	public function getSupplierMarginToDaiiBuy()
+//	{
+//		$totals = Yii::app()->db->createCommand()
+//			->select('value as daiiMargin')
+//			->from('order t')
+//			->join('order_items op', 't.orderId = op.orderId')
+//			->join('user_certificate_file ucf', 'op.marginId = ucf.id')
+//			->where('t.orderId=:id', array(
+//				':id'=>$this->orderId))
+//			->group('t.orderId')
+//			->queryRow();
+//		return $totals;
+//	}
 
 	public function getCollectedOrderView($userId)
 	{
@@ -518,10 +518,10 @@ class Order extends OrderMaster
 		return $res['collectedOrder'] == null ? 0 : $res['collectedOrder'];
 	}
 
-	public function showOrderStatus($orderStatusId)
+	public function showOrderStatus($status)
 	{
 		$user = User::model()->findByPk(Yii::app()->user->id);
-		switch($orderStatusId)
+		switch($status)
 		{
 			case 99:
 				return "แบบร่าง";
@@ -655,7 +655,7 @@ class Order extends OrderMaster
 		$result = array();
 		$criteria = new CDbCriteria();
 		$criteria->select = "YEAR(paymentDateTime) as paymentYear";
-		$criteria->compare("orderStatusId", ">2");
+		$criteria->compare("status", ">2");
 		$criteria->compare("paymentDateTime", "<>''");
 		$criteria->group = "YEAR(paymentDateTime)";
 		foreach($this->findAll($criteria) as $item)
@@ -692,8 +692,8 @@ class Order extends OrderMaster
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
 		$criteria->compare("paymentDateTime", "<> '' ", TRUE, "AND");
-		$criteria->compare("orderStatusId", ">=2");
-		$criteria->compare("orderStatusId", "<> 99");
+		$criteria->compare("status", ">=2");
+		$criteria->compare("status", "<> 99");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
@@ -712,9 +712,36 @@ class Order extends OrderMaster
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
 		$criteria->compare("paymentDateTime", "<> '' ", TRUE, "AND");
-		$criteria->compare("orderStatusId", ">=2");
-		$criteria->compare("orderStatusId", "<> 99");
+		$criteria->compare("status", ">=2");
+		$criteria->compare("status", "<> 99");
 		return $this->find($criteria)->totalSummary;
+	}
+
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->orderNo = $this->searchText;
+			$this->title = $this->searchText;
+			$this->type = $this->searchText;
+		}
+
+		$criteria->compare('orderNo', $this->orderNo, true, 'OR');
+		$criteria->compare('title', $this->title, true, 'OR');
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'t.createDateTime DESC',
+			),
+			'pagination'=>array(
+				'pageSize'=>30
+			),
+		));
 	}
 
 }

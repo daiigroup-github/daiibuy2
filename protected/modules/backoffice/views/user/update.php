@@ -35,11 +35,11 @@ $this->menu = array(
 <h1>Update User <?php echo $model->userId; ?></h1>
 
 <?php
-echo $this->renderPartial('_form', array(
+$this->renderPartial('_form', array(
 	'model'=>$model,
 	'address'=>$address,
 	'shippingAddressModel'=>$shippingAddressModel,
-	'supplierDiscountRangeModel'=>$supplierDiscountRangeModel,
+//	'supplierDiscountRangeModel'=>$supplierDiscountRangeModel,
 	'supplierId'=>$model->userId,
-));
+	), FALSE, true);
 ?>

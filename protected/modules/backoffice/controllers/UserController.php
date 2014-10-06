@@ -120,7 +120,6 @@ class UserController extends MasterBackofficeController
 
 	public function actionCreate()
 	{
-		$supplierDiscountRangeModel = new SupplierDiscountRange('search');
 		$model = new User;
 		$dateNow = new CDbExpression('NOW()');
 		$addressModel = new Address();
@@ -299,7 +298,6 @@ class UserController extends MasterBackofficeController
 			'model'=>$model,
 			'address'=>$addressModel,
 			'shippingAddressModel'=>$shippingAddressModel,
-			'supplierDiscountRangeModel'=>$supplierDiscountRangeModel,
 		));
 	}
 
@@ -386,10 +384,9 @@ class UserController extends MasterBackofficeController
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		$supplierDiscountRangeModel = new SupplierDiscountRange('search');
-		if(isset($_GET['SupplierDiscountRange']))
-			$supplierDiscountRangeModel->attributes = $_GET['SupplierDiscountRange'];
+//		$supplierDiscountRangeModel = new SupplierDiscountRange('search');
+//		if(isset($_GET['SupplierDiscountRange']))
+//			$supplierDiscountRangeModel->attributes = $_GET['SupplierDiscountRange'];
 
 		if(isset($_POST['User']))
 		{
@@ -545,7 +542,7 @@ class UserController extends MasterBackofficeController
 			'model'=>$model,
 			'address'=>$address,
 			'shippingAddressModel'=>$shippingAddressModel,
-			'supplierDiscountRangeModel'=>$supplierDiscountRangeModel,
+//			//'supplierDiscountRangeModel'=>$supplierDiscountRangeModel,
 		));
 	}
 

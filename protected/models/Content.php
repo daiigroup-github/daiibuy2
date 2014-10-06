@@ -15,7 +15,7 @@
  * @property string $createDateTime
  * @property string $updateDateTime
  */
-class Content extends CActiveRecord
+class Content extends ContentMaster
 {
 
 	const CONTENT_TYPE_INDEX_SLIDE = 0;

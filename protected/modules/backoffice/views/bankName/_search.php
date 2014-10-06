@@ -4,13 +4,28 @@
 /* @var $form CActiveForm */
 ?>
 
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php
+$form = $this->beginWidget('CActiveForm', array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
-	'htmlOptions'=>array('class'=>'form-search search-form')
-)); ?>
+	'htmlOptions'=>array(
+		'class'=>'form-search search-form')
+	));
+?>
 
-<?php echo $form->textField($model,'searchText', array('class'=>'input-medium search-query')); ?>
-<?php echo CHtml::button('Search', array('class'=>'btn', 'type'=>'submit')); ?>
+<div class="input-group">
+	<span class="input-group-btn">
+		<button class="btn btn-default" type="submit">Search</button>
+	</span>
+	<div class="row">
+		<div class="col-lg-12">
+			<?php
+			echo $form->textField($model, 'searchText', array(
+				'class'=>'form-control',
+				'placeholder'=>'คำค้น เช่น ชื่อธนาคาร สาขา',));
+			?>
+		</div>
+	</div>
 
+</div>
 <?php $this->endWidget(); ?>
