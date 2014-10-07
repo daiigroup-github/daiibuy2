@@ -30,8 +30,10 @@
                 <div class="product">
 
                     <div class="product-image">
-                        <?php //<span class="product-tag">Sale</span>?>
-                        <img src="themes/homeshop/assets/img/products/sample4.jpg" alt="Product1">
+                        <?php if($item['promotionPrice'] > 0):?>
+                            <span class="product-tag">Sale</span>
+                        <?php endif;?>
+                        <img src="<?php echo Yii::app()->baseUrl.$item['images'][0]->image;?>" alt="Product1">
                         <a href="<?php echo $item['url']; ?>" class="product-hover">
                             <i class="icons icon-eye-1"></i> Quick View
                         </a>
@@ -45,10 +47,10 @@
                     </div>
 
                     <div class="product-actions">
-						<span class="add-to-cart">
+						<span class="add-to-cart"  id="<?php echo $item['productId'];?>">
 							<span class="action-wrapper">
 								<i class="icons icon-basket-2"></i>
-								<span class="action-name" id="<?php echo $item['productId'];?>">Add To Cart</span>
+								<span class="action-name">Add To Cart</span>
 							</span>
 						</span>
                         <?php
@@ -81,7 +83,24 @@
 </div>
 
 <?php Yii::app()->clientScript->registerScript('addToCart', "
-$('.action-name').live('click', function(){
-        addToCart($(this).attr('id'));
+$('.add-to-cart').live('click', function(){
+        var pid = $(this).attr('id');
+        $.ajax({
+            type : 'POST',
+            url : '".Yii::app()->createUrl('cart/addToCart')."',
+            dataType : 'json',
+            data : {productId:pid},
+            beforeSend : function(){
+                //spinning
+                alert(pid);
+            },
+            success : function(data){
+                //success
+                alert(data.result);
+            },
+            fail : function(){
+                //fail
+            },
+        });
     });
 ");?>

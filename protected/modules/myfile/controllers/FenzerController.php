@@ -211,9 +211,12 @@ class FenzerController extends MasterMyFileController
 		}
 		if(isset($_POST['productId']) && !empty($_POST['productId']))
 		{
-			$length = $_POST['productId'];
+			$productId = $_POST['productId'];
 		}
-		$itemSetArray = Product::model()->calculateItemSetFenzer($productCate2->categoryId, $length, $provinceId);
+		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId, $productId);
+		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+				'productResult'=>$itemSetArray,
+				),TRUE, TRUE);
 
 	}
 

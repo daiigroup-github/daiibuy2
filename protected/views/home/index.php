@@ -24,7 +24,7 @@ $this->breadcrumbs = array(
 					<div class="row">
 
 						<?php $i = 0; ?>
-						<?php foreach($suppliers as $key => $value): ?>
+						<?php foreach($suppliers as $supplier): ?>
 							<?php
 							$class = 'col-lg-3 col-md-3 col-sm-12';
 							//$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
@@ -33,11 +33,11 @@ $this->breadcrumbs = array(
 							<div class="<?php echo $class; ?>">
 								<div class="blog-item">
 
-									<a href="<?php echo Yii::app()->createUrl($key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/supplier/' . $key . '.jpg'); ?></a>
+									<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/' . $supplier->logo); ?></a>
 
 									<div class="blog-info">
 										<h3>
-											<a href="<?php echo Yii::app()->createUrl($key); ?>"><?php echo $value; ?></a>
+											<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo $supplier->name; ?></a>
 										</h3>
 										<?php
 										/*
@@ -48,11 +48,7 @@ $this->breadcrumbs = array(
 										</div>
 										*/
 										?>
-										<p>
-											Aliquam erat volutpat. Duis ac turpis.
-											Donec sit amet eros.
-											Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-										</p>
+										<p><?php echo $supplier->description;?></p>
 									</div>
 									<?php
 									/*
@@ -82,7 +78,8 @@ $this->breadcrumbs = array(
 </div>
 
 
-
+<?php
+/*
 <!-- Banner -->
 <section class="banner">
 
@@ -111,3 +108,5 @@ $this->breadcrumbs = array(
 
 </section>
 <!-- /Banner -->
+ */
+?>
