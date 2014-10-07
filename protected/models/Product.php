@@ -710,7 +710,7 @@ class Product extends ProductMaster
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
 		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
-		$res;
+		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
@@ -721,6 +721,8 @@ class Product extends ProductMaster
 		foreach($products as $product)
 			{
 			$productId = strval($product->productId);
+			$category2toProduct = Category2ToProduct::model()->find('productId = '. $productId .' AND categoryId = '. $product->categoryId . ' AND status = 1');
+			$quantity = $category2toProduct->quantity;
 			//product
 			$res['items'][$productId] = $product;
 
@@ -732,7 +734,7 @@ class Product extends ProductMaster
 			}
 			else
 			{
-				$res['items'][$productId]['quantity'] = $this->calculateItemQuantityFenzer($product, $length, $height)*$noSpanSet;
+				$res['items'][$productId]['quantity'] = $quantity * $noSpanSet;
 			}
 
 			//price
@@ -747,32 +749,7 @@ class Product extends ProductMaster
 			}
 			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
 		}
-
 		$res['totalPrice'] = $totalPrice;
-		return $res;
-	}
-
-	public function calculateItemQuantityFenzer($product, $length, $height)
-	{
-
-		switch($product->type)
-		{
-			case 1:
-				//
-				break;
-			case 2:
-				//
-				break;
-			case 3:
-				//
-				break;
-			case 4:
-				//
-				break;
-			default:
-				break;
-		}
-
 		return $res;
 	}
 
@@ -793,5 +770,12 @@ class Product extends ProductMaster
 
 		return $result;
 	}
-
+	public function findAllProductArraySupplierIdAndCategoryId($supplierId,$categoryId){
+		$products = Product::model()->findAll('supplierId ='. $supplierId .' AND Status = 1 AND CategoryId = '.$categoryId);
+		$res = array();
+		foreach($products as $item){
+			$res[$item->productId] = $item->isbn;
+		}
+		return $res;
+	}
 }

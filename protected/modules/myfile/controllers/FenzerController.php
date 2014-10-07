@@ -200,6 +200,23 @@ class FenzerController extends MasterMyFileController
 				),TRUE, TRUE);
 	}
 
+	public function addNewProductItem($productId, $categoryId){
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$provinceId = $daiibuy->provinceId;
+		$categoryId = $_POST['categoryId'];
+		if(isset($_POST['length']) && !empty($_POST['length']))
+		{
+			$length = $_POST['length'];
+		}
+		if(isset($_POST['productId']) && !empty($_POST['productId']))
+		{
+			$length = $_POST['productId'];
+		}
+		$itemSetArray = Product::model()->calculateItemSetFenzer($productCate2->categoryId, $length, $provinceId);
+
+	}
+
 // Uncomment the following methods and override them if needed
 	/*
 	  public function filters()
