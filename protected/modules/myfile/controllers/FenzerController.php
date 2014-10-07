@@ -200,7 +200,7 @@ class FenzerController extends MasterMyFileController
 				),TRUE, TRUE);
 	}
 
-	public function addNewProductItem($productId, $categoryId){
+	public function actionAddNewProductItem($productId, $categoryId){
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$provinceId = $daiibuy->provinceId;
