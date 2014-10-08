@@ -1,15 +1,16 @@
 
 
-<table class="table table-hover" style="text-align: center;background-color: #67ae73">
+<table class="edit-table table table-hover" style="background-color: #67ae73" >
+	<!--style="text-align: center;background-color: #67ae73"-->
 	<thead >
 		<tr>
-			<th style="text-align: center">ประเภทของรั้ว</th>
-			<th style="text-align: center">ความสูง</th>
-			<th style="text-align: center">Span</th>
-			<th style="text-align: center">คุณลักษณะ</th>
-			<th style="text-align: center">สี</th>
-			<th style="text-align: center">ราคา/เมตร</th>
-			<th style="text-align: center;width:17%">ประเมิณราคา/เมตร(ไม่รวมเข็ม)</th>
+			<th>ประเภทของรั้ว</th>
+			<th>ความสูง</th>
+			<th>Span</th>
+			<th>คุณลักษณะ</th>
+			<th>สี</th>
+			<th>ราคา/เมตร</th>
+			<th class="edit-table-price">ประเมิณราคา/เมตร(ไม่รวมเข็ม)</th>
 		</tr>
 	</thead>
 	<tbody>

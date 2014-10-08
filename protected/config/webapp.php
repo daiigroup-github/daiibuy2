@@ -35,6 +35,7 @@ return CMap::mergeArray(
 						'baseUrl'=>$params['assets'],
 						'css'=>array(
 							'css/perfect-scrollbar.css',
+							'css/myFileStyle.css',
 							'css/style.css',
 							'css/flexslider.css',
 							'css/fontello.css',
@@ -47,6 +48,7 @@ return CMap::mergeArray(
 							'select2/select2-bootstrap.css',
 							'font-awesome/css/font-awesome.min.css',
 							'css/custom.css',
+
 						),
 						'js'=>array(
 							'js/modernizr.min.js',

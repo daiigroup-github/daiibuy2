@@ -25,12 +25,12 @@ $this->breadcrumbs = array(
 </div>
 <div class="row" >
 	<ul class="nav nav-tabs" role="tablist" >
-		<li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/"; ?>"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
-		<li class="green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/create"; ?>"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
+		<li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
+		<li class="green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/create"; ?>"><h5 >+ สร้างใหม่</h5></a></li>
 	</ul>
 </div>
 <!-- WIZARD -->
-<div style="margin-top: 1%">
+<div class="myfile-main">
 	<div class="row form-group hidden">
         <div class="col-xs-12">
             <ul class="nav nav-pills nav-justified thumbnail setup-panel">
@@ -56,7 +56,7 @@ $this->breadcrumbs = array(
             <div class="col-md-12 well text-center">
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3">
-						<div class="page-header" style="color:gray">
+						<div class="page-header select-province">
 							<h1>เลือกจังหวัด</h1><small> กรุณาเลือกจังหวัดที่ท่านต้องการสั่งซื้อสินค้า.</small>
 						</div>
 						<div>
@@ -70,7 +70,7 @@ $this->breadcrumbs = array(
 						</div>
 					</div>
 				</div>
-				<div class="row" style="margin-top:3%;margin-right:1%">
+				<div class="row wizard-control">
 					<div class="pull-right">
 						<button id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป</button>
 					</div>
@@ -84,7 +84,7 @@ $this->breadcrumbs = array(
 		<div class="col-xs-12">
             <div class="col-md-12 well text-left">
 				<div class="row">
-					<div class="page-header" style="color:gray;margin-left: 2%">
+					<div class="page-header myfile-fenzer-header" >
 						<h1>เลือกความสูง(เมตร)</h1><small> กรุณาเลือกช่วงความสูงของรั้วที่ท่านต้องการ.</small>
 					</div>
 				</div>
@@ -118,7 +118,7 @@ $this->breadcrumbs = array(
 					<div class="col-md-12" id="select_content">
 					</div>
 				</div>
-				<div class="row" style="margin-top:3%;margin-right:1%;margin-left: 1%">
+				<div class="row wizard-control">
 					<div class="pull-left">
 						<button id="backToStep1" class="btn btn-primary btn-lg">ย้อนกลับ</button>
 					</div>
@@ -158,9 +158,12 @@ $this->breadcrumbs = array(
 				<div class="row" id="order_list">
 
 				</div>
-				<div class="row" style="margin-top:3%;margin-right:1%">
-					<div class="pull-left">
+				<div class="row wizard-control">
+					<div class="pull-left" >
 						<button id="backToStep2" class="btn btn-primary btn-lg">ย้อนกลับ</button>
+					</div>
+					<div class="col-lg-10 text-center">
+						<button id="calculatePrice" class="btn btn-warning btn-lg">อัพเดทราคา</button>
 					</div>
 					<div class="pull-right">
 						<button id="nextToStep4" class="btn btn-primary btn-lg">ต่อไป</button>

@@ -49,7 +49,7 @@ $(document).ready(function() {
 	$(".clickableRow").click(function() {
 		var base_url = window.location.origin;
 		var categoryId = $(this).attr("id");
-		alert(categoryId);
+//		alert(categoryId);
 		var height = $(this).attr("name");
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/fenzer/showProductSelected',
@@ -63,6 +63,33 @@ $(document).ready(function() {
 		$('#height_input')[0].setAttribute('name', categoryId);
 		this.setAttribute("class", "clickableRow active");
 	});
+	//delete row
+//	$(".deleteRow").click(function() {
+//		if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
+//			$(this).parent().parent().remove();
+//		}
+//	});
+	$("#deleteRow").live('click', function() {
+		if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
+			$(this).parent().parent().remove();
+		}
+	});
 
+//calculatePrice
+	$('#calculatePrice').on('click', function() {
+		var base_url = window.location.origin;
+		var length = $("#length_input").attr("value");
+		var categoryId = $("#editTable").attr("name");
+		var productItems = $("#editTableForm").serialize();
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/fenzer/updatePrice',
+			type: 'POST',
+			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
+			success: function(data) {
+				$("#result_content").html(data);
+			}
+		});
+//		alert($(this).attr("name"));
+	});
 //	$('#nextToStep3')
-});	
+});

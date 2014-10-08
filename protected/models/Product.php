@@ -707,32 +707,30 @@ class Product extends ProductMaster
 		$res['totalPrice'] = $totalPrice;
 
 
-		if(isset($productIdNew)){
-			$productIdNew = intval($productIdNew);
-			$category2toProductNew = Category2ToProduct::model()->find('productId = '. $productIdNew .' AND categoryId = '. $product->categoryId . ' AND status = 1');
-			$quantity = $category2toProductNew->quantity;
+
+		return $res;
+	}
+
+	public function calculateNewItemFenzer($productId,$provinceId)
+	{
+			$res = array();
+			$productIdNew = intval($productId);
 			$newProduct = Product::model()->findByPk($productIdNew);
-			$res['items'][$productId] = $product;
-			if($noSpanSet == 0)
-			{
+			$res["item"] = $newProduct;
 				//default Qty = 1
-				$res['items'][$productIdNew]['quantity'] = 1;
-			}
-			else
-			{
-				$res['items'][$productIdNew]['quantity'] = $quantity * $noSpanSet;
-			}
+			$res["item"]['quantity'] = 1;
+
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 			":productId"=>$productIdNew));
 			if(isset($productPromotion)){
 				//promotion price
-				$res['items'][$productIdNew]['price'] = $this->calProductPromotionTotalPrice($productIdNew, $res['items'][$productIdNew]['quantity'] ,$provinceId) * (($noSpanSet==0)? 1 : $noSpanSet);
+				$res["item"]['price'] = $this->calProductPromotionTotalPrice($productIdNew, 1 ,$provinceId);
 			}else{
 				//normal price
-				$res['items'][$productIdNew]['price'] = $this->calProductTotalPrice($productIdNew, $res['items'][$productIdNew]['quantity'] ,$provinceId) * (($noSpanSet==0)? 1 : $noSpanSet);
+				$res["item"]['price'] = $this->calProductTotalPrice($productIdNew, 1,$provinceId);
 			}
-		}
-		return $res;
+			return $res;
+
 	}
 
 	public function findAllProductBySupplierId($supplierId)
@@ -756,7 +754,7 @@ class Product extends ProductMaster
 		$products = Product::model()->findAll('supplierId ='. $supplierId .' AND Status = 1 AND CategoryId = '.$categoryId);
 		$res = array();
 		foreach($products as $item){
-			$res[$item->productId] = $item->isbn;
+			$res[$item->isbn] = $item->productId;
 		}
 		return $res;
 	}

@@ -144,7 +144,6 @@ class FenzerController extends MasterMyFileController
 	{
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(176);
-
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$provinceId = $daiibuy->provinceId;
@@ -200,24 +199,57 @@ class FenzerController extends MasterMyFileController
 				),TRUE, TRUE);
 	}
 
-	public function actionAddNewProductItem($productId, $categoryId){
+	public function actionAddNewProductItem(){
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$provinceId = $daiibuy->provinceId;
-		$categoryId = $_POST['categoryId'];
-		if(isset($_POST['length']) && !empty($_POST['length']))
-		{
-			$length = $_POST['length'];
-		}
 		if(isset($_POST['productId']) && !empty($_POST['productId']))
 		{
 			$productId = $_POST['productId'];
 		}
-		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId, $productId);
+		$itemSetArray = Product::model()->calculateNewItemFenzer($productId,$provinceId);
+		echo '<tr>'
+		. '<td>'. $itemSetArray['item']['code'].'</td>'
+		. '<td>'. $itemSetArray['item']['name'].'</td>'
+			. '<td>'. $itemSetArray['item']['productUnits'].'</td>'
+			. '<td>'. CHtml::textField('productItems['.$itemSetArray['item']['productId'].'][quantity]', $itemSetArray['item']['quantity'],array('class'=>'edit-table-qty-input')).'</td>'
+			. '<td>'. $this->formatMoney($itemSetArray['item']['price']/$itemSetArray['item']['quantity'],true).'</td>'
+			. '<td>'. $this->formatMoney($itemSetArray['item']['price'],true).'</td>'
+			. '<td>'. $this->formatMoney(($itemSetArray['item']['price']/$itemSetArray['item']['quantity'])/3,true).'</td>'
+			. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
+			. '</tr>';
+
+		//echo CJSON::encode($itemSetArray);
+//		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId, $productId);
+//		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+//				'productResult'=>$itemSetArray,
+//				),TRUE, TRUE);
+
+	}
+
+
+	public function actionUpdatePrice(){
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$provinceId = $daiibuy->provinceId;
+		$productItems = array();
+		if(isset($_POST['productItems']) && !empty($_POST['productItems']))
+		{
+			$productItems = $_POST['productItems'];
+		}
+		if(isset($_POST['length']) && !empty($_POST['length']))
+		{
+			$length = $_POST['length'];
+		}
+		if(isset($_POST['categoryId']) && !empty($_POST['categoryId']))
+		{
+			$categoryId = $_POST['categoryId'];
+		}
+		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
+
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
-
 	}
 
 // Uncomment the following methods and override them if needed
