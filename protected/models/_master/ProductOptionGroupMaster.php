@@ -56,7 +56,7 @@ class ProductOptionGroupMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'productOptions' => array(self::HAS_MANY, 'ProductOption', 'productIOptionGroupd'),
+			'productOptions' => array(self::HAS_MANY, 'ProductOption', 'productOptionGroupId'),
 			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
 		);
 	}

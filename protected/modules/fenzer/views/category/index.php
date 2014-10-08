@@ -24,17 +24,13 @@ $this->breadcrumbs = array(
 
             <div class="col-lg-7 col-md-7 col-sm-7 product-single-info">
 
-                <h2><?php echo $product['title']; ?></h2>
-                <?php
-                /*
-                <div class="rating-box">
-                    <div class="rating readonly-rating" data-score="4"></div>
-                    <span>3 Review(s)</span>
-                </div>
-                */
-                ?>
+                <h2><?php echo $categoryModel->title; ?></h2>
 
-                <?php $this->renderPartial('//layouts/_product_description', array('description' => $product['description'])); ?>
+                <table>
+                    <tr>
+                        <td colspan="2"><?php echo $categoryModel->description;?></td>
+                    </tr>
+                </table>
 
                 <span class="price"></span>
 

@@ -82,7 +82,9 @@
 
 </div>
 
-<?php Yii::app()->clientScript->registerScript('addToCart', "
+<?php
+/*
+Yii::app()->clientScript->registerScript('addToCart', "
 $('.add-to-cart').live('click', function(){
         var pid = $(this).attr('id');
         $.ajax({
@@ -103,4 +105,6 @@ $('.add-to-cart').live('click', function(){
             },
         });
     });
-");?>
+");
+*/
+?>

@@ -11,8 +11,8 @@ class ProductController extends MasterMadridController
 
         $productModel = Product::model()->findByPk($id);
 
-        foreach($productModel->productImagesSort as $productImage) {
-            $images[] = Yii::app()->baseUrl.$productImage->image;
+        foreach ($productModel->productImagesSort as $productImage) {
+            $images[] = Yii::app()->baseUrl . $productImage->image;
         }
 
         $product = array(
@@ -34,12 +34,12 @@ class ProductController extends MasterMadridController
                 array('option2'),
             ),
             'images' => $images,
-            'attributes'=>array(
-                'ประเภท'=>'Sanitary',
-                'จำนวนคงเหลือ'=>'20',
-                'กว้าง x ยาว x สูง'=>'100.00x100.00x100.00'
+            'attributes' => array(
+                'ประเภท' => 'Sanitary',
+                'จำนวนคงเหลือ' => '20',
+                'กว้าง x ยาว x สูง' => '100.00x100.00x100.00'
             ),
-            'description'=>'Control simulated sensors like battery, GPS, and accelerometer with a the user-friendly interface.<br /><br />Powerful command line tools allow you to build complex tests.',
+            'description' => 'Control simulated sensors like battery, GPS, and accelerometer with a the user-friendly interface.<br /><br />Powerful command line tools allow you to build complex tests.',
             'tabs' => array(
                 array(
                     'title' => 'Description',
@@ -55,7 +55,14 @@ class ProductController extends MasterMadridController
                 ),
             ),
         );
-        $this->render('index', array('product' => $product));
+
+        $descriptionTabs = array();
+        foreach ($productModel->productSpecGroupsTypeDescription as $desc) {
+            $descriptionTabs[]['title'] = $desc->title;
+            $descriptionTabs[]['detail'] = $desc->description;
+        }
+
+        $this->render('index', array('product' => $product, 'productModel' => $productModel, 'images' => $images, 'descriptionTabs'=>$descriptionTabs));
     }
 
     // Uncomment the following methods and override them if needed
@@ -84,4 +91,14 @@ class ProductController extends MasterMadridController
         );
     }
     */
+
+    public function actionAddToCart()
+    {
+        $this->writeToFile('/tmp/madridProduct', print_r($_POST, true));
+
+        $productId = $_POST['productId'];
+        $qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
+
+        $model = Product::model()->findByPk($productId);
+    }
 }

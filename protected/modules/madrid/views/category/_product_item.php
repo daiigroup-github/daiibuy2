@@ -27,19 +27,22 @@ if (isset($data->productImages)) {
     class="<?php echo ($this->id == 'category') ? 'col-lg-4 col-md-4 col-sm-4' : 'col-lg-3 col-md-3 col-sm-4'; ?> product">
 
     <div class="product-image">
-        <?php if(isset($data->productPromotion)):?>
+        <?php if (isset($data->productPromotion)): ?>
             <span class="product-tag">Sale</span>
-        <?php endif;?>
-        <?php echo CHtml::image(Yii::app()->baseUrl . $image);?>
-        <?php //if (isset($data['isQuickView'])): ?>
+        <?php endif; ?>
+        <?php echo CHtml::image(Yii::app()->baseUrl . $image); ?>
+        <?php /*
             <a href="<?php echo $this->createUrl('product/index/id/'.$data['productId']); ?>" class="product-hover">
                 <i class="icons icon-eye-1"></i> Quick View
             </a>
-        <?php //endif; ?>
+        */
+        ?>
     </div>
 
     <div class="product-info">
-        <h5><a href="<?php echo $this->createUrl('product/index/id/'.$data['productId']); ?>"><?php echo mb_substr($data['name'],0,29,'utf8'); ?></a></h5>
+        <h5>
+            <a href="<?php echo $this->createUrl('product/index/id/' . $data['productId']); ?>"><?php echo mb_substr($data['name'], 0, 29, 'utf8'); ?></a>
+        </h5>
         <?php if (isset($data['price'])): ?>
             <?php if (isset($data->productPromotion)): ?>
                 <span class="price"><del><?php echo number_format($data->price, 2); ?></del><?php echo number_format($data->productPromotion->price, 2); ?></span>
@@ -49,57 +52,14 @@ if (isset($data->productImages)) {
         <?php endif; ?>
     </div>
 
-    <?php if (isset($data['buttons'])): ?>
-        <div class="product-actions">
-            <?php
-            foreach ($data['buttons'] as $button):
-                switch ($button) {
-                    case 'cart':
-                        $icon = 'fa fa-shopping-cart';
-                        $name = 'Add to cart';
-                        break;
-
-                    case 'favorites':
-                        $icon = 'fa fa-heart-o';
-                        $name = 'Add to wishlist';
-                        break;
-
-                    case 'compare':
-                        $icon = 'icon-docs';
-                        $name = 'Add to compare';
-                        break;
-                }
-                ?>
-                <span class="add-to-<?php echo $button; ?>">
+    <div class="product-actions">
+        <span class="add-to-cart" id="<?php echo $data['productId']; ?>">
 			<span class="action-wrapper">
-				<i class="icons <?php echo $icon; ?>"></i>
-				<span class="action-name"><?php echo $name; ?></span>
+                <i class="icons icon-basket-2"></i>
+                <span class="action-name">Add to cart</span>
 			</span>
 		</span>
-            <?php endforeach; ?>
-            <?php /*
-		<span class="add-to-cart">
-			<span class="action-wrapper">
-				<i class="icons icon-basket-2"></i>
-				<span class="action-name">Add to cart</span>
-			</span>
-		</span>
-		<span class="add-to-favorites">
-			<span class="action-wrapper">
-				<i class="icons icon-heart-empty"></i>
-				<span class="action-name">Add to wishlist</span>
-			</span>
-		</span>
-		<span class="add-to-compare">
-			<span class="action-wrapper">
-				<i class="icons icon-docs"></i>
-				<span class="action-name">Add to Compare</span>
-			</span>
-		</span>
-        */
-            ?>
-        </div>
-    <?php endif; ?>
+    </div>
 
 </div>
 <!-- Product Item -->

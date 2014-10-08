@@ -34,6 +34,9 @@ class Supplier extends SupplierMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 		//code here
+            'brands' => array(
+                self::HAS_MANY, 'Brand', 'supplierId',
+            ),
 		));
 	}
 

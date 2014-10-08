@@ -7,5 +7,4 @@ images/madrid
 images/upload
 .idea/php.xml
 protected/config/params.php
-
-protected/config/params.php
+images/userFile/*
