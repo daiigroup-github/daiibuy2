@@ -41,7 +41,7 @@ Yii::app()->clientScript->registerScript("xxx", "
 							if (data.userType != 1)
 							{
 								$('#attechFile').html(data.attechForm);
-								if (data.userType == 2)
+								if (data.userType == 2 || data.userType == 1)
 								{
 									document.getElementById('shippingAddress').style.display = 'block';
 								}
@@ -274,7 +274,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								<!--								<div class="control-group">
 																	<label class="control-label"><?php echo "ผู้แต่งตั้ง" ?></label>
 																	<div class="controls">
-																		<input type='text' name='nTotal' value='<?php // echo $referenceUser->firstname . " " . $referenceUser->lastname;                                                                                                                                                                ?>'size="32" readonly="true">
+																		<input type='text' name='nTotal' value='<?php // echo $referenceUser->firstname . " " . $referenceUser->lastname;                                                                                                                                                                              ?>'size="32" readonly="true">
 								<?php // echo $form->error($model, 'referenceId');              ?>
 																	</div>
 																</div>-->
@@ -382,7 +382,8 @@ $form = $this->beginWidget('CActiveForm', array(
 							?>
 							<div class="col-sm-10">
 								<?php
-								echo $form->dropdownList($model, 'type', User::model()->getAllUserType(), array(
+								echo $form->dropdownList($model, 'type', !isset($_GET["supplierId"]) ? User::model()->getAllUserType() : array(
+										3=>"Supplier"), array(
 									"prompt"=>"เลือกประเภท User",
 									'class'=>'form-control',
 									'ajax'=>array(
@@ -400,7 +401,7 @@ $form = $this->beginWidget('CActiveForm', array(
 										),
 										'success'=>"function(data){
 											$('#attechFile').html(data.attechForm);
-											if(data.userType == 2)
+											if(data.userType == 1 || data.userType == 2)
 											{
 												document.getElementById('shippingAddress').style.display = 'block';
 											}
@@ -408,6 +409,7 @@ $form = $this->beginWidget('CActiveForm', array(
 											{
 												document.getElementById('shippingAddress').style.display = 'none';
 											}
+
 											if(data.userType == 3)
 											{
 												document.getElementById('minOrder').style.display = 'block';
@@ -476,7 +478,8 @@ $form = $this->beginWidget('CActiveForm', array(
 					<?php } ?>
 				</div>
 				<?php
-				if($isShowUserCer)
+				//if($isShowUserCer)
+				if(1 == 0)
 				{
 					?>
 					<div class="tab-pane" id="tab2">

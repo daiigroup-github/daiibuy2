@@ -26,7 +26,7 @@ class MasterBackofficeController extends MasterController
 					array(
 						'label'=>'Product',
 						'url'=>array(
-							'product/index')
+							'/backoffice/product/index')
 					),
 					array(
 						'label'=>'PriceList',
@@ -54,9 +54,30 @@ class MasterBackofficeController extends MasterController
 					'/backoffice/order',
 				)),
 			array(
-				'label'=>'User',
+				'label'=>'User<i class="fa fa-arrow-circle-o-down"></i>',
 				'url'=>array(
-					'user/index')
+					'#'),
+//				'active'=>$this->id == 'controllerId',
+				'items'=>array(
+					array(
+						'label'=>'User',
+						'url'=>array(
+							'/backoffice/user/index',
+						)),
+					array(
+						'label'=>'Supplier',
+						'url'=>array(
+							'/backoffice/supplier/index')
+					),
+				),
+				'itemOptions'=>array(
+					'class'=>'dropdown'),
+				'submenuOptions'=>array(
+					'class'=>'dropdown-menu'),
+				'linkOptions'=>array(
+					'class'=>'dropdown-toggle',
+					'data-toggle'=>'dropdown',
+				),
 			),
 			array(
 				'label'=>'ข้อมูลหลัก<i class="fa fa-arrow-circle-o-down"></i>',

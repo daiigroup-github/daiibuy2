@@ -34,7 +34,11 @@ class Category extends CategoryMaster
 				'subCategorys'=>array(
 					self::MANY_MANY,
 					'Category',
-					'category_to_sub(categoryId, subCategoryId)',)
+					'category_to_sub(categoryId, subCategoryId)',),
+//				'brandModel'=>array(
+//					self::BELONGS_TO,
+//					'BrandModel',
+//					'brandModelId',)
 		));
 	}
 
@@ -127,10 +131,16 @@ class Category extends CategoryMaster
 	{
 		$result = array();
 		$criteria = new CDbCriteria();
-		$criteria->condition = 'status = 1 AND isRoot = :isRoot AND supplierId = :supplierId';
+		$criteria->condition = 'status = 1 AND isRoot = :isRoot ';
 		$criteria->params = array(
 			':isRoot'=>$isRoot,
-			':supplierId'=>$supplierId);
+		);
+
+		if(Yii::app()->user->userType != 4)
+		{
+			$criteria->condition .=" AND supplierId = :supplierId ";
+			$criteria->params[":supplierId"] = $supplierId;
+		}
 
 		$models = Category::model()->findAll($criteria);
 

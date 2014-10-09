@@ -1,6 +1,6 @@
 <?php
 
-class ModelToCategory1 extends ModelToCategory1Master
+class SupplierEpayment extends SupplierEpaymentMaster
 {
 
 	/**
@@ -52,36 +52,19 @@ class ModelToCategory1 extends ModelToCategory1Master
 	  {
 	  }
 	 */
-	public function search()
+	public $epaymentTypeArray = array(
+		1=>'Test Server',
+		2=>'Production Server'
+	);
+
+	public function findAllEpaymentTypeArray()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+		return $this->epaymentTypeArray;
+	}
 
-		$criteria = new CDbCriteria;
-
-		if(isset($this->searchText) && !empty($this->searchText))
-		{
-			$this->id = $this->searchText;
-			$this->brandModelId = $this->searchText;
-			$this->categoryId = $this->searchText;
-//			$this->sortOrder = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
-		}
-
-		$criteria->compare('id', $this->id, true, 'OR');
-		$criteria->compare('brandModelId', $this->brandModelId);
-		$criteria->compare('categoryId', $this->categoryId, true, 'OR');
-//		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
-
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-			'sort'=>array(
-				'defaultOrder'=>'sortOrder ASC'),
-		));
+	public function getEpaymentTypeText($type)
+	{
+		return $this->epaymentTypeArray[$type];
 	}
 
 }

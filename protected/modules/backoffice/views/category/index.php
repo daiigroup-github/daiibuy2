@@ -48,7 +48,7 @@ return false;
 			</div>
 		</div>
 	</div>
-
+	<h3><?php echo isset($model->brandModel) ? $model->brandModel->title : "-" ?></h3>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'category-grid',

@@ -37,6 +37,7 @@
  * @property Order[] $orders
  * @property OrderDetailTemplate[] $orderDetailTemplates
  * @property Product[] $products
+ * @property UserToSupplier[] $userToSuppliers
  */
 class UserMaster extends MasterCActiveRecord
 {
@@ -56,7 +57,7 @@ class UserMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('approved, token, type, status', 'required'),
+			array('approved, type, status', 'required'),
 			array('newsletter, approved, type, isFirstLogin, collectedPoint, collectedOrder, status', 'numerical', 'integerOnly'=>true),
 			array('firstname, lastname, telephone, fax', 'length', 'max'=>32),
 			array('email', 'length', 'max'=>96),
@@ -86,6 +87,7 @@ class UserMaster extends MasterCActiveRecord
 			'orders' => array(self::HAS_MANY, 'Order', 'supplierId'),
 			'orderDetailTemplates' => array(self::HAS_MANY, 'OrderDetailTemplate', 'supplierId'),
 			'products' => array(self::HAS_MANY, 'Product', 'supplierId'),
+			'userToSuppliers' => array(self::HAS_MANY, 'UserToSupplier', 'userId'),
 		);
 	}
 

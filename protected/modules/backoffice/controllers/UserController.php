@@ -237,12 +237,12 @@ class UserController extends MasterBackofficeController
 								if(!$address->save())
 								{
 									$flag = 0;
-									$model->errors;
+									$address->errors;
 									$model->addError("errorText", "ไม่สามารถบันทึก ที่อยู่ในการวางบิลได้");
 								}
 							}
 
-							if(isset($_POST["Address"]["shipping"]) && ($model->type == 1 || $model->type == 2 || $model->type == 3))
+							if(isset($_POST["Address"]["shipping"]) && ($model->type == 1 || $model->type == 2))
 							{
 								$shipping = new Address();
 								$shipping->attributes = $_POST["Address"]["shipping"];
@@ -250,7 +250,7 @@ class UserController extends MasterBackofficeController
 								$shipping->userId = $userId;
 								if(!$shipping->save())
 								{
-									$model->errors;
+									$shipping->errors;
 									$flag = 0;
 									$model->addError("errorText", "ไม่สามารถบันทึก ที่อยู่ในการจัดส่งเอกสารได้");
 								}
@@ -260,21 +260,37 @@ class UserController extends MasterBackofficeController
 					else
 					{
 						$flag = 0;
-						//var_dump($address);
-						//throw new Exception("ไม่สารถ บันทึก user ได้");
+					}
+
+					if($flag && isset($_GET["supplierId"]))
+					{
+						if(!$this->actionSaveUserToSupplier($_GET["supplierId"], $userId))
+						{
+							$flag = FALSE;
+						}
 					}
 
 					if($flag)
 					{
 						$transaction->commit();
 
-						$emailObj = new Email();
-						$sentMail = new EmailSend();
-						$emailObj->Setmail($userId, null, null, null, null, null, $model->password);
-						$sentMail->mailNewAccount($emailObj);
-
-						$this->redirect(array(
-							'index'));
+						if(Yii::app()->params["sendEmail"])
+						{
+							$emailObj = new Email();
+							$sentMail = new EmailSend();
+							$emailObj->Setmail($userId, null, null, null, null, null, $model->password);
+							$sentMail->mailNewAccount($emailObj);
+						}
+						if(!isset($_GET["supplierId"]))
+						{
+							$this->redirect(array(
+								'index'));
+						}
+						else
+						{
+							$this->redirect(array(
+								'/backoffice/userToSupplier?supplierId=' . $_GET["supplierId"]));
+						}
 					}
 					else
 					{
@@ -533,8 +549,16 @@ class UserController extends MasterBackofficeController
 						$sentMail->mailNewAccount($emailObj);
 					}
 				}
-				$this->redirect(array(
-					'index'));
+				if(!isset($_GET["supplierId"]))
+				{
+					$this->redirect(array(
+						'index'));
+				}
+				else
+				{
+					$this->redirect(array(
+						'/backoffice/userToSupplier?supplierId=' . $_GET["supplierId"]));
+				}
 			}
 		}
 
@@ -796,6 +820,73 @@ class UserController extends MasterBackofficeController
 		$this->render('_supplier_reward_grid', array(
 			'model'=>$model,
 		));
+	}
+
+	public function actionSaveUserToSupplier($supplierId = null, $userId = null)
+	{
+//		throw new Exception(print_r($_REQUEST, true));
+		$result = array();
+		$model = new UserToSupplier();
+		$model->createDateTime = new CDbExpression("NOW()");
+		$model->updateDateTime = new CDbExpression("NOW()");
+		if(!isset($_POST['supplierId']))
+		{
+			$model->supplierId = $supplierId;
+			$model->userId = $userId;
+			return $model->save();
+		}
+		else
+		{
+			$model->supplierId = $_POST["supplierId"];
+			$model->userId = $_POST["userId"];
+			$result["status"] = $model->save();
+			echo CJSON::encode($result);
+		}
+	}
+
+	public function actionDynamicLocation()
+	{
+		if(isset($_POST['provinceId']))
+		{
+			$provinceId = $_POST['provinceId'];
+		}
+		if(isset($_POST['amphurId']))
+		{
+			$amphurId = $_POST['amphurId'];
+		}
+		if(isset($_POST['provinceId']))
+		{
+			$provinceId = $_POST['provinceId'];
+		}
+
+		if(isset($provinceId))
+		{
+			$amphurs = Amphur::model()->findAll("provinceId=:provinceId", array(
+				":provinceId"=>(int) $provinceId));
+			$result = array(
+				);
+			foreach($amphurs as $amphur)
+			{
+				$result[$amphur->amphurId] = $amphur->amphurName;
+			}
+			echo CHtml::dropDownList("Address[amphurId]", "", $result, array(
+				"class"=>"input-medium",
+				"prompt"=>"-เลือกอำเภอ-",));
+		}
+		else if(isset($amphurId))
+		{
+			$districts = District::model()->findAll("amphurId=:amphurId", array(
+				":amphurId"=>(int) $amphurId));
+			$result = array(
+				);
+			foreach($districts as $district)
+			{
+				$result[$district->districtId] = $district->districtName;
+			}
+			echo CHtml::dropDownList("Address[districtId]", "", $result, array(
+				"class"=>"input-small",
+				"prompt"=>"-เลือกตำบล-"));
+		}
 	}
 
 }

@@ -44,7 +44,7 @@ if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $typ
 				"prompt"=>"--เลือกจังหวัด--",
 				'ajax'=>array(
 					'type'=>'POST', //request type
-					'url'=>CController::createUrl('admin/address/dynamicLocation'), //url to call.
+					'url'=>CController::createUrl('/backoffice/user/dynamicLocation'), //url to call.
 					//Style: CController::createUrl('currentController/methodToCall')
 					'update'=>!isset($type) ? '#Address_amphurId' : "#Address_" . $type . "_amphurId", //selector to update
 					'data'=>array(
@@ -69,7 +69,7 @@ if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $typ
 				"prompt"=>"--เลือกอำเภอ--",
 				'ajax'=>array(
 					'type'=>'POST', //request type
-					'url'=>CController::createUrl('admin/address/dynamicLocation'), //url to call.
+					'url'=>CController::createUrl('/backoffice/user/dynamicLocation'), //url to call.
 					//Style: CController::createUrl('currentController/methodToCall')
 					'update'=>!isset($type) ? '#Address_districtId' : "#Address_" . $type . "_districtId", //selector to update
 					'data'=>array(

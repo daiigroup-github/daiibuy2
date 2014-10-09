@@ -284,7 +284,7 @@ class ProductController extends MasterBackofficeController
 				{
 					$flag = false;
 				}
-				if($flag)
+				if($flag && isset($_GET["categoryId"]))
 				{
 					$this->actionSaveCategory2toProduct($_GET["categoryId"], $productId);
 				}

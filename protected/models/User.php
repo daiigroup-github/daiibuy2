@@ -2,7 +2,8 @@
 
 class User extends UserMaster
 {
-    public $confirmPassword;
+
+	public $confirmPassword;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -43,7 +44,7 @@ class User extends UserMaster
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 				//code here
-            'confirmPassword' => 'Confirm Password',
+				'confirmPassword'=>'Confirm Password',
 		));
 	}
 
@@ -260,12 +261,22 @@ class User extends UserMaster
 		return $res;
 	}
 
-	public function findAllSupplierArray()
+	public function findAllSupplierArray($returnEmail = false)
 	{
 		$result = array();
-		foreach($this->findAll('status = 1 and type = 3') as $item)
+		if(!$returnEmail)
 		{
-			$result[$item->userId] = User::model()->showUserCompany($item->userId);
+			foreach($this->findAll('status = 1 and type = 3') as $item)
+			{
+				$result[$item->userId] = User::model()->showUserCompany($item->userId);
+			}
+		}
+		else
+		{
+			foreach($this->findAll('status = 1 and type = 3') as $item)
+			{
+				$result[$item->userId] = $item->email;
+			}
 		}
 
 		return $result;
