@@ -65,6 +65,11 @@ class MasterBackofficeController extends MasterController
 							'/backoffice/user/index',
 						)),
 					array(
+						'label'=>'User File',
+						'url'=>array(
+							'/backoffice/userFile/index',
+						)),
+					array(
 						'label'=>'Supplier',
 						'url'=>array(
 							'/backoffice/supplier/index')
@@ -121,11 +126,11 @@ class MasterBackofficeController extends MasterController
 						'url'=>array(
 							'/backoffice/report/viewSummaryReport',
 						)),
-					array(
-						'label'=>'รายงานยอดค้างชำระผู้ผลิตสินค้า',
-						'url'=>array(
-							'/backoffice/report/viewSupplierReport',
-						)),
+//					array(
+//						'label'=>'รายงานยอดค้างชำระผู้ผลิตสินค้า',
+//						'url'=>array(
+//							'/backoffice/report/viewSupplierReport',
+//						)),
 //					array(
 //						'label'=>'รายงานยอดค้างชำระผู้กระจายสินค้า',
 //						'url'=>array(

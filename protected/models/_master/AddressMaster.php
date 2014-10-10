@@ -22,6 +22,9 @@
  * @property string $taxNo
  *
  * The followings are the available model relations:
+ * @property Province $province
+ * @property Amphur $amphur
+ * @property District $district
  * @property User $user
  */
 class AddressMaster extends MasterCActiveRecord
@@ -66,6 +69,9 @@ class AddressMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'province' => array(self::BELONGS_TO, 'Province', 'provinceId'),
+			'amphur' => array(self::BELONGS_TO, 'Amphur', 'amphurId'),
+			'district' => array(self::BELONGS_TO, 'District', 'districtId'),
 			'user' => array(self::BELONGS_TO, 'User', 'userId'),
 		);
 	}

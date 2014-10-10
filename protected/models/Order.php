@@ -19,6 +19,13 @@
 class Order extends OrderMaster
 {
 
+	public $maxCode;
+	public $searchText;
+	public $orderError;
+	public $marginToDealer;
+	public $marginToDaii;
+	public $sumMarginDealer;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -48,6 +55,21 @@ class Order extends OrderMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
+				'shippingAmphur'=>array(
+					self::BELONGS_TO,
+					'Amphur',
+					array(
+						'shippingAmphurId'=>'amphurId'),),
+				'shippingProvince'=>array(
+					self::BELONGS_TO,
+					'Province',
+					array(
+						'shippingProvinceId'=>'provinceId'),),
+				'shippingDistrict'=>array(
+					self::BELONGS_TO,
+					'District',
+					array(
+						'shippingDistrictId'=>'districtId'),),
 		));
 	}
 
@@ -57,8 +79,7 @@ class Order extends OrderMaster
 	public function attributeLabels()
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
-				//code here
-		));
+			));
 	}
 
 	public function findAllMyFileBySupplierId($userId, $supplierId, $type, $status, $token)

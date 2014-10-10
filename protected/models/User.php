@@ -4,6 +4,7 @@ class User extends UserMaster
 {
 
 	public $confirmPassword;
+	public $company;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -34,6 +35,18 @@ class User extends UserMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
+				'billingAddress'=>array(
+					self::BELONGS_TO,
+					'Address',
+					array(
+						'userId'=>'userId'),
+					'condition'=>'billingAddress.type=1'),
+				'shippingAddress'=>array(
+					self::BELONGS_TO,
+					'Address',
+					array(
+						'userId'=>'userId'),
+					'condition'=>'shippingAddress.type=2'),
 		));
 	}
 
@@ -179,7 +192,7 @@ class User extends UserMaster
 	public function showUserCompany($id)
 	{
 		$criteria = new CDbCriteria();
-		$criteria->select = "a.company as company";
+		$criteria->select = "a.company as company ";
 		$criteria->join = "LEFT JOIN address a ON t.userId = a.userId ";
 		$criteria->condition = 't.userId = ' . $id;
 		$result = $this->findAll($criteria);

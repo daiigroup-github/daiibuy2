@@ -3,10 +3,16 @@
 /* @var $model UserFile */
 
 $this->breadcrumbs = array(
-	'User Files',
+	'User Files'=>array(
+		'index'),
+	'Manage',
 );
 
 $this->menu = array(
+	array(
+		'label'=>'List UserFile',
+		'url'=>array(
+			'index')),
 	array(
 		'label'=>'Create UserFile',
 		'url'=>array(
@@ -14,53 +20,60 @@ $this->menu = array(
 );
 
 Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
+$('#search-form').submit(function(){
+$('#user-file-grid').yiiGridView('update', {
+data: $(this).serialize()
 });
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('user-file-grid', {
-		data: $(this).serialize()
-	});
-	return false;
+return false;
 });
 ");
-
-$this->pageHeader = 'การจัดการเอกสารที่ต้องการจาก User';
 ?>
 
-<div class="btn-toolbar">
-	<div class="btn-group">
-		<?php
-		echo CHtml::link('<i class="icon-plus-sign icon-white"></i> เพิ่มเอกสารที่ต้องการของ user', array(
-			'create'), array(
-			'class'=>'btn btn-primary'));
-		?>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Manage User Files
+		<div class="pull-right">
+			<?php echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array(
+				'class'=>'btn btn-xs btn-primary'));
+			?>
+		</div>
 	</div>
+
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-12">
+				<?php
+				$this->renderPartial('_search', array(
+					'model'=>$model,
+				));
+				?>
+			</div>
+		</div>
+	</div>
+
+	<?php
+	$this->widget('zii.widgets.grid.CGridView', array(
+		'id'=>'user-file-grid',
+		'dataProvider'=>$model->search(),
+		'itemsCssClass'=>'table table-striped table-bordered table-hover',
+		'columns'=>array(
+			array(
+				'class'=>'IndexColumn'),
+			'userFileName',
+			'type',
+			'status',
+			'isShowInProductView',
+			'isPublic',
+			/*
+			  'createDateTime',
+			 */
+			array(
+				'class'=>'CButtonColumn',
+			),
+		),
+	));
+	?>
+
 </div>
 
-<?php
-$this->renderPartial('_search', array(
-	'model'=>$model,
-));
-?>
 
-<?php
-$this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'user-file-grid',
-	'dataProvider'=>$model->search(),
-	//'filter'=>$model,
-	'itemsCssClass'=>'table table-striped table-bordered table-condensed',
-	'columns'=>array(
-		'userFileName',
-		'type',
-		'isShowInProductView',
-		'isPublic',
-		'status',
-		'createDateTime',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-));
-?>
