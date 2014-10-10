@@ -339,7 +339,19 @@ class OrderController extends MasterBackofficeController
 
 	public function actionPrint($id)
 	{
-		$this->layout = '//layouts/daiibuy/print';
+		$this->layout = '//layouts/print';
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$this->render('view', array(
+			'model'=>$this->loadModel($id),
+			'pageText'=>$this->selectPageTitle($this->loadModel($id)),
+			'daiibuy'=>$daiibuy
+		));
+	}
+
+	public function actionPrintPayForm($id)
+	{
+		$this->layout = '//layouts/print';
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$this->render('view', array(

@@ -5,6 +5,7 @@ protected/runtime
 images/fenzer
 images/madrid
 images/upload
+images/barcode
 .idea/php.xml
 protected/config/params.php
 images/userFile/*

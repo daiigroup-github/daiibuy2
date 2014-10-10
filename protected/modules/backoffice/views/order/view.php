@@ -50,7 +50,8 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 			$this->renderPartial("_actions", array(
 				'model'=>$model,
 				'pageText'=>$pageText,
-				'user'=>$user));
+				'user'=>$user,
+				'token'=>isset($token) ? $token : NULL));
 			$this->renderPartial("_files", array(
 				'model'=>$model));
 		}
@@ -69,20 +70,30 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 		<?php
 		if(!(Yii::app()->controller->action->id == "printPayForm"))
 		{
-			$this->renderPartial("_viewOrderUser", array(
-				'model'=>$model,
-				'pageText'=>$pageText,
-				'daiibuy'=>$daiibuy,
-				'token'=>isset($token) ? $token : null,
-				'supplier'=>$supplier,
-//							'dealer'=>$dealer,
-				'supplierAddr'=>$supplierAddr,
-//							'dealerAddr'=>$dealerAddr,
-				'daiiAddr'=>$daiiAddr,
-				'user'=>isset($user) ? $user : null,
-				'discount'=>$discount,
-//							'margin'=>$margin
-			));
+			?>
+			<div class="img-rounded" style="background-color:white; border: 2px; border-color: #dddddd; border-style: solid;">
+				<?php if($this->action->id != "view"): ?>
+					<?php
+					$this->renderPartial("_header", array(
+						'model'=>$model,
+						'daiiAddr'=>$daiiAddr,
+						'pageText'=>$pageText,
+					));
+					?>
+					<?php
+					$this->renderPartial("_header_address", array(
+						'model'=>$model,
+					));
+					?>
+				<?php endif; ?>
+				<?php
+				$this->renderPartial("_items", array(
+					'model'=>$model,
+					'user'=>$user,
+				));
+				?>
+			</div>
+			<?php
 		}
 		?>
 	</div><?php

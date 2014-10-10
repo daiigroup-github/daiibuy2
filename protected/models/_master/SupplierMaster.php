@@ -7,8 +7,15 @@
  * @property string $supplierId
  * @property string $name
  * @property string $description
+ * @property string $companyName
  * @property string $address1
  * @property string $address2
+ * @property string $districtId
+ * @property string $amphurId
+ * @property string $provinceId
+ * @property string $postcode
+ * @property string $taxNumber
+ * @property string $email
  * @property string $tel
  * @property string $fax
  * @property string $logo
@@ -18,6 +25,11 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
+ * @property Order[] $orders
+ * @property Amphur $amphur
+ * @property District $district
+ * @property Province $province
+ * @property SupplierEpayment[] $supplierEpayments
  * @property UserToSupplier[] $userToSuppliers
  */
 class SupplierMaster extends MasterCActiveRecord
@@ -38,17 +50,17 @@ class SupplierMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, logo', 'required'),
+			array('name, districtId, amphurId, provinceId, postcode, logo, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>200),
+			array('name, companyName, email', 'length', 'max'=>200),
+			array('districtId, amphurId, provinceId, postcode', 'length', 'max'=>10),
+			array('taxNumber', 'length', 'max'=>50),
 			array('tel, fax', 'length', 'max'=>25),
 			array('logo, url', 'length', 'max'=>255),
-			array('description, address1, address2, createDateTime, updateDateTime', 'safe'),
-			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
-			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
+			array('description, address1, address2', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('supplierId, name, description, address1, address2, tel, fax, logo, url, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('supplierId, name, description, companyName, address1, address2, districtId, amphurId, provinceId, postcode, taxNumber, email, tel, fax, logo, url, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,6 +72,11 @@ class SupplierMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'orders' => array(self::HAS_MANY, 'Order', 'supplierId'),
+			'amphur' => array(self::BELONGS_TO, 'Amphur', 'amphurId'),
+			'district' => array(self::BELONGS_TO, 'District', 'districtId'),
+			'province' => array(self::BELONGS_TO, 'Province', 'provinceId'),
+			'supplierEpayments' => array(self::HAS_MANY, 'SupplierEpayment', 'supplierId'),
 			'userToSuppliers' => array(self::HAS_MANY, 'UserToSupplier', 'supplierId'),
 		);
 	}
@@ -73,8 +90,15 @@ class SupplierMaster extends MasterCActiveRecord
 			'supplierId' => 'Supplier',
 			'name' => 'Name',
 			'description' => 'Description',
+			'companyName' => 'Company Name',
 			'address1' => 'Address1',
 			'address2' => 'Address2',
+			'districtId' => 'District',
+			'amphurId' => 'Amphur',
+			'provinceId' => 'Province',
+			'postcode' => 'Postcode',
+			'taxNumber' => 'Tax Number',
+			'email' => 'Email',
 			'tel' => 'Tel',
 			'fax' => 'Fax',
 			'logo' => 'Logo',
@@ -108,8 +132,15 @@ class SupplierMaster extends MasterCActiveRecord
 			$this->supplierId = $this->searchText;
 			$this->name = $this->searchText;
 			$this->description = $this->searchText;
+			$this->companyName = $this->searchText;
 			$this->address1 = $this->searchText;
 			$this->address2 = $this->searchText;
+			$this->districtId = $this->searchText;
+			$this->amphurId = $this->searchText;
+			$this->provinceId = $this->searchText;
+			$this->postcode = $this->searchText;
+			$this->taxNumber = $this->searchText;
+			$this->email = $this->searchText;
 			$this->tel = $this->searchText;
 			$this->fax = $this->searchText;
 			$this->logo = $this->searchText;
@@ -122,8 +153,15 @@ class SupplierMaster extends MasterCActiveRecord
 		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
 		$criteria->compare('name',$this->name,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
+		$criteria->compare('companyName',$this->companyName,true, 'OR');
 		$criteria->compare('address1',$this->address1,true, 'OR');
 		$criteria->compare('address2',$this->address2,true, 'OR');
+		$criteria->compare('districtId',$this->districtId,true, 'OR');
+		$criteria->compare('amphurId',$this->amphurId,true, 'OR');
+		$criteria->compare('provinceId',$this->provinceId,true, 'OR');
+		$criteria->compare('postcode',$this->postcode,true, 'OR');
+		$criteria->compare('taxNumber',$this->taxNumber,true, 'OR');
+		$criteria->compare('email',$this->email,true, 'OR');
 		$criteria->compare('tel',$this->tel,true, 'OR');
 		$criteria->compare('fax',$this->fax,true, 'OR');
 		$criteria->compare('logo',$this->logo,true, 'OR');

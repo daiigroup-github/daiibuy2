@@ -1,10 +1,10 @@
 <style>
 	.tong {
-		position: fixed;
-		top: 10%;
-		right: 10px;
-		min-width: 300px;
-		max-width: 500px;
+		/*		position: fixed;
+				bottom : 0%;
+				right: 10px;
+				min-width: 200px;
+				max-width: 500px;*/
 		border:2px black solid;
 	}
 
@@ -32,20 +32,20 @@
 	{
 		if(Yii::app()->user->userType == 3 && !($model->status == 2))
 		{
-			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl("order/print", array(
+			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 					"id"=>$model->orderId)), array(
 				'class'=>'btn btn-warning',
 				'target'=>'_blank',));
 		}
 		else
 		{
-			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์', Yii::app()->createUrl("order/print", array(
+			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 					"id"=>$model->orderId)), array(
 				'class'=>'btn btn-warning',
 				'target'=>'_blank',));
 			if(Yii::app()->user->userType == 1 && $model->status >= 2)
 			{
-				echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์รายการสินค้า', Yii::app()->createUrl("order/printProductList", array(
+				echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์รายการสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printProductList", array(
 						"id"=>$model->orderId)), array(
 					'class'=>'btn btn-info',
 					'target'=>'_blank',));
@@ -53,7 +53,7 @@
 		}
 
 		if($model->status > 2 && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5))
-			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบสั่งซื้อสินค้า', Yii::app()->createUrl("order/viewOrder", array(
+			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบสั่งซื้อสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/viewOrder", array(
 					"id"=>$model->orderId)), array(
 				'class'=>'btn btn-info',
 				'target'=>'_blank',));
@@ -61,14 +61,14 @@
 	else
 	{
 
-		echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์', Yii::app()->createUrl("order/print", array(
+		echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 				"id"=>$model->orderId)), array(
 			'class'=>'btn btn-warning',
 			'target'=>'_blank',));
 	}
 	if(((!isset(Yii::app()->user->userType) && ($model->status == 0)) || ( Yii::app()->user->userType == 1) && ($model->status == 0)))
 	{
-		echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบ Pay-in', Yii::app()->createUrl("order/printPayForm", array(
+		echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบ Pay-in', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printPayForm", array(
 				"id"=>$model->orderId)), array(
 			'class'=>'btn btn-info',
 			'target'=>'_blank',));

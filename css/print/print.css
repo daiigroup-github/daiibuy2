@@ -1,0 +1,151 @@
+@CHARSET "US-ASCII";
+
+body,html {
+	font-size: 12px;
+	margin: 0px;
+	padding: 0px;
+}
+
+footer {
+	position: absolute;
+	bottom: 10px;
+	width: 19cm;
+	text-align: center;
+	font-size: 16px;
+	margin-left: 0.5cm;
+}
+
+.wrapper {
+	width: 20cm;
+	height: 27cm;
+	margin: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	page-break-after:always;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+table {
+	width: 19cm;
+	margin: auto;
+	position: relative;
+}
+
+td table {
+	width: 100%;
+	margin: auto;
+}
+
+.bordered {
+	border: 2px solid;
+}
+
+.borderedBottom {
+	border-bottom: 2px solid;
+}
+
+td.firstCol {
+	border-right: 2px solid;
+}
+
+th.secondCol {
+	border-right: 2px solid;
+	text-align: center;
+}
+
+th.order {
+	width: 0.8cm;
+}
+
+th.code {
+	width: 1.3cm;
+}
+
+/* 	th.desc{ */
+/* 		width:4.8cm; */
+/* 	} */
+th.wo {
+	width: 1.2cm;
+}
+
+th.ho {
+	width: 1.2cm;
+}
+
+th.price {
+	width: 2.3cm;
+}
+
+th.set {
+	width: 1.3cm;
+}
+
+th.total {
+	width: 2.5cm;
+}
+
+tbody th {
+	text-align: center;
+	border-right: 2px solid;
+}
+
+.items td {
+	border-right: 2px solid;
+}
+
+.items td:last-child {
+	border-right: none;
+}
+
+.title {
+	font-size: 64px;
+	font-weight: bolder;
+}
+
+.subTitle {
+	font-size: 14px;
+	margin-top: -10px;
+	margin-bottom: 20px;
+}
+
+table.signed {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table.signed td {
+	border: 2px solid;
+	width: 33%;
+	font-size: 12px;
+}
+
+.atech {
+	color: green;
+}
+
+hr {
+	height: 5px;
+	background-color: green;
+	border:none;
+}
+
+.qo{
+	background-color:#000;
+	color:#fff;
+	text-align:center;
+	font-size:22px;
+	font-weight:bold;
+}

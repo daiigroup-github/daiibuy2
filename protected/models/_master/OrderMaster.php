@@ -9,12 +9,18 @@
  * @property string $supplierId
  * @property string $provinceId
  * @property string $orderNo
+ * @property string $invoiceNo
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $email
+ * @property string $telephone
  * @property string $token
  * @property string $title
  * @property integer $type
  * @property string $total
  * @property string $totalIncVAT
  * @property string $paymentDateTime
+ * @property string $paymentCompany
  * @property string $paymentFirstname
  * @property string $paymentLastname
  * @property string $paymentPostcode
@@ -33,7 +39,7 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property User $supplier
+ * @property Supplier $supplier
  * @property OrderFile[] $orderFiles
  * @property OrderGroupToOrder[] $orderGroupToOrders
  * @property OrderItems[] $orderItems
@@ -56,17 +62,17 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, provinceId, paymentMethod, createDateTime', 'required'),
+			array('provinceId, paymentMethod, createDateTime', 'required'),
 			array('type, paymentMethod, usedPoint, isSentToCustomer, status', 'numerical', 'integerOnly'=>true),
-			array('userId, supplierId, provinceId, shippingDistrictId, shippingAmphurId, shippingProvinceId', 'length', 'max'=>20),
+			array('userId, supplierId, provinceId, invoiceNo, telephone', 'length', 'max'=>20),
 			array('orderNo', 'length', 'max'=>45),
-			array('token, title, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
+			array('firstname, lastname, email, token, title, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
 			array('total, totalIncVAT', 'length', 'max'=>15),
-			array('paymentPostcode, shippingPostCode', 'length', 'max'=>10),
+			array('paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
 			array('paymentDateTime, shippingAddress1, shippingAddress2, updateDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderId, userId, supplierId, provinceId, orderNo, token, title, type, total, totalIncVAT, paymentDateTime, paymentFirstname, paymentLastname, paymentPostcode, paymentMethod, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderId, userId, supplierId, provinceId, orderNo, invoiceNo, firstname, lastname, email, telephone, token, title, type, total, totalIncVAT, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentPostcode, paymentMethod, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,7 +84,7 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'supplier' => array(self::BELONGS_TO, 'User', 'supplierId'),
+			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
 			'orderFiles' => array(self::HAS_MANY, 'OrderFile', 'orderId'),
 			'orderGroupToOrders' => array(self::HAS_MANY, 'OrderGroupToOrder', 'orderId'),
 			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'orderId'),
@@ -96,12 +102,18 @@ class OrderMaster extends MasterCActiveRecord
 			'supplierId' => 'Supplier',
 			'provinceId' => 'Province',
 			'orderNo' => 'Order No',
+			'invoiceNo' => 'Invoice No',
+			'firstname' => 'Firstname',
+			'lastname' => 'Lastname',
+			'email' => 'Email',
+			'telephone' => 'Telephone',
 			'token' => 'Token',
 			'title' => 'Title',
 			'type' => 'Type',
 			'total' => 'Total',
 			'totalIncVAT' => 'Total Inc Vat',
 			'paymentDateTime' => 'Payment Date Time',
+			'paymentCompany' => 'Payment Company',
 			'paymentFirstname' => 'Payment Firstname',
 			'paymentLastname' => 'Payment Lastname',
 			'paymentPostcode' => 'Payment Postcode',
@@ -146,12 +158,18 @@ class OrderMaster extends MasterCActiveRecord
 			$this->supplierId = $this->searchText;
 			$this->provinceId = $this->searchText;
 			$this->orderNo = $this->searchText;
+			$this->invoiceNo = $this->searchText;
+			$this->firstname = $this->searchText;
+			$this->lastname = $this->searchText;
+			$this->email = $this->searchText;
+			$this->telephone = $this->searchText;
 			$this->token = $this->searchText;
 			$this->title = $this->searchText;
 			$this->type = $this->searchText;
 			$this->total = $this->searchText;
 			$this->totalIncVAT = $this->searchText;
 			$this->paymentDateTime = $this->searchText;
+			$this->paymentCompany = $this->searchText;
 			$this->paymentFirstname = $this->searchText;
 			$this->paymentLastname = $this->searchText;
 			$this->paymentPostcode = $this->searchText;
@@ -175,12 +193,18 @@ class OrderMaster extends MasterCActiveRecord
 		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
 		$criteria->compare('provinceId',$this->provinceId,true, 'OR');
 		$criteria->compare('orderNo',$this->orderNo,true, 'OR');
+		$criteria->compare('invoiceNo',$this->invoiceNo,true, 'OR');
+		$criteria->compare('firstname',$this->firstname,true, 'OR');
+		$criteria->compare('lastname',$this->lastname,true, 'OR');
+		$criteria->compare('email',$this->email,true, 'OR');
+		$criteria->compare('telephone',$this->telephone,true, 'OR');
 		$criteria->compare('token',$this->token,true, 'OR');
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('type',$this->type);
 		$criteria->compare('total',$this->total,true, 'OR');
 		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
 		$criteria->compare('paymentDateTime',$this->paymentDateTime,true, 'OR');
+		$criteria->compare('paymentCompany',$this->paymentCompany,true, 'OR');
 		$criteria->compare('paymentFirstname',$this->paymentFirstname,true, 'OR');
 		$criteria->compare('paymentLastname',$this->paymentLastname,true, 'OR');
 		$criteria->compare('paymentPostcode',$this->paymentPostcode,true, 'OR');
