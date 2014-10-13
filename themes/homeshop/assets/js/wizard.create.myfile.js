@@ -80,6 +80,7 @@ $(document).ready(function() {
 		var base_url = window.location.origin;
 		var length = $("#length_input").attr("value");
 		var categoryId = $("#editTable").attr("name");
+//		alert(categoryId);
 		var productItems = $("#editTableForm").serialize();
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/fenzer/updatePrice',

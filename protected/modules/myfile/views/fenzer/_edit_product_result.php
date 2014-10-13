@@ -25,7 +25,7 @@
 				<td><?php echo $item->name; ?></td>
 				<td><?php echo $item->productUnits; ?></td>
 				<td><?php echo CHtml::textField('productItems['.$item->productId.'][quantity]', $item->quantity,array('class'=>'edit-table-qty-input')); ?></td>
-				<td><?php echo FenzerController::formatMoney($item->price/$item->quantity,true); ?></td>
+				<td><?php echo FenzerController::formatMoney($item->price/intval($item->quantity),true); ?></td>
 				<td><?php echo FenzerController::formatMoney($item->price,true); ?></td>
 				<td><?php echo FenzerController::formatMoney(($item->price/$item->quantity)/3,true); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
@@ -99,12 +99,7 @@
 				'url'=>CController::createUrl('fenzer/addNewProductItem'),
 				'dataType'=>'html',
 				'data'=>'js:$("#addItem").serialize()',
-//									array(
-//										"productId"=>$('#myForm').serialize(),
-//										"categoryId"=>$productResult['categoryId'],
-//										"length"=>0,),
 				'success'=>'js:function(data){
-					alert("success !!!");
 					$("#editTable").append(data);
 				}',
 				),

@@ -711,6 +711,41 @@ class Product extends ProductMaster
 		return $res;
 	}
 
+	public function calculateItemSetFenzerManual($categoryId, $productItems, $provinceId)
+	{
+		$category = Category::model()->findByPk($categoryId);
+		$res = array();
+		$res['categoryId'] = $categoryId;
+		$totalPrice = 0.00;
+		unset($productItems['categoryId']);
+
+		foreach($productItems as $productId => $qty)
+			{
+			$product = Product::model()->findByPk($productId);
+			//product
+			$res['items'][$productId] = $product;
+
+			//quantity
+			$res['items'][$productId]['quantity'] = intval($qty['quantity']);
+			print_r($qty);
+
+			//price
+			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$productId));
+			if(isset($productPromotion)){
+				//promotion price
+				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId)*1;
+			}else{
+				//normal price
+				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId)*1;
+			}
+			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
+		}
+		$res['totalPrice'] = $totalPrice;
+
+		return $res;
+	}
+
 	public function calculateNewItemFenzer($productId,$provinceId)
 	{
 			$res = array();
@@ -724,10 +759,10 @@ class Product extends ProductMaster
 			":productId"=>$productIdNew));
 			if(isset($productPromotion)){
 				//promotion price
-				$res["item"]['price'] = $this->calProductPromotionTotalPrice($productIdNew, 1 ,$provinceId);
+				$res["item"]['price'] = $this->calProductPromotionTotalPrice($productIdNew, 1 ,$provinceId)*1;
 			}else{
 				//normal price
-				$res["item"]['price'] = $this->calProductTotalPrice($productIdNew, 1,$provinceId);
+				$res["item"]['price'] = $this->calProductTotalPrice($productIdNew, 1,$provinceId)*1;
 			}
 			return $res;
 
