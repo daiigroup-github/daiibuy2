@@ -1,7 +1,7 @@
 <?php
 
 ?>
-<div id="result_content" class="content-result">
+<div id="confirm_content" class="content-result">
 				<div class="row" >
 					<div class="col-xs-12">
 						<form id="editTableForm">
@@ -66,20 +66,20 @@
 				</div>
 
 
-<div class="row">
+<!--<div class="row">
 	<div class="col-sm-1">
 		เพิ่มสินค้า
 	</div>
 	<div class="col-sm-3">
 	<form id="addItem" action="#">
 
-	<?php echo CHtml::dropDownList('productId', 'selectedCode',
-					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
-					array('class'=>'form-control',
-						'id'=>'itemCode',
-						'prompt'=>'เลือกรหัสสินค้า',
-						'style'=>'text-align: center;',
-					)); ?>
+	<?php // echo CHtml::dropDownList('productId', 'selectedCode',
+//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
+//					array('class'=>'form-control',
+//						'id'=>'itemCode',
+//						'prompt'=>'เลือกรหัสสินค้า',
+//						'style'=>'text-align: center;',
+//					)); ?>
 
 					<?php
 //					echo count($productResult['items'])." <br>";
@@ -91,19 +91,20 @@
 		</form>
 	</div>
 	<div class="col-sm-3">
-		<!--<button id="addItemButton" class="btn btn-block btn-info">เพิ่มสินค้า</button>-->
-		<?php echo CHtml::button('เพิ่มสินค้า',
-			array('class'=>'btn btn-info',
-				'ajax'=>array(
-				'type'=>'POST',
-				'url'=>CController::createUrl('fenzer/addNewProductItem'),
-				'dataType'=>'html',
-				'data'=>'js:$("#addItem").serialize()',
-				'success'=>'js:function(data){
-					$("#editTable").append(data);
-				}',
-				),
-			)); ?>
+		<button id="addItemButton" class="btn btn-block btn-info">เพิ่มสินค้า</button>
+		<?php // echo CHtml::button('เพิ่มสินค้า',
+//			array('class'=>'btn btn-info',
+//				'ajax'=>array(
+//				'type'=>'POST',
+//				'url'=>CController::createUrl('fenzer/addNewProductItem'),
+//				'dataType'=>'html',
+//				'data'=>'js:$("#addItem").serialize()',
+//				'success'=>'js:function(data){
+//					$("#editTable").append(data);
+//				}',
+//				),
+//			)); ?>
 	</div>
-	</div>
+
+	</div>-->
 </div>

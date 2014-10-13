@@ -74,7 +74,6 @@ class FenzerController extends MasterMyFileController
 
 	public function actionShowFenzerProductResultByHeight()
 	{
-
 //		if(isset($value))
 //		{
 			$status = 1;
@@ -172,28 +171,6 @@ class FenzerController extends MasterMyFileController
 		}
 		$itemSetArray = Product::model()->calculateItemSetFenzer($productCate2->categoryId, $length, $provinceId);
 
-		//SAVE NEW ORDER
-//		$orderModel->supplierId = 176;
-//		$orderModel->provinceId = $provinceId;
-//		$orderModel->type = 1;
-//		$orderModel->status = 1;
-//		$orderModel->createDateTime = new CDbExpression("NOW()");
-//		if($orderModel->save()){
-//			$orderId = Yii::app()->db->lastInsertID;
-//			$orderDetail = new OrderModel();
-//			$orderDetail->orderId = $orderId;
-//			$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
-//			$orderDetail->createDateTime = new CDbExpression("NOW()");
-//			if($orderDetail->save()){
-//				$orderDetailId = Yii::app()->db->lastInsertID;
-//				foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
-//				$orderDetailValue = new OrderDetailValue();
-//				$orderDetailValue->orderDetailId = $orderDetailId;
-//				$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-//				$orderDetailValue->value = $item->title=='height'? $height : $length;
-//				}
-//			}
-//		}
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
@@ -248,12 +225,39 @@ class FenzerController extends MasterMyFileController
 			$categoryId = $_POST['categoryId'];
 		}
 		if($length==0){
-			$itemSetArray = Product::model()->calculateItemSetFenzerManual($categoryId,$productItems, $provinceId);
+			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId);
 		}else{
 		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
 		}
 
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+				'productResult'=>$itemSetArray,
+				),TRUE, TRUE);
+	}
+
+	public function actionSaveOrderMyFile(){
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$provinceId = $daiibuy->provinceId;
+		$productItems = array();
+		if(isset($_POST['productItems']) && !empty($_POST['productItems']))
+		{
+			$productItems = $_POST['productItems'];
+		}
+		if(isset($_POST['length']) && !empty($_POST['length']))
+		{
+			$length = $_POST['length'];
+		}else{
+			$length = 0;
+		}
+		if(isset($_POST['categoryId']) && !empty($_POST['categoryId']))
+		{
+			$categoryId = $_POST['categoryId'];
+		}
+
+		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId, TRUE);
+
+		echo $this->renderPartial('/fenzer/_confirm_order_myfile', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
 	}

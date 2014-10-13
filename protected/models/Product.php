@@ -711,7 +711,7 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculateItemSetFenzerManual($categoryId, $productItems, $provinceId)
+	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $isSave=FALSE)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$res = array();
@@ -720,14 +720,39 @@ class Product extends ProductMaster
 		unset($productItems['categoryId']);
 
 		foreach($productItems as $productId => $qty)
-			{
+		{
+			if($isSave){
+			//SAVE NEW ORDER
+			$orderModel = new Order();
+			$orderModel->supplierId = 176;
+			$orderModel->provinceId = $provinceId;
+			$orderModel->type = 1;
+			$orderModel->status = 1;
+			$orderModel->createDateTime = new CDbExpression("NOW()");
+			if($orderModel->save()){
+				$orderId = Yii::app()->db->lastInsertID;
+				$orderDetail = new OrderDetail();
+				$orderDetail->orderId = $orderId;
+				$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
+				$orderDetail->createDateTime = new CDbExpression("NOW()");
+					if($orderDetail->save()){
+						$orderDetailId = Yii::app()->db->lastInsertID;
+						foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
+							$orderDetailValue = new OrderDetailValue();
+							$orderDetailValue->orderDetailId = $orderDetailId;
+							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
+							$orderDetailValue->value = $item->title=='height'? $height : $length;
+						}
+					}
+				}
+			}
 			$product = Product::model()->findByPk($productId);
 			//product
 			$res['items'][$productId] = $product;
 
 			//quantity
 			$res['items'][$productId]['quantity'] = intval($qty['quantity']);
-			print_r($qty);
+//			print_r($qty);
 
 			//price
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
