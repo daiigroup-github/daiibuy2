@@ -86,7 +86,10 @@ class BrandModelController extends MasterBackofficeController
 			{
 				$model->attributes = $_POST['BrandModel'];
 				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
-				$model->supplierId = $sup->supplierId;
+				if(isset($sup))
+				{
+					$model->supplierId = $sup->supplierId;
+				}
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderimage = 'brandModel';

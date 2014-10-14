@@ -120,7 +120,7 @@ return false;
 						<div class="col-lg-6" style="border-right: 1px solid">
 							<h3>Choose Category..</h3>
 							<?php
-							echo Select2::dropDownList("categoryId", "", Category::model()->findAllCategoryBySupplierId(1, Yii::app()->user->id), array(
+							echo Select2::dropDownList("categoryId", "", Category::model()->findAllCategoryBySupplierId(1, User::model()->getSupplierId(Yii::app()->user->id)), array(
 								'prompt'=>'-- เลือก Category --',
 								'id'=>'categoryId',
 								'style'=>'max-width:400px;min-width:300px',

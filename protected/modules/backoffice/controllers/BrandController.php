@@ -83,7 +83,10 @@ class BrandController extends MasterBackofficeController
 			{
 				$model->attributes = $_POST['Brand'];
 				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
-				$model->supplierId = $sup->supplierId;
+				if(isset($sup))
+				{
+					$model->supplierId = $sup->supplierId;
+				}
 				$folderimage = 'brand';
 				$image = CUploadedFile::getInstance($model, 'image');
 				if(isset($image) && !empty($image))

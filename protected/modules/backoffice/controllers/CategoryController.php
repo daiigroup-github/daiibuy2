@@ -90,8 +90,10 @@ class CategoryController extends MasterBackofficeController
 				if(!Yii::app()->user->isGuest)
 				{
 					$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
-					$model->supplierId = $sup->supplierId;
-					$model->supplierId = Yii::app()->user->id;
+					if(isset($sup))
+					{
+						$model->supplierId = $sup->supplierId;
+					}
 				}
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");

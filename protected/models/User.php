@@ -308,7 +308,7 @@ class User extends UserMaster
 		}
 		else
 		{
-			return $this->userId;
+			return NULL;
 		}
 	}
 
