@@ -93,6 +93,11 @@ class UserIdentity extends CBaseUserIdentity
 					$this->_id = $user->userId;
 					$this->email = $user->email;
 					$this->setState('userType', $user->type);
+					$supplierId = $user->getSupplierId();
+					if(isset($supplierId))
+					{
+						$this->setState('supplierId', $user->getSupplierId());
+					}
 					$this->errorCode = self::ERROR_NONE;
 				}
 			}

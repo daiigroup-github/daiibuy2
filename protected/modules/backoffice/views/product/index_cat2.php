@@ -127,7 +127,7 @@ $this->menu = array(
 						<div class="col-lg-6" style="border-right: 1px solid">
 							<h3>Choose Product..</h3>
 							<?php
-							echo Select2::dropDownList("productId", "", Product::model()->findAllProductBySupplierId(Yii::app()->user->id), array(
+							echo Select2::dropDownList("productId", "", Product::model()->findAllProductBySupplierId(User::model()->getSupplierId(Yii::app()->user->id)), array(
 								'prompt'=>'-- เลือก Product --',
 								'id'=>'productId',
 								'style'=>'max-width:400px;min-width:300px',

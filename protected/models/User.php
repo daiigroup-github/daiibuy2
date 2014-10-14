@@ -295,4 +295,21 @@ class User extends UserMaster
 		return $result;
 	}
 
+	public function getSupplierId($userId = NULL)
+	{
+		if(isset($userId))
+		{
+			$this->userId = $userId;
+		}
+		$model = UserToSupplier::model()->find("userId = " . $this->userId);
+		if(isset($model))
+		{
+			return $model->supplierId;
+		}
+		else
+		{
+			return $this->userId;
+		}
+	}
+
 }
