@@ -146,10 +146,6 @@ class ProductController extends MasterBackofficeController
 //		$productHistory = new ProductHistory();
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
-		if(isset($_GET["categoryId"]))
-		{
-			$model->categoryId = $_GET["categoryId"];
-		}
 		if(isset($_POST['Product']))
 		{
 			$model->attributes = $_POST['Product'];
@@ -287,7 +283,7 @@ class ProductController extends MasterBackofficeController
 				{
 					$flag = false;
 				}
-				if($flag && isset($_GET["categoryId"]))
+				if($flag && isset($_GET["category2Id"]))
 				{
 					$this->actionSaveCategory2toProduct($_GET["categoryId"], $productId);
 				}
@@ -661,9 +657,9 @@ class ProductController extends MasterBackofficeController
 		//$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Product']))
 			$model->attributes = $_GET['Product'];
-		if(isset($_GET["categoryId"]))
+		if(isset($_GET["category2Id"]))
 		{
-			$cat2ToProduct->categoryId = $_GET["categoryId"];
+			$cat2ToProduct->category2Id = $_GET["category2Id"];
 		}
 
 		$this->render('index_cat2', array(
@@ -759,7 +755,7 @@ class ProductController extends MasterBackofficeController
 		}
 		else
 		{
-			$model->categoryId = $_POST["categoryId"];
+			$model->category2Id = $_POST["category2Id"];
 			$model->productId = $_POST["productId"];
 			$result["status"] = $model->save();
 			echo CJSON::encode($result);

@@ -17,6 +17,9 @@
  *
  * The followings are the available model relations:
  * @property Brand $brand
+ * @property BrandModelImage[] $brandModelImages
+ * @property Category2ToProduct[] $category2ToProducts
+ * @property ModelToCategory1[] $modelToCategory1s
  */
 class BrandModelMaster extends MasterCActiveRecord
 {
@@ -57,7 +60,9 @@ class BrandModelMaster extends MasterCActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'brand' => array(self::BELONGS_TO, 'Brand', 'brandId'),
-			'categorys' => array(self::MANY_MANY, 'Category','model_to_category1(brandModelId, categoryId)',)
+			'brandModelImages' => array(self::HAS_MANY, 'BrandModelImage', 'brandModelId'),
+			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'brandModelId'),
+			'modelToCategory1s' => array(self::HAS_MANY, 'ModelToCategory1', 'brandModelId'),
 		);
 	}
 

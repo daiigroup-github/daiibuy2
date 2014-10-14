@@ -236,14 +236,14 @@ class Product extends ProductMaster
 		  $criteria->compare('status',$this->status);
 		 *
 		 */
-		if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
-		{
-			$user = User::model()->findByPk(Yii::app()->user->id);
-			if($user->type == 3)
-			{
-				$criteria->compare('supplierId', Yii::app()->user->id);
-			}
-		}
+//		if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
+//		{
+//			$user = User::model()->findByPk(Yii::app()->user->id);
+//			if($user->type == 3)
+//			{
+//				$criteria->compare('supplierId', User::model()->getSupplierId(Yii::app()->user->id));
+//			}
+//		}
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -17,6 +17,8 @@
  *
  * The followings are the available model relations:
  * @property Category2ToProduct[] $category2ToProducts
+ * @property Category2ToProduct[] $category2ToProducts1
+ * @property CategoryImage[] $categoryImages
  * @property CategoryToSub[] $categoryToSubs
  * @property CategoryToSub[] $categoryToSubs1
  * @property ModelToCategory1[] $modelToCategory1s
@@ -60,7 +62,9 @@ class CategoryMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'categoryId'),
+			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'subCategoryId'),
+			'category2ToProducts1' => array(self::HAS_MANY, 'Category2ToProduct', 'category1Id'),
+			'categoryImages' => array(self::HAS_MANY, 'CategoryImage', 'categoryId'),
 			'categoryToSubs' => array(self::HAS_MANY, 'CategoryToSub', 'categoryId'),
 			'categoryToSubs1' => array(self::HAS_MANY, 'CategoryToSub', 'subCategoryId'),
 			'modelToCategory1s' => array(self::HAS_MANY, 'ModelToCategory1', 'categoryId'),
