@@ -10,31 +10,16 @@ $this->breadcrumbs = array(
 		'id'=>$model->contentId),
 	'Update',
 );
-
-$this->menu = array(
-	array(
-		'label'=>'List Content',
-		'url'=>array(
-			'index')),
-	array(
-		'label'=>'Create Content',
-		'url'=>array(
-			'create')),
-	array(
-		'label'=>'View Content',
-		'url'=>array(
-			'view',
-			'id'=>$model->contentId)),
-	array(
-		'label'=>'Manage Content',
-		'url'=>array(
-			'admin')),
-);
 ?>
 
-<h1>Update Content <?php echo $model->contentId; ?></h1>
 
-<?php
-echo $this->renderPartial('_form', array(
-	'model'=>$model));
-?>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Update Content <?php echo $model->contentId; ?>	</div>
+	<div class="panel-body">
+		<?php
+		$this->renderPartial('_form', array(
+			'model'=>$model));
+		?>
+	</div>
+</div>

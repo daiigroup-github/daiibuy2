@@ -9,3 +9,4 @@ images/barcode
 .idea/php.xml
 protected/config/params.php
 images/userFile/*
+images/bank

@@ -59,7 +59,7 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 				</div>
 			</div>
 		</div>
-		<div class="span4">
+		<div class="col-md-4">
 			<div class="row">
 				<div class="col-md-12 text-right" style="font-size:small;">
 					<?php echo isset($title) ? $title : "" ?>
@@ -103,7 +103,6 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 							<b><?php echo str_replace("-", "", $model->telephone); ?></b>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -139,10 +138,12 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 			</div>
 		</div>
 	</div>
-
 	<div class="row" >
 		<div class="col-md-3 text-center">
-			<?php echo CHtml::image(Yii::app()->baseUrl . "/images/daii_logo.png") ?>
+			<?php
+			echo CHtml::image(Yii::app()->baseUrl . "/images/daii_logo.png", "", array(
+				'style'=>'width:150px'))
+			?>
 		</div>
 		<div class="col-md-9 text-center"  style="text-align:right">
 			<?php

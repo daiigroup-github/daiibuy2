@@ -48,7 +48,7 @@ return false;
 			</div>
 		</div>
 	</div>
-	<h3><?php echo isset($model->brandModel) ? $model->brandModel->title : "-" ?></h3>
+	<h3><?php echo isset($brandToCat->brandModel) ? $brandToCat->brandModel->title : "-" ?></h3>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'category-grid',
@@ -85,8 +85,21 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {subCat} {image}',
+				'template'=>'{view} {update} {delete} {subCat} {product} {image}',
 				'buttons'=>array(
+					'product'=>array(
+						'label'=>'<br><u>Product</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?category1Id=".$data->categoryId)'
+					),
+					'view'=>array(
+						'url'=>'Yii::app()->createUrl("/backoffice/category/view/id/".$data->categoryId)'
+					),
+					'update'=>array(
+						'url'=>'Yii::app()->createUrl("/backoffice/category/update/id/".$data->categoryId)'
+					),
+					'delete'=>array(
+						'url'=>'Yii::app()->createUrl("/backoffice/category/delete/id/".$data->categoryId)'
+					),
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
@@ -111,7 +124,7 @@ return false;
 						<div class="col-lg-6" style="border-right: 1px solid">
 							<h3>Choose Category..</h3>
 							<?php
-							echo Select2::dropDownList("categoryId", "", Category::model()->findAllCategoryBySupplierId(1, Yii::app()->user->id), array(
+							echo Select2::dropDownList("categoryId", "", Category::model()->findAllCategoryBySupplierId(1, User::model()->getSupplierId(Yii::app()->user->id)), array(
 								'prompt'=>'-- เลือก Category --',
 								'id'=>'categoryId',
 								'style'=>'max-width:400px;min-width:300px',

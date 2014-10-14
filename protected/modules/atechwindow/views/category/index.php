@@ -17,14 +17,14 @@ $this->breadcrumbs = array(
 
             <!-- Product Images Carousel -->
             <div class="col-lg-5 col-md-5 col-sm-5 product-single-image">
-                <?php $this->renderPartial('//layouts/_product_slider', array('images' => $product['images'])); ?>
+                <?php $this->renderPartial('//layouts/_product_slider', array('images' => $images)); ?>
             </div>
             <!-- /Product Images Carousel -->
 
 
             <div class="col-lg-7 col-md-7 col-sm-7 product-single-info">
 
-                <h2><?php echo $product['title']; ?></h2>
+                <h2><?php echo $category2->title; ?></h2>
                 <?php
                 /*
                 <div class="rating-box">
@@ -34,7 +34,11 @@ $this->breadcrumbs = array(
                 */
                 ?>
 
-                <?php $this->renderPartial('//layouts/_product_description', array('description' => $product['description'])); ?>
+                <table>
+                    <tr>
+                        <td colspan="2"><?php echo $category2->description;?></td>
+                    </tr>
+                </table>
 
                 <span class="price"></span>
 
@@ -51,18 +55,35 @@ $this->breadcrumbs = array(
                 ));
                 ?>
 
-                <?php foreach ($product['options'] as $option): ?>
-                    <div class="form-group product-actions-single">
-                        <label for="h" class="col-sm-2 control-label"><?php echo $option['title']; ?></label>
+                <div class="form-group product-actions-single">
+                    <label for="h" class="col-sm-2 control-label">Width</label>
 
-                        <div class="col-sm-9">
-                            <?php
-                            //$form->dropDownList();
-                            echo CHtml::dropDownList($option['title'], '', $option['items'], array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
-                            ?>
-                        </div>
+                    <div class="col-sm-9">
+                        <?php
+                        echo CHtml::dropDownList('width', '', CHtml::listData($category2->atechwindowWidth, 'width', 'width'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
+                        ?>
                     </div>
-                <?php endforeach; ?>
+                </div>
+
+                <div class="form-group product-actions-single">
+                    <label for="h" class="col-sm-2 control-label">Height</label>
+
+                    <div class="col-sm-9">
+                        <?php
+                        echo CHtml::dropDownList('height', '', CHtml::listData($category2->atechwindowWidth, 'height', 'height'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
+                        ?>
+                    </div>
+                </div>
+
+                <div class="form-group product-actions-single">
+                    <label for="h" class="col-sm-2 control-label">Color</label>
+
+                    <div class="col-sm-9">
+                        <?php
+                        echo CHtml::dropDownList('Color', '', $colors, array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
+                        ?>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -116,6 +137,8 @@ $this->breadcrumbs = array(
                         <i class="fa fa-spinner fa-spin spinner" id="spinner"></i>
                     </div>
                 </div>
+
+                <?php echo CHtml::hiddenField('categoryId', $category2->categoryId);?>
 
                 <?php $this->endWidget(); ?>
 

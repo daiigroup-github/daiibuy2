@@ -175,7 +175,7 @@ class BrandModelImageController extends MasterBackofficeController
 				{
 					$imgType = explode('.', $image->name);
 					$imgType = $imgType[count($imgType) - 1];
-					$imageUrl = '/images/' . $folder{$columnName} . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
 					$imagePathimage = '/../' . $imageUrl;
 					$model->image = $imageUrl;
 				}

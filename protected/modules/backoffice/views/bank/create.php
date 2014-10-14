@@ -18,12 +18,12 @@ $this->menu = array(
 		'url'=>array(
 			'admin')),
 );
-
-$this->pageHeader = "สร้างบัญชีธนาคาร";
 ?>
 
-
-<?php
-echo $this->renderPartial('_form', array(
-	'model'=>$model));
-?>
+<div class="panel panel-default">
+	<div class="panel-heading">Create Bank</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array(
+			'model'=>$model)); ?>
+	</div>
+</div>

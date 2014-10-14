@@ -47,12 +47,14 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
+				'visible'=>!Yii::app()->user->isGuest
 			),
 			array(
 				'label'=>'Order',
 				'url'=>array(
 					'/backoffice/order',
-				)),
+				),
+				'visible'=>!Yii::app()->user->isGuest),
 			array(
 				'label'=>'User<i class="fa fa-arrow-circle-o-down"></i>',
 				'url'=>array(
@@ -83,6 +85,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
+				'visible'=>!Yii::app()->user->isGuest
 			),
 			array(
 				'label'=>'ข้อมูลหลัก<i class="fa fa-arrow-circle-o-down"></i>',
@@ -114,6 +117,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
+				'visible'=>!Yii::app()->user->isGuest
 			),
 			array(
 				'label'=>'รายงาน<i class="fa fa-arrow-circle-o-down"></i>',
@@ -145,12 +149,14 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
+				'visible'=>!Yii::app()->user->isGuest
 			),
 			array(
 				'label'=>'Configuration',
 				'url'=>array(
 					'/backoffice/configuration',
-				)),
+				),
+				'visible'=>!Yii::app()->user->isGuest),
 //            array(
 //                'label' => 'Home',
 //                'url' => array('/site/index')
@@ -590,7 +596,8 @@ class MasterBackofficeController extends MasterController
 			}
 			else if($user->type == 3)
 			{
-				return Yii::app()->user->id;
+//				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
+				return User::model()->getSupplierId(Yii::app()->user->id);
 			}
 		}
 		else

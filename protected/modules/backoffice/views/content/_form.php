@@ -12,7 +12,7 @@
 		'enableAjaxValidation'=>false,
 		'htmlOptions'=>array(
 			'enctype'=>'multipart/form-data',
-			'class'=>'form-horizontal well'
+			'class'=>'form-horizontal'
 		),
 	));
 	?>
@@ -20,19 +20,11 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
-	<div class="control-group">
-		<div class='controls'>
-			<?php
-			echo CHtml::submitButton($model->isNewRecord ? 'สร้าง Content' : 'บันทึก Content', array(
-				'class'=>'btn btn-primary pull-right'));
-			?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label">
+	<div class="form-group">
+		<div class="control-label col-sm-2">
 			<?php echo $form->labelEx($model, 'title'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			echo $form->textField($model, 'title', array(
 				'size'=>60,
@@ -42,11 +34,11 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label">
+	<div class="form-group">
+		<div class="control-label col-sm-2">
 			<?php echo $form->labelEx($model, 'description'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			$this->widget('ext.editMe.widgets.ExtEditMe', array(
 				'model'=>$model,
@@ -59,11 +51,11 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class='control-label'>
+	<div class="form-group">
+		<div class='control-label col-sm-2'>
 			<?php echo $form->labelEx($model, 'image'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			if(strtolower($this->action->id) != 'create')
 			{
@@ -83,11 +75,11 @@
 			<?php echo $form->error($model, 'image'); ?>
 		</div>
 	</div>
-	<div class="control-group">
-		<div class='control-label'>
+	<div class="form-group">
+		<div class='control-label col-sm-2'>
 			<?php echo $form->labelEx($model, 'subview'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			echo $form->textField($model, 'subview', array(
 				'size'=>60,
@@ -97,11 +89,11 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class='control-label'>
+	<div class="form-group">
+		<div class='control-label col-sm-2'>
 			<?php echo $form->labelEx($model, 'parentId'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			if(isset($model->parent) && Yii::app()->controller->action->id != "update")
 			{
@@ -117,11 +109,11 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class='control-label'>
+	<div class="form-group">
+		<div class='control-label col-sm-2'>
 			<?php echo $form->labelEx($model, 'type'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			if(isset($model->type) && Yii::app()->controller->action->id != "update")
 			{
@@ -182,6 +174,15 @@
 		));
 	}
 	?>
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-9">
+			<?php
+			echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
+				'class'=>'btn btn-primary'));
+			?>
+		</div>
+	</div>
 	<?php $this->endWidget(); ?>
 
 </div><!-- form -->

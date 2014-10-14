@@ -11,7 +11,7 @@
 		'id'=>'configuration-form',
 		'enableAjaxValidation'=>false,
 		'htmlOptions'=>array(
-			'class'=>'form-horizontal well'
+			'class'=>'form-horizontal'
 		),
 	));
 	?>
@@ -20,11 +20,11 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="control-group">
-		<div class="control-label">
+	<div class="form-group">
+		<div class="control-label col-sm-2">
 			<?php echo $form->labelEx($model, 'name'); ?>
 		</div>
-		<div class="controls">
+		<div class="col-sm-10">
 			<?php
 			echo $form->textField($model, 'name', array(
 				'size'=>60,
@@ -34,11 +34,11 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label">
+	<div class="form-group">
+		<div class="control-label col-sm-2">
 			<?php echo $form->labelEx($model, 'description'); ?>
 		</div>
-		<div class='controls'>
+		<div class='col-sm-10'>
 			<?php
 			$this->widget('ext.editMe.widgets.ExtEditMe', array(
 				'model'=>$model,
@@ -51,11 +51,11 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label">
+	<div class="form-group">
+		<div class="control-label col-sm-2">
 			<?php echo $form->labelEx($model, 'value'); ?>
 		</div>
-		<div class="controls">
+		<div class="col-sm-10">
 			<?php
 			echo $form->textField($model, 'value');
 			?>
@@ -63,18 +63,18 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label">
+	<div class="form-group">
+		<div class="control-label col-sm-2">
 			<?php echo $form->labelEx($model, 'status'); ?>
 		</div>
-		<div class="controls">
+		<div class="col-sm-10">
 			<?php echo $form->checkBox($model, 'status'); ?>
 			<?php echo $form->error($model, 'status'); ?>
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="controls">
+	<div class="form-group">
+		<div class="controls col-sm-offset-2 col-sm-9">
 			<?php
 			echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
 				'class'=>'btn btn-primary'));

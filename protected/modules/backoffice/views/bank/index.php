@@ -37,7 +37,7 @@ $this->pageHeader = "การจัดการ บัญชีธนาคา�
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Product
+		Manage Bank
 		<div class="pull-right">
 			<?php
 			echo CHtml::link('<i class="icon-plus-sign icon-white"></i>  เพิ่ม บัญชี', array(
@@ -64,13 +64,13 @@ $this->pageHeader = "การจัดการ บัญชีธนาคา�
 		'itemsCssClass'=>'table table-striped table-bordered table-condensed',
 		'dataProvider'=>$model->search(),
 		'columns'=>array(
-//		array(
-//			'name'=>'logo',
-//			'type'=>'html',
-//			'htmlOptions'=>array(
-//				'style'=>'width:110px'),
-//			'value'=>'CHtml::image(Yii::app()->request->baseUrl.$data->logo, "logo", array("style"=>"width:100px;"))',
-//		),
+			array(
+				'name'=>'logo',
+				'type'=>'html',
+				'htmlOptions'=>array(
+					'style'=>'width:110px'),
+				'value'=>'CHtml::image(Yii::app()->request->baseUrl.$data->bankName->logo, "logo", array("style"=>"width:100px;"))',
+			),
 			array(
 				'name'=>'bankNameId',
 				'value'=>'isset($data->bankName)?$data->bankName->title:"-"',
@@ -84,10 +84,10 @@ $this->pageHeader = "การจัดการ บัญชีธนาคา�
 				'name'=>'supplierId',
 				'value'=>'isset($data->supplier)?$data->supplier->showUserCompany($data->supplierId):"-"',
 			),
-			array(
-				'name'=>'status',
-				'value'=>'$data->getStatusName()',
-			),
+//			array(
+//				'name'=>'status',
+//				'value'=>'$data->getStatusName()',
+//			),
 			/*
 			  'createDateTime',
 			 */

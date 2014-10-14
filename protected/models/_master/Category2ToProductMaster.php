@@ -5,7 +5,10 @@
  *
  * The followings are the available columns in table 'category2_to_product':
  * @property string $id
- * @property string $categoryId
+ * @property string $brandId
+ * @property string $brandModelId
+ * @property string $category1Id
+ * @property string $category2Id
  * @property string $productId
  * @property string $groupName
  * @property integer $quantity
@@ -16,8 +19,9 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
+ * @property Brand $brand
+ * @property BrandModel $brandModel
  * @property Product $product
- * @property Category $category
  */
 class Category2ToProductMaster extends MasterCActiveRecord
 {
@@ -37,13 +41,13 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('categoryId, productId, createDateTime, updateDateTime', 'required'),
+			array('productId, createDateTime, updateDateTime', 'required'),
 			array('quantity, type, sortOrder, status', 'numerical', 'integerOnly'=>true),
-			array('categoryId, productId', 'length', 'max'=>20),
+			array('brandId, brandModelId, category1Id, category2Id, productId', 'length', 'max'=>20),
 			array('groupName', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, categoryId, productId, groupName, quantity, type, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, brandId, brandModelId, category1Id, category2Id, productId, groupName, quantity, type, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,8 +59,9 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'brand' => array(self::BELONGS_TO, 'Brand', 'brandId'),
+			'brandModel' => array(self::BELONGS_TO, 'BrandModel', 'brandModelId'),
 			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
-			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
 		);
 	}
 
@@ -67,7 +72,10 @@ class Category2ToProductMaster extends MasterCActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'categoryId' => 'Category',
+			'brandId' => 'Brand',
+			'brandModelId' => 'Brand Model',
+			'category1Id' => 'Category1',
+			'category2Id' => 'Category2',
 			'productId' => 'Product',
 			'groupName' => 'Group Name',
 			'quantity' => 'Quantity',
@@ -100,7 +108,10 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->id = $this->searchText;
-			$this->categoryId = $this->searchText;
+			$this->brandId = $this->searchText;
+			$this->brandModelId = $this->searchText;
+			$this->category1Id = $this->searchText;
+			$this->category2Id = $this->searchText;
 			$this->productId = $this->searchText;
 			$this->groupName = $this->searchText;
 			$this->quantity = $this->searchText;
@@ -112,7 +123,10 @@ class Category2ToProductMaster extends MasterCActiveRecord
 		}
 
 		$criteria->compare('id',$this->id,true, 'OR');
-		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
+		$criteria->compare('brandId',$this->brandId,true, 'OR');
+		$criteria->compare('brandModelId',$this->brandModelId,true, 'OR');
+		$criteria->compare('category1Id',$this->category1Id,true, 'OR');
+		$criteria->compare('category2Id',$this->category2Id,true, 'OR');
 		$criteria->compare('productId',$this->productId,true, 'OR');
 		$criteria->compare('groupName',$this->groupName,true, 'OR');
 		$criteria->compare('quantity',$this->quantity);

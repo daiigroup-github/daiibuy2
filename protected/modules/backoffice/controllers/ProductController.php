@@ -146,15 +146,21 @@ class ProductController extends MasterBackofficeController
 //		$productHistory = new ProductHistory();
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
-		if(isset($_GET["categoryId"]))
-		{
-			$model->categoryId = $_GET["categoryId"];
-		}
 		if(isset($_POST['Product']))
 		{
 			$model->attributes = $_POST['Product'];
 			$model->createDateTime = new CDbExpression('NOW()');
-			$model->supplierId = Yii::app()->user->id;
+
+			if(!(Yii::app()->user->isGuest) && Yii::app()->user->userType == 4)
+			{
+				$model->supplierId = Yii::app()->user->id;
+			}
+			else
+			{
+				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
+				$model->supplierId = $sup->supplierId;
+			}
+
 			$model->status = 2;
 			if(isset($_POST["Product"]["categoryId"]))
 			{
@@ -284,9 +290,9 @@ class ProductController extends MasterBackofficeController
 				{
 					$flag = false;
 				}
-				if($flag && isset($_GET["categoryId"]))
+				if($flag && (isset($_GET["category2Id"]) || isset($_GET["category1Id"])))
 				{
-					$this->actionSaveCategory2toProduct($_GET["categoryId"], $productId);
+					$this->actionSaveCategory2toProduct(isset($_GET["category1Id"]) ? $_GET["category1Id"] : NULL, $productId, isset($_GET["category2Id"]) ? $_GET["category2Id"] : NULL);
 				}
 
 				if($flag)
@@ -658,9 +664,13 @@ class ProductController extends MasterBackofficeController
 		//$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Product']))
 			$model->attributes = $_GET['Product'];
-		if(isset($_GET["categoryId"]))
+		if(isset($_GET["category2Id"]))
 		{
-			$cat2ToProduct->categoryId = $_GET["categoryId"];
+			$cat2ToProduct->category2Id = $_GET["category2Id"];
+		}
+		if(isset($_GET["category1Id"]))
+		{
+			$cat2ToProduct->category1Id = $_GET["category1Id"];
 		}
 
 		$this->render('index_cat2', array(
@@ -741,22 +751,54 @@ class ProductController extends MasterBackofficeController
 		}
 	}
 
-	public function actionSaveCategory2toProduct($categoryId = null, $productId = null)
+	public function actionSaveCategory2toProduct($category1Id = null, $productId = null, $category2Id = null)
 	{
 //		throw new Exception(print_r($_REQUEST, true));
 		$result = array();
 		$model = new Category2ToProduct();
 		$model->createDateTime = new CDbExpression("NOW()");
 		$model->updateDateTime = new CDbExpression("NOW()");
-		if(!isset($_POST['categoryId']))
+		if(!isset($_POST['category1Id']))
 		{
-			$model->categoryId = $categoryId;
+			if(isset($category1Id))
+			{
+				$model->category1Id = $category1Id;
+			}
+			if(isset($category2Id))
+			{
+				$model->category2Id = $category2Id;
+				$cat1 = CategoryToSub::model()->find("subCategoryId =" . $model->category2Id);
+				if(isset($cat1))
+				{
+					$model->category1Id = $cat1->categoryId;
+				}
+			}
+			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
+			$model->brandModelId = $modelToCat->brandModelId;
+			$brandModel = BrandModel::model()->findByPk($model->brandModelId);
+			$model->brandId = $brandModel->brandId;
 			$model->productId = $productId;
 			return $model->save();
 		}
 		else
 		{
-			$model->categoryId = $_POST["categoryId"];
+			if(isset($_POST["category1Id"]) && $_POST["category1Id"] > 0)
+			{
+				$model->category1Id = $_POST["category1Id"];
+			}
+			if(isset($_POST["category2Id"]) && $_POST["category2Id"] > 0)
+			{
+				$model->category2Id = $_POST["category2Id"];
+				$cat1 = CategoryToSub::model()->find("subCategoryId =" . $_POST["category2Id"]);
+				if(isset($cat1))
+				{
+					$model->category1Id = $cat1->categoryId;
+				}
+			}
+			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
+			$model->brandModelId = $modelToCat->brandModelId;
+			$brandModel = BrandModel::model()->findByPk($model->brandModelId);
+			$model->brandId = $brandModel->brandId;
 			$model->productId = $_POST["productId"];
 			$result["status"] = $model->save();
 			echo CJSON::encode($result);

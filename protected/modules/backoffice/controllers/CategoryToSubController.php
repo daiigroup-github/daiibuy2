@@ -90,7 +90,8 @@ class CategoryToSubController extends MasterBackofficeController
 				$cat->isRoot = 0;
 				if(!Yii::app()->user->isGuest)
 				{
-					$cat->supplierId = Yii::app()->user->id;
+					$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
+					$cat->supplierId = $sup->supplierId;
 				}
 				$catModel = Category::model()->findByPk($model->categoryId);
 				$cat->createDateTime = new CDbExpression("NOW()");

@@ -22,6 +22,8 @@ class DefaultController extends MasterMadridController
         $i = 0;
         $sanitaryItems = array();
         foreach (Product::model()->findAll(array('limit' => 7)) as $s) {
+            //if($s->productImages == array()) continue;
+
             $sanitaryItems[$i]['productId'] = $s->productId;
             $sanitaryItems[$i]['name'] = $s->name;
             $sanitaryItems[$i]['quantity'] = $s->quantity;
@@ -41,6 +43,8 @@ class DefaultController extends MasterMadridController
         $j = 0;
         $tileItems = array();
         foreach (Product::model()->findAll(array('limit' => 7)) as $t) {
+            //if($t->productImages == array()) continue;
+
             $tileItems[$j]['productId'] = $t->productId;
             $tileItems[$j]['name'] = $t->name;
             $tileItems[$j]['quantity'] = $t->quantity;

@@ -89,7 +89,11 @@ class CategoryController extends MasterBackofficeController
 				$model->attributes = $_POST['Category'];
 				if(!Yii::app()->user->isGuest)
 				{
-					$model->supplierId = Yii::app()->user->id;
+					$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
+					if(isset($sup))
+					{
+						$model->supplierId = $sup->supplierId;
+					}
 				}
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
@@ -276,13 +280,16 @@ class CategoryController extends MasterBackofficeController
 	{
 		$model = new Category('search');
 		$model->unsetAttributes();  // clear any default values
-		$brandToCat = new ModelToCategory1();
+		$brandToCat = new ModelToCategory1('search');
 		if(isset($_GET["brandModelId"]))
 		{
 			$brandToCat->brandModelId = $_GET["brandModelId"];
 		}
 		if(isset($_GET['Category']))
+		{
 			$model->attributes = $_GET['Category'];
+			$brandToCat->attributes = $_GET['Category'];
+		}
 
 		$this->render('index', array(
 			'brandToCat'=>$brandToCat,

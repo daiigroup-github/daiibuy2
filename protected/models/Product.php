@@ -81,11 +81,11 @@ class Product extends ProductMaster
     {
 // NOTE: you should only define rules for those attributes that
 // will receive user inputs.
-        return CMap::mergeArray(parent::rules(), array(
-            //code here
-            array(
-                'dateAvailable, name, quantity, productUnits, price, priceGroupId, supplierId, sortOrder',
-                'required'),
+		return CMap::mergeArray(parent::rules(), array(
+				//code here
+				array(
+					'dateAvailable, name, quantity, productUnits, price, priceGroupId, supplierId, sortOrder',
+					'required'),
 //				array(
 //					'createDateTime, updateDateTime',
 //					'default',
@@ -100,168 +100,179 @@ class Product extends ProductMaster
 //					'setOnEmpty'=>false,
 //					'on'=>'update'
 //				),
-        ));
-    }
+		));
+	}
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
 // NOTE: you may need to adjust the relation name and the related
 // class name for the relations automatically generated below.
-        return CMap::mergeArray(parent::relations(), array(
-            //code here
-            'productImagesSort'=>array(
-                self::HAS_MANY,
-                'ProductImage',
-                'productId',
-                'order'=>'sortOrder'
-            ),
-            'priceGroup' => array(
-                self::BELONGS_TO,
-                'PriceGroup',
-                'priceGroupId'),
-            'productAttributeValue' => array(
-                self::HAS_MANY,
-                'ProductAttributeValue',
-                'productId'),
-            'productPromotion' => array(
-                self::HAS_ONE,
-                'ProductPromotion',
-                'productId',
-                'condition' => "'" . date('Y-m-d') . "' BETWEEN productPromotion.dateStart AND productPromotion.dateEnd",
-                //'order'=>'productPromotionId desc'),
-            ),
-            'brand' => array(
-                self::BELONGS_TO,
-                'ProductBrand',
-                'brandId'),
-            'margin' => array(
-                self::BELONGS_TO,
-                'UserCertificateFile',
-                array(
-                    'marginId' => 'id')),
-            'productSpecGroupsTypeSpec' => array(self::HAS_MANY, 'ProductSpecGroup', 'productId', 'condition'=>'type=1'),
-            'productSpecGroupsTypeDescription' => array(self::HAS_MANY, 'ProductSpecGroup', 'productId', 'condition'=>'type=2'),
-        ));
-    }
+		return CMap::mergeArray(parent::relations(), array(
+				//code here
+				'productImagesSort'=>array(
+					self::HAS_MANY,
+					'ProductImage',
+					'productId',
+					'order'=>'sortOrder'
+				),
+				'priceGroup'=>array(
+					self::BELONGS_TO,
+					'PriceGroup',
+					'priceGroupId'),
+				'productAttributeValue'=>array(
+					self::HAS_MANY,
+					'ProductAttributeValue',
+					'productId'),
+				'productPromotion'=>array(
+					self::HAS_ONE,
+					'ProductPromotion',
+					'productId',
+					'condition'=>"'" . date('Y-m-d') . "' BETWEEN productPromotion.dateStart AND productPromotion.dateEnd",
+				//'order'=>'productPromotionId desc'),
+				),
+				'brand'=>array(
+					self::BELONGS_TO,
+					'ProductBrand',
+					'brandId'),
+				'margin'=>array(
+					self::BELONGS_TO,
+					'UserCertificateFile',
+					array(
+						'marginId'=>'id')),
+				'productSpecGroupsTypeSpec'=>array(
+					self::HAS_MANY,
+					'ProductSpecGroup',
+					'productId',
+					'condition'=>'type=1'),
+				'productSpecGroupsTypeDescription'=>array(
+					self::HAS_MANY,
+					'ProductSpecGroup',
+					'productId',
+					'condition'=>'type=2'),
+		));
+	}
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
-    {
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
 
-        return CMap::mergeArray(parent::attributeLabels(), array(
-            'productId' => 'ID',
-            'brandModelId' => 'รุ่น',
-            'name' => 'ชื่อ',
-            'isbn' => 'รหัสสินค้า',
-            'sku' => 'Sku',
-            'upc' => 'Upc',
-            'location' => 'Location',
-            'quantity' => 'จำนวนคงเหลือ',
-            'productUnits' => 'หน่วย',
-            'stockStatusId' => 'Stock Status',
-            'image' => 'รูปภาพ',
-            'shipping' => 'Shipping',
-            'price' => 'ราคา',
-            'points' => 'คะแนนสะสม',
-            'taxClassId' => 'Tax Class',
-            'dateAvailable' => 'วันเริ่มขาย',
-            'weight' => 'น้ำหนัก',
-            'length' => 'Length',
-            'width' => 'Width',
-            'height' => 'Height',
-            'dimensionUnits' => 'Dimension Units',
-            'metricUnits' => 'Metric Units',
-            'subtract' => 'Subtract',
-            'minimum' => 'Minimum',
-            'sortOrder' => 'ลำดับ',
-            'status' => 'Status',
-            'createDateTime' => 'Create Date Time',
-            'updateDateTime' => 'Update Date Time',
-            'viewed' => 'Viewed',
-            'categoryId' => 'ประเภท',
-            'marginId' => 'Margin',
-            'searchText' => 'Search',
-            'description' => 'รายละเอียด',
-            'priceGroupId' => 'กลุ่มราคาขาย',
-            'supplierId' => 'Supplier Id',
-            'brandId' => "ยี่ห้อ",
-        ));
-    }
+		return CMap::mergeArray(parent::attributeLabels(), array(
+				'productId'=>'ID',
+				'brandModelId'=>'รุ่น',
+				'name'=>'ชื่อ',
+				'isbn'=>'รหัสสินค้า',
+				'sku'=>'Sku',
+				'upc'=>'Upc',
+				'location'=>'Location',
+				'quantity'=>'จำนวนคงเหลือ',
+				'productUnits'=>'หน่วย',
+				'stockStatusId'=>'Stock Status',
+				'image'=>'รูปภาพ',
+				'shipping'=>'Shipping',
+				'price'=>'ราคา',
+				'points'=>'คะแนนสะสม',
+				'taxClassId'=>'Tax Class',
+				'dateAvailable'=>'วันเริ่มขาย',
+				'weight'=>'น้ำหนัก',
+				'length'=>'Length',
+				'width'=>'Width',
+				'height'=>'Height',
+				'dimensionUnits'=>'Dimension Units',
+				'metricUnits'=>'Metric Units',
+				'subtract'=>'Subtract',
+				'minimum'=>'Minimum',
+				'sortOrder'=>'ลำดับ',
+				'status'=>'Status',
+				'createDateTime'=>'Create Date Time',
+				'updateDateTime'=>'Update Date Time',
+				'viewed'=>'Viewed',
+				'categoryId'=>'ประเภท',
+				'marginId'=>'Margin',
+				'searchText'=>'Search',
+				'description'=>'รายละเอียด',
+				'priceGroupId'=>'กลุ่มราคาขาย',
+				'supplierId'=>'Supplier Id',
+				'brandId'=>"ยี่ห้อ",
+		));
+	}
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function search()
-    {
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
 
-        $criteria = new CDbCriteria;
-        if (isset($this->searchText) && !empty($this->searchText)) {
-            $this->name = $this->searchText;
-            $this->description = $this->searchText;
-            $this->status = $this->searchText;
-        }
+		$criteria = new CDbCriteria;
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->name = $this->searchText;
+			$this->description = $this->searchText;
+			$this->status = $this->searchText;
+		}
 
-        $criteria->compare("categoryId", $this->categoryId);
-        $criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
-        $criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
-        $criteria->compare("status", $this->status);
-        $criteria->compare("supplierId", $this->supplierId);
-        /*
-          $criteria->compare('productId',$this->productId,true);
-          $criteria->compare('quantity',$this->quantity);
-          $criteria->compare('stockStatusId',$this->stockStatusId,true);
-          $criteria->compare('shipping',$this->shipping);
-          $criteria->compare('price',$this->price,true);
-          $criteria->compare('points',$this->points);
-          $criteria->compare('dateAvailable',$this->dateAvailable,true);
-          $criteria->compare('weight',$this->weight,true);
-          $criteria->compare('length',$this->length,true);
-          $criteria->compare('width',$this->width,true);
-          $criteria->compare('height',$this->height,true);
-          $criteria->compare('status',$this->status);
-         *
-         */
-        if (Yii::app()->user->id > 0 && isset(Yii::app()->user->id)) {
-            $user = User::model()->findByPk(Yii::app()->user->id);
-            if ($user->type == 3) {
-                $criteria->compare('supplierId', Yii::app()->user->id);
-            }
-        }
+		$criteria->compare("categoryId", $this->categoryId);
+		$criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
+		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
+		$criteria->compare("status", $this->status);
+		$criteria->compare("supplierId", $this->supplierId);
+		/*
+		  $criteria->compare('productId',$this->productId,true);
+		  $criteria->compare('quantity',$this->quantity);
+		  $criteria->compare('stockStatusId',$this->stockStatusId,true);
+		  $criteria->compare('shipping',$this->shipping);
+		  $criteria->compare('price',$this->price,true);
+		  $criteria->compare('points',$this->points);
+		  $criteria->compare('dateAvailable',$this->dateAvailable,true);
+		  $criteria->compare('weight',$this->weight,true);
+		  $criteria->compare('length',$this->length,true);
+		  $criteria->compare('width',$this->width,true);
+		  $criteria->compare('height',$this->height,true);
+		  $criteria->compare('status',$this->status);
+		 *
+		 */
+//		if(Yii::app()->user->id > 0 && isset(Yii::app()->user->id))
+//		{
+//			$user = User::model()->findByPk(Yii::app()->user->id);
+//			if($user->type == 3)
+//			{
+//				$criteria->compare('supplierId', User::model()->getSupplierId(Yii::app()->user->id));
+//			}
+//		}
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'sort' => array(
-                'defaultOrder' => 'sortOrder ASC'
-            )
-        ));
-    }
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'sortOrder ASC'
+			)
+		));
+	}
 
-    public function beforeSave()
-    {
-        $this->updateDateTime = new CDbExpression('NOW()');
+	public function beforeSave()
+	{
+		$this->updateDateTime = new CDbExpression('NOW()');
 
-        return parent::beforeSave();
-    }
+		return parent::beforeSave();
+	}
 
-    public function getStatusArray()
-    {
-        return array(
+	public function getStatusArray()
+	{
+		return array(
 //			self::STATUS_WAITING_APPROVE=>'Waiting for Approve',
-            self::STATUS_APPROVED => 'Approved',
+			self::STATUS_APPROVED=>'Approved',
 //			self::STATUS_RETURN=>'Return to Edit',
 //			self::STATUS_REJECT=>'Rejected',
-            self::STATUS_DELETE => 'Delete',
-            self::STATUS_DISABLE => 'Disable',
-        );
-    }
+			self::STATUS_DELETE=>'Delete',
+			self::STATUS_DISABLE=>'Disable',
+		);
+	}
 
 //	public function getStatusText()
 //	{
@@ -269,362 +280,398 @@ class Product extends ProductMaster
 //		return $statusArray[$this->status];
 //	}
 
-    public function getMetricUnits()
-    {
-        return array(
-            self::METRIC_GRAMS => 'กรัม',
-            self::METRIC_KILOGRAMS => 'กิโลกรัม',
-            self::METRIC_TONS => 'ตัน',
-        );
-    }
+	public function getMetricUnits()
+	{
+		return array(
+			self::METRIC_GRAMS=>'กรัม',
+			self::METRIC_KILOGRAMS=>'กิโลกรัม',
+			self::METRIC_TONS=>'ตัน',
+		);
+	}
 
-    public function getMetricText()
-    {
-        $metricArray = $this->getMetricUnits();
-        if (isset($metricArray[$this->metricUnits]))
-            return $metricArray[$this->metricUnits];
-        else
-            return "";
-    }
+	public function getMetricText()
+	{
+		$metricArray = $this->getMetricUnits();
+		if(isset($metricArray[$this->metricUnits]))
+			return $metricArray[$this->metricUnits];
+		else
+			return "";
+	}
 
-    public function getDimensionUnits()
-    {
-        return array(
-            self::DIMENSION_MM => 'มิลลิเมตร',
-            self::DIMENSION_CM => 'เซนติเมตร',
-            self::DIMENSION_INCH => 'นิ้ว',
-            self::DIMENSION_M => 'เมตร',
-        );
-    }
+	public function getDimensionUnits()
+	{
+		return array(
+			self::DIMENSION_MM=>'มิลลิเมตร',
+			self::DIMENSION_CM=>'เซนติเมตร',
+			self::DIMENSION_INCH=>'นิ้ว',
+			self::DIMENSION_M=>'เมตร',
+		);
+	}
 
-    public function getDimensionText()
-    {
-        $dimensionArray = $this->getDimensionUnits();
-        if (isset($dimensionArray[$this->dimensionUnits]))
-            return $dimensionArray[$this->dimensionUnits];
-        else
-            return "";
-    }
+	public function getDimensionText()
+	{
+		$dimensionArray = $this->getDimensionUnits();
+		if(isset($dimensionArray[$this->dimensionUnits]))
+			return $dimensionArray[$this->dimensionUnits];
+		else
+			return "";
+	}
 
-    public function getBadgeStatus()
-    {
-        switch ($this->status) {
+	public function getBadgeStatus()
+	{
+		switch($this->status)
+		{
 
-            case self::STATUS_APPROVED:
-                $badge = 'label label-success';
-                break;
-            case self::STATUS_RETURN :
-                $badge = 'badge-info';
-                break;
-            case self::STATUS_WAITING_APPROVE || self::STATUS_DISABLE :
-                $badge = 'badge-warning';
-                break;
-            case self::STATUS_DELETE :
-                $badge = 'badge-important';
-                break;
-            case self::STATUS_REJECT :
-                $badge = 'badge-important';
-                break;
-        }
+			case self::STATUS_APPROVED:
+				$badge = 'label label-success';
+				break;
+			case self::STATUS_RETURN :
+				$badge = 'badge-info';
+				break;
+			case self::STATUS_WAITING_APPROVE || self::STATUS_DISABLE :
+				$badge = 'badge-warning';
+				break;
+			case self::STATUS_DELETE :
+				$badge = 'badge-important';
+				break;
+			case self::STATUS_REJECT :
+				$badge = 'badge-important';
+				break;
+		}
 
-        return '<span class="badge ' . $badge . '">' . $this->getStatusText($this->status) . '</span>';
-    }
+		return '<span class="badge ' . $badge . '">' . $this->getStatusText($this->status) . '</span>';
+	}
 
-    public function calTotalCartBySupplier($cart)
-    {
-        $daiibuy = new DaiiBuy();
-        $daiibuy->loadCookie();
-        $products = $cart['products'];
-        $subTotal = 0;
-        $today = date("Y-m-d");
-        foreach ($products as $product) {
-            $productModel = $product['productModel'];
-            $productTemp = Product::model()->findByPk($productModel->productId);
-            if (isset($productTemp->productPromotion)) {
+	public function calTotalCartBySupplier($cart)
+	{
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$products = $cart['products'];
+		$subTotal = 0;
+		$today = date("Y-m-d");
+		foreach($products as $product)
+		{
+			$productModel = $product['productModel'];
+			$productTemp = Product::model()->findByPk($productModel->productId);
+			if(isset($productTemp->productPromotion))
+			{
 
-                if ($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today) {
-                    $productTotalPrice = Product::model()->calProductPromotionTotalPrice($productTemp->productId, $product['qty'], $daiibuy->provinceId);
-                } else {
-                    $productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->provinceId);
-                }
-            } else {
-                $productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->provinceId);
-            }
-            $subTotal += $productTotalPrice;
-        }
-        return $subTotal;
-    }
+				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
+				{
+					$productTotalPrice = Product::model()->calProductPromotionTotalPrice($productTemp->productId, $product['qty'], $daiibuy->provinceId);
+				}
+				else
+				{
+					$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->provinceId);
+				}
+			}
+			else
+			{
+				$productTotalPrice = Product::model()->calProductTotalPrice($productModel->productId, $product['qty'], $daiibuy->provinceId);
+			}
+			$subTotal += $productTotalPrice;
+		}
+		return $subTotal;
+	}
 
-    public function cartTotal($items, $provinceId)
-    {
-        $cartTotal = 0;
-        $today = date("Y-m-d");
-        foreach ($items as $productId => $qty) {
+	public function cartTotal($items, $provinceId)
+	{
+		$cartTotal = 0;
+		$today = date("Y-m-d");
+		foreach($items as $productId=> $qty)
+		{
 
-            if (isset(Product::model()->findByPk($productId)->productPromotion)) {
-                $productTemp = Product::model()->findByPk($productId);
-                if ($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today) {
-                    $cartTotal += Product::model()->calProductPromotionTotalPrice($productId, $qty, $provinceId);
-                } else {
-                    $cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
-                }
-            } else {
-                $cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
-            }
-        }
+			if(isset(Product::model()->findByPk($productId)->productPromotion))
+			{
+				$productTemp = Product::model()->findByPk($productId);
+				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
+				{
+					$cartTotal += Product::model()->calProductPromotionTotalPrice($productId, $qty, $provinceId);
+				}
+				else
+				{
+					$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
+				}
+			}
+			else
+			{
+				$cartTotal += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
+			}
+		}
 
-        return $cartTotal;
-    }
+		return $cartTotal;
+	}
 
-    public function cartSummaryBySupplierId($cart, $provinceId, $supplierId)
-    {
-        $cartTotal = 0;
-        $cartItems = 0;
-        $cartRowTotal = 0;
+	public function cartSummaryBySupplierId($cart, $provinceId, $supplierId)
+	{
+		$cartTotal = 0;
+		$cartItems = 0;
+		$cartRowTotal = 0;
 
-        foreach ($cart as $supplier => $items) {
-            if ($supplier == $supplierId) {
-                $cartTotal += $this->cartSum($items, $provinceId);
+		foreach($cart as $supplier=> $items)
+		{
+			if($supplier == $supplierId)
+			{
+				$cartTotal += $this->cartSum($items, $provinceId);
 
-                $cartItems += array_sum($items);
+				$cartItems += array_sum($items);
 
-                $cartRowTotal += count($items);
-            }
-        }
+				$cartRowTotal += count($items);
+			}
+		}
 
-        return array(
-            'cartTotal' => $cartTotal,
-            'cartItems' => $cartItems,
-            'cartRowTotal' => $cartRowTotal);
-    }
+		return array(
+			'cartTotal'=>$cartTotal,
+			'cartItems'=>$cartItems,
+			'cartRowTotal'=>$cartRowTotal);
+	}
 
-    public function cartSummary($cart, $provinceId)
-    {
-        $cartTotal = 0;
-        $cartItems = 0;
-        $cartRowTotal = 0;
+	public function cartSummary($cart, $provinceId)
+	{
+		$cartTotal = 0;
+		$cartItems = 0;
+		$cartRowTotal = 0;
 
-        foreach ($cart as $items) {
-            $cartTotal += $this->cartSum($items, $provinceId);
+		foreach($cart as $items)
+		{
+			$cartTotal += $this->cartSum($items, $provinceId);
 
-            $cartItems += array_sum($items);
+			$cartItems += array_sum($items);
 
-            $cartRowTotal += count($items);
-        }
+			$cartRowTotal += count($items);
+		}
 
-        return array(
-            'cartTotal' => $cartTotal,
-            'cartItems' => $cartItems,
-            'cartRowTotal' => $cartRowTotal);
-    }
+		return array(
+			'cartTotal'=>$cartTotal,
+			'cartItems'=>$cartItems,
+			'cartRowTotal'=>$cartRowTotal);
+	}
 
-    public function cartSum($items, $provinceId)
-    {
-        $total = 0;
-        $today = date("Y-m-d");
+	public function cartSum($items, $provinceId)
+	{
+		$total = 0;
+		$today = date("Y-m-d");
 
-        foreach ($items as $productId => $qty) {
+		foreach($items as $productId=> $qty)
+		{
 
-            if (isset(Product::model()->findByPk($productId)->productPromotion)) {
-                $productTemp = Product::model()->findByPk($productId);
-                if ($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today) {
-                    $total += Product::model()->calProductPromotionTotalPrice($productId, $qty, $provinceId);
-                } else {
-                    $total += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
-                }
-            } else {
-                $total += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
-            }
-        }
+			if(isset(Product::model()->findByPk($productId)->productPromotion))
+			{
+				$productTemp = Product::model()->findByPk($productId);
+				if($productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today)
+				{
+					$total += Product::model()->calProductPromotionTotalPrice($productId, $qty, $provinceId);
+				}
+				else
+				{
+					$total += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
+				}
+			}
+			else
+			{
+				$total += Product::model()->calProductTotalPrice($productId, $qty, $provinceId);
+			}
+		}
 
-        return $total;
-    }
+		return $total;
+	}
 
-    public function removeVAT($price)
-    {
-        $result = $price / 1.07;
-        return $result;
-    }
+	public function removeVAT($price)
+	{
+		$result = $price / 1.07;
+		return $result;
+	}
 
-    public function calProductPrice($productId = NULL, $provinceId = NULL)
-    {
-        if (!isset($provinceId)) {
-            $daiibuy = new DaiiBuy();
-            $daiibuy->loadCookie();
-            $provinceId = $daiibuy['provinceId'];
-        }
+	public function calProductPrice($productId = NULL, $provinceId = NULL)
+	{
+		if(!isset($provinceId))
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$provinceId = $daiibuy['provinceId'];
+		}
 
-        $product = (isset($productId)) ? Product::model()->findByPk($productId) : $this;
-        $price = $product->price;
+		$product = (isset($productId)) ? Product::model()->findByPk($productId) : $this;
+		$price = $product->price;
 
-        $priceModel = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
-            ":provinceId" => $provinceId,
-            ':priceGroupId' => $product->priceGroupId));
+		$priceModel = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+			":provinceId"=>$provinceId,
+			':priceGroupId'=>$product->priceGroupId));
 
-        if (isset($priceModel)) {
-            $price = $price * ((100 + $priceModel->priceRate) / 100);
-        } else {
-            $price = $price * ((100 + $product->priceGroup->priceRate) / 100);
-        }
+		if(isset($priceModel))
+		{
+			$price = $price * ((100 + $priceModel->priceRate) / 100);
+		}
+		else
+		{
+			$price = $price * ((100 + $product->priceGroup->priceRate) / 100);
+		}
 
-        return floor($price);
-    }
+		return floor($price);
+	}
 
-    public function calProductPromotionPrice($productId = NULL, $provinceId = NULL)
-    {
-        if (!isset($provinceId)) {
-            $daiibuy = new DaiiBuy();
-            $daiibuy->loadCookie();
-            $provinceId = $daiibuy['provinceId'];
-        }
+	public function calProductPromotionPrice($productId = NULL, $provinceId = NULL)
+	{
+		if(!isset($provinceId))
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$provinceId = $daiibuy['provinceId'];
+		}
 
-        $product = (isset($productId)) ? Product::model()->findByPk($productId) : $this;
+		$product = (isset($productId)) ? Product::model()->findByPk($productId) : $this;
 
-        if (isset($product->productPromotion)) {
-            $price = $product->productPromotion->price;
-            $priceModel = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
-                ":provinceId" => $provinceId,
-                ':priceGroupId' => $product->priceGroupId));
+		if(isset($product->productPromotion))
+		{
+			$price = $product->productPromotion->price;
+			$priceModel = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
+				":provinceId"=>$provinceId,
+				':priceGroupId'=>$product->priceGroupId));
 
-            if (isset($priceModel)) {
-                $price = $price * ((100 + $priceModel->priceRate) / 100);
-            } else {
-                $price = $price * ((100 + $product->priceGroup->priceRate) / 100);
-            }
+			if(isset($priceModel))
+			{
+				$price = $price * ((100 + $priceModel->priceRate) / 100);
+			}
+			else
+			{
+				$price = $price * ((100 + $product->priceGroup->priceRate) / 100);
+			}
 
-            return floor($price);
-        } else {
-            return 0;
-        }
-    }
+			return floor($price);
+		}
+		else
+		{
+			return 0;
+		}
+	}
 
-    public function calProductPromotionPriceMargin($productId, $provinceId = NULL, $orderModel)
-    {
-        $productPrice = $this->calProductPromotionPrice($productId, $provinceId);
-        $margin = $orderModel->getSupplierMarginToDaiiBuy();
-        $result = $productPrice * (100 + $margin['daiiMargin']);
-        return $result;
-    }
+	public function calProductPromotionPriceMargin($productId, $provinceId = NULL, $orderModel)
+	{
+		$productPrice = $this->calProductPromotionPrice($productId, $provinceId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']);
+		return $result;
+	}
 
-    public function calProductPriceMargin($productId, $provinceId = NULL, $orderModel)
-    {
-        $productPrice = $this->calProductPrice($productId, $provinceId);
-        $margin = $orderModel->getSupplierMarginToDaiiBuy();
-        $result = $productPrice * (100 + $margin['daiiMargin']);
-        return $result;
-    }
+	public function calProductPriceMargin($productId, $provinceId = NULL, $orderModel)
+	{
+		$productPrice = $this->calProductPrice($productId, $provinceId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']);
+		return $result;
+	}
 
-    public function calProductTotalPrice($productId, $quantity, $provinceId)
-    {
-        return $this->calProductPrice($productId, $provinceId) * $quantity;
-    }
+	public function calProductTotalPrice($productId, $quantity, $provinceId)
+	{
+		return $this->calProductPrice($productId, $provinceId) * $quantity;
+	}
 
-    public function calProductTotalPriceMargin($productId, $quantity, $provinceId, $orderModel)
-    {
-        $productPrice = $this->calProductPrice($productId, $provinceId);
-        $margin = $orderModel->getSupplierMarginToDaiiBuy();
-        $result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
-        return $result;
-    }
+	public function calProductTotalPriceMargin($productId, $quantity, $provinceId, $orderModel)
+	{
+		$productPrice = $this->calProductPrice($productId, $provinceId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
+		return $result;
+	}
 
-    public function calProductPromotionTotalPrice($productId, $quantity, $provinceId)
-    {
-        return $this->calProductPromotionPrice($productId, $provinceId) * $quantity;
-    }
+	public function calProductPromotionTotalPrice($productId, $quantity, $provinceId)
+	{
+		return $this->calProductPromotionPrice($productId, $provinceId) * $quantity;
+	}
 
-    public function calProductPromotionTotalPriceMargin($productId, $quantity, $provinceId, $orderModel)
-    {
-        $productPrice = $this->calProductPromotionPrice($productId, $provinceId);
-        $margin = $orderModel->getSupplierMarginToDaiiBuy();
-        $result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
-        return $result;
-    }
+	public function calProductPromotionTotalPriceMargin($productId, $quantity, $provinceId, $orderModel)
+	{
+		$productPrice = $this->calProductPromotionPrice($productId, $provinceId);
+		$margin = $orderModel->getSupplierMarginToDaiiBuy();
+		$result = $productPrice * (100 + $margin['daiiMargin']) * $quantity;
+		return $result;
+	}
 
-    public function findAllProductByAmphurIdAndCategoryId($provinceId, $searchText = '', $categoryId = null, $brandId = null)
-    {
-        $criteria = new CDbCriteria();
-        $criteria->with = array(
-            'priceGroup',
-            'priceGroup.price');
-        $criteria->condition = 't.status = 2  AND t.quantity > 0 AND price.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText))';
+	public function findAllProductByAmphurIdAndCategoryId($provinceId, $searchText = '', $categoryId = null, $brandId = null)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->with = array(
+			'priceGroup',
+			'priceGroup.price');
+		$criteria->condition = 't.status = 2  AND t.quantity > 0 AND price.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText))';
 
-        if (isset($categoryId))
-            $criteria->condition .= ' AND categoryId=' . $categoryId;
+		if(isset($categoryId))
+			$criteria->condition .= ' AND categoryId=' . $categoryId;
 
-        if (isset($brandId))
-            $criteria->condition .= ' AND brandId=' . $brandId;
+		if(isset($brandId))
+			$criteria->condition .= ' AND brandId=' . $brandId;
 
-        $criteria->params = array(
-            ':provinceId' => $provinceId,
-            ':searchText' => '%' . $searchText . '%');
-        $criteria->order = 't.productId';
+		$criteria->params = array(
+			':provinceId'=>$provinceId,
+			':searchText'=>'%' . $searchText . '%');
+		$criteria->order = 't.productId';
 
-        Controller::writeToFile('/tmp/product', print_r($criteria, true));
+		Controller::writeToFile('/tmp/product', print_r($criteria, true));
 
-        return $this->findAll($criteria);
-    }
+		return $this->findAll($criteria);
+	}
 
-    public function findFirstImageProduct($productId)
-    {
-        $productImage = ProductImage::model()->find("productId =:productId AND sortOrder = 1"
-            , array(
-                ":productId" => $productId));
-        if (isset($productImage))
-            return $productImage->image;
-        else
-            return "";
-    }
+	public function findFirstImageProduct($productId)
+	{
+		$productImage = ProductImage::model()->find("productId =:productId AND sortOrder = 1"
+			, array(
+			":productId"=>$productId));
+		if(isset($productImage))
+			return $productImage->image;
+		else
+			return "";
+	}
 
-    public function findAllProductDataByAmphurIdAndCategoryId($provinceId, $searchText = '', $categoryId = null, $brandId = null, $dateNow)
-    {
-        $criteria = new CDbCriteria();
-        $criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
-        $criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
-        $criteria->condition = 'p.status = 1 AND t.status = 2 AND p.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
+	public function findAllProductDataByAmphurIdAndCategoryId($provinceId, $searchText = '', $categoryId = null, $brandId = null, $dateNow)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
+		$criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
+		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
 
-        if (isset($categoryId))
-            $criteria->condition .= ' AND t.categoryId=' . $categoryId;
+		if(isset($categoryId))
+			$criteria->condition .= ' AND t.categoryId=' . $categoryId;
 
-        if (isset($brandId))
-            $criteria->condition .= ' AND t.brandId=' . $brandId;
+		if(isset($brandId))
+			$criteria->condition .= ' AND t.brandId=' . $brandId;
 
-        $criteria->params = array(
-            ':provinceId' => $provinceId,
-            ':searchText' => '%' . $searchText . '%');
-        $criteria->order = 't.productId';
+		$criteria->params = array(
+			':provinceId'=>$provinceId,
+			':searchText'=>'%' . $searchText . '%');
+		$criteria->order = 't.productId';
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'pagination' => array(
-                'pageSize' => 12),
-        ));
-    }
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize'=>12),
+		));
+	}
 
-    public function findAllProductDataByAmphurIdAndCategoryIdAndSupplierId($provinceId, $searchText = '', $categoryId = null, $brandId = null, $dateNow, $supplierId = null)
-    {
-        $criteria = new CDbCriteria();
+	public function findAllProductDataByAmphurIdAndCategoryIdAndSupplierId($provinceId, $searchText = '', $categoryId = null, $brandId = null, $dateNow, $supplierId = null)
+	{
+		$criteria = new CDbCriteria();
 
-        $sort = new CSort('Product');
-        $sort->defaultOrder = 't.createDateTime DESC, t.name DESC';
-        $sort->attributes = array(
-            'createDateTime' => array(
-                'asc' => 't.createDateTime ASC',
-                'desc' => 't.createDateTime DESC',
-            ),
-            'name' => array(
-                'asc' => 't.name ASC',
-                'desc' => 't.name DESC',
-            ),
-            'price' => array(
-                'asc' => 't.price ASC',
-                'desc' => 't.price DESC',
-            ),
-        );
-        $sort->applyOrder($criteria);
+		$sort = new CSort('Product');
+		$sort->defaultOrder = 't.createDateTime DESC, t.name DESC';
+		$sort->attributes = array(
+			'createDateTime'=>array(
+				'asc'=>'t.createDateTime ASC',
+				'desc'=>'t.createDateTime DESC',
+			),
+			'name'=>array(
+				'asc'=>'t.name ASC',
+				'desc'=>'t.name DESC',
+			),
+			'price'=>array(
+				'asc'=>'t.price ASC',
+				'desc'=>'t.price DESC',
+			),
+		);
+		$sort->applyOrder($criteria);
 
-        $criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
-        $criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
-        $criteria->condition = 'p.status = 1 AND t.status = 2 AND p.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
+		$criteria->join = 'LEFT JOIN price_group pg ON t.priceGroupId=pg.priceGroupId ';
+		$criteria->join .= 'LEFT JOIN price p ON p.priceGroupId=pg.priceGroupId';
+		$criteria->condition = 'p.status = 1 AND t.status = 2 AND p.provinceId=:provinceId AND (LOWER(t.name) LIKE LOWER(:searchText) OR LOWER(t.description) LIKE LOWER(:searchText)) AND t.quantity > 0 AND t.dateAvailable <= ' . $dateNow;
 
 //		if (isset($categoryId))
 //			$criteria->condition .= ' AND t.categoryId=' . $categoryId;
@@ -673,6 +720,7 @@ class Product extends ProductMaster
 		$res['height'] = $height;
 		$res['length'] = $length;
 
+
 		if($type==3){
 			$span = self::BLOCK_SPAN;
 		}else{
@@ -682,9 +730,9 @@ class Product extends ProductMaster
 		$totalPrice = 0.00;
 
 		foreach($products as $product)
-			{
+		{
 			$productId = strval($product->productId);
-			$category2toProduct = Category2ToProduct::model()->find('productId = '. $productId .' AND categoryId = '. $product->categoryId . ' AND status = 1');
+			$category2toProduct = Category2ToProduct::model()->find('productId = ' . $productId . ' AND categoryId = ' . $product->categoryId . ' AND status = 1');
 			$quantity = $category2toProduct->quantity;
 			//product
 			$res['items'][$productId] = $product;
@@ -702,15 +750,18 @@ class Product extends ProductMaster
 
 			//price
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
-			":productId"=>$productId));
-			if(isset($productPromotion)){
+				":productId"=>$productId));
+			if(isset($productPromotion))
+			{
 				//promotion price
-				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId) * (($noSpanSet==0)? 1 : $noSpanSet);
-			}else{
-				//normal price
-				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId) * (($noSpanSet==0)? 1 : $noSpanSet);
+				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId) * (($noSpanSet == 0) ? 1 : $noSpanSet);
 			}
-			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
+			else
+			{
+				//normal price
+				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId) * (($noSpanSet == 0) ? 1 : $noSpanSet);
+			}
+			$totalPrice = $totalPrice + $res['items'][$productId]['price'];
 		}
 		$res['totalPrice'] = $totalPrice;
 
@@ -718,6 +769,7 @@ class Product extends ProductMaster
 
 		return $res;
 	}
+
 
 	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave=FALSE)
 	{
@@ -728,7 +780,7 @@ class Product extends ProductMaster
 		$totalPrice = 0.00;
 		unset($productItems['categoryId']);
 
-		foreach($productItems as $productId => $qty)
+		foreach($productItems as $productId=> $qty)
 		{
 			$product = Product::model()->findByPk($productId);
 			//product
@@ -769,7 +821,8 @@ class Product extends ProductMaster
 				$orderDetail->createDateTime = new CDbExpression("NOW()");
 					if($orderDetail->save()){
 						$orderDetailId = Yii::app()->db->lastInsertID;
-						foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
+						foreach($orderDetailTemplate->orderDetailTemplateFields as $item)
+						{
 							$orderDetailValue = new OrderDetailValue();
 							$orderDetailValue->orderDetailId = $orderDetailId;
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
@@ -780,40 +833,44 @@ class Product extends ProductMaster
 					}
 				}
 			}
-
 		return $res;
 	}
 
-	public function calculateNewItemFenzer($productId,$provinceId)
+	public function calculateNewItemFenzer($productId, $provinceId)
 	{
-			$res = array();
-			$productIdNew = intval($productId);
-			$newProduct = Product::model()->findByPk($productIdNew);
-			$res["item"] = $newProduct;
-				//default Qty = 1
-			$res["item"]['quantity'] = 1;
+		$res = array();
+		$productIdNew = intval($productId);
+		$newProduct = Product::model()->findByPk($productIdNew);
+		$res["item"] = $newProduct;
+		//default Qty = 1
+		$res["item"]['quantity'] = 1;
 
-			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+		$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 			":productId"=>$productIdNew));
-			if(isset($productPromotion)){
-				//promotion price
-				$res["item"]['price'] = $this->calProductPromotionTotalPrice($productIdNew, 1 ,$provinceId)*1;
-			}else{
-				//normal price
-				$res["item"]['price'] = $this->calProductTotalPrice($productIdNew, 1,$provinceId)*1;
-			}
-			return $res;
-
+		if(isset($productPromotion))
+		{
+			//promotion price
+			$res["item"]['price'] = $this->calProductPromotionTotalPrice($productIdNew, 1, $provinceId) * 1;
+		}
+		else
+		{
+			//normal price
+			$res["item"]['price'] = $this->calProductTotalPrice($productIdNew, 1, $provinceId) * 1;
+		}
+		return $res;
 	}
 
 	public function findAllProductBySupplierId($supplierId)
 	{
 		$result = array();
 		$criteria = new CDbCriteria();
-		$criteria->condition = 'status = 2 AND supplierId = :supplierId';
-		$criteria->params = array(
-			':supplierId'=>$supplierId);
+		$criteria->condition = 'status = 2 ';
 
+		if(Yii::app()->user->userType != 4)
+		{
+			$criteria->condition .=" AND supplierId = :supplierId ";
+			$criteria->params[":supplierId"] = $supplierId;
+		}
 		$models = Product::model()->findAll($criteria);
 
 		foreach($models as $item)
@@ -823,12 +880,16 @@ class Product extends ProductMaster
 
 		return $result;
 	}
-	public function findAllProductArraySupplierIdAndCategoryId($supplierId,$categoryId){
-		$products = Product::model()->findAll('supplierId ='. $supplierId .' AND Status = 1 AND CategoryId = '.$categoryId);
+
+	public function findAllProductArraySupplierIdAndCategoryId($supplierId, $categoryId)
+	{
+		$products = Product::model()->findAll('supplierId =' . $supplierId . ' AND Status = 1 AND CategoryId = ' . $categoryId);
 		$res = array();
-		foreach($products as $item){
+		foreach($products as $item)
+		{
 			$res[$item->isbn] = $item->productId;
 		}
 		return $res;
 	}
+
 }
