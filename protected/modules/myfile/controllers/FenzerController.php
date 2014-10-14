@@ -225,7 +225,7 @@ class FenzerController extends MasterMyFileController
 			$categoryId = $_POST['categoryId'];
 		}
 		if($length==0){
-			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId);
+			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId,$length);
 		}else{
 		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
 		}
@@ -255,7 +255,7 @@ class FenzerController extends MasterMyFileController
 			$categoryId = $_POST['categoryId'];
 		}
 
-		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId, TRUE);
+		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId, $length, TRUE);
 
 		echo $this->renderPartial('/fenzer/_confirm_order_myfile', array(
 				'productResult'=>$itemSetArray,

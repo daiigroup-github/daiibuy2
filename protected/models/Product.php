@@ -58,6 +58,8 @@ class Product extends ProductMaster
     const METRIC_GRAMS = 1;
     const METRIC_KILOGRAMS = 2;
     const METRIC_TONS = 3;
+	const FENZER_SPAN = 3;
+	const BLOCK_SPAN = 0.4;
 
     public $searchText;
     public $cartTotal;
@@ -662,15 +664,21 @@ class Product extends ProductMaster
 
 	public function calculateItemSetFenzer($categoryId, $length, $provinceId, $productIdNew = NULL)
 	{
+		$type = Category2ToProduct::model()->find('category2Id = '. $categoryId . ' AND status=1');
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
-		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
+		$products = Product::model()->findAll('category2Id = ' . $categoryId . ' AND status = 1');
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
 		$res['length'] = $length;
 
-		$noSpanSet = round(intval($length)/3);
+		if($type==3){
+			$span = self::BLOCK_SPAN;
+		}else{
+			$span = self::FENZER_SPAN;
+		}
+		$noSpanSet = round(intval($length)/$span);
 		$totalPrice = 0.00;
 
 		foreach($products as $product)
@@ -711,9 +719,10 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $isSave=FALSE)
+	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave=FALSE)
 	{
 		$category = Category::model()->findByPk($categoryId);
+		$height = $category->description;
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$totalPrice = 0.00;
@@ -721,31 +730,6 @@ class Product extends ProductMaster
 
 		foreach($productItems as $productId => $qty)
 		{
-			if($isSave){
-			//SAVE NEW ORDER
-			$orderModel = new Order();
-			$orderModel->supplierId = 176;
-			$orderModel->provinceId = $provinceId;
-			$orderModel->type = 1;
-			$orderModel->status = 1;
-			$orderModel->createDateTime = new CDbExpression("NOW()");
-			if($orderModel->save()){
-				$orderId = Yii::app()->db->lastInsertID;
-				$orderDetail = new OrderDetail();
-				$orderDetail->orderId = $orderId;
-				$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
-				$orderDetail->createDateTime = new CDbExpression("NOW()");
-					if($orderDetail->save()){
-						$orderDetailId = Yii::app()->db->lastInsertID;
-						foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
-							$orderDetailValue = new OrderDetailValue();
-							$orderDetailValue->orderDetailId = $orderDetailId;
-							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-							$orderDetailValue->value = $item->title=='height'? $height : $length;
-						}
-					}
-				}
-			}
 			$product = Product::model()->findByPk($productId);
 			//product
 			$res['items'][$productId] = $product;
@@ -767,6 +751,35 @@ class Product extends ProductMaster
 			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
 		}
 		$res['totalPrice'] = $totalPrice;
+
+		if($isSave){
+			//SAVE NEW ORDER
+			$orderModel = new Order();
+			$orderModel->supplierId = 176;
+			$orderModel->provinceId = $provinceId;
+			$orderModel->type = 1;
+			$orderModel->status = 1;
+			$orderModel->totalIncVAT =
+			$orderModel->createDateTime = new CDbExpression("NOW()");
+			if($orderModel->save()){
+				$orderId = Yii::app()->db->lastInsertID;
+				$orderDetail = new OrderDetail();
+				$orderDetail->orderId = $orderId;
+				$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
+				$orderDetail->createDateTime = new CDbExpression("NOW()");
+					if($orderDetail->save()){
+						$orderDetailId = Yii::app()->db->lastInsertID;
+						foreach($orderDetailTemplate->orderDetailTemplateFields as $item){
+							$orderDetailValue = new OrderDetailValue();
+							$orderDetailValue->orderDetailId = $orderDetailId;
+							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
+							$orderDetailValue->value = $item->title=='height'? $height : $length;
+							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
+							$orderDetailValue->save();
+						}
+					}
+				}
+			}
 
 		return $res;
 	}
