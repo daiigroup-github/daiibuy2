@@ -21,9 +21,9 @@ echo $form->errorSummary($model, '', '', array(
 	'class'=>'alert alert-error'));
 ?>
 
-<div class="control-group">
-	<?php echo $form->labelEx($model, 'title'); ?>
-	<div class='controls'>
+<div class="form-group">
+	<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'title'); ?></div>
+	<div class='col-sm-10'>
 		<?php
 		echo $form->textField($model, 'title', array(
 			'size'=>60,
@@ -43,9 +43,9 @@ echo $form->errorSummary($model, '', '', array(
 <?php // echo $form->error($model, 'description');   ?>
 	</div>
 </div>-->
-<div class="control-group">
-	<?php echo $form->labelEx($model, 'logo'); ?>
-	<div class="controls">
+<div class="form-group">
+	<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'logo'); ?></div>
+	<div class="col-sm-10">
 		<?php
 		if($this->action->id != 'create')
 		{
@@ -61,19 +61,21 @@ echo $form->errorSummary($model, '', '', array(
 		?>
 	</div>
 </div>
-<div class="control-group">
-	<?php echo $form->labelEx($model, 'status'); ?>
-	<div class='controls'>
+<div class="form-group">
+	<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'status'); ?></div>
+	<div class='col-sm-10'>
 		<?php echo $form->checkBox($model, 'status'); ?>
 		<?php echo $form->error($model, 'status'); ?>
 	</div>
 </div>
 
-<div class="form-actions">
-	<?php
-	echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
-		'class'=>'btn btn-primary'));
-	?>
+<div class="form-group">
+	<div class="col-sm-offset-2 col-sm-9">
+		<?php
+		echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
+			'class'=>'btn btn-primary'));
+		?>
+	</div>
 </div>
 
 <?php $this->endWidget(); ?>

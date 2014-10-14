@@ -10,23 +10,20 @@
 	$form = $this->beginWidget('CActiveForm', array(
 		'action'=>Yii::app()->createUrl($this->route),
 		'method'=>'get',
-		'htmlOptions'=>array(
-			'class'=>'form-inline well'
-		),
+		'id'=>'search-form',
 	));
 	?>
 
-	<div class="input-append">
+	<div class="input-group">
+		<span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Search</button>
+		</span>
 		<?php
 		echo $form->textField($model, 'searchText', array(
-			'class'=>'input-medium search-query',
-			'placeholder'=>'Search'));
-
-		echo CHtml::submitButton('Search', array(
-			'class'=>'btn'));
+			'class'=>'form-control'));
 		?>
 	</div>
 
-	<?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
 </div><!-- search-form -->

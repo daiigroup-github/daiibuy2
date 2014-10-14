@@ -3,6 +3,8 @@
 class ModelToCategory1 extends ModelToCategory1Master
 {
 
+	public $categoryTitle;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -20,6 +22,10 @@ class ModelToCategory1 extends ModelToCategory1Master
 	{
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
+				array(
+					'categoryTitle',
+					'safe',
+					'on'=>'search')
 		));
 	}
 
@@ -60,22 +66,25 @@ class ModelToCategory1 extends ModelToCategory1Master
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->id = $this->searchText;
-			$this->brandModelId = $this->searchText;
-			$this->categoryId = $this->searchText;
+			$this->categoryTitle = $this->searchText;
+//			$this->id = $this->searchText;
+//			$this->brandModelId = $this->searchText;
+//			$this->categoryId = $this->searchText;
 //			$this->sortOrder = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
+//			$this->status = $this->searchText;
+//			$this->createDateTime = $this->searchText;
+//			$this->updateDateTime = $this->searchText;
 		}
-
+		$criteria->join = " LEFT JOIN category c ON c.categoryId = t.categoryId ";
+		$criteria->compare('c.title', $this->categoryTitle, true, 'OR');
 		$criteria->compare('id', $this->id, true, 'OR');
 		$criteria->compare('brandModelId', $this->brandModelId);
 		$criteria->compare('categoryId', $this->categoryId, true, 'OR');
 //		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('status', $this->status);
+//		$criteria->compare('status', $this->status);
 		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
 		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

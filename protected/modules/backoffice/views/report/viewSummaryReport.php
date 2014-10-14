@@ -53,9 +53,9 @@ $('#search-form').submit(function(){
 				if(1 == 1)
 				//if(User::model()->findByPk(Yii::app()->user->id)->type != 6)
 				{
-					echo CHtml::link('<i class="icon-plus-sign icon-white"></i> เพิ่ม User', array(
-						'create'), array(
-						'class'=>'btn btn-primary btn-mini btn-xs'));
+//					echo CHtml::link('<i class="icon-plus-sign icon-white"></i> เพิ่ม User', array(
+//						'create'), array(
+//						'class'=>'btn btn-primary btn-mini btn-xs'));
 				}
 			?>
 		</div>

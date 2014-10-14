@@ -32,9 +32,12 @@ $this->menu = array(
 );
 ?>
 
-<h1>Update Configuration <?php echo $model->id; ?></h1>
-
-<?php
-echo $this->renderPartial('_form', array(
-	'model'=>$model));
-?>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Update Configuration <?php echo $model->id; ?>	</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array(
+			'model'=>$model));
+		?>
+	</div>
+</div>

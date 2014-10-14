@@ -48,7 +48,7 @@ return false;
 			</div>
 		</div>
 	</div>
-	<h3><?php echo isset($model->brandModel) ? $model->brandModel->title : "-" ?></h3>
+	<h3><?php echo isset($brandToCat->brandModel) ? $brandToCat->brandModel->title : "-" ?></h3>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'category-grid',
@@ -87,6 +87,15 @@ return false;
 				'class'=>'CButtonColumn',
 				'template'=>'{view} {update} {delete} {subCat} {image}',
 				'buttons'=>array(
+					'view'=>array(
+						'url'=>'Yii::app()->createUrl("/backoffice/category/view/id/".$data->categoryId)'
+					),
+					'update'=>array(
+						'url'=>'Yii::app()->createUrl("/backoffice/category/update/id/".$data->categoryId)'
+					),
+					'delete'=>array(
+						'url'=>'Yii::app()->createUrl("/backoffice/category/delete/id/".$data->categoryId)'
+					),
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'

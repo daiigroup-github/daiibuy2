@@ -154,7 +154,10 @@ class ProductController extends MasterBackofficeController
 		{
 			$model->attributes = $_POST['Product'];
 			$model->createDateTime = new CDbExpression('NOW()');
-			$model->supplierId = Yii::app()->user->id;
+
+			$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
+			$model->supplierId = $sup->supplierId;
+
 			$model->status = 2;
 			if(isset($_POST["Product"]["categoryId"]))
 			{

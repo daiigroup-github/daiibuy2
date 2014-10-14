@@ -3,6 +3,9 @@
 class CategoryToSub extends CategoryToSubMaster
 {
 
+	public $categoryTitle;
+	public $subCategoryTitle;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -20,6 +23,10 @@ class CategoryToSub extends CategoryToSubMaster
 	{
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
+				array(
+					'subCategoryTitle, categoryTitle, searchText',
+					'safe',
+					'on'=>'search'),
 		));
 	}
 
@@ -60,29 +67,36 @@ class CategoryToSub extends CategoryToSubMaster
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->id = $this->searchText;
-			$this->categoryId = $this->searchText;
-			$this->subCategoryId = $this->searchText;
-			$this->isTheme = $this->searchText;
-			$this->isSet = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
-		}
+			if(isset($this->categoryId))
+			{
 
-		$criteria->compare('id', $this->id, true, 'OR');
-		$criteria->compare('categoryId', $this->categoryId, true, 'OR');
-		$criteria->compare('subCategoryId', $this->subCategoryId, true, 'OR');
-		$criteria->compare('isTheme', $this->isTheme);
-		$criteria->compare('isSet', $this->isSet);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+//				$subCat = Category::model()->find("title = '" . $this->searchText . "'");
+//				$this->subCategoryId = $subCat->categoryId;
+				$this->subCategoryTitle = $this->searchText;
+			}
+			else
+			{
+//				$cat = Category::model()->find("title = '" . $this->searchText . "'");
+//				$this->categoryId = $cat->categoryId;
+				$this->categoryTitle = $this->searchText;
+			}
+		}
+//		$criteria->compare('id', $this->id, true, 'OR');
+		$criteria->compare("t.categoryId", $this->categoryId);
+		$criteria->compare('c.title', $this->categoryTitle, TRUE, 'OR');
+		$criteria->compare('s.title', $this->subCategoryTitle, TRUE, 'OR');
+		$criteria->join = "LEFT JOIN category c ON c.categoryId = t.categoryId ";
+		$criteria->join .=" LEFT JOIN category s ON s.categoryId = t.subCategoryId ";
+//		$criteria->compare('isTheme', $this->isTheme);
+//		$criteria->compare('isSet', $this->isSet);
+//		$criteria->compare('status', $this->status);
+//		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+//		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
-				'defaultOrder'=>'sortOrder ASC'
+				'defaultOrder'=>'t.sortOrder ASC'
 			)
 		));
 	}

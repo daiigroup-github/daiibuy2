@@ -33,41 +33,48 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Configurations</h1>
-<div class="btn-toolbar">
-	<div class="btn-group">
-		<?php
-		echo CHtml::link('<i class="icon-plus-sign icon-white"></i> เพิ่ม Configuration', array(
-			'create'), array(
-			'class'=>'btn btn-primary'));
-		?>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Manage Configurations
+		<div class="pull-right">
+			<?php
+			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array(
+				'class'=>'btn btn-xs btn-primary'));
+			?>
+		</div>
 	</div>
-</div>
-<div class="search-form" >
-	<?php
-	$this->renderPartial('_search', array(
-		'model'=>$model,
-	));
-	?>
-</div><!-- search-form -->
 
-<?php
-$this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'configuration-grid',
-	'dataProvider'=>$model->search(),
-	'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
-	'columns'=>array(
-		'name',
-		'description',
-		'value',
-		'status',
-		'createDateTime',
-		/*
-		  'updateDateTime',
-		 */
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-));
-?>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-lg-12">
+				<?php
+				$this->renderPartial('_search', array(
+					'model'=>$model,
+				));
+				?>
+			</div>
+		</div>
+
+		<?php
+		$this->widget('zii.widgets.grid.CGridView', array(
+			'id'=>'configuration-grid',
+			'dataProvider'=>$model->search(),
+			'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
+			'columns'=>array(
+				'name',
+				'description',
+				'value',
+//				'status',
+//				'createDateTime',
+				/*
+				  'updateDateTime',
+				 */
+				array(
+					'class'=>'CButtonColumn',
+				),
+			),
+		));
+		?>
+    </div>
+
+</div>

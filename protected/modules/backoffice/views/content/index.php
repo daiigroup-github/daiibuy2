@@ -36,7 +36,7 @@ $this->pageHeader = 'การจัดการเนื้อหาเว็�
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Product
+		Manage Content
 		<div class="pull-right">
 			<?php
 			echo CHtml::link('<i class="icon-plus-sign icon-white"></i>  Create', array(

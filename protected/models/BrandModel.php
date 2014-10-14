@@ -64,22 +64,19 @@ class BrandModel extends BrandModelMaster
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->supplierId = $this->supplierId;
-			$this->brandId = $this->searchText;
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 		}
-
-		$criteria->compare('brandModelId', $this->brandModelId, true, 'OR');
-		$criteria->compare('brandId', $this->brandId);
-		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
+//		$criteria->compare('brandModelId', $this->brandModelId, true, 'OR');
+		$criteria->compare('brandId', $this->brandId, FALSE, "AND");
+//		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
 		$criteria->compare('title', $this->title, true, 'OR');
 		$criteria->compare('description', $this->description, true, 'OR');
-		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+//		$criteria->compare('image', $this->image, true, 'OR');
+//		$criteria->compare('sortOrder', $this->sortOrder);
+//		$criteria->compare('status', $this->status);
+//		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+//		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

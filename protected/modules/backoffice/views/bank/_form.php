@@ -12,7 +12,7 @@
 		'enableAjaxValidation'=>false,
 		'htmlOptions'=>array(
 			'enctype'=>'multipart/form-data',
-			'class'=>'form-horizontal well'),
+			'class'=>'form-horizontal'),
 	));
 	?>
 
@@ -20,17 +20,9 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="control-group">
-		<div class="controls">
-			<?php
-			echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
-				'class'=>'btn btn-primary pull-right')); //'onclick'=>"validatePromotion()" ));
-			?>
-		</div>
-	</div>
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'bankNameId'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'bankNameId'); ?></div>
+		<div class="col-sm-10">
 			<?php
 			echo $form->dropDownList($model, 'bankNameId', BankName::model()->findAllBankNameArray(), array(
 				'prompt'=>'-- Select Bank --'));
@@ -39,9 +31,9 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'compCode'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'compCode'); ?></div>
+		<div class="col-sm-10">
 			<?php
 			echo $form->textField($model, 'compCode', array(
 				'length'=>5));
@@ -50,9 +42,9 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'accNo'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'accNo'); ?></div>
+		<div class="col-sm-10">
 			<?php
 			echo $form->textField($model, 'accNo', array(
 				'rows'=>6,
@@ -62,9 +54,9 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'accName'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'accName'); ?></div>
+		<div class="controls col-sm-10">
 			<?php
 			echo $form->textField($model, 'accName', array(
 				'size'=>60,
@@ -74,17 +66,17 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'accType'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'accType'); ?></div>
+		<div class="col-sm-10">
 			<?php echo $form->dropdownList($model, 'accType', Bank::model()->getAllBankAccType()); ?>
 			<?php echo $form->error($model, 'accType'); ?>
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'branch'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'branch'); ?></div>
+		<div class="col-sm-10">
 			<?php
 			echo $form->textField($model, 'branch', array(
 				'size'=>25,
@@ -94,9 +86,9 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'supplierId'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'supplierId'); ?></div>
+		<div class="col-sm-10">
 			<?php
 			echo $form->dropDownList($model, 'supplierId', User::model()->findAllSupplierArray(), array(
 				'prompt'=>'-- Select Supplier --'));
@@ -105,14 +97,21 @@
 		</div>
 	</div>
 
-	<div class="control-group">
-		<div class="control-label"><?php echo $form->labelEx($model, 'status'); ?></div>
-		<div class="controls">
+	<div class="form-group">
+		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'status'); ?></div>
+		<div class="col-sm-10">
 			<?php echo $form->checkBox($model, 'status'); ?>
 			<?php echo $form->error($model, 'status'); ?>
 		</div>
 	</div>
-
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-9">
+			<?php
+			echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array(
+				'class'=>'btn btn-primary'));
+			?>
+		</div>
+	</div>
 
 	<?php $this->endWidget(); ?>
 
