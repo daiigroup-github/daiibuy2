@@ -28,7 +28,7 @@ $this->breadcrumbs = array(
 
                 <table>
                     <tr>
-                        <td colspan="2"><?php echo $categoryModel->description;?></td>
+                        <td colspan="2"><?php echo $categoryModel->description; ?></td>
                     </tr>
                 </table>
 
@@ -51,7 +51,7 @@ $this->breadcrumbs = array(
                     <label for="h" class="col-sm-2 control-label">Height</label>
 
                     <div class="col-sm-9">
-                        <?php echo CHtml::dropDownList('h', '', array('2.5', '2.75', '3.00'), array('class'=>'chosen-select-full-width'));?>
+                        <?php echo CHtml::dropDownList('h', '', CHtml::listData($categoryModel->fenzerSubCategorys, 'categoryId', 'title'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Select --')); ?>
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@ $this->breadcrumbs = array(
                             'dataType' => 'html',
                             'method' => 'POST',
                             'data' => 'js:$("#fenzerForm").serialize()',
-                            'beforeSend'=>'js:function(){$("#spinner").css("display","inline-block");}',
+                            'beforeSend' => 'js:function(){$("#spinner").css("display","inline-block");}',
                             'success' => 'js:function(data){
                                 $("#showProduct").show();
                                 $("#productItems").html(data);
@@ -120,6 +120,7 @@ $this->breadcrumbs = array(
                     </div>
                 </div>
 
+                <?php echo CHtml::hiddenField('categoryId', $categoryModel->categoryId);?>
                 <?php $this->endWidget(); ?>
 
                 <?php if (isset($product['actions'])): ?>
@@ -178,8 +179,7 @@ $this->breadcrumbs = array(
                 'id' => 'productItemsForm',
                 //'enableClientValidation' => true,
                 //'clientOptions' => array('validateOnSubmit' => true,),
-                'htmlOptions' => array(
-                ),
+                'htmlOptions' => array(),
             ));
             ?>
             <table class="table table-bordered fenzer-items">
@@ -204,8 +204,7 @@ $this->breadcrumbs = array(
             'id' => 'addProductItemForm',
             //'enableClientValidation' => true,
             //'clientOptions' => array('validateOnSubmit' => true,),
-            'htmlOptions' => array(
-            ),
+            'htmlOptions' => array(),
         ));
         ?>
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -283,7 +282,7 @@ $this->breadcrumbs = array(
 		        <span class="add-to-cart" id="addToCartFenzer">
                     <span class="action-wrapper">
 					    <i class="fa fa-money"></i>
-						<span class="action-name" >Check out</span>
+						<span class="action-name">Check out</span>
 					</span>
 				</span>
             </div>

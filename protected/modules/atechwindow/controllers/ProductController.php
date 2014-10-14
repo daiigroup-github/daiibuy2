@@ -71,8 +71,9 @@ class ProductController extends MasterAtechwindowController
     public function actionSearchProductItems()
     {
         if (isset($_POST)) {
-            sleep(2);
+            //sleep(2);
             $res = '';
+            $this->writeToFile('/tmp/searchproduct', print_r($_POST, true));
 
             $colors = array(
                 'ALL',
@@ -91,14 +92,21 @@ class ProductController extends MasterAtechwindowController
                 '2500 x 2000',
             );
 
+            $products = Product::model()->findAll(
+                array(
+                    'condition' => 'categoryId=:categoryId AND width=:width AND height=:height',
+                    'params' => array(':categoryId' => $_POST['categoryId'], ':width' => $_POST['width'], ':height' => $_POST['height'])
+                )
+            );
+
             $items = array();
 
-            for ($i = 0; $i < rand(3, 9); $i++) {
-                $items[$i] = array(
-                    'model' => 'Model ' . $i,
-                    'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
-                    'name' => 'Atech Window ' . $i,
-                    'size' => $sizes[rand(0, 5)],
+            foreach ($products as $product) {
+                $items[] = array(
+                    'model' => 'Model ',
+                    'code' => strtoupper($product->code),
+                    'name' => $product->name,
+                    'size' => $product->width.' x '.$product->height,
                     'color' => $colors[rand(0, 4)],
                     'price' => rand(100, 500),
                     'qty' => 1,
@@ -113,7 +121,7 @@ class ProductController extends MasterAtechwindowController
                     '<td>' . $item['name'] . '</td>' .
                     '<td>' . $item['size'] . '</td>' .
                     '<td>' . $item['color'] . '</td>' .
-                    '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
+                    '<td>' . number_format($item['qty'] * $item['price'], 2) . '</td>' .
                     '<td>' .
                     '<div class="numeric-input full-width">' .
                     '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
@@ -121,31 +129,31 @@ class ProductController extends MasterAtechwindowController
                     '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
                     '</div>' .
                     '</td>' .
-                    '<td><a class="btn btn-info btn-xs addToCart" data-productid="'.$item['code'].'"><i class="fa fa-shopping-cart"></i></a></td>' .
+                    '<td><a class="btn btn-info btn-xs addToCart" data-productid="' . $item['code'] . '"><i class="fa fa-shopping-cart"></i></a></td>' .
                     '</tr>';
             }
 
             /**
              * <?php foreach ($items as $item): ?>
-            <tr>
-            <td><?php echo $item['model']; ?></td>
-            <td><?php echo $item['code']; ?></td>
-            <td><?php echo $item['name']; ?></td>
-            <td><?php echo $item['size']; ?></td>
-            <td><?php echo $item['color']; ?></td>
-            <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
-            <td>
-            <div class="numeric-input full-width">
-            <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
-            <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
-            <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
-            </div>
-            </td>
-            <td class="text-center">
-            <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i></a>
-            </td>
-            </tr>
-            <?php endforeach; ?>
+             * <tr>
+             * <td><?php echo $item['model']; ?></td>
+             * <td><?php echo $item['code']; ?></td>
+             * <td><?php echo $item['name']; ?></td>
+             * <td><?php echo $item['size']; ?></td>
+             * <td><?php echo $item['color']; ?></td>
+             * <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
+             * <td>
+             * <div class="numeric-input full-width">
+             * <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
+             * <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
+             * <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
+             * </div>
+             * </td>
+             * <td class="text-center">
+             * <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i></a>
+             * </td>
+             * </tr>
+             * <?php endforeach; ?>
              */
 
             echo $res;

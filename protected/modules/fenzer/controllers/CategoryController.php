@@ -49,8 +49,6 @@ class CategoryController extends MasterFenzerController
 
         $categoryModel = Category::model()->findByPk($id);
 
-        echo $categoryModel->title;
-
         $this->render('index', array(
             'product' => $product,
             'categoryModel'=>$categoryModel,
