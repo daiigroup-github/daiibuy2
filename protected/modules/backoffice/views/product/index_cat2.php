@@ -145,7 +145,7 @@ $this->menu = array(
 						<div class="col-lg-6">
 							<h3>New Product</h3>
 							<?php
-							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?category2Id=' . $_GET["category2Id"]), array(
+							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl(isset($_GET["category2Id"]) ? 'create?category2Id=' . $_GET["category2Id"] : 'create?category1Id=' . $_GET["category1Id"]), array(
 								'class'=>'btn btn-xs btn-primary'));
 							?>
 						</div>
@@ -166,7 +166,7 @@ $this->menu = array(
 								return false;
 							}
 						},
-						data: {productId: $("#productId").val(), category2Id: <?php echo $_GET["category2Id"] ?>},
+						data: {productId: $("#productId").val(), category1Id: <?php echo isset($_GET["category1Id"]) ? $_GET["category1Id"] : 0; ?>, category2Id:<?php echo isset($_GET["category2Id"]) ? $_GET["category2Id"] : 0; ?>},
 						success: function (data) {
 							if (data.status)
 							{
