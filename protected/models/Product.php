@@ -780,6 +780,18 @@ class Product extends ProductMaster
 		$res['categoryId'] = $categoryId;
 		$totalPrice = 0.00;
 		unset($productItems['categoryId']);
+		if($isSave){
+			//SAVE NEW ORDER
+			$orderModel = new Order();
+			$orderModel->supplierId = 176;
+			$orderModel->provinceId = $provinceId;
+			$orderModel->type = 1;
+			$orderModel->status = 1;
+			$orderModel->createDateTime = new CDbExpression("NOW()");
+			if($orderModel->save()){
+				$orderId = Yii::app()->db->lastInsertID;
+			}
+		}
 
 		foreach($productItems as $productId=> $qty)
 		{
@@ -802,18 +814,23 @@ class Product extends ProductMaster
 				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId)*1;
 			}
 			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
+			if($isSave){
+				$orderItemModel = new OrderItems();
+				$orderItemModel->orderId = $orderId;
+				$orderItemModel->productId = $productId;
+				$orderItemModel->title = 'FenzerItem';
+				$orderItemModel->price = $res['items'][$productId]['price']/$res['items'][$productId]['quantity'];
+				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
+				$orderItemModel->total = $res['items'][$productId]['price'];
+				$orderItemModel->createDateTime = new CDbExpression("NOW()");
+				$orderItemModel->save();
+			}
 		}
 		$res['totalPrice'] = $totalPrice;
 
 		if($isSave){
 			//SAVE NEW ORDER
-			$orderModel = new Order();
-			$orderModel->supplierId = 176;
-			$orderModel->provinceId = $provinceId;
-			$orderModel->type = 1;
-			$orderModel->status = 1;
-			$orderModel->totalIncVAT =
-			$orderModel->createDateTime = new CDbExpression("NOW()");
+			$orderModel->totalIncVAT = $totalPrice;
 			if($orderModel->save()){
 				$orderId = Yii::app()->db->lastInsertID;
 				$orderDetail = new OrderDetail();
