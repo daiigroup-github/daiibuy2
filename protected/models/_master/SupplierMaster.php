@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'supplier':
  * @property string $supplierId
  * @property string $name
+ * @property string $prefix
  * @property string $description
  * @property string $companyName
  * @property string $address1
@@ -26,6 +27,8 @@
  *
  * The followings are the available model relations:
  * @property Order[] $orders
+ * @property OrderDetailTemplate[] $orderDetailTemplates
+ * @property Product[] $products
  * @property Amphur $amphur
  * @property District $district
  * @property Province $province
@@ -53,6 +56,7 @@ class SupplierMaster extends MasterCActiveRecord
 			array('name, districtId, amphurId, provinceId, postcode, logo, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('name, companyName, email', 'length', 'max'=>200),
+			array('prefix', 'length', 'max'=>5),
 			array('districtId, amphurId, provinceId, postcode', 'length', 'max'=>10),
 			array('taxNumber', 'length', 'max'=>50),
 			array('tel, fax', 'length', 'max'=>25),
@@ -60,7 +64,7 @@ class SupplierMaster extends MasterCActiveRecord
 			array('description, address1, address2', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('supplierId, name, description, companyName, address1, address2, districtId, amphurId, provinceId, postcode, taxNumber, email, tel, fax, logo, url, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('supplierId, name, prefix, description, companyName, address1, address2, districtId, amphurId, provinceId, postcode, taxNumber, email, tel, fax, logo, url, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +77,8 @@ class SupplierMaster extends MasterCActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'orders' => array(self::HAS_MANY, 'Order', 'supplierId'),
+			'orderDetailTemplates' => array(self::HAS_MANY, 'OrderDetailTemplate', 'supplierId'),
+			'products' => array(self::HAS_MANY, 'Product', 'supplierId'),
 			'amphur' => array(self::BELONGS_TO, 'Amphur', 'amphurId'),
 			'district' => array(self::BELONGS_TO, 'District', 'districtId'),
 			'province' => array(self::BELONGS_TO, 'Province', 'provinceId'),
@@ -89,6 +95,7 @@ class SupplierMaster extends MasterCActiveRecord
 		return array(
 			'supplierId' => 'Supplier',
 			'name' => 'Name',
+			'prefix' => 'Prefix',
 			'description' => 'Description',
 			'companyName' => 'Company Name',
 			'address1' => 'Address1',
@@ -131,6 +138,7 @@ class SupplierMaster extends MasterCActiveRecord
 		{
 			$this->supplierId = $this->searchText;
 			$this->name = $this->searchText;
+			$this->prefix = $this->searchText;
 			$this->description = $this->searchText;
 			$this->companyName = $this->searchText;
 			$this->address1 = $this->searchText;
@@ -152,6 +160,7 @@ class SupplierMaster extends MasterCActiveRecord
 
 		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
 		$criteria->compare('name',$this->name,true, 'OR');
+		$criteria->compare('prefix',$this->prefix,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('companyName',$this->companyName,true, 'OR');
 		$criteria->compare('address1',$this->address1,true, 'OR');

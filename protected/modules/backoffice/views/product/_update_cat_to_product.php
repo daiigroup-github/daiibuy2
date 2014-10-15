@@ -15,36 +15,40 @@
 			),
 		));
 		?>
-		<div class="form-group" style="margin-top: 10px">
-			<div class="control-label col-lg-2">Group Name</div>
-			<div class="col-lg-10">
-				<?php
-				echo $form->textField($model, "groupName", array(
-					'class'=>'form-control'));
-				?>
+		<?php if(Yii::app()->user->supplierId == 3): ?>
+			<div class="form-group" style="margin-top: 10px">
+				<div class="control-label col-lg-2">Group Name</div>
+				<div class="col-lg-10">
+					<?php
+					echo $form->textField($model, "groupName", array(
+						'class'=>'form-control'));
+					?>
+				</div>
 			</div>
-		</div>
-		<div class="form-group" style="margin-top: 10px">
-			<div class="control-label col-lg-2">Quantity</div>
-			<div class="col-lg-10">
-				<?php
-				echo CHtml::numberField("Category2ToProduct[quantity]", $model->quantity, array(
-					'class'=>'form-control'));
-				?>
+		<?php endif; ?>
+		<?php if(Yii::app()->user->supplierId == 1): ?>
+			<div class="form-group" style="margin-top: 10px">
+				<div class="control-label col-lg-2">Quantity</div>
+				<div class="col-lg-10">
+					<?php
+					echo CHtml::numberField("Category2ToProduct[quantity]", $model->quantity, array(
+						'class'=>'form-control'));
+					?>
+				</div>
 			</div>
-		</div>
-		<div class="form-group" style="margin-top: 10px">
-			<div class="control-label col-lg-2">Type</div>
-			<div class="col-lg-10">
-				<?php
-				echo $form->dropDownList($model, "type", array(
-					1=>'Normal',
-					2=>'+ 1',), array(
-					'class'=>'form-control',
-					'prompt'=>'-- Type --'));
-				?>
+			<div class="form-group" style="margin-top: 10px">
+				<div class="control-label col-lg-2">Type</div>
+				<div class="col-lg-10">
+					<?php
+					echo $form->dropDownList($model, "type", array(
+						1=>'Normal',
+						2=>'+ 1',), array(
+						'class'=>'form-control',
+						'prompt'=>'-- Type --'));
+					?>
+				</div>
 			</div>
-		</div>
+		<?php endif; ?>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-9">
 				<?php

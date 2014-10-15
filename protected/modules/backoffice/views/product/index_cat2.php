@@ -113,7 +113,8 @@ $this->menu = array(
 					),
 					'cat2ToProduct'=>array(
 						'label'=>'<br><u>cat2ToProduct</u>',
-						'url'=>'Yii::app()->createUrl("backoffice/product/updateCat2ToProduct?id=".$data->id)'
+						'url'=>'Yii::app()->createUrl("backoffice/product/updateCat2ToProduct?id=".$data->id)',
+						'visible'=>'(Yii::app()->user->supplierId == 1 || Yii::app()->user->supplierId == 3)'
 					)
 				),
 				'htmlOptions'=>array(
