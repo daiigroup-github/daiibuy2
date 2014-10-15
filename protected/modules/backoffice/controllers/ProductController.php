@@ -805,4 +805,20 @@ class ProductController extends MasterBackofficeController
 		}
 	}
 
+	public function actionUpdateCat2ToProduct($id)
+	{
+		$model = Category2ToProduct::model()->findByPk($id);
+
+		if(isset($_POST["Category2ToProduct"]))
+		{
+			$model->attributes = $_POST["Category2ToProduct"];
+			if($model->save())
+			{
+				$this->redirect("indexCat");
+			}
+		}
+		$this->render("_update_cat_to_product", array(
+			'model'=>$model));
+	}
+
 }
