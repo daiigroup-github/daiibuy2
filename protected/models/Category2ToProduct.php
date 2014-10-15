@@ -90,4 +90,13 @@ class Category2ToProduct extends Category2ToProductMaster
 		));
 	}
 
+	public function findProductType($categoryId,$productId=NULL){
+		if(isset($productId)){
+			$cate = $this->find('category2Id = '. $categoryId . ' AND productId = '. $productId.' AND status=1');
+		}else{
+		$cate = $this->find('category2Id = '. $categoryId . ' AND status=1');
+	}
+		return $cate->type;
+	}
+
 }

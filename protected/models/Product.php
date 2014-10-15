@@ -711,10 +711,10 @@ class Product extends ProductMaster
 
 	public function calculateItemSetFenzer($categoryId, $length, $provinceId, $productIdNew = NULL)
 	{
-		$type = Category2ToProduct::model()->find('category2Id = '. $categoryId . ' AND status=1');
+		$type = Category2ToProduct::model()->findProductType($categoryId);
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
-		$products = Product::model()->findAll('category2Id = ' . $categoryId . ' AND status = 1');
+		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
@@ -726,16 +726,17 @@ class Product extends ProductMaster
 		}else{
 			$span = self::FENZER_SPAN;
 		}
-		$noSpanSet = round(intval($length)/$span);
+		$noSpanSet = ceil(intval($length)/$span);
 		$totalPrice = 0.00;
 
 		foreach($products as $product)
 		{
 			$productId = strval($product->productId);
-			$category2toProduct = Category2ToProduct::model()->find('productId = ' . $productId . ' AND categoryId = ' . $product->categoryId . ' AND status = 1');
+			$category2toProduct = Category2ToProduct::model()->find('productId = ' . $productId . ' AND category2Id = ' . $product->categoryId . ' AND status = 1');
 			$quantity = $category2toProduct->quantity;
 			//product
 			$res['items'][$productId] = $product;
+			$type = Category2ToProduct::model()->findProductType($categoryId,$productId);
 
 			//quantity
 			if($noSpanSet == 0)
@@ -745,7 +746,7 @@ class Product extends ProductMaster
 			}
 			else
 			{
-				$res['items'][$productId]['quantity'] = $quantity * $noSpanSet;
+				$res['items'][$productId]['quantity'] = ($quantity * $noSpanSet)+ ($type==2? 1 : 0);
 			}
 
 			//price
