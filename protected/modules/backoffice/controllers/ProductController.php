@@ -814,7 +814,14 @@ class ProductController extends MasterBackofficeController
 			$model->attributes = $_POST["Category2ToProduct"];
 			if($model->save())
 			{
-				$this->redirect("indexCat");
+				if(isset($model->category2Id))
+				{
+					$this->redirect("indexCat2?category2Id=" . $model->category2Id);
+				}
+				else
+				{
+					$this->redirect("indexCat2?category1Id=" . $model->category1Id);
+				}
 			}
 		}
 		$this->render("_update_cat_to_product", array(

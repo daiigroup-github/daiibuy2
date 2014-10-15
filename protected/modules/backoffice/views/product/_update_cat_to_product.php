@@ -28,7 +28,7 @@
 			<div class="control-label col-lg-2">Quantity</div>
 			<div class="col-lg-10">
 				<?php
-				echo CHtml::numberField("Category2ToProduct[quantity]", "", array(
+				echo CHtml::numberField("Category2ToProduct[quantity]", $model->quantity, array(
 					'class'=>'form-control'));
 				?>
 			</div>

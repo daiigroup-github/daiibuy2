@@ -39,24 +39,6 @@ $this->menu = array(
 		</div>
 	</div>
 	<?php
-	$cat2ToProductUrl = 'Yii::app()->createUrl("backoffice/product/updateCat2ToProduct?id=".$data->id';
-	if(isset($_GET["category1Id"]))
-	{
-		$cat2ToProductUrl.="&category1Id=" . $_GET["category1Id"];
-	}
-	else
-	{
-		$category1Id = 0;
-	}
-	if(isset($_GET["category2Id"]))
-	{
-		$category2Id = $_GET["category2Id"];
-	}
-	else
-	{
-		$category2Id = 0;
-	}
-	$cat2ToProductUrl .= ')';
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'product-grid',
 		'dataProvider'=>$cat2ToProduct->search(),
@@ -131,7 +113,7 @@ $this->menu = array(
 					),
 					'cat2ToProduct'=>array(
 						'label'=>'<br><u>cat2ToProduct</u>',
-						'url'=>$cat2ToProductUrl
+						'url'=>'Yii::app()->createUrl("backoffice/product/updateCat2ToProduct?id=".$data->id)'
 					)
 				),
 				'htmlOptions'=>array(
