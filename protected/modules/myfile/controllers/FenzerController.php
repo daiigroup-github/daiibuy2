@@ -13,7 +13,7 @@ class FenzerController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 176, 1, 1, null);
+		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 1, 1, 1, null);
 		$this->render('index', array(
 			'myfileArray'=>$myfileArray));
 	}
@@ -24,7 +24,7 @@ class FenzerController extends MasterMyFileController
 
 		$model = new Order;
 		$orderDetailModel = new OrderDetail;
-		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(176);
+		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(1);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
 		foreach($orderDetailTemplateField as $field)
 		{
@@ -78,7 +78,7 @@ class FenzerController extends MasterMyFileController
 //		{
 			$status = 1;
 
-//			$brandModel = BrandModel::model()->find('supplierId = 176 AND status = 1');
+//			$brandModel = BrandModel::model()->find('supplierId = 1 AND status = 1');
 //			$cate1Model = $brandModel->with('categorys')->findAll(
 //				array('condition'=>'categorys.isRoot = 1 AND categorys.status = 1'
 //					));
@@ -90,7 +90,7 @@ class FenzerController extends MasterMyFileController
 				$height = explode("-", $value);
 			}
 			$cate1Model = Category::model()->with('subCategorys')->findAll(
-				array('condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 176 AND '
+				array('condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 1 AND '
 					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
 					'params'=>array(':minHeight'=>$height[0],
 						':maxHeight'=>$height[1])
@@ -104,7 +104,7 @@ class FenzerController extends MasterMyFileController
 //					));
 
 
-			$productResult = Category::model()->findAll('supplierId = 176 AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
+			$productResult = Category::model()->findAll('supplierId = 1 AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
 			if(count($productResult) > 0)
 			{
 				echo $this->renderPartial('/fenzer/_product_result', array(
@@ -142,7 +142,7 @@ class FenzerController extends MasterMyFileController
 	public function actionShowProductOrder()
 	{
 		$orderModel = new Order();
-		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(176);
+		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$provinceId = $daiibuy->provinceId;
@@ -225,7 +225,7 @@ class FenzerController extends MasterMyFileController
 			$categoryId = $_POST['categoryId'];
 		}
 		if($length==0){
-			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId,$length);
+			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId,$productItems, $provinceId,$length,FALSE);
 		}else{
 		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
 		}

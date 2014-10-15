@@ -772,7 +772,7 @@ class Product extends ProductMaster
 	}
 
 
-	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave=FALSE)
+	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
@@ -780,17 +780,19 @@ class Product extends ProductMaster
 		$res['categoryId'] = $categoryId;
 		$totalPrice = 0.00;
 		unset($productItems['categoryId']);
-		if($isSave){
-			//SAVE NEW ORDER
-			$orderModel = new Order();
-			$orderModel->supplierId = 176;
-			$orderModel->provinceId = $provinceId;
-			$orderModel->type = 1;
-			$orderModel->status = 1;
-			$orderModel->createDateTime = new CDbExpression("NOW()");
-			if($orderModel->save()){
-				$orderId = Yii::app()->db->lastInsertID;
-			}
+		if(isset($isSave)&&$isSave==TRUE){
+				//SAVE NEW ORDER
+				$orderModel = new Order();
+				$orderModel->supplierId = 1;
+				$orderModel->provinceId = $provinceId;
+				$orderModel->type = 1;
+				$orderModel->status = 1;
+				$orderModel->createDateTime = new CDbExpression("NOW()");
+				if($orderModel->save()){
+					$orderId = Yii::app()->db->lastInsertID;
+				}else{
+					throw new Exception(print_r($orderModel->errors, True));
+				}
 		}
 
 		foreach($productItems as $productId=> $qty)
@@ -814,7 +816,7 @@ class Product extends ProductMaster
 				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId)*1;
 			}
 			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
-			if($isSave){
+			if(isset($isSave)&&$isSave==TRUE){
 				$orderItemModel = new OrderItems();
 				$orderItemModel->orderId = $orderId;
 				$orderItemModel->productId = $productId;
@@ -823,12 +825,14 @@ class Product extends ProductMaster
 				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
 				$orderItemModel->total = $res['items'][$productId]['price'];
 				$orderItemModel->createDateTime = new CDbExpression("NOW()");
-				$orderItemModel->save();
+				if(!($orderItemModel->save())){
+					throw new Exception(print_r($orderItemModel->errors, True));
+				}
 			}
 		}
 		$res['totalPrice'] = $totalPrice;
 
-		if($isSave){
+		if(isset($isSave)&&$isSave==TRUE){
 			//SAVE NEW ORDER
 			$orderModel->totalIncVAT = $totalPrice;
 			if($orderModel->save()){
@@ -846,9 +850,13 @@ class Product extends ProductMaster
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
 							$orderDetailValue->value = $item->title=='height'? $height : $length;
 							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
-							$orderDetailValue->save();
+							if(!($orderDetailValue->save())){
+								throw new Exception(print_r($orderDetailValue->errors, True));
+							}
 						}
-					}
+					}else{
+					throw new Exception(print_r($orderDetail->errors, True));
+				}
 				}
 			}
 		return $res;
