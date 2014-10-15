@@ -90,13 +90,12 @@ class OrderDetailTemplate extends OrderDetailTemplateMaster
 		));
 	}
 
-	public function findOrderDetailTemplateBySupplierId($orderDetailTemplateId){
+	public function findOrderDetailTemplateBySupplierId($supplierId){
 		$criteria = new CDbCriteria();
-		$criteria->condition = 'orderDetailTemplateId = '. $orderDetailTemplateId .' AND status = 1';
+		$criteria->condition = 'supplierId = '. $supplierId .' AND status = 1';
 		$res = $this->find($criteria);
 		return $res;
 	}
-
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *

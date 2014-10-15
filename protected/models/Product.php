@@ -820,11 +820,12 @@ class Product extends ProductMaster
 				$orderItemModel = new OrderItems();
 				$orderItemModel->orderId = $orderId;
 				$orderItemModel->productId = $productId;
-				$orderItemModel->title = 'FenzerItem';
+				$orderItemModel->title = substr($product->name, 0, 44);
 				$orderItemModel->price = $res['items'][$productId]['price']/$res['items'][$productId]['quantity'];
 				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
 				$orderItemModel->total = $res['items'][$productId]['price'];
 				$orderItemModel->createDateTime = new CDbExpression("NOW()");
+				$orderItemModel->updateDateTime = new CDbExpression("NOW()");
 				if(!($orderItemModel->save())){
 					throw new Exception(print_r($orderItemModel->errors, True));
 				}
@@ -836,6 +837,7 @@ class Product extends ProductMaster
 			//SAVE NEW ORDER
 			$orderModel->totalIncVAT = $totalPrice;
 			if($orderModel->save()){
+				$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
 				$orderId = Yii::app()->db->lastInsertID;
 				$orderDetail = new OrderDetail();
 				$orderDetail->orderId = $orderId;
