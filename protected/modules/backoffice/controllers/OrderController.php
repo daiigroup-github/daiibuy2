@@ -361,6 +361,124 @@ class OrderController extends MasterBackofficeController
 		));
 	}
 
+	public function actionUserConfirmTransfer($id)
+	{
+		$order = Order::model()->findByPk($id);
+		$orderFile = new OrderFile();
+		if(isset($order))
+		{
+			if(isset($_POST["OrderFile"]))
+			{
+				$flag = TRUE;
+				$transaction = Yii::app()->db->beginTransaction();
+				try
+				{
+					$order->status = 1;
+//$order->updateDateTime = new CDbExpression("NOW()");
+					if(!$order->save())
+					{
+						$flag = FALSE;
+					}
+					else
+					{
+//						$oldFile = OrderFile::model()->findAll("orderId =:orderId AND userType=:userType", array(
+//							":orderId" => $id,
+//							":userType" => isset(Yii::app()->user->userType) ? Yii::app()->user->userType : 0));
+//						if (count($oldFile) > 0) {
+//							foreach ($oldFile as $item) {
+////								$item->status = 0;
+//								$item->save();
+//							}
+//						}
+						$dateNow = new CDbExpression("NOW()");
+						$orderFile->attributes = $_POST["OrderFile"];
+						$orderFile->orderId = $id;
+						$orderFile->senderId = isset(Yii::app()->user->id) ? Yii::app()->user->id : 0;
+						$orderFile->receiverId = -1;
+						$orderFile->userType = isset(Yii::app()->user->userType) ? Yii::app()->user->userType : 0;
+						$orderFile->createDateTime = $dateNow;
+						$image = CUploadedFile::getInstanceByName("OrderFile[filePath]");
+						if(!empty($image))
+						{
+							$ran = rand(0, 999999);
+							$imgType = explode(".", $image->name);
+							$imgType = $imgType[count($imgType) - 1];
+							$imageUrl = "images/orderFile/" . $order->orderId . "/" . time() . '-' . $ran . "." . $imgType;
+							$imagePath = '/../' . $imageUrl;
+							$Img = $imageUrl;
+//throw new Exception(Yii::app()->getBasePath().'/../'."images/userFile/$userId");
+							if(!file_exists(Yii::app()->getBasePath() . '/../' . "images/orderFile/$order->orderId"))
+							{
+								mkdir(Yii::app()->getBasePath() . '/../' . "images/orderFile/$order->orderId", 0777);
+							}
+
+							$image->saveAs(Yii::app()->getBasePath() . $imagePath);
+							$orderFile->filePath = $Img;
+						}
+						else
+						{
+							$orderFile->filePath = null;
+						}
+						if(!$orderFile->save())
+						{
+							$flag = FALSE;
+						}
+					}
+
+					if($flag)
+					{
+						$transaction->commit();
+//Send Request Confirm Email to customer for Comfirm
+						$emailObj = new Email();
+						$sentMail = new EmailSend();
+						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/";
+						$emailObj->Setmail($order->userId, NULL, $order->supplierId, $order->orderId, null, $documentUrl);
+						$sentMail->mailRequestApproveTranferToAdmin($emailObj);
+
+						$this->redirect(array(
+							"index"));
+					}
+					else
+					{
+						$transaction->rollback();
+					}
+				}
+				catch(Exception $exc)
+				{
+					echo $exc->getTraceAsString();
+					$transaction->rollback();
+				}
+			}
+
+			$this->render("_confirm_transfer", array(
+				"orderFileModel"=>$orderFile,
+			));
+		}
+	}
+
+	public function actionAdminDefinePaymentDateTime($id)
+	{
+		$order = Order::model()->findByPk($id);
+		if(isset($order))
+		{
+			$transaction = Yii::app()->db->beginTransaction();
+			try
+			{
+				$order->paymentDateTime = $_POST['paymentDateTime'];
+				if($order->save())
+				{
+					$transaction->commit();
+				}
+			}
+			catch(Exception $exc)
+			{
+				$transaction->rollback();
+				echo $exc->getTraceAsString();
+			}
+			$this->redirect(Yii::app()->createUrl(isset($this->action->controller->module) ? $this->action->controller->module : "" . "/order/adminApproveConfirmTransfer/" . $id));
+		}
+	}
+
 	public function selectPageTitle($model = null)
 	{
 		$user = User::model()->findByPk(Yii::app()->user->id);
@@ -378,7 +496,7 @@ class OrderController extends MasterBackofficeController
 							'defaultStatus'=>'0',
 							'optionButtonText'=>'ยืนยันชำระเงิน',
 							'comfirmText'=>'ต้องการยืนยันโอนเงิน ?',
-							'actionUrl'=>"order/UserConfirmTransfer",
+							'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/UserConfirmTransfer",
 							'description'=>"รอการยืนยันโอนเงินจากลูกค้า"
 						),
 						'1'=>array(
@@ -951,14 +1069,14 @@ class OrderController extends MasterBackofficeController
 							'defaultStatus'=>'1',
 							'optionButtonText'=>'ยืนยันหลักฐานการโอนเงินถูกต้อง',
 							'comfirmText'=>'ต้องการยืนยัน ?',
-							'actionUrl'=>"order/adminDefinePaymentDateTime",
+							'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/adminDefinePaymentDateTime",
 //							'actionUrl'=>"order/adminApproveConfirmTransfer",
 							'optionButtonTextCredit'=>'ยืนยันหลักฐานการโอนเงินถูกต้อง',
 							'comfirmTextCredit'=>'ต้องการยืนยัน ?',
-							'actionUrlCredit'=>"order/adminApproveConfirmTransfer",
+							'actionUrlCredit'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/adminApproveConfirmTransfer",
 							'optionButtonText2'=>'ให้ผู้สั่งซื้อยืนยันโอนเงินอีกครั้ง',
 							'comfirmText2'=>'ต้องการส่งกลับให้ผู้สั่งซื้อยืนยัน ?',
-							'actionUrl2'=>"order/adminRejectConfirmTransfer",
+							'actionUrl2'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/adminRejectConfirmTransfer",
 							'description'=>"ลูกค้ายืนยันการโอนเงินเรียบร้อยแล้ว"
 						),
 						'2'=>array(

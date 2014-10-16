@@ -121,19 +121,29 @@
 				?>
 				<a href="#remarkModal" role="button" class="btn btn-danger icon-remove icon-white" data-toggle="modal">ให้ผู้สั่งซื้อยืนยันโอนเงินอีกครั้ง</a>
 
-				<div id="remarkModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-header">
-						<button type="button" class="close btn-small" data-dismiss="modal" aria-hidden="true">close x</button>
-						<h3 id="myModalLabel">หลักฐานการโอนไม่ผ่านการตรวจสอบ</h3>
-					</div>
-					<div class="modal-body">
-						<label class="control-label">กรุณาระบุเหตุผล : </label>
-						<div class="controls">
-							<textarea id="returnText" rows="4" class="input-xlarge" name="remark"></textarea>
+				<div id="remarkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close btn-xs" data-dismiss="modal" aria-hidden="true">close x</button>
+								<h3 id="myModalLabel" class="modal-title">หลักฐานการโอนไม่ผ่านการตรวจสอบ</h3>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-groupl">
+											<label class="control-label col-sm-3">กรุณาระบุเหตุผล : </label>
+											<div class="controls col-sm-9">
+												<textarea id="returnText" rows="4" class="form-control" name="remark"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-primary" name="action" value="return" >Submit</button>
+							</div>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-primary" name="action" value="return" >Submit</button>
 					</div>
 				</div>
 				<?php

@@ -55,32 +55,32 @@ if(isset(Yii::app()->user->userType))
 					?>
 				</table>
 			</div>
-			<div class="row">
-				<h4>หลักฐานการโอนเงิน ผู้ผลิต/ผู้กระจายสินค้า</h4>
-				<table class="table table-striped table-bordered table-condensed">
-					<thead>
-					<th width="5%">ลำดับ</th>
-					<th>ชื่อไฟล์</th>
-					<th width="15%">เอกสาร</th>
-					</thead>
-					<?php
-					$i = 1;
-					$slipFile = BalanceTransaction::model()->findSlipByOrderId($model->orderId);
-					foreach($slipFile as $slip)
-					{
-						?>
-						<tbody>
-						<td><?php echo $i . ". "; ?></td>
-						<td><?php echo $slip['fileName'] ?></td>
-						<td><?php echo showImage($slip['file'], $slip['fileName']); ?></td>
-						</tbody>
-						</br>
-						<?php
-						$i++;
-					}
-					?>
-				</table>
-			</div>
+			<!--			<div class="row">
+							<h4>หลักฐานการโอนเงิน ผู้ผลิต/ผู้กระจายสินค้า</h4>
+							<table class="table table-striped table-bordered table-condensed">
+								<thead>
+								<th width="5%">ลำดับ</th>
+								<th>ชื่อไฟล์</th>
+								<th width="15%">เอกสาร</th>
+								</thead>
+			<?php
+//					$i = 1;
+//					$slipFile = BalanceTransaction::model()->findSlipByOrderId($model->orderId);
+//					foreach($slipFile as $slip)
+//					{
+			?>
+									<tbody>
+									<td><?php // echo $i . ". ";   ?></td>
+									<td><?php // echo $slip['fileName']   ?></td>
+									<td><?php // echo showImage($slip['file'], $slip['fileName']);   ?></td>
+									</tbody>
+									</br>
+			<?php
+//						$i++;
+//		}
+			?>
+						</table>
+					</div>-->
 			<?php
 		}
 		else if(Yii::app()->user->userType == 2 || Yii::app()->user->userType == 3)
