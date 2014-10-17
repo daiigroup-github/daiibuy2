@@ -71,7 +71,6 @@ class ProductController extends MasterAtechwindowController
     public function actionSearchProductItems()
     {
         if (isset($_POST)) {
-            //sleep(2);
             $res = '';
             $this->writeToFile('/tmp/searchproduct', print_r($_POST, true));
 
@@ -83,15 +82,6 @@ class ProductController extends MasterAtechwindowController
                 'Gray',
             );
 
-            $sizes = array(
-                '2000 x 1000',
-                '2100 x 1200',
-                '2200 x 1400',
-                '2300 x 1600',
-                '2400 x 1800',
-                '2500 x 2000',
-            );
-
             $products = Product::model()->findAll(
                 array(
                     'condition' => 'categoryId=:categoryId AND width=:width AND height=:height',
@@ -99,64 +89,59 @@ class ProductController extends MasterAtechwindowController
                 )
             );
 
-            $items = array();
-
             foreach ($products as $product) {
-                $items[] = array(
-                    'model' => 'Model ',
-                    'code' => strtoupper($product->code),
-                    'name' => $product->name,
-                    'size' => $product->width.' x '.$product->height,
-                    'color' => $colors[rand(0, 4)],
-                    'price' => rand(100, 500),
-                    'qty' => 1,
+               $category2ToProduct = Category2ToProduct::model()->find(array(
+                   'condition'=>'productId=:productId',
+                   'params'=>array(
+                     ':productId'=>$product->productId,
+                   ),
+               ));
 
-                );
-            }
+                $price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
 
-            foreach ($items as $item) {
                 $res .= '<tr>' .
-                    '<td>' . $item['model'] . '</td>' .
-                    '<td>' . $item['code'] . '</td>' .
-                    '<td>' . $item['name'] . '</td>' .
-                    '<td>' . $item['size'] . '</td>' .
-                    '<td>' . $item['color'] . '</td>' .
-                    '<td>' . number_format($item['qty'] * $item['price'], 2) . '</td>' .
+                    '<td>' . $category2ToProduct->brandModel->title . '</td>' .
+                    '<td>' . strtoupper($product->code) . '</td>' .
+                    '<td>' . $product->name . '</td>' .
+                    '<td>' . $product->width.' x '.$product->height . '</td>' .
+                    '<td>' . $colors[rand(0, 4)] . '</td>' .
+                    '<td>' . number_format($price, 2) . '</td>' .
                     '<td>' .
                     '<div class="numeric-input full-width">' .
-                    '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
+                    '<input type="text" value="1" id="'.$product->productId.'" name="qty['.$product->productId.']"/>' .
                     '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
                     '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
                     '</div>' .
                     '</td>' .
-                    '<td><a class="btn btn-info btn-xs addToCart" data-productid="' . $item['code'] . '"><i class="fa fa-shopping-cart"></i></a></td>' .
+                    '<td><a class="btn btn-info btn-xs addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i></a></td>' .
                     '</tr>';
             }
 
-            /**
-             * <?php foreach ($items as $item): ?>
-             * <tr>
-             * <td><?php echo $item['model']; ?></td>
-             * <td><?php echo $item['code']; ?></td>
-             * <td><?php echo $item['name']; ?></td>
-             * <td><?php echo $item['size']; ?></td>
-             * <td><?php echo $item['color']; ?></td>
-             * <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
-             * <td>
-             * <div class="numeric-input full-width">
-             * <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
-             * <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
-             * <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
-             * </div>
-             * </td>
-             * <td class="text-center">
-             * <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i></a>
-             * </td>
-             * </tr>
-             * <?php endforeach; ?>
-             */
-
             echo $res;
         }
+    }
+
+    public function actionAddToCart()
+    {
+        $this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
+
+        $productId = $_POST['productId'];
+        $qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
+
+        $supplier = Supplier::model()->find(array(
+            'condition'=>'url=:url',
+            'params'=>array(':url'=>$this->module->id),
+        ));
+
+        $this->cookie = new DaiiBuy();
+        $this->cookie->loadCookie();
+
+        $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+        $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+
+        $orderModel->totalIncVAT = $orderModel->orderItemsSum;
+        $orderModel->save(false);
+
+        echo CJSON::encode(array('result'=>true));
     }
 }

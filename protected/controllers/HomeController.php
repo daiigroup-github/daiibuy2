@@ -5,12 +5,6 @@ class HomeController extends MasterController
 	public $layout = '//layouts/home';
 	public function actionIndex()
 	{
-		$suppliers = array('atechwindow' => 'Atech Window',
-		                   'fenzer' => 'Fenzer',
-		                   'ginzahome' => 'Ginza Home',
-		                   'madrid' => 'Madrid Bathroom',
-		);
-
         $suppliers = Supplier::model()->findAll('status=1');
         shuffle($suppliers);
 
@@ -43,4 +37,10 @@ class HomeController extends MasterController
 		);
 	}
 	*/
+
+    public function actionUnsetCookie()
+    {
+        $daiibuy = new DaiiBuy();
+        $daiibuy->unsetCookie();
+    }
 }

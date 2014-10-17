@@ -48,6 +48,9 @@ class CategoryController extends MasterGinzahomeController
             ),
         );
 
+        $category = Category::model()->findByPk($id);
+        echo $category->title;
+
         $this->render('index', array('product' => $product));
     }
 

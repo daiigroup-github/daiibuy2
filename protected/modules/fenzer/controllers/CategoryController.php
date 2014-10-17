@@ -49,9 +49,15 @@ class CategoryController extends MasterFenzerController
 
         $categoryModel = Category::model()->findByPk($id);
 
+        $fenzerArray = array();
+        foreach ($categoryModel->fenzerToProductsCategory1 as $f) {
+            $fenzerArray[$f->productId] = $f->product->name;
+        }
+
         $this->render('index', array(
             'product' => $product,
             'categoryModel'=>$categoryModel,
+            'fenzerArray'=>$fenzerArray,
         ));
     }
 

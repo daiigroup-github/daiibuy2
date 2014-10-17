@@ -59,6 +59,8 @@ class Product extends ProductMaster
 	const METRIC_KILOGRAMS = 2;
 	const METRIC_TONS = 3;
 
+    const SPAN_FENZER = 3;
+
 	public $searchText;
 	public $cartTotal;
 

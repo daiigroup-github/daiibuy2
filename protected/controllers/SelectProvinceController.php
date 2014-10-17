@@ -13,7 +13,6 @@ class SelectProvinceController extends MasterController
 			$this->cookie->provinceId = $_POST['provinceId'];
 			$this->cookie->saveCookie();
 
-			//$this->writeToFile('/tmp/selectprovince', print_r($this->cookie, true));
 			echo json_encode($this->cookie);
 		}
 	}

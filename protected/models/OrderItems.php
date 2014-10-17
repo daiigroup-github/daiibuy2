@@ -55,4 +55,40 @@ class OrderItems extends OrderItemsMaster
 	{
 	}
 	 */
+
+    public function saveByOrderIdAndProductId($orderId, $productId, $qty=1)
+    {
+        $daiibuy = new DaiiBuy();
+        $daiibuy->loadCookie();
+
+        $orderItem = $this->find(array(
+            'condition'=>'orderId=:orderId AND productId=:productId',
+            'params'=>array(
+                ':orderId'=>$orderId,
+                ':productId'=>$productId,
+            ),
+        ));
+
+        if(!isset($orderItem)) {
+
+            $this->writeTofile('/tmp/orderitemmodelexist', print_r($orderId, true));
+
+            $orderItem = new OrderItems();
+            $orderItem->orderId = $orderId;
+            $orderItem->productId = $productId;
+            $orderItem->createDateTime = new CDbExpression('NOW()');
+        }
+
+        $orderItem->quantity = $qty;
+        $orderItem->price = (Product::model()->calProductPromotionPrice($productId, $daiibuy->provinceId) == 0) ? Product::model()->calProductPrice($productId, $daiibuy->provinceId) : Product::model()->calProductPromotionPrice($productId, $daiibuy->provinceId);
+        $orderItem->total = $orderItem->quantity*$orderItem->price;
+        $orderItem->updateDateTime = new CDbExpression('NOW()');
+
+        if($orderItem->save(false)) {
+            return true;
+        } else {
+            $this->writeTofile('/tmp/orderitemmodel', print_r($orderItem->errors, true));
+            return false;
+        }
+    }
 }

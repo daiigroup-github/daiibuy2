@@ -51,7 +51,7 @@ $this->breadcrumbs = array(
                     <label for="h" class="col-sm-2 control-label">Height</label>
 
                     <div class="col-sm-9">
-                        <?php echo CHtml::dropDownList('h', '', CHtml::listData($categoryModel->fenzerSubCategorys, 'categoryId', 'title'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Select --')); ?>
+                        <?php echo CHtml::dropDownList('categoryH', '', CHtml::listData($categoryModel->fenzerSubCategorys, 'categoryId', 'title'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Select --')); ?>
                     </div>
                 </div>
 
@@ -207,29 +207,90 @@ $this->breadcrumbs = array(
             'htmlOptions' => array(),
         ));
         ?>
+        <?php
+        /*
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="alert alert-info">
                 <div class="row">
-                    <div class="col-md-5">
-                        <select class="from-control" name="cat1" id="">
-                            <option value="">เสา</option>
-                            <option value="">แผ่น</option>
-                            <option value="">ฐานราก</option>
-                        </select>
+                    <div class="col-md-4">
+                        <?php echo CHtml::dropDownList('productId', '', $fenzerArray, array('class'=>'chosen-select-full-width'));?>
                     </div>
-                    <div class="col-md-5">
-                        <select class="form-control" name="product" id="">
-                            <option value="">product1</option>
-                            <option value="">product2</option>
-                            <option value="">product3</option>
-                        </select>
+
+                    <div class="col-md-4">
+                        <div class="numeric-input full-width">
+                            <input type="text" value="1" class="form-control" name="qty"/>
+                            <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
+                            <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
+                        </div>
                     </div>
-                    <div class="col-md-2">
+
+                    <div class="col-md-4">
                         <?php echo CHtml::ajaxLink('<i class="fa fa-plus"></i> เพิ่มรายการ', $this->createAbsoluteUrl('product/addProductItem'), array(
                             'dataType' => 'html',
                             'method' => 'POST',
-                            'data' => 'js:$("#addProductForm").serialize()',
+                            'data' => 'js:$("#addProductItemForm").serialize()',
                             'success' => 'js:function(data){
+                                $("#productItems").append($(data).hide().fadeIn(1000));
+                                //$("#productItems").append(data);
+                                //$(data).hide().appendTo("#productItems").fadeIn(1000);
+
+                                $(".numeric-input").each(function(){
+		                            var el = $(this);
+		                            numericInput(el);
+	                            });
+
+	                            // Numeric Input
+	                            function numericInput(el){
+		                            var element = el;
+		                            var input = $(element).find("input");
+
+		                            $(element).find(".arrow-up").click(function(){
+			                            var value = parseInt(input.val());
+			                            input.val(value+1);
+		                            });
+
+		                            $(element).find(".arrow-down").click(function(){
+			                            var value = parseInt(input.val());
+
+                                        if(value-1 < 0)
+                                            input.val(0);
+                                        else
+			                            input.val(value-1);
+		                            });
+
+		                            input.keypress(function(e){
+			                            var value = parseInt(String.fromCharCode(e.which));
+			                            if(isNaN(value)){
+				                            e.preventDefault();
+			                            }
+		                            });
+	                            }
+                            }',
+                        ), array(
+                            'class' => 'form-control btn btn-primary',
+                            'id' => 'addProductItem',
+                        ));?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        */
+        ?>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <table class="table table-bordered fenzer-add-items">
+                <tbody id="">
+                <td><?php echo CHtml::dropDownList('productId', '', $fenzerArray, array('class' => 'chosen-select-full-width')); ?></td>
+                <td><div class="numeric-input full-width">
+                        <input type="text" value="1" class="form-control" name="qty"/>
+                        <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
+                        <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
+                    </div></td>
+                <td>
+                    <?php echo CHtml::ajaxLink('<i class="fa fa-plus"></i> เพิ่มรายการ', $this->createAbsoluteUrl('product/addProductItem'), array(
+                        'dataType' => 'html',
+                        'method' => 'POST',
+                        'data' => 'js:$("#addProductItemForm").serialize()',
+                        'success' => 'js:function(data){
                                 $("#productItems").append($(data).hide().fadeIn(1000));
                                 //$("#productItems").append(data);
                                 //$(data).hide().appendTo("#productItems").fadeIn(1000);
@@ -266,13 +327,13 @@ $this->breadcrumbs = array(
 		                            });
 	                            }
                             }',
-                        ), array(
-                            'class' => 'form-control btn btn-default',
-                            'id' => 'addProductItem',
-                        ));?>
-                    </div>
-                </div>
-            </div>
+                    ), array(
+                        'class' => 'form-control btn btn-primary',
+                        'id' => 'addProductItem',
+                    ));?>
+                </td>
+                </tbody>
+            </table>
         </div>
         <?php $this->endWidget(); ?>
 
@@ -281,8 +342,8 @@ $this->breadcrumbs = array(
             <div class="product-actions">
 		        <span class="add-to-cart" id="addToCartFenzer">
                     <span class="action-wrapper">
-					    <i class="fa fa-money"></i>
-						<span class="action-name">Check out</span>
+					    <i class="fa fa-shopping-cart"></i>
+						<span class="action-name">Add To Cart</span>
 					</span>
 				</span>
             </div>

@@ -14,7 +14,7 @@ table.fenzer-items td:nth-child(3), table.fenzer-items td:nth-child(5) {
 table.fenzer-items td:nth-child(4) {
     width: 120px;
 }
-table.fenzer-items tr td {
+table.fenzer-items tr td, table.fenzer-add-items tr td {
     vertical-align: middle;
 }
 

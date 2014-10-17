@@ -65,8 +65,9 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 					<?php echo isset($title) ? $title : "" ?>
 				</div>
 			</div>
-			<div class="row img img-rounded" style="border: 2px solid">
+			<div class="row">
 				<div class="col-md-12">
+                    <div style="border:1px solid;">
 					<div class="row">
 						<div class="col-md-12" style="font-size:small;">
 							สาขา_____________วันที่____________
@@ -103,6 +104,7 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 							<b><?php echo str_replace("-", "", $model->telephone); ?></b>
 						</div>
 					</div>
+                    </div>
 				</div>
 			</div>
 		</div>

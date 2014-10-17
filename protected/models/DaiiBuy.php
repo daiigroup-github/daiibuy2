@@ -17,6 +17,7 @@ class DaiiBuy extends CFormModel
     public $provinceId;
     public $cart = array();
     public $order = array();
+    public $token;
 
     /**
      * Declares the validation rules.
@@ -50,7 +51,7 @@ class DaiiBuy extends CFormModel
         if (isset(Yii::app()->request->cookies['daiibuy'])) {
             $daiibuy = json_decode(Yii::app()->request->cookies['daiibuy'], true);
             $handle = fopen('/tmp/loadCookie', 'w+');
-            fwrite($handle, print_r($daiibuy['provinceId'], true));
+            fwrite($handle, print_r($daiibuy, true));
             fclose($handle);
             $this->amphurId = $daiibuy['amphurId'];
             $this->cart = $daiibuy['cart'];
@@ -69,6 +70,8 @@ class DaiiBuy extends CFormModel
                 $this->cartRowTotal = $cart['cartRowTotal'];
             }
             */
+
+            $this->token = $daiibuy['token'];
         }
         //return array('cartTotal'=>$cartTotal, 'cartItems'=>$cartItems);
     }
@@ -84,6 +87,7 @@ class DaiiBuy extends CFormModel
         $daiibuy['usedPoint'] = $this->usedPoint;
         $daiibuy['discount'] = $this->discount;
         $daiibuy['provinceId'] = $this->provinceId;
+        $daiibuy['token'] = isset($this->token) ? $this->token : md5(uniqid(time(), true));
 
         $cookie = new CHttpCookie('daiibuy', json_encode($daiibuy));
         $cookie->expire = time() + (60 * 60 * 24);

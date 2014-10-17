@@ -4,7 +4,6 @@ class DefaultController extends MasterMadridController
 {
     public function actionIndex()
     {
-        echo $this->module->id;
         $this->sideBarCategories = array(
             'title' => 'Madrid Categories',
             'items' => array(

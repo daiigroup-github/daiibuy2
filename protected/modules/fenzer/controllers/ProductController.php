@@ -75,51 +75,14 @@ class ProductController extends MasterFenzerController
 
             $this->writeToFile('/tmp/showItems', print_r($_POST, true));
 
-            $items = array();
+            $category2Model = Category::model()->findByPk($_POST['categoryH']);
+            $length = $_POST['l'];
+            $noSpan = ceil($length / Product::SPAN_FENZER);
 
-            for ($i = 0; $i < 6; $i++) {
-                $items[$i] = array(
-                    'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
-                    'name' => 'Fenzer ' . $i,
-                    'price' => rand(100, 500),
-                    'qty' => rand(1, 100),
-                );
+            foreach ($category2Model->fenzerToProducts as $fenzerProduct) {
+                $qty = ($fenzerProduct->type == 1) ? $fenzerProduct->quantity * $noSpan : $fenzerProduct->quantity * ($noSpan + 1);
+                $res .= $this->generateTrByProductId($fenzerProduct->productId, $qty);
             }
-
-            foreach ($items as $item) {
-                $res .= '<tr>' .
-                    '<td>' . $item['code'] . '</td>' .
-                    '<td>' . $item['name'] . '</td>' .
-                    '<td>' . number_format($item['price'], 2) . '</td>' .
-                    '<td>' .
-                    '<div class="numeric-input full-width">' .
-                    '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
-                    '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
-                    '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
-                    '</div>' .
-                    '</td>' .
-                    '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
-                    '<td><a class="btn btn-danger btn-xs removeProductItem"><i class="fa fa-ban"></i></a></td>' .
-                    '</tr>';
-            }
-            /*
-            <tr>
-                <td><?php echo $item['code']; ?></td>
-                <td><?php echo $item['name']; ?></td>
-                <td><?php echo number_format($item['price'], 2); ?></td>
-                <td>
-                    <div class="numeric-input full-width">
-                        <input type="text" value="<?php echo $item['qty']; ?>" name="l"/>
-                        <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
-                        <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
-                    </div>
-                </td>
-                <td><?php echo number_format($item['price'] * $item['qty'], 2); ?></td>
-                <td class="text-center">
-                    <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i></a>
-                </td>
-            </tr>
-            */
 
             echo $res;
         }
@@ -128,38 +91,78 @@ class ProductController extends MasterFenzerController
     public function actionAddProductItem()
     {
         if (isset($_POST)) {
-            $item = array(
-                'code' => strtoupper(substr(md5(uniqid()), 0, 8)),
-                'name' => 'Fenzer ' . rand(10,99),
-                'price' => rand(100, 500),
-                'qty' => rand(1, 100),
-            );
-
-            $res = '<tr>' .
-                '<td>' . $item['code'] . '</td>' .
-                '<td>' . $item['name'] . '</td>' .
-                '<td>' . number_format($item['price'], 2) . '</td>' .
-                '<td>' .
-                '<div class="numeric-input full-width">' .
-                '<input type="text" value="' . $item['qty'] . '" name="l"/>' .
-                '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
-                '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
-                '</div>' .
-                '</td>' .
-                '<td>' . number_format($item['qty']*$item['price'], 2) . '</td>' .
-                '<td><a class="btn btn-danger btn-xs" id="removeProductItem"><i class="fa fa-ban"></i></a></td>' .
-                '</tr>';
-
-            echo $res;
+            $this->writeToFile('/tmp/fenzerAddItems', print_r($_POST, true));
+            echo $this->generateTrByProductId($_POST['productId'], $_POST['qty']);
         }
+    }
+
+    /**
+     * Generate TR by productId
+     */
+    private function generateTrByProductId($productId, $qty = 1)
+    {
+        $product = Product::model()->findByPk($productId);
+
+        $price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
+
+        return '<tr>' .
+        '<td>' . $product->code . '</td>' .
+        '<td>' . $product->name . '</td>' .
+        '<td>' . number_format($product->calProductPrice(), 2) . '</td>' .
+        '<td>' .
+        '<div class="numeric-input full-width">' .
+        '<input type="text" value="' . $qty . '" name="qty[' . $product->productId . ']"/>' .
+        '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
+        '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
+        '</div>' .
+        '</td>' .
+        '<td>' . number_format($qty * $price, 2) . '</td>' .
+        '<td><a class="btn btn-danger btn-xs removeProductItem"><i class="fa fa-ban"></i></a></td>' .
+        '</tr>';
     }
 
     public function actionAddToCart()
     {
         $this->writeToFile('/tmp/addToCartFenzer', print_r($_POST, true));
-        $res = array();
-        $res['result'] = true;
 
-        echo CJSON::encode($res);
+        $res = array();
+        $supplier = Supplier::model()->find(array(
+            'condition' => 'url=:url',
+            'params' => array(':url' => $this->module->id),
+        ));
+
+        $this->cookie = new DaiiBuy();
+        $this->cookie->loadCookie();
+
+        $flag = false;
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            //code here
+            $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+
+            $i = 0;
+            foreach ($_POST['qty'] as $productId => $qty) {
+                $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+                $i++;
+            }
+
+            if ($i == sizeof($_POST['qty'])) $flag = true;
+
+            if ($flag) {
+                $orderModel->totalIncVAT = $orderModel->orderItemsSum;
+                $orderModel->save(false);
+
+                $transaction->commit();
+
+            } else {
+                $transaction->rolback();
+            }
+
+            $res['result'] = $flag;
+            echo CJSON::encode($res);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+            $transaction->rollback();
+        }
     }
 }

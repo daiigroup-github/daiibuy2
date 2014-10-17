@@ -45,6 +45,18 @@ class Category extends CategoryMaster
             ),
             'atechwindowWidth' => array(self::HAS_MANY, 'Product', 'categoryId', 'group' => 'width', 'order' => 'width'),
             'atechwindowHeight' => array(self::HAS_MANY, 'Product', 'categoryId', 'group' => 'height', 'order' => 'height'),
+            'fenzerToProducts' => array(
+                self::HAS_MANY,
+                'Category2ToProduct',
+                'category2Id',
+                'order'=>'sortOrder'
+            ),
+            'fenzerToProductsCategory1'=>array(
+                self::HAS_MANY,
+                'Category2ToProduct',
+                'category1Id',
+                'order'=>'sortOrder'
+            ),
 //				'brandModel'=>array(
 //					self::BELONGS_TO,
 //					'BrandModel',

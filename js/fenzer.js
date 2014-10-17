@@ -19,12 +19,11 @@ $('#addToCartFenzer').live('click', function() {
 			type: 'POST',
 			url: baseUrl + 'fenzer/product/addToCart',
 			dataType: 'json',
-			data: $('#productItemsForm').serialize()
-		}).done(function(data) {
-			alert(data.result);
-			/**
-			 * redirect to cart url
-			 */
+			data: $('#productItemsForm').serialize(),
+            success: function (data) {
+                //alert success message
+                alert(data.result);
+            }
 		});
 	}
 });

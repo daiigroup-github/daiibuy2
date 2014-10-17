@@ -26,6 +26,9 @@ class Order extends OrderMaster
 	public $marginToDaii;
 	public $sumMarginDealer;
 
+    const ORDER_TYPE_MYFILE = 1;
+    const ORDER_TYPE_CART = 2;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -70,6 +73,12 @@ class Order extends OrderMaster
 					'District',
 					array(
 						'shippingDistrictId'=>'districtId'),),
+            'orderItemsSum'=>array(
+                self::STAT,
+                'OrderItems',
+                'orderId',
+                'select'=>'sum(total)'
+            ),
 		));
 	}
 
@@ -765,4 +774,31 @@ class Order extends OrderMaster
 		));
 	}
 
+    /**
+     * Front
+     */
+    public function findByTokenAndSupplierId($token, $supplierId)
+    {
+        $daiibuy = new DaiiBuy();
+        $daiibuy->loadCookie();
+
+        $model = $this->find(array(
+            'condition'=>'token=:token AND supplierId=:supplierId',
+            'params' => array(
+                ':token'=>$token,
+                ':supplierId'=>$supplierId,
+            ),
+        ));
+
+        if(!isset($model)) {
+            $model = new Order();
+            $model->token = $token;
+            $model->supplierId = $supplierId;
+            $model->provinceId = $daiibuy->provinceId;
+            $model->type = self::ORDER_TYPE_CART;
+            $model->createDateTime = $model->updateDateTime = new CDbExpression('NOW()');
+            $model->save(false);
+        }
+        return $model;
+    }
 }

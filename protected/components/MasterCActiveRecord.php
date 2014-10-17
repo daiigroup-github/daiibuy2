@@ -16,4 +16,11 @@ class MasterCActiveRecord extends CActiveRecord {
 		return $this->statusArray[$status];
 	}
 
+    public function writeToFile($filePath, $string, $mode='w+')
+    {
+        $handle = fopen($filePath, $mode);
+        fwrite($handle, $string);
+        fclose($handle);
+    }
+
 }

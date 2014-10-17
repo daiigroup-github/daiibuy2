@@ -16,7 +16,8 @@ $('.add-to-cart').click(function () {
         data: data,
         success: function (data) {
             //alert success message
-        },
+            alert(data.result);
+        }
     });
 })
 ;

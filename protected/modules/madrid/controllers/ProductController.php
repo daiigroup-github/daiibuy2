@@ -96,9 +96,23 @@ class ProductController extends MasterMadridController
     {
         $this->writeToFile('/tmp/madridProduct', print_r($_POST, true));
 
-        $productId = $_POST['productId'];
+        $productId = $_POST['id'];
         $qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
 
-        $model = Product::model()->findByPk($productId);
+        $supplier = Supplier::model()->find(array(
+            'condition'=>'url=:url',
+            'params'=>array(':url'=>$this->module->id),
+        ));
+
+        $this->cookie = new DaiiBuy();
+        $this->cookie->loadCookie();
+
+        $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+        $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+
+        $orderModel->totalIncVAT = $orderModel->orderItemsSum;
+        $orderModel->save(false);
+
+        return CJSON::encode(array('result'=>OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId)));
     }
 }
