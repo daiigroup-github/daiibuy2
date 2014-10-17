@@ -39,7 +39,7 @@
 		}
 		else
 		{
-			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
+			echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 					"id"=>$model->orderId)), array(
 				'class'=>'btn btn-warning',
 				'target'=>'_blank',));
@@ -119,7 +119,45 @@
 			if($model->status == 1 && $user->type == 5)
 			{
 				?>
-				<a href="#remarkModal" role="button" class="btn btn-danger icon-remove icon-white" data-toggle="modal">ให้ผู้สั่งซื้อยืนยันโอนเงินอีกครั้ง</a>
+				<a href="#approveModal" role="button" class="btn btn-success fa fa-check icon-white" data-toggle="modal">ยืนยันหลักฐานการโอนเงินถูกต้อง</a>
+
+				<div id="approveModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close btn-xs" data-dismiss="modal" aria-hidden="true">close x</button>
+								<h3 id="myModalLabel" class="modal-title">หลักฐานการโอนถูกต้อง</h3>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="form-group">
+											<label class="control-label col-sm-5">กรุณาระบุวันที่ชำระเงิน : </label>
+											<div class="controls col-sm-7">
+												<?php
+												$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+													'name'=>'paymentDateTime',
+													// additional javascript options for the date picker plugin
+													'options'=>array(
+														'showAnim'=>'slide', //'slide','fold','slideDown','fadeIn','blind','bounce','clip','drop'
+													),
+													'htmlOptions'=>array(
+														'class'=>'form-control',
+													),
+												));
+												?>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-primary" name="action" value="approve" >Submit</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="#remarkModal" role="button" class="btn btn-danger fa fa-remove icon-white" data-toggle="modal">ให้ผู้สั่งซื้อยืนยันโอนเงินอีกครั้ง</a>
 
 				<div id="remarkModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
@@ -131,7 +169,7 @@
 							<div class="modal-body">
 								<div class="row">
 									<div class="col-sm-12">
-										<div class="form-groupl">
+										<div class="form-group">
 											<label class="control-label col-sm-3">กรุณาระบุเหตุผล : </label>
 											<div class="controls col-sm-9">
 												<textarea id="returnText" rows="4" class="form-control" name="remark"></textarea>

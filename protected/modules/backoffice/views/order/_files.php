@@ -4,7 +4,7 @@ if(isset(Yii::app()->user->userType))
 	$i = 0;
 	if(count($model->orderFiles) > 0)
 	{
-		if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5)
+		if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5 || Yii::app()->user->userType == 1)
 		{
 			?>
 			<div class="form-group">
@@ -14,7 +14,7 @@ if(isset(Yii::app()->user->userType))
 					<th width="5%">ลำดับ</th>
 					<th>ชื่อไฟล์</th>
 					<th width="15%">ประเภทผู้ใช้งาน</th>
-					<th width="15%">เอกสาร</th>
+					<th width="5%">เอกสาร</th>
 					<th width="10%">วันที่สร้าง</th>
 					</thead>
 					<?php
@@ -45,8 +45,8 @@ if(isset(Yii::app()->user->userType))
 						<td><?php echo $i . ". "; ?></td>
 						<td><?php echo $file->fileName; ?></td>
 						<td><?php echo!empty($userType) ? $userType : ""; ?></td>
-						<td><?php echo showImage($file->filePath, $file->fileName); ?></td>
-						<td><?php echo $file->createDateTime; ?></td>
+						<td class="text-center"><?php echo showImage($file->filePath, $file->fileName); ?></td>
+						<td><?php echo $this->dateThai($file->createDateTime, 2, TRUE); ?></td>
 						</tbody>
 						<br/>
 						<?php
@@ -70,9 +70,9 @@ if(isset(Yii::app()->user->userType))
 //					{
 			?>
 									<tbody>
-									<td><?php // echo $i . ". ";   ?></td>
-									<td><?php // echo $slip['fileName']   ?></td>
-									<td><?php // echo showImage($slip['file'], $slip['fileName']);   ?></td>
+									<td><?php // echo $i . ". ";                 ?></td>
+									<td><?php // echo $slip['fileName']                 ?></td>
+									<td><?php // echo showImage($slip['file'], $slip['fileName']);                 ?></td>
 									</tbody>
 									</br>
 			<?php
@@ -122,8 +122,10 @@ if(isset(Yii::app()->user->userType))
 					<?php
 				}
 			}
-			$slipFile = BalanceTransaction::model()->findSlipByOrderId($model->orderId);
-			if(count($slipFile) > 0)
+//Comment By Tong when i'm confuse why shwo this
+//			$slipFile = BalanceTransaction::model()->findSlipByOrderId($model->orderId);
+//			if(count($slipFile) > 0)
+			if(1 == 0)
 			{
 				?>
 				<div class="form-group">

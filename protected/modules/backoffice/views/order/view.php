@@ -140,13 +140,13 @@ function showImage($imageUrl, $title)
 		if(strpos($imageUrl, ".pdf"))
 		{
 			$imageUrl = Yii::app()->baseUrl . "/" . $imageUrl;
-			$image = "<a class='pdf' Title='$title' href='$imageUrl'>ดูเอกสาร</a>";
+			$image = "<a class='pdf' Title='$title' href='$imageUrl'>ดู</a>";
 		}
 		else
 		{
 			$imageUrl = Yii::app()->baseUrl . "/" . $imageUrl;
 			//$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'><img src='$imageUrl' width='50px' alt='' /></a>";
-			$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'>ดูเอกสาร</a>";
+			$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'>ดู</a>";
 		}
 	}
 	return $image;
@@ -164,14 +164,14 @@ function getOrderPaymentAddress($model)
 
 function getOrderSupplierBillingAddress($model, $isFull = false)
 {
-	$supplierAddr = $model->supplier->billingAddress;
+	$supplierAddr = $model->supplier;
 	if($isFull)
 	{
-		return "<p> บริษัท " . $supplierAddr->company . "</p>" . "<p>" . isset($supplierAddr->address_1) ? $supplierAddr->address_1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->telephone : $supplierAddr->address_2 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
+		return "<p> บริษัท " . $supplierAddr->companyName . "</p>" . "<p>" . isset($supplierAddr->address1) ? $supplierAddr->address1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplierAddr->address2 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
 	}
 	else
 	{
-		return "<h4>" . $supplierAddr->company . "</h4>" . $supplierAddr->address_1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode;
+		return "<h4>" . $supplierAddr->companyName . "</h4>" . $supplierAddr->address1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode;
 	}
 }
 ?>

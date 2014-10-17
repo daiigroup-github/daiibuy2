@@ -26,8 +26,8 @@ class Order extends OrderMaster
 	public $marginToDaii;
 	public $sumMarginDealer;
 
-    const ORDER_TYPE_MYFILE = 1;
-    const ORDER_TYPE_CART = 2;
+	const ORDER_TYPE_MYFILE = 1;
+	const ORDER_TYPE_CART = 2;
 
 	/**
 	 * @return string the associated database table name
@@ -73,12 +73,12 @@ class Order extends OrderMaster
 					'District',
 					array(
 						'shippingDistrictId'=>'districtId'),),
-            'orderItemsSum'=>array(
-                self::STAT,
-                'OrderItems',
-                'orderId',
-                'select'=>'sum(total)'
-            ),
+				'orderItemsSum'=>array(
+					self::STAT,
+					'OrderItems',
+					'orderId',
+					'select'=>'sum(total)'
+				),
 		));
 	}
 
@@ -136,14 +136,14 @@ class Order extends OrderMaster
 	{
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
-		$supplierUser = User::model()->findByPk($model->supplierId);
+		$supplierUser = Supplier::model()->findByPk($model->supplierId);
 
 		$criteria = new CDbCriteria;
 
 		$criteria->select = 'max(RIGHT(invoiceNo,6)) as maxCode';
 //		if(isset($supplierUser->redirectURL))
 //		{
-		$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->userId . ' AND paymentMethod = ' . $model->paymentMethod;
+		$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->supplierId . ' AND paymentMethod = ' . $model->paymentMethod;
 //		}
 //		else
 //		{
@@ -223,7 +223,7 @@ class Order extends OrderMaster
 	public function findAllSupplierOrder()
 	{
 		$criteria = new CDbCriteria();
-		$criteria->compare("supplierId", Yii::app()->user->id);
+		$criteria->compare("supplierId", Yii::app()->user->supplierId);
 		$criteria->compare('invoiceNo', $this->invoiceNo, true);
 		$criteria->compare('orderNo', $this->orderNo, true);
 		$criteria->compare('firstname', $this->firstname, true);
@@ -519,7 +519,7 @@ class Order extends OrderMaster
 	public function getCollectedOrder($userId)
 	{
 		$value = Configuration::model()->getOrderExpiredDate();
-		$orders = Order::model()->findAll('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND userId = ' . $userId);
+		$orders = Order::model()->findAll('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND status > 1 AND userId = ' . $userId);
 		$res = 0.00;
 		foreach($orders as $order)
 		{
@@ -774,31 +774,33 @@ class Order extends OrderMaster
 		));
 	}
 
-    /**
-     * Front
-     */
-    public function findByTokenAndSupplierId($token, $supplierId)
-    {
-        $daiibuy = new DaiiBuy();
-        $daiibuy->loadCookie();
+	/**
+	 * Front
+	 */
+	public function findByTokenAndSupplierId($token, $supplierId)
+	{
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
 
-        $model = $this->find(array(
-            'condition'=>'token=:token AND supplierId=:supplierId',
-            'params' => array(
-                ':token'=>$token,
-                ':supplierId'=>$supplierId,
-            ),
-        ));
+		$model = $this->find(array(
+			'condition'=>'token=:token AND supplierId=:supplierId',
+			'params'=>array(
+				':token'=>$token,
+				':supplierId'=>$supplierId,
+			),
+		));
 
-        if(!isset($model)) {
-            $model = new Order();
-            $model->token = $token;
-            $model->supplierId = $supplierId;
-            $model->provinceId = $daiibuy->provinceId;
-            $model->type = self::ORDER_TYPE_CART;
-            $model->createDateTime = $model->updateDateTime = new CDbExpression('NOW()');
-            $model->save(false);
-        }
-        return $model;
-    }
+		if(!isset($model))
+		{
+			$model = new Order();
+			$model->token = $token;
+			$model->supplierId = $supplierId;
+			$model->provinceId = $daiibuy->provinceId;
+			$model->type = self::ORDER_TYPE_CART;
+			$model->createDateTime = $model->updateDateTime = new CDbExpression('NOW()');
+			$model->save(false);
+		}
+		return $model;
+	}
+
 }

@@ -34,6 +34,7 @@
  * @property string $shippingPostCode
  * @property integer $usedPoint
  * @property integer $isSentToCustomer
+ * @property string $remark
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -69,10 +70,10 @@ class OrderMaster extends MasterCActiveRecord
 			array('firstname, lastname, email, token, title, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
 			array('total, totalIncVAT', 'length', 'max'=>15),
 			array('paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
-			array('paymentDateTime, shippingAddress1, shippingAddress2, updateDateTime', 'safe'),
+			array('paymentDateTime, shippingAddress1, shippingAddress2, remark, updateDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderId, userId, supplierId, provinceId, orderNo, invoiceNo, firstname, lastname, email, telephone, token, title, type, total, totalIncVAT, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentPostcode, paymentMethod, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderId, userId, supplierId, provinceId, orderNo, invoiceNo, firstname, lastname, email, telephone, token, title, type, total, totalIncVAT, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentPostcode, paymentMethod, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -127,6 +128,7 @@ class OrderMaster extends MasterCActiveRecord
 			'shippingPostCode' => 'Shipping Post Code',
 			'usedPoint' => 'Used Point',
 			'isSentToCustomer' => 'Is Sent To Customer',
+			'remark' => 'Remark',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -183,6 +185,7 @@ class OrderMaster extends MasterCActiveRecord
 			$this->shippingPostCode = $this->searchText;
 			$this->usedPoint = $this->searchText;
 			$this->isSentToCustomer = $this->searchText;
+			$this->remark = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -218,6 +221,7 @@ class OrderMaster extends MasterCActiveRecord
 		$criteria->compare('shippingPostCode',$this->shippingPostCode,true, 'OR');
 		$criteria->compare('usedPoint',$this->usedPoint);
 		$criteria->compare('isSentToCustomer',$this->isSentToCustomer);
+		$criteria->compare('remark',$this->remark,true, 'OR');
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
