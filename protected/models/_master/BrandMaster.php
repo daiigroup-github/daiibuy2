@@ -13,10 +13,14 @@
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
+ *
+ * The followings are the available model relations:
+ * @property BrandImage[] $brandImages
+ * @property BrandModel[] $brandModels
+ * @property Category2ToProduct[] $category2ToProducts
  */
 class BrandMaster extends MasterCActiveRecord
 {
-
 	/**
 	 * @return string the associated database table name
 	 */
@@ -33,34 +37,15 @@ class BrandMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array(
-				'supplierId, title, createDateTime, updateDateTime',
-				'required'),
-			array(
-				'sortOrder, status',
-				'numerical',
-				'integerOnly'=>true),
-			array(
-				'supplierId',
-				'length',
-				'max'=>20),
-			array(
-				'title',
-				'length',
-				'max'=>200),
-			array(
-				'image',
-				'length',
-				'max'=>255),
-			array(
-				'description',
-				'safe'),
+			array('supplierId, title, createDateTime, updateDateTime', 'required'),
+			array('sortOrder, status', 'numerical', 'integerOnly'=>true),
+			array('supplierId', 'length', 'max'=>20),
+			array('title', 'length', 'max'=>200),
+			array('image', 'length', 'max'=>255),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array(
-				'brandId, supplierId, title, description, image, sortOrder, status, createDateTime, updateDateTime, searchText',
-				'safe',
-				'on'=>'search'),
+			array('brandId, supplierId, title, description, image, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,7 +57,10 @@ class BrandMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			);
+			'brandImages' => array(self::HAS_MANY, 'BrandImage', 'brandId'),
+			'brandModels' => array(self::HAS_MANY, 'BrandModel', 'brandId'),
+			'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'brandId'),
+		);
 	}
 
 	/**
@@ -81,15 +69,15 @@ class BrandMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'brandId'=>'Brand',
-			'supplierId'=>'Supplier',
-			'title'=>'Title',
-			'description'=>'Description',
-			'image'=>'Image',
-			'sortOrder'=>'Sort Order',
-			'status'=>'Status',
-			'createDateTime'=>'Create Date Time',
-			'updateDateTime'=>'Update Date Time',
+			'brandId' => 'Brand',
+			'supplierId' => 'Supplier',
+			'title' => 'Title',
+			'description' => 'Description',
+			'image' => 'Image',
+			'sortOrder' => 'Sort Order',
+			'status' => 'Status',
+			'createDateTime' => 'Create Date Time',
+			'updateDateTime' => 'Update Date Time',
 		);
 	}
 
@@ -109,7 +97,7 @@ class BrandMaster extends MasterCActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria = new CDbCriteria;
+		$criteria=new CDbCriteria;
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
@@ -124,15 +112,15 @@ class BrandMaster extends MasterCActiveRecord
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('brandId', $this->brandId, true, 'OR');
-		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
-		$criteria->compare('title', $this->title, true, 'OR');
-		$criteria->compare('description', $this->description, true, 'OR');
-		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+		$criteria->compare('brandId',$this->brandId,true, 'OR');
+		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
+		$criteria->compare('title',$this->title,true, 'OR');
+		$criteria->compare('description',$this->description,true, 'OR');
+		$criteria->compare('image',$this->image,true, 'OR');
+		$criteria->compare('sortOrder',$this->sortOrder);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
+		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -145,9 +133,8 @@ class BrandMaster extends MasterCActiveRecord
 	 * @param string $className active record class name.
 	 * @return BrandMaster the static model class
 	 */
-	public static function model($className = __CLASS__)
+	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
 }

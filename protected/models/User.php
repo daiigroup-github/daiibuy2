@@ -277,16 +277,21 @@ class User extends UserMaster
 	public function findAllSupplierArray($returnEmail = false)
 	{
 		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->join = " LEFT JOIN user_to_supplier uts ON uts.userId = t.userId ";
+		$criteria->condition = " t.status =1 AND t.type = 3 AND t.userId not in (select b.userId from user_to_supplier b)";
+		$model = $this->findAll($criteria);
+//		throw new Exception(sizeof($model));
 		if(!$returnEmail)
 		{
-			foreach($this->findAll('status = 1 and type = 3') as $item)
+			foreach($model as $item)
 			{
 				$result[$item->userId] = User::model()->showUserCompany($item->userId);
 			}
 		}
 		else
 		{
-			foreach($this->findAll('status = 1 and type = 3') as $item)
+			foreach($model as $item)
 			{
 				$result[$item->userId] = $item->email;
 			}

@@ -58,7 +58,7 @@ class Email
 	public function Setmail($userId = null, $dealerId = null, $supplierId = null, $orderId = null, $productId = null, $documentUrl = null, $remark = null)
 	{
 		$this->userId = $userId;
-		$this->dealerId = $dealerId;
+//		$this->dealerId = $dealerId;
 		$this->supplierId = $supplierId;
 		$this->orderId = $orderId;
 		$this->productId = $productId;

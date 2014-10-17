@@ -77,7 +77,8 @@ class Category2ToProduct extends Category2ToProductMaster
 		}
 
 		$criteria->compare('id', $this->id, true, 'OR');
-		$criteria->compare('categoryId', $this->categoryId, true, 'OR');
+		$criteria->compare('category2Id', $this->category2Id);
+		$criteria->compare('category1Id', $this->category1Id);
 		$criteria->compare('productId', $this->productId, true, 'OR');
 		$criteria->compare('groupName', $this->groupName, true, 'OR');
 		$criteria->compare('quantity', $this->quantity);
@@ -92,6 +93,15 @@ class Category2ToProduct extends Category2ToProductMaster
 				'defaultOrder'=>'sortOrder ASC'
 			)
 		));
+	}
+
+	public function findProductType($categoryId,$productId=NULL){
+		if(isset($productId)){
+			$cate = $this->find('category2Id = '. $categoryId . ' AND productId = '. $productId.' AND status=1');
+		}else{
+		$cate = $this->find('category2Id = '. $categoryId . ' AND status=1');
+	}
+		return $cate->type;
 	}
 
 }

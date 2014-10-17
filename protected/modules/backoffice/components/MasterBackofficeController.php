@@ -596,8 +596,8 @@ class MasterBackofficeController extends MasterController
 			}
 			else if($user->type == 3)
 			{
-				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
-				return $sup->supplierId;
+//				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
+				return User::model()->getSupplierId(Yii::app()->user->id);
 			}
 		}
 		else

@@ -62,7 +62,7 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('provinceId, paymentMethod, createDateTime', 'required'),
+			array('provinceId, createDateTime', 'required'),
 			array('type, paymentMethod, usedPoint, isSentToCustomer, status', 'numerical', 'integerOnly'=>true),
 			array('userId, supplierId, provinceId, invoiceNo, telephone', 'length', 'max'=>20),
 			array('orderNo', 'length', 'max'=>45),
