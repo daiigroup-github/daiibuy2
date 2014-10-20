@@ -169,7 +169,7 @@ class FenzerController extends MasterMyFileController
 		{
 			$length = 0;
 		}
-		$itemSetArray = Product::model()->calculateItemSetFenzer($productCate2->categoryId, $length, $provinceId);
+		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
 
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
@@ -288,4 +288,79 @@ class FenzerController extends MasterMyFileController
 	  );
 	  }
 	 */
+
+	public function actionViews($id){
+		$this->layout = '//layouts/cl1';
+
+		$model = Order::model()->findByPk($id);
+
+		$productItems = $this->prepareProductItems($model);
+
+		if(isset($_POST['Order']))
+		{
+			$model->attributes = $_POST['Order'];
+			$orderModel->type = 1;
+			$orderModel->status = 1;
+
+			if($model->save())
+			{
+				$this->redirect(array(
+					'index'
+				));
+			}
+		}
+		else
+		{
+			$this->render('view', array(
+				'model'=>$model,
+				'productItems'=>$productItems,
+			));
+		}
+	}
+
+	public function findLengthHeigtByOrderId($orderId){
+		$res = array();
+
+		return $res;
+	}
+
+	public function prepareProductItems($model){
+		$res = array();
+		$orderItems = $model->orderItems;
+		$provinceId = $model->provinceId;
+		$totalPrice = 0.00;
+		$result = $this->findLengthHeigtByOrderId($model->orderId);
+		$res['height'] = $result['height'];
+		$res['length'] = $result['length'];
+
+		foreach($orderItems as $item){
+			$productId = $item->productId;
+			$product = Product::model()->findByPk($productId);
+
+			//product
+			$res['items'][$productId] = $product;
+
+			//quantity
+			$res['items'][$productId]['quantity'] = intval($item->quantity);
+//			print_r($qty);
+
+			//price
+			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$productId));
+			if(isset($productPromotion)){
+				//promotion price
+				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId)*1;
+			}else{
+				//normal price
+				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'] ,$provinceId)*1;
+			}
+			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
+			$categoryId = $product->categoryId;
+		}
+		$res['totalPrice'] = $totalPrice;
+		$res['orderId'] = $model->orderId;
+		$res['categoryId'] = $categoryId;
+
+		return $res;
+	}
 }

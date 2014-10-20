@@ -42,6 +42,12 @@ $(document).ready(function() {
 	$('#backToStep2').on('click', function(e) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	});
+	$('#backToStep3').on('click', function(e) {
+		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+	});
+	$('#addToCart').on('click', function(e) {
+		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+	});
 	$('#nextToStep4').on('click', function(e) {
 
 		//save order
@@ -55,6 +61,7 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
 			success: function(data) {
+				alert('success');
 				$("#confirm_content").html(data);
 			}
 		});

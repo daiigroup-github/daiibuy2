@@ -782,6 +782,8 @@ class Product extends ProductMaster
 		if(isset($isSave)&&$isSave==TRUE){
 				//SAVE NEW ORDER
 				$orderModel = new Order();
+				$orderModel->userId = isset(Yii::app()->user->id)? Yii::app()->user->id:0;
+				$orderModel->title = $category->title;
 				$orderModel->supplierId = 1;
 				$orderModel->provinceId = $provinceId;
 				$orderModel->type = 1;
@@ -831,15 +833,16 @@ class Product extends ProductMaster
 			}
 		}
 		$res['totalPrice'] = $totalPrice;
+		$res['orderId'] = $orderId;
 
 		if(isset($isSave)&&$isSave==TRUE){
 			//SAVE NEW ORDER
 			$orderModel->totalIncVAT = $totalPrice;
+			$orderModel->total = $totalPrice/1.07;
 			if($orderModel->save()){
-				$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
-				$orderId = Yii::app()->db->lastInsertID;
 				$orderDetail = new OrderDetail();
 				$orderDetail->orderId = $orderId;
+				$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
 				$orderDetail->orderDetailTemplateId = $orderDetailTemplate->orderDetailTemplateId;
 				$orderDetail->createDateTime = new CDbExpression("NOW()");
 					if($orderDetail->save()){
@@ -849,7 +852,7 @@ class Product extends ProductMaster
 							$orderDetailValue = new OrderDetailValue();
 							$orderDetailValue->orderDetailId = $orderDetailId;
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-							$orderDetailValue->value = $item->title=='height'? $height : $length;
+							$orderDetailValue->value = $item->title=='height'? $height : ('length'? $length : $categoryId);
 							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
 							if(!($orderDetailValue->save())){
 								throw new Exception(print_r($orderDetailValue->errors, True));

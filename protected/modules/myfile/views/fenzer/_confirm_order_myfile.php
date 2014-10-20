@@ -1,8 +1,8 @@
 <?php
 
 ?>
-<div id="confirm_content" class="content-result">
-				<div class="row" >
+<div class="content-result">
+	<div class="row" id="order" name="<?php echo $productResult['orderId']; ?>">
 					<div class="col-xs-12">
 						<form id="editTableForm">
 						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php echo $productResult['categoryId']; ?>">
@@ -15,7 +15,6 @@
 								<th>ราคา/หน่วย</th>
 								<th>ราคา(บาท)</th>
 								<th class="edit-table-price">ประเมิณราคา/เมตร(ไม่รวมเข็ม)</th>
-								<th>Action</th>
 								</tr>
 							</thead>
 							<tbody >
@@ -24,11 +23,10 @@
 				<td><?php echo $item->code; ?></td>
 				<td><?php echo $item->name; ?></td>
 				<td><?php echo $item->productUnits; ?></td>
-				<td><?php echo CHtml::textField('productItems['.$item->productId.'][quantity]', $item->quantity,array('class'=>'edit-table-qty-input')); ?></td>
+				<td name="<?php echo 'productItems['.$item->productId.'][quantity]'; ?>"><?php echo $item->quantity; ?></td>
 				<td><?php echo FenzerController::formatMoney($item->price/intval($item->quantity),true); ?></td>
 				<td><?php echo FenzerController::formatMoney($item->price,true); ?></td>
 				<td><?php echo FenzerController::formatMoney(($item->price/$item->quantity)/3,true); ?></td>
-				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>
 		<?php endforeach; ?>
 

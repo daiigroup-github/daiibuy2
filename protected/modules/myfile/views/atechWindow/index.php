@@ -22,8 +22,8 @@ $this->breadcrumbs = array(
 </div>
 <div class="row">
 	<ul class="nav nav-tabs" role="tablist">
-		<li class="active green"><a href="#"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
-		<li class="orange"><a href="#"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
+		<li class="active green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/index"; ?>"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
+		<li class="orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/create"; ?>"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
 	</ul>
 	<?php $i = 0; ?>
 	<?php foreach($suppliers as $key=> $value): ?>

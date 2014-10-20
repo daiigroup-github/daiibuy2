@@ -53,86 +53,6 @@ $this->breadcrumbs = array(
             </ul>
         </div>
 	</div>
-
-	<!--STEP 1 Select Province-->
-    <div class="row setup-content" id="step-1">
-        <div class="col-xs-12">
-            <div class="col-md-12 well text-center">
-				<div class="row">
-					<div class="col-md-6 col-md-offset-3">
-						<div class="page-header select-province">
-							<h1>เลือกจังหวัด</h1><small> กรุณาเลือกจังหวัดที่ท่านต้องการสั่งซื้อสินค้า.</small>
-						</div>
-						<div>
-							<?php
-							echo CHtml::dropDownList('provinceId', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
-								'class'=>'form-control',
-								'id'=>'selectProvince',
-								'prompt'=>'--กรุณาเลือกจังหวัด--',
-							));
-							?>
-						</div>
-					</div>
-				</div>
-				<div class="row wizard-control">
-					<div class="pull-right">
-						<button id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!--STEP 2 Select Height-->
-	<div class="row setup-content" id="step-2">
-		<div class="col-xs-12">
-            <div class="col-md-12 well text-left">
-				<div class="row">
-					<div class="page-header myfile-fenzer-header" >
-						<h1>เลือกความสูง(เมตร)</h1><small> กรุณาเลือกช่วงความสูงของรั้วที่ท่านต้องการ.</small>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-3">
-						<div>
-							<?php
-							echo CHtml::dropDownList("OrderDetailValue[height]", '', $heightArray, array(
-								'class'=>'form-control',
-								'id'=>'selectHeight',
-								'prompt'=>'--กรุณาเลือกความสูง--',
-								'ajax'=>array(
-									'type'=>'POST',
-									'url'=>CController::createUrl('fenzer/showFenzerProductResultByHeight'), //url to call.
-//									'update'=>'#height_content', //selector to update
-									'dataType'=>'html',
-									'data'=>array(
-										"height"=>"js:this.value"),
-									'success'=>'js:function(data){
-										$("#height_content").html(data);
-									}',
-								),
-							));
-							?>
-						</div>
-					</div>
-					<div class="col-md-9" id="height_content">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12" id="select_content">
-					</div>
-				</div>
-				<div class="row wizard-control">
-					<div class="pull-left">
-						<button id="backToStep1" class="btn btn-primary btn-lg">ย้อนกลับ</button>
-					</div>
-					<div class="pull-right">
-						<button id="nextToStep3" class="btn btn-primary btn-lg">ต่อไป</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-12">
             <div class="col-md-12 well text-center">
@@ -142,7 +62,7 @@ $this->breadcrumbs = array(
 				<div class="row">
 					<div class="col-md-6">
 						Height : <?php
-						echo CHtml::textField('height', '', array(
+						echo CHtml::textField('height', $height, array(
 							'id'=>'height_input',
 							'class'=>'input-lg',
 							'disabled'=>true,));
@@ -151,7 +71,7 @@ $this->breadcrumbs = array(
 					</div>
 					<div class="col-md-6 pull-left">
 						Length : <?php
-						echo CHtml::textField('length', '', array(
+						echo CHtml::textField('length', $length, array(
 							'id'=>'length_input',
 							'class'=>'input-lg',
 						));
@@ -163,9 +83,6 @@ $this->breadcrumbs = array(
 
 				</div>
 				<div class="row wizard-control">
-					<div class="pull-left" >
-						<button id="backToStep2" class="btn btn-primary btn-lg">ย้อนกลับ</button>
-					</div>
 					<div class="col-lg-10 text-center">
 						<button id="calculatePrice" class="btn btn-warning btn-lg">อัพเดทราคา</button>
 					</div>
