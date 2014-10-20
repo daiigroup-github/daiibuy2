@@ -22,10 +22,10 @@ $this->breadcrumbs = array(
 	$model->orderId,
 );
 
-$supplier = user::model()->findByPk($model->supplierId);
+$supplier = Supplier::model()->findByPk($model->supplierId);
 //$dealer = user::model()->findByPk($model->dealerId);
-$supplierAddr = Address::model()->find("userId=:userId", array(
-	":userId"=>$model->supplierId));
+//$supplierAddr = Address::model()->find("userId=:userId", array(
+//	":userId"=>$model->supplierId));
 //$dealerAddr = Address::model()->find("userId=:userId", array(
 //	":userId"=>$model->dealerId));
 //$daiiAddr = Address::model()->findByPk(1);
@@ -164,14 +164,14 @@ function getOrderPaymentAddress($model)
 
 function getOrderSupplierBillingAddress($model, $isFull = false)
 {
-	$supplierAddr = $model->supplier;
+	$supplier = $model->supplier;
 	if($isFull)
 	{
-		return "<p> บริษัท " . $supplierAddr->companyName . "</p>" . "<p>" . isset($supplierAddr->address1) ? $supplierAddr->address1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplierAddr->address2 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
+		return "<p> บริษัท " . $supplier->companyName . "</p>" . "<p>" . isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
 	}
 	else
 	{
-		return "<h4>" . $supplierAddr->companyName . "</h4>" . $supplierAddr->address1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode;
+		return "<h4>" . $supplier->companyName . "</h4>" . $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode;
 	}
 }
 ?>

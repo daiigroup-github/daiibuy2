@@ -68,6 +68,59 @@ class User extends UserMaster
 	 * {
 	 * }
 	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->firstname = $this->searchText;
+			$this->lastname = $this->searchText;
+			$this->email = $this->searchText;
+			$this->telephone = $this->searchText;
+			$this->fax = $this->searchText;
+			$this->approved = $this->searchText;
+			$this->type = $this->searchText;
+			$this->taxNumber = $this->searchText;
+			$this->status = $this->searchText;
+			$this->createDateTime = $this->searchText;
+		}
+
+		$criteria->compare('userId', $this->userId, true, 'OR');
+		$criteria->compare('firstname', $this->firstname, true, 'OR');
+		$criteria->compare('lastname', $this->lastname, true, 'OR');
+		$criteria->compare('email', $this->email, true, 'OR');
+		$criteria->compare('telephone', $this->telephone, true, 'OR');
+		$criteria->compare('fax', $this->fax, true, 'OR');
+		$criteria->compare('password', $this->password, true, 'OR');
+		$criteria->compare('cart', $this->cart, true, 'OR');
+		$criteria->compare('wishlist', $this->wishlist, true, 'OR');
+		$criteria->compare('newsletter', $this->newsletter);
+		$criteria->compare('ip', $this->ip, true, 'OR');
+		$criteria->compare('approved', $this->approved);
+		$criteria->compare('token', $this->token, true, 'OR');
+		$criteria->compare('type', $this->type);
+		$criteria->compare('isFirstLogin', $this->isFirstLogin);
+		$criteria->compare('description', $this->description, true, 'OR');
+		$criteria->compare('logo', $this->logo, true, 'OR');
+		$criteria->compare('map', $this->map, true, 'OR');
+		$criteria->compare('minimumOrder', $this->minimumOrder, true, 'OR');
+		$criteria->compare('referenceId', $this->referenceId, true, 'OR');
+		$criteria->compare('collectedPoint', $this->collectedPoint);
+		$criteria->compare('collectedOrder', $this->collectedOrder);
+		$criteria->compare('redirectURL', $this->redirectURL, true, 'OR');
+		$criteria->compare('taxNumber', $this->taxNumber, true, 'OR');
+		$criteria->compare('parentId', $this->parentId, true, 'OR');
+		$criteria->compare('status', $this->status);
+		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
 	public function getAllUserType()
 	{
 		$result = array(
