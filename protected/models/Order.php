@@ -19,7 +19,6 @@
 class Order extends OrderMaster
 {
 
-	public $maxCode;
 	public $searchText;
 	public $orderError;
 	public $marginToDealer;
@@ -294,20 +293,6 @@ class Order extends OrderMaster
 		return $margin;
 	}
 
-//	public function getSupplierMarginToDaiiBuy()
-//	{
-//		$totals = Yii::app()->db->createCommand()
-//			->select('value as daiiMargin')
-//			->from('order t')
-//			->join('order_items op', 't.orderId = op.orderId')
-//			->join('user_certificate_file ucf', 'op.marginId = ucf.id')
-//			->where('t.orderId=:id', array(
-//				':id'=>$this->orderId))
-//			->group('t.orderId')
-//			->queryRow();
-//		return $totals;
-//	}
-
 	public function getCollectedOrderView($userId)
 	{
 		$value = Configuration::model()->getOrderExpiredDate();
@@ -318,12 +303,6 @@ class Order extends OrderMaster
 			$res = $res + $order->total;
 		}
 
-//		$res = Yii::app()->db->createCommand()
-//				->select('sum(total) as collectedOrder')
-//				->from('order')
-//				->where('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND userId = ' . $userId . ' AND isChangeToReward = 0')
-//				->queryRow();
-//		return $res['collectedOrder'] == null ? 0 : $res['collectedOrder'];
 		return $res;
 	}
 
@@ -339,12 +318,6 @@ class Order extends OrderMaster
 			//$order->save();
 		}
 
-//		$res = Yii::app()->db->createCommand()
-//				->select('sum(total) as collectedOrder')
-//				->from('order')
-//				->where('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND userId = ' . $userId . ' AND isChangeToReward = 0')
-//				->queryRow();
-//		return $res['collectedOrder'] == null ? 0 : $res['collectedOrder'];
 		return $res;
 	}
 

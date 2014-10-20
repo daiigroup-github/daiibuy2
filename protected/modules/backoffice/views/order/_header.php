@@ -6,11 +6,11 @@
 			$user = User::model()->findByPk(Yii::app()->user->id);
 		}
 		$urlLogo = Yii::app()->baseUrl . "/images/daii_logo.png";
-		if($model->status < 3 || Yii::app()->controller->action->id == "viewOrder")
+		if($model->status < 4 || Yii::app()->controller->action->id == "viewOrder")
 		{
 			if(isset(Yii::app()->user->id))
 			{
-				if($user->type == 3 && $model->status <> 2)
+				if($user->type == 3 && $model->status <> 3)
 				{
 					if(isset($supplier->logo) && !empty($supplier->logo))
 					{
@@ -84,7 +84,7 @@
 		<?php
 		if(isset(Yii::app()->user->id))
 		{
-			if(($model->status < 3 && ($user->type != 2 && $user->type != 3)) && !isset($supplier->redirectURL))
+			if(($model->status < 4 && ($user->type != 2 && $user->type != 3)) && !isset($supplier->redirectURL))
 			{
 				?>
 				<br>
@@ -117,7 +117,7 @@
 	$numberOfTax = Configuration::model()->getTaxNumber();
 	if(isset($user))
 	{
-		if($model->status != 2 && ($user->type != 4 || $user->type != 2 ))
+		if($model->status != 3 && ($user->type != 4 || $user->type != 2 ))
 		{
 			?>
 			<div class="col-md-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $numberOfTax; ?>
