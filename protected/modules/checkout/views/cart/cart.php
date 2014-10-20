@@ -24,12 +24,12 @@ $this->breadcrumbs = array(
 </div>
 
 <?php
-foreach ($carts as $cart) {
-    $this->renderPartial('_order_info', array('cart' => $cart));
+foreach ($orders as $order) {
+    $this->renderPartial('_order_info', array('order' => $order));
 }
 ?>
 
-<?php $this->renderPartial('_order_info_summary', array('cart' => $cart)); ?>
+<?php $this->renderPartial('_order_info_summary', array('orderSummary' => $orderSummary)); ?>
 
 <p class="pull-right">
     <a class="button big orange" href="#"><i class="icons icon-reply"></i>Continue Shopping</a>

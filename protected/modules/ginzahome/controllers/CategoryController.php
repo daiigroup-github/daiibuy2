@@ -3,6 +3,7 @@
 class CategoryController extends MasterGinzahomeController
 {
     public $layout = '//layouts/cl1';
+
     public function actionIndex($id)
     {
         $images = [];
@@ -48,10 +49,18 @@ class CategoryController extends MasterGinzahomeController
             ),
         );
 
-        $category = Category::model()->findByPk($id);
-        echo $category->title;
+        $brandModel = BrandModel::model()->findByPk($id);
+        foreach ($brandModel->categorys as $category) {
+            echo $category->title . ' ' . $category->categoryId . '<br />';
 
-        $this->render('index', array('product' => $product));
+            foreach ($category->subCategorys as $sub) {
+                echo $sub->title . ' ' . $sub->categoryId . '<br />';
+                echo Product::model()->ginzaPriceByCategory1IdAndCategory2Id($category->categoryId, $sub->categoryId);
+                echo '<hr />';
+            }
+        }
+
+        $this->render('index', array('brandModel' => $brandModel));
     }
 
     // Uncomment the following methods and override them if needed

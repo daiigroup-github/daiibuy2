@@ -2,7 +2,7 @@
 
 class CartController extends MasterCheckoutController
 {
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $carts = array(
             array(
@@ -189,6 +189,50 @@ class CartController extends MasterCheckoutController
                 ),
             ),
         );
-        $this->render('cart', array('carts' => $carts));
+        $daiibuy = new DaiiBuy();
+        $daiibuy->loadCookie();
+
+        $orders = array();
+
+        if (isset(Yii::app()->user->id)) {
+            $orders = Order::model()->findAll(array(
+                'condition' => 'type&3 > 0 AND userId=:userId AND supplierId=:supplierId',
+                'params' => array(
+                    ':userId' => Yii::app()->user->id,
+                    ':supplierId' => $id,
+                ),
+            ));
+        } else {
+            $orders = Order::model()->findAll(array(
+                'condition' => 'type&3 > 0 AND token=:token AND supplierId=:supplierId',
+                'params' => array(
+                    ':token' => $daiibuy->token,
+                    ':supplierId' => $id,
+                ),
+            ));
+        }
+
+        $this->render('cart', array(
+            'orders' => $orders,
+            'orderSummary' => Order::model()->sumOrderTotalBySupplierId($id)
+        ));
+    }
+
+    public function actionUpdateCart(){
+        if(isset($_POST['qty'])){
+            $res = [];
+
+            foreach ($_POST['qty'] as $orderItemsId => $qty) {
+               $orderItem = OrderItems::model()->findByPk($orderItemsId);
+
+                if($orderItem->quantity == $qty) {
+                    continue;
+                } else {
+                    $orderItem->quantity = $qty;
+                    $orderItem->save();
+                }
+            }
+
+        }
     }
 }

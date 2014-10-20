@@ -10,7 +10,7 @@ $this->breadcrumbs = array(
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         <div class="carousel-heading">
-            <h4><?php echo $product['title']; ?></h4>
+            <h4><?php echo $brandModel->title; ?></h4>
         </div>
 
     </div>
@@ -20,6 +20,32 @@ $this->breadcrumbs = array(
 <div class="page-content">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
+
+            <?php foreach ($brandModel->categorys as $category):?>
+                <div class="page-header"><h1><?php echo $category->title;?> :: Spec.</h1></div>
+
+                <table class="table table-bordered text-center ginzahome-compare">
+                    <tr>
+                        <td>Type</td>
+                        <?php foreach($category->subCategorys as $subCategory):?>
+                        <td><?php echo $subCategory->title;?></td>
+                        <?php endforeach;?>
+                    </tr>
+
+                    <tr>
+                        <td>ราคา</td>
+
+                        <?php foreach($category->subCategorys as $subCategory):?>
+                        <td>
+                            <span class="price">
+                                <?php echo Product::model()->ginzaPriceByCategory1IdAndCategory2Id($category->categoryId, $subCategory->categoryId);;?>
+                            </span><br />
+                            <a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/id/'.$category->categoryId.'/'.$subCategory->categoryId);?>">เลือก</a>
+                        </td>
+                        <?php endforeach;?>
+                    </tr>
+                </table>
+            <?php endforeach;?>
 
             <div class="page-header"><h1>Ginza 188 :: Spec.</h1></div>
 

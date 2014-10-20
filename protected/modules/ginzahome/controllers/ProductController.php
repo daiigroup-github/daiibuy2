@@ -2,7 +2,12 @@
 
 class ProductController extends MasterGinzahomeController
 {
-    public function actionIndex($id)
+    /**
+     * @param $id = categoryId
+     * @param $id2 = subCategoryId
+     * @throws CException
+     */
+    public function actionIndex($id,$id2)
     {
         $images = [];
         foreach ($this->scanDir(Yii::app()->basePath . '/../images/ginzahome') as $k => $image) {
