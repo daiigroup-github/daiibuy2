@@ -331,7 +331,7 @@ class OrderGroup extends OrderGroupMaster
 				return isset($user) ? ($user->type == 1 ? "การสั่งซื้อสินค้าสมบูรณ์" : "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" ) : "การสั่งซื้อสินค้าสมบูรณ์";
 				break;
 			case 4:
-				return "Supplier กำลังจัดส่งสินค้า";
+				return "ผู้ผลิตกำลังจัดส่งสินค้า";
 				break;
 		}
 	}
