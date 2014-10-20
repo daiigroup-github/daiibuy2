@@ -8,7 +8,7 @@
 				{
 					if(!($user->type == 2))
 					{
-						if(($user->type == 1 && $model->status == 0) || ($user->type == 4 && $model->status == 0) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && $model->status == 2 && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 2))
+						if(($user->type == 1 && $model->status == 1) || ($user->type == 4 && $model->status == 1) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && $model->status == 3 && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
 						{
 							?>
 							<td style="width:7%;text-align: center">ลำดับ</td>
@@ -61,17 +61,16 @@
 		</thead>
 		<tbody style="font-size:small">
 			<?php
-			if(count($model->orderItems) > 0)
+			if(count($model->orders) > 0)
 			{
 				$i = 1;
-				$today = date("Y-m-d");
 				$priceTotalTemp = 0.00;
 				$priceTotalDouble = 0.00;
 				if(isset(Yii::app()->user->id))
 				{
 					$userType = Yii::app()->user->userType;
 				}
-				if((!isset(Yii::app()->user->id)) || ((($userType == 0 || $userType == 1 || $userType == 5) && $model->status > 1) && !(Yii::app()->controller->action->id == "printProductList")))
+				if((!isset(Yii::app()->user->id)) || ((($userType == 0 || $userType == 1 || $userType == 5) && $model->status > 2) && !(Yii::app()->controller->action->id == "printProductList")))
 				{
 					?>
 					<tr>
@@ -87,101 +86,67 @@
 				}
 				else
 				{
-					foreach($model->orderItems as $item)
+					foreach($model->orders as $order)
 					{
-//								$isPromotion = isset(Product::model()->findByPk($item->productId)->productPromotion);
-//								$productTemp = Product::model()->findByPk($item->productId);
-//								if (isset($userType) && $userType <> 1 && ($userType <> 5 && $model->status < 2 )) {
-//									if ($isPromotion) {
-//										if ($isPromotion && $productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today) {
-//											$priceTotalTemp = Product::model()->calProductPromotionTotalPriceMargin($item->productId, $item->quantity, $model->amphurId, $model);
-//											$pricePerUnit = number_format(Product::model()->calProductPromotionPriceMargin($item->productId, $model->amphurId, $model), 2, ".", ",");
-//										} else {
-//											$priceTotalTemp = Product::model()->calProductTotalPriceMargin($item->productId, $item->quantity, $model->amphurId, $model);
-//											$pricePerUnit = number_format(Product::model()->calProductPriceMargin($item->productId, $model->amphurId, $model), 2, ".", ",");
-//										}
-//									} else {
-//                                                                            if ($isPromotion) {
-//                                                                                    $priceTotalTemp = Product::model()->calProductPromotionTotalPrice($item->productId, $item->quantity, $model->amphurId, $model);
-//                                                                                    $pricePerUnit = number_format(Product::model()->calProductPromotionPrice($item->productId, $model->amphurId, $model), 2, ".", ",");
-//                                                                                }else{
-//                                                                                   $priceTotalTemp = Product::model()->calProductTotalPrice($item->productId, $item->quantity, $model->amphurId, $model);
-//                                                                                   $pricePerUnit = number_format(Product::model()->calProductPrice($item->productId, $model->amphurId, $model), 2, ".", ",");
-//                                                                            }
-//                                                                             $priceTotal = number_format($priceTotalTemp, 2, ".", ",");
-//                                                                             $priceTotalDouble = $priceTotalDouble + $priceTotalTemp;
-//                                                                        }
-//								} else {
-//									if ($isPromotion && $productTemp->productPromotion->dateStart <= $today && $productTemp->productPromotion->dateEnd >= $today) {
-//										$priceTotalTemp = Product::model()->calProductPromotionTotalPrice($item->productId, $item->quantity, $model->amphurId);
-//										$pricePerUnit = number_format(Product::model()->calProductPromotionPrice($item->productId, $model->amphurId), 2, ".", ",");
-//									} else {
-//										if (isset($userType) && $userType <> 1 && ($userType <> 5 && $model->status <> 1)) {
-//											$priceTotalTemp = Product::model()->calProductTotalPriceMargin($item->productId, $item->quantity, $model->amphurId, $model);
-//											$pricePerUnit = number_format(Product::model()->calProductPriceMargin($item->productId, $model->amphurId, $model), 2, ".", ",");
-//										} else {
-//											$priceTotalTemp = Product::model()->calProductTotalPrice($item->productId, $item->quantity, $model->amphurId);
-//											$pricePerUnit = number_format(Product::model()->calProductPrice($item->productId, $model->amphurId), 2, ".", ",");
-//										}
-//									}
-//									$priceTotal = number_format($priceTotalTemp, 2, ".", ",");
-//									$priceTotalDouble = $priceTotalDouble + $priceTotalTemp;
-//								}
 						?>
-						<tr>
-							<td style="text-align: center"><?php echo $i; ?></td>
-							<td style="text-align: center"><?php echo isset($item->product->code) ? $item->product->code : ""; ?></td>
-							<td><?php echo $item->product->name; ?></td>
-							<?php
-							$priceTotal = number_format($priceTotalTemp, 2, ".", ",");
+						<?php if(isset($order->title) && !empty($order->title)): ?><tr><td colspan="7"><?php echo $order->title; ?></td></tr><?php endif; ?>
+						<?php
+						foreach($order->orderItems as $item)
+						{
+							?>
+							<tr>
+								<td style="text-align: center"><?php echo $i; ?></td>
+								<td style="text-align: center"><?php echo isset($item->product->code) ? $item->product->code : ""; ?></td>
+								<td><?php echo $item->product->name; ?></td>
+								<?php
+								$priceTotal = number_format($priceTotalTemp, 2, ".", ",");
 //                                                                        $priceTotalDouble = floor($priceTotalDouble);
-
-							if(isset(Yii::app()->user->id))
-							{
-								if(($model->status == 99) || ($model->status == 0) || (!($user->type == 2) && !(Yii::app()->controller->action->id == "print") && !($user->type == 3)) || ($user->type == 3 && $model->status == 2 && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 2))
+								if(isset(Yii::app()->user->id))
 								{
-									if(($model->status == 99) || ($model->status == 0) || ($user->type == 4 && $model->status == 0) || ((!(($user->type == 5) && $model->status > 2))) || (($user->type == 5 || $user->type == 4) && $model->status >= 2) || ($user->type == 3 && $model->status == 2))
+									if(($model->status == 99) || ($model->status == 1) || (!($user->type == 2) && !(Yii::app()->controller->action->id == "print") && !($user->type == 3)) || ($user->type == 3 && $model->status == 3 && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
 									{
-										?>
-										<td style="text-align: center"><?php echo $item->quantity; ?></td>
-										<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-										<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
-										<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
-										<?php
+										if(($model->status == 99) || ($model->status == 1) || ($user->type == 4 && $model->status == 1) || ((!(($user->type == 5) && $model->status > 3))) || (($user->type == 5 || $user->type == 4) && $model->status >= 3) || ($user->type == 3 && $model->status == 3))
+										{
+											?>
+											<td style="text-align: center"><?php echo $item->quantity; ?></td>
+											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+											<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+											<?php
+										}
+										else
+										{
+											?>
+											<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
+											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right"><?php echo number_format($item->price * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
+											<td style="text-align: right"><?php echo number_format($item->total * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
+											<?php
+										}
 									}
 									else
 									{
 										?>
 										<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
 										<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-										<td style="text-align: right"><?php echo number_format($item->price * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
-										<td style="text-align: right"><?php echo number_format($item->total * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
 										<?php
 									}
 								}
 								else
 								{
 									?>
-									<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
+									<td style="text-align: center"><?php echo $item->quantity; ?></td>
 									<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-					<!--											<td style="text-align: right"><?php // echo $pricePerUnit;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ?></td>
-									<td style="text-align: right"><?php // echo $priceTotal;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ?></td>-->
+									<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+									<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
 									<?php
 								}
-							}
-							else
-							{
 								?>
-								<td style="text-align: center"><?php echo $item->quantity; ?></td>
-								<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-								<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
-								<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
-							<?php }
-							?>
-						</tr>
-						<?php
-						$i++;
-						$priceTotalDouble = $priceTotalDouble + $item->total;
+							</tr>
+							<?php
+							$i++;
+							$priceTotalDouble = $priceTotalDouble + $item->total;
+						}
 					}
 				}
 			}
@@ -191,7 +156,7 @@
 			<?php
 			if(isset(Yii::app()->user->id))
 			{
-				if((!(Yii::app()->controller->action->id == "print") && ($user->type == 3)) || !($user->type == 3 && $model->status >= 2))
+				if((!(Yii::app()->controller->action->id == "print") && ($user->type == 3)) || !($user->type == 3 && $model->status >= 3))
 				{
 					?>
 
@@ -226,7 +191,7 @@
 					<?php
 //									}
 				}
-				else if(!($user->type == 3 && $model->status == 2))
+				else if(!($user->type == 3 && $model->status == 3))
 				{
 					?>
 
@@ -237,7 +202,7 @@
 					<tr>
 						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Total excluded VAT</td>
 						<td style="text-align: right"><?php echo number_format(($model->total * (100 + $margin['daiiMargin']) / 100), 2, ".", ",");
-					?></td>
+			?></td>
 					</tr>
 					<tr>
 						<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
@@ -257,14 +222,14 @@
 				<tr>
 					<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Total excluded VAT</td>
 					<td style="text-align: right"><?php echo number_format($model->total, 2, ".", ",");
-				?></td>
+			?></td>
 				</tr>
 				<tr>
 					<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
 					<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 				</tr>
 				<?php
-				if(!($model->status == 0 || $model->status == 1 || $model->status == 2 || $model->status == 99 ) || ($model->status == 2 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
+				if(!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
 				{
 					if(isset(Yii::app()->user->id))
 					{
@@ -334,7 +299,7 @@
 				}
 				if(isset($user))
 				{
-					if(!($model->status == 0 || $model->status == 1 || $model->status == 98 || $model->status == 99))
+					if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99))
 					{
 						echo "
 									<tr>
@@ -344,7 +309,7 @@
 					</tr>";
 					}
 				}
-				else if($model->status > 1 && $model->status < 99)
+				else if($model->status > 2 && $model->status < 99)
 				{
 					echo "<tr><td colspan = '6'>&nbsp;</td></tr>
 						<tr>
@@ -358,7 +323,7 @@
 		</tfoot>
 	</table>
 	<?php
-	if($model->isSentToCustomer == 1 && ($user->type == 3) && $model->status != 2)
+	if($model->isSentToCustomer == 1 && ($user->type == 3) && $model->status != 3)
 	{
 		?>
 		<div class="row-fluid" style="margin-top: 10px">

@@ -1,37 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "order".
+ * This is the model class for table "user_reward".
  *
- * The followings are the available columns in table 'order':
- * @property string $orderId
+ * The followings are the available columns in table 'user_reward':
+ * @property string $userRewardId
  * @property string $userId
- * @property string $supplierId
- * @property string $provinceId
- * @property string $token
- * @property string $title
- * @property integer $type
- * @property string $total
- * @property string $totalIncVAT
- * @property string $remark
+ * @property string $orderId
+ * @property string $description
+ * @property integer $points
+ * @property integer $remainingPoints
  * @property integer $status
+ * @property string $expiredDate
  * @property string $createDateTime
  * @property string $updateDateTime
- *
- * The followings are the available model relations:
- * @property Supplier $supplier
- * @property OrderFile[] $orderFiles
- * @property OrderGroupToOrder[] $orderGroupToOrders
- * @property OrderItems[] $orderItems
  */
-class OrderMaster extends MasterCActiveRecord
+class UserRewardMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'order';
+		return 'user_reward';
 	}
 
 	/**
@@ -42,15 +33,13 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('provinceId, createDateTime', 'required'),
-			array('type, status', 'numerical', 'integerOnly'=>true),
-			array('userId, supplierId, provinceId', 'length', 'max'=>20),
-			array('token, title', 'length', 'max'=>200),
-			array('total, totalIncVAT', 'length', 'max'=>15),
-			array('remark, updateDateTime', 'safe'),
+			array('userId, orderId, points, remainingPoints, expiredDate, updateDateTime', 'required'),
+			array('points, remainingPoints, status', 'numerical', 'integerOnly'=>true),
+			array('userId, orderId', 'length', 'max'=>20),
+			array('description, createDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderId, userId, supplierId, provinceId, token, title, type, total, totalIncVAT, remark, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('userRewardId, userId, orderId, description, points, remainingPoints, status, expiredDate, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,10 +51,6 @@ class OrderMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
-			'orderFiles' => array(self::HAS_MANY, 'OrderFile', 'orderId'),
-			'orderGroupToOrders' => array(self::HAS_MANY, 'OrderGroupToOrder', 'orderId'),
-			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'orderId'),
 		);
 	}
 
@@ -75,17 +60,14 @@ class OrderMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'orderId' => 'Order',
+			'userRewardId' => 'User Reward',
 			'userId' => 'User',
-			'supplierId' => 'Supplier',
-			'provinceId' => 'Province',
-			'token' => 'Token',
-			'title' => 'Title',
-			'type' => 'Type',
-			'total' => 'Total',
-			'totalIncVAT' => 'Total Inc Vat',
-			'remark' => 'Remark',
+			'orderId' => 'Order',
+			'description' => 'Description',
+			'points' => 'Points',
+			'remainingPoints' => 'Remaining Points',
 			'status' => 'Status',
+			'expiredDate' => 'Expired Date',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
 		);
@@ -111,32 +93,26 @@ class OrderMaster extends MasterCActiveRecord
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->orderId = $this->searchText;
+			$this->userRewardId = $this->searchText;
 			$this->userId = $this->searchText;
-			$this->supplierId = $this->searchText;
-			$this->provinceId = $this->searchText;
-			$this->token = $this->searchText;
-			$this->title = $this->searchText;
-			$this->type = $this->searchText;
-			$this->total = $this->searchText;
-			$this->totalIncVAT = $this->searchText;
-			$this->remark = $this->searchText;
+			$this->orderId = $this->searchText;
+			$this->description = $this->searchText;
+			$this->points = $this->searchText;
+			$this->remainingPoints = $this->searchText;
 			$this->status = $this->searchText;
+			$this->expiredDate = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('orderId',$this->orderId,true, 'OR');
+		$criteria->compare('userRewardId',$this->userRewardId,true, 'OR');
 		$criteria->compare('userId',$this->userId,true, 'OR');
-		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
-		$criteria->compare('provinceId',$this->provinceId,true, 'OR');
-		$criteria->compare('token',$this->token,true, 'OR');
-		$criteria->compare('title',$this->title,true, 'OR');
-		$criteria->compare('type',$this->type);
-		$criteria->compare('total',$this->total,true, 'OR');
-		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
-		$criteria->compare('remark',$this->remark,true, 'OR');
+		$criteria->compare('orderId',$this->orderId,true, 'OR');
+		$criteria->compare('description',$this->description,true, 'OR');
+		$criteria->compare('points',$this->points);
+		$criteria->compare('remainingPoints',$this->remainingPoints);
 		$criteria->compare('status',$this->status);
+		$criteria->compare('expiredDate',$this->expiredDate,true, 'OR');
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
 
@@ -149,7 +125,7 @@ class OrderMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return OrderMaster the static model class
+	 * @return UserRewardMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This is the model class for table "order_file".
+ * This is the model class for table "order_group_file".
  *
- * The followings are the available columns in table 'order_file':
- * @property string $orderFileId
- * @property string $orderId
+ * The followings are the available columns in table 'order_group_file':
+ * @property string $orderGroupFileId
+ * @property string $orderGroupId
  * @property string $fileName
  * @property string $filePath
  * @property string $senderId
@@ -15,16 +15,16 @@
  * @property string $createDateTime
  *
  * The followings are the available model relations:
- * @property Order $order
+ * @property OrderGroup $orderGroup
  */
-class OrderFileMaster extends MasterCActiveRecord
+class OrderGroupFileMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'order_file';
+		return 'order_group_file';
 	}
 
 	/**
@@ -35,15 +35,15 @@ class OrderFileMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('orderId, fileName, filePath, senderId, receiverId, userType, createDateTime', 'required'),
+			array('orderGroupId, fileName, filePath, senderId, receiverId, userType, createDateTime', 'required'),
 			array('userType, status', 'numerical', 'integerOnly'=>true),
-			array('orderId, senderId, receiverId', 'length', 'max'=>20),
+			array('orderGroupId, senderId, receiverId', 'length', 'max'=>20),
 			array('fileName', 'length', 'max'=>200),
 			array('filePath', 'length', 'max'=>1000),
 			array('createDateTime', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderFileId, orderId, fileName, filePath, senderId, receiverId, userType, status, createDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupFileId, orderGroupId, fileName, filePath, senderId, receiverId, userType, status, createDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,7 +55,7 @@ class OrderFileMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'order' => array(self::BELONGS_TO, 'Order', 'orderId'),
+			'orderGroup' => array(self::BELONGS_TO, 'OrderGroup', 'orderGroupId'),
 		);
 	}
 
@@ -65,8 +65,8 @@ class OrderFileMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'orderFileId' => 'Order File',
-			'orderId' => 'Order',
+			'orderGroupFileId' => 'Order Group File',
+			'orderGroupId' => 'Order Group',
 			'fileName' => 'File Name',
 			'filePath' => 'File Path',
 			'senderId' => 'Sender',
@@ -97,8 +97,8 @@ class OrderFileMaster extends MasterCActiveRecord
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->orderFileId = $this->searchText;
-			$this->orderId = $this->searchText;
+			$this->orderGroupFileId = $this->searchText;
+			$this->orderGroupId = $this->searchText;
 			$this->fileName = $this->searchText;
 			$this->filePath = $this->searchText;
 			$this->senderId = $this->searchText;
@@ -108,8 +108,8 @@ class OrderFileMaster extends MasterCActiveRecord
 			$this->createDateTime = $this->searchText;
 		}
 
-		$criteria->compare('orderFileId',$this->orderFileId,true, 'OR');
-		$criteria->compare('orderId',$this->orderId,true, 'OR');
+		$criteria->compare('orderGroupFileId',$this->orderGroupFileId,true, 'OR');
+		$criteria->compare('orderGroupId',$this->orderGroupId,true, 'OR');
 		$criteria->compare('fileName',$this->fileName,true, 'OR');
 		$criteria->compare('filePath',$this->filePath,true, 'OR');
 		$criteria->compare('senderId',$this->senderId,true, 'OR');
@@ -127,7 +127,7 @@ class OrderFileMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return OrderFileMaster the static model class
+	 * @return OrderGroupFileMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

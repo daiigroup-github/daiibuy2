@@ -28,8 +28,8 @@ class Order extends OrderMaster
     public $sumMarginDealer;
     public $sumTotal;
 
-    const ORDER_TYPE_MYFILE = 1;
-    const ORDER_TYPE_CART = 2;
+	const ORDER_TYPE_MYFILE = 1;
+	const ORDER_TYPE_CART = 2;
 
     /**
      * @return string the associated database table name

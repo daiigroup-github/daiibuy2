@@ -19,13 +19,13 @@ $cs->registerCssFile($baseUrl . '/js/fancyBox/source/helpers/jquery.fancybox-thu
 $this->breadcrumbs = array(
 	'Orders'=>array(
 		'index'),
-	$model->orderId,
+	$model->orderGroupId,
 );
 
-$supplier = user::model()->findByPk($model->supplierId);
+$supplier = Supplier::model()->findByPk($model->supplierId);
 //$dealer = user::model()->findByPk($model->dealerId);
-$supplierAddr = Address::model()->find("userId=:userId", array(
-	":userId"=>$model->supplierId));
+//$supplierAddr = Address::model()->find("userId=:userId", array(
+//	":userId"=>$model->supplierId));
 //$dealerAddr = Address::model()->find("userId=:userId", array(
 //	":userId"=>$model->dealerId));
 //$daiiAddr = Address::model()->findByPk(1);
@@ -34,7 +34,7 @@ if(isset(Yii::app()->user->id))
 {
 	$user = User::model()->findByPk(Yii::app()->user->id);
 }
-$discount = isset($daiibuy->discount[$model->supplierId]) ? $daiibuy->discount[$model->supplierId] : $model->usedPoint;
+//$discount = isset($daiibuy->discount[$model->supplierId]) ? $daiibuy->discount[$model->supplierId] : $model->usedPoint;
 $pointToBahtConfig = Configuration::model()->getPointToBaht();
 $pointToBaht = (float) $pointToBahtConfig->value;
 //$margin = $model->getSupplierMarginToDaiiBuy();
@@ -68,7 +68,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 			-->
 		</style>
 		<?php
-		if(!(Yii::app()->controller->action->id == "printPayForm"))
+		if((Yii::app()->controller->action->id != "printPayForm"))
 		{
 			?>
 			<div class="img-rounded" style="background-color:white; border: 2px; border-color: #dddddd; border-style: solid;">
@@ -103,7 +103,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 
 		<div class="row">
 			<?php
-			if($model->status == 0)
+			if($model->status == 1)
 			{
 				?>
 
@@ -140,13 +140,13 @@ function showImage($imageUrl, $title)
 		if(strpos($imageUrl, ".pdf"))
 		{
 			$imageUrl = Yii::app()->baseUrl . "/" . $imageUrl;
-			$image = "<a class='pdf' Title='$title' href='$imageUrl'>ดูเอกสาร</a>";
+			$image = "<a class='pdf' Title='$title' href='$imageUrl'>ดู</a>";
 		}
 		else
 		{
 			$imageUrl = Yii::app()->baseUrl . "/" . $imageUrl;
 			//$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'><img src='$imageUrl' width='50px' alt='' /></a>";
-			$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'>ดูเอกสาร</a>";
+			$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'>ดู</a>";
 		}
 	}
 	return $image;
@@ -164,14 +164,14 @@ function getOrderPaymentAddress($model)
 
 function getOrderSupplierBillingAddress($model, $isFull = false)
 {
-	$supplierAddr = $model->supplier->billingAddress;
+	$supplier = $model->supplier;
 	if($isFull)
 	{
-		return "<p> บริษัท " . $supplierAddr->company . "</p>" . "<p>" . isset($supplierAddr->address_1) ? $supplierAddr->address_1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->telephone : $supplierAddr->address_2 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
+		return "<p> บริษัท " . $supplier->companyName . "</p>" . "<p>" . isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
 	}
 	else
 	{
-		return "<h4>" . $supplierAddr->company . "</h4>" . $supplierAddr->address_1 . " " . $supplierAddr->district->districtName . " " . $supplierAddr->amphur->amphurName . " " . $supplierAddr->province->provinceName . " " . $supplierAddr->postcode;
+		return "<h4>" . $supplier->companyName . "</h4>" . $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode;
 	}
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-class OrderFile extends OrderFileMaster
+class UserReward extends UserRewardMaster
 {
 	/**
 	 * Returns the static model of the specified AR class.

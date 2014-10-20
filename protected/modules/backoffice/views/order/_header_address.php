@@ -3,7 +3,7 @@
 		<?php
 		if(isset($user))
 		{
-			if(($model->status != 2 && ($user->type != 4 && $user->type != 3 && $user->type != 2 )) || ($model->status >= 2 && ($user->type != 4 && $user->type != 3 )))
+			if(($model->status != 3 && ($user->type != 4 && $user->type != 3 && $user->type != 2 )) || ($model->status >= 3 && ($user->type != 4 && $user->type != 3 )))
 			{
 				?>
 				<div class="col-md-3 table-condensed"  ><h6 style='margin-left: 8px;'>ได้รับเงินจาก :
@@ -12,7 +12,7 @@
 			}
 			else
 			{
-				if(($model->status == 3 && $user->type == 3) || $model->status == 0 && $user->type == 4)
+				if(($model->status == 4 && $user->type == 3) || $model->status == 1 && $user->type == 4)
 				{
 					?>
 					<div class="col-md-3 table-condensed" ><h6 style='margin-left: 8px; text-align: Right'>ผู้ซื้อ : &nbsp;</h6></div>
@@ -44,9 +44,9 @@
 				$shippingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 2');
 				$billingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 1');
 //					(Yii::app()->controller->action->id == "viewOrder" && $userType <> 1 && $userType <> 5)
-				if(($model->status == 2 && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1 )) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1))
+				if(($model->status == 3 && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1 )) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1))
 				{
-					if(($model->status == 3 && $user->type == 3) || $model->status == 0 && $user->type == 4)
+					if(($model->status == 4 && $user->type == 3) || $model->status == 1 && $user->type == 4)
 					{
 						echo getOrderShippingAddress($model);
 					}
@@ -82,9 +82,9 @@
 			$dateToPay = date("Y-m-d hh:mm:ss", strtotime("+" . $deadLinePaymentDay->value . " day", $time));
 			$deadlinePayment = $this->dateThai($dateToPay, 1);
 //						$deadlinePayment = $this->dateThai($dateToPay->format("Y-m-d hh:mm:ss"), 1);
-			if($model->status < 2 && ($user->type != 4 || $user->type != 5 ) && Yii::app()->controller->action->id != "viewOrder")
+			if($model->status < 3 && ($user->type != 4 || $user->type != 5 ) && Yii::app()->controller->action->id != "viewOrder")
 			{
-				if(($model->status > 2 && ($user->type == 2 || $user->type == 3 )))
+				if(($model->status > 3 && ($user->type == 2 || $user->type == 3 )))
 				{
 					?>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->orderNo ?></p></div>
@@ -103,7 +103,7 @@
 			}
 			else
 			{
-				if(($model->status == 2 && $user->type == 3) || (($user->type == 5 || $user->type == 4) && $model->status >= 2))
+				if(($model->status == 3 && $user->type == 3) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
 				{
 					?>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->orderNo ?></p></div>
@@ -114,10 +114,10 @@
 				else
 				{
 					?>
-			<!--<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo $model->orderNo                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?></p></div>-->
+			<!--<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo $model->orderNo                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ?></p></div>-->
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->invoiceNo ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo isset($model->paymentDateTime) ? "วันที่ : " . $this->dateThai($model->paymentDateTime, 1) : ""; ?></p></div>
-			<!--							<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo "ระยะเวลาชำระเงิน";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ?></p></div>-->
+			<!--							<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo "ระยะเวลาชำระเงิน";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ?></p></div>-->
 					<?php
 				}
 			}
@@ -125,7 +125,7 @@
 		else
 		{
 			?>
-	<!--<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo $model->orderNo                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ?></p></div>-->
+	<!--<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo $model->orderNo                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?></p></div>-->
 			<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo; ?></p></div>
 			<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo isset($model->paymentDateTime) ? $this->dateThai($model->paymentDateTime, 1) : ""; ?></p></div>
 		<?php } ?>
@@ -138,7 +138,7 @@
 				<?php
 				if(isset($user))
 				{
-					if($model->status < 2 && ($user->type != 4 || $user->type != 3 || $user->type != 5 ))
+					if($model->status < 3 && ($user->type != 4 || $user->type != 3 || $user->type != 5 ))
 					{
 						?>
 						<td style="width:30%;text-align: center"><b style="font-size:small">เลขทื่ใบสั่งซื้อสินค้า</b></td>
@@ -166,7 +166,7 @@
 						}
 						else
 						{
-							if($model->status == 2 && $user->type == 3)
+							if($model->status == 3 && $user->type == 3)
 							{
 								?>
 								<td style="width:50%;text-align: center"><b style="font-size:small">ผู้ซื้อ</b></td>
@@ -181,7 +181,7 @@
 						}
 						if($model->isSentToCustomer == 0)
 						{
-							if($model->status == 2 && $user->type == 3)
+							if($model->status == 3 && $user->type == 3)
 							{
 								?>
 								<td style="width:50%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>
@@ -228,9 +228,9 @@
 				<td style="text-align: center"><?php
 					if(isset($user))
 					{
-						if($model->status >= 2 && ($user->type == 4 || $user->type == 3 || $user->type == 5))
+						if($model->status >= 3 && ($user->type == 4 || $user->type == 3 || $user->type == 5))
 						{
-							if($model->status >= 2 && $user->type == 3)
+							if($model->status >= 3 && $user->type == 3)
 							{
 								echo "<p style='margin-left: 20px'>" . ( isset($model->paymentCompany) ? "บริษัท " . $model->paymentCompany : $model->paymentFirstname . " " . $model->paymentLastname) . "</p><p style='margin-left: 20px'>สถานที่จัดส่ง : "
 								. (isset($model->shippingAddress1) ? $model->shippingAddress1 : "") . " " . (isset($model->shippingAddress2) ? $model->shippingAddress2 : "") . " " . $model->shippingDistrict->districtName . " " . $model->shippingAmphur->amphurName . " " . $model->shippingProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "</p>";

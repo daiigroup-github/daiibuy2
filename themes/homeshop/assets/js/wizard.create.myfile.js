@@ -42,6 +42,12 @@ $(document).ready(function() {
 	$('#backToStep2').on('click', function(e) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	});
+	$('#backToStep3').on('click', function(e) {
+		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+	});
+	$('#addToCart').on('click', function(e) {
+		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+	});
 	$('#nextToStep4').on('click', function(e) {
 
 		//save order
@@ -55,11 +61,35 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
 			success: function(data) {
+				alert('success');
 				$("#confirm_content").html(data);
 			}
 		});
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 	});
+
+//view Myfile Fenzer
+	$('#nextToStep4Edit').on('click', function(e) {
+
+		//save order
+		var base_url = window.location.origin;
+		var orderId = $("#nextToStep4Edit").attr("name");
+		var length = $("#length_input").attr("value");
+		var categoryId = $("#editTable").attr("name");
+//		alert(categoryId);
+		var productItems = $("#editTableForm").serialize();
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/fenzer/saveOrderMyFile',
+			type: 'POST',
+			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + '&orderId=' + orderId,
+			success: function(data) {
+				alert('success');
+				$("#confirm_content").html(data);
+			}
+		});
+		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
+	});
+
 //clickable Row
 	$(".clickableRow").click(function() {
 		var base_url = window.location.origin;
