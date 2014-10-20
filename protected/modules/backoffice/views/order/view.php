@@ -68,7 +68,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 			-->
 		</style>
 		<?php
-		if(!(Yii::app()->controller->action->id == "printPayForm"))
+		if((Yii::app()->controller->action->id != "printPayForm"))
 		{
 			?>
 			<div class="img-rounded" style="background-color:white; border: 2px; border-color: #dddddd; border-style: solid;">

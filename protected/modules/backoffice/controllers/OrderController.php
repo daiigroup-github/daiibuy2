@@ -274,10 +274,10 @@ class OrderController extends MasterBackofficeController
 	public function actionIndex()
 	{
 
-		$model = new Order('search');
+		$model = new OrderGroup('search');
 		$model->unsetAttributes(); // clear any default values
-		if(isset($_GET['Order']))
-			$model->attributes = $_GET['Order'];
+		if(isset($_GET['OrderGroup']))
+			$model->attributes = $_GET['OrderGroup'];
 
 		if(Yii::app()->user->id != 0)
 		{
@@ -655,6 +655,18 @@ class OrderController extends MasterBackofficeController
 				"orderModel"=>$order
 			));
 		}
+	}
+
+	public function actionPrintProductList($id)
+	{
+		$this->layout = '//layouts/print';
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$this->render('view', array(
+			'model'=>$this->loadModel($id),
+			'pageText'=>$this->selectPageTitle($this->loadModel($id)),
+			'daiibuy'=>$daiibuy
+		));
 	}
 
 	public function selectPageTitle($model = null)
