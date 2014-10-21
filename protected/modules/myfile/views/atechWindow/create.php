@@ -61,9 +61,18 @@ $this->breadcrumbs = array(
 				<div class="row">
 					<div class="col-md-4">
 						<div class="page-header select-province">
-							<h1>เลือกจังหวัด</h1><small> กรุณาเลือกจังหวัดที่ท่านต้องการสั่งซื้อสินค้า.</small>
+							<h1>สร้าง My File</h1><small> กรุณากรอกข้อมูลตามด้านล่าง.</small>
 						</div>
 						<div>
+							<?php
+							echo CHtml::textField('title', $model->title, array(
+								'class'=>'form-control',
+								'id'=>'title',
+								'placeholder'=>'กรุณากรอกชื่อ My File.'
+							));
+							?>
+						</div>
+						<div style="margin-top: 15px">
 							<?php
 							echo CHtml::dropDownList('provinceId', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
 								'class'=>'form-control',
@@ -82,7 +91,7 @@ $this->breadcrumbs = array(
 
 				<div class="row">
 					<div class="col-md-6 text-center">
-						<a>
+						<a id="uploadPlanAtech">
 							<div class="panel panel-info">
 								<div class="panel-heading">
 									<h3><b>อัพโหลดแบบดีไซน์</b></h3>
@@ -94,7 +103,7 @@ $this->breadcrumbs = array(
 						</a>
 					</div>
 					<div class="col-md-6 text-center">
-						<a>
+						<a id="manualQuantityAtech">
 							<div class="panel panel-warning">
 								<div class="panel-heading">
 									<h3><b>ใส่ปริมาณเอง</b></h3>
@@ -108,14 +117,14 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<button id="nextToStep2" class="btn btn-primary btn-lg"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
+						<button id="nextToStep2" class="btn btn-primary btn-lg hidden"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!--STEP 2 Select Height-->
+	<!--STEP 2 upload plan-->
 	<div class="row setup-content" id="step-2">
 		<div class="col-xs-12">
             <div class="col-md-12 well text-left">

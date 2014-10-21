@@ -4,7 +4,7 @@ class AtechWindowController extends MasterMyFileController
 {
 
 	public function init(){
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
+//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
 		parent::init();
 	}
 

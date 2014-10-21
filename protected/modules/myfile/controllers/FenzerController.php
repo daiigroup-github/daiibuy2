@@ -5,7 +5,7 @@ class FenzerController extends MasterMyFileController
 
 	public function init()
 	{
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
+
 		parent::init();
 	}
 
@@ -382,5 +382,19 @@ class FenzerController extends MasterMyFileController
 		$res['orderId'] = $model->orderId;
 
 		return $res;
+	}
+
+	public function actionAddToCart()
+	{
+		if(isset($_POST['orderId']) && !empty($_POST['orderId']))
+		{
+		$orderId = $_POST['orderId'];
+		$model = Order::model()->findByPk($orderId);
+		$model->type = 3;
+			if($model->save()){
+				echo 'success';
+			}
+		}
+		echo 'fail';
 	}
 }

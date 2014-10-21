@@ -46,7 +46,21 @@ $(document).ready(function() {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 	});
 	$('#addToCart').on('click', function(e) {
-		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+		var base_url = window.location.origin;
+		var orderId = $("#order").attr("name");
+		if (orderId === null)
+		{
+			orderId = $(this).attr("name");
+		}
+//		alert(orderId);
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/fenzer/addToCart',
+			type: 'POST',
+			data: {'orderId': orderId},
+			success: function(data) {
+			}
+		});
+		window.location.assign(base_url + '/daiibuy2/myfile/fenzer/');
 	});
 
 	$('#finish').on('click', function(e) {

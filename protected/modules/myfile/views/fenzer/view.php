@@ -206,8 +206,8 @@ $this->breadcrumbs = array(
 					<div class="pull-right">
 						<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
 						<button id="finish" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
-						<button id="addToCart" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
-						<button id="requestSpecial" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
+						<button id="addToCart" class="btn btn-warning btn-lg" name="<?php echo $model->orderId; ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
+						<button id="requestSpecial" class="btn btn-info btn-lg" name="<?php echo $model->orderId; ?>><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
 					</div>
 				</div>
 			</div>
