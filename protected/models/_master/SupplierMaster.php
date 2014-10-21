@@ -28,6 +28,7 @@
  * The followings are the available model relations:
  * @property Order[] $orders
  * @property OrderDetailTemplate[] $orderDetailTemplates
+ * @property OrderGroup[] $orderGroups
  * @property Product[] $products
  * @property Amphur $amphur
  * @property District $district
@@ -79,6 +80,7 @@ class SupplierMaster extends MasterCActiveRecord
 		return array(
 			'orders' => array(self::HAS_MANY, 'Order', 'supplierId'),
 			'orderDetailTemplates' => array(self::HAS_MANY, 'OrderDetailTemplate', 'supplierId'),
+			'orderGroups' => array(self::HAS_MANY, 'OrderGroup', 'supplierId'),
 			'products' => array(self::HAS_MANY, 'Product', 'supplierId'),
 			'amphur' => array(self::BELONGS_TO, 'Amphur', 'amphurId'),
 			'district' => array(self::BELONGS_TO, 'District', 'districtId'),

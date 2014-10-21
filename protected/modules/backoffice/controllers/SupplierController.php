@@ -2,11 +2,12 @@
 
 class SupplierController extends MasterBackofficeController
 {
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout = '//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -27,29 +28,29 @@ class SupplierController extends MasterBackofficeController
 	public function accessRules()
 	{
 		return array(
-	/*
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-			*/
+			/*
+			  array('allow',  // allow all users to perform 'index' and 'view' actions
+			  'actions'=>array('index','view'),
+			  'users'=>array('*'),
+			  ),
+			  array('allow', // allow authenticated user to perform 'create' and 'update' actions
+			  'actions'=>array('create','update'),
+			  'users'=>array('@'),
+			  ),
+			  array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			  'actions'=>array('admin','delete'),
+			  'users'=>array('admin'),
+			  ),
+			  array('deny',  // deny all users
+			  'users'=>array('*'),
+			  ),
+			 */
 		);
 
 		/*
-		$result = array();
-		return CMap::mergeArray(parent::rules(), $result);
-		*/
+		  $result = array();
+		  return CMap::mergeArray(parent::rules(), $result);
+		 */
 	}
 
 	/**
@@ -58,7 +59,7 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionView($id)
 	{
-		$this->render('view',array(
+		$this->render('view', array(
 			'model'=>$this->loadModel($id),
 		));
 	}
@@ -69,7 +70,7 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
-		$model=new Supplier;
+		$model = new Supplier;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -80,7 +81,8 @@ class SupplierController extends MasterBackofficeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes=$_POST['Supplier'];
+				$model->attributes = $_POST['Supplier'];
+				$model->attributes = $_POST['Supplier']["billing"];
 
 				if($model->save())
 				{
@@ -90,22 +92,22 @@ class SupplierController extends MasterBackofficeController
 				if($flag)
 				{
 					$transaction->commit();
-					$this->redirect(array('view','id'=>$model->supplierId));
+					$this->redirect(array(
+						'index'));
 				}
 				else
 				{
 					$transaction->rollback();
 				}
 			}
-			catch (Exception $e)
+			catch(Exception $e)
 			{
 				throw new Exception($e->getMessage());
 				$transaction->rollback();
 			}
-
 		}
 
-		$this->render('create',array(
+		$this->render('create', array(
 			'model'=>$model,
 		));
 	}
@@ -117,7 +119,7 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -128,7 +130,8 @@ class SupplierController extends MasterBackofficeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes=$_POST['Supplier'];
+				$model->attributes = $_POST['Supplier'];
+				$model->attributes = $_POST['Supplier']["billing"];
 
 				if($model->save())
 				{
@@ -138,21 +141,22 @@ class SupplierController extends MasterBackofficeController
 				if($flag)
 				{
 					$transaction->commit();
-					$this->redirect(array('view','id'=>$model->supplierId));
+					$this->redirect(array(
+						'index'));
 				}
 				else
 				{
 					$transaction->rollback();
 				}
 			}
-			catch (Exception $e)
+			catch(Exception $e)
 			{
 				throw new Exception($e->getMessage());
 				$transaction->rollback();
 			}
 		}
 
-		$this->render('update',array(
+		$this->render('update', array(
 			'model'=>$model,
 		));
 	}
@@ -168,7 +172,8 @@ class SupplierController extends MasterBackofficeController
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
+					'admin'));
 	}
 
 	/**
@@ -176,8 +181,8 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider=new CActiveDataProvider('Supplier');
-		$this->render('admin',array(
+		$dataProvider = new CActiveDataProvider('Supplier');
+		$this->render('admin', array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
@@ -187,12 +192,12 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-		$model=new Supplier('search');
+		$model = new Supplier('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Supplier']))
-			$model->attributes=$_GET['Supplier'];
+			$model->attributes = $_GET['Supplier'];
 
-		$this->render('index',array(
+		$this->render('index', array(
 			'model'=>$model,
 		));
 	}
@@ -206,9 +211,9 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function loadModel($id)
 	{
-		$model=Supplier::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		$model = Supplier::model()->findByPk($id);
+		if($model === null)
+			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
 	}
 
@@ -218,10 +223,11 @@ class SupplierController extends MasterBackofficeController
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='supplier-form')
+		if(isset($_POST['ajax']) && $_POST['ajax'] === 'supplier-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
+
 }

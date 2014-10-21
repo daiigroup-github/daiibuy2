@@ -78,6 +78,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 						'model'=>$model,
 						'daiiAddr'=>$daiiAddr,
 						'pageText'=>$pageText,
+						'supplier'=>$supplier
 					));
 					?>
 					<?php
