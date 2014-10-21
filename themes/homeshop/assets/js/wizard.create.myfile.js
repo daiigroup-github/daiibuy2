@@ -48,6 +48,13 @@ $(document).ready(function() {
 	$('#addToCart').on('click', function(e) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 	});
+
+	$('#finish').on('click', function(e) {
+		var base_url = window.location.origin;
+		window.location.assign(base_url + '/daiibuy2/myfile/fenzer/');
+	});
+
+
 	$('#nextToStep4').on('click', function(e) {
 
 		//save order
@@ -61,7 +68,6 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
 			success: function(data) {
-				alert('success');
 				$("#confirm_content").html(data);
 			}
 		});
@@ -83,7 +89,6 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + '&orderId=' + orderId,
 			success: function(data) {
-				alert('success');
 				$("#confirm_content").html(data);
 			}
 		});

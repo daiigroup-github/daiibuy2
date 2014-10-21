@@ -91,26 +91,22 @@ class Order extends OrderMaster
 			));
 	}
 
-	public function findAllMyFileBySupplierId($userId, $supplierId, $type, $status, $token)
+	public function findAllMyFileBySupplierId($userId, $supplierId, $token)
 	{
 		$criteria = new CDbCriteria();
 		if(($this->userId == 0))
 		{
-			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND type = :type AND status = :status';
+			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = 1 OR type = 3) AND status = 1';
 			$criteria->params = array(
 				':userId'=>$userId,
-				':supplierId'=>$supplierId,
-				':type'=>$type,
-				':status'=>$status,);
+				':supplierId'=>$supplierId,);
 		}
 		else
 		{
-			$criteria->condition = 'token = :token AND supplierId = :supplierId AND type = :type AND status = :status';
+			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = 1 OR type = 3) AND status = 1';
 			$criteria->params = array(
 				':token'=>$token,
-				':supplierId'=>$supplierId,
-				':type'=>$type,
-				':status'=>$status,);
+				':supplierId'=>$supplierId,);
 		}
 
 		$res = $this->findAll($criteria);
