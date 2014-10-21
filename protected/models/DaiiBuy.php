@@ -90,7 +90,7 @@ class DaiiBuy extends CFormModel
         $daiibuy['token'] = isset($this->token) ? $this->token : md5(uniqid(time(), true));
 
         $cookie = new CHttpCookie('daiibuy', json_encode($daiibuy));
-        $cookie->expire = time() + (60 * 60 * 24);
+        $cookie->expire = time() + (60 * 60 * 24 * 7);
         Yii::app()->request->cookies['daiibuy'] = $cookie;
     }
 

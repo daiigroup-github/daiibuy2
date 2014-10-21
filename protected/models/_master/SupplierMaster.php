@@ -32,6 +32,7 @@
  * @property Amphur $amphur
  * @property District $district
  * @property Province $province
+ * @property SupplierDiscountRange[] $supplierDiscountRanges
  * @property SupplierEpayment[] $supplierEpayments
  * @property UserToSupplier[] $userToSuppliers
  */
@@ -82,6 +83,7 @@ class SupplierMaster extends MasterCActiveRecord
 			'amphur' => array(self::BELONGS_TO, 'Amphur', 'amphurId'),
 			'district' => array(self::BELONGS_TO, 'District', 'districtId'),
 			'province' => array(self::BELONGS_TO, 'Province', 'provinceId'),
+			'supplierDiscountRanges' => array(self::HAS_MANY, 'SupplierDiscountRange', 'supplierId'),
 			'supplierEpayments' => array(self::HAS_MANY, 'SupplierEpayment', 'supplierId'),
 			'userToSuppliers' => array(self::HAS_MANY, 'UserToSupplier', 'supplierId'),
 		);

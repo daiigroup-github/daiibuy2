@@ -12,51 +12,95 @@
  *
  * The followings are the available model relations:
  * @property OrderGroupToOrder[] $orderGroupToOrders
+ *
+ * @property inetger $sumTotal
  */
 class OrderGroup extends OrderGroupMaster
 {
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public static function model($className = __CLASS__)
-	{
-		return parent::model($className);
-	}
+    public $maxCode;
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return CMap::mergeArray(parent::rules(), array(
-				//code here
-		));
-	}
+    const STATUS_ORDER = 1;
+    const STATUS_COMFIRM_TRANSFER = 2;
+    const STATUS_APPROVE_TRANSFER = 3;
+    const STATUS_SUPPLIER_SHIPPING = 4;
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return CMap::mergeArray(parent::relations(), array(
-				//code here
-		));
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return Cmap::mergeArray(parent::attributeLabels(), array(
-				//code here
-		));
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return CMap::mergeArray(parent::rules(), array(//code here
+        ));
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return CMap::mergeArray(parent::relations(), array(
+            //code here
+            'orders' => array(
+                self::MANY_MANY,
+                'Order',
+                'order_group_to_order(orderGroupId, orderId)'
+            ),
+        ));
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return Cmap::mergeArray(parent::attributeLabels(), array(//code here
+        ));
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     * public function search()
+     * {
+     * }
+     */
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return OrderGroup the static model class
+     */
+
+    public function sumOrderLastTwelveMonth()
+    {
+        $today = date('Y-m-d');
+        $lastYear = date('Y-m-d', strtotime($today . ' -12 months'));
+
+        $model = $this->findAll(array(
+            'condition' => 'userId=:userId AND (updateDateTime BETWEEN :today AND :lastYear)',
+            'select'=>'sum(summary) as sumTotal',
+            'params' => array(
+                ':userId' => Yii::app()->user->id,
+                ':today' => $today,
+                ':lastYear' => $lastYear,
+            ),
+        ));
+
+        return $model->sumTotal;
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -74,12 +118,11 @@ class OrderGroup extends OrderGroupMaster
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->orderNo = $this->searchText;
-			$this->title = $this->searchText;
 			$this->type = $this->searchText;
 		}
 
 		$criteria->compare('orderNo', $this->orderNo, true, 'OR');
-		$criteria->compare('title', $this->title, true, 'OR');
+//		$criteria->compare('title', $this->title, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -196,7 +239,7 @@ class OrderGroup extends OrderGroupMaster
 		$criteria->compare('lastname', $this->lastname, true);
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
-		$criteria->compare("status", ">1");
+		$criteria->compare("status", ">2");
 		$criteria->compare("status", "<99");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -212,7 +255,7 @@ class OrderGroup extends OrderGroupMaster
 	public function findAllFinanceAdminOrder()
 	{
 		$criteria = new CDbCriteria();
-		$criteria->condition = "status in (1 , 4 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98 ) ";
+		$criteria->condition = "status in (2 , 5 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98 ) ";
 		$criteria->compare('invoiceNo', $this->invoiceNo, true);
 		$criteria->compare('orderNo', $this->orderNo, true);
 		$criteria->compare('firstname', $this->firstname, true);
@@ -236,7 +279,7 @@ class OrderGroup extends OrderGroupMaster
 	public function findAllFinanceAdminOrderPay()
 	{
 		$criteria = new CDbCriteria();
-		$criteria->condition = "status > 1 AND paymentDateTime is not NULL";
+		$criteria->condition = "status > 2 AND paymentDateTime is not NULL";
 		$criteria->compare('invoiceNo', $this->invoiceNo, true);
 		$criteria->compare('orderNo', $this->orderNo, true);
 		$criteria->compare('firstname', $this->firstname, true);
@@ -290,6 +333,16 @@ class OrderGroup extends OrderGroupMaster
 		return $prefix . date("Ym") . "-" . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
 
+	public function findAllStatus()
+	{
+		return array(
+			self::STATUS_ORDER=>$this->showOrderStatus(self::STATUS_ORDER),
+			self::STATUS_COMFIRM_TRANSFER=>$this->showOrderStatus(self::STATUS_COMFIRM_TRANSFER),
+			self::STATUS_APPROVE_TRANSFER=>$this->showOrderStatus(self::STATUS_APPROVE_TRANSFER),
+			self::STATUS_SUPPLIER_SHIPPING=>$this->showOrderStatus(self::STATUS_SUPPLIER_SHIPPING),
+		);
+	}
+
 	public function showOrderStatus($status)
 	{
 		$user = User::model()->findByPk(Yii::app()->user->id);
@@ -301,70 +354,18 @@ class OrderGroup extends OrderGroupMaster
 			case 98:
 				return "ระหว่างดำเนินการตรวจสอบเครดิต";
 				break;
-			case 0:
+			case 1:
 				return "รอการยืนยันโอนเงินจากลูกค้า";
 				break;
-			case 1:
+			case 2:
 				return "รอตรวจสอบการโอนเงิน";
 				break;
-			case 2:
+			case 3:
 				return isset($user) ? ($user->type == 1 ? "การสั่งซื้อสินค้าสมบูรณ์" : "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" ) : "การสั่งซื้อสินค้าสมบูรณ์";
 				break;
-			case 3:
-				return "Supplier กำลังจัดส่งสินค้า";
-				break;
 			case 4:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "การซื้อสินค้าเสร็จสมบูรณ์(รออัพโหลดเอกสาร)") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 5:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "รอยืนยันการรับสินค้าผ่านอีเมลล์" : "รอการยืนยันของ ลูกค้า ผ่าน Email") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 6:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "รออัพโหลดใบส่งสินค้า") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 7:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "รอยืนยันการรับสินค้าผ่านอีเมลล์" : "ผู้ดูแลระบบติดตามเอกสารและยืนยันรับของ") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 8:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "รอการอนุมัติจ่ายเงิน จากผู้ดูแลระบบ(การเงิน)") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 9:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "ให้ ผู้ผลิดสินค้า แนบเอกสารใหม่") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 10:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "ให้ ตัวแทนกระจายสินค้า แนบเอกสารใหม่") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 11:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "เอกสารเรียบร้อยสามารถจ่ายเงินได้") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 12:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "จ่ายเงินให้ ผู้ผลิดสินค้า แล้วรอยืนยันการจ่ายเงินให้ ตัวแทนกระจายสินค้า") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 13:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "จ่ายเงินให้ ตัวแทนกระจายสินค้า แล้วรอยืนยันการจ่ายเงินให้ ผู้ผลิดสินค้า") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 14:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "รอการยืนยันชำระเงินให้ ผู้ผลิต และ ตัวแทนกระจายสินค้า") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 15:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "ยืนยันชำระเงินให้ผู้ผลิตสินค้าเรียบร้อย") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 16:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "ยืนยันชำระเงินให้ตัวแทนกระจายสินค้าเรียบร้อย") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 17:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "การซื้อสินค้าเสร็จสมบูรณ์" : "เอกสารดำเนินการเรียบร้อยแล้ว") : "การซื้อสินค้าเสร็จสมบูรณ์";
-				break;
-			case 18:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "สามารถไปรับของได้ที่ตัวแทนกระจายสินค้า" : "Distributor รับสินค้าเรียบร้อยแล้ว") : "สามารถไปรับสินค้าได้ที่ตัวแทนกระจายสินค้า";
-				break;
-			case 19:
-				return isset($user) ? ($user->type == 1 || $user->type == 0 ? "สินค้าถูกตีกลับรอส่งสินค้าใหม่" : "สินค้าถูกตีกลับรอส่งใหม่") : "สินค้าถูกตีกลับรอส่งสินค้าใหม่";
-				break;
-			case 20:
-				return;
+				return "ผู้ผลิตกำลังจัดส่งสินค้า";
 				break;
 		}
 	}
-
 }

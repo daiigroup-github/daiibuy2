@@ -1,6 +1,6 @@
 <?php
 
-class OrderFile extends OrderFileMaster
+class OrderGroupFile extends OrderGroupFileMaster
 {
 	/**
 	 * Returns the static model of the specified AR class.

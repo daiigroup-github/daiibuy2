@@ -85,7 +85,9 @@ return CMap::mergeArray(
 			),
 			'urlManager'=>array(
 				'showScriptName'=>false,
-				'rules'=>array(),
+				'rules'=>array(
+                    '<controller:\w+>/<action:\w+>/<id:\d+>/<id2:d+>'=>'<controller>/<action>',
+                ),
 			),
 		),
 		'modules'=>array(

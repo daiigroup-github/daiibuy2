@@ -59,7 +59,8 @@ class OrderController extends MasterBackofficeController
 	 */
 	public function actionView($id, $token = null)
 	{
-		$model = $this->loadModel($id);
+//		$model = $this->loadModel($id);
+		$model = OrderGroup::model()->findByPk($id);
 		if(!isset(Yii::app()->user->id) && $model->userId != 0)
 		{
 			Yii::app()->user->setReturnUrl(Yii::app()->createUrl('order/view/' . $id));
@@ -95,26 +96,6 @@ class OrderController extends MasterBackofficeController
 			{
 				$remark = isset($_POST["remark"]) ? $_POST["remark"] : "-";
 				$this->actionAdminRejectConfirmTransfer($id, $remark);
-//			$model->updateDateTime = new CDbExpression('NOW()');
-//			$model->status = 3;
-//			if ($model->save())
-//			{
-//
-//				//save history
-//				$productHistory = new ProductHistory();
-//				$productHistory->userId = $model->supplierId;
-//				$productHistory->productId = $model->productId;
-//				$productHistory->description = "Return";
-//				$productHistory->remark = isset($remark) ? $remark : null;
-//				$productHistory->createDateTime = new CDbExpression('NOW()');
-//				$productHistory->save();
-//
-//				//sent mail
-//				$emailObj = new Email();
-//				$sentMail = new EmailSend();
-//				$emailObj->Setmail(NULL, null, $model->supplierId, null, $model->productId, null, $remark = null);
-//				$sentMail->mailAddNewProductEdit($emailObj);
-//		}
 			}
 			if(($_POST["action"] == "approve"))
 			{
@@ -122,19 +103,6 @@ class OrderController extends MasterBackofficeController
 				$this->actionAdminDefinePaymentDateTime($id, $paymentDateTime);
 			}
 		}
-//		if (!isset(Yii::app()->user->id) || Yii::app()->user->id == 0)
-//		{
-//			$this->redirect(array(
-//				"site/login"));
-//		}
-//		if (isset($_POST["remark"]))
-//			$remark = $_POST["remark"];
-//		if (isset($_POST["action"]))
-//		{
-//			$this->actionAdminRejectConfirmTransfer($id);
-//		}
-
-
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$this->render('view', array(
@@ -142,6 +110,19 @@ class OrderController extends MasterBackofficeController
 			'pageText'=>$this->selectPageTitle($model),
 			'daiibuy'=>$daiibuy,
 			'token'=>$token,
+		));
+	}
+
+	public function actionViewOrder($id)
+	{
+		$model = OrderGroup::model()->findByPk($id);
+		$this->layout = '//layouts/print';
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$this->render('view', array(
+			'model'=>$model,
+			'pageText'=>$this->selectPageTitle($model),
+			'daiibuy'=>$daiibuy
 		));
 	}
 
@@ -306,7 +287,7 @@ class OrderController extends MasterBackofficeController
 		else
 		{
 			$this->redirect(array(
-				"/login"));
+				"/backoffice/login"));
 		}
 
 		$this->render('index', array(
@@ -344,41 +325,43 @@ class OrderController extends MasterBackofficeController
 
 	public function actionPrint($id)
 	{
+		$model = OrderGroup::model()->findByPk($id);
 		$this->layout = '//layouts/print';
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$this->render('view', array(
-			'model'=>$this->loadModel($id),
-			'pageText'=>$this->selectPageTitle($this->loadModel($id)),
+			'model'=>$model,
+			'pageText'=>$this->selectPageTitle($model),
 			'daiibuy'=>$daiibuy
 		));
 	}
 
 	public function actionPrintPayForm($id)
 	{
+		$model = OrderGroup::model()->findByPk($id);
 		$this->layout = '//layouts/print';
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$this->render('view', array(
-			'model'=>$this->loadModel($id),
-			'pageText'=>$this->selectPageTitle($this->loadModel($id)),
+			'model'=>$model,
+			'pageText'=>$this->selectPageTitle($model),
 			'daiibuy'=>$daiibuy
 		));
 	}
 
 	public function actionUserConfirmTransfer($id)
 	{
-		$order = Order::model()->findByPk($id);
-		$orderFile = new OrderFile();
+		$order = OrderGroup::model()->findByPk($id);
+		$orderFile = new OrderGroupFile();
 		if(isset($order))
 		{
-			if(isset($_POST["OrderFile"]))
+			if(isset($_POST["OrderGroupFile"]))
 			{
 				$flag = TRUE;
 				$transaction = Yii::app()->db->beginTransaction();
 				try
 				{
-					$order->status = 1;
+					$order->status = 2;
 //$order->updateDateTime = new CDbExpression("NOW()");
 					if(!$order->save())
 					{
@@ -396,25 +379,25 @@ class OrderController extends MasterBackofficeController
 //							}
 //						}
 						$dateNow = new CDbExpression("NOW()");
-						$orderFile->attributes = $_POST["OrderFile"];
-						$orderFile->orderId = $id;
+						$orderFile->attributes = $_POST["OrderGroupFile"];
+						$orderFile->orderGroupId = $id;
 						$orderFile->senderId = isset(Yii::app()->user->id) ? Yii::app()->user->id : 0;
 						$orderFile->receiverId = -1;
 						$orderFile->userType = isset(Yii::app()->user->userType) ? Yii::app()->user->userType : 0;
 						$orderFile->createDateTime = $dateNow;
-						$image = CUploadedFile::getInstanceByName("OrderFile[filePath]");
+						$image = CUploadedFile::getInstanceByName("OrderGroupFile[filePath]");
 						if(!empty($image))
 						{
 							$ran = rand(0, 999999);
 							$imgType = explode(".", $image->name);
 							$imgType = $imgType[count($imgType) - 1];
-							$imageUrl = "images/orderFile/" . $order->orderId . "/" . time() . '-' . $ran . "." . $imgType;
+							$imageUrl = "images/orderFile/" . $order->orderGroupId . "/" . time() . '-' . $ran . "." . $imgType;
 							$imagePath = '/../' . $imageUrl;
 							$Img = $imageUrl;
 //throw new Exception(Yii::app()->getBasePath().'/../'."images/userFile/$userId");
-							if(!file_exists(Yii::app()->getBasePath() . '/../' . "images/orderFile/$order->orderId"))
+							if(!file_exists(Yii::app()->getBasePath() . '/../' . "images/orderFile/$order->orderGroupId"))
 							{
-								mkdir(Yii::app()->getBasePath() . '/../' . "images/orderFile/$order->orderId", 0777);
+								mkdir(Yii::app()->getBasePath() . '/../' . "images/orderFile/$order->orderGroupId", 0777);
 							}
 
 							$image->saveAs(Yii::app()->getBasePath() . $imagePath);
@@ -437,8 +420,8 @@ class OrderController extends MasterBackofficeController
 						$emailObj = new Email();
 						$sentMail = new EmailSend();
 						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/";
-						$emailObj->Setmail($order->userId, NULL, $order->supplierId, $order->orderId, null, $documentUrl);
-						$sentMail->mailRequestApproveTranferToAdmin($emailObj);
+						$emailObj->Setmail($order->userId, NULL, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+//						$sentMail->mailRequestApproveTranferToAdmin($emailObj);
 
 						$this->redirect(array(
 							"index"));
@@ -463,7 +446,7 @@ class OrderController extends MasterBackofficeController
 
 	public function actionAdminDefinePaymentDateTime($id, $paymentDateTime)
 	{
-		$order = Order::model()->findByPk($id);
+		$order = OrderGroup::model()->findByPk($id);
 		if(isset($order))
 		{
 			$transaction = Yii::app()->db->beginTransaction();
@@ -486,16 +469,15 @@ class OrderController extends MasterBackofficeController
 
 	public function actionAdminApproveConfirmTransfer($id)
 	{
-		$model = $this->loadModel($id);
-		$model->status = 2;
-		$model->invoiceNo = Order::model()->genInvNo($model);
+		$model = OrderGroup::model()->findByPk($id);
+		$model->status = 3;
+		$model->invoiceNo = OrderGroup::model()->genInvNo($model);
 //			$model->paymentDateTime = new CDbExpression('NOW()');
 		$transaction = Yii::app()->db->beginTransaction();
 		try
 		{
 			if($model->userId <> 0)
 			{
-				$collectedOrder = Order::model()->getCollectedOrder($model->userId);
 				$bahtToPoint = Configuration::model()->find('name = "bahtToPoint"')->value;
 //			Order::model()->clearCollectedOrder($model->userId);
 				if($bahtToPoint > 0)
@@ -506,7 +488,7 @@ class OrderController extends MasterBackofficeController
 					$userReward = new UserReward();
 					$userReward->status = 1;
 					$userReward->userId = $model->userId;
-					$userReward->orderId = $model->orderId;
+					$userReward->orderId = $model->orderGroupId;
 					$userReward->points = $point;
 					$userReward->remainingPoints = $point;
 					$userReward->createDateTime = new CDbExpression('NOW()');
@@ -523,7 +505,7 @@ class OrderController extends MasterBackofficeController
 							$emailObj = new Email();
 							$sentMail = new EmailSend();
 							$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $id;
-							$emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderId, null, $documentUrl);
+							$emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderGroupId, null, $documentUrl);
 //							$sentMail->mailCompleteOrderCustomer($emailObj);
 //							$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 							$transaction->commit();
@@ -585,14 +567,14 @@ class OrderController extends MasterBackofficeController
 	{
 //		if (isset($_POST["remark"]))
 //			$remark = $_POST["remark"];
-		$model = $this->loadModel($id);
+		$model = OrderGroup::model()->findByPk($id);
 		$user = User::model()->findByPk(Yii::app()->user->id);
 		if(isset($model->remark))
 		{
 			$model->remark .= ",";
 		}
 		$model->remark .="{" . $user->firstname . " " . $user->lastname . "}-" . $model->status . ":" . $remark;
-		$model->status = 0;
+		$model->status = 1;
 		$model->invoiceNo = null;
 		$model->save();
 		$emailObj = new Email();
@@ -607,17 +589,17 @@ class OrderController extends MasterBackofficeController
 
 	public function actionSupplierShipping($id)
 	{
-		$order = Order::model()->findByPk($id);
+		$order = OrderGroup::model()->findByPk($id);
 		if(isset($order))
 		{
-			if(isset($_POST["Order"]["supplierShippingDateTime"]))
+			if(isset($_POST["OrderGroup"]["supplierShippingDateTime"]))
 			{
 				$flag = TRUE;
 				$transaction = Yii::app()->db->beginTransaction();
 				try
 				{
-					$order->orderStatusid = 3;
-					$order->supplierShippingDateTime = $_POST["Order"]["supplierShippingDateTime"];
+					$order->status = 4;
+					$order->supplierShippingDateTime = $_POST["OrderGroup"]["supplierShippingDateTime"];
 					if(!$order->save())
 					{
 						$flag = FALSE;
@@ -631,7 +613,7 @@ class OrderController extends MasterBackofficeController
 						$sentMail = new EmailSend();
 						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/";
 						$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
-						$sentMail->mailReadyToShipProduct($emailObj);
+//						$sentMail->mailReadyToShipProduct($emailObj);
 
 						$this->redirect(Yii::app()->createUrl("//order/SupplierShippingNotice/id/" . $id));
 					}
@@ -659,12 +641,13 @@ class OrderController extends MasterBackofficeController
 
 	public function actionPrintProductList($id)
 	{
+		$model = OrderGroup::model()->findByPk($id);
 		$this->layout = '//layouts/print';
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$this->render('view', array(
-			'model'=>$this->loadModel($id),
-			'pageText'=>$this->selectPageTitle($this->loadModel($id)),
+			'model'=>$model,
+			'pageText'=>$this->selectPageTitle($model),
 			'daiibuy'=>$daiibuy
 		));
 	}
@@ -679,27 +662,27 @@ class OrderController extends MasterBackofficeController
 		{
 			case 1://User
 				return array(
-					'0'=>array(
+					'1'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'0',
+						'defaultStatus'=>'1',
 						'optionButtonText'=>'ยืนยันชำระเงิน',
 						'comfirmText'=>'ต้องการยืนยันโอนเงิน ?',
 						'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/UserConfirmTransfer",
 						'description'=>"รอการยืนยันโอนเงินจากลูกค้า"
 					),
-					'1'=>array(
-						'pageTitle'=>"แบบร่างใบเสร็จรับเงิน",
-						'defaultStatus'=>'1',
-						'description'=>"รอตรวจสอบการโอนเงิน"
-					),
 					'2'=>array(
-						'pageTitle'=>"ใบเสร็จรับเงิน/ใบกำกับภาษี",
+						'pageTitle'=>"แบบร่างใบเสร็จรับเงิน",
 						'defaultStatus'=>'2',
-						'description'=>"การสั่งซื้อสินค้าสมบูรณ์"
+						'description'=>"รอตรวจสอบการโอนเงิน"
 					),
 					'3'=>array(
 						'pageTitle'=>"ใบเสร็จรับเงิน/ใบกำกับภาษี",
 						'defaultStatus'=>'3',
+						'description'=>"การสั่งซื้อสินค้าสมบูรณ์"
+					),
+					'4'=>array(
+						'pageTitle'=>"ใบเสร็จรับเงิน/ใบกำกับภาษี",
+						'defaultStatus'=>'4',
 						'description'=>"Supplier กำลังจัดส่งสินค้า",
 						'optionButtonText3'=>' แก้ไขรายชื่อผู้รับสินค้าแทน',
 					),
@@ -716,9 +699,9 @@ class OrderController extends MasterBackofficeController
 				break;
 			case 2://Dealer
 				return array(
-					'0'=>(Yii::app()->user->userType == $userOrder->type) ? array(
+					'1'=>(Yii::app()->user->userType == $userOrder->type) ? array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'0',
+						'defaultStatus'=>'1',
 						'optionButtonText'=>'ยืนยันชำระเงิน',
 						'comfirmText'=>'ต้องการยืนยันโอนเงิน ?',
 						'actionUrl'=>"order/UserConfirmTransfer",
@@ -728,22 +711,22 @@ class OrderController extends MasterBackofficeController
 						'defaultStatus'=>'0',
 						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
 						),
-					'1'=>array(
+					'2'=>array(
 						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'1',
+						'defaultStatus'=>'2',
 						'description'=>"รอผู้ดูแลระบบยืนยันการโอนเงินจากลูกค้า"
 					),
-					'2'=>array(
+					'3'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'2',
+						'defaultStatus'=>'3',
 						'description'=>"ลูกค้าชำระเงินเรียบร้อยแล้ว"
 					),
-					'3'=>$model->isSentToCustomer == 1 ? array(
+					'4'=>$model->isSentToCustomer == 1 ? array(
 						'pageTitle'=>"ใบส่งสินค้า",
-						'defaultStatus'=>'3',
+						'defaultStatus'=>'4',
 						'description'=>"รอผู้สั่งซื้อรับสินค้า",) : array(
 						'pageTitle'=>"ใบส่งสินค้า",
-						'defaultStatus'=>'3',
+						'defaultStatus'=>'4',
 						'optionButtonText'=>'ยืนยันรับสินค้า',
 						'comfirmText'=>'ต้องการยืนยันรับสินค้า?',
 						'actionUrl'=>"order/DealerReceived",
@@ -763,29 +746,29 @@ class OrderController extends MasterBackofficeController
 				break;
 			case 3://supplier
 				return array(
-					'0'=>array(
-						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'0',
-						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
-					),
 					'1'=>array(
 						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
 						'defaultStatus'=>'1',
-						'description'=>"รอผู้ดูแลระบบยืนยันการโอนเงิน"),
+						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
+					),
 					'2'=>array(
+						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
+						'defaultStatus'=>'2',
+						'description'=>"รอผู้ดูแลระบบยืนยันการโอนเงิน"),
+					'3'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
 						'printText'=>"พิมพ์",
 						'description'=>"รอจัดส่งสินค้า",
-						'defaultStatus'=>'2',
+						'defaultStatus'=>'3',
 						'optionButtonText'=>' ส่งสินค้า',
 						'comfirmText'=>'ต้องการยืนยันส่งสินค้า ?',
-						'actionUrl'=>"order/SupplierShipping",
+						'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/SupplierShipping",
 //							'optionButtonText2'=>' อัพโหลดใบกำกับภาษี',
 //							'actionUrl2'=>"order/SupplierUploadFile",
 					),
-					'3'=>$model->isSentToCustomer == 1 ? array(
+					'4'=>$model->isSentToCustomer == 1 ? array(
 						'pageTitle'=>"ใบส่งสินค้า",
-						'defaultStatus'=>'3',
+						'defaultStatus'=>'4',
 						'description'=>"รอผู้สั่งซื้อรับสินค้า",
 						'optionButtonText'=>'ส่งสินค้าเรียบร้อย',
 						'comfirmText'=>'ต้องการยืนยันส่งสินค้าเรียบร้อย ?',
@@ -806,24 +789,24 @@ class OrderController extends MasterBackofficeController
 				break;
 			case 4://Admin
 				return array(
-					'0'=>array(
-						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'0',
-						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
-					),
 					'1'=>array(
-						'pageTitle'=>"ใบสั่งซื้อสินค้า",
+						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
 						'defaultStatus'=>'1',
-						'description'=>"รอยืนยันการโอนเงินจากผู้ดูแลระบบ"
+						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
 					),
 					'2'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
 						'defaultStatus'=>'2',
-						'description'=>"ลูกค้าชำระเงินเรียบร้อยแล้ว"
+						'description'=>"รอยืนยันการโอนเงินจากผู้ดูแลระบบ"
 					),
 					'3'=>array(
-						'pageTitle'=>"ใบส่งสินค้า",
+						'pageTitle'=>"ใบสั่งซื้อสินค้า",
 						'defaultStatus'=>'3',
+						'description'=>"ลูกค้าชำระเงินเรียบร้อยแล้ว"
+					),
+					'4'=>array(
+						'pageTitle'=>"ใบส่งสินค้า",
+						'defaultStatus'=>'4',
 						'description'=>"ผู้ผลิตกำลังจัดส่งสินค้า"),
 					'98'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
@@ -841,14 +824,14 @@ class OrderController extends MasterBackofficeController
 				break;
 			case 5://Finance
 				return array(
-					'0'=>array(
-						'pageTitle'=>"ใบสั่งซื้อสินค้า",
-						'defaultStatus'=>'0',
-						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
-					),
 					'1'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",
 						'defaultStatus'=>'1',
+						'description'=>"รอยืนยันการโอนเงินจากลูกค้า"
+					),
+					'2'=>array(
+						'pageTitle'=>"ใบสั่งซื้อสินค้า",
+						'defaultStatus'=>'2',
 //							'optionButtonText'=>'ยืนยันหลักฐานการโอนเงินถูกต้อง',
 //							'comfirmText'=>'ต้องการยืนยัน ?',
 //							'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/adminDefinePaymentDateTime",
@@ -861,14 +844,14 @@ class OrderController extends MasterBackofficeController
 						'actionUrl2'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/adminRejectConfirmTransfer",
 						'description'=>"ลูกค้ายืนยันการโอนเงินเรียบร้อยแล้ว"
 					),
-					'2'=>array(
-						'pageTitle'=>"ใบเสร็จรับเงิน/ใบกำกับภาษี",
-						'defaultStatus'=>'2',
-						'description'=>"ลูกค้าชำระเงินเรียบร้อยแล้ว"
-					),
 					'3'=>array(
 						'pageTitle'=>"ใบเสร็จรับเงิน/ใบกำกับภาษี",
 						'defaultStatus'=>'3',
+						'description'=>"ลูกค้าชำระเงินเรียบร้อยแล้ว"
+					),
+					'4'=>array(
+						'pageTitle'=>"ใบเสร็จรับเงิน/ใบกำกับภาษี",
+						'defaultStatus'=>'4',
 						'description'=>"ผู้ผลิตสินค้าส่งสินค้าแล้ว"),
 					'98'=>array(
 						'pageTitle'=>"ใบสั่งซื้อสินค้า",

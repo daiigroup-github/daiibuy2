@@ -19,7 +19,7 @@ $cs->registerCssFile($baseUrl . '/js/fancyBox/source/helpers/jquery.fancybox-thu
 $this->breadcrumbs = array(
 	'Orders'=>array(
 		'index'),
-	$model->orderId,
+	$model->orderGroupId,
 );
 
 $supplier = Supplier::model()->findByPk($model->supplierId);
@@ -34,7 +34,7 @@ if(isset(Yii::app()->user->id))
 {
 	$user = User::model()->findByPk(Yii::app()->user->id);
 }
-$discount = isset($daiibuy->discount[$model->supplierId]) ? $daiibuy->discount[$model->supplierId] : $model->usedPoint;
+//$discount = isset($daiibuy->discount[$model->supplierId]) ? $daiibuy->discount[$model->supplierId] : $model->usedPoint;
 $pointToBahtConfig = Configuration::model()->getPointToBaht();
 $pointToBaht = (float) $pointToBahtConfig->value;
 //$margin = $model->getSupplierMarginToDaiiBuy();
@@ -103,7 +103,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 
 		<div class="row">
 			<?php
-			if($model->status == 0)
+			if($model->status == 1)
 			{
 				?>
 

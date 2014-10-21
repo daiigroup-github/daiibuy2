@@ -2,7 +2,7 @@
 if(isset(Yii::app()->user->userType))
 {
 	$i = 0;
-	if(count($model->orderFiles) > 0)
+	if(count($model->orderGroupFiles) > 0)
 	{
 		if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5 || Yii::app()->user->userType == 1)
 		{
@@ -18,7 +18,7 @@ if(isset(Yii::app()->user->userType))
 					<th width="10%">วันที่สร้าง</th>
 					</thead>
 					<?php
-					foreach($model->orderFiles as $file)
+					foreach($model->orderGroupFiles as $file)
 					{
 						$userType = "";
 						if(isset($file->userType))
@@ -70,9 +70,9 @@ if(isset(Yii::app()->user->userType))
 //					{
 			?>
 									<tbody>
-									<td><?php // echo $i . ". ";                 ?></td>
-									<td><?php // echo $slip['fileName']                 ?></td>
-									<td><?php // echo showImage($slip['file'], $slip['fileName']);                 ?></td>
+									<td><?php // echo $i . ". ";                   ?></td>
+									<td><?php // echo $slip['fileName']                   ?></td>
+									<td><?php // echo showImage($slip['file'], $slip['fileName']);                   ?></td>
 									</tbody>
 									</br>
 			<?php

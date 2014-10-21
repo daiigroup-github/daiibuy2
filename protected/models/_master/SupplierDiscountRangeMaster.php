@@ -1,30 +1,29 @@
 <?php
 
 /**
- * This is the model class for table "order_file".
+ * This is the model class for table "supplier_discount_range".
  *
- * The followings are the available columns in table 'order_file':
- * @property string $orderFileId
- * @property string $orderId
- * @property string $fileName
- * @property string $filePath
- * @property string $senderId
- * @property string $receiverId
- * @property integer $userType
+ * The followings are the available columns in table 'supplier_discount_range':
+ * @property string $id
+ * @property string $supplierId
+ * @property string $min
+ * @property string $max
+ * @property integer $percentDiscount
  * @property integer $status
  * @property string $createDateTime
+ * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property Order $order
+ * @property Supplier $supplier
  */
-class OrderFileMaster extends MasterCActiveRecord
+class SupplierDiscountRangeMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'order_file';
+		return 'supplier_discount_range';
 	}
 
 	/**
@@ -35,15 +34,16 @@ class OrderFileMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('orderId, fileName, filePath, senderId, receiverId, userType, createDateTime', 'required'),
-			array('userType, status', 'numerical', 'integerOnly'=>true),
-			array('orderId, senderId, receiverId', 'length', 'max'=>20),
-			array('fileName', 'length', 'max'=>200),
-			array('filePath', 'length', 'max'=>1000),
-			array('createDateTime', 'length', 'max'=>45),
+			array('supplierId, min, percentDiscount', 'required'),
+			array('percentDiscount, status', 'numerical', 'integerOnly'=>true),
+			array('supplierId', 'length', 'max'=>20),
+			array('min, max', 'length', 'max'=>15),
+			array('createDateTime, updateDateTime', 'safe'),
+			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
+			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderFileId, orderId, fileName, filePath, senderId, receiverId, userType, status, createDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, supplierId, min, max, percentDiscount, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,7 +55,7 @@ class OrderFileMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'order' => array(self::BELONGS_TO, 'Order', 'orderId'),
+			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
 		);
 	}
 
@@ -65,15 +65,14 @@ class OrderFileMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'orderFileId' => 'Order File',
-			'orderId' => 'Order',
-			'fileName' => 'File Name',
-			'filePath' => 'File Path',
-			'senderId' => 'Sender',
-			'receiverId' => 'Receiver',
-			'userType' => 'User Type',
+			'id' => 'ID',
+			'supplierId' => 'Supplier',
+			'min' => 'Min',
+			'max' => 'Max',
+			'percentDiscount' => 'Percent Discount',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
+			'updateDateTime' => 'Update Date Time',
 		);
 	}
 
@@ -97,26 +96,24 @@ class OrderFileMaster extends MasterCActiveRecord
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->orderFileId = $this->searchText;
-			$this->orderId = $this->searchText;
-			$this->fileName = $this->searchText;
-			$this->filePath = $this->searchText;
-			$this->senderId = $this->searchText;
-			$this->receiverId = $this->searchText;
-			$this->userType = $this->searchText;
+			$this->id = $this->searchText;
+			$this->supplierId = $this->searchText;
+			$this->min = $this->searchText;
+			$this->max = $this->searchText;
+			$this->percentDiscount = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
+			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('orderFileId',$this->orderFileId,true, 'OR');
-		$criteria->compare('orderId',$this->orderId,true, 'OR');
-		$criteria->compare('fileName',$this->fileName,true, 'OR');
-		$criteria->compare('filePath',$this->filePath,true, 'OR');
-		$criteria->compare('senderId',$this->senderId,true, 'OR');
-		$criteria->compare('receiverId',$this->receiverId,true, 'OR');
-		$criteria->compare('userType',$this->userType);
+		$criteria->compare('id',$this->id,true, 'OR');
+		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
+		$criteria->compare('min',$this->min,true, 'OR');
+		$criteria->compare('max',$this->max,true, 'OR');
+		$criteria->compare('percentDiscount',$this->percentDiscount);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
+		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -127,7 +124,7 @@ class OrderFileMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return OrderFileMaster the static model class
+	 * @return SupplierDiscountRangeMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

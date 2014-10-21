@@ -946,4 +946,21 @@ class Product extends ProductMaster
 		return $res;
 	}
 
+    public function ginzaPriceByCategory1IdAndCategory2Id($category1Id, $category2Id)
+    {
+        $c2tops = Category2ToProduct::model()->findAll(array(
+            'condition' => 'category1Id=:category1Id AND category2Id=:category2Id',
+            'params' => array(
+                'category1Id' => $category1Id,
+                'category2Id' => $category2Id,
+            ),
+        ));
+
+        $price = 0;
+        foreach ($c2tops as $c2top) {
+            $price += ($c2top->product->calProductPromotionPrice() != 0) ? $c2top->product->calProductPromotionPrice() : $c2top->product->calProductPrice();
+        }
+
+        return $price;
+    }
 }
