@@ -67,7 +67,7 @@ $this->breadcrumbs = array(
 							<?php
 							echo CHtml::textField('title', $model->title, array(
 								'class'=>'form-control',
-								'id'=>'title',
+								'id'=>'myfile_title',
 								'placeholder'=>'กรุณากรอกชื่อ My File.'
 							));
 							?>
@@ -130,37 +130,11 @@ $this->breadcrumbs = array(
             <div class="col-md-12 well text-left">
 				<div class="row">
 					<div class="page-header myfile-fenzer-header" >
-						<h1>เลือกความสูง(เมตร)</h1><small> กรุณาเลือกช่วงความสูงของรั้วที่ท่านต้องการ.</small>
+						<h1>อัพโหลดแบบแปลน</h1><small> กรุณาอัพโหลดแบบแปลนที่ต้องการให้ประเมินราคา.</small>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-3">
-						<div>
-							<?php
-							echo CHtml::dropDownList("OrderDetailValue[height]", '', $heightArray, array(
-								'class'=>'form-control',
-								'id'=>'selectHeight',
-								'prompt'=>'--กรุณาเลือกความสูง--',
-								'ajax'=>array(
-									'type'=>'POST',
-									'url'=>CController::createUrl('fenzer/showFenzerProductResultByHeight'), //url to call.
-//									'update'=>'#height_content', //selector to update
-									'dataType'=>'html',
-									'data'=>array(
-										"height"=>"js:this.value"),
-									'success'=>'js:function(data){
-										$("#height_content").html(data);
-									}',
-								),
-							));
-							?>
-						</div>
-					</div>
-					<div class="col-md-9" id="height_content">
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12" id="select_content">
+					<div class="col-md-12" id="upload_plan">
 					</div>
 				</div>
 				<div class="row wizard-control">

@@ -13,7 +13,7 @@ class FenzerController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 1, null);
+		$myfileArray = Order::model()->findAllMyFileBySupplierId(Yii::app()->user->id, 1, null);
 		$this->render('index', array(
 			'myfileArray'=>$myfileArray));
 	}
