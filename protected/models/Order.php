@@ -97,14 +97,14 @@ class Order extends OrderMaster
 		$criteria = new CDbCriteria();
 		if(($this->userId == 0))
 		{
-			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = '. self::ORDER_TYPE_MYFILE .' OR type = '. self::ORDER_TYPE_MYFILE_TO_CART.') AND status = 1';
+			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = '. self::ORDER_TYPE_MYFILE .' OR type = '. self::ORDER_TYPE_MYFILE_TO_CART.') AND (status = 1 OR status = 0)';
 			$criteria->params = array(
 				':userId'=>$userId,
 				':supplierId'=>$supplierId,);
 		}
 		else
 		{
-			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = '. self::ORDER_TYPE_MYFILE .' OR type = '. self::ORDER_TYPE_MYFILE_TO_CART.') AND status = 1';
+			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = '. self::ORDER_TYPE_MYFILE .' OR type = '. self::ORDER_TYPE_MYFILE_TO_CART.') AND (status = 1 OR status = 0)';
 			$criteria->params = array(
 				':token'=>$token,
 				':supplierId'=>$supplierId,);

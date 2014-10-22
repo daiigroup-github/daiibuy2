@@ -160,20 +160,20 @@ $(document).ready(function() {
 
 //Upload Plan Atech
 	$('#uploadPlanAtech').on('click', function() {
-		var base_url = window.location.origin;
-		var title = $("#myfile_title").attr("value");
-		var provinceId = $("#selectProvince").attr("value");
-		alert(title);
-		alert(provinceId);
-		var productItems = $("#editTableForm").serialize();
-		$.ajax({
-			url: base_url + '/daiibuy2/myfile/atechWindow/saveTitleAndProvinceId',
-			type: 'POST',
-			data: {'provinceId': provinceId, 'title': title},
-			success: function(data) {
-				$("#upload_plan").html(data);
-			}
-		});
+//		var base_url = window.location.origin;
+//		var title = $("#myfile_title").attr("value");
+//		var provinceId = $("#selectProvince").attr("value");
+//		alert(title);
+//		alert(provinceId);
+//		var productItems = $("#editTableForm").serialize();
+//		$.ajax({
+//			url: base_url + '/daiibuy2/myfile/atechWindow/saveTitleAndProvinceId',
+//			type: 'POST',
+//			data: {'provinceId': provinceId, 'title': title},
+//			success: function(data) {
+//				$("#upload_plan").html(data);
+//			}
+//		});
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	});
 

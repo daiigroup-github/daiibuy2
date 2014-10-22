@@ -38,6 +38,7 @@ return CMap::mergeArray(
 //							'css/jquery.fileupload-ui.css',
 //							'css/jquery.fileupload-noscript.css',
 //							'css/jquery.fileupload-ui-noscript.css',
+							'css/fileinput.css',
 							'css/perfect-scrollbar.css',
 							'css/myFileStyle.css',
 							'css/style.css',
@@ -53,8 +54,10 @@ return CMap::mergeArray(
 							'font-awesome/css/font-awesome.min.css',
 							'css/custom.css',
 
+
 						),
 						'js'=>array(
+							'js/fileinput.js',
 							'js/modernizr.min.js',
 							'js/jquery.raty.min.js',
 							'js/perfect-scrollbar.min.js',
@@ -71,6 +74,7 @@ return CMap::mergeArray(
 							'js/main-script.js',
 							'select2/select2.js',
 							'jquery/jquery.cookie.js',
+
 //							'js/vendor/jquery.ui.widget.js',
 //							'js/jquery.iframe-transport.js',
 //							'js/jquery.fileupload.js',
