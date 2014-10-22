@@ -34,6 +34,7 @@ class BankController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
+		$this->checkAdminAccessMenu();
 		$model = new Bank;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -165,6 +166,7 @@ class BankController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
+		$this->checkAdminAccessMenu();
 		$model = new Bank('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Bank']))

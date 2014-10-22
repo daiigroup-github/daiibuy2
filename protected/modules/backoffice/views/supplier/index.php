@@ -34,8 +34,10 @@ return false;
 		Manage Suppliers
 		<div class="pull-right">
 			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array(
-				'class'=>'btn btn-xs btn-primary'));
+			if(Yii::app()->user->userType == 4):
+				echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array(
+					'class'=>'btn btn-xs btn-primary'));
+			endif;
 			?>
 		</div>
 	</div>
@@ -82,13 +84,17 @@ return false;
 				'class'=>'CButtonColumn',
 				'template'=>'{view} {update} {delete} {user} {ePayment} {discount}',
 				'buttons'=>array(
+					'delete'=>array(
+						'visible'=>'Yii::app()->user->userType == 4'
+					),
 					'user'=>array(
 						'label'=>'<br><u>User</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/userToSupplier/index?supplierId=".$data->supplierId)'
 					),
 					'ePayment'=>array(
 						'label'=>'<br><u>e-Payment</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/supplierEpayment/index?supplierId=".$data->supplierId)'
+						'url'=>'Yii::app()->createUrl("/backoffice/supplierEpayment/index?supplierId=".$data->supplierId)',
+						'visible'=>'Yii::app()->user->userType == 4'
 					),
 					'discount'=>array(
 						'label'=>'<br><u>Discount</u>',

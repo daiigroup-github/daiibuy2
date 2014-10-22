@@ -57,4 +57,67 @@ class Supplier extends SupplierMaster
 	  {
 	  }
 	 */
+	public function search()
+	{
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria = new CDbCriteria;
+
+		if(isset($this->searchText) && !empty($this->searchText))
+		{
+			$this->supplierId = $this->searchText;
+			$this->name = $this->searchText;
+			$this->prefix = $this->searchText;
+			$this->description = $this->searchText;
+			$this->companyName = $this->searchText;
+			$this->address1 = $this->searchText;
+			$this->address2 = $this->searchText;
+			$this->districtId = $this->searchText;
+			$this->amphurId = $this->searchText;
+			$this->provinceId = $this->searchText;
+			$this->postcode = $this->searchText;
+			$this->taxNumber = $this->searchText;
+			$this->email = $this->searchText;
+			$this->tel = $this->searchText;
+			$this->fax = $this->searchText;
+			$this->logo = $this->searchText;
+			$this->url = $this->searchText;
+			$this->status = $this->searchText;
+			$this->createDateTime = $this->searchText;
+			$this->updateDateTime = $this->searchText;
+		}
+
+		if(Yii::app()->user->userType == 3)
+		{
+			$criteria->compare('supplierId', Yii::app()->user->supplierId);
+		}
+		else
+		{
+			$criteria->compare('supplierId', $this->supplierId, true, 'OR');
+		}
+		$criteria->compare('name', $this->name, true, 'OR');
+		$criteria->compare('prefix', $this->prefix, true, 'OR');
+		$criteria->compare('description', $this->description, true, 'OR');
+		$criteria->compare('companyName', $this->companyName, true, 'OR');
+		$criteria->compare('address1', $this->address1, true, 'OR');
+		$criteria->compare('address2', $this->address2, true, 'OR');
+		$criteria->compare('districtId', $this->districtId, true, 'OR');
+		$criteria->compare('amphurId', $this->amphurId, true, 'OR');
+		$criteria->compare('provinceId', $this->provinceId, true, 'OR');
+		$criteria->compare('postcode', $this->postcode, true, 'OR');
+		$criteria->compare('taxNumber', $this->taxNumber, true, 'OR');
+		$criteria->compare('email', $this->email, true, 'OR');
+		$criteria->compare('tel', $this->tel, true, 'OR');
+		$criteria->compare('fax', $this->fax, true, 'OR');
+		$criteria->compare('logo', $this->logo, true, 'OR');
+		$criteria->compare('url', $this->url, true, 'OR');
+		$criteria->compare('status', $this->status);
+		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
 }

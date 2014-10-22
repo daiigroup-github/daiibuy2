@@ -47,7 +47,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
 			),
 			array(
 				'label'=>'Order',
@@ -65,12 +65,14 @@ class MasterBackofficeController extends MasterController
 						'label'=>'User',
 						'url'=>array(
 							'/backoffice/user/index',
-						)),
+						),
+						'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)),
 					array(
 						'label'=>'User File',
 						'url'=>array(
 							'/backoffice/userFile/index',
-						)),
+						),
+						'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)),
 					array(
 						'label'=>'Supplier',
 						'url'=>array(
@@ -85,7 +87,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
 			),
 			array(
 				'label'=>'ข้อมูลหลัก<i class="fa fa-arrow-circle-o-down"></i>',
@@ -117,7 +119,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)
 			),
 			array(
 				'label'=>'รายงาน<i class="fa fa-arrow-circle-o-down"></i>',
@@ -149,14 +151,15 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)
 			),
 			array(
 				'label'=>'Configuration',
 				'url'=>array(
 					'/backoffice/configuration',
 				),
-				'visible'=>!Yii::app()->user->isGuest),
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)
+			),
 //            array(
 //                'label' => 'Home',
 //                'url' => array('/site/index')

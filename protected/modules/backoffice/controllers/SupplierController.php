@@ -192,6 +192,7 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
+		$this->checkSupplierAndAdminAccessMenu();
 		$model = new Supplier('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Supplier']))
