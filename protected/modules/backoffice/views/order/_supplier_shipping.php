@@ -19,22 +19,24 @@
 		<div class="form-group">
 			<label class="control-label col-sm-3"><?php echo $form->labelEx($orderModel, "supplierShippingDateTime"); ?></label>
 			<div class="col-sm-9">
-				<?php //echo $form->textField($orderModel, "supplierShippingDateTime"); ?>
 				<?php
-				$this->widget('ext.CJuiDateTimePicker.CJuiDateTimePicker', array(
-//					'name'=>'OrderGroup[supplierShippingDateTime]',
+				$this->widget('ext.timepicker.BJuiDateTimePicker', array(
 					'model'=>$orderModel,
 					'attribute'=>'supplierShippingDateTime',
+					'type'=>'datetime', // available parameter is datetime or time
+					//'language'=>'de', // default to english
+					'themeName'=>'sunny', // jquery ui theme, file is under assets folder
 					'options'=>array(
-						'showAnim'=>'fold',
-						'dateFormat'=>'yy-mm-dd',
-						'changeMonth'=>'true',
-						'changeYear'=>'true',
+						// put your js options here check http://trentrichardson.com/examples/timepicker/#slider_examples for more info
+						'timeFormat'=>'HH:mm:ss',
+						'dateFormat'=>'yy/mm/dd',
+						'showSecond'=>FALSE,
+						'hourGrid'=>1,
+						'minuteGrid'=>10,
 					),
-					'language'=>'th',
 					'htmlOptions'=>array(
-						'style'=>'height:20px;'
-					),
+						'class'=>'input-medium'
+					)
 				));
 				?>
 				<?php echo $form->error($orderModel, 'supplierShippingDateTime'); ?>

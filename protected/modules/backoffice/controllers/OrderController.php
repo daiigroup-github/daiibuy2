@@ -545,9 +545,9 @@ class OrderController extends MasterBackofficeController
 					$emailObj = new Email();
 					$sentMail = new EmailSend();
 					$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $id;
-					$emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderId, null, $documentUrl);
-//					$sentMail->mailCompleteOrderCustomer($emailObj);
-//					$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+					$emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderGroupId, null, $documentUrl);
+					$sentMail->mailCompleteOrderCustomer($emailObj);
+					$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 					$transaction->commit();
 					$this->redirect(array(
 						'index'));
@@ -579,8 +579,8 @@ class OrderController extends MasterBackofficeController
 		$model->save();
 		$emailObj = new Email();
 		$sentMail = new EmailSend();
-		$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $model->orderId;
-		$emailObj->Setmail($model->userId, NULL, $model->supplierId, $model->orderId, null, $documentUrl, $remark);
+		$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $model->orderGroupId;
+		$emailObj->Setmail($model->userId, NULL, $model->supplierId, $model->orderGroupId, null, $documentUrl, $remark);
 		$sentMail->mailRejectConfirmTransferToCustomer($emailObj);
 
 		$this->redirect(array(
@@ -612,10 +612,12 @@ class OrderController extends MasterBackofficeController
 						$emailObj = new Email();
 						$sentMail = new EmailSend();
 						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/";
-						$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
+						$emailObj->Setmail($order->userId, NULL, $order->supplierId, $order->orderGroupId, null, $documentUrl);
 //						$sentMail->mailReadyToShipProduct($emailObj);
 
-						$this->redirect(Yii::app()->createUrl("//order/SupplierShippingNotice/id/" . $id));
+						$this->redirect(array(
+							'supplierShippingNotice',
+							'id'=>$id));
 					}
 					else
 					{
@@ -637,6 +639,14 @@ class OrderController extends MasterBackofficeController
 				"orderModel"=>$order
 			));
 		}
+	}
+
+	public function actionSupplierShippingNotice($id)
+	{
+		$model = OrderGroup::model()->findByPk($id);
+		$this->render("_supplier_shipping_notice", array(
+			"model"=>$model
+		));
 	}
 
 	public function actionPrintProductList($id)
@@ -760,7 +770,7 @@ class OrderController extends MasterBackofficeController
 						'printText'=>"พิมพ์",
 						'description'=>"รอจัดส่งสินค้า",
 						'defaultStatus'=>'3',
-						'optionButtonText'=>' ส่งสินค้า',
+						'optionButtonText'=>' ระบุวันจัดส่งสินค้า',
 						'comfirmText'=>'ต้องการยืนยันส่งสินค้า ?',
 						'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/SupplierShipping",
 //							'optionButtonText2'=>' อัพโหลดใบกำกับภาษี',

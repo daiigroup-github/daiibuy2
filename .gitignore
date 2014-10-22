@@ -11,3 +11,4 @@ protected/config/params.php
 images/userFile/*
 images/bank
 images/categoryImage
+images/orderFile

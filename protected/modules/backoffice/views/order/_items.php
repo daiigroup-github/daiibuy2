@@ -197,16 +197,25 @@
 
 					<tr>
 						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/vat 7%</td>
-						<td style="text-align: right"><?php echo number_format(($model->totalIncVAT * (100 + $margin['daiiMargin']) / 100) - ($model->total * (100 + $margin['daiiMargin']) / 100), 2, ".", ","); ?></td>
+						<td style="text-align: right"><?php
+							// echo number_format(($model->totalIncVAT * (100 + $margin['daiiMargin']) / 100) - ($model->total * (100 + $margin['daiiMargin']) / 100), 2, ".", ",");
+							echo number_format($model->totalIncVAT - $model->total, 2, ".", ",");
+							?></td>
 					</tr>
 					<tr>
 						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Total excluded VAT</td>
-						<td style="text-align: right"><?php echo number_format(($model->total * (100 + $margin['daiiMargin']) / 100), 2, ".", ",");
-			?></td>
+						<td style="text-align: right"><?php
+							// echo number_format(($model->total * (100 + $margin['daiiMargin']) / 100), 2, ".", ",");
+							echo number_format($model->total, 2, ".", ",");
+							?></td>
 					</tr>
 					<tr>
 						<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
-						<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format(($model->totalIncVAT * (100 + $margin['daiiMargin']) / 100), 2, ".", ","); ?></td>
+						<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" >
+							<?php
+							// echo number_format(($model->totalIncVAT * (100 + $margin['daiiMargin']) / 100), 2, ".", ",");
+							echo number_format($model->totalIncVAT, 2, ".", ",");
+							?></td>
 					</tr>
 					<?php
 				}
@@ -222,7 +231,7 @@
 				<tr>
 					<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Total excluded VAT</td>
 					<td style="text-align: right"><?php echo number_format($model->total, 2, ".", ",");
-			?></td>
+				?></td>
 				</tr>
 				<tr>
 					<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>

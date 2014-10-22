@@ -1,6 +1,6 @@
 <?php
 
-class SupplierController extends MasterBackofficeController
+class SupplierDiscountRangeController extends MasterBackofficeController
 {
 
 	/**
@@ -70,20 +70,23 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
-		$model = new Supplier;
-
+		$model = new SupplierDiscountRange;
+		if(isset($_GET["supplierId"]))
+		{
+			$model->supplierId = $_GET["supplierId"];
+		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Supplier']))
+		if(isset($_POST['SupplierDiscountRange']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['Supplier'];
-				$model->attributes = $_POST['Supplier']["billing"];
-
+				$model->attributes = $_POST['SupplierDiscountRange'];
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
 				if($model->save())
 				{
 					$flag = true;
@@ -93,7 +96,8 @@ class SupplierController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'index'));
+						'index',
+						'supplierId'=>$model->supplierId));
 				}
 				else
 				{
@@ -124,15 +128,14 @@ class SupplierController extends MasterBackofficeController
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Supplier']))
+		if(isset($_POST['SupplierDiscountRange']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['Supplier'];
-				$model->attributes = $_POST['Supplier']["billing"];
-
+				$model->attributes = $_POST['SupplierDiscountRange'];
+				$model->updateDateTime = new CDbExpression("NOW()");
 				if($model->save())
 				{
 					$flag = true;
@@ -142,7 +145,8 @@ class SupplierController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'index'));
+						'index',
+						'supplierId'=>$model->supplierId));
 				}
 				else
 				{
@@ -181,7 +185,7 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider = new CActiveDataProvider('Supplier');
+		$dataProvider = new CActiveDataProvider('SupplierDiscountRange');
 		$this->render('admin', array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -192,10 +196,14 @@ class SupplierController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-		$model = new Supplier('search');
+		$model = new SupplierDiscountRange('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Supplier']))
-			$model->attributes = $_GET['Supplier'];
+		if(isset($_GET['SupplierDiscountRange']))
+			$model->attributes = $_GET['SupplierDiscountRange'];
+		if(isset($_GET["supplierId"]))
+		{
+			$model->supplierId = $_GET["supplierId"];
+		}
 
 		$this->render('index', array(
 			'model'=>$model,
@@ -206,12 +214,12 @@ class SupplierController extends MasterBackofficeController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Supplier the loaded model
+	 * @return SupplierDiscountRange the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model = Supplier::model()->findByPk($id);
+		$model = SupplierDiscountRange::model()->findByPk($id);
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
@@ -219,11 +227,11 @@ class SupplierController extends MasterBackofficeController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Supplier $model the model to be validated
+	 * @param SupplierDiscountRange $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax'] === 'supplier-form')
+		if(isset($_POST['ajax']) && $_POST['ajax'] === 'supplier-discount-range-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

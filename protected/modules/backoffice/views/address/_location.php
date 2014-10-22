@@ -46,7 +46,7 @@ if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $typ
 					'type'=>'POST', //request type
 					'url'=>CController::createUrl('/backoffice/user/dynamicLocation'), //url to call.
 					//Style: CController::createUrl('currentController/methodToCall')
-					'update'=>!isset($type) ? '#Address_amphurId' : "#Address_" . $type . "_amphurId", //selector to update
+					'update'=>!isset($type) ? "#" . get_class($model) . "_amphurId" : "#" . get_class($model) . "_" . $type . "_amphurId", //selector to update
 					'data'=>array(
 						"provinceId"=>"js:this.value"),
 				//leave out the data key to pass all form values through
@@ -71,7 +71,7 @@ if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $typ
 					'type'=>'POST', //request type
 					'url'=>CController::createUrl('/backoffice/user/dynamicLocation'), //url to call.
 					//Style: CController::createUrl('currentController/methodToCall')
-					'update'=>!isset($type) ? '#Address_districtId' : "#Address_" . $type . "_districtId", //selector to update
+					'update'=>!isset($type) ? "#" . get_class($model) . "_districtId" : "#" . get_class($model) . "_" . $type . "_districtId", //selector to update
 					'data'=>array(
 						"amphurId"=>"js:this.value"),
 				//leave out the data key to pass all form values through

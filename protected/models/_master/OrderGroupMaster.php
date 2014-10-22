@@ -22,8 +22,14 @@
  * @property string $paymentCompany
  * @property string $paymentFirstname
  * @property string $paymentLastname
+ * @property string $paymentAddress1
+ * @property string $paymentAddress2
+ * @property string $paymentDistrictId
+ * @property string $paymentAmphurId
+ * @property string $paymentProvinceId
  * @property string $paymentPostcode
  * @property integer $paymentMethod
+ * @property string $paymentTaxNo
  * @property string $shippingCompany
  * @property string $shippingAddress1
  * @property string $shippingAddress2
@@ -40,6 +46,9 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
+ * @property District $paymentDistrict
+ * @property Amphur $paymentAmphur
+ * @property Province $paymentProvince
  * @property District $shippingDistrict
  * @property Amphur $shippingAmphur
  * @property Province $shippingProvince
@@ -68,15 +77,15 @@ class OrderGroupMaster extends MasterCActiveRecord
 			array('userId, total, totalIncVAT, discountPercent, discountValue, createDateTime, updateDateTime', 'required'),
 			array('paymentMethod, usedPoint, isSentToCustomer, status', 'numerical', 'integerOnly'=>true),
 			array('userId, supplierId, invoiceNo, telephone', 'length', 'max'=>20),
-			array('orderNo', 'length', 'max'=>45),
+			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
 			array('firstname, lastname, email, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
 			array('total, totalIncVAT, discountValue, summary', 'length', 'max'=>15),
 			array('discountPercent', 'length', 'max'=>5),
-			array('paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
-			array('paymentDateTime, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
+			array('paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
+			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentPostcode, paymentMethod, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +97,9 @@ class OrderGroupMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'paymentDistrict' => array(self::BELONGS_TO, 'District', 'paymentDistrictId'),
+			'paymentAmphur' => array(self::BELONGS_TO, 'Amphur', 'paymentAmphurId'),
+			'paymentProvince' => array(self::BELONGS_TO, 'Province', 'paymentProvinceId'),
 			'shippingDistrict' => array(self::BELONGS_TO, 'District', 'shippingDistrictId'),
 			'shippingAmphur' => array(self::BELONGS_TO, 'Amphur', 'shippingAmphurId'),
 			'shippingProvince' => array(self::BELONGS_TO, 'Province', 'shippingProvinceId'),
@@ -121,8 +133,14 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'paymentCompany' => 'Payment Company',
 			'paymentFirstname' => 'Payment Firstname',
 			'paymentLastname' => 'Payment Lastname',
+			'paymentAddress1' => 'Payment Address1',
+			'paymentAddress2' => 'Payment Address2',
+			'paymentDistrictId' => 'Payment District',
+			'paymentAmphurId' => 'Payment Amphur',
+			'paymentProvinceId' => 'Payment Province',
 			'paymentPostcode' => 'Payment Postcode',
 			'paymentMethod' => 'Payment Method',
+			'paymentTaxNo' => 'Payment Tax No',
 			'shippingCompany' => 'Shipping Company',
 			'shippingAddress1' => 'Shipping Address1',
 			'shippingAddress2' => 'Shipping Address2',
@@ -178,8 +196,14 @@ class OrderGroupMaster extends MasterCActiveRecord
 			$this->paymentCompany = $this->searchText;
 			$this->paymentFirstname = $this->searchText;
 			$this->paymentLastname = $this->searchText;
+			$this->paymentAddress1 = $this->searchText;
+			$this->paymentAddress2 = $this->searchText;
+			$this->paymentDistrictId = $this->searchText;
+			$this->paymentAmphurId = $this->searchText;
+			$this->paymentProvinceId = $this->searchText;
 			$this->paymentPostcode = $this->searchText;
 			$this->paymentMethod = $this->searchText;
+			$this->paymentTaxNo = $this->searchText;
 			$this->shippingCompany = $this->searchText;
 			$this->shippingAddress1 = $this->searchText;
 			$this->shippingAddress2 = $this->searchText;
@@ -214,8 +238,14 @@ class OrderGroupMaster extends MasterCActiveRecord
 		$criteria->compare('paymentCompany',$this->paymentCompany,true, 'OR');
 		$criteria->compare('paymentFirstname',$this->paymentFirstname,true, 'OR');
 		$criteria->compare('paymentLastname',$this->paymentLastname,true, 'OR');
+		$criteria->compare('paymentAddress1',$this->paymentAddress1,true, 'OR');
+		$criteria->compare('paymentAddress2',$this->paymentAddress2,true, 'OR');
+		$criteria->compare('paymentDistrictId',$this->paymentDistrictId,true, 'OR');
+		$criteria->compare('paymentAmphurId',$this->paymentAmphurId,true, 'OR');
+		$criteria->compare('paymentProvinceId',$this->paymentProvinceId,true, 'OR');
 		$criteria->compare('paymentPostcode',$this->paymentPostcode,true, 'OR');
 		$criteria->compare('paymentMethod',$this->paymentMethod);
+		$criteria->compare('paymentTaxNo',$this->paymentTaxNo,true, 'OR');
 		$criteria->compare('shippingCompany',$this->shippingCompany,true, 'OR');
 		$criteria->compare('shippingAddress1',$this->shippingAddress1,true, 'OR');
 		$criteria->compare('shippingAddress2',$this->shippingAddress2,true, 'OR');

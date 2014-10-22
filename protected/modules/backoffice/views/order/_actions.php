@@ -32,7 +32,7 @@
 	{
 		if(Yii::app()->user->userType == 3 && !($model->status == 2))
 		{
-			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
+			echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 					"id"=>$model->orderGroupId)), array(
 				'class'=>'btn btn-warning',
 				'target'=>'_blank',));
@@ -45,7 +45,7 @@
 				'target'=>'_blank',));
 			if(Yii::app()->user->userType == 1 && $model->status >= 2)
 			{
-				echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์รายการสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printProductList", array(
+				echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์รายการสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printProductList", array(
 						"id"=>$model->orderGroupId)), array(
 					'class'=>'btn btn-info',
 					'target'=>'_blank',));
@@ -53,7 +53,7 @@
 		}
 
 		if($model->status > 2 && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5))
-			echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบสั่งซื้อสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/viewOrder", array(
+			echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์ใบสั่งซื้อสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/viewOrder", array(
 					"id"=>$model->orderGroupId)), array(
 				'class'=>'btn btn-info',
 				'target'=>'_blank',));
@@ -61,14 +61,14 @@
 	else
 	{
 
-		echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
+		echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 				"id"=>$model->orderGroupId)), array(
 			'class'=>'btn btn-warning',
 			'target'=>'_blank',));
 	}
 	if(((!isset(Yii::app()->user->userType) && ($model->status == 1)) || ( Yii::app()->user->userType == 1) && ($model->status == 1)))
 	{
-		echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบ Pay-in', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printPayForm", array(
+		echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์ใบ Pay-in', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printPayForm", array(
 				"id"=>$model->orderGroupId)), array(
 			'class'=>'btn btn-info',
 			'target'=>'_blank',));
@@ -85,7 +85,7 @@
 			{
 				$optionButton['confirm'] = $pageText[$model->status]['comfirmText'];
 			}
-			echo CHtml::link('<i class="icon-share icon-white"></i>' . $pageText[$model->status]['optionButtonText'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl']) ? $pageText[$model->status]['actionUrl'] : "", array(
+			echo CHtml::link('<i class="fa fa-share icon-white"></i>' . $pageText[$model->status]['optionButtonText'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl']) ? $pageText[$model->status]['actionUrl'] : "", array(
 					"id"=>$model->orderGroupId,
 					"token"=>$token)), $optionButton);
 		}
@@ -97,7 +97,7 @@
 			if($model->status == 3 && $user->type == 2)
 			{
 				?>
-				<a href = "#remarkModal2" role = "button" class = "btn btn-danger icon-remove icon-white" data-toggle = "modal">ตีกลับสินค้า</a>
+				<a href = "#remarkModal2" role = "button" class = "btn btn-danger fa fa-remove icon-white" data-toggle = "modal">ตีกลับสินค้า</a>
 
 				<div id = "remarkModal2" class = "modal hide fade" tabindex = "-1" role = "dialog" aria-labelledby = "myModalLabel" aria-hidden = "true">
 					<div class = "modal-header">
@@ -194,7 +194,7 @@
 				{
 					$optionButton2['confirm'] = $pageText[$model->status]['comfirmText2'];
 				}
-				echo CHtml::link('<i class="icon-remove icon-white"></i>' . $pageText[$model->status]['optionButtonText2'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl2']) ? $pageText[$model->status]['actionUrl2'] : "", array(
+				echo CHtml::link('<i class="fa fa-remove icon-white"></i>' . $pageText[$model->status]['optionButtonText2'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl2']) ? $pageText[$model->status]['actionUrl2'] : "", array(
 						"id"=>$model->orderGroupId,
 						"token"=>$token)), $optionButton2);
 			}
@@ -206,7 +206,7 @@
 				{
 					$optionButton2['confirm'] = $pageText[$model->status]['comfirmText2'];
 				}
-				echo CHtml::link('<i class="icon-list-alt icon-white"></i>' . $pageText[$model->status]['optionButtonText2'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl2']) ? $pageText[$model->status]['actionUrl2'] : "", array(
+				echo CHtml::link('<i class="fa fa-list-alt icon-white"></i>' . $pageText[$model->status]['optionButtonText2'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl2']) ? $pageText[$model->status]['actionUrl2'] : "", array(
 						"id"=>$model->orderGroupId,
 						"token"=>$token)), $optionButton2);
 			}
@@ -219,7 +219,7 @@
 			{
 				$optionButton2['confirm'] = $pageText[$model->status]['comfirmText2'];
 			}
-			echo CHtml::link('<i class="icon-remove icon-white"></i>' . $pageText[$model->status]['optionButtonText2'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl2']) ? $pageText[$model->status]['actionUrl2'] : "", array(
+			echo CHtml::link('<i class="fa fa-remove icon-white"></i>' . $pageText[$model->status]['optionButtonText2'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl2']) ? $pageText[$model->status]['actionUrl2'] : "", array(
 					"id"=>$model->orderGroupId,
 					"token"=>$token)), $optionButton2);
 		}
@@ -238,7 +238,7 @@
 			if($model->isSentToCustomer == 1)
 			{
 				?>
-				<a href="#editReserveModal" role="button" class="btn btn-info icon-pencil icon-white" data-toggle="modal"><?php echo $pageText[$model->status]['optionButtonText3']; ?></a>
+				<a href="#editReserveModal" role="button" class="btn btn-info fa fa-pencil icon-white" data-toggle="modal"><?php echo $pageText[$model->status]['optionButtonText3']; ?></a>
 				<!-- Modal -->
 
 				<div id="editReserveModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -271,7 +271,7 @@
 			{
 				if(isset($pageText[$model->status]['actionUrl3']))
 				{
-					echo CHtml::link('<i class="icon-remove icon-white" ></i>' . $pageText[$model->status]['optionButtonText3'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl3']) ? $pageText[$model->status]['actionUrl3'] : "", array(
+					echo CHtml::link('<i class="fa fa-remove icon-white" ></i>' . $pageText[$model->status]['optionButtonText3'], Yii::app()->createUrl(isset($pageText[$model->status]['actionUrl3']) ? $pageText[$model->status]['actionUrl3'] : "", array(
 							"id"=>$model->orderGroupId,
 							"token"=>$token)), $optionButton2);
 				}
