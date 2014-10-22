@@ -545,9 +545,9 @@ class OrderController extends MasterBackofficeController
 					$emailObj = new Email();
 					$sentMail = new EmailSend();
 					$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $id;
-					$emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderId, null, $documentUrl);
-//					$sentMail->mailCompleteOrderCustomer($emailObj);
-//					$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+					$emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderGroupId, null, $documentUrl);
+					$sentMail->mailCompleteOrderCustomer($emailObj);
+					$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 					$transaction->commit();
 					$this->redirect(array(
 						'index'));
@@ -579,8 +579,8 @@ class OrderController extends MasterBackofficeController
 		$model->save();
 		$emailObj = new Email();
 		$sentMail = new EmailSend();
-		$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $model->orderId;
-		$emailObj->Setmail($model->userId, NULL, $model->supplierId, $model->orderId, null, $documentUrl, $remark);
+		$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $model->orderGroupId;
+		$emailObj->Setmail($model->userId, NULL, $model->supplierId, $model->orderGroupId, null, $documentUrl, $remark);
 		$sentMail->mailRejectConfirmTransferToCustomer($emailObj);
 
 		$this->redirect(array(
