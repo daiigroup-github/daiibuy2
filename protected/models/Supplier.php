@@ -125,7 +125,7 @@ class Supplier extends SupplierMaster
 		$res = array();
 		foreach($this->findAll("status = 1") as $item)
 		{
-
+			$res[$item->supplierId] = $item->name;
 		}
 		return $res;
 	}

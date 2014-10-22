@@ -90,7 +90,7 @@
 		<div class="control-label col-sm-2"><?php echo $form->labelEx($model, 'supplierId'); ?></div>
 		<div class="col-sm-10">
 			<?php
-			echo $form->dropDownList($model, 'supplierId', User::model()->findAllSupplierArray(), array(
+			echo $form->dropDownList($model, 'supplierId', Supplier::model()->findAllSupplierArray(), array(
 				'prompt'=>'-- Select Supplier --'));
 			?>
 			<?php echo $form->error($model, 'supplierId'); ?>
