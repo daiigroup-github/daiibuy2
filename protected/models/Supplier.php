@@ -120,4 +120,14 @@ class Supplier extends SupplierMaster
 		));
 	}
 
+	public function findAllSupplierArray()
+	{
+		$res = array();
+		foreach($this->findAll("status = 1") as $item)
+		{
+
+		}
+		return $res;
+	}
+
 }

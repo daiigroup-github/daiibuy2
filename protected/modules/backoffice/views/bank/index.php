@@ -82,7 +82,7 @@ $this->pageHeader = "การจัดการ บัญชีธนาคา�
 			'accType',
 			array(
 				'name'=>'supplierId',
-				'value'=>'isset($data->supplier)?$data->supplier->showUserCompany($data->supplierId):"-"',
+				'value'=>'isset($data->supplier)?$data->supplier->companyName:"-"',
 			),
 //			array(
 //				'name'=>'status',
