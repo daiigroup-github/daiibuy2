@@ -80,7 +80,7 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {user} {ePayment}',
+				'template'=>'{view} {update} {delete} {user} {ePayment} {discount}',
 				'buttons'=>array(
 					'user'=>array(
 						'label'=>'<br><u>User</u>',
@@ -89,6 +89,10 @@ return false;
 					'ePayment'=>array(
 						'label'=>'<br><u>e-Payment</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/supplierEpayment/index?supplierId=".$data->supplierId)'
+					),
+					'discount'=>array(
+						'label'=>'<br><u>Discount</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/supplierDiscountRange/index?supplierId=".$data->supplierId)'
 					)
 				),
 				'htmlOptions'=>array(

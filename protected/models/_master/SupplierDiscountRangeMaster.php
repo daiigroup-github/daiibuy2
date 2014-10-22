@@ -34,13 +34,10 @@ class SupplierDiscountRangeMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, min, percentDiscount', 'required'),
+			array('supplierId, min, percentDiscount, createDateTime, updateDateTime', 'required'),
 			array('percentDiscount, status', 'numerical', 'integerOnly'=>true),
 			array('supplierId', 'length', 'max'=>20),
 			array('min, max', 'length', 'max'=>15),
-			array('createDateTime, updateDateTime', 'safe'),
-			array('createDateTime, updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
-			array('updateDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, supplierId, min, max, percentDiscount, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),

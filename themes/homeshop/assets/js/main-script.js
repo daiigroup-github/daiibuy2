@@ -6,7 +6,7 @@ function include(url) {
 	if (window.location.host === 'dev')
 		document.write('<script src="http://dev/daiibuy2/' + url + '" type="text/javascript"></script>');
 	else
-		document.write('<script src="' + window.location.origin + '/' + url + '" type="text/javascript"></script>');
+		document.write('<script src="' + window.location.origin + '/daiibuy2' + '/' + url + '" type="text/javascript"></script>');
 }
 
 include('themes/homeshop/assets/twitter/jquery.tweet.js'); // Twitter widget */
@@ -15,7 +15,7 @@ include('themes/homeshop/assets/js/tinynav.min.js'); // Tiny nav
 
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 	"use strict";
 
 
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 
 	/* Window Scroll */
-	$(window).scroll(function() {
+	$(window).scroll(function () {
 
 		backToTop(); // Back to top
 
@@ -69,7 +69,7 @@ $(document).ready(function() {
 
 
 	/* Window Resize */
-	$(window).resize(function() {
+	$(window).resize(function () {
 
 		// Set the new Window Width and Height
 		windowWidth = $(window).width();
@@ -151,7 +151,7 @@ $(document).ready(function() {
 		controlNav: false,
 		prevText: "",
 		nextText: "",
-		start: function(slider) {
+		start: function (slider) {
 			$('body').removeClass('loading');
 		}
 	});
@@ -163,7 +163,7 @@ $(document).ready(function() {
 		directionNav: false,
 		prevText: "",
 		nextText: "",
-		start: function(slider) {
+		start: function (slider) {
 			$('body').removeClass('loading');
 		}
 	});
@@ -178,7 +178,7 @@ $(document).ready(function() {
 	$('.rating.readonly-rating').raty({
 		readOnly: true,
 		path: 'js/img',
-		score: function() {
+		score: function () {
 			return $(this).attr('data-score');
 		}
 	});
@@ -186,7 +186,7 @@ $(document).ready(function() {
 	// Rate
 	$('.rating.rate').raty({
 		path: 'js/img',
-		score: function() {
+		score: function () {
 			return $(this).attr('data-score');
 		}
 	});
@@ -197,9 +197,9 @@ $(document).ready(function() {
 	/* Fix Revolution Slider Arrows */
 	function fixRevolutionArrows() {
 
-		$('.tp-banner').each(function() {
+		$('.tp-banner').each(function () {
 
-			setTimeout(function() {
+			setTimeout(function () {
 
 				var arrow_l = $('.tp-banner').find('.tp-leftarrow');
 				var arrow_r = $('.tp-banner').find('.tp-rightarrow');
@@ -228,7 +228,7 @@ $(document).ready(function() {
 		$(nav).find('>a').attr('style', '');
 		var nav_height = $(nav).height();
 
-		$(nav).each(function() {
+		$(nav).each(function () {
 
 			$(this).find('>a').innerHeight(nav_height);
 
@@ -276,18 +276,18 @@ $(document).ready(function() {
 			slideshow: false,
 			itemWidth: 80,
 			itemMargin: 0,
-			start: function(slider) {
+			start: function (slider) {
 
 				setActive($('#product-carousel li:first-child img'));
-				slider.find('.right-arrow').click(function() {
+				slider.find('.right-arrow').click(function () {
 					slider.flexAnimate(slider.getTarget("next"));
 				});
 
-				slider.find('.left-arrow').click(function() {
+				slider.find('.left-arrow').click(function () {
 					slider.flexAnimate(slider.getTarget("prev"));
 				});
 
-				slider.find('img').click(function() {
+				slider.find('img').click(function () {
 					var large = $(this).attr('data-large');
 					setActive($(this));
 					$('#product-slider img').fadeOut(300, changeImg(large, $('#product-slider img')));
@@ -297,7 +297,7 @@ $(document).ready(function() {
 				function changeImg(large, element) {
 					var element = element;
 					var large = large;
-					setTimeout(function() {
+					setTimeout(function () {
 						startF()
 					}, 300);
 					function startF() {
@@ -321,7 +321,7 @@ $(document).ready(function() {
 
 
 		/* FullScreen Button */
-		$('a.fullscreen-button').click(function(e) {
+		$('a.fullscreen-button').click(function (e) {
 			e.preventDefault();
 			var target = $(this).attr('href');
 			$('#product-carousel a.fancybox[href="' + target + '"]').trigger('click');
@@ -349,7 +349,7 @@ $(document).ready(function() {
 	/* Set Carousels */
 	function installCarousels() {
 
-		$('.owl-carousel').each(function() {
+		$('.owl-carousel').each(function () {
 
 			/* Max items counting */
 			var max_items = $(this).attr('data-max-items');
@@ -374,12 +374,12 @@ $(document).ready(function() {
 			var owl = $(this).data('owlCarousel');
 
 			/* Arrow next */
-			$(this).parent().parent().find('.icon-left-dir').click(function(e) {
+			$(this).parent().parent().find('.icon-left-dir').click(function (e) {
 				owl.prev();
 			});
 
 			/* Arrow previous */
-			$(this).parent().parent().find('.icon-right-dir').click(function(e) {
+			$(this).parent().parent().find('.icon-right-dir').click(function (e) {
 				owl.next();
 			});
 
@@ -405,7 +405,7 @@ $(document).ready(function() {
 				range: [min_range, max_range]
 				, start: [min_val, max_val]
 				, connect: true
-				, slide: function() {
+				, slide: function () {
 					var noui_val = $('.noUiSlider').val();
 					$('.price-range-min').text('$' + noui_val[0]);
 					$('.price-range-max').text('$' + noui_val[1]);
@@ -429,20 +429,20 @@ $(document).ready(function() {
 	var productButtons = $('.product-actions').not('.full-width');
 	productButtons.find('>span:first-child').addClass('current');
 
-	productButtons.find('>span').hover(function() {
+	productButtons.find('>span').hover(function () {
 
 		$(this).parent().find('>span').removeClass('current');
 		$(this).addClass('current');
 
-	}, function() {
+	}, function () {
 
 		$(this).removeClass('current');
 
 	});
 
-	productButtons.hover(function() {
+	productButtons.hover(function () {
 
-	}, function() {
+	}, function () {
 		$(this).find('>span:first-child').addClass('current');
 	});
 
@@ -462,7 +462,7 @@ $(document).ready(function() {
 
 
 		/* Navigation FadeIn Dropdown Effect */
-		mainNavItems.hover(function() {
+		mainNavItems.hover(function () {
 
 			var dropdown = $(this).find('>ul');
 			if (!dropdown.hasClass('animating') && windowWidth > 767) {
@@ -471,12 +471,12 @@ $(document).ready(function() {
 
 			}
 
-		}, function() {
+		}, function () {
 
 			var dropdown = $(this).find('>ul');
 			if (!dropdown.hasClass('animating')) {
 
-				dropdown.addClass('animating').animate({opacity: 0, top: 150 + '%'}, 300, function() {
+				dropdown.addClass('animating').animate({opacity: 0, top: 150 + '%'}, 300, function () {
 					$(this).hide().removeClass('animating');
 					;
 				});
@@ -492,7 +492,7 @@ $(document).ready(function() {
 
 
 		/* Navigation SlideDown Dropdown Effect */
-		sideNavItems.hover(function() {
+		sideNavItems.hover(function () {
 
 			var dropdown = $(this).find('>ul');
 			if (!dropdown.hasClass('animating') && windowWidth > 767) {
@@ -500,11 +500,11 @@ $(document).ready(function() {
 				dropdown.hide().fadeIn(200);
 			}
 
-		}, function() {
+		}, function () {
 
 			var dropdown = $(this).find('>ul');
 			if (!dropdown.hasClass('animating')) {
-				$(this).find('>ul').addClass('animating').show().fadeOut(100, function() {
+				$(this).find('>ul').addClass('animating').show().fadeOut(100, function () {
 					$(this).removeClass('animating');
 				});
 			}
@@ -517,7 +517,7 @@ $(document).ready(function() {
 
 
 		/* Navigation Fadein Dropdown Effect 2 */
-		mainNav.find('ul.normal-dropdown>li').hover(function() {
+		mainNav.find('ul.normal-dropdown>li').hover(function () {
 
 			var dropdown = $(this).find('>ul');
 			if (!dropdown.hasClass('animating') && windowWidth > 767) {
@@ -525,11 +525,11 @@ $(document).ready(function() {
 				dropdown.hide().fadeIn(200);
 			}
 
-		}, function() {
+		}, function () {
 
 			var dropdown = $(this).find('>ul');
 			if (!dropdown.hasClass('animating')) {
-				$(this).find('>ul').addClass('animating').show().fadeOut(100, function() {
+				$(this).find('>ul').addClass('animating').show().fadeOut(100, function () {
 					$(this).removeClass('animating');
 				});
 			}
@@ -555,16 +555,16 @@ $(document).ready(function() {
 		searchButton = $('.nav-search');
 		searchBar = $('#search-bar');
 
-		searchButton.click(function() {
+		searchButton.click(function () {
 
 			if (searchBar.hasClass('searchbar-visible')) {
 				searchButton.removeClass('searchbar-visible');
-				searchBar.animate({opacity: 0, left: -200, right: 200}, 200, function() {
+				searchBar.animate({opacity: 0, left: -200, right: 200}, 200, function () {
 					$(this).removeClass('searchbar-visible').hide();
 				});
 			} else {
 				searchButton.addClass('searchbar-visible');
-				searchBar.css('opacity', 0).css('left', -200).css('right', 200).show().animate({opacity: 1, left: 0, right: 1}, 300, function() {
+				searchBar.css('opacity', 0).css('left', -200).css('right', 200).show().animate({opacity: 1, left: 0, right: 1}, 300, function () {
 					$(this).addClass('searchbar-visible');
 					var config = {
 						'.chosen-select-search': {disable_search_threshold: 10, width: '100%'}
@@ -606,7 +606,7 @@ $(document).ready(function() {
 
 		var button = $('#back-to-top');
 
-		button.click(function() {
+		button.click(function () {
 
 			$('html,body').animate({scrollTop: 0}, 600);
 
@@ -624,7 +624,7 @@ $(document).ready(function() {
 	/* Tabs */
 	function tabsOn() {
 
-		$('.tabs').each(function() {
+		$('.tabs').each(function () {
 
 			var tab = $(this);
 			tab.find('.tab-content > div').hide();
@@ -632,7 +632,7 @@ $(document).ready(function() {
 			tab.find('.tab-content > div:first-child').show();
 
 			var tabMenuItems = tab.find('.tab-heading>a');
-			tabMenuItems.click(function(e) {
+			tabMenuItems.click(function (e) {
 
 				e.preventDefault();
 
@@ -660,12 +660,12 @@ $(document).ready(function() {
 	/* Accordions */
 	function accordionsOn() {
 
-		$('.accordion').each(function() {
+		$('.accordion').each(function () {
 
 			var accordion = $(this);
 			accordion.find('.accordion-content').hide();
 			accordion.find('>ul>li:first-child').addClass('accordion-active').find('.accordion-content').show();
-			accordion.find('.accordion-header').click(function() {
+			accordion.find('.accordion-header').click(function () {
 
 				if ($(this).parent().hasClass('accordion-active')) {
 					$(this).parent().removeClass('accordion-active');
@@ -714,7 +714,7 @@ $(document).ready(function() {
 		$('body').append('<div id="quick-view-modal"><div id="quick-view-content"><div id="quick-view-close"></div><div class="quick-view-content"><div class="quick-view-container col-lg-12 col-md-12 col-sm-12"></div></div></div></div>');
 		$('#quick-view-modal').hide();
 
-		$('#quick-view-close').click(function() {
+		$('#quick-view-close').click(function () {
 
 			$('#quick-view-modal').fadeOut(300);
 
@@ -724,19 +724,19 @@ $(document).ready(function() {
 		$('.quick-view-content').perfectScrollbar({wheelSpeed: 40, suppressScrollX: true});
 
 		var elements = el;
-		elements.click(function(e) {
+		elements.click(function (e) {
 
 			e.preventDefault();
 			var target = $(this).attr('href');
 
-			$('#quick-view-content .quick-view-container').load(target + ' #product-single', function() {
+			$('#quick-view-content .quick-view-container').load(target + ' #product-single', function () {
 
 
 				/* Rating Box */
-				$('#quick-view-modal .rating.readonly-rating').raty({readOnly: true, path: 'js/img', score: function() {
+				$('#quick-view-modal .rating.readonly-rating').raty({readOnly: true, path: 'js/img', score: function () {
 						return $(this).attr('data-score');
 					}});
-				$('#quick-view-modal .rating.rate').raty({path: 'js/img', score: function() {
+				$('#quick-view-modal .rating.rate').raty({path: 'js/img', score: function () {
 						return $(this).attr('data-score');
 					}});
 
@@ -745,20 +745,20 @@ $(document).ready(function() {
 				var productButtons = $('#quick-view-content .product-actions').not('.full-width');
 				productButtons.find('>span:first-child').addClass('current');
 
-				productButtons.find('>span').hover(function() {
+				productButtons.find('>span').hover(function () {
 
 					$(this).parent().find('>span').removeClass('current');
 					$(this).addClass('current');
 
-				}, function() {
+				}, function () {
 
 					$(this).removeClass('current');
 
 				});
 
-				productButtons.hover(function() {
+				productButtons.hover(function () {
 
-				}, function() {
+				}, function () {
 					$(this).find('>span:first-child').addClass('current');
 				});
 
@@ -767,7 +767,7 @@ $(document).ready(function() {
 				tabsOn();
 
 				/* Numeric Input */
-				$('#quick-view-modal .numeric-input').each(function() {
+				$('#quick-view-modal .numeric-input').each(function () {
 
 					var el = $(this);
 					numericInput(el);
@@ -775,7 +775,7 @@ $(document).ready(function() {
 				});
 
 				/* Char Counter */
-				$('#quick-view-modal .char-counter').each(function() {
+				$('#quick-view-modal .char-counter').each(function () {
 
 					var el = $(this);
 					charCounter(el);
@@ -800,15 +800,15 @@ $(document).ready(function() {
 					slideshow: false,
 					itemWidth: 80,
 					itemMargin: 0,
-					start: function(slider) {
+					start: function (slider) {
 						setActive($('#product-carousel li:first-child img'));
-						slider.find('.right-arrow').click(function() {
+						slider.find('.right-arrow').click(function () {
 							slider.flexAnimate(slider.getTarget("next"));
 						});
-						slider.find('.left-arrow').click(function() {
+						slider.find('.left-arrow').click(function () {
 							slider.flexAnimate(slider.getTarget("prev"));
 						});
-						slider.find('img').click(function() {
+						slider.find('img').click(function () {
 							var large = $(this).attr('data-large');
 							setActive($(this));
 							$('#product-slider img').fadeOut(300, changeImg(large, $('#product-slider img')));
@@ -816,7 +816,7 @@ $(document).ready(function() {
 						function changeImg(large, element) {
 							var element = element;
 							var large = large;
-							setTimeout(function() {
+							setTimeout(function () {
 								startF()
 							}, 300);
 							function startF() {
@@ -853,7 +853,7 @@ $(document).ready(function() {
 				$('.quick-view-content').perfectScrollbar('update');
 				$('.quick-view-content').css('overflow', 'hidden');
 
-				$('.quick-view-content').click(function() {
+				$('.quick-view-content').click(function () {
 					$(this).perfectScrollbar('update');
 				});
 
@@ -878,7 +878,7 @@ $(document).ready(function() {
 
 	/* Newsletter */
 
-	$('#newsletter').submit(function(e) {
+	$('#newsletter').submit(function (e) {
 
 		e.preventDefault();
 
@@ -900,7 +900,7 @@ $(document).ready(function() {
 				type: "POST",
 				url: url,
 				data: $('#newsletter').serialize(),
-				success: function(data) {
+				success: function (data) {
 					$('#newsletter').find('>*').slideUp(300);
 					$('#newsletter').append('<span>' + data + '</span>');
 				}
@@ -912,7 +912,7 @@ $(document).ready(function() {
 
 	/* Contact Form */
 
-	$('#contact-form').submit(function(e) {
+	$('#contact-form').submit(function (e) {
 
 		e.preventDefault();
 
@@ -948,7 +948,7 @@ $(document).ready(function() {
 				type: "POST",
 				url: url,
 				data: $('#contact-form').serialize(),
-				success: function(data) {
+				success: function (data) {
 					$('#contact-form').find('>*').slideUp(300);
 					$('#contact-form').append('<span>' + data + '</span>');
 				}
@@ -963,7 +963,7 @@ $(document).ready(function() {
 
 
 	/* Numeric Input */
-	$('.numeric-input').each(function() {
+	$('.numeric-input').each(function () {
 		var el = $(this);
 		numericInput(el);
 
@@ -975,12 +975,12 @@ $(document).ready(function() {
 		var element = el;
 		var input = $(element).find('input');
 
-		$(element).find('.arrow-up').click(function() {
+		$(element).find('.arrow-up').click(function () {
 			var value = parseInt(input.val());
 			input.val(value + 1);
 		});
 
-		$(element).find('.arrow-down').click(function() {
+		$(element).find('.arrow-down').click(function () {
 			var value = parseInt(input.val());
 
 			if (value - 1 < 0)
@@ -989,7 +989,7 @@ $(document).ready(function() {
 				input.val(value - 1);
 		});
 
-		input.keypress(function(e) {
+		input.keypress(function (e) {
 
 			var value = parseInt(String.fromCharCode(e.which));
 			if (isNaN(value)) {
@@ -1006,7 +1006,7 @@ $(document).ready(function() {
 
 
 	/* Char Counter */
-	$('.char-counter').each(function() {
+	$('.char-counter').each(function () {
 
 		var el = $(this);
 		charCounter(el);
@@ -1020,7 +1020,7 @@ $(document).ready(function() {
 		var counter = $(element).find('input');
 		var target = $(counter).attr('data-target');
 
-		$(target).bind("change paste keyup", function() {
+		$(target).bind("change paste keyup", function () {
 
 			var value = $(this).val();
 			var length = value.length;
