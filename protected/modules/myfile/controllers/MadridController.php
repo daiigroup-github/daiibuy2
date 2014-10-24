@@ -95,7 +95,7 @@ class MadridController extends MasterMyFileController
 
 		$model = new Order;
 		$orderDetailModel = new OrderDetail;
-		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(1);
+		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
 		// uncomment the following code to enable ajax-based validation
 		/*
@@ -161,7 +161,26 @@ class MadridController extends MasterMyFileController
 								}
 								else
 								{
-									throw new Exception(print_r($orderFileModel->error, TRUE));
+									$flag = FALSE;
+									break;
+								}
+							}
+						}
+
+						if($flag)
+						{
+							foreach($_POST["OrderDetailValue"] as $k=> $v)
+							{
+								$orderFieldValue = new OrderDetailValue();
+								$orderFieldValue->orderDetailTemplateFieldId = $k;
+								$orderFieldValue->value = $v;
+								$orderFieldValue->orderDetailId = $orderDetailModel->orderDetailId;
+								$orderFieldValue->createDateTime = new CDbExpression("NOW()");
+								$orderFieldValue->updateDateTime = new CDbExpression("NOW()");
+								if(!$orderFieldValue->save())
+								{
+									$flag = FALSE;
+									break;
 								}
 							}
 						}
@@ -191,7 +210,7 @@ class MadridController extends MasterMyFileController
 			$this->render('create', array(
 				'model'=>$model,
 //				'orderDetailModel'=>$orderDetailModel,
-//				'orderDetailTemplateFieldArray'=>$orderDetailTemplateField,
+				'orderDetailTemplateField'=>$orderDetailTemplateField,
 			));
 		}
 	}

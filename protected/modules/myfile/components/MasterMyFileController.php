@@ -174,4 +174,14 @@ class MasterMyFileController extends MasterController
 		return $number;
 	}
 
+	public function saveOrderDetail($orderId, $orderDetailTemplateFieldId)
+	{
+		$orderDetail = new OrderDetail();
+		$orderDetail->orderId = $orderId;
+		$orderDetail->orderDetailTemplateId = $orderDetailTemplateFieldId;
+		$orderDetail->createDateTime = new CDbExpression("NOW()");
+		$orderDetail->updateDateTime = new CDbExpression("NOW()");
+		return $orderDetail->save();
+	}
+
 }
