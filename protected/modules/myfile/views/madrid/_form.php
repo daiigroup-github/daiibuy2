@@ -1,13 +1,15 @@
 <?php
-/* @var $this MadridController */
+/* @var $this OrderController */
 /* @var $model Order */
 /* @var $form CActiveForm */
+$this->breadcrumbs = array(
+	$this->module->id,
+);
 ?>
 
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'order-form',
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+	'id'=>'Order-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
@@ -15,91 +17,443 @@
 	'enableAjaxValidation'=>false,
 	'htmlOptions'=>array(
 		'class'=>'form-horizontal',
-		//'enctype' => 'multipart/form-data',
+		'enctype'=>'multipart/form-data',
 	),
-)); ?>
+	));
+?>
 
+<?php $this->renderPartial("_navbar"); ?>
+<!-- WIZARD -->
+<div class="myfile-main">
+	<?php $this->renderPartial("_wizard_step"); ?>
+	<!--STEP 1 Select Province-->
+    <div class="row setup-content" id="step-1">
+        <div class="col-xs-12">
+            <div class="col-md-12 well">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="page-header select-province">
+							<h1>สร้าง My File</h1><small> กรุณากรอกข้อมูลตามด้านล่าง.</small>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-10">
+								<?php
+								echo $form->textField($model, 'title', array(
+									'size'=>20,
+									'maxlength'=>20,
+									'class'=>'form-control',
+									'placeholder'=>'กรุณากรอกชื่อ My File.'));
+								?>
+								<?php echo $form->error($model, 'title'); ?>
+							</div>
+						</div>
+						<!--						<div>
+						<?php
+//							echo CHtml::textField('title', $model->title, array(
+//								'class'=>'form-control',
+//								'id'=>'myfile_title',
+//								'placeholder'=>'กรุณากรอกชื่อ My File.'
+//							));
+						?>
+												</div>-->
+						<div style="margin-top: 15px">
+							<?php
+							echo CHtml::dropDownList('Order[provinceId]', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
+								'class'=>'form-control',
+								'id'=>'selectProvince',
+								'prompt'=>'--กรุณาเลือกจังหวัด--',
+							));
+							?>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="page-header select-province">
+						<h4>Step 1</h4>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6 text-center">
+						<a id="uploadPlanAtech">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<h3><b>อัพโหลดแบบดีไซน์</b></h3>
+								</div>
+								<div class="panel-body">
+									<h4><b>เพื่อส่ง Call Center ประเมิณจำนวนและเทียบราคา</b></h4>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="col-md-6 text-center">
+						<a id="manualQuantityAtech">
+							<div class="panel panel-warning">
+								<div class="panel-heading">
+									<h3><b>ใส่ปริมาณเอง</b></h3>
+								</div>
+								<div class="panel-body">
+									<h4><b>เพื่อเปรียบเทียบราคา</b></h4>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="row wizard-control">
+					<div class="pull-right">
+						<button id="nextToStep2" class="btn btn-primary btn-lg hidden"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--STEP 2 upload plan-->
+	<div class="row setup-content" id="step-2">
+		<div class="col-xs-12">
+            <div class="col-md-12 well text-left">
+				<div class="row">
+					<div class="page-header myfile-fenzer-header" >
+						<h1>อัพโหลดแบบแปลน</h1><small> กรุณาอัพโหลดแบบแปลนที่ต้องการให้ประเมินราคา.</small>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12" id="upload_plan">
+						<?php // $this->renderPartial('_upload_plan', array('model'=>$model));   ?>
+
+						<div class="row">
+							<div class="col-sm-7">
+
+								<div class="form-group">
+									รูปแปลน : <input name="OrderFile[0]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 1 : <input name="OrderFile[1]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 2 : <input name="OrderFile[2]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 3 : <input name="OrderFile[3]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
+
+								<?php ?>
+							</div>
+							<div class="col-sm-5">
+								<div class="panel panel-info">
+									<div class="panel-heading text-left">
+										<h4><b><i class="glyphicon glyphicon-exclamation-sign"></i> หมายเหตุ</b></h4>
+									</div>
+									<div class="panel-body">
+										<small><b>1.หลังจากลูกค้าอัพโหลดแบบ รอ 3 วันทำการ เพื่อทำการประเมินราคา <br>
+												2.ขนาดที่ลูกค้าได้รับจากการประเมินราคาใน www.daiibuy.com จะเป็นขนาดมาตรฐานจากโรงงานเท่านั้น โดยจะมีการปรับขนาดหน้าต่าง ให้ใกล้เคียงกับขนาดมารฐาน<br>
+												3.หากลูกค้าต้องการสั่งซื้อขนาดอื่นๆ นอกเหนือจากขนาดมารฐาน<br>
+												โปรดติดต่อบริษัท ไดอิ กรุ๊ป จำกัด มหาชน โทร. 02-9383464</b></small>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row wizard-control">
+
+							<?php
+							echo CHtml::submitButton('Create', array(
+								'class'=>'btn btn-primary'));
+							?>
+						</div>
+					</div>
+				</div>
+				<!--				<div class="row wizard-control">-->
+				<!--					<div class="pull-right">
+									<button id="commitUpload" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> ส่งข้อมูล</button>
+									</div>-->
+				<!--					<div class="pull-left">
+										<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
+									</div>
+									<div class="pull-right">
+										<button id="nextToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+									</div>-->
+				<!--</div>-->
+			</div>
+		</div>
+	</div>
+	<div class="row setup-content" id="step-2-1">
+		<div class="col-xs-12">
+            <div class="col-md-12 well">
+				<div class="row">
+					<div class="page-header myfile-fenzer-header" >
+						<h3>รอ Call Center ประเมินราคา</h3>
+					</div>
+				</div>
+				<div class="row text-center">
+					<div style="margin-top: 2%">
+						<?php $i = 0; ?>
+						<?php foreach($model->orderFiles as $orderFile): ?>
+							<div class='col-lg-6 col-md-6 col-sm-12'>
+								<div class="blog-item">
+									<?php
+									echo CHtml::image(Yii::app()->baseUrl . $orderFile->filePath, '', array(
+										'style'=>'width:300px;height:300px'));
+									?>
+									<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i == 0 ? "แบบแปลน" : "ด้านข้าง " . $i; ?></div>
+								</div>
+							</div>
+							<?php $i++; ?>
+						<?php endforeach; ?>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="row setup-content" id="step-2-2">
+		<div class="col-xs-12">
+            <div class="col-md-12 well">
+				<div class="row">
+					<div class="page-header myfile-fenzer-header" >
+						<h3>STEP.2 ใส่ปริมาณเอง</h3><small>กรุณาเลือกแบบหน้าต่างและกำหนดปริมาณที่ต้องการ.</small>
+					</div>
+				</div>
+				<div class="row text-center">
+					<form id="atechTableForm">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];           ?>">
+							<thead>
+								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
+								<tr>
+									<th>ลำดับ</th>
+									<th>ประเภท</th>
+									<th>รูปแบบ</th>
+									<th>ขนาด</th>
+									<th class="edit-table-qty" >จำนวน</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody >
+								<?php // foreach($productResult['items'] as $item):    ?>
+								<tr>
+									<td>1</td>
+									<td><?php
+										echo CHtml::dropDownList('Criteria[category]', "category", array(
+											1=>'ประตู',
+											2=>'หน้าต่าง'));
+										?></td>
+									<td><?php
+										echo CHtml::dropDownList('Criteria[type]', "type", array(
+											1=>'บานเลื่อน 2 บาน',
+											2=>'บานเลื่อน 4 บาน',
+											3=>'บานเปิดเดี่ยว',
+											4=>'บานเปิดคู่',
+											5=>'บานกระทุ้ง',
+											6=>'บานส่องแสง'));
+										?></td>
+									<td><?php echo CHtml::dropDownList('Criteria[size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+									<td><?php
+										echo CHtml::textField('Criteria[quantity]', "quantity", array(
+											'class'=>'edit-table-qty-input'));
+										?></td>
+									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+								</tr>
+
+								<?php // endforeach;  ?>
+
+<!--			<tr>
+				<td><?php
+								// echo CHtml::dropDownList('productId', 'selectedCode',
+//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
+//					array('id'=>'itemCode',
+//						'prompt'=>'เลือกรหัส',
+//						'ajax'=>array(
+//									'type'=>'POST',
+//									'url'=>CController::createUrl('fenzer/addNewProductItem'), //url to call.
+////									'update'=>'#height_content', //selector to update
+//									'dataType'=>'html',
+//									'data'=>array(
+//										"productId"=>"js:this.value",
+//										"categoryId"=>$productResult['categoryId']),
+//										"length"=>0,
+//									'success'=>'js:function(data){
+//										alert("Yo");
+//										$("#result_content").html(data);
+//									}',
+//								),
+//					));
+								?></td>
+				<td><?php // echo '';           ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));           ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo '';          ?></td>
+			</tr>-->
+							</tbody>
+						</table>
+					</form>
+					<!--					<div style="margin-top: 2%">
+					<?php // $i = 0;   ?>
+					<?php // foreach($model->orderFiles as $orderFile):   ?>
+										<div class='col-lg-6 col-md-6 col-sm-12'>
+										<div class="blog-item">
+					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));    ?>
+											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;           ?></div>
+									</div>
+								</div>
+					<?php // $i++;    ?>
+					<?php // endforeach;   ?>
+						</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row setup-content" id="step-3">
+		<div class="col-xs-12">
+
+            <div class="col-md-12 well">
+				<div class="row">
+					<div class="page-header myfile-fenzer-header" >
+						<h3>รอ Call Center ประเมินราคา</h3>
+					</div>
+				</div>
+				<div class="row text-center">
+					<div style="margin-top: 2%">
+						<?php $i = 0; ?>
+						<?php foreach($model->orderFiles as $orderFile): ?>
+							<div class='col-lg-6 col-md-6 col-sm-12'>
+								<div class="blog-item">
+									<?php
+									echo CHtml::image(Yii::app()->baseUrl . $orderFile->filePath, '', array(
+										'style'=>'width:300px;height:300px'));
+									?>
+									<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i == 0 ? "แบบแปลน" : "ด้านข้าง " . $i; ?></div>
+								</div>
+							</div>
+							<?php $i++; ?>
+						<?php endforeach; ?>
+					</div>
+				</div>
+
+			</div>
+
+
+
+
+
+
+            <div class="col-md-12 well text-center">
+				<div class="row text-left">
+					ประเมินราคา
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						Height : <?php
+						echo CHtml::textField('height', '', array(
+							'id'=>'height_input',
+							'class'=>'input-lg',
+							'disabled'=>true,));
+						?>
+						เมตร
+					</div>
+					<div class="col-md-6 pull-left">
+						Length : <?php
+						echo CHtml::textField('length', '', array(
+							'id'=>'length_input',
+							'class'=>'input-lg',
+						));
+						?>
+						เมตร
+					</div>
+				</div>
+				<div class="row" id="order_list">
+
+				</div>
+				<div class="row wizard-control">
+					<div class="pull-left" >
+						<button id="backToStep2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
+					</div>
+					<div class="col-lg-9 text-center">
+						<button id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</button>
+					</div>
+					<div class="pull-right">
+						<button id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row setup-content" id="step-4">
+		<div class="col-xs-12">
+            <div class="col-md-12 well text-center">
+				<div class="row" id="confirm_content"></div>
+				<div class="row wizard-control">
+					<div class="pull-right">
+
+						<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
+						<button id="finishAtech" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
+						<button id="addToCart" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
+						<button id="requestSpecial" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<!--********old code-->
+<!--<div class="form">
+
+<?php
+//	$form = $this->beginWidget('CActiveForm', array(
+//		'id'=>'order-create-form',
+// Please note: When you enable ajax validation, make sure the corresponding
+// controller action is handling ajax validation correctly.
+// See class documentation of CActiveForm for details on this,
+// you need to use the performAjaxValidation()-method described there.
+//		'enableAjaxValidation'=>false,
+//	));
+?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model, '', '', array('class'=>'alert alert-danger')); ?>
+<?php // echo $form->errorSummary($model);        ?>
 
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'userId', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'userId',array('size'=>20,'maxlength'=>20, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'userId'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'supplierId', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'supplierId',array('size'=>20,'maxlength'=>20, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'supplierId'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'provinceId', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'provinceId',array('size'=>20,'maxlength'=>20, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'provinceId'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'token', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'token',array('size'=>60,'maxlength'=>200, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'token'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'title', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>200, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'title'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'type', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'type', array('class'=>'form-control')); ?>
-			<?php echo $form->error($model,'type'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'total', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'total',array('size'=>15,'maxlength'=>15, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'total'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'totalIncVAT', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textField($model,'totalIncVAT',array('size'=>15,'maxlength'=>15, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'totalIncVAT'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'remark', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->textArea($model,'remark',array('rows'=>6, 'cols'=>50, 'class'=>'form-control')); ?>
-			<?php echo $form->error($model,'remark'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php echo $form->labelEx($model,'status', array('class'=>'col-sm-2 control-label')); ?>
-		<div class="col-sm-10">
-			<?php echo $form->checkBox($model,'status'); ?>
-			<?php echo $form->error($model,'status'); ?>
-		</div>
+	<div class="row">
+<?php // echo $form->labelEx($model, 'supplierId');      ?>
+<?php // echo $form->textField($model, 'supplierId');      ?>
+<?php // echo $form->error($model, 'supplierId');          ?>
 	</div>
 
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-9">
-			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-primary')); ?>
-		</div>
+	<div class="row">
+<?php // echo $form->labelEx($model, 'type');       ?>
+<?php // echo $form->textField($model, 'type');      ?>
+<?php // echo $form->error($model, 'type');          ?>
 	</div>
+
+	<div class="row">
+<?php // echo $form->labelEx($model, 'status');       ?>
+<?php // echo $form->textField($model, 'status');     ?>
+<?php // echo $form->error($model, 'status');          ?>
+	</div>
+
+	<div class="row">
+<?php // echo $form->labelEx($model, 'title');      ?>
+<?php // echo $form->textField($model, 'title');    ?>
+<?php // echo $form->error($model, 'title');          ?>
+	</div>
+
+
+	<div class="row buttons">
+<?php // echo CHtml::submitButton('Submit');          ?>
+	</div>
+
+<?php // $this->endWidget();           ?>
+
+</div>-->
+<!-- form -->
 
 <?php $this->endWidget(); ?>
-
-</div><!-- form -->
