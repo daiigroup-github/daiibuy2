@@ -45,10 +45,10 @@ class Order extends OrderMaster
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
+// NOTE: you should only define rules for those attributes that
+// will receive user inputs.
 		return CMap::mergeArray(parent::rules(), array(
-				//code here
+//code here
 		));
 	}
 
@@ -57,10 +57,10 @@ class Order extends OrderMaster
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
+// NOTE: you may need to adjust the relation name and the related
+// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
-				//code here
+//code here
 				'shippingAmphur'=>array(
 					self::BELONGS_TO,
 					'Amphur',
@@ -102,14 +102,14 @@ class Order extends OrderMaster
 		$criteria = new CDbCriteria();
 		if(($this->userId == 0))
 		{
-			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND status = 1';
+			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
 			$criteria->params = array(
 				':userId'=>$userId,
 				':supplierId'=>$supplierId,);
 		}
 		else
 		{
-			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND status = 1';
+			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
 			$criteria->params = array(
 				':token'=>$token,
 				':supplierId'=>$supplierId,);
@@ -162,8 +162,8 @@ class Order extends OrderMaster
 
 	public function findMaxOrderNo()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+// Warning: Please modify the following code to remove attributes that
+// should not be searched.
 
 		$criteria = new CDbCriteria;
 
@@ -547,7 +547,7 @@ class Order extends OrderMaster
 		{
 			$res = $res + ($order->totalIncVAT - $order->usedPoint);
 //			$order->isChangeToReward = 1;
-			//$order->save();
+//$order->save();
 		}
 
 //		$res = Yii::app()->db->createCommand()
@@ -632,7 +632,7 @@ class Order extends OrderMaster
 		return parent::beforeSave();
 	}
 
-	//Summary Report
+//Summary Report
 
 	public $paymentYear;
 	public $paymentMonth;
@@ -675,7 +675,6 @@ class Order extends OrderMaster
 	{
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
-
 		$criteria = new CDbCriteria;
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
@@ -764,7 +763,7 @@ class Order extends OrderMaster
 	public function sumOrderTotalBySupplierId($supplierId = NULL)
 	{
 		$res = [];
-		$condition = 'supplierId=:supplierId AND type&3 > 0';
+		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
 		$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
 		$discountPercent = 0;
 
@@ -776,8 +775,6 @@ class Order extends OrderMaster
 			/**
 			 * @TODO find discount
 			 */
-			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumLastTwelveMonth);
 		}
 		else
 		{
@@ -794,14 +791,22 @@ class Order extends OrderMaster
 			'params'=>$params,
 		));
 
+		$this->writeToFile('/tmp/sumOrderTotalBySupplierId', $condition);
+
 		if(!isset(Yii::app()->user->id))
 		{
 			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal);
 		}
+		else
+		{
+			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal + $sumLastTwelveMonth);
+		}
 
-		$res['total'] = $model->sumTotal;
-		$res['discount'] = $discountPercent;
-		$res['grandTotal'] = $model->sumTotal - $discountPercent;
+		$res['total'] = number_format($model->sumTotal, 2);
+		$res['discountPercent'] = $discountPercent;
+		$res['discount'] = number_format($model->sumTotal * $discountPercent / 100, 2);
+		$res['grandTotal'] = number_format($model->sumTotal - ($model->sumTotal * $discountPercent / 100), 2);
 		return $res;
 	}
 

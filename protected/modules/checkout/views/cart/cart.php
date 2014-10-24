@@ -34,5 +34,5 @@ foreach ($orders as $order) {
 <p class="pull-right">
     <a class="button big orange" href="#"><i class="icons icon-reply"></i>Continue Shopping</a>
     <a class="button big blue" href="#"><i class="glyphicon glyphicon-refresh"></i> Update</a>
-    <a class="button big green" href="#"><i class="glyphicon glyphicon-shopping-cart"></i> Check out</a>
+    <a class="button big green" href="<?php echo $this->createUrl('cart/checkout/id/'.$supplierId);?>"><i class="glyphicon glyphicon-shopping-cart"></i> Check out</a>
 </p>

@@ -103,7 +103,6 @@ class BrandController extends MasterBackofficeController
 				}
 				$model->createDateTime = new CDbExpression("NOW()");
 				$model->updateDateTime = new CDbExpression("NOW()");
-
 				if($model->save())
 				{
 					if(isset($image) && !empty($image))
@@ -112,7 +111,6 @@ class BrandController extends MasterBackofficeController
 						{
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
-
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
 						{
 							$flag = true;
@@ -123,9 +121,10 @@ class BrandController extends MasterBackofficeController
 						}
 					}
 					else
+					{
 						$flag = true;
+					}
 				}
-
 				if($flag)
 				{
 					$transaction->commit();

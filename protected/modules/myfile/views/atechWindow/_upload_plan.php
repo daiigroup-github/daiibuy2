@@ -1,85 +1,45 @@
-<div class="navbar navbar-default navbar-fixed-top">
-	<div class="row">
-	<div class="form-group">
-		<?php
-		echo $form->labelEx($model, 'image', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
-		<div class="col-sm-5">
-			<?php
-			if($this->action->id != 'create')
-			{
-//					foreach($model->productImages as $image)
-//					{
-//						echo CHtml::image(Yii::app()->request->baseUrl . $image->image, 'image' . $image->productImageId, array(
-//							'style'=>'height:250px;',
-//							'class'=>'img-polaroid',
-//							'id'=>'image' . $image->productImageId));
-//						echo CHtml::ajaxLink('<i class="icon-minus-sign icon-white"></i> ลบ', CController::createUrl("admin/product/deleteProductImage/", array(
-//								'id'=>$image->productImageId)), array(
-//							'dataType'=>'json',
-//							'success'=>'function(data){
-//                                                            if(data.status)
-//                                                            {
-//                                                                var image = document.getElementById("image' . $image->productImageId . '");
-//                                                                if(image != null){
-//                                                                image.parentNode.removeChild(image); }
-//                                                                var delBtn = document.getElementById("del-image' . $image->productImageId . '");
-//                                                                if(image != null){
-//                                                                delBtn.parentNode.removeChild(delBtn);  }
-//                                                            }
-//                                                            else
-//                                                            {
-//                                                                alert("กรุณาลองใหม่อีกครั้ง");
-//                                                            }
-//                                                        }
-//                                                    ',
-//							), array(
-//							'class'=>'btn btn-danger',
-//							'id'=>'del-image' . $image->productImageId,
-//							'confirm'=>'คุณต้องการลบรูป ?',
-//						));
-//						echo '<br />';
-//					}
-				$dataProvider = new CActiveDataProvider('OrderFiles');
-				$dataProvider->setData($model->orderFiles);
-				$this->widget('zii.widgets.grid.CGridView', array(
-					'id'=>'product-grid',
-					'dataProvider'=>$dataProvider,
-					//'filter'=>$model,
-					'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
-					'columns'=>array(
-						array(
-							'class'=>'IndexColumn'),
-						array(
-							'class'=>'SortColumn',
-							'url'=>'backoffice/productImage/sortOrder'),
-						array(
-							'name'=>'image',
-							'type'=>'html',
-							'value'=>'CHtml::image(Yii::app()->baseUrl.$data->image, "image", array("style"=>"width:200px;"))',
-						),
-						array(
-							'class'=>'CButtonColumn',
-							'template'=>'{delete}'
-						),
-					),
-				));
-			}
 
-//				echo $form->fileField($model, 'image', array(
-//					'value' => $model->image,
-//				));
-			$this->widget('CMultiFileUpload', array(
-				'name'=>'images',
-				'accept'=>'jpeg|jpg|gif|png', // useful for verifying files
-				'duplicate'=>'Duplicate file!', // useful, i think
-				'denied'=>'Invalid file type', // useful, i think
-			));
+	<div class="row">
+		<div class="col-sm-7">
+
+			 <div class="form-group">
+					รูปแปลน : <input name="OrderFile[0]" type="file" class="file" data-show-upload="false">
+            </div>
+			 <div class="form-group">
+					รูปด้าน 1 : <input name="OrderFile[1]" type="file" class="file" data-show-upload="false">
+            </div>
+			 <div class="form-group">
+					รูปด้าน 2 : <input name="OrderFile[2]" type="file" class="file" data-show-upload="false">
+            </div>
+			 <div class="form-group">
+					รูปด้าน 3 : <input name="OrderFile[3]" type="file" class="file" data-show-upload="false">
+            </div>
+			 <div class="form-group">
+					รูปด้าน 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+            </div>
+
+			<?php
+
 			?>
-			<p style="color: red;">**คุณสามารถอัพโหลดแปลนได้มากสุด 10 รูป**</p>
-			<?php echo $form->error($model, 'orderFiles'); ?>
+		</div>
+		<div class="col-sm-5">
+			<div class="panel panel-info">
+				<div class="panel-heading text-left">
+					<h4><b><i class="glyphicon glyphicon-exclamation-sign"></i> หมายเหตุ</b></h4>
+				</div>
+				<div class="panel-body">
+					<small><b>1.หลังจากลูกค้าอัพโหลดแบบ รอ 3 วันทำการ เพื่อทำการประเมินราคา <br>
+							2.ขนาดที่ลูกค้าได้รับจากการประเมินราคาใน www.daiibuy.com จะเป็นขนาดมาตรฐานจากโรงงานเท่านั้น โดยจะมีการปรับขนาดหน้าต่าง ให้ใกล้เคียงกับขนาดมารฐาน<br>
+							3.หากลูกค้าต้องการสั่งซื้อขนาดอื่นๆ นอกเหนือจากขนาดมารฐาน<br>
+						โปรดติดต่อบริษัท ไดอิ กรุ๊ป จำกัด มหาชน โทร. 02-9383464</b></small>
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-</div>
+	<div class="row wizard-control">
+
+		<?php
+			echo CHtml::submitButton('Create', array(
+				'class'=>'btn btn-primary'));
+			?>
+	</div>
