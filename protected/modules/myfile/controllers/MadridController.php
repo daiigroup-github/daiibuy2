@@ -80,8 +80,14 @@ class MadridController extends MasterMyFileController
 	 */
 	public function actionView($id)
 	{
+		$this->layout = '//layouts/cl1';
+		$model = new Order;
+		$orderDetailModel = new OrderDetail;
+		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
+		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
 		$this->render('view', array(
 			'model'=>$this->loadModel($id),
+			'orderDetailTemplateField'=>$orderDetailTemplateField,
 		));
 	}
 
@@ -92,7 +98,6 @@ class MadridController extends MasterMyFileController
 	public function actionCreate()
 	{
 		$this->layout = '//layouts/cl1';
-
 		$model = new Order;
 		$orderDetailModel = new OrderDetail;
 		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
@@ -118,14 +123,16 @@ class MadridController extends MasterMyFileController
 					$model->attributes = $_POST['Order'];
 					$model->type = 1;
 					$model->status = 0;
-					$model->supplierId = 2;
+					$model->supplierId = 3;
 					$model->userId = Yii::app()->user->id;
 					$model->createDateTime = new CDbExpression("NOW()");
 
 					if($model->save())
 					{
-						$folderimage = "orderFile";
 						$orderId = Yii::app()->db->lastInsertID;
+						$this->saveOrderDetail($orderId, $orderDetailModel->orderDetailTemplateId);
+						$folderimage = "orderFile";
+
 						for($i = 0; $i <= sizeof($_FILES["OrderFile"]); $i++)
 						{
 							$image = CUploadedFile::getInstanceByName("OrderFile[$i]");
@@ -173,8 +180,8 @@ class MadridController extends MasterMyFileController
 							{
 								$orderFieldValue = new OrderDetailValue();
 								$orderFieldValue->orderDetailTemplateFieldId = $k;
-								$orderFieldValue->value = $v;
-								$orderFieldValue->orderDetailId = $orderDetailModel->orderDetailId;
+								$orderFieldValue->value = $v["value"];
+								$orderFieldValue->orderDetailId = $this->orderDetailId;
 								$orderFieldValue->createDateTime = new CDbExpression("NOW()");
 								$orderFieldValue->updateDateTime = new CDbExpression("NOW()");
 								if(!$orderFieldValue->save())
@@ -277,17 +284,6 @@ class MadridController extends MasterMyFileController
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
 					'admin'));
-	}
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionAdmin()
-	{
-		$dataProvider = new CActiveDataProvider('Order');
-		$this->render('admin', array(
-			'dataProvider'=>$dataProvider,
-		));
 	}
 
 	/**

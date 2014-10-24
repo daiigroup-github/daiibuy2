@@ -1,2 +1,4 @@
 <?php $this->renderPartial('_form', array(
-	'model'=>$model)); ?>
+	'model'=>$model,
+	'orderDetailTemplateField'=>$orderDetailTemplateField,));
+?>

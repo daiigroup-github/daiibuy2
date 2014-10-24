@@ -117,12 +117,12 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 							<th style="width: 17%">Model</th>
 							<th>Cat1</th>
 							<th>Cat2</th>
-							<th style="width: 20%">Product</th>
+							<th style="width: 17%">Product</th>
 							<?php if(Yii::app()->user->supplierId != 3): ?>
 								<th style="width: 5%">Quantiry</th>
 							<?php else: ?>
 								<th style="width: 5%">Group Name</th>
-								<th style="width: 5%">Area</th>
+								<th style="width: 10%">Area</th>
 							<?php endif; ?>
 						</tr>
 					</thead>
@@ -321,7 +321,7 @@ function showImage($imageUrl, $title)
 		var obj = $('select[name=\"' + attrName + '\"]');
 		var cat2Id = obj.val();
 		$.ajax({
-			'url': '<?php echo CController::createUrl('order/findAllGroupNameCat2IdAjax'); ?>',
+			'url': '<?php echo CController::createUrl('order/findAllGroupNameByCat2IdAjax'); ?>',
 //			'dataType': 'json',
 			'type': 'POST',
 			'data': {'cat2Id': cat2Id},

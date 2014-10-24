@@ -174,6 +174,8 @@ class MasterMyFileController extends MasterController
 		return $number;
 	}
 
+	public $orderDetailId = null;
+
 	public function saveOrderDetail($orderId, $orderDetailTemplateFieldId)
 	{
 		$orderDetail = new OrderDetail();
@@ -181,7 +183,10 @@ class MasterMyFileController extends MasterController
 		$orderDetail->orderDetailTemplateId = $orderDetailTemplateFieldId;
 		$orderDetail->createDateTime = new CDbExpression("NOW()");
 		$orderDetail->updateDateTime = new CDbExpression("NOW()");
-		return $orderDetail->save();
+		if($orderDetail->save())
+		{
+			$this->orderDetailId = Yii::app()->db->lastInsertID;
+		}
 	}
 
 }
