@@ -57,16 +57,25 @@ $this->breadcrumbs = array(
 						<h4 class="list-group-item-heading">Step 2</h4>
 						<p class="list-group-item-text">Second step description</p>
 					</a></li>
-					  <li class="<?php echo ($this->action->id == 'view' && $model->status == 0)? 'active' : ''; ?>"><a href="#step-3-1">
-						<h4 class="list-group-item-heading">Step 3</h4>
+					  <li class="<?php echo ($this->action->id == 'view' && $model->status == 0)? 'active' : ''; ?>"><a href="#step-2-1">
+						<h4 class="list-group-item-heading">Step 2-1</h4>
 						<p class="list-group-item-text">Third step description</p>
 					</a></li>
+				<li><a href="#step-2-2">
+						<h4 class="list-group-item-heading">Step 2-2</h4>
+						<p class="list-group-item-text">ใส่ปริมาณเอง</p>
+					</a></li>
                 <li class="<?php echo ($this->action->id == 'view' && $model->status == 1)? 'active' : ''; ?>"><a href="#step-3">
-						<h4 class="list-group-item-heading">Step 3</h4>
+						<h4 class="list-group-item-heading">Step _</h4>
+						<p class="list-group-item-text">เปรียบเทียบประเมินราคา</p>
+					</a></li>
+
+					<li><a href="#step-4">
+						<h4 class="list-group-item-heading">Step 4</h4>
 						<p class="list-group-item-text">Third step description</p>
 					</a></li>
 				<li><a href="#step-5">
-						<h4 class="list-group-item-heading">Step 4</h4>
+						<h4 class="list-group-item-heading">Step 5</h4>
 						<p class="list-group-item-text">Third step description</p>
 					</a></li>
             </ul>
@@ -222,7 +231,7 @@ $this->breadcrumbs = array(
 			</div>
 		</div>
 	</div>
-	<div class="row setup-content" id="step-3-1">
+	<div class="row setup-content" id="step-2-1">
 		<div class="col-xs-12">
             <div class="col-md-12 well">
 				<div class="row">
@@ -249,8 +258,119 @@ $this->breadcrumbs = array(
 		</div>
 	</div>
 
+	<div class="row setup-content" id="step-2-2">
+		<div class="col-xs-12">
+            <div class="col-md-12 well">
+				<div class="row">
+					<div class="page-header myfile-fenzer-header" >
+						<h3>STEP.2 ใส่ปริมาณเอง</h3><small>กรุณาเลือกแบบหน้าต่างและกำหนดปริมาณที่ต้องการ.</small>
+					</div>
+				</div>
+				<div class="row text-center">
+					<form id="atechTableForm">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId']; ?>">
+							<thead>
+								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
+								<tr>
+								<th>ลำดับ</th>
+								<th>ประเภท</th>
+								<th>รูปแบบ</th>
+								<th>ขนาด</th>
+								<th class="edit-table-qty" >จำนวน</th>
+								<th>Action</th>
+								</tr>
+							</thead>
+							<tbody >
+						<?php // foreach($productResult['items'] as $item): ?>
+			<tr>
+				<td>1</td>
+				<td><?php echo CHtml::dropDownList('Criteria[category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[size]', "size", $data); ?></td>
+				<td><?php echo CHtml::textField('Criteria[quantity]', "quantity",array('class'=>'edit-table-qty-input')); ?></td>
+				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+			</tr>
+
+		<?php // endforeach; ?>
+
+<!--			<tr>
+				<td><?php // echo CHtml::dropDownList('productId', 'selectedCode',
+//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
+//					array('id'=>'itemCode',
+//						'prompt'=>'เลือกรหัส',
+//						'ajax'=>array(
+//									'type'=>'POST',
+//									'url'=>CController::createUrl('fenzer/addNewProductItem'), //url to call.
+////									'update'=>'#height_content', //selector to update
+//									'dataType'=>'html',
+//									'data'=>array(
+//										"productId"=>"js:this.value",
+//										"categoryId"=>$productResult['categoryId']),
+//										"length"=>0,
+//									'success'=>'js:function(data){
+//										alert("Yo");
+//										$("#result_content").html(data);
+//									}',
+//								),
+//					)); ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;')); ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo ''; ?></td>
+			</tr>-->
+	</tbody>
+</table>
+							</form>
+<!--					<div style="margin-top: 2%">
+					<?php // $i = 0; ?>
+					<?php // foreach($model->orderFiles as $orderFile): ?>
+					<div class='col-lg-6 col-md-6 col-sm-12'>
+					<div class="blog-item">
+					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px')); ?>
+						<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i; ?></div>
+				</div>
+			</div>
+		<?php // $i++; ?>
+	<?php // endforeach;?>
+	</div>-->
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-12">
+
+            <div class="col-md-12 well">
+				<div class="row">
+					<div class="page-header myfile-fenzer-header" >
+						<h3>รอ Call Center ประเมินราคา</h3>
+					</div>
+				</div>
+				<div class="row text-center">
+					<div style="margin-top: 2%">
+					<?php $i = 0; ?>
+					<?php foreach($model->orderFiles as $orderFile): ?>
+					<div class='col-lg-6 col-md-6 col-sm-12'>
+					<div class="blog-item">
+					<?php echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px')); ?>
+						<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i==0? "แบบแปลน":"ด้านข้าง ".$i; ?></div>
+				</div>
+			</div>
+		<?php $i++; ?>
+	<?php endforeach;?>
+	</div>
+				</div>
+
+			</div>
+
+
+
+
+
+
             <div class="col-md-12 well text-center">
 				<div class="row text-left">
 					ประเมินราคา

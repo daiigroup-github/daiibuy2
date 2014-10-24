@@ -963,4 +963,10 @@ class Product extends ProductMaster
 
         return $price;
     }
+
+	public function findAllAtechSizeArray(){
+		$criteria = new CDbCriteria();
+		$criteria->select = 'SELECT DISTINCT CONCAT(width, "x", height)';
+		$criteria->
+	}
 }
