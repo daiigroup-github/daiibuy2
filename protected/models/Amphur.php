@@ -32,6 +32,12 @@ class Amphur extends AmphurMaster
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return CMap::mergeArray(parent::relations(), array(//code here
+            'districts'=>array(
+                self::HAS_MANY,
+                'District',
+                'amphurId',
+                'order'=>'districts.districtName'
+            ),
         ));
     }
 

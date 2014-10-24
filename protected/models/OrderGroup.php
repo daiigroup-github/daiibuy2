@@ -19,6 +19,7 @@ class OrderGroup extends OrderGroupMaster
 {
 
     public $maxCode;
+    public $sumTotal;
 
     const STATUS_ORDER = 1;
     const STATUS_COMFIRM_TRANSFER = 2;
@@ -89,7 +90,7 @@ class OrderGroup extends OrderGroupMaster
         $today = date('Y-m-d');
         $lastYear = date('Y-m-d', strtotime($today . ' -12 months'));
 
-        $model = $this->findAll(array(
+        $model = $this->find(array(
             'condition' => 'userId=:userId AND (updateDateTime BETWEEN :today AND :lastYear)',
             'select'=>'sum(summary) as sumTotal',
             'params' => array(
@@ -99,7 +100,7 @@ class OrderGroup extends OrderGroupMaster
             ),
         ));
 
-        return $model->sumTotal;
+        return isset($model) ? $model->sumTotal : 0;
     }
 
 	/**

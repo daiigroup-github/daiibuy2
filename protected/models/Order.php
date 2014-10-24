@@ -789,7 +789,7 @@ class Order extends OrderMaster
     public function sumOrderTotalBySupplierId($supplierId = NULL)
     {
         $res = [];
-        $condition = 'supplierId=:supplierId AND type&3 > 0';
+        $condition = 'supplierId=:supplierId AND type&'.self::ORDER_TYPE_CART.' > 0';
         $params = [':supplierId' => isset($supplierId) ? $supplierId : $this->supplierId];
         $discountPercent = 0;
 
@@ -800,8 +800,6 @@ class Order extends OrderMaster
             /**
              * @TODO find discount
              */
-            $sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
-            $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumLastTwelveMonth);
         } else {
             $condition .= ' AND token=:token';
 
@@ -816,13 +814,19 @@ class Order extends OrderMaster
             'params' => $params,
         ));
 
+        $this->writeToFile('/tmp/sumOrderTotalBySupplierId', $condition);
+
         if (!isset(Yii::app()->user->id)) {
             $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal);
+        } else {
+            $sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
+            $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal+$sumLastTwelveMonth);
         }
 
-        $res['total'] = $model->sumTotal;
-        $res['discount'] = $discountPercent;
-        $res['grandTotal'] = $model->sumTotal - $discountPercent;
+        $res['total'] = number_format($model->sumTotal, 2);
+        $res['discountPercent'] = $discountPercent;
+        $res['discount'] = number_format($model->sumTotal * $discountPercent / 100, 2);
+        $res['grandTotal'] = number_format($model->sumTotal - ($model->sumTotal * $discountPercent / 100), 2);
         return $res;
     }
 }

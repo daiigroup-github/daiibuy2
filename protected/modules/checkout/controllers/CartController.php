@@ -196,15 +196,16 @@ class CartController extends MasterCheckoutController
 
         if (isset(Yii::app()->user->id)) {
             $orders = Order::model()->findAll(array(
-                'condition' => 'type&3 > 0 AND userId=:userId AND supplierId=:supplierId',
+                'condition' => 'type&'.Order::ORDER_TYPE_CART.' > 0 AND userId=:userId AND supplierId=:supplierId',
                 'params' => array(
                     ':userId' => Yii::app()->user->id,
                     ':supplierId' => $id,
                 ),
+                'order' => 'type, orderId'
             ));
         } else {
             $orders = Order::model()->findAll(array(
-                'condition' => 'type&3 > 0 AND token=:token AND supplierId=:supplierId',
+                'condition' => 'type&'.Order::ORDER_TYPE_CART.' > 0 AND token=:token AND supplierId=:supplierId',
                 'params' => array(
                     ':token' => $daiibuy->token,
                     ':supplierId' => $id,
@@ -214,25 +215,42 @@ class CartController extends MasterCheckoutController
 
         $this->render('cart', array(
             'orders' => $orders,
-            'orderSummary' => Order::model()->sumOrderTotalBySupplierId($id)
+            'orderSummary' => Order::model()->sumOrderTotalBySupplierId($id),
+            'supplierId'=>$id,
         ));
     }
 
+    public function actionCheckout($id){
+        Yii::app()->session['supplierId'] = $id;
+        $this->redirect($this->createUrl('../checkout/step/1'));
+    }
+
     public function actionUpdateCart(){
-        if(isset($_POST['qty'])){
+        if(isset($_POST['quantity'])){
             $res = [];
 
-            foreach ($_POST['qty'] as $orderItemsId => $qty) {
+            foreach ($_POST['quantity'] as $orderItemsId => $quantity) {
                $orderItem = OrderItems::model()->findByPk($orderItemsId);
 
-                if($orderItem->quantity == $qty) {
+                if($orderItem->quantity == $quantity) {
                     continue;
                 } else {
-                    $orderItem->quantity = $qty;
+                    $orderItem->quantity = $quantity;
+                    $orderItem->total = $orderItem->quantity * $orderItem->price;
                     $orderItem->save();
+
+                    $res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
                 }
             }
 
+            $order = Order::model()->findByPk($_POST['orderId']);
+            $order->totalIncVAT = $order->orderItemsSum;
+            $order->save(false);
+            $res['orderTotal'] = number_format($order->totalIncVAT, 2);
+            $res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
+
+            $this->writeToFile('/tmp/updatecart', print_r($res, true));
+            echo CJSON::encode($res);
         }
     }
 }

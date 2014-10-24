@@ -1,3 +1,5 @@
+<?php $this->renderPartial('_step_header', array('step'=>$step));?>
+
 <div class="row">
     <div class="col-md-4">
 
@@ -20,7 +22,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="iconic-input">
-                        <?php echo $formLogin->textField($userModel, 'email', array('placeholder'=>$userModel->attributeLabels()['email']));?>
+                        <?php echo $formLogin->textField($userModel, 'email', array('placeholder' => $userModel->attributeLabels()['email'])); ?>
                         <i class="icons icon-user-3"></i>
                     </div>
                 </div>
@@ -28,7 +30,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="iconic-input">
-                        <?php echo $formLogin->textField($userModel, 'password', array('placeholder'=>$userModel->attributeLabels()['password']));?>
+                        <?php echo $formLogin->textField($userModel, 'password', array('placeholder' => $userModel->attributeLabels()['password'])); ?>
                         <i class="icons icon-lock"></i>
                     </div>
                 </div>
@@ -36,7 +38,7 @@
 
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <?php echo CHtml::submitButton('Login', array('class'=>'orange', 'name'=>'Login'));?>
+                    <?php echo CHtml::submitButton('Login', array('class' => 'orange', 'name' => 'Login')); ?>
                 </div>
             </div>
         </div>
