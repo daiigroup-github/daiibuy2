@@ -219,12 +219,60 @@ class MyfileController extends MasterBackofficeController
 	public function actionProve($id)
 	{
 		$model = $this->loadModel($id);
-
+		$flag = true;
 		if(isset($_POST["OrderItems"]))
 		{
-			foreach($_POST["OrderItems"]["brandId"] as $k=> $v)
+			try
 			{
-				
+				$transaction = Yii::app()->db->beginTransaction();
+
+				foreach($_POST["OrderItems"]["brandId"] as $k=> $v)
+				{
+					$orderItems = new OrderItems();
+					$orderItems->orderId = $id;
+					$orderItems->productId = $_POST["OrderItems"]["productId"][$k];
+					$orderItems->quantity = $_POST["OrderItems"]["quantity"][$k];
+					if(isset($_POST["OrderItems"]["groupName"][$k]))
+					{
+						$orderItems->groupName = $_POST["OrderItems"]["groupName"][$k];
+					}
+					if(isset($_POST["OrderItems"]["area"][$k]))
+					{
+						$orderItems->groupName = $_POST["OrderItems"]["area"][$k];
+					}
+
+					$orderItems->createDateTime = new CDbExpression("NOW()");
+					$orderItems->updateDateTime = new CDbExpression("NOW()");
+
+
+					if(!$orderItems->save(FALSE))
+					{
+						$flag = false;
+						break;
+					}
+				}
+
+				if($flag)
+				{
+					$model->status = 1;
+					if($model->save())
+					{
+						$transaction->commit();
+						$this->redirect("index");
+					}
+				}
+				else
+				{
+					$transaction->rollback();
+				}
+			}
+			catch(Exception $ex)
+			{
+				if($flag)
+				{
+					$transaction->rollback();
+				}
+				throw new Exception($ex->getMessage());
 			}
 		}
 

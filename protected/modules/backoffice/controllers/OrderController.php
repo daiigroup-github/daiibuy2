@@ -972,4 +972,21 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
 	}
 
+	public function actionFindAllGroupNameByCat2IdAjax()
+	{
+		$data = Category2ToProduct::model()->findAll('category2Id=:category2Id AND groupName is not null', array(
+			':category2Id'=>(int) $_POST['cat2Id']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Product --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->groupName), CHtml::encode($item->groupName), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
 }

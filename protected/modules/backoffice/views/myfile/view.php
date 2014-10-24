@@ -118,7 +118,12 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 							<th>Cat1</th>
 							<th>Cat2</th>
 							<th style="width: 20%">Product</th>
-							<th style="width: 5%">Quantiry</th>
+							<?php if(Yii::app()->user->supplierId != 3): ?>
+								<th style="width: 5%">Quantiry</th>
+							<?php else: ?>
+								<th style="width: 5%">Group Name</th>
+								<th style="width: 5%">Area</th>
+							<?php endif; ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -166,10 +171,25 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 									'id'=>'productId',
 								));
 								?></td>
-							<td><?php
-								echo CHtml::numberField('OrderItems[quantity][]', "", array(
-									'class'=>'form-control'))
-								?></td>
+							<?php if(Yii::app()->user->supplierId != 3): ?>
+								<td><?php
+									echo CHtml::numberField('OrderItems[quantity][]', "", array(
+										'class'=>'form-control'))
+									?></td>
+							<?php else: ?>
+								<td class="groupName"><?php
+									echo CHtml::dropDownList('OrderItems[groupName][]', '', array(
+										), array(
+										'prompt'=>'Select Group Name',
+										'class'=>'form-control',
+										'id'=>'groupName',
+									));
+									?></td>
+								<td><?php
+									echo CHtml::numberField('OrderItems[area][]', "", array(
+										'class'=>'form-control'))
+									?></td>
+							<?php endif; ?>
 						</tr>
 					</tbody>
 					<tfoot>
@@ -291,6 +311,22 @@ function showImage($imageUrl, $title)
 			'data': {'cat2Id': cat2Id},
 			'success': function (data) {
 				obj.parent().parent().children('.product').children('select').html(data);
+				findGroupName(sel);
+			},
+		});
+	}
+	function findGroupName(sel)
+	{
+		var attrName = sel.attributes['name'].value;
+		var obj = $('select[name=\"' + attrName + '\"]');
+		var cat2Id = obj.val();
+		$.ajax({
+			'url': '<?php echo CController::createUrl('order/findAllGroupNameCat2IdAjax'); ?>',
+//			'dataType': 'json',
+			'type': 'POST',
+			'data': {'cat2Id': cat2Id},
+			'success': function (data) {
+				obj.parent().parent().children('.groupName').children('select').html(data);
 			},
 		});
 	}
