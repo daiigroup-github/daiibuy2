@@ -346,11 +346,10 @@ class OrderGroup extends OrderGroupMaster
 
 	public function showOrderStatus($status)
 	{
-		$user = User::model()->findByPk(Yii::app()->user->id);
 		switch($status)
 		{
 			case 99:
-				return "แบบร่าง";
+				return "ชำระเงินไม่สำเร็จ(กรุณาชำระเงินอีกครั้ง)";
 				break;
 			case 98:
 				return "ระหว่างดำเนินการตรวจสอบเครดิต";
@@ -362,11 +361,12 @@ class OrderGroup extends OrderGroupMaster
 				return "รอตรวจสอบการโอนเงิน";
 				break;
 			case 3:
-				return isset($user) ? ($user->type == 1 ? "การสั่งซื้อสินค้าสมบูรณ์" : "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" ) : "การสั่งซื้อสินค้าสมบูรณ์";
+				return "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)";
 				break;
 			case 4:
 				return "ผู้ผลิตกำลังจัดส่งสินค้า";
 				break;
 		}
 	}
+
 }

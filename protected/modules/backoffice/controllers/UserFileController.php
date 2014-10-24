@@ -310,6 +310,7 @@ class UserFileController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
+		$this->checkAdminAccessMenu();
 		$model = new UserFile('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['UserFile']))

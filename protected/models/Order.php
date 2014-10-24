@@ -30,6 +30,7 @@ class Order extends OrderMaster
 
 	const ORDER_TYPE_MYFILE = 1;
 	const ORDER_TYPE_CART = 2;
+	const ORDER_TYPE_MYFILE_TO_CART = 3;
 
     /**
      * @return string the associated database table name
@@ -91,29 +92,28 @@ class Order extends OrderMaster
         return Cmap::mergeArray(parent::attributeLabels(), array());
     }
 
-    public function findAllMyFileBySupplierId($userId, $supplierId, $type, $status, $token)
-    {
-        $criteria = new CDbCriteria();
-        if (($this->userId == 0)) {
-            $criteria->condition = 'userId = :userId AND supplierId = :supplierId AND type = :type AND status = :status';
-            $criteria->params = array(
-                ':userId' => $userId,
-                ':supplierId' => $supplierId,
-                ':type' => $type,
-                ':status' => $status,);
-        } else {
-            $criteria->condition = 'token = :token AND supplierId = :supplierId AND type = :type AND status = :status';
-            $criteria->params = array(
-                ':token' => $token,
-                ':supplierId' => $supplierId,
-                ':type' => $type,
-                ':status' => $status,);
-        }
+    public function findAllMyFileBySupplierId($userId, $supplierId, $token)
+	{
+		$criteria = new CDbCriteria();
+		if(($this->userId == 0))
+		{
+			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = '. self::ORDER_TYPE_MYFILE .' OR type = '. self::ORDER_TYPE_MYFILE_TO_CART.') AND (status = 1 OR status = 0)';
+			$criteria->params = array(
+				':userId'=>$userId,
+				':supplierId'=>$supplierId,);
+		}
+		else
+		{
+			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = '. self::ORDER_TYPE_MYFILE .' OR type = '. self::ORDER_TYPE_MYFILE_TO_CART.') AND (status = 1 OR status = 0)';
+			$criteria->params = array(
+				':token'=>$token,
+				':supplierId'=>$supplierId,);
+		}
 
-        $res = $this->findAll($criteria);
+		$res = $this->findAll($criteria);
 
-        return $res;
-    }
+		return $res;
+	}
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

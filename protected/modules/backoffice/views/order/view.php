@@ -78,6 +78,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 						'model'=>$model,
 						'daiiAddr'=>$daiiAddr,
 						'pageText'=>$pageText,
+						'supplier'=>$supplier
 					));
 					?>
 					<?php
@@ -159,7 +160,14 @@ function getOrderShippingAddress($model)
 
 function getOrderPaymentAddress($model)
 {
-	return "<p>" . isset($model->paymentCompany) ? "บริษัท " . $model->paymentCompany . (isset($model->taxNo) ? " เลขที่ประจำตัวผู้เสียภาษี : " . $model->taxNo : "") : $model->paymentFirstname . " " . $model->paymentLastname . "</p><p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmhpur->amphurName) ? $model->paymentAmhpur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";
+	$res = "";
+	if(isset($model->paymentCompany))
+	{
+		$res.= "บริษัท " . $model->paymentCompany . (isset($model->paymentTaxNo) ? " เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
+		$res.="<br>";
+	}
+	$res .="โดย : " . $model->paymentFirstname . " " . $model->paymentLastname . "<p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";
+	return $res;
 }
 
 function getOrderSupplierBillingAddress($model, $isFull = false)

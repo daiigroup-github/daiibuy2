@@ -34,6 +34,11 @@ return CMap::mergeArray(
 					'homeshop'=>array(
 						'baseUrl'=>$params['assets'],
 						'css'=>array(
+//							'css/jquery.fileupload.css',
+//							'css/jquery.fileupload-ui.css',
+//							'css/jquery.fileupload-noscript.css',
+//							'css/jquery.fileupload-ui-noscript.css',
+							'css/fileinput.css',
 							'css/perfect-scrollbar.css',
 							'css/myFileStyle.css',
 							'css/style.css',
@@ -49,8 +54,10 @@ return CMap::mergeArray(
 							'font-awesome/css/font-awesome.min.css',
 							'css/custom.css',
 
+
 						),
 						'js'=>array(
+							'js/fileinput.js',
 							'js/modernizr.min.js',
 							'js/jquery.raty.min.js',
 							'js/perfect-scrollbar.min.js',
@@ -67,6 +74,19 @@ return CMap::mergeArray(
 							'js/main-script.js',
 							'select2/select2.js',
 							'jquery/jquery.cookie.js',
+
+//							'js/vendor/jquery.ui.widget.js',
+//							'js/jquery.iframe-transport.js',
+//							'js/jquery.fileupload.js',
+//							'js/jquery.fileupload-process.js',
+//							'js/jquery.fileupload-image.js',
+//							'js/jquery.fileupload-validate.js',
+//							'js/main.js',
+//							'js/jquery.blueimp-gallery.min.js',
+//							'js/canvas-to-blob.min.js',
+//							'js/load-image.all.min.js',
+//							'js/tmpl.min.js',
+
 //							'js/html5shiv.min.js',
 //							'js/respond.min.js',
 						),

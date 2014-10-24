@@ -755,12 +755,12 @@ class Product extends ProductMaster
 			if(isset($productPromotion))
 			{
 				//promotion price
-				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId) * (($noSpanSet == 0) ? 1 : $noSpanSet);
+				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId);
 			}
 			else
 			{
 				//normal price
-				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId) * (($noSpanSet == 0) ? 1 : $noSpanSet);
+				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId);
 			}
 			$totalPrice = $totalPrice + $res['items'][$productId]['price'];
 		}
@@ -772,7 +772,7 @@ class Product extends ProductMaster
 	}
 
 
-	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $orderId)
+	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
@@ -782,9 +782,7 @@ class Product extends ProductMaster
 		unset($productItems['categoryId']);
 		if(isset($isSave)&&$isSave==TRUE){
 				//SAVE NEW ORDER
-				if(isset($orderId)){
-					$orderModel = Order::model()->findByPk($orderId);
-				}else{
+				if($oldOrderId==NULL){
 					$orderModel = new Order();
 					$orderModel->userId = isset(Yii::app()->user->id)? Yii::app()->user->id:0;
 					$orderModel->title = $category->title;
@@ -797,7 +795,9 @@ class Product extends ProductMaster
 						$orderId = Yii::app()->db->lastInsertID;
 					}else{
 					throw new Exception(print_r($orderModel->errors, True));
-				}
+					}
+				}else{
+					$orderModel = Order::model()->findByPk($oldOrderId);
 			}
 		}
 
@@ -823,14 +823,14 @@ class Product extends ProductMaster
 			}
 			$totalPrice = $totalPrice+$res['items'][$productId]['price'];
 			if(isset($isSave)&&$isSave==TRUE){
-				if(isset($orderId)){
-				$orderItemModel = OrderItems::model()->find('productId = '.$productId.' AND orderId = '. $orderId);
-				}else{
+				if($oldOrderId==NULL){
 					$orderItemModel = new OrderItems();
 					$orderItemModel->orderId = $orderId;
 					$orderItemModel->productId = $productId;
 					$orderItemModel->title = substr($product->name, 0, 44);
 					$orderItemModel->createDateTime = new CDbExpression("NOW()");
+				}else{
+					$orderItemModel = OrderItems::model()->find('productId = '.$productId.' AND orderId = '. $oldOrderId);
 				}
 				$orderItemModel->price = $res['items'][$productId]['price']/$res['items'][$productId]['quantity'];
 				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
@@ -842,27 +842,14 @@ class Product extends ProductMaster
 			}
 		}
 		$res['totalPrice'] = $totalPrice;
-		$res['orderId'] = $orderId;
+		$res['orderId'] = isset($orderId)? $orderId : $oldOrderId;
 
 		if(isset($isSave)&&$isSave==TRUE){
 			//SAVE NEW ORDER
 			$orderModel->totalIncVAT = $totalPrice;
 			$orderModel->total = $totalPrice/1.07;
 			if($orderModel->save()){
-				if(isset($orderId)){
-					$orderDetail = OrderDetail::model()->find('orderId = '.$orderId);
-					$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
-					$orderDetailValue = OrderDetailValue::model()->findAll('orderDetailId = '.$orderDetail->orderDetailId);
-
-					foreach($orderDetailValue as $item)
-						{
-							$item->value = $item->orderDetailTemplateFieldId==1? $height : ($item->orderDetailTemplateFieldId==2? $length : $categoryId);
-							$item->updateDateTime = new CDbExpression("NOW()");
-							if(!($item->save())){
-								throw new Exception(print_r($item->errors, True));
-							}
-						}
-				}else{
+				if($oldOrderId==NULL){
 				$orderDetail = new OrderDetail();
 				$orderDetail->orderId = $orderId;
 				$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
@@ -884,7 +871,20 @@ class Product extends ProductMaster
 					}else{
 					throw new Exception(print_r($orderDetail->errors, True));
 				}
-			}
+				}else{
+					$orderDetail = OrderDetail::model()->find('orderId = '.$oldOrderId);
+					$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
+					$orderDetailValue = OrderDetailValue::model()->findAll('orderDetailId = '.$orderDetail->orderDetailId);
+
+					foreach($orderDetailValue as $item)
+						{
+							$item->value = $item->orderDetailTemplateFieldId==1? $height : ($item->orderDetailTemplateFieldId==2? $length : $categoryId);
+							$item->updateDateTime = new CDbExpression("NOW()");
+							if(!($item->save())){
+								throw new Exception(print_r($item->errors, True));
+							}
+						}
+					}
 				}
 			}
 		return $res;

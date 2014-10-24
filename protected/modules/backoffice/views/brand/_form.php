@@ -66,7 +66,7 @@
 		<div class="col-sm-10">
 			<?php
 			if($this->action->id == 'update')
-				echo CHtml::image(Yii::app()->baseUrl . $model->image, '', array(
+				echo CHtml::image(Yii::app()->baseUrl . "/" . $model->image, '', array(
 					'style'=>'width:150px;'));
 			?>
 			<?php

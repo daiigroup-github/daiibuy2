@@ -5,7 +5,7 @@ class FenzerController extends MasterMyFileController
 
 	public function init()
 	{
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
+
 		parent::init();
 	}
 
@@ -13,7 +13,7 @@ class FenzerController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 1, 1, 1, null);
+		$myfileArray = Order::model()->findAllMyFileBySupplierId(Yii::app()->user->id, 1, null);
 		$this->render('index', array(
 			'myfileArray'=>$myfileArray));
 	}
@@ -241,6 +241,7 @@ class FenzerController extends MasterMyFileController
 		$provinceId = $daiibuy->provinceId;
 		$productItems = array();
 		$orderId = NULL;
+
 		if(isset($_POST['productItems']) && !empty($_POST['productItems']))
 		{
 			$productItems = $_POST['productItems'];
@@ -325,13 +326,19 @@ class FenzerController extends MasterMyFileController
 		$res = array();
 		$orderDetail = OrderDetail::model()->find('orderId = '.$orderId);
 		$orderDetailValues = OrderDetailValue::model()->findAll('orderDetailId = '.$orderDetail->orderDetailId);
-		foreach($orderDetailValues as $item){
-			if($item->orderDetailTemplateFieldId == 1){
-			$res['height'] = $item->value;
-			}else if($item->orderDetailTemplateFieldId == 2){
-				$res['length'] = $item->value;
-			}else{
-				$res['categoryId'] = $item->value;
+		if(count($orderDetailValues)==0){
+				$res['categoryId'] = 0;
+				$res['height'] = 0;
+				$res['length'] = 0;
+		}else{
+			foreach($orderDetailValues as $item){
+				if($item->orderDetailTemplateFieldId == 1){
+				$res['height'] = $item->value;
+				}else if($item->orderDetailTemplateFieldId == 2){
+					$res['length'] = $item->value;
+				}else{
+					$res['categoryId'] = $item->value;
+				}
 			}
 		}
 
@@ -375,5 +382,19 @@ class FenzerController extends MasterMyFileController
 		$res['orderId'] = $model->orderId;
 
 		return $res;
+	}
+
+	public function actionAddToCart()
+	{
+		if(isset($_POST['orderId']) && !empty($_POST['orderId']))
+		{
+		$orderId = $_POST['orderId'];
+		$model = Order::model()->findByPk($orderId);
+		$model->type = 3;
+			if($model->save()){
+				echo 'success';
+			}
+		}
+		echo 'fail';
 	}
 }

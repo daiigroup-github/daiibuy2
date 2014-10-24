@@ -46,8 +46,29 @@ $(document).ready(function() {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 	});
 	$('#addToCart').on('click', function(e) {
-		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+		var base_url = window.location.origin;
+		var orderId = $("#order").attr("name");
+		if (orderId === null)
+		{
+			orderId = $(this).attr("name");
+		}
+//		alert(orderId);
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/fenzer/addToCart',
+			type: 'POST',
+			data: {'orderId': orderId},
+			success: function(data) {
+			}
+		});
+		window.location.assign(base_url + '/daiibuy2/myfile/fenzer/');
 	});
+
+	$('#finish').on('click', function(e) {
+		var base_url = window.location.origin;
+		window.location.assign(base_url + '/daiibuy2/myfile/fenzer/');
+	});
+
+
 	$('#nextToStep4').on('click', function(e) {
 
 		//save order
@@ -61,7 +82,6 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
 			success: function(data) {
-				alert('success');
 				$("#confirm_content").html(data);
 			}
 		});
@@ -83,7 +103,6 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + '&orderId=' + orderId,
 			success: function(data) {
-				alert('success');
 				$("#confirm_content").html(data);
 			}
 		});
@@ -138,4 +157,25 @@ $(document).ready(function() {
 //		alert($(this).attr("name"));
 	});
 //	$('#nextToStep3')
+
+//Upload Plan Atech
+	$('#uploadPlanAtech').on('click', function() {
+//		var base_url = window.location.origin;
+//		var title = $("#myfile_title").attr("value");
+//		var provinceId = $("#selectProvince").attr("value");
+//		alert(title);
+//		alert(provinceId);
+//		var productItems = $("#editTableForm").serialize();
+//		$.ajax({
+//			url: base_url + '/daiibuy2/myfile/atechWindow/saveTitleAndProvinceId',
+//			type: 'POST',
+//			data: {'provinceId': provinceId, 'title': title},
+//			success: function(data) {
+//				$("#upload_plan").html(data);
+//			}
+//		});
+		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
+	});
+
+
 });

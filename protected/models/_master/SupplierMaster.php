@@ -26,8 +26,10 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
+ * @property Bank[] $banks
  * @property Order[] $orders
  * @property OrderDetailTemplate[] $orderDetailTemplates
+ * @property OrderGroup[] $orderGroups
  * @property Product[] $products
  * @property Amphur $amphur
  * @property District $district
@@ -77,8 +79,10 @@ class SupplierMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'banks' => array(self::HAS_MANY, 'Bank', 'supplierId'),
 			'orders' => array(self::HAS_MANY, 'Order', 'supplierId'),
 			'orderDetailTemplates' => array(self::HAS_MANY, 'OrderDetailTemplate', 'supplierId'),
+			'orderGroups' => array(self::HAS_MANY, 'OrderGroup', 'supplierId'),
 			'products' => array(self::HAS_MANY, 'Product', 'supplierId'),
 			'amphur' => array(self::BELONGS_TO, 'Amphur', 'amphurId'),
 			'district' => array(self::BELONGS_TO, 'District', 'districtId'),

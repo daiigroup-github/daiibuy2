@@ -76,7 +76,7 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<button id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป</button>
+						<button id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </button>
 					</div>
 				</div>
 			</div>
@@ -124,10 +124,10 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-left">
-						<button id="backToStep1" class="btn btn-primary btn-lg">ย้อนกลับ</button>
+						<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</button>
 					</div>
 					<div class="pull-right">
-						<button id="nextToStep3" class="btn btn-primary btn-lg">ต่อไป</button>
+						<button id="nextToStep3" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </button>
 					</div>
 				</div>
 			</div>
@@ -164,13 +164,13 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-left" >
-						<button id="backToStep2" class="btn btn-primary btn-lg">ย้อนกลับ</button>
+						<button id="backToStep2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
 					</div>
-					<div class="col-lg-10 text-center">
-						<button id="calculatePrice" class="btn btn-warning btn-lg">อัพเดทราคา</button>
+					<div class="col-lg-9 text-center">
+						<button id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</button>
 					</div>
 					<div class="pull-right">
-						<button id="nextToStep4" class="btn btn-primary btn-lg">ต่อไป</button>
+						<button id="nextToStep4" class="btn btn-primary btn-lg"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
 					</div>
 				</div>
 			</div>
@@ -182,8 +182,10 @@ $this->breadcrumbs = array(
 				<div class="row" id="confirm_content"></div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<button id="backToStep3" class="btn btn-primary btn-lg">ย้อนกลับ</button>
-						<button id="addToCart" class="btn btn-warning btn-lg">ใส่ตระกร้า</button>
+						<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
+						<button id="finish" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
+						<button id="addToCart" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
+						<button id="requestSpecial" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
 					</div>
 				</div>
 			</div>

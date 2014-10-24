@@ -48,12 +48,12 @@ class EmailSend
 		}
 		if(isset($mailObj->supplierId))
 		{
-			$supplier = new User();
+			$supplier = new Supplier();
 			$this->supplierModel = $supplier->findByPk($mailObj->supplierId);
 		}
 		if(isset($mailObj->orderId))
 		{
-			$order = new Order();
+			$order = new OrderGroup();
 			$this->orderModel = $order->findByPk($mailObj->orderId);
 		}
 		if(isset($mailObj->productId))
@@ -1154,8 +1154,8 @@ class EmailSend
 		$message->setBody(array(
 			"name"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
 			"invoiceNo"=>$this->orderModel->orderNo,
-			"orderID"=>$this->orderModel->orderId,
-			"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderId,
+			"orderID"=>$this->orderModel->orderGroupId,
+			"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderGroupId,
 			"remark"=>$mailObj->remark), 'text/html', 'utf-8');
 		$message->addTo($this->orderModel->email);
 

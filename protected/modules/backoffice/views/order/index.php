@@ -34,8 +34,8 @@ return false;
 		Manage Orders
 		<div class="pull-right">
 			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array(
-				'class'=>'btn btn-xs btn-primary'));
+//			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create'), array(
+//				'class'=>'btn btn-xs btn-primary'));
 			?>
 		</div>
 	</div>

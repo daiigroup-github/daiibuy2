@@ -16,6 +16,7 @@
  * @property string $createDateTime
  *
  * The followings are the available model relations:
+ * @property Supplier $supplier
  * @property BankName $bankName
  */
 class BankMaster extends MasterCActiveRecord
@@ -36,7 +37,7 @@ class BankMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('bankNameId, branch, accNo, accName, accType, supplierId, status, createDateTime', 'required'),
+			array('bankNameId, branch, accNo, accName, accType, supplierId, createDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('bankNameId, supplierId', 'length', 'max'=>20),
 			array('branch', 'length', 'max'=>25),
@@ -57,6 +58,7 @@ class BankMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
 			'bankName' => array(self::BELONGS_TO, 'BankName', 'bankNameId'),
 		);
 	}
