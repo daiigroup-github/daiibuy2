@@ -286,7 +286,7 @@ $this->breadcrumbs = array(
 				<td>1</td>
 				<td><?php echo CHtml::dropDownList('Criteria[category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
 				<td><?php echo CHtml::dropDownList('Criteria[type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[size]', "size", $data); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
 				<td><?php echo CHtml::textField('Criteria[quantity]', "quantity",array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>

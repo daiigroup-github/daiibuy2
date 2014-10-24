@@ -63,6 +63,7 @@ class Product extends ProductMaster
 
 	public $searchText;
 	public $cartTotal;
+	public $size;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -966,7 +967,15 @@ class Product extends ProductMaster
 
 	public function findAllAtechSizeArray(){
 		$criteria = new CDbCriteria();
-		$criteria->select = 'SELECT DISTINCT CONCAT(width, "x", height)';
-		$criteria->
+		$criteria->distinct = true;
+		$criteria->select = 'CONCAT(width, " x ", height) AS size';
+		$criteria->condition = 'status = 2 AND supplierId = 2';
+		$model = $this->findAll($criteria);
+//		throw new Exception($model->size,true);
+		$res=array();
+		foreach($model as $item){
+			$res[$item['size']] = $item['size'];
+		}
+		return $res;
 	}
 }
