@@ -228,7 +228,7 @@ class CategoryController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'index?brandModelId=' . $model->brandModelId));
+						'index?brandModelId=' . $model->modelToCategory1s[0]->brandModelId));
 				}
 				else
 				{
@@ -254,8 +254,10 @@ class CategoryController extends MasterBackofficeController
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
+//		Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 0;")->query();
+		$model = ModelToCategory1::model()->findByPk($id);
+		$model->delete();
+//		Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 1;")->query();
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(

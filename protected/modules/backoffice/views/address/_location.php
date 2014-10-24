@@ -57,26 +57,27 @@ if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $typ
 
 	<div class="col-sm-3">
 		<?php
-		if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $type == "shipping") && !(Yii::app()->user->userType == 4))
-		{
-			echo $form->dropdownList($model, "[$type]" . 'amphurId', Address::model()->getAmphurById($model->amphurId), array(
-				"class"=>"input-medium",));
-		}
-		else
-		{
-			echo $form->dropdownList($model, "[$type]" . 'amphurId', isset($model->provinceId) ? Address::model()->getAllAmphurByProvinceId($model->provinceId) : array(), array(
-				"class"=>"form-control",
-				"prompt"=>"--เลือกอำเภอ--",
-				'ajax'=>array(
-					'type'=>'POST', //request type
-					'url'=>CController::createUrl('/backoffice/user/dynamicLocation'), //url to call.
-					//Style: CController::createUrl('currentController/methodToCall')
-					'update'=>!isset($type) ? "#" . get_class($model) . "_districtId" : "#" . get_class($model) . "_" . $type . "_districtId", //selector to update
-					'data'=>array(
-						"amphurId"=>"js:this.value"),
-				//leave out the data key to pass all form values through
-			)));
-		}
+//		if(isset(Yii::app()->user->userType) && (Yii::app()->user->userType == 2 || $type == "shipping") && !(Yii::app()->user->userType == 4))
+//		{
+//			throw new Exception(Yii::app()->user->userType);
+//			echo $form->dropdownList($model, "[$type]" . 'amphurId', Address::model()->getAmphurById($model->amphurId), array(
+//				"class"=>"input-medium",));
+//		}
+//		else
+//		{
+		echo $form->dropdownList($model, "[$type]" . 'amphurId', isset($model->provinceId) ? Address::model()->getAllAmphurByProvinceId($model->provinceId) : array(), array(
+			"class"=>"form-control",
+			"prompt"=>"--เลือกอำเภอ--",
+			'ajax'=>array(
+				'type'=>'POST', //request type
+				'url'=>CController::createUrl('/backoffice/user/dynamicLocation'), //url to call.
+				//Style: CController::createUrl('currentController/methodToCall')
+				'update'=>!isset($type) ? "#" . get_class($model) . "_districtId" : "#" . get_class($model) . "_" . $type . "_districtId", //selector to update
+				'data'=>array(
+					"amphurId"=>"js:this.value"),
+			//leave out the data key to pass all form values through
+		)));
+//		}
 		?>
 		<?php echo $form->error($model, 'amphurId'); ?>
 	</div>

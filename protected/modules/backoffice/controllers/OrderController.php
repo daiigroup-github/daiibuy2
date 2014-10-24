@@ -886,4 +886,90 @@ class OrderController extends MasterBackofficeController
 		}
 	}
 
+	public function actionFindAllModelByBrandIdAjax()
+	{
+		$data = BrandModel::model()->findAll('brandId=:brandId', array(
+			':brandId'=>(int) $_POST['brandId']));
+
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Model --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->brandModelId), CHtml::encode($item->title), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
+	public function actionFindAllCat1ByBrandModelIdAjax()
+	{
+		$data = ModelToCategory1::model()->findAll('brandModelId=:brandModelId', array(
+			':brandModelId'=>(int) $_POST['brandModelId']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Cat1 --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->categoryId), CHtml::encode(isset($item->category) ? $item->category->title : ""), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
+	public function actionFindAllCat2AndProductByBrandCat1IdAjax()
+	{
+		$data = CategoryToSub::model()->findAll('categoryId=:categoryId', array(
+			':categoryId'=>(int) $_POST['cat1Id']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Cat2 --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->subCategoryId), CHtml::encode(isset($item->subCategory) ? $item->subCategory->title : ""), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
+	public function actionFindAllProductByCat1IdAjax()
+	{
+		$data = Category2ToProduct::model()->findAll('category1Id=:category1Id', array(
+			':category1Id'=>(int) $_POST['cat1Id']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Product --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->productId), CHtml::encode(isset($item->product) ? $item->product->name : ""), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
+	public function actionFindAllProductByCat2IdAjax()
+	{
+		$data = Category2ToProduct::model()->findAll('category2Id=:category2Id', array(
+			':category2Id'=>(int) $_POST['cat2Id']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Product --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->productId), CHtml::encode(isset($item->product) ? $item->product->name : ""), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
 }

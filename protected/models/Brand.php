@@ -62,7 +62,10 @@ class Brand extends BrandMaster
 	public function getAllBrandBySupplierId($supplierId)
 	{
 		$criteria = new CDbCriteria();
-		$criteria->compare('supplierId', $supplierId);
+		if(Yii::app()->user->userType != 4)
+		{
+			$criteria->compare('supplierId', $supplierId);
+		}
 
 		$productBrands = $this->findAll($criteria);
 
@@ -70,7 +73,7 @@ class Brand extends BrandMaster
 			);
 		foreach($productBrands as $productBrand)
 		{
-			$w[$productBrand->productBrandId] = $productBrand->name;
+			$w[$productBrand->brandId] = $productBrand->title;
 		}
 
 		return $w;

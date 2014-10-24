@@ -56,6 +56,13 @@ class MasterBackofficeController extends MasterController
 				),
 				'visible'=>!Yii::app()->user->isGuest),
 			array(
+				'label'=>'Myfile',
+				'url'=>array(
+					'/backoffice/myfile',
+				),
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
+			),
+			array(
 				'label'=>'User<i class="fa fa-arrow-circle-o-down"></i>',
 				'url'=>array(
 					'#'),

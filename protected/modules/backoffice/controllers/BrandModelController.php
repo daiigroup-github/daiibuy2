@@ -133,8 +133,8 @@ class BrandModelController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->brandModelId));
+						'index',
+						'brandId'=>$model->brandId));
 				}
 				else
 				{
@@ -214,8 +214,8 @@ class BrandModelController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->brandModelId));
+						'index',
+						'brandId'=>$model->brandId));
 				}
 				else
 				{
@@ -241,7 +241,32 @@ class BrandModelController extends MasterBackofficeController
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		$transaction = Yii::app()->db->beginTransaction();
+		try
+		{
+
+//			Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 0;")->query();
+			$modelToCat = ModelToCategory1::model()->find("brandModelId=" . $id);
+
+			if($modelToCat->delete())
+			{
+
+				$this->loadModel($id)->delete();
+				$transaction->commit();
+			}
+			else
+			{
+				$transaction->rollback();
+			}
+//			Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 1;")->query();
+		}
+		catch(Exception $exc)
+		{
+			$transaction->rollback();
+			echo $exc->getTraceAsString();
+		}
+
+
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))

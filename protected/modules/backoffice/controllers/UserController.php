@@ -384,6 +384,7 @@ class UserController extends MasterBackofficeController
 	 */
 	public function actionUpdate($id)
 	{
+		$flag = 1;
 		$isGen = 0;
 		$dateNow = new CDbExpression('NOW()');
 		$model = $this->loadModel($id);
@@ -519,19 +520,22 @@ class UserController extends MasterBackofficeController
 						}
 					}
 				}
-				if(isset($_POST["Address"]) && $model->type == 3 || isset($_POST["Address"]) && $model->type == 2)
+				if(isset($_POST["Address"]))
 				{
 					$a = $_POST["Address"];
-					$address->attributes = $a['business'];
-					$address->company = $a['business']['company'];
+					$address->attributes = $a['billing'];
+					$address->userId = $id;
+					$address->type = 1;
+					$address->company = $a['billing']['company'];
 					if(!$address->save())
 					{
 						$flag = 0;
 					}
-					if(isset($a['shipping']
-						))
+					if(isset($a['shipping']) && ($model->type == 2))
 					{
 						$shippingAddressModel->attributes = $a['shipping'];
+						$shippingAddressModel->userId = $id;
+						$shippingAddressModel->type = 2;
 						$shippingAddressModel->company = $a['shipping']['company'];
 						if(!$shippingAddressModel->save())
 						{
@@ -549,15 +553,18 @@ class UserController extends MasterBackofficeController
 						$sentMail->mailNewAccount($emailObj);
 					}
 				}
-				if(!isset($_GET["supplierId"]))
+				if($flag)
 				{
-					$this->redirect(array(
-						'index'));
-				}
-				else
-				{
-					$this->redirect(array(
-						'/backoffice/userToSupplier?supplierId=' . $_GET["supplierId"]));
+					if(!isset($_GET["supplierId"]))
+					{
+						$this->redirect(array(
+							'index'));
+					}
+					else
+					{
+						$this->redirect(array(
+							'/backoffice/userToSupplier?supplierId=' . $_GET["supplierId"]));
+					}
 				}
 			}
 		}

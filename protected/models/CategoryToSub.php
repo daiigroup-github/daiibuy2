@@ -64,7 +64,8 @@ class CategoryToSub extends CategoryToSubMaster
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria = new CDbCriteria;
-
+		$criteria->join = " LEFT JOIN category c ON c.categoryId = t.categoryId ";
+		$criteria->join .=" LEFT JOIN category s ON s.categoryId = t.subCategoryId ";
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			if(isset($this->categoryId))
@@ -85,8 +86,7 @@ class CategoryToSub extends CategoryToSubMaster
 		$criteria->compare("t.categoryId", $this->categoryId);
 		$criteria->compare('c.title', $this->categoryTitle, TRUE, 'OR');
 		$criteria->compare('s.title', $this->subCategoryTitle, TRUE, 'OR');
-		$criteria->join = "LEFT JOIN category c ON c.categoryId = t.categoryId ";
-		$criteria->join .=" LEFT JOIN category s ON s.categoryId = t.subCategoryId ";
+
 //		$criteria->compare('isTheme', $this->isTheme);
 //		$criteria->compare('isSet', $this->isSet);
 //		$criteria->compare('status', $this->status);

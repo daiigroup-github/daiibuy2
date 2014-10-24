@@ -184,6 +184,8 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="tab-pane active" id="tab1">
                     <p class="note">Fields with <span class="required">*</span> are required.</p>
 					<?php echo $form->errorSummary($model); ?>
+					<?php echo $form->errorSummary($address); ?>
+					<?php echo $form->errorSummary($shippingAddressModel); ?>
 					<div class="alert">
                         <h3>ข้อมูลบัญชี</h3>
 
@@ -274,7 +276,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								<!--								<div class="control-group">
 																	<label class="control-label"><?php echo "ผู้แต่งตั้ง" ?></label>
 																	<div class="controls">
-																		<input type='text' name='nTotal' value='<?php // echo $referenceUser->firstname . " " . $referenceUser->lastname;                                                                                                                                                                              ?>'size="32" readonly="true">
+																		<input type='text' name='nTotal' value='<?php // echo $referenceUser->firstname . " " . $referenceUser->lastname;                                                                                                                                                                                 ?>'size="32" readonly="true">
 								<?php // echo $form->error($model, 'referenceId');              ?>
 																	</div>
 																</div>-->

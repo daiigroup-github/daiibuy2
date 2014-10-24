@@ -76,7 +76,8 @@ return false;
 			),
 			array(
 				'name'=>'description',
-				'value'=>'isset($data->category)?$data->category->title:"-"'
+				'type'=>'html',
+				'value'=>'isset($data->category)?$data->category->description:"-"'
 			),
 			'status',
 			/*
@@ -97,9 +98,9 @@ return false;
 					'update'=>array(
 						'url'=>'Yii::app()->createUrl("/backoffice/category/update/id/".$data->categoryId)'
 					),
-					'delete'=>array(
-						'url'=>'Yii::app()->createUrl("/backoffice/category/delete/id/".$data->categoryId)'
-					),
+//					'delete'=>array(
+//						'url'=>'Yii::app()->createUrl("/backoffice/category/delete/id/".$data->categoryId)'
+//					),
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
