@@ -52,15 +52,15 @@ class StepController extends MasterCheckoutController
                  * update order set userId = Yii::app()->user->id
                  */
                 $orders = Order::model()->findAll(array(
-                    'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
+                    'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
                     'params' => array(
-                        ':userId' => Yii::app()->user->id,
+                        ':token' => $daiibuy->token,
                         ':supplierId' => Yii::app()->session['supplierId'],
                     ),
                 ));
 
                 foreach ($orders as $order) {
-                    $order->userId = $addressModel->userId;
+                    $order->userId = Yii::app()->user->id;
                     $order->save(false);
                 }
                 $this->redirect($this->createUrl(2));
@@ -185,8 +185,88 @@ class StepController extends MasterCheckoutController
 
     public function step4()
     {
-        $this->render('step4');
-        $this->redirect($this->createUrl(5));
+        $supplierId = Yii::app()->session['supplierId'];
+        $orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
+
+        if(isset($_POST['paymentMethod'])) {
+            $flag = false;
+            $transaction = Yii::app()->db->beginTransaction();
+            try{
+                //code here
+                //new order group
+                $orderGroup = new OrderGroup();
+                $orderGroup->orderNo = $orderGroup->genOrderNo();
+                $orderGroup->summary = $orderSummary['grandTotal'];
+                $orderGroup->totalIncVAT = $orderSummary['total'];
+                $orderGroup->discountPercent = $orderSummary['discountPercent'];
+                $orderGroup->discountValue = $orderSummary['discount'];
+                $orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+                $orderGroup->vatValue = $orderGroup->calVatValue();
+                $orderGroup->userId = Yii::app()->user->id;
+
+                /**
+                 * Todo:: billing & shipping address
+                 */
+
+
+                /**
+                 * TODO:: remove false after add address
+                 */
+                if($orderGroup->save(false)) {
+                    $orderGroupId = Yii::app()->db->getLastInsertID();
+                    $orders = Order::model()->findAll(array(
+                        'condition' => 'type&'.Order::ORDER_TYPE_CART.' > 0 AND userId=:userId AND supplierId=:supplierId',
+                        'params' => array(
+                            ':userId' => Yii::app()->user->id,
+                            ':supplierId' => $supplierId,
+                        ),
+                        'order' => 'type, orderId'
+                    ));
+
+                    $i=0;
+                    foreach ($orders as $order) {
+                        $orderGroupToOrder = new OrderGroupToOrder();
+                        $orderGroupToOrder->orderGroupId = $orderGroupId;
+                        $orderGroupToOrder->orderId = $order->orderId;
+
+                        if(!$orderGroupToOrder->save()) {
+                            break;
+                        }
+                        $i++;
+                    }
+
+                    if($i == sizeof($orders)) {
+                        $flag = true;
+                    }
+                }
+
+                if($flag) {
+                    $transaction->commit();
+
+                    /**
+                     * 1 = card, 2 = transfer
+                     * orderNo = $orderGroup->orderNo
+                     */
+                    if($_POST['paymentMethod'] == 1) {
+                        //card
+
+                    } else {
+                        //transfer
+                    }
+                } else {
+                    $transaction->rollback();
+                }
+            }catch(Exception $e){
+                throw new Exception($e->getMessage());
+                $transaction->rollback();
+            }
+        }
+
+        $this->render('step4', array(
+            'step'=>4,
+            'orderSummary'=>$orderSummary,
+        ));
+//        $this->redirect($this->createUrl(5));
     }
 
     public function step5()

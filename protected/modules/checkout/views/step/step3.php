@@ -431,7 +431,8 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <?php echo CHtml::link('&lt; Back', '', array('class'=>'button orange', 'name'=>'Register'));?>
-            <?php echo CHtml::submitButton('Check out', array('class'=>'big green pull-right', 'name'=>'checkout'));?>
+            <?php echo CHtml::link('Next &gt;', $this->createUrl(4), array('class'=>'button green pull-right'));?>
+            <?php //echo CHtml::submitButton('Check out', array('class'=>'big green pull-right', 'name'=>'checkout'));?>
         </div>
     </div>
 </div>

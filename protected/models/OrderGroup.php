@@ -26,6 +26,8 @@ class OrderGroup extends OrderGroupMaster
     const STATUS_APPROVE_TRANSFER = 3;
     const STATUS_SUPPLIER_SHIPPING = 4;
 
+    const VAT_PERCENT = 7;
+
     /**
      * @return string the associated database table name
      */
@@ -168,20 +170,34 @@ class OrderGroup extends OrderGroupMaster
 		return isset($result->data[0]) ? $result->data[0]->maxCode : 0;
 	}
 
-	public function findMaxOrderNo()
+	public function findMaxOrderNo($supplierId=NULL)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria = new CDbCriteria;
+//		$criteria = new CDbCriteria;
+//
+//		$criteria->select = 'max(RIGHT(orderNo,6)) as maxCode';
+//		$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW())';
+//        if(isset($supplierId)) {
+//            $criteria->condition .= ' AND ';
+//        }
+//
+//		$result = new CActiveDataProvider($this, array(
+//			'criteria'=>$criteria,
+//		));
 
-		$criteria->select = 'max(RIGHT(orderNo,6)) as maxCode';
-		$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW())';
+        $orderGroupModel = OrderGroup::model()->find(array(
+            'select'=>'max(RIGHT(orderNo,6)) as maxCode',
+            'condition'=>'supplierId=:supplierId',
+            'params'=>array(
+                ':supplierId'=>$supplierId,
+            ),
+            'order'=>'orderNo desc',
+            'limit'=>'1'
+        ));
 
-		$result = new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-		return isset($result->data[0]) ? $result->data[0]->maxCode : 0;
+		return isset($orderGroupModel) ? $orderGroupModel->maxCode : 0;
 	}
 
 	public function findAllUserOrder()
@@ -326,10 +342,11 @@ class OrderGroup extends OrderGroupMaster
 		return $prefix . date("Ym") . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
 
-	public function genOrderNo()
-	{
-		$prefix = "OD";
-		$max_code = $this->findMaxOrderNo();
+	public function genOrderNo($supplierId=null)
+    {
+        $supplierModel = Supplier::model()->findByPk($supplierId);
+        $prefix = $supplierModel->prefix;
+        $max_code = $this->findMaxOrderNo();
 		$max_code += 1;
 		return $prefix . date("Ym") . "-" . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
@@ -369,4 +386,9 @@ class OrderGroup extends OrderGroupMaster
 		}
 	}
 
+    public function calVatValue($total=NULL)
+    {
+        $total = isset($total) ? $total : $this->totalIncVAT;
+        return $total - ($total / (1+(self::VAT_PERCENT/100)));
+    }
 }

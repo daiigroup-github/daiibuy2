@@ -31,6 +31,7 @@ class Order extends OrderMaster
 	const ORDER_TYPE_MYFILE = 1;
 	const ORDER_TYPE_CART = 2;
 	const ORDER_TYPE_MYFILE_TO_CART = 3;
+    const ORDER_TYPE_ADD_TO_ORDER_GROUP = 4;
 
 	/**
 	 * @return string the associated database table name
@@ -739,12 +740,22 @@ class Order extends OrderMaster
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 
+        $condition = 'supplierId=:supplierId AND status=0';
+        $params = array(
+            ':supplierId'=>$supplierId,
+        );
+
+        if(isset(Yii::app()->user->id)) {
+            $condition .= ' AND userId=:userId';
+            $params[':userId'] = Yii::app()->user->id;
+        } else {
+            $condition .= ' AND token=:token';
+            $params[':token'] = $daiibuy->token;
+        }
+
 		$model = $this->find(array(
-			'condition'=>'token=:token AND supplierId=:supplierId',
-			'params'=>array(
-				':token'=>$token,
-				':supplierId'=>$supplierId,
-			),
+			'condition'=>$condition,
+			'params'=>$params,
 		));
 
 		if(!isset($model))
@@ -755,6 +766,11 @@ class Order extends OrderMaster
 			$model->provinceId = $daiibuy->provinceId;
 			$model->type = self::ORDER_TYPE_CART;
 			$model->createDateTime = $model->updateDateTime = new CDbExpression('NOW()');
+
+            if(isset(Yii::app()->user->id)) {
+                $model->userId = Yii::app()->user->id;
+            }
+
 			$model->save(false);
 		}
 		return $model;
@@ -791,7 +807,6 @@ class Order extends OrderMaster
 			'params'=>$params,
 		));
 
-		$this->writeToFile('/tmp/sumOrderTotalBySupplierId', $condition);
 
 		if(!isset(Yii::app()->user->id))
 		{
@@ -807,6 +822,7 @@ class Order extends OrderMaster
 		$res['discountPercent'] = $discountPercent;
 		$res['discount'] = number_format($model->sumTotal * $discountPercent / 100, 2);
 		$res['grandTotal'] = number_format($model->sumTotal - ($model->sumTotal * $discountPercent / 100), 2);
+        $this->writeToFile('/tmp/sumOrderTotalBySupplierId', print_r($res, true));
 		return $res;
 	}
 

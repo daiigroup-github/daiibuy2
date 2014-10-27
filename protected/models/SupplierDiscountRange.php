@@ -79,25 +79,23 @@ class SupplierDiscountRange extends SupplierDiscountRangeMaster
 		$max = $this->findMaxRange($supplierId);
 		$min = $this->findMinRange($supplierId);
 
-		if($total > $min->min)
-		{
-			if($total > $max->max)
-			{
-				return $max->percentDiscount;
-			}
-			else
-			{
-				$model = $this->find(array(
-					'condition'=>'supplierId=:supplierId AND (:total BETWEEN min AND max)',
-					'params'=>array(
-						':total'=>$total,
-						':supplierId'=>$supplierId,
-					)
-				));
+        if(isset($min) && isset($max)) {
+            if ($total > $min->min) {
+                if ($total > $max->max) {
+                    return $max->percentDiscount;
+                } else {
+                    $model = $this->find(array(
+                        'condition' => 'supplierId=:supplierId AND (:total BETWEEN min AND max)',
+                        'params' => array(
+                            ':total' => $total,
+                            ':supplierId' => $supplierId,
+                        )
+                    ));
 
-				return $model->percentDiscount;
-			}
-		}
+                    return $model->percentDiscount;
+                }
+            }
+        }
 
 		return 0;
 	}
