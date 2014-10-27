@@ -214,8 +214,15 @@ class AtechWindowController extends MasterMyFileController
 	public function actionCalculatePriceMyFile(){
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(2);
-		$provinceId = $_POST['provinceId'];
-		$title = $_POST['title'];
+
+		if(isset($_POST['provinceId']))
+		{
+			$provinceId = $_POST['provinceId'];
+		}
+		if(isset($_POST['title']))
+		{
+			$title = $_POST['title'];
+		}
 		if(isset($_POST['size']))
 		{
 			$value = $_POST['size'];
@@ -238,6 +245,10 @@ class AtechWindowController extends MasterMyFileController
 
 		$brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
 		$firstBrand = reset($brandModelArray);
+
+
+
+
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
