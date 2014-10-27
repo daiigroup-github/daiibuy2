@@ -62,16 +62,13 @@ $(document).ready(function() {
 		});
 		window.location.assign(base_url + '/daiibuy2/myfile/fenzer/');
 	});
-
 	$('#finish').on('click', function(e) {
 		var base_url = window.location.origin;
 		window.location.assign(base_url + '/daiibuy2/myfile/fenzer/');
 	});
-
-
 	$('#nextToStep4').on('click', function(e) {
 
-		//save order
+//save order
 		var base_url = window.location.origin;
 		var length = $("#length_input").attr("value");
 		var categoryId = $("#editTable").attr("name");
@@ -87,11 +84,10 @@ $(document).ready(function() {
 		});
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 	});
-
 //view Myfile Fenzer
 	$('#nextToStep4Edit').on('click', function(e) {
 
-		//save order
+//save order
 		var base_url = window.location.origin;
 		var orderId = $("#nextToStep4Edit").attr("name");
 		var length = $("#length_input").attr("value");
@@ -108,7 +104,6 @@ $(document).ready(function() {
 		});
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 	});
-
 //clickable Row
 	$(".clickableRow").click(function() {
 		var base_url = window.location.origin;
@@ -138,7 +133,6 @@ $(document).ready(function() {
 			$(this).parent().parent().remove();
 		}
 	});
-
 //calculatePrice
 	$('#calculatePrice').on('click', function() {
 		var base_url = window.location.origin;
@@ -160,23 +154,8 @@ $(document).ready(function() {
 
 //Upload Plan Atech
 	$('#uploadPlanAtech').on('click', function() {
-//		var base_url = window.location.origin;
-//		var title = $("#myfile_title").attr("value");
-//		var provinceId = $("#selectProvince").attr("value");
-//		alert(title);
-//		alert(provinceId);
-//		var productItems = $("#editTableForm").serialize();
-//		$.ajax({
-//			url: base_url + '/daiibuy2/myfile/atechWindow/saveTitleAndProvinceId',
-//			type: 'POST',
-//			data: {'provinceId': provinceId, 'title': title},
-//			success: function(data) {
-//				$("#upload_plan").html(data);
-//			}
-//		});
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	});
-
 	$('#manualQuantityAtech').on('click', function() {
 //		var base_url = window.location.origin;
 //		var title = $("#myfile_title").attr("value");
@@ -195,6 +174,20 @@ $(document).ready(function() {
 		$('ul.setup-panel li a[href="#step-2-2"]').trigger('click');
 	});
 
-
-
+	$('#nextToStep3Atech').on('click', function() {
+		var base_url = window.location.origin;
+		var title = $("#myfile_title").attr("value");
+		var provinceId = $("#selectProvince").attr("value");
+//		alert(categoryId);
+		var productItems = $("#atechTableForm").serialize();
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/atechWindow/calculatePriceMyFile',
+			type: 'POST',
+			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId,
+			success: function(data) {
+				$("#result_content").html(data);
+			}
+		});
+		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+	});
 });

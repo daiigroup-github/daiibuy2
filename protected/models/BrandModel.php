@@ -88,4 +88,12 @@ class BrandModel extends BrandModelMaster
 		));
 	}
 
+	public function findAllBrandModelArrayBySupplierId($supplierId){
+		$model = $this->find('supplierId = '.$supplierId);
+		$res = array();
+		foreach($model as $item){
+			$res[$item->brandModelId] = $item;
+		}
+		return $res;
+	}
 }

@@ -261,6 +261,24 @@ $this->breadcrumbs = array(
 	<div class="row setup-content" id="step-2-2">
 		<div class="col-xs-12">
             <div class="col-md-12 well">
+				<div class="row pull-right">
+
+		<!--<button id="addItemButton" class="btn btn-block btn-info">เพิ่มสินค้า</button>-->
+		<?php echo CHtml::button('เพิ่มสินค้า',
+			array('class'=>'btn btn-info',
+				'id'=>'addProductCriteriaAtech',
+				'ajax'=>array(
+				'type'=>'POST',
+				'url'=>CController::createUrl('atechWindow/addNewProductItem'),
+				'dataType'=>'html',
+				'data'=>array("rows"=>"js:document.getElementById('criteriaTableAtech').rows.length"),
+				'success'=>'js:function(data){
+					alert("YESS");
+					$("#criteriaTableAtech").append(data);
+				}',
+				),
+			)); ?>
+				</div>
 				<div class="row">
 					<div class="page-header myfile-fenzer-header" >
 						<h3>STEP.2 ใส่ปริมาณเอง</h3><small>กรุณาเลือกแบบหน้าต่างและกำหนดปริมาณที่ต้องการ.</small>
@@ -268,7 +286,7 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row text-center">
 					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId']; ?>">
+						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -284,10 +302,18 @@ $this->breadcrumbs = array(
 						<?php // foreach($productResult['items'] as $item): ?>
 			<tr>
 				<td>1</td>
-				<td><?php echo CHtml::dropDownList('Criteria[category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
-				<td><?php echo CHtml::textField('Criteria[quantity]', "quantity",array('class'=>'edit-table-qty-input')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+				<td><?php echo CHtml::textField('Criteria[0][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
+				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+				<td><?php echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>
 
@@ -335,6 +361,15 @@ $this->breadcrumbs = array(
 		<?php // $i++; ?>
 	<?php // endforeach;?>
 	</div>-->
+				</div>
+
+				<div class="row wizard-control">
+					<div class="pull-left">
+						<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</button>
+					</div>
+					<div class="pull-right">
+						<button id="nextToStep3Atech" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -190,4 +190,56 @@ class AtechWindowController extends MasterMyFileController
 	  );
 	  }
 	 */
+
+
+	public function actionAddNewProductItem(){
+
+		if(isset($_POST['rows']) && !empty($_POST['rows']))
+		{
+			$rowCount = $_POST['rows']-1;
+			$index = $rowCount-1;
+//			throw new Exception(print_r($rowCount+1,true));
+		}
+		echo '<tr>'
+		. '<td>'.$rowCount.'</td>'
+		. '<td>'. CHtml::dropDownList('Criteria['.$index.'][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')).'</td>'
+			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')).'</td>'
+			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][size]', "size", Product::model()->findAllAtechSizeArray()) .'</td>'
+			. '<td>'. CHtml::textField('Criteria['.$index.'][quantity]', 1,array('class'=>'edit-table-qty-input number')).'</td>'
+			. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
+			. '</tr>';
+	}
+
+
+	public function actionCalculatePriceMyFile(){
+		$orderModel = new Order();
+		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(2);
+		$provinceId = $_POST['provinceId'];
+		$title = $_POST['title'];
+		if(isset($_POST['size']))
+		{
+			$value = $_POST['size'];
+			$size = explode(" x ", $value);
+			$width = $size[0];
+			$height = $size[1];
+		}
+		if(isset($_POST['category']) && !empty($_POST['category']))
+		{
+			$category = $_POST['category'];
+		}
+		if(isset($_POST['type']) && !empty($_POST['type']))
+		{
+			$type = $_POST['type'];
+		}
+		if(isset($_POST['quantity']) && !empty($_POST['quantity']))
+		{
+			$quantity = $_POST['quantity'];
+		}
+
+		$brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
+		$firstBrand = reset($brandModelArray);
+		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+				'productResult'=>$itemSetArray,
+				),TRUE, TRUE);
+	}
 }

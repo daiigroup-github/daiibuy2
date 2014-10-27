@@ -127,7 +127,7 @@ $this->breadcrumbs = array(
 						<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</button>
 					</div>
 					<div class="pull-right">
-						<button id="nextToStep3" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </button>
+						<button id="nextToStep3" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
 					</div>
 				</div>
 			</div>
