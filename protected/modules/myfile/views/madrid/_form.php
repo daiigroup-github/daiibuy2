@@ -255,7 +255,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                           ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                                                      ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -317,12 +317,12 @@ $form = $this->beginWidget('CActiveForm', array(
 //								),
 //					));
 								?></td>
-				<td><?php // echo '';                                                           ?></td>
-				<td><?php // echo '';                                                          ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                           ?></td>
-				<td><?php // echo '';                                                          ?></td>
-				<td><?php // echo '';                                                          ?></td>
-				<td><?php // echo '';                                                          ?></td>
+				<td><?php // echo '';                                                                                      ?></td>
+				<td><?php // echo '';                                                                                     ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                                                      ?></td>
+				<td><?php // echo '';                                                                                     ?></td>
+				<td><?php // echo '';                                                                                     ?></td>
+				<td><?php // echo '';                                                                                     ?></td>
 			</tr>-->
 							</tbody>
 						</table>
@@ -333,7 +333,7 @@ $form = $this->beginWidget('CActiveForm', array(
 										<div class='col-lg-6 col-md-6 col-sm-12'>
 										<div class="blog-item">
 					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));            ?>
-											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                           ?></div>
+											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                                                      ?></div>
 									</div>
 								</div>
 					<?php // $i++;       ?>
@@ -353,24 +353,50 @@ $form = $this->beginWidget('CActiveForm', array(
 							<h3>ตารางประเมินราคา <?php echo $model->title; ?></h3>
 						</div>
 					</div>
-					<div class="row text-center">
-						<div style="margin-top: 2%">
-							<?php $i = 0; ?>
-							<?php foreach($model->orderFiles as $orderFile): ?>
-								<div class='col-lg-6 col-md-6 col-sm-12'>
-									<div class="blog-item">
-										<?php
-										echo CHtml::image(Yii::app()->baseUrl . $orderFile->filePath, '', array(
-											'style'=>'width:300px;height:300px'));
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>ลำดับ</th>
+										<th>รายละเอียดรายการที่ชอบ</th>
+										<th style="width: 10%;text-align: center">พื้นที่จาก การประเมิณ</th>
+										<th>หน่วย</th>
+										<th>รหัส</th>
+										<th>รายละเอียดสินค้า</th>
+										<th>หน่วย</th>
+										<th>จำนวน/หน่วย</th>
+										<th>ปริมาณจากการประเมิณพื้นที่</th>
+										<th>ปริมาณแก้ไข</th>
+										<th>ราคารวม</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$i = 1;
+									foreach($model->orderItems as $item):
 										?>
-										<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i == 0 ? "แบบแปลน" : "ด้านข้าง " . $i; ?></div>
-									</div>
-								</div>
-								<?php $i++; ?>
-							<?php endforeach; ?>
+										<tr>
+											<td><?php echo $i; ?></td>
+											<td><?php echo $item->groupName . "." ?></td>
+											<td><?php echo $item->area; ?></td>
+											<td>ตร.เมตร</td>
+											<td class="text-info"><?php echo $item->product->code; ?></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<?php
+										$i++;
+									endforeach;
+									?>
+								</tbody>
+							</table>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="row">
@@ -450,38 +476,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                ?>
+<?php // echo $form->errorSummary($model);                  ?>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');      ?>
 <?php // echo $form->textField($model, 'supplierId');         ?>
-<?php // echo $form->error($model, 'supplierId');                  ?>
+<?php // echo $form->error($model, 'supplierId');                    ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'type');       ?>
 <?php // echo $form->textField($model, 'type');         ?>
-<?php // echo $form->error($model, 'type');                  ?>
+<?php // echo $form->error($model, 'type');                    ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'status');       ?>
 <?php // echo $form->textField($model, 'status');        ?>
-<?php // echo $form->error($model, 'status');                  ?>
+<?php // echo $form->error($model, 'status');                    ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'title');      ?>
 <?php // echo $form->textField($model, 'title');       ?>
-<?php // echo $form->error($model, 'title');                  ?>
+<?php // echo $form->error($model, 'title');                    ?>
 	</div>
 
 
 	<div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                  ?>
+<?php // echo CHtml::submitButton('Submit');                    ?>
 	</div>
 
-<?php // $this->endWidget();                   ?>
+<?php // $this->endWidget();                     ?>
 
 </div>-->
 <!-- form -->
