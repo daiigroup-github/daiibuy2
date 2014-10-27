@@ -262,6 +262,24 @@ class CategoryToSubController extends MasterBackofficeController
 		));
 	}
 
+	public function actionUpdateDescription($id)
+	{
+		$model = $this->loadModel($id);
+		if(isset($_POST["CategoryToSub"]))
+		{
+			$model->attributes = $_POST["CategoryToSub"];
+			if($model->save())
+			{
+				$this->redirect(array(
+					'index',
+					'categoryId'=>$model->categoryId));
+			}
+		}
+		$this->render('update_description', array(
+			'model'=>$model,
+		));
+	}
+
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

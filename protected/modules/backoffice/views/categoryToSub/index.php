@@ -79,7 +79,7 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {product} {image}',
+				'template'=>'{view} {update} {delete} {product} {image} {description}',
 				'buttons'=>array(
 					'product'=>array(
 						'label'=>'<br><u>Product</u>',
@@ -88,6 +88,10 @@ return false;
 					'image'=>array(
 						'label'=>'<br><u>Image</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryImage?categoryId=".$data->subCategoryId)'
+					),
+					'description'=>array(
+						'label'=>'<br><u>Description</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub/updateDescription/id/".$data->id)'
 					)
 				)
 			),
