@@ -203,6 +203,7 @@ class StepController extends MasterCheckoutController
                 $orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
                 $orderGroup->vatValue = $orderGroup->calVatValue();
                 $orderGroup->userId = Yii::app()->user->id;
+                $orderGroup->paymentMethod = $_POST['paymentMethod'];
 
                 /**
                  * Todo:: billing & shipping address
@@ -247,7 +248,7 @@ class StepController extends MasterCheckoutController
                      * 1 = card, 2 = transfer
                      * orderNo = $orderGroup->orderNo
                      */
-                    if($_POST['paymentMethod'] == 1) {
+                    if($orderGroup->paymentMethod == 1) {
                         //card
 
                     } else {
