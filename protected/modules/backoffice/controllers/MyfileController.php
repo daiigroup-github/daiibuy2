@@ -225,35 +225,51 @@ class MyfileController extends MasterBackofficeController
 			try
 			{
 				$transaction = Yii::app()->db->beginTransaction();
-
-				foreach($_POST["OrderItems"]["brandId"] as $k=> $v)
-				{
-					$orderItems = new OrderItems();
-					$orderItems->orderId = $id;
-					$orderItems->productId = $_POST["OrderItems"]["productId"][$k];
-					if(isset($_POST["OrderItems"]["quantity"][$k]))
+				if(Yii::app()->user->supplierId != 3):
+					foreach($_POST["OrderItems"]["brandId"] as $k=> $v)
 					{
-						$orderItems->quantity = $_POST["OrderItems"]["quantity"][$k];
-					}
-					if(isset($_POST["OrderItems"]["groupName"][$k]))
-					{
-						$orderItems->groupName = $_POST["OrderItems"]["groupName"][$k];
-					}
-					if(isset($_POST["OrderItems"]["area"][$k]))
-					{
-						$orderItems->area = $_POST["OrderItems"]["area"][$k];
-					}
-
-					$orderItems->createDateTime = new CDbExpression("NOW()");
-					$orderItems->updateDateTime = new CDbExpression("NOW()");
+						$orderItems = new OrderItems();
+						$orderItems->orderId = $id;
+						$orderItems->productId = $_POST["OrderItems"]["productId"][$k];
+						if(isset($_POST["OrderItems"]["quantity"][$k]))
+						{
+							$orderItems->quantity = $_POST["OrderItems"]["quantity"][$k];
+						}
+						$orderItems->createDateTime = new CDbExpression("NOW()");
+						$orderItems->updateDateTime = new CDbExpression("NOW()");
 
 
-					if(!$orderItems->save(FALSE))
-					{
-						$flag = false;
-						break;
+						if(!$orderItems->save(FALSE))
+						{
+							$flag = false;
+							break;
+						}
 					}
-				}
+				else:
+					foreach($_POST["OrderItems"]["groupName"] as $k=> $v)
+					{
+						$orderItems = new OrderItems();
+						$orderItems->orderId = $id;
+						if(isset($_POST["OrderItems"]["groupName"][$k]))
+						{
+							$orderItems->groupName = $_POST["OrderItems"]["groupName"][$k];
+						}
+						if(isset($_POST["OrderItems"]["area"][$k]))
+						{
+							$orderItems->area = $_POST["OrderItems"]["area"][$k];
+						}
+
+						$orderItems->createDateTime = new CDbExpression("NOW()");
+						$orderItems->updateDateTime = new CDbExpression("NOW()");
+
+
+						if(!$orderItems->save(FALSE))
+						{
+							$flag = false;
+							break;
+						}
+					}
+				endif;
 
 				if($flag)
 				{
@@ -261,7 +277,8 @@ class MyfileController extends MasterBackofficeController
 					if($model->save())
 					{
 						$transaction->commit();
-						$this->redirect("/backoffice/myfile/index");
+						$this->redirect(array(
+							"index"));
 					}
 				}
 				else

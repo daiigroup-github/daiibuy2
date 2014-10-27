@@ -197,6 +197,7 @@ $this->menu = array(
 								$_GET["category2Id"]) ? $_GET["category2Id"] : 0;
 							?>},
 						success: function (data) {
+							alert(data.status);
 							if (data.status)
 							{
 								$.fn.yiiGridView.update("product-grid");

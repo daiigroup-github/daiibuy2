@@ -83,7 +83,7 @@ return false;
 				'buttons'=>array(
 					'product'=>array(
 						'label'=>'<br><u>Product</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?category2Id=".$data->subCategoryId)'
+						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?category2Id=".$data->subCategoryId."&category1Id=".$data->categoryId)'
 					),
 					'image'=>array(
 						'label'=>'<br><u>Image</u>',
