@@ -77,26 +77,26 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 
 				<div class="row">
-					<div class="col-md-6 text-center">
+					<div class="col-md-4 col-sm-offset-1 text-center">
 						<a id="uploadPlanAtech">
-							<div class="panel panel-info">
+							<div class="panel panel-primary">
 								<div class="panel-heading">
-									<h3><b>อัพโหลดแบบดีไซน์</b></h3>
+									<h2><b>อัพโหลดแบบดีไซน์</b></h2>
 								</div>
 								<div class="panel-body">
-									<h4><b>เพื่อส่ง Call Center ประเมิณจำนวนและเทียบราคา</b></h4>
+									<h4><b>เพื่อส่ง Call Center <br>ประเมิณพื้นที่</b></h4>
 								</div>
 							</div>
 						</a>
 					</div>
-					<div class="col-md-6 text-center">
+					<div class="col-md-4 col-sm-offset-1 text-center">
 						<a id="manualQuantityAtech">
-							<div class="panel panel-warning">
-								<div class="panel-heading">
-									<h3><b>ใส่ปริมาณเอง</b></h3>
+							<div class="panel panel-warning" >
+								<div class="panel-heading" style="background-color: #F65D20;color: white">
+									<h2><b>ใส่ปริมาณพื้นที่</b></h2>
 								</div>
 								<div class="panel-body">
-									<h4><b>เพื่อเปรียบเทียบราคา</b></h4>
+									<h4><b>เพื่อประเมิณราคากระเบื้อง<br>และเปรียบเทียบราคา</b></h4>
 								</div>
 							</div>
 						</a>
@@ -255,7 +255,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                             ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                            ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -317,12 +317,12 @@ $form = $this->beginWidget('CActiveForm', array(
 //								),
 //					));
 								?></td>
-				<td><?php // echo '';                             ?></td>
-				<td><?php // echo '';                            ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                             ?></td>
-				<td><?php // echo '';                            ?></td>
-				<td><?php // echo '';                            ?></td>
-				<td><?php // echo '';                            ?></td>
+				<td><?php // echo '';                                            ?></td>
+				<td><?php // echo '';                                           ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                            ?></td>
+				<td><?php // echo '';                                           ?></td>
+				<td><?php // echo '';                                           ?></td>
+				<td><?php // echo '';                                           ?></td>
 			</tr>-->
 							</tbody>
 						</table>
@@ -333,7 +333,7 @@ $form = $this->beginWidget('CActiveForm', array(
 										<div class='col-lg-6 col-md-6 col-sm-12'>
 										<div class="blog-item">
 					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));            ?>
-											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                             ?></div>
+											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                            ?></div>
 									</div>
 								</div>
 					<?php // $i++;       ?>

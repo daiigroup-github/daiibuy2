@@ -129,6 +129,7 @@ class MadridController extends MasterMyFileController
 
 					if($model->save())
 					{
+						$flag = TRUE;
 						$orderId = Yii::app()->db->lastInsertID;
 						$this->saveOrderDetail($orderId, $orderDetailModel->orderDetailTemplateId);
 						$folderimage = "orderFile";
