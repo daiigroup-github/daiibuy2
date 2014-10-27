@@ -828,4 +828,12 @@ class ProductController extends MasterBackofficeController
 			'model'=>$model));
 	}
 
+	public function actionDeleteCat2ToProduct($id)
+	{
+		Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 0;")->query();
+		$model = Category2ToProduct::model()->findByPk($id);
+		$model->delete();
+		Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 1;")->query();
+	}
+
 }
