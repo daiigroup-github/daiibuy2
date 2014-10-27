@@ -231,14 +231,17 @@ class MyfileController extends MasterBackofficeController
 					$orderItems = new OrderItems();
 					$orderItems->orderId = $id;
 					$orderItems->productId = $_POST["OrderItems"]["productId"][$k];
-					$orderItems->quantity = $_POST["OrderItems"]["quantity"][$k];
+					if(isset($_POST["OrderItems"]["quantity"][$k]))
+					{
+						$orderItems->quantity = $_POST["OrderItems"]["quantity"][$k];
+					}
 					if(isset($_POST["OrderItems"]["groupName"][$k]))
 					{
 						$orderItems->groupName = $_POST["OrderItems"]["groupName"][$k];
 					}
 					if(isset($_POST["OrderItems"]["area"][$k]))
 					{
-						$orderItems->groupName = $_POST["OrderItems"]["area"][$k];
+						$orderItems->area = $_POST["OrderItems"]["area"][$k];
 					}
 
 					$orderItems->createDateTime = new CDbExpression("NOW()");
@@ -258,7 +261,7 @@ class MyfileController extends MasterBackofficeController
 					if($model->save())
 					{
 						$transaction->commit();
-						$this->redirect("index");
+						$this->redirect("/backoffice/myfile/index");
 					}
 				}
 				else

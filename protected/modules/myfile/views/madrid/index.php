@@ -12,8 +12,8 @@ $this->breadcrumbs = array(
 		<?php foreach($myfileArray as $myfile): ?>
 			<div class='col-lg-3 col-md-3 col-sm-12'>
 				<div class="blog-item">
-					<a href="<?php echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $myfile->title . '.png'); ?>
-						<div class="button blue" style="text-align: center;background-clip: border-box;color: white" name="<?php echo $myfile->title; ?>"><?php echo $myfile->title; ?></div>
+					<a class="btn btn-primary col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId); ?>">
+						<h3><?php echo $myfile->title; ?></h3>
 					</a>
 				</div>
 			</div>
