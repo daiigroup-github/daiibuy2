@@ -255,7 +255,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                            ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                           ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -317,12 +317,12 @@ $form = $this->beginWidget('CActiveForm', array(
 //								),
 //					));
 								?></td>
-				<td><?php // echo '';                                            ?></td>
-				<td><?php // echo '';                                           ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                            ?></td>
-				<td><?php // echo '';                                           ?></td>
-				<td><?php // echo '';                                           ?></td>
-				<td><?php // echo '';                                           ?></td>
+				<td><?php // echo '';                                                           ?></td>
+				<td><?php // echo '';                                                          ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                           ?></td>
+				<td><?php // echo '';                                                          ?></td>
+				<td><?php // echo '';                                                          ?></td>
+				<td><?php // echo '';                                                          ?></td>
 			</tr>-->
 							</tbody>
 						</table>
@@ -333,7 +333,7 @@ $form = $this->beginWidget('CActiveForm', array(
 										<div class='col-lg-6 col-md-6 col-sm-12'>
 										<div class="blog-item">
 					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));            ?>
-											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                            ?></div>
+											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                           ?></div>
 									</div>
 								</div>
 					<?php // $i++;       ?>
@@ -346,74 +346,68 @@ $form = $this->beginWidget('CActiveForm', array(
 
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-12">
-
-            <div class="col-md-12 well">
-				<div class="row">
-					<div class="page-header myfile-fenzer-header" >
-						<h3>รอ Call Center ประเมินราคา</h3>
+			<div class="row">
+				<div class="col-md-12 well">
+					<div class="row">
+						<div class="" >
+							<h3>ตารางประเมินราคา <?php echo $model->title; ?></h3>
+						</div>
 					</div>
-				</div>
-				<div class="row text-center">
-					<div style="margin-top: 2%">
-						<?php $i = 0; ?>
-						<?php foreach($model->orderFiles as $orderFile): ?>
-							<div class='col-lg-6 col-md-6 col-sm-12'>
-								<div class="blog-item">
-									<?php
-									echo CHtml::image(Yii::app()->baseUrl . $orderFile->filePath, '', array(
-										'style'=>'width:300px;height:300px'));
-									?>
-									<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i == 0 ? "แบบแปลน" : "ด้านข้าง " . $i; ?></div>
+					<div class="row text-center">
+						<div style="margin-top: 2%">
+							<?php $i = 0; ?>
+							<?php foreach($model->orderFiles as $orderFile): ?>
+								<div class='col-lg-6 col-md-6 col-sm-12'>
+									<div class="blog-item">
+										<?php
+										echo CHtml::image(Yii::app()->baseUrl . $orderFile->filePath, '', array(
+											'style'=>'width:300px;height:300px'));
+										?>
+										<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i == 0 ? "แบบแปลน" : "ด้านข้าง " . $i; ?></div>
+									</div>
 								</div>
-							</div>
-							<?php $i++; ?>
-						<?php endforeach; ?>
+								<?php $i++; ?>
+							<?php endforeach; ?>
+						</div>
 					</div>
-				</div>
 
+				</div>
 			</div>
-
-
-
-
-
-
-            <div class="col-md-12 well text-center">
-				<div class="row text-left">
-					ประเมินราคา
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						Height : <?php
-						echo CHtml::textField('height', '', array(
-							'id'=>'height_input',
-							'class'=>'input-lg',
-							'disabled'=>true,));
-						?>
-						เมตร
+			<div class="row">
+				<div class="col-md-12 well text-center">
+					<div class="row">
+						<div class="col-md-6">
+							Height : <?php
+							echo CHtml::textField('height', '', array(
+								'id'=>'height_input',
+								'class'=>'input-lg',
+								'disabled'=>true,));
+							?>
+							เมตร
+						</div>
+						<div class="col-md-6 pull-left">
+							Length : <?php
+							echo CHtml::textField('length', '', array(
+								'id'=>'length_input',
+								'class'=>'input-lg',
+							));
+							?>
+							เมตร
+						</div>
 					</div>
-					<div class="col-md-6 pull-left">
-						Length : <?php
-						echo CHtml::textField('length', '', array(
-							'id'=>'length_input',
-							'class'=>'input-lg',
-						));
-						?>
-						เมตร
-					</div>
-				</div>
-				<div class="row" id="order_list">
+					<div class="row" id="order_list">
 
-				</div>
-				<div class="row wizard-control">
-					<div class="pull-left" >
-						<button id="backToStep2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
 					</div>
-					<div class="col-lg-9 text-center">
-						<button id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</button>
-					</div>
-					<div class="pull-right">
-						<button id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+					<div class="row wizard-control">
+						<div class="pull-left" >
+							<button id="backToStep2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
+						</div>
+						<div class="col-lg-9 text-center">
+							<button id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</button>
+						</div>
+						<div class="pull-right">
+							<button id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+						</div>
 					</div>
 				</div>
 			</div>

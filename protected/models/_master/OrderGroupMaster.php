@@ -14,6 +14,8 @@
  * @property string $email
  * @property string $telephone
  * @property string $total
+ * @property string $vatPercent
+ * @property string $vatValue
  * @property string $totalIncVAT
  * @property string $discountPercent
  * @property string $discountValue
@@ -46,10 +48,10 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property District $paymentDistrict
- * @property Amphur $paymentAmphur
- * @property Province $paymentProvince
  * @property District $shippingDistrict
+ * @property Amphur $paymentAmphur
+ * @property District $paymentDistrict
+ * @property Province $paymentProvince
  * @property Amphur $shippingAmphur
  * @property Province $shippingProvince
  * @property Supplier $supplier
@@ -79,13 +81,13 @@ class OrderGroupMaster extends MasterCActiveRecord
 			array('userId, supplierId, invoiceNo, telephone', 'length', 'max'=>20),
 			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
 			array('firstname, lastname, email, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
-			array('total, totalIncVAT, discountValue, summary', 'length', 'max'=>15),
-			array('discountPercent', 'length', 'max'=>5),
+			array('total, vatValue, totalIncVAT, discountValue, summary', 'length', 'max'=>15),
+			array('vatPercent, discountPercent', 'length', 'max'=>5),
 			array('paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
 			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -97,10 +99,10 @@ class OrderGroupMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'paymentDistrict' => array(self::BELONGS_TO, 'District', 'paymentDistrictId'),
-			'paymentAmphur' => array(self::BELONGS_TO, 'Amphur', 'paymentAmphurId'),
-			'paymentProvince' => array(self::BELONGS_TO, 'Province', 'paymentProvinceId'),
 			'shippingDistrict' => array(self::BELONGS_TO, 'District', 'shippingDistrictId'),
+			'paymentAmphur' => array(self::BELONGS_TO, 'Amphur', 'paymentAmphurId'),
+			'paymentDistrict' => array(self::BELONGS_TO, 'District', 'paymentDistrictId'),
+			'paymentProvince' => array(self::BELONGS_TO, 'Province', 'paymentProvinceId'),
 			'shippingAmphur' => array(self::BELONGS_TO, 'Amphur', 'shippingAmphurId'),
 			'shippingProvince' => array(self::BELONGS_TO, 'Province', 'shippingProvinceId'),
 			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
@@ -125,6 +127,8 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'email' => 'Email',
 			'telephone' => 'Telephone',
 			'total' => 'Total',
+			'vatPercent' => 'Vat Percent',
+			'vatValue' => 'Vat Value',
 			'totalIncVAT' => 'Total Inc Vat',
 			'discountPercent' => 'Discount Percent',
 			'discountValue' => 'Discount Value',
@@ -188,6 +192,8 @@ class OrderGroupMaster extends MasterCActiveRecord
 			$this->email = $this->searchText;
 			$this->telephone = $this->searchText;
 			$this->total = $this->searchText;
+			$this->vatPercent = $this->searchText;
+			$this->vatValue = $this->searchText;
 			$this->totalIncVAT = $this->searchText;
 			$this->discountPercent = $this->searchText;
 			$this->discountValue = $this->searchText;
@@ -230,6 +236,8 @@ class OrderGroupMaster extends MasterCActiveRecord
 		$criteria->compare('email',$this->email,true, 'OR');
 		$criteria->compare('telephone',$this->telephone,true, 'OR');
 		$criteria->compare('total',$this->total,true, 'OR');
+		$criteria->compare('vatPercent',$this->vatPercent,true, 'OR');
+		$criteria->compare('vatValue',$this->vatValue,true, 'OR');
 		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
 		$criteria->compare('discountPercent',$this->discountPercent,true, 'OR');
 		$criteria->compare('discountValue',$this->discountValue,true, 'OR');
