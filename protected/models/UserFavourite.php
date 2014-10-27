@@ -49,7 +49,7 @@ class UserFavourite extends UserFavouriteMaster
 	{
 		$criteria = new CDbCriteria();
 		$criteria->compare("userId", $userId);
-		$criteria->compare("category2Id", "is not null");
+		$criteria->compare("category2Id", "<> null");
 		return $this->findAll($criteria);
 	}
 
