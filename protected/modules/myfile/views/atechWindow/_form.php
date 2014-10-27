@@ -258,6 +258,9 @@ $this->breadcrumbs = array(
 		</div>
 	</div>
 
+<?php $this->endWidget(); ?>
+
+
 	<div class="row setup-content" id="step-2-2">
 		<div class="col-xs-12">
             <div class="col-md-12 well">
@@ -285,7 +288,7 @@ $this->breadcrumbs = array(
 					</div>
 				</div>
 				<div class="row text-center">
-					<form id="atechTableForm">
+					<form id="aa">
 						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
@@ -302,8 +305,8 @@ $this->breadcrumbs = array(
 						<?php // foreach($productResult['items'] as $item): ?>
 			<tr>
 				<td>1</td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category", array('ประตู'=>'ประตู','หน้าต่าง'=>'หน้าต่าง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง')); ?></td>
 				<td><?php echo CHtml::dropDownList('Criteria[0][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
 				<td><?php echo CHtml::textField('Criteria[0][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
@@ -348,7 +351,7 @@ $this->breadcrumbs = array(
 			</tr>-->
 	</tbody>
 </table>
-							</form>
+</form>
 <!--					<div style="margin-top: 2%">
 					<?php // $i = 0; ?>
 					<?php // foreach($model->orderFiles as $orderFile): ?>
@@ -537,4 +540,3 @@ $this->breadcrumbs = array(
 </div>-->
 <!-- form -->
 
-<?php $this->endWidget(); ?>

@@ -140,6 +140,7 @@ $(document).ready(function() {
 		var categoryId = $("#editTable").attr("name");
 //		alert(categoryId);
 		var productItems = $("#editTableForm").serialize();
+		alert(productItems);
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/fenzer/updatePrice',
 			type: 'POST',
@@ -179,12 +180,13 @@ $(document).ready(function() {
 		var base_url = window.location.origin;
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
+		alert($("#aa").serialize());
 //		alert(categoryId);
-		alert(title + ", " + provinceId);
+//		alert(title + ", " + provinceId);
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/atechWindow/calculatePriceMyFile',
 			type: 'POST',
-			data: $("#atechTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId,
+			data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId,
 			success: function(data) {
 				alert("ya");
 				$("#result_content").html(data);
