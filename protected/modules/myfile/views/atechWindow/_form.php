@@ -124,26 +124,26 @@ $this->breadcrumbs = array(
 				</div>
 
 				<div class="row">
-					<div class="col-md-6 text-center">
+					<div class="col-md-4 col-sm-offset-1 text-center">
 						<a id="uploadPlanAtech">
-							<div class="panel panel-info">
+							<div class="panel panel-primary">
 								<div class="panel-heading">
-									<h3><b>อัพโหลดแบบดีไซน์</b></h3>
+									<h2><b>อัพโหลดแบบดีไซน์</b></h2>
 								</div>
 								<div class="panel-body">
-									<h4><b>เพื่อส่ง Call Center ประเมิณจำนวนและเทียบราคา</b></h4>
+									<h4><b>เพื่อส่ง Call Center <br>ประเมิณพื้นที่</b></h4>
 								</div>
 							</div>
 						</a>
 					</div>
-					<div class="col-md-6 text-center">
+					<div class="col-md-4 col-sm-offset-1 text-center">
 						<a id="manualQuantityAtech">
-							<div class="panel panel-warning">
-								<div class="panel-heading">
-									<h3><b>ใส่ปริมาณเอง</b></h3>
+							<div class="panel panel-warning" >
+								<div class="panel-heading" style="background-color: #F65D20;color: white">
+									<h2><b>ใส่ปริมาณพื้นที่</b></h2>
 								</div>
 								<div class="panel-body">
-									<h4><b>เพื่อเปรียบเทียบราคา</b></h4>
+									<h4><b>เพื่อประเมิณ<br>และเปรียบเทียบราคา</b></h4>
 								</div>
 							</div>
 						</a>
@@ -365,10 +365,10 @@ $this->breadcrumbs = array(
 
 				<div class="row wizard-control">
 					<div class="pull-left">
-						<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</button>
+						<a id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</a>
 					</div>
 					<div class="pull-right">
-						<button id="nextToStep3Atech" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </button>
+						<a id="nextToStep3Atech" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </a>
 					</div>
 				</div>
 			</div>
@@ -385,63 +385,80 @@ $this->breadcrumbs = array(
 					</div>
 				</div>
 				<div class="row text-center">
-					<div style="margin-top: 2%">
-					<?php $i = 0; ?>
-					<?php foreach($model->orderFiles as $orderFile): ?>
-					<div class='col-lg-6 col-md-6 col-sm-12'>
-					<div class="blog-item">
-					<?php echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px')); ?>
-						<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i==0? "แบบแปลน":"ด้านข้าง ".$i; ?></div>
-				</div>
-			</div>
-		<?php $i++; ?>
-	<?php endforeach;?>
-	</div>
-				</div>
+					<form id="atechFormStep3">
+						<table id="ConfirmTableAtech" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId']; ?>">
+							<thead>
+								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
+								<tr>
+								<th>ลำดับ</th>
+								<th>ประเภท</th>
+								<th>รูปแบบ</th>
+								<th>ขนาด</th>
+								<th class="edit-table-qty" >จำนวน</th>
+								<th>Action</th>
+								</tr>
+							</thead>
+							<tbody >
+						<?php // foreach($productResult['items'] as $item): ?>
+			<tr>
+				<td>1</td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+				<td><?php echo CHtml::textField('Criteria[0][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
+				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+				<td><?php echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
+				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+			</tr>
 
-			</div>
+		<?php // endforeach; ?>
 
-
-
-
-
-
-            <div class="col-md-12 well text-center">
-				<div class="row text-left">
-					ประเมินราคา
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						Height : <?php
-						echo CHtml::textField('height', '', array(
-							'id'=>'height_input',
-							'class'=>'input-lg',
-							'disabled'=>true,));
-						?>
-						เมตร
-					</div>
-					<div class="col-md-6 pull-left">
-						Length : <?php
-						echo CHtml::textField('length', '', array(
-							'id'=>'length_input',
-							'class'=>'input-lg',
-						));
-						?>
-						เมตร
-					</div>
+<!--			<tr>
+				<td><?php // echo CHtml::dropDownList('productId', 'selectedCode',
+//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
+//					array('id'=>'itemCode',
+//						'prompt'=>'เลือกรหัส',
+//						'ajax'=>array(
+//									'type'=>'POST',
+//									'url'=>CController::createUrl('fenzer/addNewProductItem'), //url to call.
+////									'update'=>'#height_content', //selector to update
+//									'dataType'=>'html',
+//									'data'=>array(
+//										"productId"=>"js:this.value",
+//										"categoryId"=>$productResult['categoryId']),
+//										"length"=>0,
+//									'success'=>'js:function(data){
+//										alert("Yo");
+//										$("#result_content").html(data);
+//									}',
+//								),
+//					)); ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;')); ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo ''; ?></td>
+				<td><?php // echo ''; ?></td>
+			</tr>-->
+	</tbody>
+</table>
+							</form>
 				</div>
 				<div class="row" id="order_list">
 
 				</div>
 				<div class="row wizard-control">
-					<div class="pull-left" >
-						<button id="backToStep2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
-					</div>
 					<div class="col-lg-9 text-center">
-						<button id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</button>
+						<a id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
 					</div>
 					<div class="pull-right">
-						<button id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+						<a id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
 					</div>
 				</div>
 			</div>

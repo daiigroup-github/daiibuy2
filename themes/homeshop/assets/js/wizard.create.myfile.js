@@ -175,16 +175,18 @@ $(document).ready(function() {
 	});
 
 	$('#nextToStep3Atech').on('click', function() {
+
 		var base_url = window.location.origin;
-		var title = $("#myfile_title").attr("value");
+		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
 //		alert(categoryId);
-		var productItems = $("#atechTableForm").serialize();
+		alert(title + ", " + provinceId);
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/atechWindow/calculatePriceMyFile',
 			type: 'POST',
-			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId,
+			data: $("#atechTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId,
 			success: function(data) {
+				alert("ya");
 				$("#result_content").html(data);
 			}
 		});

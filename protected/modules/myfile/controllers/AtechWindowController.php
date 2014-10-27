@@ -212,6 +212,7 @@ class AtechWindowController extends MasterMyFileController
 
 
 	public function actionCalculatePriceMyFile(){
+		throw new Exception;
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(2);
 
