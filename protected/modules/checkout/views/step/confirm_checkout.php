@@ -1,11 +1,11 @@
-<?php // include 'e_payment/security.php'                                                                     ?>
+<?php // include 'e_payment/security.php'                                                                      ?>
 <script>
 //	function checkMinimum(subTotal)
 //	{
 //		subTotal = subTotal.replace(",", "");
-//		var minimun = <?php // echo number_format($model->supplier->minimumOrder, 2, ".", "");                        ?>;
-//		lblMinError = document.getElementById("lblMinimumError<?php // echo $model->supplier->supplierId;                        ?>");
-//		btnCheckout = document.getElementById("btnCheckout<?php // echo $model->supplier->supplierId;                        ?>");
+//		var minimun = <?php // echo number_format($model->supplier->minimumOrder, 2, ".", "");                         ?>;
+//		lblMinError = document.getElementById("lblMinimumError<?php // echo $model->supplier->supplierId;                         ?>");
+//		btnCheckout = document.getElementById("btnCheckout<?php // echo $model->supplier->supplierId;                         ?>");
 //		if (subTotal >= minimun)
 //		{
 //			lblMinError.style.display = "none";
@@ -77,10 +77,12 @@ $ePayment = Supplier::model()->findEpaymentByConfig($model->supplierId);
 			?>
 			<div class="row">
 				<div class="col-md-12 ">
-					<?php echo CHtml::link('&lt; Back', '', array(
-						'class'=>'button orange',
+					<?php
+					echo CHtml::link('&lt; Back', '', array(
+						'class'=>'button orange pull-right',
 						'name'=>'Register',
-						'onclick'=>'return history.back()')); ?>
+						'onclick'=>'return history.back()'));
+					?>
 					<?php
 					echo CHtml::submitButton('ยืนยัน', array(
 						'class'=>'btn btn-success btn-xs pull-right',
