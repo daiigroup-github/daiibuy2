@@ -42,7 +42,7 @@ foreach($_REQUEST as $name=> $value)
 		</div>
 		<div class="sidebar-box-content sidebar-padding-box">
 			<div class="row">
-				<div class="col-md-12" style="height: 300px">
+				<div class="col-md-12" style="height: 100px">
 					<?php
 					echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
 						"style"=>"width:250px"));
