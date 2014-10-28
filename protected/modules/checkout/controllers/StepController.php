@@ -235,6 +235,27 @@ class StepController extends MasterCheckoutController
 				/**
 				 * Todo:: billing & shipping address
 				 */
+				$userModel = User::model()->findByPk(Yii::app()->user->id);
+				$orderGroup->firstname = $userModel->firstname;
+				$orderGroup->lastname = $userModel->lastname;
+				$orderGroup->telephone = $userModel->telephone;
+				$orderGroup->paymentFirstname = $userModel->billingAddress->firstname;
+				$orderGroup->paymentLastname = $userModel->billingAddress->lastname;
+				$orderGroup->paymentAddress1 = $userModel->billingAddress->address_1;
+				$orderGroup->paymentAddress2 = $userModel->billingAddress->address_2;
+				$orderGroup->paymentDistrictId = $userModel->billingAddress->districtId;
+				$orderGroup->paymentAmphurId = $userModel->billingAddress->amphurId;
+				$orderGroup->paymentProvinceId = $userModel->billingAddress->provinceId;
+				$orderGroup->paymentPostcode = $userModel->billingAddress->postcode;
+
+//				$orderGroup->shippingFirstname = $userModel->shippingAddress->firstname;
+//				$orderGroup->shippingLastname = $userModel->shippingAddress->lastname;
+				$orderGroup->shippingAddress1 = $userModel->shippingAddress->address_1;
+				$orderGroup->shippingAddress2 = $userModel->shippingAddress->address_2;
+				$orderGroup->shippingDistrictId = $userModel->shippingAddress->districtId;
+				$orderGroup->shippingAmphurId = $userModel->shippingAddress->amphurId;
+				$orderGroup->shippingProvinceId = $userModel->shippingAddress->provinceId;
+				$orderGroup->shippingPostCode = $userModel->shippingAddress->postcode;
 				/**
 				 * TODO:: remove false after add address
 				 */
@@ -310,7 +331,101 @@ class StepController extends MasterCheckoutController
 
 	public function step5()
 	{
-		$this->render('step5');
+		$daiibuy = new DaiiBuy();
+//		$daiibuy->loadCookie();
+		$order = new Order();
+		$decisionArray = array(
+			"ACCEPT",
+//			"REVIEW"
+		);
+		$resonCode = array(
+			100,
+//			110,
+//			200,
+//			201,
+//			230,
+//			520
+		);
+		$flag = FALSE;
+		if(isset($_REQUEST) && $_REQUEST != array())
+		{
+//			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
+//			{
+			if($_REQUEST["decision"] == "ACCEPT")
+			{
+				$order = Order::model()->find("orderNo =:orderNo", array(
+					":orderNo"=>$_REQUEST["req_reference_number"]));
+				if(isset($order))
+				{
+					$order->status = 1;
+					$order->invoiceNo = Order::model()->genInvNo($order);
+					$order->paymentDateTime = new CDbExpression('NOW()');
+					if($order->save())
+					{
+//						$this->cutProductStock($order);
+//						unset($daiibuy->cart[$order->supplierId]);
+//						unset($daiibuy->order[$order->supplierId]);
+//						$daiibuy->usedPoint = 0;
+//						$daiibuy->saveCookie();
+
+						$flag = TRUE;
+						$emailObj = new Email();
+						$sentMail = new EmailSend();
+						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderId;
+						$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
+						$sentMail->mailCompleteOrderCustomer($emailObj);
+						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+					}
+				}
+				else
+				{
+					echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+				}
+			}
+			else
+			{
+// Email จ่ายไม่ผ่าน
+				if($_REQUEST["decision"] == "REVIEW")
+				{
+					$order = Order::model()->find("orderNo =:orderNo", array(
+						":orderNo"=>$_REQUEST["req_reference_number"]));
+					if(isset($order))
+					{
+						$order->orderStatusid = 98;
+//						$order->invoiceNo = Order::model()->genInvNo($order);
+//						$order->paymentDateTime = new CDbExpression('NOW()');
+						if($order->save())
+						{
+//							$this->cutProductStock($order);
+//							unset($daiibuy->cart[$order->supplierId]);
+//							unset($daiibuy->order[$order->supplierId]);
+//							$daiibuy->usedPoint = 0;
+//							$daiibuy->saveCookie();
+
+							$flag = TRUE;
+							$emailObj = new Email();
+							$sentMail = new EmailSend();
+							$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderId;
+							$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
+							$sentMail->mailCompleteOrderCustomer($emailObj);
+							$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+						}
+					}
+					else
+					{
+						echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+					}
+				}
+			}
+		}
+		else
+		{
+//$flag = TRUE;
+		}
+		$this->render("step5", array(
+			'result'=>$_REQUEST,
+			'flag'=>$flag,
+			'model'=>$order));
 	}
 
 	public function actionFindAmphur()

@@ -1,5 +1,4 @@
 <?php
-
 /** This file is part of KCFinder project
  *
  *      @desc Base configuration file
@@ -14,66 +13,65 @@
 // IMPORTANT!!! Do not remove uncommented settings in this file even if
 // you are using session configuration.
 // See http://kcfinder.sunhater.com/install for setting descriptions
-
 $_CONFIG = array(
-	'disabled' => false,
-	'denyZipDownload' => false,
-	'denyUpdateCheck' => false,
-	'denyExtensionRename' => false,
-	'theme' => "oxygen",
-	'uploadURL' => "http://tong-svr/Qsaf/images/upload",
-	'uploadDir' => "/var/www/Qsaf/images/upload",
-	'dirPerms' => 0755,
-	'filePerms' => 0644,
-	'access' => array(
-		'files' => array(
-			'upload' => true,
-			'delete' => true,
-			'copy' => true,
-			'move' => true,
-			'rename' => true
+	'disabled'=>false,
+	'denyZipDownload'=>false,
+	'denyUpdateCheck'=>false,
+	'denyExtensionRename'=>false,
+	'theme'=>"oxygen",
+	'uploadURL'=>"http://tong-svr/daiibuy2/images/upload",
+	'uploadDir'=>realpath(dirname(__FILE__)) . "/../../images/upload",
+	'dirPerms'=>0755,
+	'filePerms'=>0644,
+	'access'=>array(
+		'files'=>array(
+			'upload'=>true,
+			'delete'=>true,
+			'copy'=>true,
+			'move'=>true,
+			'rename'=>true
 		),
-		'dirs' => array(
-			'create' => true,
-			'delete' => true,
-			'rename' => true
+		'dirs'=>array(
+			'create'=>true,
+			'delete'=>true,
+			'rename'=>true
 		)
 	),
-	'deniedExts' => "exe com msi bat php phps phtml php3 php4 cgi pl",
-	'types' => array(
+	'deniedExts'=>"exe com msi bat php phps phtml php3 php4 cgi pl",
+	'types'=>array(
 		// CKEditor & FCKEditor types
-		'files' => "",
-		'flash' => "swf",
-		'images' => "*img",
+		'files'=>"",
+		'flash'=>"swf",
+		'images'=>"*img",
 		// TinyMCE types
-		'file' => "",
-		'media' => "swf flv avi mpg mpeg qt mov wmv asf rm",
-		'image' => "*img",
+		'file'=>"",
+		'media'=>"swf flv avi mpg mpeg qt mov wmv asf rm",
+		'image'=>"*img",
 	),
-	'filenameChangeChars' => array(
+	'filenameChangeChars'=>array(
 	/*
 	  ' ' => "_",
 	  ':' => "."
 	 */	),
-	'dirnameChangeChars' => array(
+	'dirnameChangeChars'=>array(
 	/*
 	  ' ' => "_",
 	  ':' => "."
 	 */	),
-	'mime_magic' => "",
-	'maxImageWidth' => 0,
-	'maxImageHeight' => 0,
-	'thumbWidth' => 100,
-	'thumbHeight' => 100,
-	'thumbsDir' => ".thumbs",
-	'jpegQuality' => 90,
-	'cookieDomain' => "",
-	'cookiePath' => "",
-	'cookiePrefix' => 'KCFINDER_',
+	'mime_magic'=>"",
+	'maxImageWidth'=>0,
+	'maxImageHeight'=>0,
+	'thumbWidth'=>100,
+	'thumbHeight'=>100,
+	'thumbsDir'=>".thumbs",
+	'jpegQuality'=>90,
+	'cookieDomain'=>"",
+	'cookiePath'=>"",
+	'cookiePrefix'=>'KCFINDER_',
 	// THE FOLLOWING SETTINGS CANNOT BE OVERRIDED WITH SESSION CONFIGURATION
-	'_check4htaccess' => true,
+	'_check4htaccess'=>true,
 	//'_tinyMCEPath' => "/tiny_mce",
-	'_sessionVar' => &$_SESSION['KCFINDER'],
+	'_sessionVar'=>&$_SESSION['KCFINDER'],
 	//'_sessionLifetime' => 30,
 	//'_sessionDir' => "/full/directory/path",
 	//'_sessionDomain' => ".mysite.com",
