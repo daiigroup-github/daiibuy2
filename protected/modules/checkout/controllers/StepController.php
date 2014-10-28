@@ -212,7 +212,6 @@ class StepController extends MasterCheckoutController
 	{
 		$supplierId = Yii::app()->session['supplierId'];
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
-
 		if(isset($_POST['paymentMethod']))
 		{
 			$flag = false;
@@ -222,7 +221,8 @@ class StepController extends MasterCheckoutController
 				//code here
 				//new order group
 				$orderGroup = new OrderGroup();
-				$orderGroup->orderNo = $orderGroup->genOrderNo();
+				$orderGroup->supplierId = $supplierId;
+				$orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
 				$orderGroup->summary = $orderSummary['grandTotal'];
 				$orderGroup->totalIncVAT = $orderSummary['total'];
 				$orderGroup->discountPercent = $orderSummary['discountPercent'];
@@ -281,7 +281,8 @@ class StepController extends MasterCheckoutController
 					if($orderGroup->paymentMethod == 1)
 					{
 						$this->redirect(array(
-							"confirmCheckout"));
+							"confirmCheckout",
+							'id'=>$orderGroupId));
 					}
 					else
 					{
@@ -356,14 +357,16 @@ class StepController extends MasterCheckoutController
 		}
 	}
 
-	public function actionConfirmation()
+	public function actionConfirmation($id)
 	{
-		$this->render("e_payment/payment_confirmation");
+		$model = OrderGroup::model()->findByPk($id);
+		$this->render("e_payment/payment_confirmation", array(
+			'model'=>$model));
 	}
 
 	public function actionConfirmCheckout($id)
 	{
-		$model = $this->loadModel($id);
+		$model = OrderGroup::model()->findByPk($id);
 
 		$this->render("confirm_checkout", array(
 			'model'=>$model));

@@ -1,6 +1,6 @@
 <?php
 define('HMAC_SHA256', 'sha256');
-define('SECRET_KEY', Yii::app()->params["ePaymentSecretKey"]);
+define('SECRET_KEY', $ePayment->ePaymentSecretKey);
 
 function sign($params)
 {
@@ -17,7 +17,7 @@ function buildDataToSign($params)
 	$signedFieldNames = explode(",", $params["signed_field_names"]);
 	foreach($signedFieldNames as &$field)
 	{
-		$dataToSign[] = $field . "=" . $params[$field];
+		$dataToSign[] = $field . "=" . $params[trim($field)];
 	}
 	return commaSeparate($dataToSign);
 }

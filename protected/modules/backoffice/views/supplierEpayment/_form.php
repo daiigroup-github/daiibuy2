@@ -53,21 +53,6 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'ePaymentTel', array(
-			'class'=>'col-sm-2 control-label'));
-		?>
-		<div class="col-sm-10">
-			<?php
-			echo $form->textField($model, 'ePaymentTel', array(
-				'size'=>30,
-				'maxlength'=>30,
-				'class'=>'form-control'));
-			?>
-			<?php echo $form->error($model, 'ePaymentTel'); ?>
-		</div>
-	</div>
-	<div class="form-group">
-		<?php
 		echo $form->labelEx($model, 'ePaymentMerchantId', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
@@ -159,6 +144,21 @@
 	</div>
 	<div class="form-group">
 		<?php
+		echo $form->labelEx($model, 'ePaymentTel', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->textField($model, 'ePaymentTel', array(
+				'size'=>30,
+				'maxlength'=>30,
+				'class'=>'form-control'));
+			?>
+			<?php echo $form->error($model, 'ePaymentTel'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
 		echo $form->labelEx($model, 'type', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
@@ -168,7 +168,7 @@
 				'class'=>'form-control',
 				'prompt'=>'-- Select Server Type --'));
 			?>
-<?php echo $form->error($model, 'type'); ?>
+			<?php echo $form->error($model, 'type'); ?>
 		</div>
 	</div>
 	<div class="form-group">
@@ -181,7 +181,7 @@
 			echo $form->checkBox($model, 'status', array(
 				'class'=>'form-control'));
 			?>
-<?php echo $form->error($model, 'status'); ?>
+			<?php echo $form->error($model, 'status'); ?>
 		</div>
 	</div>
 
@@ -194,6 +194,6 @@
 		</div>
 	</div>
 
-<?php $this->endWidget(); ?>
+	<?php $this->endWidget(); ?>
 
 </div><!-- form -->

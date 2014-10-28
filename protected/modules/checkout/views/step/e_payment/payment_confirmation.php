@@ -1,15 +1,24 @@
-<?php include 'security.php' ?>
-<script >
-	$(document).ready(function() {
-		setTimeout(function() {
-			$("#confirmationForm").submit();
-			//alert(111);
+<?php
+$ePayment = Supplier::model()->findEpaymentByConfig($model->supplierId);
+//$this->renderPartial("security", array(
+//	'ePayment'=>$ePayment));
+include 'security.php';
+Yii::app()->clientScript->registerScript('load', "$(document).ready(function () {
+		setTimeout(function () {
+			$('#confirmationForm').submit();
 		}, 1000
 				);
-//		$("form").submit();
-
+	});");
+?>
+<!--<script >
+	$(document).ready(function () {
+		setTimeout(function () {
+			$('#confirmationForm').submit();
+			alert(111);
+		}, 1000
+				);
 	});
-</script>
+</script>-->
 
 
 
@@ -40,7 +49,7 @@ foreach($_REQUEST as $name=> $value)
 </div>
 
 
-<form id="confirmationForm" action="<?php echo Yii::app()->params["ePaymentUrl"]; ?>" method="post">
+<form id="confirmationForm" action="<?php echo $ePayment->ePaymentUrl; ?>" method="post">
 	<?php
 	foreach($params as $name=> $value)
 	{
