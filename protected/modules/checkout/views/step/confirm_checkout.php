@@ -1,11 +1,11 @@
-<?php // include 'e_payment/security.php'                                                                ?>
+<?php // include 'e_payment/security.php'                                                                     ?>
 <script>
 //	function checkMinimum(subTotal)
 //	{
 //		subTotal = subTotal.replace(",", "");
-//		var minimun = <?php // echo number_format($model->supplier->minimumOrder, 2, ".", "");                   ?>;
-//		lblMinError = document.getElementById("lblMinimumError<?php // echo $model->supplier->supplierId;                   ?>");
-//		btnCheckout = document.getElementById("btnCheckout<?php // echo $model->supplier->supplierId;                   ?>");
+//		var minimun = <?php // echo number_format($model->supplier->minimumOrder, 2, ".", "");                        ?>;
+//		lblMinError = document.getElementById("lblMinimumError<?php // echo $model->supplier->supplierId;                        ?>");
+//		btnCheckout = document.getElementById("btnCheckout<?php // echo $model->supplier->supplierId;                        ?>");
 //		if (subTotal >= minimun)
 //		{
 //			lblMinError.style.display = "none";
@@ -40,7 +40,7 @@ $ePayment = Supplier::model()->findEpaymentByConfig($model->supplierId);
 					<div class="col-lg-12 col-md-12 col-sm-12">
 						<div class="form-group">
 							<div class="control-label col-md-3">
-								เลขที่ใบเสนอราคา.
+								เลขที่ใบเสนอราคา
 							</div>
 							<div class="col-md-9">
 								<?php echo $model->orderNo; ?>
@@ -51,7 +51,7 @@ $ePayment = Supplier::model()->findEpaymentByConfig($model->supplierId);
 								ยอดชำระ
 							</div>
 							<div class="col-md-9">
-								<?php echo $model->summary; ?>
+								<?php echo $model->summary; ?>&nbsp;บาท
 							</div>
 						</div>
 					</div>
@@ -75,15 +75,22 @@ $ePayment = Supplier::model()->findEpaymentByConfig($model->supplierId);
 						'supplierId'=>$supplierModel->userId));
 			}
 			?>
-			<?php
-//	echo CHtml::link('แก้ไข', Yii::app()->createUrl("order/viewCart/" . $model->supplierId), array(
-//		'class'=>'btn btn-danger btn-small',));
-			echo CHtml::submitButton('ยืนยัน', array(
-				'class'=>'btn btn-success btn-xs col-md-offset-3',
-				'value'=>'ยืนยันการสั่งซื้อ',
-				'id'=>'submit',
-				'name'=>'submit'));
-			?>
+			<div class="row">
+				<div class="col-md-12 ">
+					<?php echo CHtml::link('&lt; Back', '', array(
+						'class'=>'button orange',
+						'name'=>'Register',
+						'onclick'=>'return history.back()')); ?>
+					<?php
+					echo CHtml::submitButton('ยืนยัน', array(
+						'class'=>'btn btn-success btn-xs pull-right',
+						'value'=>'ยืนยันการสั่งซื้อ',
+						'id'=>'submit',
+						'name'=>'submit'));
+					?>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </form>
