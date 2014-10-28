@@ -32,7 +32,7 @@ foreach($_REQUEST as $name=> $value)
 }
 ?>
 <div class="row text-center">
-	<div class="col-md-12">
+	<div class="col-md-5 col-md-offset-3">
 		<?php
 		echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
 			"style"=>"width:500px"));
@@ -45,7 +45,7 @@ foreach($_REQUEST as $name=> $value)
 	</div>
 </div>
 <div class="row text-center" style="background-color:white;">
-	<div class="col-md-12"><i class="icon-spinner icon-spin icon-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-size: 40px;font-weight: bold">ระบบกำลังดำเนินการ...</span></div>
+	<div class="col-md-12"><i class="icon-spinner icon-spin icon-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-size: 40px;font-weight: bold">ระบบกำลังดำเนินการ ติดต่อธนาคารเพื่อชำระเงิน</span></div>
 </div>
 
 
