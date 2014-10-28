@@ -45,7 +45,7 @@ foreach($_REQUEST as $name=> $value)
 				<div class="col-md-12">
 					<?php
 					echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
-						"style"=>"width:500px"));
+						"style"=>"width:250px"));
 					?>
 				</div>
 			</div>
