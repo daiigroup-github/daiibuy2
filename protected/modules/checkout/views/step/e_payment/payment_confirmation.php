@@ -31,21 +31,32 @@ foreach($_REQUEST as $name=> $value)
 	$params[$name] = $value;
 }
 ?>
-<div class="row text-center">
-	<div class="col-md-5 col-md-offset-3">
-		<?php
-		echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
-			"style"=>"width:500px"));
-		?></div>
-</div>
-</div>
-<div class="row text-center">
-	<div class="col-md-12">
 
+<div class="row sidebar-box blue">
+
+	<div class="col-lg-12 col-md-12 col-sm-12">
+
+		<div class="sidebar-box-heading">
+			<i class="icons icon-box-2"></i>
+			<h4>Waiting e-Payment</h4>
+		</div>
+		<div class="sidebar-box-content sidebar-padding-box">
+			<div class="row">
+				<div class="col-md-12">
+					<?php
+					echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
+						"style"=>"width:500px"));
+					?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<i class="icon-spinner icon-spin icon-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-size: 40px;font-weight: bold">ระบบกำลังดำเนินการ ติดต่อธนาคารเพื่อชำระเงิน</span>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-<div class="row text-center" style="background-color:white;">
-	<div class="col-md-12"><i class="icon-spinner icon-spin icon-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-size: 40px;font-weight: bold">ระบบกำลังดำเนินการ ติดต่อธนาคารเพื่อชำระเงิน</span></div>
+
 </div>
 
 
