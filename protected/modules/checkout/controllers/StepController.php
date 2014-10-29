@@ -390,7 +390,7 @@ class StepController extends MasterCheckoutController
 						":orderNo"=>$_REQUEST["req_reference_number"]));
 					if(isset($order))
 					{
-						$order->orderStatusid = 98;
+						$order->status = 98;
 //						$order->invoiceNo = Order::model()->genInvNo($order);
 //						$order->paymentDateTime = new CDbExpression('NOW()');
 						if($order->save())

@@ -61,14 +61,14 @@
 							<div class="col-md-12">
 								<?php
 								echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl("order/print", array(
-										"id"=>$model->orderId)), array(
-									'class'=>'btn btn-warning',
+										"id"=>$model->orderGroupId)), array(
+		'class'=>'btn btn-warning',
 									'target'=>'_blank',));
 								?>
 								<?php
 								echo CHtml::link('<i class="icon-search icon-white"></i> ดูใบสั่งซื้อสินค้า', Yii::app()->createUrl("order/view", array(
-										"id"=>$model->orderId)), array(
-									'class'=>'btn btn-primary',
+										"id"=>$model->orderGroupId)), array(
+		'class'=>'btn btn-primary',
 									'target'=>'_blank',));
 								?>
 								<?php
