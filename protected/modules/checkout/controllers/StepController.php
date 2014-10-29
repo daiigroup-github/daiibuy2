@@ -386,7 +386,7 @@ class StepController extends MasterCheckoutController
 // Email จ่ายไม่ผ่าน
 				if($_REQUEST["decision"] == "REVIEW")
 				{
-					$order = Order::model()->find("orderNo =:orderNo", array(
+					$order = OrderGroup::model()->find("orderNo =:orderNo", array(
 						":orderNo"=>$_REQUEST["req_reference_number"]));
 					if(isset($order))
 					{
@@ -405,9 +405,9 @@ class StepController extends MasterCheckoutController
 							$emailObj = new Email();
 							$sentMail = new EmailSend();
 							$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderId;
-							$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
-							$sentMail->mailCompleteOrderCustomer($emailObj);
-							$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+//							$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
+//							$sentMail->mailCompleteOrderCustomer($emailObj);
+//							$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 						}
 					}
 					else
