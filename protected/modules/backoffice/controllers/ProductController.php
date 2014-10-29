@@ -782,10 +782,6 @@ class ProductController extends MasterBackofficeController
 		}
 		else
 		{
-			if(isset($_POST["category1Id"]) && $_POST["category1Id"] > 0)
-			{
-				$model->category1Id = $_POST["category1Id"];
-			}
 			if(isset($_POST["category2Id"]) && $_POST["category2Id"] > 0)
 			{
 				$model->category2Id = $_POST["category2Id"];
@@ -794,6 +790,10 @@ class ProductController extends MasterBackofficeController
 				{
 					$model->category1Id = $cat1->categoryId;
 				}
+			}
+			if(isset($_POST["category1Id"]) && $_POST["category1Id"] > 0)
+			{
+				$model->category1Id = $_POST["category1Id"];
 			}
 			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
 			$model->brandModelId = $modelToCat->brandModelId;
@@ -826,6 +826,14 @@ class ProductController extends MasterBackofficeController
 		}
 		$this->render("_update_cat_to_product", array(
 			'model'=>$model));
+	}
+
+	public function actionDeleteCat2ToProduct($id)
+	{
+		Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 0;")->query();
+		$model = Category2ToProduct::model()->findByPk($id);
+		$model->delete();
+		Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 1;")->query();
 	}
 
 }

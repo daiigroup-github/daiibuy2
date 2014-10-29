@@ -212,10 +212,11 @@ class AtechWindowController extends MasterMyFileController
 
 
 	public function actionCalculatePriceMyFile(){
-		throw new Exception;
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(2);
-
+		if(isset($_POST['Criteria'])){
+			$criteria = $_POST['Criteria'];
+		}
 		if(isset($_POST['provinceId']))
 		{
 			$provinceId = $_POST['provinceId'];
@@ -224,28 +225,18 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$title = $_POST['title'];
 		}
-		if(isset($_POST['size']))
-		{
-			$value = $_POST['size'];
-			$size = explode(" x ", $value);
-			$width = $size[0];
-			$height = $size[1];
-		}
-		if(isset($_POST['category']) && !empty($_POST['category']))
-		{
-			$category = $_POST['category'];
-		}
-		if(isset($_POST['type']) && !empty($_POST['type']))
-		{
-			$type = $_POST['type'];
-		}
-		if(isset($_POST['quantity']) && !empty($_POST['quantity']))
-		{
-			$quantity = $_POST['quantity'];
-		}
+//		if(isset($_POST['size']))
+//		{
+//			$value = $_POST['size'];
+//			$size = explode(" x ", $value);
+//			$width = $size[0];
+//			$height = $size[1];
+//		}
 
 		$brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
 		$firstBrand = reset($brandModelArray);
+		throw new Exception(print_r($brandModelArray,true));
+		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand, $provinceId);
 
 
 

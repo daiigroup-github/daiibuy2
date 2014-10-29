@@ -97,8 +97,8 @@ class SupplierEpaymentController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->id));
+						'index',
+						'supplierId'=>$model->supplierId));
 				}
 				else
 				{
@@ -148,8 +148,8 @@ class SupplierEpaymentController extends MasterBackofficeController
 				{
 					$transaction->commit();
 					$this->redirect(array(
-						'view',
-						'id'=>$model->id));
+						'index',
+						'supplierId'=>$model->supplierId));
 				}
 				else
 				{

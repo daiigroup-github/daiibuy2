@@ -14,6 +14,9 @@
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
+ *
+ * The followings are the available model relations:
+ * @property Category $category2
  */
 class UserFavouriteMaster extends MasterCActiveRecord
 {
@@ -50,6 +53,7 @@ class UserFavouriteMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'category2' => array(self::BELONGS_TO, 'Category', 'category2Id'),
 		);
 	}
 

@@ -80,6 +80,7 @@ class SiteController extends MasterController
 	 */
 	public function actionLogin()
 	{
+		$this->layout = '//layouts/home';
 		$model = new LoginForm;
 		// if it is ajax validation request
 		if(isset($_POST['ajax']) && $_POST['ajax'] === 'login-form')

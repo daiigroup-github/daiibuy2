@@ -63,17 +63,18 @@ return false;
 				'class'=>'IndexColumn'),
 //				'id',
 //			'supplierId',
-			'enableEPayment',
-			'ePaymentTel',
+//			'enableEPayment',
 			'ePaymentMerchantId',
 			'ePaymentProfileId',
-//			'ePaymentOrgId',
+			'ePaymentUrl',
+//			'ePaymentTel',
+			'ePaymentOrgId',
 			array(
 				'name'=>'type',
 				'value'=>'$data->getEpaymentTypeText($data->type)'
 			),
 			/*
-			  'ePaymentUrl',
+
 			  'ePaymentAccessKey',
 
 			  'ePaymentSecretKey',

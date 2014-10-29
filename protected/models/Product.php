@@ -865,6 +865,7 @@ class Product extends ProductMaster
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
 							$orderDetailValue->value = $item->title=='height'? $height : ($item->title=='length'? $length : $categoryId);
 							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
+							$orderDetailValue->updateDateTime = new CDbExpression("NOW()");
 							if(!($orderDetailValue->save())){
 								throw new Exception(print_r($orderDetailValue->errors, True));
 							}
@@ -977,5 +978,28 @@ class Product extends ProductMaster
 			$res[$item['size']] = $item['size'];
 		}
 		return $res;
+	}
+
+	public function calculatePriceFromCriteriaAtech($criteria, $brand, $provinceId){
+		$res = array();
+		foreach($criteria as $item){
+	throw new Exception(print_r($item,true));
+			$category2Id = $this->getCategory2IdByBrandModelIdAndCategory1($brand->brandModelId,$item['category'],$item['type']);
+			$value = $item['size'];
+			$size = explode(" x ", $value);
+			$width = $size[0];
+			$height = $size[1];
+			$productModel = Product::model()->find('supplierId = 2 AND brandModelId = '.$brand->brandModelId . ' AND categoryId = '.$category2Id.' AND width = '.$width.' AND height = '.$height);
+			$res[$productModel->productId] = $productModel;
+			$res[$productModel->productId]['price'] = $price;
+			$res[$productModel->productId]['quantity'] = $item['quantity'];
+		}
+	}
+
+	public function getCategory2IdByBrandModelIdAndCategory1($brandModelId,$cate1Title,$cate2Title){
+		$brandModel = BrandModel::model()->findByPk($brandModelId);
+		$cate1 = $brandModel->with('modelToCategory1s')->find('title = '.$cate1Title);
+		$cate2 = $cate1->with('categoryToSubs')->find('title = '.$cate2Title);
+		return $cate2->id;
 	}
 }

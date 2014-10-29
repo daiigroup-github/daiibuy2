@@ -113,65 +113,65 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 				<table class="table table-bordered table-condensed">
 					<thead>
 						<tr class="alert alert-success">
-							<th style="width: 17%">Brand</th>
-							<th style="width: 17%">Model</th>
-							<th>Cat1</th>
-							<th>Cat2</th>
-							<th style="width: 17%">Product</th>
 							<?php if(Yii::app()->user->supplierId != 3): ?>
+								<th style="width: 17%">Brand</th>
+								<th style="width: 17%">Model</th>
+								<th>Cat1</th>
+								<th>Cat2</th>
+								<th style="width: 17%">Product</th>
 								<th style="width: 5%">Quantiry</th>
 							<?php else: ?>
-								<th style="width: 5%">Group Name</th>
-								<th style="width: 10%">Area</th>
+								<th style="width: 50%">Group Name</th>
+								<th style="width: 50%">Area</th>
 							<?php endif; ?>
 						</tr>
 					</thead>
 					<tbody>
 						<tr class="copy" id="copy">
-							<td><?php
-								echo CHtml::dropDownList("OrderItems[brandId][]", "", Brand::model()->getAllBrandBySupplierId(Yii::app()->user->supplierId), array(
-									'prompt'=>'Select Brand',
-									'class'=>'form-control',
-									'onchange'=>'findModel(this);',
-									'id'=>'brandId',
-								));
-								?></td>
-							<td class="model"><?php
-								echo CHtml::dropDownList('OrderItems[brandModelId][]', '', array(
-									), array(
-									'prompt'=>'Select Model',
-									'class'=>'form-control',
-									'onchange'=>'findCat1(this);',
-									'id'=>'brandModelId',
-								));
-								?></td>
-							<td class="cat1"><?php
-								echo CHtml::dropDownList('OrderItems[category1Id][]', '', array(
-									), array(
-									'prompt'=>'Select Cat1',
-									'class'=>'form-control',
-									'onchange'=>'findCat2(this);',
-									'id'=>'category1Id',
-								));
-								?></td>
-							<td class="cat2"><?php
-								echo CHtml::dropDownList('OrderItems[category2Id][]', '', array(
-									), array(
-									'prompt'=>'Select Cat2',
-									'class'=>'form-control',
-									'onchange'=>'findProduct(this);',
-									'id'=>'category2Id',
-								));
-								?></td>
-							<td class="product"><?php
-								echo CHtml::dropDownList('OrderItems[productId][]', '', array(
-									), array(
-									'prompt'=>'Select Product',
-									'class'=>'form-control',
-									'id'=>'productId',
-								));
-								?></td>
 							<?php if(Yii::app()->user->supplierId != 3): ?>
+								<td><?php
+									echo CHtml::dropDownList("OrderItems[brandId][]", "", Brand::model()->getAllBrandBySupplierId(Yii::app()->user->supplierId), array(
+										'prompt'=>'Select Brand',
+										'class'=>'form-control',
+										'onchange'=>'findModel(this);',
+										'id'=>'brandId',
+									));
+									?></td>
+								<td class="model"><?php
+									echo CHtml::dropDownList('OrderItems[brandModelId][]', '', array(
+										), array(
+										'prompt'=>'Select Model',
+										'class'=>'form-control',
+										'onchange'=>'findCat1(this);',
+										'id'=>'brandModelId',
+									));
+									?></td>
+								<td class="cat1"><?php
+									echo CHtml::dropDownList('OrderItems[category1Id][]', '', array(
+										), array(
+										'prompt'=>'Select Cat1',
+										'class'=>'form-control',
+										'onchange'=>'findCat2(this);',
+										'id'=>'category1Id',
+									));
+									?></td>
+								<td class="cat2"><?php
+									echo CHtml::dropDownList('OrderItems[category2Id][]', '', array(
+										), array(
+										'prompt'=>'Select Cat2',
+										'class'=>'form-control',
+										'onchange'=>'findProduct(this);',
+										'id'=>'category2Id',
+									));
+									?></td>
+								<td class="product"><?php
+									echo CHtml::dropDownList('OrderItems[productId][]', '', array(
+										), array(
+										'prompt'=>'Select Product',
+										'class'=>'form-control',
+										'id'=>'productId',
+									));
+									?></td>
 								<td><?php
 									echo CHtml::numberField('OrderItems[quantity][]', "", array(
 										'class'=>'form-control'))
@@ -179,6 +179,13 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 							<?php else: ?>
 								<td class="groupName"><?php
 									echo CHtml::dropDownList('OrderItems[groupName][]', '', array(
+										"A"=>"A",
+										"B"=>"B",
+										"C"=>"C",
+										"D"=>"D",
+										"E"=>"E",
+										"F"=>"F",
+										"G"=>"G",
 										), array(
 										'prompt'=>'Select Group Name',
 										'class'=>'form-control',

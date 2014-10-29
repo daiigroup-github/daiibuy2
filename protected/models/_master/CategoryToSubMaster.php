@@ -10,6 +10,7 @@
  * @property integer $isTheme
  * @property integer $isSet
  * @property integer $sortOrder
+ * @property string $description
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -39,9 +40,10 @@ class CategoryToSubMaster extends MasterCActiveRecord
 			array('categoryId, subCategoryId, createDateTime, updateDateTime', 'required'),
 			array('isTheme, isSet, sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('categoryId, subCategoryId', 'length', 'max'=>20),
+			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, categoryId, subCategoryId, isTheme, isSet, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('id, categoryId, subCategoryId, isTheme, isSet, sortOrder, description, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +72,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 			'isTheme' => 'Is Theme',
 			'isSet' => 'Is Set',
 			'sortOrder' => 'Sort Order',
+			'description' => 'Description',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -102,6 +105,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 			$this->isTheme = $this->searchText;
 			$this->isSet = $this->searchText;
 			$this->sortOrder = $this->searchText;
+			$this->description = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -113,6 +117,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		$criteria->compare('isTheme',$this->isTheme);
 		$criteria->compare('isSet',$this->isSet);
 		$criteria->compare('sortOrder',$this->sortOrder);
+		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

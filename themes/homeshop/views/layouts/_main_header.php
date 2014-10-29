@@ -3,7 +3,7 @@
     <div class="row">
 
         <div id="logo" class="col-lg-4 col-md-4 col-sm-4">
-            <a href="home_v1.html"><img src="<?php echo Yii::app()->baseUrl; ?>/images/logo.png" alt="Logo"></a>
+            <a href="<?php echo Yii::app()->baseUrl; ?>"><img src="<?php echo Yii::app()->baseUrl; ?>/images/logo.png" alt="Logo"></a>
         </div>
 
         <nav id="middle-navigation" class="col-lg-8 col-md-8 col-sm-8">

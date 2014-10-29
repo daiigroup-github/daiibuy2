@@ -60,10 +60,12 @@
 		?>
 		<div class="col-sm-10">
 			<?php
-			echo $form->textArea($model, 'description', array(
-				'rows'=>6,
-				'cols'=>50,
-				'class'=>'form-control'));
+			$this->widget('ext.editMe.widgets.ExtEditMe', array(
+				'model'=>$model,
+				'attribute'=>'description',
+//				'filebrowserImageUploadUrl'=>Yii::app()->createUrl('/../images/upload/supplierImage' . Yii::app()->user->supplierId),
+				'filebrowserImageBrowseUrl'=>Yii::app()->request->baseUrl . '/ext/kcfinder/browse.php?type=files&cms=yii',
+			));
 			?>
 			<?php echo $form->error($model, 'description'); ?>
 		</div>

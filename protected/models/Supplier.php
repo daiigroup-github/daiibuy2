@@ -37,6 +37,16 @@ class Supplier extends SupplierMaster
 					'Brand',
 					'supplierId',
 				),
+				'ePaymentTest'=>array(
+					self::HAS_MANY,
+					'SupplierEpayment',
+					'supplierId',
+					'on'=>'type=1'),
+				'ePaymentProduction'=>array(
+					self::HAS_MANY,
+					'SupplierEpayment',
+					'supplierId',
+					'on'=>'type=2'),
 		));
 	}
 
@@ -128,6 +138,30 @@ class Supplier extends SupplierMaster
 			$res[$item->supplierId] = $item->name;
 		}
 		return $res;
+	}
+
+	public function findEpaymentByConfig($supplierId)
+	{
+		if(isset(Yii::app()->params["ePaymentServerType"]))
+		{
+			$serverType = 0;
+			if(Yii::app()->params["ePaymentServerType"] == 1)
+			{
+				$serverType = 1;
+			}
+			else
+			{
+				$serverType = 2;
+			}
+
+			return SupplierEpayment::model()->find("supplierId = :supplierId AND type =:type", array(
+					":supplierId"=>$supplierId,
+					":type"=>$serverType));
+		}
+		else
+		{
+			throw new CHttpException("Please Select Payment Server Type");
+		}
 	}
 
 }

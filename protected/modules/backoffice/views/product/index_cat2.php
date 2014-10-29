@@ -99,6 +99,9 @@ $this->menu = array(
 					'update'=>array(
 						'url'=>'Yii::app()->createUrl("backoffice/product/update?id=".$data->productId."&category2Id=".$data->category2Id)'
 					),
+					'delete'=>array(
+						'url'=>'Yii::app()->createUrl("backoffice/product/deleteCat2ToProduct?id=".$data->id)'
+					),
 					'option'=>array(
 						'label'=>'<br><u>Option</u>',
 						'url'=>'Yii::app()->createUrl("backoffice/productOptionGroup/index?productId=".$data->productId)'
@@ -197,6 +200,7 @@ $this->menu = array(
 								$_GET["category2Id"]) ? $_GET["category2Id"] : 0;
 							?>},
 						success: function (data) {
+							alert(data.status);
 							if (data.status)
 							{
 								$.fn.yiiGridView.update("product-grid");
