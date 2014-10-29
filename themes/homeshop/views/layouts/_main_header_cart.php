@@ -9,7 +9,7 @@
             </td>
             <td>
                 <span class="quantity"><span class="light">1 x</span> 1,120,000.00 บาท</span>
-                <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
+                <a href="<?php echo Yii::app()->createUrl("/checkout/cart/index/id/1") ?>" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>
@@ -22,7 +22,7 @@
             </td>
             <td>
                 <span class="quantity"><span class="light">1 x</span> 120,000.00 บาท</span>
-                <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
+                <a href="<?php echo Yii::app()->createUrl("/checkout/cart/index/id/2") ?>" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>
@@ -34,7 +34,7 @@
             </td>
             <td>
                 <span class="quantity"><span class="light">1 x</span> 9,120,000.00 บาท</span>
-                <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
+                <a href="<?php echo Yii::app()->createUrl("/checkout/cart/index/id/3") ?>" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>
@@ -45,7 +45,7 @@
             </td>
             <td>
                 <span class="quantity"><span class="light">1 x</span> 9,120,000.00 บาท</span>
-                <a href="#" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
+                <a href="<?php echo Yii::app()->createUrl("/checkout/cart/index/id/4") ?>" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart"></i> View</a>
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>

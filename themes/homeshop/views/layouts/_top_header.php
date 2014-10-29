@@ -21,23 +21,24 @@
 						<li>
 							<div class="box-wrapper">
 								<h4>LOGIN</h4>
+								<form method="POST">
+									<div class="iconic-input">
+										<input type="text" placeholder="Username">
+										<i class="icons icon-user-3"></i>
+									</div>
+									<div class="iconic-input">
+										<input type="text" placeholder="Password">
+										<i class="icons icon-lock"></i>
+									</div>
+									<input type="checkbox" id="loginremember">
+									<label for="loginremember">Remember me</label>
+									<br>
+									<br>
 
-								<div class="iconic-input">
-									<input type="text" placeholder="Username">
-									<i class="icons icon-user-3"></i>
-								</div>
-								<div class="iconic-input">
-									<input type="text" placeholder="Password">
-									<i class="icons icon-lock"></i>
-								</div>
-								<input type="checkbox" id="loginremember">
-								<label for="loginremember">Remember me</label>
-								<br>
-								<br>
-
-								<div class="pull-left">
-									<input type="submit" class="orange" value="Login">
-								</div>
+									<div class="pull-left">
+										<input type="submit" class="orange" value="Login">
+									</div>
+								</form>
 								<div class="pull-right">
 									<a href="#">Forgot your password?</a>
 									<br>
