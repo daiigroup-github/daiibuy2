@@ -8,7 +8,6 @@ $('.add-to-cart').click(function () {
 		data = {id: $(this).attr('id')};
 	else
 		data = $('#productOptionForm').serialize();
-
 	$.ajax({
 		url: baseUrl + 'madrid/product/addToCart',
 		type: 'POST',
@@ -21,7 +20,6 @@ $('.add-to-cart').click(function () {
 	});
 })
 		;
-
 function loadThemeItem(cat2Id, baseUrl)
 {
 	$.ajax({
@@ -31,6 +29,8 @@ function loadThemeItem(cat2Id, baseUrl)
 		data: {category2Id: cat2Id},
 		success: function (data) {
 			//alert success message
+			$("#item-table").removeClass('hide');
+			$("#action-button").removeClass('hide');
 			for (var groupName in data)
 			{
 				if (groupName != "")
@@ -87,3 +87,96 @@ $('#uploadPlanMadrid').on('click', function () {
 	$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	$('#Order_createMyfileType').val(2);
 });
+function loadSetItem(cat2Id, baseUrl)
+{
+	$("#item-table").removeClass('hide');
+	$("#action-button").removeClass('hide');
+	$.ajax({
+		url: baseUrl + '/myfile/madrid/loadSetItem',
+		type: 'POST',
+//		dataType: 'JSON',
+		data: {category2Id: cat2Id},
+		success: function (data) {
+			$("#item-table").html(data);
+		}
+	});
+}
+
+
+function findModel(sel, baseUrl)
+{
+	var attrName = sel.attributes['name'].value;
+	var obj = $('select[name=\"' + attrName + '\"]');
+	var brandId = obj.val();
+	$.ajax({
+		'url': baseUrl + '/backoffice/order/findAllModelByBrandIdAjax',
+//			'dataType': 'json',
+		'type': 'POST',
+		'data': {'brandId': brandId},
+		'success': function (data) {
+			obj.parent().parent().children('.model').children('select').html(data);
+		},
+	});
+}
+function findCat1(sel, baseUrl)
+{
+	var attrName = sel.attributes['name'].value;
+	var obj = $('select[name=\"' + attrName + '\"]');
+	var brandModelId = obj.val();
+	$.ajax({
+		'url': baseUrl + '/backoffice/order/findAllCat1ByBrandModelIdAjax',
+//			'dataType': 'json',
+		'type': 'POST',
+		'data': {'brandModelId': brandModelId},
+		'success': function (data) {
+			obj.parent().parent().children('.cat1').children('select').html(data);
+		},
+	});
+}
+function findCat2(sel, baseUrl)
+{
+	var attrName = sel.attributes['name'].value;
+	var obj = $('select[name=\"' + attrName + '\"]');
+	var cat1Id = obj.val();
+	$.ajax({
+		'url': baseUrl + '/backoffice/order/findAllCat2AndProductByBrandCat1IdAjax',
+//			'dataType': 'json',
+		'type': 'POST',
+		'data': {'cat1Id': cat1Id},
+		'success': function (data) {
+			obj.parent().parent().children('.cat2').children('select').html(data);
+			findProductByCat1(sel);
+		},
+	});
+}
+function findProductByCat1(sel, baseUrl)
+{
+	var attrName = sel.attributes['name'].value;
+	var obj = $('select[name=\"' + attrName + '\"]');
+	var cat1Id = obj.val();
+	$.ajax({
+		'url': baseUrl + '/backoffice/order/findAllProductByCat1IdAjax',
+//			'dataType': 'json',
+		'type': 'POST',
+		'data': {'cat1Id': cat1Id},
+		'success': function (data) {
+			obj.parent().parent().children('.product').children('select').html(data);
+		},
+	});
+}
+function findProduct(sel, baseUrl)
+{
+	var attrName = sel.attributes['name'].value;
+	var obj = $('select[name=\"' + attrName + '\"]');
+	var cat2Id = obj.val();
+	$.ajax({
+		'url': baseUrl + '/backoffice/order/findAllProductByCat2IdAjax',
+//			'dataType': 'json',
+		'type': 'POST',
+		'data': {'cat2Id': cat2Id},
+		'success': function (data) {
+			obj.parent().parent().children('.product').children('select').html(data);
+//			findGroupName(sel);
+		},
+	});
+}

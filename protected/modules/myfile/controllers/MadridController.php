@@ -90,7 +90,8 @@ class MadridController extends MasterMyFileController
 			foreach($_POST["OrderItems"] as $k=> $v)
 			{
 				$orderItems = OrderItems::model()->findByPk($k);
-				$orderItems->quantity = $v;
+				$orderItems->quantity = $v["quantity"];
+				$orderItems->total = $orderItems->quantity * $orderItems->price;
 				if($orderItems->save(FALSE))
 				{
 					$model->status = 2;
@@ -137,6 +138,7 @@ class MadridController extends MasterMyFileController
 					$model->type = 1;
 					$model->status = 0;
 					$model->supplierId = 3;
+					$model->isTheme = 1;
 					$model->userId = Yii::app()->user->id;
 					$model->createDateTime = new CDbExpression("NOW()");
 
@@ -236,6 +238,14 @@ class MadridController extends MasterMyFileController
 				$model->type = 1;
 				$model->status = 1;
 				$model->supplierId = 3;
+				if($_POST["Order"]["createMyfileType"] == 3)
+				{
+					$model->isTheme = 0;
+				}
+				else
+				{
+					$model->isTheme = 1;
+				}
 				$model->userId = Yii::app()->user->id;
 				$model->createDateTime = new CDbExpression("NOW()");
 				if($model->save(false))
@@ -402,6 +412,18 @@ class MadridController extends MasterMyFileController
 			}
 		}
 		echo CJSON::encode($result);
+	}
+
+	public function actionLoadSetItem()
+	{
+		$cat2ToProduct = new Category2ToProduct();
+		$result = array();
+		if(isset($_POST["category2Id"]))
+		{
+			$cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
+		}
+		$this->renderPartial("_sanitary_set", array(
+			'model'=>$cat2ToProduct));
 	}
 
 	public function actionBackTo3($id)

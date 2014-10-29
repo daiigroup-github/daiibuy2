@@ -32,6 +32,10 @@ class Category2ToProduct extends Category2ToProductMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
+				'category2'=>array(
+					self::BELONGS_TO,
+					'Category',
+					'category2Id'),
 		));
 	}
 
@@ -90,12 +94,17 @@ class Category2ToProduct extends Category2ToProductMaster
 		));
 	}
 
-	public function findProductType($categoryId,$productId=NULL){
-		if(isset($productId)){
-			$cate = $this->find('category2Id = '. $categoryId . ' AND productId = '. $productId.' AND status=1');
-		}else{
-		$cate = $this->find('category2Id = '. $categoryId . ' AND status=1');
-	}
+	public function findProductType($categoryId, $productId = NULL)
+	{
+		if(isset($productId))
+		{
+			$cate = $this->find('category2Id = ' . $categoryId . ' AND productId = ' . $productId . ' AND status=1');
+		}
+		else
+		{
+			$cate = $this->find('category2Id = ' . $categoryId . ' AND status=1');
+		}
 		return $cate->type;
 	}
+
 }
