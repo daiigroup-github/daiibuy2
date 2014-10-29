@@ -352,12 +352,12 @@ class StepController extends MasterCheckoutController
 //			{
 			if($_REQUEST["decision"] == "ACCEPT")
 			{
-				$order = Order::model()->find("orderNo =:orderNo", array(
+				$order = OrderGroup::model()->find("orderNo =:orderNo", array(
 					":orderNo"=>$_REQUEST["req_reference_number"]));
 				if(isset($order))
 				{
 					$order->status = 1;
-					$order->invoiceNo = Order::model()->genInvNo($order);
+					$order->invoiceNo = OrderGroup::model()->genInvNo($order);
 					$order->paymentDateTime = new CDbExpression('NOW()');
 					if($order->save())
 					{
@@ -371,9 +371,9 @@ class StepController extends MasterCheckoutController
 						$emailObj = new Email();
 						$sentMail = new EmailSend();
 						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderId;
-						$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
-						$sentMail->mailCompleteOrderCustomer($emailObj);
-						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+//						$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+//						$sentMail->mailCompleteOrderCustomer($emailObj);
+//						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 					}
 				}
 				else

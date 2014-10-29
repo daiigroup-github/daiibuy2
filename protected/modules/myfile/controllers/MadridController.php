@@ -81,12 +81,25 @@ class MadridController extends MasterMyFileController
 	public function actionView($id)
 	{
 		$this->layout = '//layouts/cl1';
-		$model = new Order;
+		$model = $this->loadModel($id);
 		$orderDetailModel = new OrderDetail;
 		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
+		if(isset($_POST["OrderItems"]))
+		{
+			foreach($_POST["OrderItems"] as $k=> $v)
+			{
+				$orderItems = OrderItems::model()->findByPk($k);
+				$orderItems->quantity = $v;
+				if($orderItems->save(FALSE))
+				{
+					$model->status = 2;
+					$model->save(false);
+				}
+			}
+		}
 		$this->render('view', array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 			'orderDetailTemplateField'=>$orderDetailTemplateField,
 		));
 	}
@@ -325,6 +338,27 @@ class MadridController extends MasterMyFileController
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionLoadThemeItem()
+	{
+		$result = array();
+		if(isset($_POST["category2Id"]))
+		{
+			$cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
+			foreach($cat2ToProduct as $item)
+			{
+				$result[strtolower($item->groupName)]["productId"] = $item->productId;
+				$result[strtolower($item->groupName)]["code"] = $item->product->code;
+				$result[strtolower($item->groupName)]["name"] = $item->product->name;
+				$result[strtolower($item->groupName)]["width"] = $item->product->width;
+				$result[strtolower($item->groupName)]["height"] = $item->product->height;
+				$result[strtolower($item->groupName)]["productArea"] = ($item->product->width * $item->product->width) / 10000;
+				$result[strtolower($item->groupName)]["price"] = $item->product->price;
+				$result[strtolower($item->groupName)]["productUnits"] = $item->product->productUnits;
+			}
+		}
+		echo CJSON::encode($result);
 	}
 
 }

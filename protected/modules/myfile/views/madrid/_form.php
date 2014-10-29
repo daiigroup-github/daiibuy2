@@ -343,7 +343,6 @@ $form = $this->beginWidget('CActiveForm', array(
 			</div>
 		</div>
 	</div>
-
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-3">
 			<?php
@@ -358,8 +357,8 @@ $form = $this->beginWidget('CActiveForm', array(
 					<div class="sidebar-box-content">
 						<ul>
 							<?php foreach($favs as $fav): ?>
-								<li><a href=""><?php echo $fav->category2->title; ?></li></a>
-							<?php endforeach; ?>
+							<li><a href="#" onclick="loadThemeItem(<?php echo $fav->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>)"><?php echo $fav->category2->title; ?></li></a>
+						<?php endforeach; ?>
 						</ul>
 					</div>
 				</div>
@@ -392,21 +391,23 @@ $form = $this->beginWidget('CActiveForm', array(
 									$i = 1;
 									foreach($model->orderItems as $item):
 										?>
-										<tr>
+									<tr id="orderItem<?php echo strtolower($item->groupName); ?>">
 											<td><?php echo $i; ?></td>
-											<td><?php echo $item->groupName . "." ?></td>
-											<td style="text-align: center"><?php echo $item->area; ?></td>
-											<td>ตร.เมตร</td>
-											<td class="text-info" id="productCode"></td>
-											<td id="productDescription"></td>
-											<td id="productUnit"></td>
-											<?php // $squareMeterQuantiry = 1 / (($item->product->width * $item->product->height) / 10000);   ?>
-											<?php // $estimateAreaQuantity = $item->area * $squareMeterQuantiry; ?>
-											<?php // $price = $estimateAreaQuantity * $item->product->price;     ?>
-											<td style="text-align: center" id="squareMeterQuantity"></td>
-											<td style="text-align: center" id="estimateAreaQuantity"></td>
-											<td id="quantity"></td>
-											<td id="price<?php echo $item->orderItemsId ?>"></td>
+											<td style="text-align:center"><?php echo $item->groupName ?></td>
+											<td style="text-align: center"><?php echo $item->area; ?><?php echo CHtml::hiddenField("supplierArea" . strtolower($item->groupName), $item->area); ?></td>
+												<td>ตร.เมตร</td>
+												<td id="productCode<?php echo strtolower($item->groupName) ?>" class="text-info" id="productCode"></td>
+												<td id="productName<?php echo strtolower($item->groupName) ?>"></td>
+												<td id="productUnits<?php echo strtolower($item->groupName) ?>"></td>
+													<td  style="text-align: center" id="productArea<?php echo strtolower($item->groupName) ?>"></td>
+													<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"></td>
+													<td id="quantity<?php echo strtolower($item->groupName) ?>"><?php
+															echo CHtml::numberField("OrderItems[" . $item->orderItemsId . "]", "", array(
+																'min'=>0,
+																'class'=>'hide',
+																'id'=>'quantityText_' . strtolower($item->groupName)));
+															?></td>
+														<td id="price<?php echo strtolower($item->groupName) ?>"></td>
 										</tr>
 										<?php
 										$i++;
