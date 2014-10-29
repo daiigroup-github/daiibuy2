@@ -99,7 +99,7 @@ class Content extends ContentMaster
 				'Content',
 				array(
 					'contentId'=>'parentId')),
-			'child'=>array(
+			'childs'=>array(
 				self::HAS_MANY,
 				'Content',
 				array(
