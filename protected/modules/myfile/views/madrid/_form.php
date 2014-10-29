@@ -78,7 +78,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
 				<div class="row">
 					<div class="col-md-4 col-sm-offset-1 text-center">
-						<a id="uploadPlanAtech">
+						<a id="uploadPlanMadrid">
 							<div class="panel panel-primary">
 								<div class="panel-heading">
 									<h2><b>อัพโหลดแบบดีไซน์</b></h2>
@@ -258,7 +258,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                                                                                                                                                                                                                  ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                                                                                                                                                                                                                   ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -320,12 +320,12 @@ $form = $this->beginWidget('CActiveForm', array(
 //								),
 //					));
 								?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                   ?></td>
 				<td><?php // echo '';                                                                                                                                                                                                                                                  ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                                                                                                                                                                                                                  ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                                                                                                                                                                                                                   ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                  ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                  ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                  ?></td>
 			</tr>-->
 							</tbody>
 						</table>
@@ -336,7 +336,7 @@ $form = $this->beginWidget('CActiveForm', array(
 										<div class='col-lg-6 col-md-6 col-sm-12'>
 										<div class="blog-item">
 					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));            ?>
-											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                                                                                                                                                                                                                  ?></div>
+											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                                                                                                                                                                                                                   ?></div>
 									</div>
 								</div>
 					<?php // $i++;       ?>
@@ -447,12 +447,12 @@ $form = $this->beginWidget('CActiveForm', array(
 												<td><?php echo $i; ?></td>
 												<td style="text-align:center"><?php echo $k ?></td>
 												<?php if($this->action->id == "view"): ?>
-													<td style="text-align: center"><?php // echo $item->area;                          ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                          ?></td>
+													<td style="text-align: center"><?php // echo $item->area;                           ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                           ?></td>
 												<?php endif; ?>
 												<td>ตร.เมตร</td>
-												<td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                          ?></td>
-												<td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                          ?></td>
-												<td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                           ?></td>
+												<td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                           ?></td>
+												<td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                           ?></td>
+												<td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                            ?></td>
 												<?php
 												echo CHtml::hiddenField("OrderItems[" . $k . "][price]" . strtolower($k), "", array(
 													'id'=>"priceHidden" . strtolower($k)));
@@ -472,7 +472,7 @@ $form = $this->beginWidget('CActiveForm', array(
 													<?php // echo $productArea;     ?>
 												</td>
 												<?php if($this->action->id == "view"): ?>
-													<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                      ?></td>
+													<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                       ?></td>
 												<?php endif; ?>
 												<td id="quantity<?php echo strtolower($k) ?>"><?php
 													echo CHtml::numberField("OrderItems[" . $k . "][quantity]", "", array(
@@ -480,7 +480,7 @@ $form = $this->beginWidget('CActiveForm', array(
 														//													'class'=>'hide',
 														'id'=>'quantityText_' . strtolower($k)));
 													?></td>
-												<td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                         ?></td>
+												<td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                          ?></td>
 											</tr>
 											<?php
 											$i++;

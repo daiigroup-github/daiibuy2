@@ -81,4 +81,9 @@ function updatePrice()
 
 $('#manualQuantityMadrid').on('click', function () {
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+	$('#Order_createMyfileType').val(1);
+});
+$('#uploadPlanMadrid').on('click', function () {
+	$('ul.setup-panel li a[href="#step-2"]').trigger('click');
+	$('#Order_createMyfileType').val(2);
 });

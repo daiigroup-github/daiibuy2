@@ -124,7 +124,7 @@ class MadridController extends MasterMyFileController
 		  }
 		 */
 //		throw new Exception(print_r($_FILES['OrderFile'],true));
-		if(isset($_FILES['OrderFile']) && !isset($_POST["Order"]["createMyfileType"]))
+		if(isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2)
 		{
 //			$planFile = $_FILES['OrderFile'];
 			try
