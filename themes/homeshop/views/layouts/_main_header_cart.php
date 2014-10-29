@@ -41,8 +41,7 @@
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>
-       */
-        ?>
+
         <tr>
             <td><img src="<?php echo Yii::app()->baseUrl . '/images/supplier/ginzahome.jpg' ?>" alt="product"></td>
             <td>
@@ -54,6 +53,8 @@
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>
+               */
+        ?>
     </table>
 
     <br class="clearfix">

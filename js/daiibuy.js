@@ -15,12 +15,13 @@ $(document).ready(function(){
 });
 
 function updateCartHeader() {
+    alert(baseUrl+'cart/updateCartHeader');
     $.ajax({
         type: 'POST',
         url: baseUrl+'/cart/updateCartHeader',
         dataType: 'json',
         success: function (data){
-            $('#cartHeader').html(data.cartHeader);
+            //$('#cartHeader').html(data.cartHeader);
             $('#cartHeaderTable').html(data.cartHeaderTable);
         }
     });
