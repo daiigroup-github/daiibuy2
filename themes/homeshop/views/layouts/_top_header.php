@@ -21,13 +21,13 @@
 						<li>
 							<div class="box-wrapper">
 								<h4>LOGIN</h4>
-								<form method="POST">
+								<form id="login-form" >
 									<div class="iconic-input">
-										<input type="text" placeholder="Username">
+										<input name="LoginForm[username]" type="text" class="form-control" placeholder="Username">
 										<i class="icons icon-user-3"></i>
 									</div>
 									<div class="iconic-input">
-										<input type="text" placeholder="Password">
+										<input name="LoginForm[password]" type="password" class="form-control" placeholder="Password">
 										<i class="icons icon-lock"></i>
 									</div>
 									<input type="checkbox" id="loginremember">
@@ -36,7 +36,17 @@
 									<br>
 
 									<div class="pull-left">
-										<input type="submit" class="orange" value="Login">
+										<!--<input type="submit" class="orange" value="Login">-->
+										<?php
+										echo CHtml::ajaxLink("Login", Yii::app()->createUrl("/site/login"), array(
+											'type'=>"POST",
+											'data'=>'{username:"xxxx",password:"yyyy"}',
+											'success'=>'function(data){
+												alert(data)
+											}'
+											), array(
+											"class"=>"button orange"))
+										?>
 									</div>
 								</form>
 								<div class="pull-right">
@@ -54,7 +64,7 @@
 						</li>
 					</ul>
 				</li>
-				<li><a href="#"><i class="icons icon-lock"></i> Create an Account</a></li>
+				<!--<li><a href="#"><i class="icons icon-lock"></i> Create an Account</a></li>-->
 			</ul>
 		</nav>
 

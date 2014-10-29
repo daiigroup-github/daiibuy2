@@ -3,7 +3,7 @@
 
     <table class="cart-table">
 		<tr>
-            <td><img src="images/supplier/fenzer.jpg" alt="product"></td>
+            <td><img src="<?php echo Yii::app()->baseUrl . '/images/supplier/fenzer.jpg' ?>" alt="product"></td>
             <td>
                 <h6>Fenzer</h6>
             </td>
@@ -14,7 +14,7 @@
             </td>
         </tr>
         <tr>
-            <td><img src="images/supplier/atech.jpg" alt="product"></td>
+            <td><img src="<?php echo Yii::app()->baseUrl . '/images/supplier/atech.jpg' ?>" alt="product"></td>
             <td>
                 <h6>Atech Window</h6>
 
@@ -28,7 +28,7 @@
         </tr>
 
         <tr>
-            <td><img src="images/supplier/madrid.jpg" alt="product"></td>
+            <td><img src="<?php echo Yii::app()->baseUrl . '/images/supplier/madrid.jpg' ?>" alt="product"></td>
             <td>
                 <h6>Madrid</h6>
             </td>
@@ -39,7 +39,7 @@
             </td>
         </tr>
         <tr>
-            <td><img src="images/supplier/ginzahome.jpg" alt="product"></td>
+            <td><img src="<?php echo Yii::app()->baseUrl . '/images/supplier/ginzahome.jpg' ?>" alt="product"></td>
             <td>
                 <h6>Ginza Home</h6>
             </td>
