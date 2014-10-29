@@ -41,14 +41,14 @@ foreach($_REQUEST as $name=> $value)
 			<h4>Waiting e-Payment</h4>
 		</div>
 		<div class="sidebar-box-content sidebar-padding-box">
-			<div class="row">
-				<div class="col-md-12" style="height: 100px">
-					<?php
-					echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
-						"style"=>"width:250px"));
-					?>
-				</div>
-			</div>
+			<!--<div class="row">-->
+			<!--<div class="col-md-12" style="height: 100px">-->
+			<?php
+//					echo CHtml::image(Yii::app()->baseUrl . "/images/logo.png", "", array(
+//						"style"=>"width:250px"));
+			?>
+			<!--</div>-->
+			<!--</div>-->
 			<div class="row">
 				<div class="col-md-12">
 					<i class="icon-spinner icon-spin icon-3x"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span  style="font-size: 40px;font-weight: bold">ระบบกำลังดำเนินการ ติดต่อธนาคารเพื่อชำระเงิน</span>

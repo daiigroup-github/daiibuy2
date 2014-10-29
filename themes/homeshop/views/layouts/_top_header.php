@@ -4,9 +4,11 @@
 
 		<nav id="top-navigation" class="col-lg-7 col-md-7 col-sm-7">
 			<ul class="pull-left">
-				<li><a href="create_an_account.html">My Account</a></li>
-				<li><a href="orders_list.html">List Order</a></li>
-				<li><a href="order_info.html">Checkout</a></li>
+				<?php if(isset(Yii::app()->user->id)): ?>
+					<li><a href="create_an_account.html">My Account</a></li>
+					<li><a href="orders_list.html">List Order</a></li>
+					<li><a href="order_info.html">Checkout</a></li>
+				<?php endif; ?>
 				<li><a href="text_page.html">About Us</a></li>
 				<li><a href="contact.html">Contact</a></li>
 			</ul>
