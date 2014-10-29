@@ -113,6 +113,7 @@ class MadridController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 		$model = new Order;
+		$model->isTheme = 1;
 		$orderDetailModel = new OrderDetail;
 		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
@@ -259,7 +260,16 @@ class MadridController extends MasterMyFileController
 							$orderItems->orderId = $orderId;
 							$orderItems->attributes = $_POST["OrderItems"][$k];
 							$orderItems->createDateTime = new CDbExpression("NOW()");
-							$orderItems->total = $_POST["OrderItems"][$k]["price"] * $_POST["OrderItems"][$k]["quantity"];
+							if(isset($_POST["OrderItems"][$k]["price"]))
+							{
+								$price = $_POST["OrderItems"][$k]["price"];
+							}
+							else
+							{
+								$price = Product::model()->findByPk($_POST["OrderItems"][$k]["productId"])->price;
+								$orderItems->price = $price;
+							}
+							$orderItems->total = $price * $_POST["OrderItems"][$k]["quantity"];
 
 							if(!$orderItems->save(false))
 							{
@@ -414,6 +424,14 @@ class MadridController extends MasterMyFileController
 		echo CJSON::encode($result);
 	}
 
+	public function actionRenderThemeView()
+	{
+		$model = new Order();
+		$model->isTheme = 1;
+		$this->renderPartial("_theme", array(
+			'model'=>$model));
+	}
+
 	public function actionLoadSetItem()
 	{
 		$cat2ToProduct = new Category2ToProduct();
@@ -423,7 +441,7 @@ class MadridController extends MasterMyFileController
 			$cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
 		}
 		$this->renderPartial("_sanitary_set", array(
-			'model'=>$cat2ToProduct));
+			'model'=>$cat2ToProduct), FALSE, TRUE);
 	}
 
 	public function actionBackTo3($id)

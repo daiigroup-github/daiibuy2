@@ -18,10 +18,11 @@ $('.add-to-cart').click(function () {
 			alert(data.result);
 		}
 	});
-})
-		;
+});
 function loadThemeItem(cat2Id, baseUrl)
 {
+	renderThemeItem(baseUrl);
+	$("#sanitary-item").html("");
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadThemeItem',
 		type: 'POST',
@@ -29,7 +30,7 @@ function loadThemeItem(cat2Id, baseUrl)
 		data: {category2Id: cat2Id},
 		success: function (data) {
 			//alert success message
-			$("#item-table").removeClass('hide');
+//			$("#item-table").removeClass('hide');
 			$("#action-button").removeClass('hide');
 			for (var groupName in data)
 			{
@@ -68,6 +69,37 @@ function loadThemeItem(cat2Id, baseUrl)
 		}
 	});
 }
+function renderThemeItem(baseUrl)
+{
+	$("#item-table").addClass('hide');
+	$("#action-button").removeClass('hide');
+	$.ajax({
+		url: baseUrl + '/myfile/madrid/renderThemeView',
+		type: 'POST',
+//		dataType: 'JSON',
+//		data: {category2Id: cat2Id},
+		success: function (data) {
+			$("#item-table").removeClass("hide");
+			$("#item-table").html(data);
+		}
+	});
+}
+function loadSetItem(cat2Id, baseUrl)
+{
+	$("#item-table").html('');
+	$("#action-button").removeClass('hide');
+	$.ajax({
+		url: baseUrl + '/myfile/madrid/loadSetItem',
+		type: 'POST',
+//		dataType: 'JSON',
+		data: {category2Id: cat2Id},
+		success: function (data) {
+			$("#sanitary-item").removeClass("hide");
+			$("#sanitary-item").html(data);
+		}
+	});
+}
+
 function updatePrice()
 {
 	groupNames = {a: "a", b: "b", c: "c", d: "d", e: "e", f: "f"};
@@ -87,20 +119,6 @@ $('#uploadPlanMadrid').on('click', function () {
 	$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	$('#Order_createMyfileType').val(2);
 });
-function loadSetItem(cat2Id, baseUrl)
-{
-	$("#item-table").removeClass('hide');
-	$("#action-button").removeClass('hide');
-	$.ajax({
-		url: baseUrl + '/myfile/madrid/loadSetItem',
-		type: 'POST',
-//		dataType: 'JSON',
-		data: {category2Id: cat2Id},
-		success: function (data) {
-			$("#item-table").html(data);
-		}
-	});
-}
 
 
 function findModel(sel, baseUrl)

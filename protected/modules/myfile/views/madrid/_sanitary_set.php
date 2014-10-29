@@ -68,7 +68,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 //			), 'You can remove this line'),
 	),
 	'jsAfterNewId'=>"
-		if(typeof this.attr('name') !== 'undefined'){ this.attr('name', this.attr('name').replace('[]', '['+counter+']'));}
+		if(typeof this.attr('name') !== 'undefined'){ this.attr('name', this.attr('name').replace('[0]', '['+counter+']'));}
 
 		",
 ));
@@ -92,7 +92,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 			<tbody>
 				<tr class="copyRow" id="copyRow">
 					<td><?php
-						echo CHtml::dropDownList("OrderItems[brandId][]", "", Brand::model()->getAllBrandBySupplierId(3), array(
+						echo CHtml::dropDownList("OrderItems[0][brandId]", "", Brand::model()->getAllBrandBySupplierId(3), array(
 							'prompt'=>'Select Brand',
 							'class'=>'form-control',
 							'onchange'=>"findModel(this,'" . Yii::app()->baseUrl . "');",
@@ -100,7 +100,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 						));
 						?></td>
 					<td class="model"><?php
-						echo CHtml::dropDownList('OrderItems[brandModelId][]', '', array(
+						echo CHtml::dropDownList('OrderItems[0][brandModelId]', '', array(
 							), array(
 							'prompt'=>'Select Model',
 							'class'=>'form-control',
@@ -109,7 +109,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 						));
 						?></td>
 					<td class="cat1"><?php
-						echo CHtml::dropDownList('OrderItems[category1Id][]', '', array(
+						echo CHtml::dropDownList('OrderItems[0][category1Id]', '', array(
 							), array(
 							'prompt'=>'Select Cat1',
 							'class'=>'form-control',
@@ -118,7 +118,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 						));
 						?></td>
 					<td class="cat2"><?php
-						echo CHtml::dropDownList('OrderItems[category2Id][]', '', array(
+						echo CHtml::dropDownList('OrderItems[0][category2Id]', '', array(
 							), array(
 							'prompt'=>'Select Cat2',
 							'class'=>'form-control',
@@ -127,7 +127,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 						));
 						?></td>
 					<td class="product"><?php
-						echo CHtml::dropDownList('OrderItems[productId][]', '', array(
+						echo CHtml::dropDownList('OrderItems[0][productId]', '', array(
 							), array(
 							'prompt'=>'Select Product',
 							'class'=>'form-control',
@@ -135,7 +135,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 						));
 						?></td>
 					<td><?php
-						echo CHtml::numberField('OrderItems[quantity][]', "", array(
+						echo CHtml::numberField('OrderItems[0][quantity]', "", array(
 							'class'=>'form-control'))
 						?></td>
 					<td></td>
