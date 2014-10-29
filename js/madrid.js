@@ -41,9 +41,10 @@ function loadThemeItem(cat2Id, baseUrl)
 					$("#productArea" + groupName).html(data[groupName]["productArea"]);
 					var estimateQuantity = data[groupName]["productArea"] * $("#supplierArea" + groupName).val();
 					$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
-					$("#quantityText_" + groupName).removeClass("hide");
+//					$("#quantityText_" + groupName).removeClass("hide");
 					$("#quantityText_" + groupName).val(estimateQuantity);
 					$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
+					$("#priceHidden" + groupName).val(data[groupName]["price"]);
 				}
 				else
 				{
@@ -55,12 +56,27 @@ function loadThemeItem(cat2Id, baseUrl)
 						$("#productUnits" + groupName).html("");
 						$("#productArea" + groupName).html("");
 						$("#estimateAreaQuantity" + groupName).html("");
-						$("#quantityText_" + groupName).addClass("hide");
-						$("#quantityText_" + groupName).val("");
+//						$("#quantityText_" + groupName).addClass("hide");
+						$("#quantityText_" + groupName).val(0);
 						$("#price" + groupName).html("");
+						$("#priceHidden" + groupName).val(0);
 					}
 				}
 			}
 		}
 	});
 }
+function updatePrice()
+{
+	groupNames = {a: "a", b: "b", c: "c", d: "d", e: "e"};
+	for (var groupName in groupNames)
+	{
+		var price = $("#priceHidden" + groupName).val();
+		var quantity = $("#quantityText_" + groupName).val();
+		$("#price" + groupName).html(price * quantity);
+	}
+}
+
+$('#manualQuantityMadrid').on('click', function () {
+	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+});

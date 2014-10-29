@@ -14,12 +14,14 @@
  * @property string $total
  * @property string $totalIncVAT
  * @property string $remark
+ * @property integer $isRequestSpacialProject
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
  * @property Supplier $supplier
+ * @property OrderDetail[] $orderDetails
  * @property OrderFile[] $orderFiles
  * @property OrderGroupToOrder[] $orderGroupToOrders
  * @property OrderItems[] $orderItems
@@ -43,14 +45,14 @@ class OrderMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('provinceId, createDateTime', 'required'),
-			array('type, status', 'numerical', 'integerOnly'=>true),
+			array('type, isRequestSpacialProject, status', 'numerical', 'integerOnly'=>true),
 			array('userId, supplierId, provinceId', 'length', 'max'=>20),
 			array('token, title', 'length', 'max'=>200),
 			array('total, totalIncVAT', 'length', 'max'=>15),
 			array('remark, updateDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderId, userId, supplierId, provinceId, token, title, type, total, totalIncVAT, remark, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderId, userId, supplierId, provinceId, token, title, type, total, totalIncVAT, remark, isRequestSpacialProject, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +65,7 @@ class OrderMaster extends MasterCActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
+			'orderDetails' => array(self::HAS_MANY, 'OrderDetail', 'orderId'),
 			'orderFiles' => array(self::HAS_MANY, 'OrderFile', 'orderId'),
 			'orderGroupToOrders' => array(self::HAS_MANY, 'OrderGroupToOrder', 'orderId'),
 			'orderItems' => array(self::HAS_MANY, 'OrderItems', 'orderId'),
@@ -85,6 +88,7 @@ class OrderMaster extends MasterCActiveRecord
 			'total' => 'Total',
 			'totalIncVAT' => 'Total Inc Vat',
 			'remark' => 'Remark',
+			'isRequestSpacialProject' => 'Is Request Spacial Project',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -121,6 +125,7 @@ class OrderMaster extends MasterCActiveRecord
 			$this->total = $this->searchText;
 			$this->totalIncVAT = $this->searchText;
 			$this->remark = $this->searchText;
+			$this->isRequestSpacialProject = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -136,6 +141,7 @@ class OrderMaster extends MasterCActiveRecord
 		$criteria->compare('total',$this->total,true, 'OR');
 		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
 		$criteria->compare('remark',$this->remark,true, 'OR');
+		$criteria->compare('isRequestSpacialProject',$this->isRequestSpacialProject);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

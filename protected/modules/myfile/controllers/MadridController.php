@@ -361,4 +361,42 @@ class MadridController extends MasterMyFileController
 		echo CJSON::encode($result);
 	}
 
+	public function actionBackTo3($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->status = 1;
+		$model->save();
+		$this->redirect(array(
+			'view',
+			'id'=>$id));
+	}
+
+	public function actionFinish($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->status = 3;
+		$model->save();
+		$this->redirect(array(
+			'index'));
+	}
+
+	public function actionAddtoCart($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->type = 3;
+		$model->save();
+		$this->redirect(array(
+			'index'));
+	}
+
+	public function actionRequestSpacialProject($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->isRequestSpacialProject = 1;
+		$model->save();
+		$this->redirect(array(
+			'view',
+			'id'=>$id));
+	}
+
 }
