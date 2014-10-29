@@ -12,7 +12,7 @@ $this->breadcrumbs = array(
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         <div class="carousel-heading">
-            <h4><?php echo $product['title']; ?></h4>
+            <h4><?php echo $categoryToSub->category->title . ' :: ' . $categoryToSub->subCategory->title; ?></h4>
         </div>
 
     </div>
@@ -28,20 +28,20 @@ $this->breadcrumbs = array(
 
             <!-- Product Images Carousel -->
             <div class="col-lg-5 col-md-5 col-sm-5 product-single-image">
-                <?php $this->renderPartial('//layouts/_product_slider', array('images' => $product['images'])); ?>
+                <?php $this->renderPartial('//layouts/_product_slider', array('images' => $images)); ?>
             </div>
             <!-- /Product Images Carousel -->
 
 
             <div class="col-lg-7 col-md-7 col-sm-7 product-single-info">
 
-                <h2><?php echo $product['title']; ?></h2>
+                <h2><?php echo $categoryToSub->category->title . ' :: ' . $categoryToSub->subCategory->title; ?></h2>
 
-                <?php $this->renderPartial('//layouts/_product_description', array('description' => $product['description'])); ?>
+                <?php $this->renderPartial('//layouts/_product_description', array('description' => $description)); ?>
 
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'fenzerForm',
+                    'id' => 'ginzaHomeForm',
                     //'enableClientValidation' => true,
                     //'clientOptions' => array('validateOnSubmit' => true,),
                     'htmlOptions' => array(
@@ -55,16 +55,19 @@ $this->breadcrumbs = array(
                 <div class="form-group">
                     <label for="h" class="col-sm-4 control-label">Booking Price</label>
                     <div class="col-sm-7">
-                        <input type="text" value="100,000 บาท" class="form-control price" disabled />
+                        <input type="text" value="<?php echo number_format($bookingPrice, 2);?>" class="form-control price" disabled />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="h" class="col-sm-4 control-label">Contact Price</label>
                     <div class="col-sm-7">
-                        <input type="text" value="2,600,000 บาท" class="form-control price" disabled />
+                        <input type="text" value="<?php echo number_format($price, 2);?>" class="form-control price" disabled />
                     </div>
                 </div>
+
+                <?php
+                /*
 
                 <div class="form-group">
                     <label for="h" class="col-sm-4 control-label">Color</label>
@@ -72,12 +75,40 @@ $this->breadcrumbs = array(
                         <?php echo CHtml::dropDownList('h', '', array('Silver', 'Blue', 'White'), array('class'=>'chosen-select-full-width', 'prompt'=>'-- Select --'));?>
                     </div>
                 </div>
+                */
+                ?>
+
+                <?php
+                /**
+                 * options
+                 */
+                if($productSortOrder1->productOptionGroups !== array()):
+                    foreach ($productSortOrder1->productOptionGroups as $$productOptionGroup):
+                    ?>
+                    <div class="form-group">
+                        <label for="productOption" class="col-sm-4 control-label">Color</label>
+                        <div class="col-sm-7">
+                            <?php
+                            echo CHtml::dropDownList('productOption', '',
+                                CHtml::listData($productOptionGroup->productOptions, 'productOptionsId', 'title'),
+                                array(
+                                    'class'=>'chosen-select-full-width',
+                                    'prompt'=>'-- Select --'
+                                )
+                            );
+                            ?>
+                        </div>
+                    </div>
+                <?php
+                    endforeach;
+                endif;
+                ?>
 
                 <div class="form-group">
                     <label for="h" class="col-sm-4 control-label">Amount</label>
                     <div class="col-sm-7">
                         <div class="numeric-input full-width">
-                            <input type="text" value="1" class="form-control" name="l" />
+                            <input type="text" value="1" class="form-control" name="quantity" />
                             <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
                             <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
                         </div>
@@ -85,13 +116,14 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="product-actions">
-			        <span class="add-to-cart">
+			        <span class="add-to-cart" id="addToCartGinzaHome">
                         <span class="action-wrapper">
 							<i class="icons fa fa-shopping-cart"></i>
 							<span class="action-name">Add to cart</span>
 						</span>
 					</span>
                 </div>
+                <?php echo CHtml::hiddenField('productId', $productSortOrder1->productId);?>
                 <?php $this->endWidget(); ?>
 
 
@@ -104,7 +136,7 @@ $this->breadcrumbs = array(
     <!-- /Product -->
 
     <!-- Product tabs -->
-    <?php $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs'])); ?>
+    <?php if($tabs!==array()) $this->renderPartial('//layouts/_product_tab', array('tabs' => $tabs)); ?>
 
 </div>
 

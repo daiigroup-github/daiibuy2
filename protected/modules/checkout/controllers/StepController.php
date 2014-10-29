@@ -195,7 +195,7 @@ class StepController extends MasterCheckoutController
                 //code here
                 //new order group
                 $orderGroup = new OrderGroup();
-                $orderGroup->orderNo = $orderGroup->genOrderNo();
+                $orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
                 $orderGroup->summary = $orderSummary['grandTotal'];
                 $orderGroup->totalIncVAT = $orderSummary['total'];
                 $orderGroup->discountPercent = $orderSummary['discountPercent'];

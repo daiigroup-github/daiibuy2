@@ -9,3 +9,19 @@ function addToCart(productId) {
 	//ajax add to db
 
 }
+
+$(document).ready(function(){
+    updateCartHeader();
+});
+
+function updateCartHeader() {
+    $.ajax({
+        type: 'POST',
+        url: baseUrl+'/cart/updateCartHeader',
+        dataType: 'json',
+        success: function (data){
+            $('#cartHeader').html(data.cartHeader);
+            $('#cartHeaderTable').html(data.cartHeaderTable);
+        }
+    });
+}

@@ -7,6 +7,7 @@ class MasterGinzahomeController extends MasterController
         parent::init();
 
         Yii::app()->clientScript->registerCSSFile(Yii::app()->baseUrl.'/css/ginzahome.css');
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/daiibuy.js');
         Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/ginzahome.js');
 
         $this->nav = array(

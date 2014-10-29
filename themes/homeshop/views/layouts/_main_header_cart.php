@@ -1,7 +1,10 @@
 <div class="box-wrapper parent-border">
     <p>Recently added item(s)</p>
 
-    <table class="cart-table">
+    <table class="cart-table" id="cartHeaderTable">
+        <?php
+        /*
+
         <tr>
             <td><img src="img/products/sample1.jpg" alt="product"></td>
             <td>
@@ -37,6 +40,8 @@
                 <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-ban"></i> </a>
             </td>
         </tr>
+       */
+        ?>
         <tr>
             <td><img src="img/products/sample1.jpg" alt="product"></td>
             <td>

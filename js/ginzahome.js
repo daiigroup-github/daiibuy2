@@ -1,4 +1,18 @@
 /**
  * Created by NPR on 8/13/14.
  */
-include('themes/homeshop/assets/js/daiibuy/daiibuy.js');
+
+$('#addToCartGinzaHome').live('click', function () {
+    if (confirm('Add To Cart?')) {
+        $.ajax({
+            type: 'POST',
+            url: baseUrl + 'ginzahome/product/addToCart',
+            dataType: 'json',
+            data: $('#ginzaHomeForm').serialize(),
+            success: function (data) {
+                //alert success message
+                alert(data.result);
+            }
+        });
+    }
+});

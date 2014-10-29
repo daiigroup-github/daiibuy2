@@ -98,5 +98,4 @@ class Category2ToProduct extends Category2ToProductMaster
 	}
 		return $cate->type;
 	}
-
 }

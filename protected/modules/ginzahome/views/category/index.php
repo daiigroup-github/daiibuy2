@@ -40,7 +40,7 @@ $this->breadcrumbs = array(
                             <span class="price">
                                 <?php echo Product::model()->ginzaPriceByCategory1IdAndCategory2Id($category->categoryId, $subCategory->categoryId);;?>
                             </span><br />
-                            <a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/id/'.$category->categoryId.'/'.$subCategory->categoryId);?>">เลือก</a>
+                            <a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/c/'.$category->categoryId.'/c2/'.$subCategory->categoryId);?>">เลือก</a>
                         </td>
                         <?php endforeach;?>
                     </tr>

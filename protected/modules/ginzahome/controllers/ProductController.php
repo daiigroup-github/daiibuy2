@@ -7,7 +7,7 @@ class ProductController extends MasterGinzahomeController
      * @param $id2 = subCategoryId
      * @throws CException
      */
-    public function actionIndex($id,$id2)
+    public function actionIndex($c,$c2)
     {
         $images = [];
         foreach ($this->scanDir(Yii::app()->basePath . '/../images/ginzahome') as $k => $image) {
@@ -66,6 +66,7 @@ class ProductController extends MasterGinzahomeController
             ),
         );
 
+        /*
         $product = array(
             'title' => 'Ginza 188C',
             'code' => 'PBS173',
@@ -109,8 +110,75 @@ class ProductController extends MasterGinzahomeController
                 ),
             ),
         );
+        */
 
-        $this->render('index', array('product' => $product));
+        $categoryToSub = CategoryToSub::model()->find(array(
+            'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
+            'params'=>array(
+                ':categoryId'=>$c,
+                ':subCategoryId'=>$c2,
+            ),
+        ));
+
+        $category2ToProducts = Category2ToProduct::model()->findAll(array(
+            'condition'=>'category1Id=:category1Id AND category2Id=:category2Id',
+            'params'=>array(
+                ':category1Id'=>$c,
+                ':category2Id'=>$c2,
+            ),
+            'order'=>'sortOrder'
+        ));
+
+        $i=0;
+        $price=0;
+        $product = array();
+        $productSortOrder1 = '';
+        foreach ($category2ToProducts as $category2ToProduct) {
+            $price += ($category2ToProduct->product->calProductPromotionPrice() > 0) ? $category2ToProduct->product->calProductPromotionPrice() : $category2ToProduct->product->calProductPrice();
+
+            if($i==0) {
+                $bookingPrice = $price;
+                $description = $category2ToProduct->product->description;
+                $productSortOrder1 = $category2ToProduct->product;
+            }
+            $i++;
+        }
+
+        $tabs = array();
+        $j = 0;
+        foreach ($productSortOrder1->productSpecGroupsTypeDetails as $detail) {
+            $tabs[$j] = array(
+                'title' => $detail->title,
+                'detail' => $detail->description,
+            );
+            $j++;
+        }
+//
+//        $options = array();
+//        $k = 0;
+//        foreach ($productSortOrder1->productOptionGroups as $productOptionGroup) {
+//            $options[$k]['title'] = $productOptionGroup->title;
+//            $option = array();
+//            $l = 0;
+//            foreach ($productOptionGroup->productOptions as $productOptions) {
+//                $option[$l] = array();
+//                $l++;
+//            }
+//
+//            $k++;
+//        }
+
+
+        $this->render('index', array(
+            'product' => $product,
+            'categoryToSub'=>$categoryToSub,
+            'bookingPrice'=>$bookingPrice,
+            'price'=>$price,
+            'description'=>$description,
+            'images'=>$images,
+            'tabs'=>$tabs,
+            'productSortOrder1'=>$productSortOrder1
+        ));
     }
 
     // Uncomment the following methods and override them if needed
@@ -139,4 +207,43 @@ class ProductController extends MasterGinzahomeController
         );
     }
     */
+
+    public function actionAddToCart()
+    {
+        if(isset($_POST['productId'])) {
+            $this->writeToFile('/tmp/ginzaAddCart', print_r($_POST, true));
+            $res = array();
+            $supplier = Supplier::model()->find(array(
+                'condition' => 'url=:url',
+                'params' => array(':url' => $this->module->id),
+            ));
+
+            $this->cookie = new DaiiBuy();
+            $this->cookie->loadCookie();
+
+            $flag = false;
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                //code here
+                $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+                $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
+
+                if ($flag) {
+                    $orderModel->totalIncVAT = $orderModel->orderItemsSum;
+                    $orderModel->save(false);
+
+                    $transaction->commit();
+
+                } else {
+                    $transaction->rollback();
+                }
+
+                $res['result'] = $flag;
+                echo CJSON::encode($res);
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
+                $transaction->rollback();
+            }
+        }
+    }
 }

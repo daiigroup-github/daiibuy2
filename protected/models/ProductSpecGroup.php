@@ -2,6 +2,8 @@
 
 class ProductSpecGroup extends ProductSpecGroupMaster
 {
+    const SPEC_TYPE_DETAIL = 1;
+    const SPEC_TYPE_SPEC = 2;
 
 	/**
 	 * Returns the static model of the specified AR class.

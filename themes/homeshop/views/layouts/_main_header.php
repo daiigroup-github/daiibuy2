@@ -8,52 +8,52 @@
 
         <nav id="middle-navigation" class="col-lg-8 col-md-8 col-sm-8">
             <ul class="pull-right">
-				<?php
-				/*
-				  <li class="blue">
-				  <a href="compare_products.html"><i class="icons icon-docs"></i>0 Items</a>
-				  </li>
-				 */
-				?>
+                <?php
+                /*
+                  <li class="blue">
+                  <a href="compare_products.html"><i class="icons icon-docs"></i>0 Items</a>
+                  </li>
+                 */
+                ?>
                 <li class="red">
-                    <a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/default"; ?>"><i class="icons fa fa-folder-open"></i>My Files</a>
+                    <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/"; ?>"><i class="icons fa fa-folder-open"></i>My Files</a>
                 </li>
-                <li class="blue"><a href="order_info.html"><i class="icons fa fa-shopping-cart"></i>17 Items</a>
+                <li class="blue">
+                    <a href="order_info.html"><i class="icons fa fa-shopping-cart"></i><span id="cartHeader"></span></a>
                     <ul id="cart-dropdown" class="box-dropdown parent-arrow">
                         <li>
-							<?php $this->renderPartial('//layouts/_main_header_cart'); ?>
+                            <?php $this->renderPartial('//layouts/_main_header_cart'); ?>
                         </li>
                     </ul>
                 </li>
                 <li class="green">
                     <a href="#" id="changeProvince">
-                        <i class="icons fa fa-location-arrow"></i><span id="province"
-																		style="font-size: 8pt;"><?php echo isset($this->province) ? $this->province : ''; ?></span>
+                        <i class="icons fa fa-location-arrow"></i><span id="province" style="font-size: 8pt;"><?php echo isset($this->province) ? $this->province : ''; ?></span>
                     </a>
                 </li>
-				<?php
-				/*
-				  <li><a href="#"><i class="icons icon-dollar"></i>US Dollar</a>
-				  <ul class="box-dropdown parent-arrow">
-				  <li>
-				  <div class="box-wrapper no-padding parent-border">
-				  <table class="currency-table">
-				  <tr>
-				  <td><a href="#">$ US Dollar</a></td>
-				  </tr>
-				  <tr>
-				  <td><a href="#">€ Euro</a></td>
-				  </tr>
-				  <tr>
-				  <td><a href="#">£ Pound</a></td>
-				  </tr>
-				  </table>
-				  </div>
-				  </li>
-				  </ul>
-				  </li>
-				 */
-				?>
+                <?php
+                /*
+                  <li><a href="#"><i class="icons icon-dollar"></i>US Dollar</a>
+                  <ul class="box-dropdown parent-arrow">
+                  <li>
+                  <div class="box-wrapper no-padding parent-border">
+                  <table class="currency-table">
+                  <tr>
+                  <td><a href="#">$ US Dollar</a></td>
+                  </tr>
+                  <tr>
+                  <td><a href="#">€ Euro</a></td>
+                  </tr>
+                  <tr>
+                  <td><a href="#">£ Pound</a></td>
+                  </tr>
+                  </table>
+                  </div>
+                  </li>
+                  </ul>
+                  </li>
+                 */
+                ?>
             </ul>
         </nav>
 

@@ -143,16 +143,16 @@ class Product extends ProductMaster
 					'UserCertificateFile',
 					array(
 						'marginId'=>'id')),
-				'productSpecGroupsTypeSpec'=>array(
-					self::HAS_MANY,
-					'ProductSpecGroup',
-					'productId',
-					'condition'=>'type=1'),
-				'productSpecGroupsTypeDescription'=>array(
+				'productSpecGroupsTypeSpecs'=>array(
 					self::HAS_MANY,
 					'ProductSpecGroup',
 					'productId',
 					'condition'=>'type=2'),
+				'productSpecGroupsTypeDetails'=>array(
+					self::HAS_MANY,
+					'ProductSpecGroup',
+					'productId',
+					'condition'=>'type=1'),
 		));
 	}
 
