@@ -15,7 +15,6 @@ $(document).ready(function(){
 });
 
 function updateCartHeader() {
-    alert(baseUrl+'cart/updateCartHeader');
     $.ajax({
         type: 'POST',
         url: baseUrl+'/cart/updateCartHeader',
