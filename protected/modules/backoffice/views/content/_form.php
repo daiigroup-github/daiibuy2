@@ -135,7 +135,7 @@
 		<div class="control-group">
 			<div class='controls'>
 				<?php
-				echo CHtml::link("สร้าง รายละเอียดเพิ่มเติม", Yii::app()->createUrl("/admin/Content/Create/id/" . $model->contentId), array(
+				echo CHtml::link("สร้าง รายละเอียดเพิ่มเติม", Yii::app()->createUrl("/backoffice/Content/Create/id/" . $model->contentId), array(
 					'class'=>'btn btn-success'));
 				?>
 			</div>
