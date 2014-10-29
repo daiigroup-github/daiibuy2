@@ -45,6 +45,7 @@ function loadThemeItem(cat2Id, baseUrl)
 					$("#quantityText_" + groupName).val(estimateQuantity);
 					$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
 					$("#priceHidden" + groupName).val(data[groupName]["price"]);
+					$("#productId" + groupName).val(data[groupName]["productId"]);
 				}
 				else
 				{
@@ -60,6 +61,7 @@ function loadThemeItem(cat2Id, baseUrl)
 						$("#quantityText_" + groupName).val(0);
 						$("#price" + groupName).html("");
 						$("#priceHidden" + groupName).val(0);
+						$("#productId" + groupName).val(0);
 					}
 				}
 			}
@@ -68,7 +70,7 @@ function loadThemeItem(cat2Id, baseUrl)
 }
 function updatePrice()
 {
-	groupNames = {a: "a", b: "b", c: "c", d: "d", e: "e"};
+	groupNames = {a: "a", b: "b", c: "c", d: "d", e: "e", f: "f"};
 	for (var groupName in groupNames)
 	{
 		var price = $("#priceHidden" + groupName).val();

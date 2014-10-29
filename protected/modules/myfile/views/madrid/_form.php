@@ -228,12 +228,15 @@ $form = $this->beginWidget('CActiveForm', array(
 						<div class="col-lg-11">
 							<?php
 							if(isset($model->orderId)):
-								$orderDetailId = OrderDetail::model()->find("orderId = :orderId", array(
-										":orderId"=>$model->orderId))->orderDetailId;
-								$fieldValue = OrderDetailValue::model()->find("orderDetailId = :orderDetailId AND orderDetailTemplateFieldId = :orderDetailTemplateFieldId", array(
-									":orderDetailId"=>$orderDetailId,
-									":orderDetailTemplateFieldId"=>$field->orderDetailTemplateFieldId));
-								echo $fieldValue->value;
+								$orderDetail = OrderDetail::model()->find("orderId = :orderId", array(
+									":orderId"=>$model->orderId));
+								if(isset($orderDetail))
+								{
+									$fieldValue = OrderDetailValue::model()->find("orderDetailId = :orderDetailId AND orderDetailTemplateFieldId = :orderDetailTemplateFieldId", array(
+										":orderDetailId"=>$orderDetail->orderDetailId,
+										":orderDetailTemplateFieldId"=>$field->orderDetailTemplateFieldId));
+									echo $fieldValue->value;
+								}
 							endif;
 							?>
 						</div>
@@ -255,7 +258,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                                                                                                                                                                                         ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                                                                                                                                                                                                                  ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -317,12 +320,12 @@ $form = $this->beginWidget('CActiveForm', array(
 //								),
 //					));
 								?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                         ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                        ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                                                                                                                                                                                         ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                        ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                        ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                        ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                  ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                                                                                                                                                                                                                  ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
+				<td><?php // echo '';                                                                                                                                                                                                                                                 ?></td>
 			</tr>-->
 							</tbody>
 						</table>
@@ -333,7 +336,7 @@ $form = $this->beginWidget('CActiveForm', array(
 										<div class='col-lg-6 col-md-6 col-sm-12'>
 										<div class="blog-item">
 					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));            ?>
-											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                                                                                                                                                                                         ?></div>
+											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                                                                                                                                                                                                                  ?></div>
 									</div>
 								</div>
 					<?php // $i++;       ?>
@@ -375,13 +378,17 @@ $form = $this->beginWidget('CActiveForm', array(
 									<tr>
 										<th>ลำดับ</th>
 										<th>รายละเอียดรายการที่ชอบ</th>
-										<th style="width: 10%;text-align: center">พื้นที่จาก การประเมิณ</th>
+										<?php if($this->action->id == "view"): ?>
+											<th style="width: 10%;text-align: center">พื้นที่จาก การประเมิณ</th>
+										<?php endif; ?>
 										<th>หน่วย</th>
 										<th>รหัส</th>
 										<th>รายละเอียดสินค้า</th>
 										<th>หน่วย</th>
 										<th>จำนวน/หน่วย</th>
-										<th style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
+										<?php if($this->action->id == "view"): ?>
+											<th style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
+										<?php endif; ?>
 										<th>ปริมาณแก้ไข</th>
 										<th>ราคารวม</th>
 									</tr>
@@ -389,7 +396,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								<tbody>
 									<?php
 									$i = 1;
-									if(isset($model->orderItems) && count($model->orderItems))
+									if(isset($model->orderItems) && count($model->orderItems) > 0)
 									{
 										foreach($model->orderItems as $item):
 											?>
@@ -402,6 +409,7 @@ $form = $this->beginWidget('CActiveForm', array(
 												<td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->name; ?></td>
 												<td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->productUnits; ?></td>
 												<?php echo CHtml::hiddenField("priceHidden" . strtolower($item->groupName), $item->product->price); ?>
+												<?php echo CHtml::hiddenField("productId" . strtolower($item->groupName), $item->product->productId); ?>
 												<?php
 												$productArea = ($item->product->width * $item->product->height) / 10000;
 												$estimateQuantity = $productArea * $item->area;
@@ -432,39 +440,53 @@ $form = $this->beginWidget('CActiveForm', array(
 											"d"=>"d",
 											"e"=>"e",
 											"f"=>"f");
+										echo CHtml::hiddenField("Order[createMyfileType]", 1);
 										foreach($productGroupName as $k=> $v):
 											?>
 											<tr id="orderItem<?php echo strtolower($k); ?>">
 												<td><?php echo $i; ?></td>
 												<td style="text-align:center"><?php echo $k ?></td>
-												<td style="text-align: center"><?php // echo $item->area; ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area); ?></td>
+												<?php if($this->action->id == "view"): ?>
+													<td style="text-align: center"><?php // echo $item->area;                          ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                          ?></td>
+												<?php endif; ?>
 												<td>ตร.เมตร</td>
-												<td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code; ?></td>
-												<td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name; ?></td>
-												<td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;  ?></td>
-													<?php // echo CHtml::hiddenField("priceHidden" . strtolower($k), $item->product->price);  ?>
-													<?php
+												<td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                          ?></td>
+												<td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                          ?></td>
+												<td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                           ?></td>
+												<?php
+												echo CHtml::hiddenField("OrderItems[" . $k . "][price]" . strtolower($k), "", array(
+													'id'=>"priceHidden" . strtolower($k)));
+												?>
+												<?php
+												echo CHtml::hiddenField("OrderItems[" . $k . "][productId]" . strtolower($k), "", array(
+													'id'=>"productId" . strtolower($k)));
+												echo CHtml::hiddenField("OrderItems[" . $k . "][groupName]" . strtolower($k), strtolower($k), array(
+													'id'=>"groupName" . strtolower($k)));
+												?>
+												<?php
 //												$productArea = ($item->product->width * $item->product->height) / 10000;
 //												$estimateQuantity = $productArea * $item->area;
-													?>
+												?>
 
 												<td  style="text-align: center" id="productArea<?php echo strtolower($k) ?>">
-													<?php // echo $productArea; ?>
+													<?php // echo $productArea;     ?>
 												</td>
-												<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity ?></td>
+												<?php if($this->action->id == "view"): ?>
+													<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                      ?></td>
+												<?php endif; ?>
 												<td id="quantity<?php echo strtolower($k) ?>"><?php
-//													echo CHtml::numberField("OrderItems[" . $item->orderItemsId . "]", $item->quantity, array(
-//														'min'=>0,
-//														//													'class'=>'hide',
-//														'id'=>'quantityText_' . strtolower($k)));
+													echo CHtml::numberField("OrderItems[" . $k . "][quantity]", "", array(
+														'min'=>0,
+														//													'class'=>'hide',
+														'id'=>'quantityText_' . strtolower($k)));
 													?></td>
-												<td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price) ?></td>
+												<td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                         ?></td>
 											</tr>
-		<?php
-		$i++;
-	endforeach;
-}
-?>
+											<?php
+											$i++;
+										endforeach;
+									}
+									?>
 								</tbody>
 							</table>
 						</div>
@@ -510,10 +532,10 @@ $form = $this->beginWidget('CActiveForm', array(
 												</tr>
 											</thead>
 											<tbody>
-<?php
-$i = 1;
-foreach($model->orderItems as $item):
-	?>
+												<?php
+												$i = 1;
+												foreach($model->orderItems as $item):
+													?>
 													<tr id="orderItem<?php echo strtolower($item->groupName); ?>">
 														<td><?php echo $i; ?></td>
 														<td style="text-align:center"><?php echo $item->groupName ?></td>
@@ -522,24 +544,24 @@ foreach($model->orderItems as $item):
 														<td id="productCode<?php echo strtolower($item->groupName) ?>" class="text-info" id="productCode"><?php echo $item->product->code; ?></td>
 														<td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->name; ?></td>
 														<td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->productUnits; ?></td>
-															<?php
-															$productArea = ($item->product->width * $item->product->height) / 10000;
-															$estimateQuantity = $productArea * $item->area;
-															?>
+														<?php
+														$productArea = ($item->product->width * $item->product->height) / 10000;
+														$estimateQuantity = $productArea * $item->area;
+														?>
 
 														<td  style="text-align: center" id="productArea<?php echo strtolower($item->groupName) ?>">
-	<?php echo $productArea; ?>
+															<?php echo $productArea; ?>
 														</td>
 														<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"><?php echo $estimateQuantity ?></td>
 														<td id="quantity<?php echo strtolower($item->groupName) ?>"><?php
-													echo $item->quantity;
-													?></td>
+															echo $item->quantity;
+															?></td>
 														<td id="price<?php echo strtolower($item->groupName) ?>"><?php echo number_format($item->quantity * $item->product->price) ?></td>
 													</tr>
-	<?php
-	$i++;
-endforeach;
-?>
+													<?php
+													$i++;
+												endforeach;
+												?>
 											</tbody>
 										</table>
 									</div>
@@ -553,11 +575,11 @@ endforeach;
 						<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
 						<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
-<?php if(!$model->isRequestSpacialProject): ?>
+						<?php if(!$model->isRequestSpacialProject): ?>
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
-<?php else: ?>
+						<?php else: ?>
 							<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
-<?php endif; ?>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -583,38 +605,38 @@ endforeach;
 ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                              ?>
+<?php // echo $form->errorSummary($model);                                   ?>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');         ?>
-<?php // echo $form->textField($model, 'supplierId');         ?>
-<?php // echo $form->error($model, 'supplierId');                            ?>
+<?php // echo $form->textField($model, 'supplierId');          ?>
+<?php // echo $form->error($model, 'supplierId');                                 ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'type');          ?>
-<?php // echo $form->textField($model, 'type');         ?>
-<?php // echo $form->error($model, 'type');                            ?>
+<?php // echo $form->textField($model, 'type');          ?>
+<?php // echo $form->error($model, 'type');                                 ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'status');          ?>
-<?php // echo $form->textField($model, 'status');        ?>
-<?php // echo $form->error($model, 'status');                            ?>
+<?php // echo $form->textField($model, 'status');         ?>
+<?php // echo $form->error($model, 'status');                                 ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'title');          ?>
-<?php // echo $form->textField($model, 'title');       ?>
-<?php // echo $form->error($model, 'title');                             ?>
+<?php // echo $form->textField($model, 'title');        ?>
+<?php // echo $form->error($model, 'title');                                  ?>
 	</div>
 
 
 	<div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                ?>
+<?php // echo CHtml::submitButton('Submit');                                     ?>
 	</div>
 
-<?php // $this->endWidget();                                ?>
+<?php // $this->endWidget();                                     ?>
 
 </div>-->
 <!-- form -->

@@ -124,7 +124,7 @@ class MadridController extends MasterMyFileController
 		  }
 		 */
 //		throw new Exception(print_r($_FILES['OrderFile'],true));
-		if(isset($_FILES['OrderFile']))
+		if(isset($_FILES['OrderFile']) && !isset($_POST["Order"]["createMyfileType"]))
 		{
 //			$planFile = $_FILES['OrderFile'];
 			try
@@ -228,6 +228,49 @@ class MadridController extends MasterMyFileController
 		}
 		else
 		{
+			if(isset($_POST["Order"]))
+			{
+				$transaction = Yii::app()->db->beginTransaction();
+				$flag = true;
+				$model->attributes = $_POST['Order'];
+				$model->type = 1;
+				$model->status = 1;
+				$model->supplierId = 3;
+				$model->userId = Yii::app()->user->id;
+				$model->createDateTime = new CDbExpression("NOW()");
+				if($model->save(false))
+				{
+					$orderId = Yii::app()->db->lastInsertID;
+					foreach($_POST["OrderItems"] as $k=> $v)
+					{
+						if(!empty($v["productId"]))
+						{
+							$orderItems = new OrderItems();
+							$orderItems->orderId = $orderId;
+							$orderItems->attributes = $_POST["OrderItems"][$k];
+							$orderItems->createDateTime = new CDbExpression("NOW()");
+							$orderItems->total = $_POST["OrderItems"][$k]["price"] * $_POST["OrderItems"][$k]["quantity"];
+
+							if(!$orderItems->save(false))
+							{
+								$flag = FALSE;
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					$flag = FALSE;
+				}
+				if($flag)
+				{
+					$transaction->commit();
+					$this->redirect(array(
+						'view',
+						'id'=>$model->orderId));
+				}
+			}
 			$this->render('create', array(
 				'model'=>$model,
 //				'orderDetailModel'=>$orderDetailModel,
