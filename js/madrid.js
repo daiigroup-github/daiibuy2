@@ -19,15 +19,15 @@ $('.add-to-cart').click(function () {
 		}
 	});
 });
-function loadThemeItem(cat2Id, baseUrl)
+function loadThemeItem(cat2Id, baseUrl, orderId)
 {
-	renderThemeItem(baseUrl);
+	renderThemeItem(baseUrl, orderId);
 	$("#sanitary-item").html("");
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadThemeItem',
 		type: 'POST',
 		dataType: 'JSON',
-		data: {category2Id: cat2Id},
+		data: {category2Id: cat2Id, orderId: orderId},
 		success: function (data) {
 			//alert success message
 //			$("#item-table").removeClass('hide');
@@ -69,7 +69,7 @@ function loadThemeItem(cat2Id, baseUrl)
 		}
 	});
 }
-function renderThemeItem(baseUrl)
+function renderThemeItem(baseUrl, orderId)
 {
 	$("#item-table").addClass('hide');
 	$("#action-button").removeClass('hide');
@@ -77,7 +77,7 @@ function renderThemeItem(baseUrl)
 		url: baseUrl + '/myfile/madrid/renderThemeView',
 		type: 'POST',
 //		dataType: 'JSON',
-//		data: {category2Id: cat2Id},
+		data: {orderId: orderId},
 		success: function (data) {
 			$("#item-table").removeClass("hide");
 			$("#item-table").html(data);

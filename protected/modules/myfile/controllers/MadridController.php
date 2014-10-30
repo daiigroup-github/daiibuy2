@@ -76,13 +76,16 @@ class MadridController extends MasterMyFileController
 		{
 			foreach($_POST["OrderItems"] as $k=> $v)
 			{
-				$orderItems = OrderItems::model()->findByPk($k);
-				$orderItems->quantity = $v["quantity"];
-				$orderItems->total = $orderItems->quantity * $orderItems->price;
-				if($orderItems->save(FALSE))
+				if(!empty($v["quantity"]))
 				{
-					$model->status = 2;
-					$model->save(false);
+					$orderItems = OrderItems::model()->findByPk($k);
+					$orderItems->quantity = $v["quantity"];
+					$orderItems->total = $orderItems->quantity * $orderItems->price;
+					if($orderItems->save(FALSE))
+					{
+						$model->status = 2;
+						$model->save(false);
+					}
 				}
 			}
 		}
@@ -413,7 +416,14 @@ class MadridController extends MasterMyFileController
 
 	public function actionRenderThemeView()
 	{
-		$model = new Order();
+		if(isset($_POST["orderId"]) && $_POST["orderId"] > 0)
+		{
+			$model = $this->loadModel($_POST["orderId"]);
+		}
+		if(!isset($model))
+		{
+			$model = new Order();
+		}
 		$model->isTheme = 1;
 		$this->renderPartial("_theme", array(
 			'model'=>$model));

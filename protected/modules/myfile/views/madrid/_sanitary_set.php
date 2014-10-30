@@ -11,9 +11,10 @@
 	<tbody>
 		<?php foreach($model as $item): ?>
 			<tr>
-				<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
-				'style'=>'width:200px')) : "";
-			?></td>
+				<td><?php
+					echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
+							'style'=>'width:200px')) : "";
+					?></td>
 				<td><?php echo $item->product->code; ?></td>
 				<td><?php echo $item->product->name . "<br>" . $item->category2->title; ?></td>
 				<td style="color:red"><?php echo number_format($item->product->price, 2); ?>
@@ -25,15 +26,15 @@
 					<div class="row"><div class="col-md-12"><?php echo CHtml::numberField("OrderItems[$item->productId][quantity]") ?></div></div>
 					<div class="row"><div class="col-md-12">
 							<?php
-							echo CHtml::link("<i class='icon-cart'></i>Add TO CART", "", array(
-								'class'=>'button orange btn-xs'))
+//							echo CHtml::link("<i class='icon-cart'></i>Add TO CART", "", array(
+//								'class'=>'button orange btn-xs'))
 							?>
 						</div></div>
 					<div class="row">
 						<div class="col-md-12">
 							<?php
-							echo CHtml::link("<i class='icon-trash'></i>REMOVE", "", array(
-								'class'=>'button btn-xs'))
+//							echo CHtml::link("<i class='icon-trash'></i>REMOVE", "", array(
+//								'class'=>'button btn-xs'))
 							?>
 						</div>
 					</div>

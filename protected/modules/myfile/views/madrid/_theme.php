@@ -7,7 +7,8 @@
 					<?php if($model->isTheme): ?>
 						<th>ลำดับ</th>
 						<th>รายละเอียดรายการที่ชอบ</th>
-						<?php if($this->action->id == "view"): ?>
+						<?php if($this->action->id == "view" || $model->status == 1): ?>
+
 							<th style="width: 10%;text-align: center">พื้นที่จาก การประเมิณ</th>
 						<?php endif; ?>
 						<th>หน่วย</th>
@@ -15,7 +16,7 @@
 						<th>รายละเอียดสินค้า</th>
 						<th>หน่วย</th>
 						<th>จำนวน/หน่วย</th>
-						<?php if($this->action->id == "view"): ?>
+						<?php if($this->action->id == "view" || $model->status == 1): ?>
 							<th style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
 						<?php endif; ?>
 						<th>ปริมาณแก้ไข</th>
@@ -32,6 +33,7 @@
 			<tbody>
 				<?php
 				$i = 1;
+
 				if(isset($model->orderItems) && count($model->orderItems) > 0)
 				{
 					foreach($model->orderItems as $item):
@@ -42,13 +44,13 @@
 								<td style="text-align:center"><?php echo $item->groupName ?></td>
 								<td style="text-align: center"><?php echo $item->area; ?><?php echo CHtml::hiddenField("supplierArea" . strtolower($item->groupName), $item->area); ?></td>
 								<td>ตร.เมตร</td>
-								<td id="productCode<?php echo strtolower($item->groupName) ?>" class="text-info" id="productCode"><?php echo $item->product->code; ?></td>
-								<td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->name; ?></td>
-								<td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->productUnits; ?></td>
-								<?php echo CHtml::hiddenField("priceHidden" . strtolower($item->groupName), $item->product->price); ?>
-								<?php echo CHtml::hiddenField("productId" . strtolower($item->groupName), $item->product->productId); ?>
+								<td id="productCode<?php echo strtolower($item->groupName) ?>" class="text-info" id="productCode"><?php echo isset($item->product) ? $item->product->code : ""; ?></td>
+								<td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->name : ""; ?></td>
+								<td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->productUnits : ""; ?></td>
+								<?php echo CHtml::hiddenField("priceHidden" . strtolower($item->groupName), isset($item->product) ? $item->product->price : ""); ?>
+								<?php echo CHtml::hiddenField("productId" . strtolower($item->groupName), isset($item->product) ? $item->product->productId : ""); ?>
 								<?php
-								$productArea = ($item->product->width * $item->product->height) / 10000;
+								$productArea = isset($item->product) ? ($item->product->width * $item->product->height) / 10000 : 0;
 								$estimateQuantity = $productArea * $item->area;
 								?>
 
@@ -62,7 +64,7 @@
 										//													'class'=>'hide',
 										'id'=>'quantityText_' . strtolower($item->groupName)));
 									?></td>
-								<td id="price<?php echo strtolower($item->groupName) ?>"><?php echo number_format($item->quantity * $item->product->price) ?></td>
+								<td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price) : 0 ?></td>
 							</tr>
 						<?php else: ?>
 							<tr>
@@ -98,13 +100,13 @@
 						<tr id="orderItem<?php echo strtolower($k); ?>">
 							<td><?php echo $i; ?></td>
 							<td style="text-align:center"><?php echo $k ?></td>
-							<?php if($this->action->id == "view"): ?>
-								<td style="text-align: center"><?php // echo $item->area;                                                           ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                                                           ?></td>
+							<?php if($this->action->id == "view" || $model->status == 1): ?>
+								<td style="text-align: center"><?php // echo $item->area;                                                                                ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                                                                                ?></td>
 							<?php endif; ?>
 							<td>ตร.เมตร</td>
-							<td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                                                           ?></td>
-							<td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                                                           ?></td>
-							<td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                                                            ?></td>
+							<td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                                                                                 ?></td>
+							<td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                                                                                 ?></td>
+							<td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                                                                                 ?></td>
 							<?php
 							echo CHtml::hiddenField("OrderItems[" . $k . "][price]" . strtolower($k), "", array(
 								'id'=>"priceHidden" . strtolower($k)));
@@ -121,10 +123,10 @@
 							?>
 
 							<td  style="text-align: center" id="productArea<?php echo strtolower($k) ?>">
-								<?php // echo $productArea;     ?>
+								<?php // echo $productArea;      ?>
 							</td>
-							<?php if($this->action->id == "view"): ?>
-								<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                                                       ?></td>
+							<?php if($this->action->id == "view" || $model->status == 1): ?>
+								<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                                                                            ?></td>
 							<?php endif; ?>
 							<td id="quantity<?php echo strtolower($k) ?>"><?php
 								echo CHtml::numberField("OrderItems[" . $k . "][quantity]", "", array(
@@ -132,7 +134,7 @@
 									//													'class'=>'hide',
 									'id'=>'quantityText_' . strtolower($k)));
 								?></td>
-							<td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                                                          ?></td>
+							<td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                                                                                ?></td>
 						</tr>
 						<?php
 						$i++;
