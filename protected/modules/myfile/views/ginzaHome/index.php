@@ -5,38 +5,19 @@ $this->breadcrumbs = array(
 	$this->module->id,
 );
 ?>
+<?php $this->renderPartial("_navbar"); ?>
 <div class="row">
-	<!-- Heading -->
-	<div class="col-lg-12 col-md-12 col-sm-12">
-
-		<div class="carousel-heading">
-			<h4>My Files Ginza Home</h4>
-			<div class="pull-right">
-				<a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-left button" onclick="javascript:history.back();"></a>
-				<a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-right button" onclick="javascript:history.forward();"></a>
+	<div style="margin-top: 2%">
+		<?php $i = 0; ?>
+		<?php foreach($myfileArray as $myfile): ?>
+			<div class='col-lg-3 col-md-3 col-sm-12'>
+				<div class="blog-item">
+					<a class="btn <?php echo ($myfile->status == 1) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId); ?>">
+						<h3><?php echo $myfile->orderItems[0]->product->name; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
+						</a>
+				</div>
 			</div>
-		</div>
-
+			<?php $i++; ?>
+		<?php endforeach; ?>
 	</div>
-	<!-- /Heading -->
-</div>
-<div class="row">
-	<ul class="nav nav-tabs" role="tablist">
-		<li class="active green"><a href="#"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
-		<li class="orange"><a href="#"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
-	</ul>
-	<?php $i = 0; ?>
-	<?php foreach($suppliers as $key=> $value): ?>
-		<div class='col-lg-3 col-md-3 col-sm-12'>
-			<div class="blog-item">
-				<a href="<?php echo Yii::app()->createUrl($key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $key . '.png'); ?>
-					<div class="button" style="text-align: center;background-clip: border-box;
-						 background-color: rgb(52, 152, 219);"><?php echo $value; ?></div>
-				</a>
-			</div>
-
-		</div>
-		<?php $i++; ?>
-	<?php endforeach; ?>
-
 </div>

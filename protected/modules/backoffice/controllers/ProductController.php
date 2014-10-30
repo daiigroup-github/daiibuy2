@@ -368,11 +368,7 @@ class ProductController extends MasterBackofficeController
 		$productOptionGroup = new ProductOptionGroup();
 		$productOptionGroup->productId = $model->productId;
 		$productOption = new ProductOption();
-		if(isset(Yii::app()->user) && Yii::app()->user->id != $model->supplierId && Yii::app()->user->userType != 4)
-		{
-			$this->redirect(array(
-				"index"));
-		}
+		$this->checkSupplierAndAdminAccessMenu();
 //		$productAttributeModel = new ProductAttribute;
 //		$productAttributeValueModel = new ProductAttributeValue;
 		$productPromotion = ProductPromotion::model()->find("productId = :productId order by productPromotionId desc", array(
