@@ -19,6 +19,7 @@ class AtechWindowController extends MasterMyFileController
 //		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/tmpl.min.js');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/fileinput.js');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->baseUrl . '/themes/homeshop/assets/css/fileinput.css');
+		Yii::app()->getClientScript()->registerCssFile(Yii::app()->baseUrl . '/themes/homeshop/assets/css/vetical_navbar.css');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
 		parent::init();
 	}
@@ -40,6 +41,7 @@ class AtechWindowController extends MasterMyFileController
 		$orderDetailModel = new OrderDetail;
 		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(1);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
+		$modelArray = BrandModel::model()->findAll('supplierId = 2 AND status = 1');
 		// uncomment the following code to enable ajax-based validation
 		/*
 		  if(isset($_POST['ajax']) && $_POST['ajax']==='order-create-form')
@@ -128,6 +130,7 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$this->render('create', array(
 				'model'=>$model,
+				'modelArray'=>$modelArray,
 //				'orderDetailModel'=>$orderDetailModel,
 //				'orderDetailTemplateFieldArray'=>$orderDetailTemplateField,
 			));
@@ -235,13 +238,10 @@ class AtechWindowController extends MasterMyFileController
 
 		$brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
 		$firstBrand = reset($brandModelArray);
-		throw new Exception(print_r($brandModelArray,true));
 		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand, $provinceId);
 
-
-
-
-		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+//		throw new Exception(print_r($itemSetArray,true));
+		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
 	}

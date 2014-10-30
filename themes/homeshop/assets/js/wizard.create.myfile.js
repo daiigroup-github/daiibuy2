@@ -189,7 +189,7 @@ $(document).ready(function() {
 			data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId,
 			success: function(data) {
 				alert("ya");
-				$("#result_content").html(data);
+				$("#atech_result").html(data);
 			}
 		});
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
