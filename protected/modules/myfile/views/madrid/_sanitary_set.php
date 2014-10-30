@@ -11,13 +11,15 @@
 	<tbody>
 		<?php foreach($model as $item): ?>
 			<tr>
-				<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image) : ""; ?></td>
+				<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
+				'style'=>'width:200px')) : "";
+			?></td>
 				<td><?php echo $item->product->code; ?></td>
 				<td><?php echo $item->product->name . "<br>" . $item->category2->title; ?></td>
 				<td style="color:red"><?php echo number_format($item->product->price, 2); ?>
 					<?php echo CHtml::hiddenField("Order[createMyfileType]", 3) ?>
 					<?php echo CHtml::hiddenField("OrderItems[$item->productId][productId]", $item->productId) ?>
-					<?php echo CHtml::hiddenField("OrderItems[$item->productId][price]", $item->product->price) ?>
+	<?php echo CHtml::hiddenField("OrderItems[$item->productId][price]", $item->product->price) ?>
 				</td>
 				<td style="width: 20%">
 					<div class="row"><div class="col-md-12"><?php echo CHtml::numberField("OrderItems[$item->productId][quantity]") ?></div></div>
@@ -37,7 +39,7 @@
 					</div>
 				</td>
 			</tr>
-		<?php endforeach; ?>
+<?php endforeach; ?>
 	</tbody>
 </table>
 <?php
