@@ -43,11 +43,14 @@
  * @property integer $isSentToCustomer
  * @property string $remark
  * @property string $supplierShippingDateTime
+ * @property string $parentId
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
+ * @property OrderGroupMaster $parent
+ * @property OrderGroupMaster[] $orderGroups
  * @property District $shippingDistrict
  * @property Amphur $paymentAmphur
  * @property District $paymentDistrict
@@ -78,7 +81,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 		return array(
 			array('userId, total, totalIncVAT, discountPercent, discountValue, createDateTime, updateDateTime', 'required'),
 			array('paymentMethod, usedPoint, isSentToCustomer, status', 'numerical', 'integerOnly'=>true),
-			array('userId, supplierId, invoiceNo, telephone', 'length', 'max'=>20),
+			array('userId, supplierId, invoiceNo, telephone, parentId', 'length', 'max'=>20),
 			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
 			array('firstname, lastname, email, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
 			array('total, vatValue, totalIncVAT, discountValue, summary', 'length', 'max'=>15),
@@ -87,7 +90,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, parentId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,6 +102,8 @@ class OrderGroupMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'parent' => array(self::BELONGS_TO, 'OrderGroupMaster', 'parentId'),
+			'orderGroups' => array(self::HAS_MANY, 'OrderGroupMaster', 'parentId'),
 			'shippingDistrict' => array(self::BELONGS_TO, 'District', 'shippingDistrictId'),
 			'paymentAmphur' => array(self::BELONGS_TO, 'Amphur', 'paymentAmphurId'),
 			'paymentDistrict' => array(self::BELONGS_TO, 'District', 'paymentDistrictId'),
@@ -156,6 +161,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'isSentToCustomer' => 'Is Sent To Customer',
 			'remark' => 'Remark',
 			'supplierShippingDateTime' => 'Supplier Shipping Date Time',
+			'parentId' => 'Parent',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -221,6 +227,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			$this->isSentToCustomer = $this->searchText;
 			$this->remark = $this->searchText;
 			$this->supplierShippingDateTime = $this->searchText;
+			$this->parentId = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -265,6 +272,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 		$criteria->compare('isSentToCustomer',$this->isSentToCustomer);
 		$criteria->compare('remark',$this->remark,true, 'OR');
 		$criteria->compare('supplierShippingDateTime',$this->supplierShippingDateTime,true, 'OR');
+		$criteria->compare('parentId',$this->parentId,true, 'OR');
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

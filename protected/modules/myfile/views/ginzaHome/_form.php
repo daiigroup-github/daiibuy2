@@ -7,20 +7,6 @@ $this->breadcrumbs = array(
 );
 ?>
 
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-	'id'=>'Order-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-// controller action is handling ajax validation correctly.
-// There is a call to performAjaxValidation() commented in generated controller code.
-// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array(
-		'class'=>'form-horizontal',
-		'enctype'=>'multipart/form-data',
-	),
-	));
-?>
 
 <?php $this->renderPartial("_navbar"); ?>
 <!-- WIZARD -->
@@ -31,31 +17,264 @@ $form = $this->beginWidget('CActiveForm', array(
 	?>
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-12">
-			<div class="row sidebar-box blue ">
+			<div class="row sidebar-box blue " style="background-color: white">
 				<div class="col-md-12" style="border:1px black solid" id="item-table">
 					<div class="form-group">
 						<div class="control-label col-md-2">
 							เลขที่ใบสั่งซื้อสินค้า
 						</div>
 						<div class="col-md-10">
-							<?php ?>
+							<h4><?php echo $model->orderNo; ?></h4>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-12 text-center">
-							<?php ?>
+							<?php
+							echo CHtml::image(Yii::app()->baseUrl . $model->orders[0]->orderItems[0]->product->image, "", array(
+								'style'=>'width:500px'))
+							?>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-12" style="border:1px black solid" id="item-table">
-					<h3>GINZA HOME</h3>
-					<h4><?php echo $model->orderItems[0]->product->name; ?></h4>
+					<h2>GINZA HOME</h2>
+					<h4>ตารางแสดงรายละเอียดสินค้า</h4>
+					<br>
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+							<table class="table table-bordered">
+								<tr>
+									<td>House</td>
+									<td><?php echo $cat2ToProduct->category->title; ?></td>
+								</tr>
+								<tr>
+									<td>Price</td>
+									<td><?php echo number_format($price, 0) ?></td>
+								</tr>
+								<tr>
+									<td>Spec</td>
+									<td><?php echo $cat2ToProduct->category2->title; ?></td>
+								</tr>
+								<tr>
+									<td>Colour</td>
+									<td>Silver</td>
+								</tr>
+<!--								<tr>
+									<td>Function</td>
+									<td></td>
+								</tr>-->
+							</table>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-md-12">
+					<table class="table table-bordered table-hover" style="width:100%">
+						<thead>
+							<tr>
+								<th style="text-align:center">งวดที่</th>
+								<th style="text-align:center">รายละเอียดงาน ชำระก่อนดำเนินงาน</th>
+								<th style="text-align:center">มูลค่าการสั่งซื้อ</th>
+								<th style="text-align:center">สถานะ</th>
+								<th style='text-align: center'>ตรวจรับงาน <p>เพื่อชำระงวดงานถัดไป</p></th>
+						</tr>
+						</thead>
+						<tbody>
+							<?php
+							$i = 1;
+							$parentId = $model->orderGroupId;
+							$isShowPayButton = true;
+							foreach($model->orders as $item):
+								?>
+								<tr>
+									<td><?php echo $i; ?></td>
+									<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+									<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+									<td style="color:green;text-align: center">ชำระ
+									</td>
+									<td style="width: 15%;text-align: center">
+										<span class="label label-success">อนุมัติ</span>
+									</td>
+								</tr>
+								<?php
+								$i++;
+							endforeach;
+							$child1 = $model->child;
+							if(isset($child1)):
+								$parentId = $child1->orderGroupId;
+								if($child1->status < 3)
+								{
+									$isShowPayButton = FALSE;
+								}
+								foreach($child1->orders as $item):
+									?>
+									<tr>
+										<td><?php echo $i; ?></td>
+										<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+										<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+										<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child1->status); ?>
+										</td>
+										<td style="width: 15%;text-align: center">
+											<?php if($child1->status >= 3): ?>
+												<span class="label label-success">อนุมัติ</span>
+											<?php else: ?>
+												<span class="label label-danger">รอการอนุมัติ</span>
+											<?php endif; ?>
+										</td>
+									</tr>
+									<?php
+									$i++;
+								endforeach;
+							endif;
+							if(isset($child1)):
+								$child2 = $child1->child;
+								if(isset($child2)):
+									$parentId = $child2->orderGroupId;
+									if($child2->status < 3)
+									{
+										$isShowPayButton = FALSE;
+									}
+									foreach($child2->orders as $item):
+										?>
+										<tr>
+											<td><?php echo $i; ?></td>
+											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+											<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child2->status); ?>
+											</td>
+											<td style="width: 15%;text-align: center">
+												<?php if($child2->status >= 3): ?>
+													<span class="label label-success">อนุมัติ</span>
+												<?php else: ?>
+													<span class="label label-danger">รอการอนุมัติ</span>
+												<?php endif; ?>
+											</td>
+										</tr>
+										<?php
+										$i++;
+									endforeach;
+								endif;
+							endif;
+							if(isset($child2)):
+								$child3 = $child2->child;
+								if(isset($child3)):
+									$parentId = $child3->orderGroupId;
+									if($child3->status < 3)
+									{
+										$isShowPayButton = FALSE;
+									}
+									foreach($child3->orders as $item):
+										?>
+										<tr>
+											<td><?php echo $i; ?></td>
+											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+											<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child3->status); ?>
+											</td>
+											<td style="width: 15%;text-align: center">
+												<?php if($child3->status >= 3): ?>
+													<span class="label label-success">อนุมัติ</span>
+												<?php else: ?>
+													<span class="label label-danger">รอการอนุมัติ</span>
+												<?php endif; ?>
+											</td>
+										</tr>
+										<?php
+										$i++;
+									endforeach;
+								endif;
+							endif;
+							if(isset($child3)):
+								$child4 = $child3->child;
+								if(isset($child4)):
+									$parentId = $child4->orderGroupId;
+									if($child4->status < 3)
+									{
+										$isShowPayButton = FALSE;
+									}
+									foreach($child4->orders as $item):
+										?>
+										<tr>
+											<td><?php echo $i; ?></td>
+											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+											<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child4->status); ?>
+											</td>
+											<td style="width: 15%;text-align: center">
+												<?php if($child4->status >= 3): ?>
+													<span class="label label-success">อนุมัติ</span>
+												<?php else: ?>
+													<span class="label label-danger">รอการอนุมัติ</span>
+												<?php endif; ?>
+											</td>
+										</tr>
+										<?php
+										$i++;
+									endforeach;
+								endif;
+							endif;
+							$flag = true;
+							foreach($productWithOutPay as $item2):
+								?>
+								<tr>
+									<td><?php echo $i; ?></td>
+									<td><?php echo $item2->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+									<td><?php echo number_format($item2->product->price); ?></td>
+									<td style="color:red;text-align: center">ยังไม่ชำระ
+									</td>
+									<td style="width: 20%;text-align: center">
+
+										<?php
+										if($flag):
+											?>
+
+											<?php
+											$flag = FALSE;
+											?>
+											<form  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/4"); ?>">
+
+												<?php
+												echo CHtml::hiddenField("orderGroupId", $parentId);
+												echo CHtml::hiddenField("productId", $item2->productId);
+												echo CHtml::hiddenField("paymentMethod", 1);
+												if($isShowPayButton)
+												{
+													?>
+													<span class="label label-danger">รอการชำระเงิน</span>
+													<?php
+													echo CHtml::submitButton("ชำระเงิน", array(
+														'class'=>'button blue btn-xs'));
+												}
+												else
+												{
+													?>
+													<span class="label label-default">รอการอนุมัติ</span>
+													<?php
+												}
+												?>
+											</form>
+											<?php
+										else:
+											?>
+											<span class="label label-default">รอการอนุมัติ</span>
+										<?php
+										endif;
+										?>
+									</td>
+								</tr>
+								<?php
+								$i++;
+							endforeach;
+							?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 			<div class="row <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="action-button">
 				<div class="col-md-12 wizard-control">
 					<!--<a class="btn btn-warning btn-lg col-lg-offset-3" onclick="updatePrice()"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>-->
-					<button id="nextToStep4" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+					<!--<button id="nextToStep4" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>-->
 				</div>
 			</div>
 		</div>
@@ -67,85 +286,13 @@ $form = $this->beginWidget('CActiveForm', array(
 					<div class="col-xs-12">
 						<div class="sidebar-box-heading">
 							<i class="fa fa-list"></i>
-							<h4>ยืนยันรายการสินค้า <?php echo $model->title; ?></h4>
+							<h4>ยืนยันรายการสินค้า <?php // echo $model->title;                                                                                                                                             ?></h4>
 						</div>
 						<div class="row sidebox-content ">
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-12">
-										<table class="table table-bordered table-hover">
-											<thead>
-												<tr>
-													<?php if($model->isTheme): ?>
-														<th>ลำดับ</th>
-														<th>รายละเอียดรายการที่ชอบ</th>
-														<th style="width: 10%;text-align: center">พื้นที่จาก การประเมิณ</th>
-														<th>หน่วย</th>
-														<th>รหัส</th>
-														<th>รายละเอียดสินค้า</th>
-														<th>หน่วย</th>
-														<th>จำนวน/หน่วย</th>
-														<th style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
-														<th>ปริมาณแก้ไข</th>
-														<th>ราคารวม</th>
-													<?php else: ?>
-														<th>Product Image</th>
-														<th>Code</th>
-														<th>Title/Category</th>
-														<th>Price</th>
-														<th>Action</th>
-													<?php endif; ?>
-												</tr>
-											</thead>
-											<tbody>
-												<?php
-												$i = 1;
-												foreach($model->orderItems as $item):
-													?>
-													<?php if($model->isTheme): ?>
-														<tr id="orderItem<?php echo strtolower($item->groupName); ?>">
-															<td><?php echo $i; ?></td>
-															<td style="text-align:center"><?php echo $item->groupName ?></td>
-															<td style="text-align: center"><?php echo $item->area; ?><?php echo CHtml::hiddenField("supplierArea" . strtolower($item->groupName), $item->area); ?></td>
-															<td>ตร.เมตร</td>
-															<td id="productCode<?php echo strtolower($item->groupName) ?>" class="text-info" id="productCode"><?php echo $item->product->code; ?></td>
-															<td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->name; ?></td>
-															<td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo $item->product->productUnits; ?></td>
-															<?php
-															$productArea = ($item->product->width * $item->product->height) / 10000;
-															$estimateQuantity = $productArea * $item->area;
-															?>
 
-															<td  style="text-align: center" id="productArea<?php echo strtolower($item->groupName) ?>">
-																<?php echo $productArea; ?>
-															</td>
-															<td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"><?php echo $estimateQuantity ?></td>
-															<td id="quantity<?php echo strtolower($item->groupName) ?>"><?php
-																echo $item->quantity;
-																?></td>
-															<td id="price<?php echo strtolower($item->groupName) ?>"><?php echo number_format($item->quantity * $item->product->price) ?></td>
-														</tr>
-													<?php else: ?>
-														<tr>
-															<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image) : ""; ?></td>
-															<td><?php echo $item->product->code; ?></td>
-															<td><?php echo $item->product->name; ?></td>
-															<td style="color:red"><?php echo number_format($item->product->price, 2); ?>
-																<?php // echo CHtml::hiddenField("Order[createMyfileType]", 3) ?>
-																<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", $item->productId) ?>
-																<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price) ?>
-															</td>
-															<td style="width: 20%">
-																<div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 2); ?></div></div>
-															</td>
-														</tr>
-													<?php endif; ?>
-													<?php
-													$i++;
-												endforeach;
-												?>
-											</tbody>
-										</table>
 									</div>
 								</div>
 							</div>
@@ -154,14 +301,9 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
-						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-						<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
-						<?php if(!$model->isRequestSpacialProject): ?>
-							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
-						<?php else: ?>
-							<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
-						<?php endif; ?>
+						<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderGroupId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderGroupId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
+						<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderGroupId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
 					</div>
 				</div>
 			</div>
@@ -171,4 +313,3 @@ $form = $this->beginWidget('CActiveForm', array(
 </div>
 
 
-<?php $this->endWidget(); ?>

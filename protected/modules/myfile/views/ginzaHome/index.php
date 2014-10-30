@@ -12,9 +12,12 @@ $this->breadcrumbs = array(
 		<?php foreach($myfileArray as $myfile): ?>
 			<div class='col-lg-3 col-md-3 col-sm-12'>
 				<div class="blog-item">
-					<a class="btn <?php echo ($myfile->status == 1) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId); ?>">
-						<h3><?php echo $myfile->orderItems[0]->product->name; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
-						</a>
+					<?php
+					echo CHtml::image(Yii::app()->baseUrl . $myfile->orders[0]->orderItems[0]->product->image, "", array())
+					?>
+					<a class="btn <?php echo ($myfile->status == 3) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/ginzahome/view/id/' . $myfile->orderGroupId); ?>">
+						<h3><?php echo $myfile->orderNo; ?><?php if($myfile->status == 3): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
+					</a>
 				</div>
 			</div>
 			<?php $i++; ?>

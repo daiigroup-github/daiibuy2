@@ -87,6 +87,11 @@ class Order extends OrderMaster
 					self::BELONGS_TO,
 					'user',
 					'userId'),
+				'orderGroups'=>array(
+					self::MANY_MANY,
+					'OrderGroup',
+					'order_group_to_order(orderId,orderGroupId)'
+				),
 		));
 	}
 

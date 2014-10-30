@@ -1,4 +1,7 @@
-<?php $this->renderPartial('_form', array(
+<?php
+$this->renderPartial('_form', array(
 	'model'=>$model,
-	'orderDetailTemplateField'=>$orderDetailTemplateField,));
+	'productWithOutPay'=>$productWithOutPay,
+	'cat2ToProduct'=>$cat2ToProduct,
+	'price'=>$price));
 ?>

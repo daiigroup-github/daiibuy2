@@ -938,6 +938,23 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
 	}
 
+	public function actionFindAllProductInCat2Cat1IdAjax()
+	{
+		$data = Category2ToProduct::model()->findAll('category1Id=:category1Id', array(
+			':category1Id'=>(int) $_POST['cat1Id']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- Select Cat2 --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->productId), CHtml::encode(isset($item->product) ? $item->product->name : ""), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
 	public function actionFindAllProductByCat1IdAjax()
 	{
 		$data = Category2ToProduct::model()->findAll('category1Id=:category1Id', array(

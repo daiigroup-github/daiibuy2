@@ -3,229 +3,73 @@
 class GinzaHomeController extends MasterMyFileController
 {
 
+	const ORDER_PERIOD_1 = 1;
+	const ORDER_PERIOD_2 = 2;
+	const ORDER_PERIOD_3 = 3;
+	const ORDER_PERIOD_4 = 4;
+
 	public function actionIndex()
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 4, null);
+		$myfileArray = OrderGroup::model()->findAll("status = 3 AND userId =:userId AND supplierId =:supplierId AND parentId is null", array(
+			":userId"=>isset(Yii::app()->user->id) ? Yii::app()->user->id : 0,
+			":supplierId"=>4
+		));
 		$this->render('index', array(
 			'myfileArray'=>$myfileArray));
-	}
-
-	public function actionCreate()
-	{
-		$this->layout = '//layouts/cl1';
-		$model = new Order;
-		$model->isTheme = 1;
-		$orderDetailModel = new OrderDetail;
-		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
-		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
-		// uncomment the following code to enable ajax-based validation
-		/*
-		  if(isset($_POST['ajax']) && $_POST['ajax']==='order-create-form')
-		  {
-		  echo CActiveForm::validate($model);
-		  Yii::app()->end();
-		  }
-		 */
-//		throw new Exception(print_r($_FILES['OrderFile'],true));
-		if(isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2)
-		{
-//			$planFile = $_FILES['OrderFile'];
-			try
-			{
-				if(isset($_POST['Order']))
-				{
-					$flag = false;
-					$transaction = Yii::app()->db->beginTransaction();
-					$model->attributes = $_POST['Order'];
-					$model->type = 1;
-					$model->status = 0;
-					$model->supplierId = 3;
-					$model->isTheme = 1;
-					$model->userId = Yii::app()->user->id;
-					$model->createDateTime = new CDbExpression("NOW()");
-
-					if($model->save())
-					{
-						$flag = TRUE;
-						$orderId = Yii::app()->db->lastInsertID;
-						$this->saveOrderDetail($orderId, $orderDetailModel->orderDetailTemplateId);
-						$folderimage = "orderFile";
-
-						for($i = 0; $i <= sizeof($_FILES["OrderFile"]); $i++)
-						{
-							$image = CUploadedFile::getInstanceByName("OrderFile[$i]");
-
-							if(isset($image) && !empty($image))
-							{
-								$orderFileModel = new OrderFile();
-								$imgType = explode('.', $image->name);
-								$imgType = $imgType[count($imgType) - 1];
-								$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-								$imagePathimage = '/../' . $imageUrl;
-								$orderFileModel->senderId = Yii::app()->user->id;
-								$orderFileModel->filePath = $imageUrl;
-								$orderFileModel->orderId = $orderId;
-								$orderFileModel->fileName = $image->name;
-								$orderFileModel->createDateTime = new CDbExpression("NOW()");
-								$orderFileModel->userType = 1;
-								$orderFileModel->status = 1;
-								if($orderFileModel->save())
-								{
-									if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
-									{
-										mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
-									}
-									if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
-									{
-										$flag = true;
-									}
-									else
-									{
-										$flag = false;
-									}
-								}
-								else
-								{
-									$flag = FALSE;
-									break;
-								}
-							}
-						}
-
-						if($flag)
-						{
-							foreach($_POST["OrderDetailValue"] as $k=> $v)
-							{
-								$orderFieldValue = new OrderDetailValue();
-								$orderFieldValue->orderDetailTemplateFieldId = $k;
-								$orderFieldValue->value = $v["value"];
-								$orderFieldValue->orderDetailId = $this->orderDetailId;
-								$orderFieldValue->createDateTime = new CDbExpression("NOW()");
-								$orderFieldValue->updateDateTime = new CDbExpression("NOW()");
-								if(!$orderFieldValue->save())
-								{
-									$flag = FALSE;
-									break;
-								}
-							}
-						}
-					}
-
-					if($flag)
-					{
-						$transaction->commit();
-						$this->redirect(array(
-							'view',
-							'id'=>$model->orderId));
-					}
-					else
-					{
-						$transaction->rollback();
-					}
-				}
-			}
-			catch(Exception $e)
-			{
-				throw new Exception($e->getMessage());
-				$transaction->rollback();
-			}
-		}
-		else
-		{
-			if(isset($_POST["Order"]))
-			{
-				$transaction = Yii::app()->db->beginTransaction();
-				$flag = true;
-				$model->attributes = $_POST['Order'];
-				$model->type = 1;
-				$model->status = 1;
-				$model->supplierId = 3;
-				if($_POST["Order"]["createMyfileType"] == 3)
-				{
-					$model->isTheme = 0;
-				}
-				else
-				{
-					$model->isTheme = 1;
-				}
-				$model->userId = Yii::app()->user->id;
-				$model->createDateTime = new CDbExpression("NOW()");
-				if($model->save(false))
-				{
-					$orderId = Yii::app()->db->lastInsertID;
-					foreach($_POST["OrderItems"] as $k=> $v)
-					{
-						if(!empty($v["productId"]))
-						{
-							$orderItems = new OrderItems();
-							$orderItems->orderId = $orderId;
-							$orderItems->attributes = $_POST["OrderItems"][$k];
-							$orderItems->createDateTime = new CDbExpression("NOW()");
-							if(isset($_POST["OrderItems"][$k]["price"]))
-							{
-								$price = $_POST["OrderItems"][$k]["price"];
-							}
-							else
-							{
-								$price = Product::model()->findByPk($_POST["OrderItems"][$k]["productId"])->price;
-								$orderItems->price = $price;
-							}
-							$orderItems->total = $price * $_POST["OrderItems"][$k]["quantity"];
-
-							if(!$orderItems->save(false))
-							{
-								$flag = FALSE;
-								break;
-							}
-						}
-					}
-				}
-				else
-				{
-					$flag = FALSE;
-				}
-				if($flag)
-				{
-					$transaction->commit();
-					$this->redirect(array(
-						'view',
-						'id'=>$model->orderId));
-				}
-			}
-			$this->render('create', array(
-				'model'=>$model,
-//				'orderDetailModel'=>$orderDetailModel,
-				'orderDetailTemplateField'=>$orderDetailTemplateField,
-			));
-		}
 	}
 
 	public function actionView($id)
 	{
 		$this->layout = '//layouts/cl1';
-		$model = $this->loadModel($id);
-		$orderDetailModel = new OrderDetail;
-		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
-		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
-		if(isset($_POST["OrderItems"]))
+		Yii::app()->session['supplierId'] = 4;
+		$model = OrderGroup::model()->findByPk($id);
+		$productId = $model->orders[0]->orderItems[0]->productId;
+		if(isset($model->child))
 		{
-			foreach($_POST["OrderItems"] as $k=> $v)
+			$child1 = $model->child;
+			$productId .="," . $child1->orders[0]->orderItems[0]->productId;
+			if($child1->child)
 			{
-				$orderItems = OrderItems::model()->findByPk($k);
-				$orderItems->quantity = $v["quantity"];
-				$orderItems->total = $orderItems->quantity * $orderItems->price;
-				if($orderItems->save(FALSE))
+				$child2 = $child1->child;
+				$productId .="," . $child2->orders[0]->orderItems[0]->productId;
+				if($child2->child)
 				{
-					$model->status = 2;
-					$model->save(false);
+					$child3 = $child2->child;
+					$productId .="," . $child3->orders[0]->orderItems[0]->productId;
 				}
 			}
 		}
+
+		$cat2ToProduct = Category2ToProduct::model()->find("productId = :productId", array(
+			":productId"=>$model->orders[0]->orderItems[0]->productId));
+		$cat2ToProducts = Category2ToProduct::model()->findAll("category1Id = :catgory1Id AND category2Id=:category2Id", array(
+			":catgory1Id"=>$cat2ToProduct->category1Id,
+			':category2Id'=>$cat2ToProduct->category2Id));
+		$productWithOutPay = Category2ToProduct::model()->findAll("category2Id=:category2Id AND productId not in(" . $productId . ") ORDER BY sortOrder ASC", array(
+			":category2Id"=>$cat2ToProduct->category2Id,
+		));
+
+		$price = 0;
+		$i = 0;
+		foreach($cat2ToProducts as $cat2ToProduct)
+		{
+			$price += ($cat2ToProduct->product->calProductPromotionPrice() > 0) ? $cat2ToProduct->product->calProductPromotionPrice() : $cat2ToProduct->product->calProductPrice();
+
+			if($i == 0)
+			{
+				$bookingPrice = $price;
+				$description = $cat2ToProduct->product->description;
+				$productSortOrder1 = $cat2ToProduct->product;
+			}
+			$i++;
+		}
 		$this->render('view', array(
 			'model'=>$model,
-			'orderDetailTemplateField'=>$orderDetailTemplateField,
+			'productWithOutPay'=>$productWithOutPay,
+			'cat2ToProduct'=>$cat2ToProduct,
+			'price'=>$price
 		));
 	}
 
@@ -235,6 +79,18 @@ class GinzaHomeController extends MasterMyFileController
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
+	}
+
+	public $findAllOrderPeriodArray = array(
+		self::ORDER_PERIOD_1=>"งานสำรวจ",
+		self::ORDER_PERIOD_2=>"งวดงานเข็ม<br>ชำระ ณ วันที่ทำสัญญา เพื่อดำเนินการ<br>เตรียมงานและขออนุญาติทำการก่อสร้าง<br>1.งานยื่นอนุญาติ<br>2.ตอกเข็มเสร็จแล้ว",
+		self::ORDER_PERIOD_3=>"งวดงานก่อสร้างโครงสร้าง<br>ชำระ ณ วันที่ทำสัญญา เพื่อดำเนินการ <br>เตรียมงานและขออนุญาติทำการก่อสร้าง<br>1.งานฐานรากอาคารเสร็จแล้ว<br>2.งานติดตั้งโครงสร้างผนังสำเร็จรูป 1-2 แล้วเสร็จ <br>3.งานจำกัดปลวกแล้วเสร็จ<br>4.งานติดตั้งพื้นสำเร็จรูปชั้น 1-2 พร้อมเท Topping<br>5.งานพื้นห้องน้ำพร้อมวาง Sleeve<br>6.งานซักล้าง + เทพื้นโรงจอดรถ",
+		self::ORDER_PERIOD_4=>"งวดงานก่อสร้างสถาปัตยกรรม<br>ชำระ ณ วันที่ทำสัญญา เพื่อดำเนินการ<br>1.งานติดตั้งโครงหลังคา แล้วเสร็จ<br>2.งานมุงหลังคา + เชิงชาย แล้วเสร็จ<br>3.เดินท่อประปาภายใน และ สุขาภิบาล ภายนอก<br>4.นำวัสดุไฟฟ้าเข้าหน่วยงาน + ร้อยสายไฟในท่อ<br>5.งานปูกระเบื้องพื้น และผนัง(ห้องน้ำ)<br>6.งานปูพื้นชั้น 1 และชั้น 2 <br>7.งานฝ้าภายใน และ งานฝ้าภายนอก<br>8.งานติดตั้งประตูภายนอก<br>9.งานบันไดสำเร็จรูปและราวระเบียงกันตก<br>10.ประตูหน้าต่าง UPVC (ภายนอก)<br>11.งานติดตั้งสุขภัณฑ์<br>12.งานติดตั้งดวงโคมและสวิตท์ปลั๊ก<br>13.งานทาสี",
+	);
+
+	public function getOrderPeriodText($period)
+	{
+		return $this->findAllOrderPeriodArray[$period];
 	}
 
 }

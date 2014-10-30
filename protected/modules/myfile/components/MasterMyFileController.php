@@ -104,6 +104,11 @@ class MasterMyFileController extends MasterController
 				),
 			)
 		);
+		if(Yii::app()->user->isGuest)
+		{
+			$this->redirect(array(
+				"/site/login"));
+		}
 	}
 
 	//temp function

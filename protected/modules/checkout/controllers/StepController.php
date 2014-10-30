@@ -2,6 +2,7 @@
 
 class StepController extends MasterCheckoutController
 {
+
 	public function actionIndex($id)
 	{
 		if($id > 1)
@@ -210,7 +211,24 @@ class StepController extends MasterCheckoutController
 	public function step4()
 	{
 		$supplierId = Yii::app()->session['supplierId'];
-		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
+		if(isset($_POST["productId"]))
+			$productId = $_POST["productId"];
+
+		if(!isset($productId))
+		{
+			$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
+		}
+		else
+		{
+			$orderSummary = array();
+			$product = Product::model()->findByPk($productId);
+			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $product->price + $sumLastTwelveMonth);
+			$orderSummary['total'] = number_format($product->price, 2);
+			$orderSummary['discountPercent'] = $discountPercent;
+			$orderSummary['discount'] = number_format($product->price * $discountPercent / 100, 2);
+			$orderSummary['grandTotal'] = number_format($product->price - ($product->price * $discountPercent / 100), 2);
+		}
 		if(isset($_POST['paymentMethod']))
 		{
 			$flag = false;
@@ -230,6 +248,10 @@ class StepController extends MasterCheckoutController
 				$orderGroup->vatValue = $orderGroup->calVatValue();
 				$orderGroup->userId = Yii::app()->user->id;
 				$orderGroup->paymentMethod = $_POST['paymentMethod'];
+				if(isset($productId))
+				{
+					$orderGroup->parentId = $_POST["orderGroupId"];
+				}
 
 				/**
 				 * Todo:: billing & shipping address
@@ -261,32 +283,77 @@ class StepController extends MasterCheckoutController
 				if($orderGroup->save(false))
 				{
 					$orderGroupId = Yii::app()->db->getLastInsertID();
-					$orders = Order::model()->findAll(array(
-						'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
-						'params'=>array(
-							':userId'=>Yii::app()->user->id,
-							':supplierId'=>$supplierId,
-						),
-						'order'=>'type, orderId'
-					));
-
-					$i = 0;
-					foreach($orders as $order)
+					if(!isset($productId))
 					{
-						$orderGroupToOrder = new OrderGroupToOrder();
-						$orderGroupToOrder->orderGroupId = $orderGroupId;
-						$orderGroupToOrder->orderId = $order->orderId;
+						$orders = Order::model()->findAll(array(
+							'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
+							'params'=>array(
+								':userId'=>Yii::app()->user->id,
+								':supplierId'=>$supplierId,
+							),
+							'order'=>'type, orderId'
+						));
 
-						if(!$orderGroupToOrder->save())
+						$i = 0;
+						foreach($orders as $order)
 						{
-							break;
-						}
-						$i++;
-					}
+							$orderGroupToOrder = new OrderGroupToOrder();
+							$orderGroupToOrder->orderGroupId = $orderGroupId;
+							$orderGroupToOrder->orderId = $order->orderId;
 
-					if($i == sizeof($orders))
+							if(!$orderGroupToOrder->save())
+							{
+								break;
+							}
+							$i++;
+						}
+						if($i == sizeof($orders))
+						{
+							$flag = true;
+						}
+					}
+					else
 					{
-						$flag = true;
+						$flag = TRUE;
+						$og = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+						$order = new Order();
+						$order->userId = Yii::app()->user->id;
+						$order->supplierId = $supplierId;
+						$order->type = 3;
+						$order->total = $product->price;
+						$order->totalIncVAT = $product->price * 1.07;
+						$order->provinceId = $og->orders[0]->provinceId;
+						$order->createDateTime = new CDbExpression("NOW()");
+						$order->updateDateTime = new CDbExpression("NOW()");
+						if($order->save())
+						{
+							$orderId = Yii::app()->db->lastInsertID;
+							$orderItems = new OrderItems();
+							$orderItems->orderId = $orderId;
+							$orderItems->productId = $productId;
+							$orderItems->price = $product->price;
+							$orderItems->quantity = 1;
+							$orderItems->total = $product->price;
+							$orderItems->createDateTime = new CDbExpression("NOW()");
+							$orderItems->updateDateTime = new CDbExpression("NOW()");
+							if(!$orderItems->save(false))
+							{
+								$flag = false;
+							}
+							$orderGroupToOrder = new OrderGroupToOrder();
+							$orderGroupToOrder->orderGroupId = $orderGroupId;
+							$orderGroupToOrder->orderId = $orderId;
+							$orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
+							$orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
+							if(!$orderGroupToOrder->save())
+							{
+								$flag = FALSE;
+							}
+						}
+						else
+						{
+							$flag = FALSE;
+						}
 					}
 				}
 
@@ -312,6 +379,11 @@ class StepController extends MasterCheckoutController
 				else
 				{
 					$transaction->rollback();
+					if(isset($productId))
+					{
+						$this->redirect(array(
+							"/myfile/ginzaHome/view/id/" . $_POST["orderGroupId"]));
+					}
 				}
 			}
 			catch(Exception $e)
@@ -356,7 +428,7 @@ class StepController extends MasterCheckoutController
 					":orderNo"=>$_REQUEST["req_reference_number"]));
 				if(isset($order))
 				{
-					$order->status = 1;
+					$order->status = 2;
 					$order->invoiceNo = OrderGroup::model()->genInvNo($order);
 					$order->paymentDateTime = new CDbExpression('NOW()');
 					if($order->save())
@@ -390,7 +462,7 @@ class StepController extends MasterCheckoutController
 						":orderNo"=>$_REQUEST["req_reference_number"]));
 					if(isset($order))
 					{
-						$order->status = 98;
+						$order->status = 2;
 //						$order->invoiceNo = Order::model()->genInvNo($order);
 //						$order->paymentDateTime = new CDbExpression('NOW()');
 						if($order->save())

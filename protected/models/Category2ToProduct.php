@@ -36,6 +36,10 @@ class Category2ToProduct extends Category2ToProductMaster
 					self::BELONGS_TO,
 					'Category',
 					'category2Id'),
+				'category'=>array(
+					self::BELONGS_TO,
+					'Category',
+					'category1Id'),
 		));
 	}
 

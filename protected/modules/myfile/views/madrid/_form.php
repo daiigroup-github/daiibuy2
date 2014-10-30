@@ -248,104 +248,6 @@ $form = $this->beginWidget('CActiveForm', array(
 		</div>
 	</div>
 
-	<div class="row setup-content" id="step-2-2">
-		<div class="col-xs-12">
-            <div class="col-md-12 well">
-				<div class="row">
-					<div class="page-header myfile-fenzer-header" >
-						<h3>STEP.2 ใส่ปริมาณเอง</h3><small>กรุณาเลือกแบบหน้าต่างและกำหนดปริมาณที่ต้องการ.</small>
-					</div>
-				</div>
-				<div class="row text-center">
-					<form id="atechTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId'];                                                                                                                                                                                                                                                                                                ?>">
-							<thead>
-								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
-								<tr>
-									<th>ลำดับ</th>
-									<th>ประเภท</th>
-									<th>รูปแบบ</th>
-									<th>ขนาด</th>
-									<th class="edit-table-qty" >จำนวน</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody >
-								<?php // foreach($productResult['items'] as $item):            ?>
-								<tr>
-									<td>1</td>
-									<td><?php
-										echo CHtml::dropDownList('Criteria[category]', "category", array(
-											1=>'ประตู',
-											2=>'หน้าต่าง'));
-										?></td>
-									<td><?php
-										echo CHtml::dropDownList('Criteria[type]', "type", array(
-											1=>'บานเลื่อน 2 บาน',
-											2=>'บานเลื่อน 4 บาน',
-											3=>'บานเปิดเดี่ยว',
-											4=>'บานเปิดคู่',
-											5=>'บานกระทุ้ง',
-											6=>'บานส่องแสง'));
-										?></td>
-									<td><?php echo CHtml::dropDownList('Criteria[size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
-									<td><?php
-										echo CHtml::textField('Criteria[quantity]', "quantity", array(
-											'class'=>'edit-table-qty-input'));
-										?></td>
-									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
-								</tr>
-
-								<?php // endforeach;          ?>
-
-<!--			<tr>
-				<td><?php
-								// echo CHtml::dropDownList('productId', 'selectedCode',
-//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
-//					array('id'=>'itemCode',
-//						'prompt'=>'เลือกรหัส',
-//						'ajax'=>array(
-//									'type'=>'POST',
-//									'url'=>CController::createUrl('fenzer/addNewProductItem'), //url to call.
-////									'update'=>'#height_content', //selector to update
-//									'dataType'=>'html',
-//									'data'=>array(
-//										"productId"=>"js:this.value",
-//										"categoryId"=>$productResult['categoryId']),
-//										"length"=>0,
-//									'success'=>'js:function(data){
-//										alert("Yo");
-//										$("#result_content").html(data);
-//									}',
-//								),
-//					));
-								?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                                                                ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                                                               ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));                                                                                                                                                                                                                                                                                                ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                                                               ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                                                               ?></td>
-				<td><?php // echo '';                                                                                                                                                                                                                                                                                               ?></td>
-			</tr>-->
-							</tbody>
-						</table>
-					</form>
-					<!--					<div style="margin-top: 2%">
-					<?php // $i = 0;      ?>
-					<?php // foreach($model->orderFiles as $orderFile):           ?>
-										<div class='col-lg-6 col-md-6 col-sm-12'>
-										<div class="blog-item">
-					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px'));            ?>
-											<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i;                                                                                                                                                                                                                                                                                                ?></div>
-									</div>
-								</div>
-					<?php // $i++;       ?>
-					<?php // endforeach;           ?>
-						</div>-->
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-3">
 			<?php
@@ -397,7 +299,9 @@ $form = $this->beginWidget('CActiveForm', array(
 			</div>
 			<div class="row <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="action-button">
 				<div class="col-md-12 wizard-control">
-					<a class="btn btn-warning btn-lg col-lg-offset-3" onclick="updatePrice()"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
+					<?php if(!$model->isNewRecord && $this->action->id == "view"): ?>
+						<a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
+					<?php endif; ?>
 					<button id="" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
 				</div>
 			</div>
@@ -437,7 +341,8 @@ $form = $this->beginWidget('CActiveForm', array(
 														<th>Code</th>
 														<th>Title/Category</th>
 														<th>Price</th>
-														<th>Action</th>
+														<th>Quantiry</th>
+														<th>Total</th>
 													<?php endif; ?>
 												</tr>
 											</thead>
@@ -471,17 +376,19 @@ $form = $this->beginWidget('CActiveForm', array(
 														</tr>
 													<?php else: ?>
 														<tr>
-															<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . isset($item->product) ? $item->product->productImagesSort[0]->image : "") : ""; ?></td>
+															<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(isset($item->product) ? Yii::app()->baseUrl . $item->product->productImagesSort[0]->image : "", "", array(
+														'style'=>"width:200px")) : ""; ?></td>
 															<td><?php echo $item->product->code; ?></td>
 															<td><?php echo $item->product->name; ?></td>
 															<td style="color:red"><?php echo number_format($item->product->price, 2); ?>
 																<?php // echo CHtml::hiddenField("Order[createMyfileType]", 3) ?>
 																<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", $item->productId) ?>
-																<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price) ?>
+		<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price) ?>
 															</td>
 															<td style="width: 20%">
-																<div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 2); ?></div></div>
+																<div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 0); ?></div></div>
 															</td>
+															<td><?php echo number_format($item->quantity * $item->product->price, 0) ?></td>
 														</tr>
 													<?php endif; ?>
 													<?php
@@ -505,7 +412,7 @@ $form = $this->beginWidget('CActiveForm', array(
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php else: ?>
 							<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
-						<?php endif; ?>
+<?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -531,38 +438,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                                      ?>
+<?php // echo $form->errorSummary($model);                                       ?>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');         ?>
 <?php // echo $form->textField($model, 'supplierId');          ?>
-<?php // echo $form->error($model, 'supplierId');                                    ?>
+<?php // echo $form->error($model, 'supplierId');                                     ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'type');          ?>
 <?php // echo $form->textField($model, 'type');          ?>
-<?php // echo $form->error($model, 'type');                                    ?>
+<?php // echo $form->error($model, 'type');                                     ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'status');          ?>
 <?php // echo $form->textField($model, 'status');         ?>
-<?php // echo $form->error($model, 'status');                                    ?>
+<?php // echo $form->error($model, 'status');                                     ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'title');          ?>
 <?php // echo $form->textField($model, 'title');        ?>
-<?php // echo $form->error($model, 'title');                                     ?>
+<?php // echo $form->error($model, 'title');                                      ?>
 	</div>
 
 
 	<div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                        ?>
+<?php // echo CHtml::submitButton('Submit');                                         ?>
 	</div>
 
-<?php // $this->endWidget();                                        ?>
+<?php // $this->endWidget();                                         ?>
 
 </div>-->
 <!-- form -->

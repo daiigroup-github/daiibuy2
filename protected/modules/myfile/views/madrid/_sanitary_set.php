@@ -5,7 +5,7 @@
 			<th>Code</th>
 			<th>Title/Category</th>
 			<th>Price</th>
-			<th>Action</th>
+			<th>Quantity</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -20,27 +20,13 @@
 				<td style="color:red"><?php echo number_format($item->product->price, 2); ?>
 					<?php echo CHtml::hiddenField("Order[createMyfileType]", 3) ?>
 					<?php echo CHtml::hiddenField("OrderItems[$item->productId][productId]", $item->productId) ?>
-	<?php echo CHtml::hiddenField("OrderItems[$item->productId][price]", $item->product->price) ?>
+					<?php echo CHtml::hiddenField("OrderItems[$item->productId][price]", $item->product->price) ?>
 				</td>
 				<td style="width: 20%">
 					<div class="row"><div class="col-md-12"><?php echo CHtml::numberField("OrderItems[$item->productId][quantity]") ?></div></div>
-					<div class="row"><div class="col-md-12">
-							<?php
-//							echo CHtml::link("<i class='icon-cart'></i>Add TO CART", "", array(
-//								'class'=>'button orange btn-xs'))
-							?>
-						</div></div>
-					<div class="row">
-						<div class="col-md-12">
-							<?php
-//							echo CHtml::link("<i class='icon-trash'></i>REMOVE", "", array(
-//								'class'=>'button btn-xs'))
-							?>
-						</div>
-					</div>
 				</td>
 			</tr>
-<?php endforeach; ?>
+		<?php endforeach; ?>
 	</tbody>
 </table>
 <?php
@@ -84,7 +70,6 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 					<th>Brand</th>
 					<th>Model</th>
 					<th>Cat1</th>
-					<th>Cat2</th>
 					<th>Product</th>
 					<th>Quantity</th>
 					<th>Unit</th>
@@ -116,17 +101,8 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 							), array(
 							'prompt'=>'Select Cat1',
 							'class'=>'form-control',
-							'onchange'=>"findCat2(this,'" . Yii::app()->baseUrl . "');",
+							'onchange'=>"findCat2Product(this,'" . Yii::app()->baseUrl . "');",
 							'id'=>'category1Id',
-						));
-						?></td>
-					<td class="cat2"><?php
-						echo CHtml::dropDownList('OrderItems[0][category2Id]', '', array(
-							), array(
-							'prompt'=>'Select Cat2',
-							'class'=>'form-control',
-							'onchange'=>"findProduct(this,'" . Yii::app()->baseUrl . "');",
-							'id'=>'category2Id',
 						));
 						?></td>
 					<td class="product"><?php
@@ -135,20 +111,21 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 							'prompt'=>'Select Product',
 							'class'=>'form-control',
 							'id'=>'productId',
+							'onchange'=>"chooseProduct(this,'" . Yii::app()->baseUrl . "');",
 						));
 						?></td>
 					<td><?php
-						echo CHtml::numberField('OrderItems[0][quantity]', "", array(
+						echo CHtml::numberField('OrderItems[0][quantity]  ', "", array(
 							'class'=>'form-control'))
 						?></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td class="unit"><span class="unitText skipCopy"></span></td>
+					<td class="price"><span class="priceText skipCopy"></span></td>
+					<td class="total"><span class="toalText skipCopy"></span></td>
 				</tr>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="6"><a id="copyItem" href="#" rel=".copyRow">Copy</a></td>
+					<td colspan="6"><a id="copyItem" href="#" rel=".copyRow" class="button green"><i class="fa fa-plus"></i>เพิ่ม</a></td>
 				</tr>
 			</tfoot>
 		</table>

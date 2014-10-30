@@ -3,7 +3,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12">
 
 		<div class="carousel-heading">
-			<h4>My Files MADRID BATHROOM : Create My File</h4>
+			<h4>My Files GINZA HOME : Create My File</h4>
 			<div class="pull-right">
 				<a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-left button" onclick="javascript:history.back();"></a>
 				<a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-right button" onclick="javascript:history.forward();"></a>
@@ -17,7 +17,7 @@
 	<ul class="nav nav-tabs" role="tablist" >
 		<li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzahome/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
 			<?php if($this->action->id != "create"): ?>
-				<!--<li class="green"><a href="<?php // echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzahome/create";  ?>"><h5 >+ สร้างใหม่</h5></a></li>-->
+					<!--<li class="green"><a href="<?php // echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzahome/create";   ?>"><h5 >+ สร้างใหม่</h5></a></li>-->
 		<?php endif; ?>
 	</ul>
 </div>

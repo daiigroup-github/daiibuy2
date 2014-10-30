@@ -18,92 +18,98 @@
 class OrderGroup extends OrderGroupMaster
 {
 
-    public $maxCode;
-    public $sumTotal;
+	public $maxCode;
+	public $sumTotal;
 
-    const STATUS_ORDER = 1;
-    const STATUS_COMFIRM_TRANSFER = 2;
-    const STATUS_APPROVE_TRANSFER = 3;
-    const STATUS_SUPPLIER_SHIPPING = 4;
+	const STATUS_ORDER = 1;
+	const STATUS_COMFIRM_TRANSFER = 2;
+	const STATUS_APPROVE_TRANSFER = 3;
+	const STATUS_SUPPLIER_SHIPPING = 4;
+	const VAT_PERCENT = 7;
 
-    const VAT_PERCENT = 7;
+	/**
+	 * @return string the associated database table name
+	 */
+	public static function model($className = __CLASS__)
+	{
+		return parent::model($className);
+	}
 
-    /**
-     * @return string the associated database table name
-     */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		// NOTE: you should only define rules for those attributes that
+		// will receive user inputs.
+		return CMap::mergeArray(parent::rules(), array(
+				//code here
+		));
+	}
 
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules()
-    {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
-        return CMap::mergeArray(parent::rules(), array(//code here
-        ));
-    }
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
+		return CMap::mergeArray(parent::relations(), array(
+				//code here
+				'orders'=>array(
+					self::MANY_MANY,
+					'Order',
+					'order_group_to_order(orderGroupId, orderId)'
+				),
+				'child'=>array(
+					self::BELONGS_TO,
+					'OrderGroup',
+					array(
+						'orderGroupId'=>'parentId')),
+		));
+	}
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-        return CMap::mergeArray(parent::relations(), array(
-            //code here
-            'orders' => array(
-                self::MANY_MANY,
-                'Order',
-                'order_group_to_order(orderGroupId, orderId)'
-            ),
-        ));
-    }
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return Cmap::mergeArray(parent::attributeLabels(), array(
+				//code here
+		));
+	}
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
-    {
-        return Cmap::mergeArray(parent::attributeLabels(), array(//code here
-        ));
-    }
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 * public function search()
+	 * {
+	 * }
+	 */
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     * public function search()
-     * {
-     * }
-     */
-    /**
-     * Returns the static model of the specified AR class.
-     * Please note that you should have this exact method in all your CActiveRecord descendants!
-     * @param string $className active record class name.
-     * @return OrderGroup the static model class
-     */
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
+	 * @return OrderGroup the static model class
+	 */
+	public function sumOrderLastTwelveMonth()
+	{
+		$today = date('Y-m-d');
+		$lastYear = date('Y-m-d', strtotime($today . ' -12 months'));
 
-    public function sumOrderLastTwelveMonth()
-    {
-        $today = date('Y-m-d');
-        $lastYear = date('Y-m-d', strtotime($today . ' -12 months'));
+		$model = $this->find(array(
+			'condition'=>'userId=:userId AND (updateDateTime BETWEEN :today AND :lastYear)',
+			'select'=>'sum(summary) as sumTotal',
+			'params'=>array(
+				':userId'=>Yii::app()->user->id,
+				':today'=>$today,
+				':lastYear'=>$lastYear,
+			),
+		));
 
-        $model = $this->find(array(
-            'condition' => 'userId=:userId AND (updateDateTime BETWEEN :today AND :lastYear)',
-            'select'=>'sum(summary) as sumTotal',
-            'params' => array(
-                ':userId' => Yii::app()->user->id,
-                ':today' => $today,
-                ':lastYear' => $lastYear,
-            ),
-        ));
-
-        return isset($model) ? $model->sumTotal : 0;
-    }
+		return isset($model) ? $model->sumTotal : 0;
+	}
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -170,11 +176,10 @@ class OrderGroup extends OrderGroupMaster
 		return isset($result->data[0]) ? $result->data[0]->maxCode : 0;
 	}
 
-	public function findMaxOrderNo($supplierId=NULL)
+	public function findMaxOrderNo($supplierId = NULL)
 	{
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
-
 //		$criteria = new CDbCriteria;
 //
 //		$criteria->select = 'max(RIGHT(orderNo,6)) as maxCode';
@@ -187,15 +192,15 @@ class OrderGroup extends OrderGroupMaster
 //			'criteria'=>$criteria,
 //		));
 
-        $orderGroupModel = OrderGroup::model()->find(array(
-            'select'=>'max(RIGHT(orderNo,6)) as maxCode',
-            'condition'=>'supplierId=:supplierId',
-            'params'=>array(
-                ':supplierId'=>$supplierId,
-            ),
-            'order'=>'orderNo desc',
-            'limit'=>'1'
-        ));
+		$orderGroupModel = OrderGroup::model()->find(array(
+			'select'=>'max(RIGHT(orderNo,6)) as maxCode',
+			'condition'=>'supplierId=:supplierId',
+			'params'=>array(
+				':supplierId'=>$supplierId,
+			),
+			'order'=>'orderNo desc',
+			'limit'=>'1'
+		));
 
 		return isset($orderGroupModel) ? $orderGroupModel->maxCode : 0;
 	}
@@ -342,11 +347,11 @@ class OrderGroup extends OrderGroupMaster
 		return $prefix . date("Ym") . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
 
-	public function genOrderNo($supplierId=null)
-    {
-        $supplierModel = Supplier::model()->findByPk($supplierId);
-        $prefix = $supplierModel->prefix;
-        $max_code = $this->findMaxOrderNo();
+	public function genOrderNo($supplierId = null)
+	{
+		$supplierModel = Supplier::model()->findByPk($supplierId);
+		$prefix = $supplierModel->prefix;
+		$max_code = $this->findMaxOrderNo();
 		$max_code += 1;
 		return $prefix . date("Ym") . "-" . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
@@ -386,9 +391,10 @@ class OrderGroup extends OrderGroupMaster
 		}
 	}
 
-    public function calVatValue($total=NULL)
-    {
-        $total = isset($total) ? $total : $this->totalIncVAT;
-        return $total - ($total / (1+(self::VAT_PERCENT/100)));
-    }
+	public function calVatValue($total = NULL)
+	{
+		$total = isset($total) ? $total : $this->totalIncVAT;
+		return $total - ($total / (1 + (self::VAT_PERCENT / 100)));
+	}
+
 }

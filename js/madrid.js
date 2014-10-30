@@ -151,29 +151,13 @@ function findCat1(sel, baseUrl)
 		},
 	});
 }
-function findCat2(sel, baseUrl)
+function findCat2Product(sel, baseUrl)
 {
 	var attrName = sel.attributes['name'].value;
 	var obj = $('select[name=\"' + attrName + '\"]');
 	var cat1Id = obj.val();
 	$.ajax({
-		'url': baseUrl + '/backoffice/order/findAllCat2AndProductByBrandCat1IdAjax',
-//			'dataType': 'json',
-		'type': 'POST',
-		'data': {'cat1Id': cat1Id},
-		'success': function (data) {
-			obj.parent().parent().children('.cat2').children('select').html(data);
-			findProductByCat1(sel);
-		},
-	});
-}
-function findProductByCat1(sel, baseUrl)
-{
-	var attrName = sel.attributes['name'].value;
-	var obj = $('select[name=\"' + attrName + '\"]');
-	var cat1Id = obj.val();
-	$.ajax({
-		'url': baseUrl + '/backoffice/order/findAllProductByCat1IdAjax',
+		'url': baseUrl + '/backoffice/order/findAllProductInCat2Cat1IdAjax',
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'cat1Id': cat1Id},
@@ -182,19 +166,30 @@ function findProductByCat1(sel, baseUrl)
 		},
 	});
 }
-function findProduct(sel, baseUrl)
+
+function chooseProduct(sel, baseUrl)
 {
 	var attrName = sel.attributes['name'].value;
 	var obj = $('select[name=\"' + attrName + '\"]');
-	var cat2Id = obj.val();
+	var productId = obj.val();
 	$.ajax({
-		'url': baseUrl + '/backoffice/order/findAllProductByCat2IdAjax',
-//			'dataType': 'json',
+		'url': baseUrl + '/myfile/madrid/findProductByPk',
+		'dataType': 'json',
 		'type': 'POST',
-		'data': {'cat2Id': cat2Id},
+		'data': {'productId': productId},
 		'success': function (data) {
-			obj.parent().parent().children('.product').children('select').html(data);
-//			findGroupName(sel);
+			obj.parent().parent().children('.price').children('.priceText').html(data.price);
+			obj.parent().parent().children('.unit').children('.unitText').html(data.productUnits);
 		},
 	});
+}
+
+function updateSetPrice(no)
+{
+	for (var i = 1; i <= no; i++)
+	{
+		var price = $("#priceHidden_" + i).val();
+		var quantity = $("#quantityText_" + i).val();
+		$("#total" + i).html(price * quantity);
+	}
 }

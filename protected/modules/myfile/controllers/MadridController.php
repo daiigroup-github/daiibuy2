@@ -479,4 +479,10 @@ class MadridController extends MasterMyFileController
 			'id'=>$id));
 	}
 
+	public function actionFindProductByPk()
+	{
+		$model = Product::model()->findByPk($_POST["productId"]);
+		echo CJSON::encode($model->attributes);
+	}
+
 }
