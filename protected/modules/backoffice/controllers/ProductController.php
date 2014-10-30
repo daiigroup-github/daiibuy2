@@ -428,6 +428,8 @@ class ProductController extends MasterBackofficeController
 								$productImage->productId = $productId;
 								$productImage->image = '/images/product/' . $fileName;
 								$productImage->sortOrder = $i;
+								$productImage->createDateTime = new CDbExpression("NOW()");
+								$productImage->updateDateTime = new CDbExpression("NOW()");
 								if(!$productImage->save())
 								{
 									$flag = FALSE;
