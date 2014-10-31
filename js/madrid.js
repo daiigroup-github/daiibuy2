@@ -194,13 +194,22 @@ function updateSetPrice(no)
 	}
 }
 
-function addFavourite(userId, category2Id, baseUrl)
+function addFavourite(userId, category2Id, baseUrl, isTheme)
 {
+	var url = "";
+	if (isTheme)
+	{
+		url = baseUrl + '/madrid/theme/addFavourite'
+	}
+	else
+	{
+		url = baseUrl + '/madrid/set/addFavourite'
+	}
 	$.ajax({
-		'url': baseUrl + '/madrid/theme/addFavourite',
+		'url': url,
 		'dataType': 'json',
 		'type': 'POST',
-		'data': {'userId': userId, 'category2Id': category2Id},
+		'data': {'userId': userId, 'category2Id': category2Id, },
 		'success': function (data) {
 			if (data)
 			{
@@ -213,3 +222,4 @@ function addFavourite(userId, category2Id, baseUrl)
 		},
 	});
 }
+

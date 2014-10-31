@@ -41,7 +41,7 @@
     </div>
 
 	<?php if(isset($data['buttons'])): ?>
-		<div class="product-actions" id="<?php echo $data['id']; ?>" onclick="addFavourite(<?php echo Yii::app()->user->id ?>,<?php echo $data["category2Id"] ?>, '<?php echo Yii::app()->baseUrl; ?>', true)">
+		<div class="product-actions" id="<?php echo $data['id']; ?>" onclick="addFavourite(<?php echo Yii::app()->user->id ?>,<?php echo $data["category2Id"] ?>, '<?php echo Yii::app()->baseUrl; ?>', false)">
 			<?php
 			foreach($data['buttons'] as $button):
 				switch($button)
