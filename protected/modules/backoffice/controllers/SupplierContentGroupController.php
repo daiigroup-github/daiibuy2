@@ -195,7 +195,7 @@ class SupplierContentGroupController extends MasterBackofficeController
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
 						{
 							if(isset($oldimage) && !empty($oldimage))
-								unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
+								@unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
 						}
 						else
 							$flag = false;

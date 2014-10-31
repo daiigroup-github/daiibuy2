@@ -152,7 +152,7 @@ class BankController extends MasterBackofficeController
 		if($model->delete())
 		{
 			if(isset($oldImage) || !empty($oldImage))
-				unlink(Yii::app()->basePath . '/..' . $oldImage);
+				@unlink(Yii::app()->basePath . '/..' . $oldImage);
 		}
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

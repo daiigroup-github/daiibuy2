@@ -233,7 +233,7 @@ class UserFileController extends MasterBackofficeController
 						if($userFileId->saveAs(Yii::app()->getBasePath() . $imagePathuserFileId))
 						{
 							if(isset($olduserFileId) && !empty($olduserFileId))
-								unlink(Yii::app()->getBasePath() . '/..' . $olduserFileId);
+								@unlink(Yii::app()->getBasePath() . '/..' . $olduserFileId);
 						}
 						else
 							$flag = false;
@@ -248,7 +248,7 @@ class UserFileController extends MasterBackofficeController
 						if($userFileName->saveAs(Yii::app()->getBasePath() . $imagePathuserFileName))
 						{
 							if(isset($olduserFileName) && !empty($olduserFileName))
-								unlink(Yii::app()->getBasePath() . '/..' . $olduserFileName);
+								@unlink(Yii::app()->getBasePath() . '/..' . $olduserFileName);
 						}
 						else
 							$flag = false;

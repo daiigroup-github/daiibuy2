@@ -199,7 +199,7 @@ class BrandController extends MasterBackofficeController
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePath))
 						{
 							if(isset($oldimage) && !empty($oldimage))
-								unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
+								@unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
 						}
 						else
 							$flag = false;
