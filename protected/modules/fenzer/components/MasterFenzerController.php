@@ -6,41 +6,32 @@ class MasterFenzerController extends MasterController
     {
         parent::init();
 
-        Yii::app()->clientScript->registerCSSFile(Yii::app()->baseUrl.'/css/fenzer.css');
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/daiibuy.js');
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/fenzer.js');
+        Yii::app()->clientScript->registerCSSFile(Yii::app()->baseUrl . '/css/fenzer.css');
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/daiibuy.js');
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/fenzer.js');
 
-        $this->nav = array(
-            array(
-                'url' => '#',
-                'color' => 'green',
-                'caption' => 'M-WALL',
-                'description' => 'Description'
+        $supplier = Supplier::model()->find(array(
+            'condition' => 'url=:url',
+            'params' => array(
+                ':url' => $this->module->id,
             ),
-            array(
-                'url' => '#',
-                'color' => 'blue',
-                'caption' => 'DOUBLE-S',
-                'description' => 'Description'
-            ),
-            array(
-                'url' => '#',
-                'color' => 'red',
-                'caption' => 'SANDY',
-                'description' => 'Description'
-            ),
-            array(
-                'url' => '#',
-                'color' => 'orange',
-                'caption' => 'BRICKS',
-                'description' => 'Description'
-            ),
-            array(
-                'url' => '#',
-                'caption' => 'ABOUT FENZER',
-                'description' => 'Company Profile'
-            ),
-        );
+        ));
+
+        $i=0;
+        foreach ($supplier->brands as $brand) {
+            foreach ($brand->brandModels as $brandModel) {
+                foreach ($brandModel->categorys as $category) {
+                    $this->nav[$i] = array(
+                        'url' => $this->createUrl('index/id/'.$category->categoryId),
+                        'caption' => $category->title,
+//                        'description' => 'Company Profile',
+                        'color'=>$this->navColor[$i]
+                    );
+                    $i++;
+                }
+            }
+        }
+
 
         $this->sideBarCategories = array(
             'title' => 'Fenzer Categories',
@@ -156,9 +147,9 @@ class MasterFenzerController extends MasterController
                 'image' => Yii::app()->baseUrl . '/images/fenzer/' . $file,
                 'url' => Yii::app()->createUrl('fenzer/category/index/id/' . $i),
                 'title' => substr($file, 0, -4),
-                'price' => 'ราคาต่อเมตร '.number_format(rand(1000, 2999), 2).' บาท',
-                'description'=>'bla bla bla ...',
-                'isQuickView'=>false
+                'price' => 'ราคาต่อเมตร ' . number_format(rand(1000, 2999), 2) . ' บาท',
+                'description' => 'bla bla bla ...',
+                'isQuickView' => false
             ];
 
             $i++;

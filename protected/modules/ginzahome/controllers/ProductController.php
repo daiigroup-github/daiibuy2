@@ -227,6 +227,7 @@ class ProductController extends MasterGinzahomeController
                 //code here
                 $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
                 $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
+                $flag = true;
 
                 if ($flag) {
                     $orderModel->totalIncVAT = $orderModel->orderItemsSum;

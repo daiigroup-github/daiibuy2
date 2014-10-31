@@ -10,6 +10,23 @@ class CategoryController extends MasterMadridController
 
         //$dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
         $dataProvider = Product::model()->search();
+
+        $category = Category::model()->findByPk($id);
+        $subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
+        $subCategorysId = implode(',', $subCategorys);
+
+        $category2ToProducts = Category2ToProduct::model()->findAll(array(
+            'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
+            'params' => array(
+                ':category1Id'=>$id,
+                ':category2Id'=>$subCategorysId,
+            ),
+        ));
+        $productsId = implode(',', CHtml::listData($category2ToProducts, 'productId', 'productId'));
+
+        $this->writeToFile('/tmp/madridCategory', print_r($productsId, true));
+
+
         $dataProvider->pagination->pageSize = 9;
         $template = "<div class='row'>
 			<div class='col-lg-4 col-md-4 col-sm-4'>{summary}</div>\n

@@ -8,7 +8,7 @@ if(isset($this->nav) && $this->nav !== []):
 	<ul>
 		<?php foreach($this->nav as $nav):?>
 			<li class="<?php echo isset($nav['color']) ? $nav['color'] : '';?>">
-				<a href="<?php echo Yii::app()->createUrl($nav['url']);?>">
+				<a href="<?php echo $nav['url'];?>">
 					<span class="nav-caption"><?php echo $nav['caption'];?></span>
 					<?php if(isset($nav['description']) && !empty($nav['description'])):?>
 						<span class="nav-description"><?php echo $nav['description'];?></span>
@@ -21,14 +21,14 @@ if(isset($this->nav) && $this->nav !== []):
 							<li>
 								<ul>
 									<?php if(isset($dropdown['url'])):?>
-										<li><span class="nav-caption"><a href="<?php echo Yii::app()->createUrl($dropdown['url']);?>"><?php echo $dropdown['caption'];?></a></span></li>
+										<li><span class="nav-caption"><a href="<?php echo $dropdown['url'];?>"><?php echo $dropdown['caption'];?></a></span></li>
 									<?php else:?>
 										<li><span class="nav-caption"><?php echo $dropdown['caption'];?></span></li>
 									<?php endif;?>
 
 									<?php if(isset($dropdown['dropdown'])):?>
 										<?php foreach($dropdown['dropdown'] as $subDropdown):?>
-											<li><a href="<?php echo Yii::app()->createUrl($subDropdown['url']);?>"><i class="icons icon-right-dir"></i> <?php echo $subDropdown['caption'];?></a></li>
+											<li><a href="<?php echo $subDropdown['url'];?>"><i class="icons icon-right-dir"></i> <?php echo $subDropdown['caption'];?></a></li>
 										<?php endforeach;?>
 									<?php endif;?>
 								</ul>

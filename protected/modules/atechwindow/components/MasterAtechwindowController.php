@@ -10,25 +10,65 @@ class MasterAtechwindowController extends MasterController
         Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/daiibuy.js');
         Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/atechwindow.js');
 
-        $this->nav = array(
-            array(
-                'url' => '#',
-                'color' => 'green',
-                'caption' => 'Window',
-                'description' => 'Description'
+//        $this->nav = array(
+//            array(
+//                'url' => '#',
+//                'color' => 'green',
+//                'caption' => 'Window',
+//                'description' => 'Description'
+//            ),
+//            array(
+//                'url' => '#',
+//                'color' => 'blue',
+//                'caption' => 'Door',
+//                'description' => 'Description'
+//            ),
+//            array(
+//                'url' => '#',
+//                'caption' => 'ABOUT ATECH WINDOW',
+//                'description' => 'Company Profile'
+//            ),
+//        );
+
+        $supplier = Supplier::model()->find(array(
+            'condition' => 'url=:url',
+            'params' => array(
+                ':url' => $this->module->id,
             ),
-            array(
-                'url' => '#',
-                'color' => 'blue',
-                'caption' => 'Door',
-                'description' => 'Description'
+        ));
+
+        $categorys = Category::model()->findAll(array(
+            'condition' => 'supplierId=:supplierId AND isRoot=1',
+            'params' => array(
+                ':supplierId' => $supplier->supplierId,
             ),
-            array(
-                'url' => '#',
-                'caption' => 'ABOUT ATECH WINDOW',
-                'description' => 'Company Profile'
-            ),
-        );
+            'order' => 'title'
+        ));
+
+        $i = 0;
+        foreach ($categorys as $category) {
+            $this->nav[$i] = array(
+                'url' => $this->createUrl('default/index/id/'.$category->categoryId),
+                'caption' => strtoupper($category->title),
+                'description' => 'Company Profile',
+                'color'=>$this->navColor[$i],
+            );
+
+            if($category->subCategorys !== array()) {
+                $dropdown = array();
+                $j = 0;
+                foreach ($category->subCategorys as $subCategory) {
+                    $dropdown[$j] = array(
+                        'url' => $this->createUrl('category/index/id/'.$subCategory->categoryId),
+                        'caption' => strtoupper($subCategory->title),
+                    );
+                    $j++;
+                }
+                $this->nav[$i]['dropdown'] = $dropdown;
+            }
+
+            $i++;
+        }
 
         $this->sideBarCategories = array(
             'title' => 'Atech Window',

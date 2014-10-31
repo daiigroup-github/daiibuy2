@@ -8,7 +8,7 @@
 
             <div class="carousel-arrows">
                 <?php if (isset($moreUrl)): ?>
-                    <a href="<?php echo Yii::app()->createUrl($moreUrl); ?>"><i class="icons icon-th-3"></i></a>
+                    <a href="<?php echo $moreUrl; ?>"><i class="icons icon-th-3"></i></a>
                 <?php endif; ?>
                 <i class="icons icon-left-dir"></i>
                 <i class="icons icon-right-dir"></i>

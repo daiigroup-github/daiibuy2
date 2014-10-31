@@ -10,37 +10,64 @@ class MasterMadridController extends MasterController
         Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/daiibuy.js');
         Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/madrid.js');
 
-        $this->nav = array(
-            array(
-                'url' => 'madrid/category/index/id/2',
-                'color' => 'green',
-                'caption' => 'Madrid Tile',
-                'description' => 'Description'
+        $supplier = Supplier::model()->find(array(
+            'condition'=>'url=:url',
+            'params'=>array(
+                ':url'=>$this->module->id,
             ),
-            array(
-                'url' => 'madrid/category/index/id/1',
-                'color' => 'blue',
-                'caption' => 'Madrid Sanitary',
-                'description' => 'Description'
+        ));
+
+        $categorys = Category::model()->findAll(array(
+            'condition'=>'supplierId=:supplierId AND isRoot=1',
+            'params' => array(
+                ':supplierId'=>$supplier->supplierId
             ),
-            array(
-                'url' => 'madrid/theme',
-                'color' => 'red',
-                'caption' => 'Tile Theme',
-                'description' => 'Description'
-            ),
-            array(
-                'url' => 'madrid/set',
-                'color' => 'orange',
-                'caption' => 'Sanitary Set',
-                'description' => 'Description'
-            ),
-            array(
-                'url' => '#',
-                'caption' => 'About Madrid',
-                'description' => 'Company Profile'
-            ),
-        );
+        ));
+
+        $nav = array();
+        $i=0;
+        foreach ($categorys as $category) {
+            $categoryToSub = CategoryToSub::model()->find(array(
+                'condition'=>'categoryId=:categoryId AND (isTheme=1 OR isSet=1)',
+                'params'=>array(
+                    ':categoryId'=>$category->categoryId,
+                ),
+            ));
+
+            if(isset($categoryToSub)) {
+                if($categoryToSub->isTheme == 1) {
+                    $nav['theme'] = array(
+                        'url' => $this->createUrl('theme'),
+                        'color' => 'orange',
+                        'caption' => $category->title,
+//                        'description' => 'Description'
+                    );
+                }
+
+                if($categoryToSub->isSet == 1) {
+                    $nav['set'] = array(
+                        'url' => $this->createUrl('set'),
+                        'color' => 'red',
+                        'caption' => $category->title,
+//                        'description' => 'Description'
+                    );
+                }
+            }
+            else {
+                $this->nav[$i] = array(
+                    'url' => $this->createUrl('category/index/id/'.$category->categoryId),
+                    'color' => $this->navColor[$i],
+                    'caption' => $category->title,
+                    'description' => 'Description'
+                );
+
+                $i++;
+            }
+        }
+
+        $this->nav[$i+1] = $nav['theme'];
+        $this->nav[$i+1] = $nav['set'];
+
 
         $this->sideBarCategories = array(
             'title' => 'Madrid Categories',

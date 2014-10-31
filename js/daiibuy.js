@@ -2,7 +2,7 @@
  * Created by NPR on 8/13/14.
  */
 
-var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin + '/daiibuy2/';
+var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin;
 function addToCart(productId) {
 	alert('productId' + productId);
 
@@ -20,7 +20,7 @@ function updateCartHeader() {
         url: baseUrl+'/cart/updateCartHeader',
         dataType: 'json',
         success: function (data){
-            //$('#cartHeader').html(data.cartHeader);
+            $('#cartHeader').html(data.cartHeader);
             $('#cartHeaderTable').html(data.cartHeaderTable);
         }
     });

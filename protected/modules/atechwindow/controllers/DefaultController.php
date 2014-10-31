@@ -4,7 +4,7 @@ class DefaultController extends MasterAtechwindowController
 {
     public $layout = '//layouts/cl1';
 
-	public function actionIndex()
+	public function actionIndex($id=null)
 	{
         $title = 'Fenzer';
 
@@ -27,7 +27,12 @@ class DefaultController extends MasterAtechwindowController
         $data = array();
 
         $supplierModel = Supplier::model()->find(array('condition'=>'url=:url', 'params'=>array(':url'=>$this->module->id)));
-        $categorys = Category::model()->findAll(array('condition'=>'supplierId=:supplierId AND isRoot=0 AND status=1', 'params'=>array(':supplierId'=>$supplierModel->supplierId)));
+        if(!isset($id)) {
+            $categorys = Category::model()->findAll(array('condition' => 'supplierId=:supplierId AND isRoot=0 AND status=1', 'params' => array(':supplierId' => $supplierModel->supplierId)));
+        } else {
+            $category = Category::model()->findByPk($id);
+            $categorys = $category->subCategorys;
+        }
 
         /*
         $this->render('index', array(

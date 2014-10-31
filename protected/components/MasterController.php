@@ -11,6 +11,12 @@ class MasterController extends Controller
 	public $pageTitle;
 
 	public $nav = array();
+    public $navColor = array(
+        'green',
+        'blue',
+        'red',
+        'orange'
+    );
 	public $sideBarCategories = array();
 	public $sideBarCompare = array();
 	public $sideBarCarousel = array();

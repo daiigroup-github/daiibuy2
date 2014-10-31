@@ -15,6 +15,8 @@ class CartController extends MasterController
     {
         $res = array();
         $cartHeaderTable = '';
+        $i = 0;
+
         foreach (Supplier::model()->findAll() as $supplier) {
             $orderSummary = array();
             $orderSummary = Order::model()->sumOrderTotalBySupplierId($supplier->supplierId);
@@ -38,7 +40,7 @@ class CartController extends MasterController
             */
 
             $cartHeaderTable .= '<tr>'.
-                '<td>'.CHtml::image(Yii::app()->baseUrl.'images/supplier/'.$supplier->url.'jpg').'</td>'.
+                '<td>'.CHtml::image(Yii::app()->baseUrl.'/images/supplier/'.$supplier->url.'.jpg').'</td>'.
                 '<td>'.$supplier->name.'</td>'.
                 '<td>'.
                 '<span class="quantity">'.$orderSummary['grandTotal'].' บาท</span>'.
@@ -46,10 +48,12 @@ class CartController extends MasterController
                 CHtml::link('<i class="fa fa-ban"></i>', '', array('class'=>'btn btn-danger btn-xs')).
                 '</td>'.
                 '</tr>';
+
+            $i++;
         }
 
         $res['cartHeaderTable'] = $cartHeaderTable;
-        $this->writeToFile('/tmp/updateCartHeader', print_r($res, true));
+        $res['cartHeader'] = $i.' Suppliers';
 
         echo CJSON::encode($res);
 
