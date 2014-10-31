@@ -30,7 +30,7 @@ $categories = $this->sideBarCategories;
 			<ul>
 				<?php foreach($categories['items'] as $item):?>
 				<li>
-					<?php echo CHtml::link($item['link'].'<i class="icons icon-right-dir"></i>', Yii::app()->createUrl($item['url']));?>
+					<?php echo CHtml::link($item['link'].'<i class="icons icon-right-dir"></i>', $item['url']);?>
 
 					<?php if(isset($item['items'])):?>
 					<ul class="sidebar-dropdown">

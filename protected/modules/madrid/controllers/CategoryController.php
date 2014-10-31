@@ -2,18 +2,16 @@
 
 class CategoryController extends MasterMadridController
 {
-    public function actionIndex($id)
+    public function actionIndex($id, $id2=null)
     {
-        $title = ($id == 1) ? 'Sanitary' : 'Tile';
-
-        $items = $this->showSanitary($id);
-
-        //$dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
-        $dataProvider = Product::model()->search();
-
         $category = Category::model()->findByPk($id);
-        $subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
-        $subCategorysId = implode(',', $subCategorys);
+
+        if(isset($id2)) {
+            $subCategorysId = $id2;
+        } else {
+            $subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
+            $subCategorysId = implode(',', $subCategorys);
+        }
 
         $category2ToProducts = Category2ToProduct::model()->findAll(array(
             'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
@@ -22,11 +20,11 @@ class CategoryController extends MasterMadridController
                 ':category2Id'=>$subCategorysId,
             ),
         ));
-        $productsId = implode(',', CHtml::listData($category2ToProducts, 'productId', 'productId'));
 
-        $this->writeToFile('/tmp/madridCategory', print_r($productsId, true));
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('productId', CHtml::listData($category2ToProducts, 'productId', 'productId'));
 
-
+        $dataProvider = new CActiveDataProvider('Product', array('criteria'=>$criteria));
         $dataProvider->pagination->pageSize = 9;
         $template = "<div class='row'>
 			<div class='col-lg-4 col-md-4 col-sm-4'>{summary}</div>\n
@@ -41,8 +39,10 @@ class CategoryController extends MasterMadridController
 		</div>";
         $summaryText = '<p>Display {start}-{end} of {count} items (page {page} of {pages})</p>';
 
+        $this->sideBarCategories = $this->sideBarCategories($id);
+
         $this->render('index', array(
-            'title' => $title,
+            'title' => $category->title,
             'dataProvider' => $dataProvider,
             'itemView' => '_product_item',
             'template' => $template,

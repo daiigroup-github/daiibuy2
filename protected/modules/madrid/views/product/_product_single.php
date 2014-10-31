@@ -44,7 +44,7 @@
                 }*/
                 ?>
 
-                <?php foreach ($productModel->productSpecGroupsTypeSpec as $productSpecGroupsTypeSpec): ?>
+                <?php foreach ($productModel->productSpecGroupsTypeSpecs as $productSpecGroupsTypeSpec): ?>
                     <?php if ($productSpecGroupsTypeSpec->productSpecs !== []): ?>
                         <h3><?php echo $productSpecGroupsTypeSpec->title; ?></h3>
                         <table>

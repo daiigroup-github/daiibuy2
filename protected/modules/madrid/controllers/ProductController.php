@@ -57,7 +57,7 @@ class ProductController extends MasterMadridController
         );
 
         $descriptionTabs = array();
-        foreach ($productModel->productSpecGroupsTypeDescription as $desc) {
+        foreach ($productModel->productSpecGroupsTypeDetails as $desc) {
             $descriptionTabs[]['title'] = $desc->title;
             $descriptionTabs[]['detail'] = $desc->description;
         }

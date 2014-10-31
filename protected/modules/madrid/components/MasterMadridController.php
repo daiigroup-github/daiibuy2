@@ -67,76 +67,6 @@ class MasterMadridController extends MasterController
 
         $this->nav[$i+1] = $nav['theme'];
         $this->nav[$i+1] = $nav['set'];
-
-
-        $this->sideBarCategories = array(
-            'title' => 'Madrid Categories',
-            'items' => array(
-                array(
-                    'link' => 'Madrid 1',
-                    'url' => '#'
-                ),
-                array(
-                    'link' => 'Madrid 2',
-                    'url' => '#'
-                ),
-                array(
-                    'link' => 'Madrid 3',
-                    'url' => '#'
-                ),
-                array(
-                    'link' => 'Madrid 4',
-                    'url' => '#'
-                ),
-                array(
-                    'link' => 'Madrid 5',
-                    'url' => '#'
-                ),
-                array(
-                    'link' => 'Madrid 6',
-                    'url' => '#'
-                ),
-                array(
-                    'link' => 'Madrid 7',
-                    'url' => '#',
-                    'items' => array(
-
-                        array(
-                            'link' => 'Madrid sub 1',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 2',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 3',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 4',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 5',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 6',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 7',
-                            'url' => '#'
-                        ),
-                        array(
-                            'link' => 'Madrid sub 8',
-                            'url' => '#'
-                        ),
-                    ),
-                ),
-            )
-        );
     }
 
     //temp function
@@ -190,5 +120,28 @@ class MasterMadridController extends MasterController
         }
 
         return $items;
+    }
+
+    public function sideBarCategories($categoryId)
+    {
+        $res = array();
+        $category = Category::model()->findByPk($categoryId);
+        $items[0] = array(
+            'link' => 'All',
+            'url' => $this->createUrl('category/index/id/'.$category->categoryId),
+        );
+        $res['title'] = $category->title;
+
+        $i=1;
+        foreach ($category->subCategorys as $subCategory) {
+            $items[$i] = array(
+                'link' => $subCategory->title,
+                'url' => $this->createUrl('category/index/id/'.$category->categoryId.'/id2/'.$subCategory->categoryId),
+            );
+            $i++;
+        }
+
+        $res['items'] = $items;
+        return $res;
     }
 }
