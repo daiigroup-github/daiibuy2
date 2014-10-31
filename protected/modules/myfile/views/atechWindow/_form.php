@@ -303,70 +303,34 @@ $this->breadcrumbs = array(
 							</thead>
 							<tbody >
 						<?php // foreach($productResult['items'] as $item): ?>
+								<?php $categoryDropDownArray = array('ประตู'=>'ประตู','หน้าต่าง'=>'หน้าต่าง');
+								$typeDropDownArray = array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง');
+								$sizeDropDownArray = Product::model()->findAllAtechSizeArray();
+								?>
 			<tr>
 				<td>1</td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category", array('ประตู'=>'ประตู','หน้าต่าง'=>'หน้าต่าง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category",$categoryDropDownArray); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray); ?></td>
 				<td><?php echo CHtml::textField('Criteria[0][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>
 			<tr>
 				<td>2</td>
-				<td><?php echo CHtml::dropDownList('Criteria[1][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[1][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[1][size]', "size", Product::model()->findAllAtechSizeArray()); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray); ?></td>
+				<td><?php echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray); ?></td>
 				<td><?php echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>
 
-		<?php // endforeach; ?>
-
-<!--			<tr>
-				<td><?php // echo CHtml::dropDownList('productId', 'selectedCode',
-//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
-//					array('id'=>'itemCode',
-//						'prompt'=>'เลือกรหัส',
-//						'ajax'=>array(
-//									'type'=>'POST',
-//									'url'=>CController::createUrl('fenzer/addNewProductItem'), //url to call.
-////									'update'=>'#height_content', //selector to update
-//									'dataType'=>'html',
-//									'data'=>array(
-//										"productId"=>"js:this.value",
-//										"categoryId"=>$productResult['categoryId']),
-//										"length"=>0,
-//									'success'=>'js:function(data){
-//										alert("Yo");
-//										$("#result_content").html(data);
-//									}',
-//								),
-//					)); ?></td>
-				<td><?php // echo ''; ?></td>
-				<td><?php // echo ''; ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;')); ?></td>
-				<td><?php // echo ''; ?></td>
-				<td><?php // echo ''; ?></td>
-				<td><?php // echo ''; ?></td>
-			</tr>-->
 	</tbody>
 </table>
 </form>
-<!--					<div style="margin-top: 2%">
-					<?php // $i = 0; ?>
-					<?php // foreach($model->orderFiles as $orderFile): ?>
-					<div class='col-lg-6 col-md-6 col-sm-12'>
-					<div class="blog-item">
-					<?php // echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px')); ?>
-						<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php // echo $i==0? "แบบแปลน":"ด้านข้าง ".$i; ?></div>
-				</div>
-			</div>
-		<?php // $i++; ?>
-	<?php // endforeach;?>
-	</div>-->
 				</div>
 
 				<div class="row wizard-control">
+
 					<div class="pull-left">
 						<a id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</a>
 					</div>
@@ -387,32 +351,33 @@ $this->breadcrumbs = array(
 						<h3>ตารางประเมิณราคาสินค้า</h3>
 					</div>
 				</div>
-<?php
 
-function echoActiveClassIfRequestMatches($requestUri)
-{
-    $current_file_name = basename($_SERVER['REQUEST_URI']);
-
-    if ($current_file_name == $requestUri)
-        echo 'class="active"';
-}
-
-?>
 				<div class="row">
 					<div class="col-md-3">
-						<nav class="navbar navbar-default" role="navigation">
-							<div class="collapse navbar-collapse navbar-ex1-collapse">
-								<ul class="nav navbar-nav">
-									<?php $i=0;
-									foreach($modelArray as $item): ?>
-									<li class="<?php // echo $i==0? 'active':'';
-									echoActiveClassIfRequestMatches("create#"); ?>"><a href="#"><?php echo $item->title; ?></a></li>
-									<?php $i++;
-									endforeach; ?>
-<!--									 <li><a href="#">Link</a></li>-->
-								</ul>
-							</div><!-- /.navbar-collapse -->
-						</nav>
+				<div class="row sidebar-box blue" style="margin-top: 55px;">
+				<div class="col-sm-12">
+					<div class="sidebar-box-heading">
+						<i class="fa fa-apple"></i>
+						<h4>Brand</h4>
+					</div>
+					<div class="sidebar-box-content">
+						<ul>
+							<?php foreach($modelArray as $item): ?>
+							<li>
+								<a class="<?php echo $this->action->id == 'view'? 'atechUpdate': ($this->action->id == 'create'? 'atechNav':'atechUpdate'); ?>" href="#" name="<?php echo $item->brandModelId; ?>" >
+								<?php echo $item->title; ?>
+								</a>
+							</li>
+							<?php endforeach; ?>
+							<li>
+								<a class="" href="#" name="" >
+								<?php echo $this->action->id; ?>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 <!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
 							<button name="<?php // echo $item->brandModelId; ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title; ?></button>
@@ -420,13 +385,22 @@ function echoActiveClassIfRequestMatches($requestUri)
 					</div>-->
 					</div>
 					<div class="col-md-9">
-						<div class="row" id="atech_result" ></div>
+						<div class="row" id="atech_result" >
+							<?php if(isset($productResult)){
+
+								$this->renderPartial('_edit_product_result', array('productResult'=>$productResult));
+							}
+//							throw new Exception(print_r($productResult,true));
+								?>
+						</div>
 					</div>
 				</div>
 				<div class="row wizard-control">
-<!--					<div class="col-lg-9 text-center">
-						<a id="calculatePrice" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
-					</div>-->
+					<?php if($this->action->id == 'create'){ ?>
+					<div class="pull-left">
+						<a id="backToStep2-2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+					</div>
+					<?php } ?>
 					<div class="pull-right">
 						<a id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
 					</div>

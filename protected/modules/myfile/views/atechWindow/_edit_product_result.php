@@ -32,6 +32,7 @@
 
 						<?php
 						$i = 1;
+						if(isset($productResult['items'])){
 						foreach($productResult['items'] as $item): ?>
 			<tr>
 				<td><?php echo $i; ?></td>
@@ -44,10 +45,26 @@
 				<td><?php echo AtechWindowController::formatMoney($item['subTotal'],true); ?></td>
 			</tr>
 		<?php $i++;
-		endforeach; ?>
+		endforeach;
+						}else{
+							?>
+					</tbody>
+					</table>
+					</form>
+						<div class="text-center">
+						ไม่พบสินค้า
+						</div>
+					<?php	}
+?>
 	</tbody>
 </table>
-							</form>
-					</div>
+				</form>
+				<div class="row">
+				<div class="col-lg-12 text-center">
+					<a name="<?php // throw new Exception(print_r($this->action->id,true));
+					echo isset($productResult["brandModelId"])? $productResult["brandModelId"] : ""; ?>" class="btn btn-warning btn-lg <?php echo $this->action->id == 'view'? 'atechUpdate': ($this->action->id == 'create'? 'atechNav':'atechUpdate'); ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
 				</div>
+			</div>
+		</div>
+	</div>
 </div>

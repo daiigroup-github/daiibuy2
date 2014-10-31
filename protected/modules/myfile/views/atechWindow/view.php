@@ -16,6 +16,8 @@
 <!--<div class="panel panel-default">
 	<div class="panel-heading">Create Order</div>
 	<div class="panel-body">-->
-		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+		<?php $this->renderPartial('_form', array('model'=>$model,
+			'modelArray'=>$modelArray,
+			'productResult'=>$productResult)); ?>
 <!--	</div>
 </div>-->

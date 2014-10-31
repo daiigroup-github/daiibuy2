@@ -980,13 +980,15 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculatePriceFromCriteriaAtech($criteria, $brand, $provinceId){
+	public function calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId){
 		$res = array();
 		$total = 0.00;
+//		throw new Exception(print_r($criteria,true));
 		foreach($criteria as $item){
 //	throw new Exception(print_r($item,true));
-			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brand->brandModelId,$item['category'],$item['type']);
-			if(isset($categoryArray)){
+			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId,$item['category'],$item['type']);
+
+			if(count($categoryArray)>0){
 			$category1Id = $categoryArray['cate1'];
 			$category2Id = $categoryArray['cate2'];
 //			throw new Exception(print_r($category1Id.', '.$category2Id,true));
@@ -994,8 +996,9 @@ class Product extends ProductMaster
 			$size = explode(" x ", $value);
 			$width = $size[0];
 			$height = $size[1];
-			$productModel = Product::model()->find('supplierId = 2 AND brandModelId = '.$brand->brandModelId . ' AND categoryId = '.$category2Id.' AND width = '.$width.' AND height = '.$height);
+			$productModel = Product::model()->find('supplierId = 2 AND brandModelId = '.$brandModelId . ' AND categoryId = '.$category2Id.' AND width = '.$width.' AND height = '.$height);
 
+			if(isset($productModel)){
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 			":productId"=>$productModel->productId));
 			$res["items"][$productModel->productId]['productId'] = $productModel->productId;
@@ -1021,9 +1024,59 @@ class Product extends ProductMaster
 
 			$total = $subTotal+$total;
 			}
+			}
 		}
 
 		$res["total"] = $total;
+		$res["brandModelId"] = $brandModelId;
+//		throw new Exception(print_r($res,true));
+//		$res["brandModelId"] = $brand->brandModelId;
+//		$res["category1Id"] = $category1Id;
+//		$res["category2Id"] = $category2Id;
+		return $res;
+	}
+
+	public function calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray, $isSave){
+		$res = array();
+		$total = 0.00;
+//		throw new Exception(print_r($criteria,true));
+		foreach($productArray as $item){
+
+			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$item->productId));
+			$res["items"][$item->productId]['productId'] = $item->productId;
+			$res["items"][$item->productId]['code'] = $item->code;
+			$res["items"][$item->productId]['width'] = $item->width;
+			$res["items"][$item->productId]['height'] = $item->height;
+//			$res["items"][$item->productId]['category'] = $item['category'];
+//			$res["items"][$item->productId]['type'] = $item['type'];
+			$res["items"][$item->productId]['description'] = $item->description;
+			$res["items"][$item->productId]['quantity'] = $item->quantity;
+			if(isset($productPromotion))
+			{
+			//promotion price
+				$res["items"][$item->productId]['price'] = $this->calProductPromotionTotalPrice($item->productId, 1, $provinceId);
+			}
+			else
+			{
+			//normal price
+				$res["items"][$item->productId]['price'] = $this->calProductTotalPrice($item->productId, 1, $provinceId);
+			}
+			$subTotal = $res["items"][$item->productId]['price']*$res["items"][$item->productId]['quantity'];
+			$res["items"][$item->productId]['subTotal'] = $subTotal;
+
+			$total = $subTotal+$total;
+
+			if($isSave){
+				$order;
+
+			}
+			}
+
+
+		$res["total"] = $total;
+		$res["brandModelId"] = $brandModelId;
+//		throw new Exception(print_r($res,true));
 //		$res["brandModelId"] = $brand->brandModelId;
 //		$res["category1Id"] = $category1Id;
 //		$res["category2Id"] = $category2Id;
@@ -1039,7 +1092,8 @@ class Product extends ProductMaster
 				break;
 			}
 		}
-
+		if(isset($cate1)){
+//throw new Exception(print_r($cate1,true));
 		foreach($cate1->subCategorys as $subCat){
 			if($subCat->title == $cate2Title){
 				$cate2 = $subCat;
@@ -1050,6 +1104,7 @@ class Product extends ProductMaster
 			$res['cate1'] = $cate1->categoryId;
 		if(isset($cate2))
 			$res['cate2'] = $cate2->categoryId;
+		}
 		return $res;
 	}
 }
