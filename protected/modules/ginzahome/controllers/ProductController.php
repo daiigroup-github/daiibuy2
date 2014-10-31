@@ -210,7 +210,7 @@ class ProductController extends MasterGinzahomeController
 
     public function actionAddToCart()
     {
-        if(isset($_POST['productId'])) {
+        if (isset($_POST['productId'])) {
             $this->writeToFile('/tmp/ginzaAddCart', print_r($_POST, true));
             $res = array();
             $supplier = Supplier::model()->find(array(
@@ -226,8 +226,7 @@ class ProductController extends MasterGinzahomeController
             try {
                 //code here
                 $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
-                $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
-                $flag = true;
+                $flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
 
                 if ($flag) {
                     $orderModel->totalIncVAT = $orderModel->orderItemsSum;

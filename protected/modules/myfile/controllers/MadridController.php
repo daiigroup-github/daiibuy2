@@ -5,19 +5,6 @@ class MadridController extends MasterMyFileController
 
 	public function init()
 	{
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/vendor/jquery.ui.widget.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.iframe-transport.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload.js');
-//		Yii::app()->clientScript->registerScrisptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload-process.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload-image.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload-audio.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload-video.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload-validate.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/main.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.blueimp-gallery.min.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/canvas-to-blob.min.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/load-image.all.min.js');
-//		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/tmpl.min.js');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/fileinput.js');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->baseUrl . '/themes/homeshop/assets/css/fileinput.css');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
@@ -89,12 +76,16 @@ class MadridController extends MasterMyFileController
 		{
 			foreach($_POST["OrderItems"] as $k=> $v)
 			{
-				$orderItems = OrderItems::model()->findByPk($k);
-				$orderItems->quantity = $v;
-				if($orderItems->save(FALSE))
+				if(!empty($v["quantity"]))
 				{
-					$model->status = 2;
-					$model->save(false);
+					$orderItems = OrderItems::model()->findByPk($k);
+					$orderItems->quantity = $v["quantity"];
+					$orderItems->total = $orderItems->quantity * $orderItems->price;
+					if($orderItems->save(FALSE))
+					{
+						$model->status = 2;
+						$model->save(false);
+					}
 				}
 			}
 		}
@@ -112,6 +103,7 @@ class MadridController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 		$model = new Order;
+		$model->isTheme = 1;
 		$orderDetailModel = new OrderDetail;
 		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
@@ -137,6 +129,7 @@ class MadridController extends MasterMyFileController
 					$model->type = 1;
 					$model->status = 0;
 					$model->supplierId = 3;
+					$model->isTheme = 1;
 					$model->userId = Yii::app()->user->id;
 					$model->createDateTime = new CDbExpression("NOW()");
 
@@ -236,6 +229,14 @@ class MadridController extends MasterMyFileController
 				$model->type = 1;
 				$model->status = 1;
 				$model->supplierId = 3;
+				if($_POST["Order"]["createMyfileType"] == 3)
+				{
+					$model->isTheme = 0;
+				}
+				else
+				{
+					$model->isTheme = 1;
+				}
 				$model->userId = Yii::app()->user->id;
 				$model->createDateTime = new CDbExpression("NOW()");
 				if($model->save(false))
@@ -249,7 +250,16 @@ class MadridController extends MasterMyFileController
 							$orderItems->orderId = $orderId;
 							$orderItems->attributes = $_POST["OrderItems"][$k];
 							$orderItems->createDateTime = new CDbExpression("NOW()");
-							$orderItems->total = $_POST["OrderItems"][$k]["price"] * $_POST["OrderItems"][$k]["quantity"];
+							if(isset($_POST["OrderItems"][$k]["price"]))
+							{
+								$price = $_POST["OrderItems"][$k]["price"];
+							}
+							else
+							{
+								$price = Product::model()->findByPk($_POST["OrderItems"][$k]["productId"])->price;
+								$orderItems->price = $price;
+							}
+							$orderItems->total = $price * $_POST["OrderItems"][$k]["quantity"];
 
 							if(!$orderItems->save(false))
 							{
@@ -350,7 +360,7 @@ class MadridController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 3, null);
+		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 3, $this->cookie->token);
 		$this->render('index', array(
 			'myfileArray'=>$myfileArray));
 	}
@@ -404,6 +414,33 @@ class MadridController extends MasterMyFileController
 		echo CJSON::encode($result);
 	}
 
+	public function actionRenderThemeView()
+	{
+		if(isset($_POST["orderId"]) && $_POST["orderId"] > 0)
+		{
+			$model = $this->loadModel($_POST["orderId"]);
+		}
+		if(!isset($model))
+		{
+			$model = new Order();
+		}
+		$model->isTheme = 1;
+		$this->renderPartial("_theme", array(
+			'model'=>$model));
+	}
+
+	public function actionLoadSetItem()
+	{
+		$cat2ToProduct = new Category2ToProduct();
+		$result = array();
+		if(isset($_POST["category2Id"]))
+		{
+			$cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
+		}
+		$this->renderPartial("_sanitary_set", array(
+			'model'=>$cat2ToProduct), FALSE, TRUE);
+	}
+
 	public function actionBackTo3($id)
 	{
 		$model = Order::model()->findByPk($id);
@@ -440,6 +477,12 @@ class MadridController extends MasterMyFileController
 		$this->redirect(array(
 			'view',
 			'id'=>$id));
+	}
+
+	public function actionFindProductByPk()
+	{
+		$model = Product::model()->findByPk($_POST["productId"]);
+		echo CJSON::encode($model->attributes);
 	}
 
 }

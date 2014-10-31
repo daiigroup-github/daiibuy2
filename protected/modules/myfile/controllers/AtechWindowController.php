@@ -19,6 +19,7 @@ class AtechWindowController extends MasterMyFileController
 //		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/tmpl.min.js');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/fileinput.js');
 		Yii::app()->getClientScript()->registerCssFile(Yii::app()->baseUrl . '/themes/homeshop/assets/css/fileinput.css');
+//		Yii::app()->getClientScript()->registerCssFile(Yii::app()->baseUrl . '/themes/homeshop/assets/css/vetical_navbar.css');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
 		parent::init();
 	}
@@ -40,6 +41,7 @@ class AtechWindowController extends MasterMyFileController
 		$orderDetailModel = new OrderDetail;
 		$orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(1);
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
+		$modelArray = BrandModel::model()->findAll('supplierId = 2 AND status = 1');
 		// uncomment the following code to enable ajax-based validation
 		/*
 		  if(isset($_POST['ajax']) && $_POST['ajax']==='order-create-form')
@@ -128,6 +130,7 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$this->render('create', array(
 				'model'=>$model,
+				'modelArray'=>$modelArray,
 //				'orderDetailModel'=>$orderDetailModel,
 //				'orderDetailTemplateFieldArray'=>$orderDetailTemplateField,
 			));
@@ -136,9 +139,48 @@ class AtechWindowController extends MasterMyFileController
 
 	public function actionView($id)
 	{
+		$modelArray = BrandModel::model()->findAll('supplierId = 2 AND status = 1');
+		$model = $this->loadModel($id);
+		$productResult = array();
+		$res = array();
+		if(count($model->orderItems)>0){
+			$total = 0.00;
+			foreach($model->orderItems as $item){
+				$productModel = Product::model()->findByPk($item->productId);
+				$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$productModel->productId));
+			$res["items"][$productModel->productId]['productId'] = $productModel->productId;
+			$res["items"][$productModel->productId]['code'] = $productModel->code;
+			$res["items"][$productModel->productId]['width'] = $productModel->width;
+			$res["items"][$productModel->productId]['height'] = $productModel->height;
+//			$res["items"][$productModel->productId]['category'] = $productModel->categoryId;
+//			$res["items"][$productModel->productId]['type'] = $item['type'];
+			$res["items"][$productModel->productId]['description'] = $productModel->description;
+			$res["items"][$productModel->productId]['quantity'] = $item->quantity;
+			if(isset($productPromotion))
+			{
+			//promotion price
+				$res["items"][$productModel->productId]['price'] = Product::model()->calProductPromotionTotalPrice($productModel->productId, 1, $model->provinceId);
+			}
+			else
+			{
+			//normal price
+				$res["items"][$productModel->productId]['price'] = Product::model()->calProductTotalPrice($productModel->productId, 1, $model->provinceId);
+			}
+			$subTotal = $res["items"][$productModel->productId]['price']*$res["items"][$productModel->productId]['quantity'];
+			$res["items"][$productModel->productId]['subTotal'] = $subTotal;
+
+			$total = $subTotal+$total;
+			}
+			$res["total"] = $total;
+			$res["brandModelId"] = $productModel->brandModelId;
+		}
+
 		$this->layout = '//layouts/cl1';
 		$this->render('view', array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
+			'productResult'=>$res,
+			'modelArray'=>$modelArray,
 		));
 	}
 
@@ -148,6 +190,37 @@ class AtechWindowController extends MasterMyFileController
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
+	}
+
+	public function actionSaveMyFileAtech(){
+		if(isset($_POST['provinceId']))
+		{
+			$provinceId = $_POST['provinceId'];
+		}
+		if(isset($_POST['title']))
+		{
+			$title = $_POST['title'];
+		}
+		if(isset($_POST['brandModelId'])){
+			$brandModelId = $_POST['brandModelId'];
+		}
+
+		if(isset($_POST['productItems'])){
+			$productItems = $_POST['productItems'];
+			$productArray = array();
+
+		foreach($productItems as $productId => $item){
+//	throw new Exception(print_r($item,true));
+				$productModel = Product::model()->findByPk($productId);
+				$productArray[$productModel->productId] = $productModel;
+				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
+			}
+		}
+			$itemSetArray = Product::model()->calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray,1,$orderId);
+//		throw new Exception(print_r($itemSetArray,true));
+		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
+				'productResult'=>$itemSetArray,
+				),TRUE, TRUE);
 	}
 
 //
@@ -202,8 +275,8 @@ class AtechWindowController extends MasterMyFileController
 		}
 		echo '<tr>'
 		. '<td>'.$rowCount.'</td>'
-		. '<td>'. CHtml::dropDownList('Criteria['.$index.'][category]', "category", array(1=>'ประตู',2=>'หน้าต่าง')).'</td>'
-			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][type]', "type", array(1=>'บานเลื่อน 2 บาน',2=>'บานเลื่อน 4 บาน', 3=>'บานเปิดเดี่ยว', 4=>'บานเปิดคู่', 5=>'บานกระทุ้ง', 6=>'บานส่องแสง')).'</td>'
+		. '<td>'. CHtml::dropDownList('Criteria['.$index.'][category]', "category", array('ประตู'=>'ประตู','หน้าต่าง'=>'หน้าต่าง')).'</td>'
+			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][type]', "type", array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง')).'</td>'
 			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][size]', "size", Product::model()->findAllAtechSizeArray()) .'</td>'
 			. '<td>'. CHtml::textField('Criteria['.$index.'][quantity]', 1,array('class'=>'edit-table-qty-input number')).'</td>'
 			. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
@@ -235,13 +308,62 @@ class AtechWindowController extends MasterMyFileController
 
 		$brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
 		$firstBrand = reset($brandModelArray);
-		throw new Exception(print_r($brandModelArray,true));
-		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand, $provinceId);
+		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand->brandModelId, $provinceId);
 
+//		throw new Exception(print_r($itemSetArray,true));
+		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
+				'productResult'=>$itemSetArray,
+				),TRUE, TRUE);
+	}
 
+	public function actionUpdatePriceMyFile(){
+		if(isset($_POST['Criteria'])){
+			$criteria = $_POST['Criteria'];
+		}
+		if(isset($_POST['provinceId']))
+		{
+			$provinceId = $_POST['provinceId'];
+		}
+		if(isset($_POST['title']))
+		{
+			$title = $_POST['title'];
+		}
+		if(isset($_POST['brandModelId'])){
+			$brandModelId = $_POST['brandModelId'];
+		}
 
+		if(isset($_POST['productItems']) && isset($_POST['Criteria'])){
+			$productItems = $_POST['productItems'];
+			$i=0;
+			foreach($productItems as $item){
+			$criteria[$i]["quantity"] = $item["quantity"];
+			$i++;
+		}
+		}else if(isset($_POST['productItems'])){
+			$productItems = $_POST['productItems'];
+			$productArray = array();
+		foreach($productItems as $productId => $item){
+//	throw new Exception(print_r($item,true));
+				$productModel = Product::model()->findByPk($productId);
+				$productArray[$productModel->productId] = $productModel;
+				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
+		}
 
-		echo $this->renderPartial('/fenzer/_edit_product_result', array(
+		}
+//		if(isset($_POST['size']))
+//		{
+//			$value = $_POST['size'];
+//			$size = explode(" x ", $value);
+//			$width = $size[0];
+//			$height = $size[1];
+//		}
+		if(isset($criteria) && isset($brandModelId) && isset($provinceId)){
+		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
+		}else{
+			$itemSetArray = Product::model()->calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray,0,NULL);
+		}
+//		throw new Exception(print_r($itemSetArray,true));
+		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
 	}

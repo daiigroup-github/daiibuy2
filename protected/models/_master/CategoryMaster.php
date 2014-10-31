@@ -23,6 +23,7 @@
  * @property CategoryToSub[] $categoryToSubs1
  * @property ModelToCategory1[] $modelToCategory1s
  * @property Product[] $products
+ * @property Category[] $subCategorys
  */
 class CategoryMaster extends MasterCActiveRecord
 {

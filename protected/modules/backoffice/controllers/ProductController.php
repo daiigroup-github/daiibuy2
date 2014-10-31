@@ -368,11 +368,7 @@ class ProductController extends MasterBackofficeController
 		$productOptionGroup = new ProductOptionGroup();
 		$productOptionGroup->productId = $model->productId;
 		$productOption = new ProductOption();
-		if(isset(Yii::app()->user) && Yii::app()->user->id != $model->supplierId && Yii::app()->user->userType != 4)
-		{
-			$this->redirect(array(
-				"index"));
-		}
+		$this->checkSupplierAndAdminAccessMenu();
 //		$productAttributeModel = new ProductAttribute;
 //		$productAttributeValueModel = new ProductAttributeValue;
 		$productPromotion = ProductPromotion::model()->find("productId = :productId order by productPromotionId desc", array(
@@ -432,6 +428,8 @@ class ProductController extends MasterBackofficeController
 								$productImage->productId = $productId;
 								$productImage->image = '/images/product/' . $fileName;
 								$productImage->sortOrder = $i;
+								$productImage->createDateTime = new CDbExpression("NOW()");
+								$productImage->updateDateTime = new CDbExpression("NOW()");
 								if(!$productImage->save())
 								{
 									$flag = FALSE;

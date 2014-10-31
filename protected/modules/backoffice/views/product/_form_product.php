@@ -360,8 +360,7 @@ if(isset($model->status))
 //						));
 //						echo '<br />';
 //					}
-				$dataProvider = new CActiveDataProvider('ProductImage');
-				$dataProvider->setData($model->productImages);
+				$dataProvider = ProductImage::model()->findAllProductImageProvider($model->productId);
 				$this->widget('zii.widgets.grid.CGridView', array(
 					'id'=>'product-grid',
 					'dataProvider'=>$dataProvider,
@@ -372,7 +371,7 @@ if(isset($model->status))
 							'class'=>'IndexColumn'),
 						array(
 							'class'=>'SortColumn',
-							'url'=>'backoffice/productImage/sortOrder'),
+							'url'=>'backoffice/productImage/sortItem'),
 						array(
 							'name'=>'image',
 							'type'=>'html',
@@ -380,7 +379,12 @@ if(isset($model->status))
 						),
 						array(
 							'class'=>'CButtonColumn',
-							'template'=>'{delete}'
+							'template'=>'{delete}',
+							'buttons'=>array(
+								'delete'=>array(
+									'url'=>'Yii::app()->createUrl("/backoffice/product/deleteProductImage/id/".$data->productImageId)'
+								),
+							)
 						),
 					),
 				));

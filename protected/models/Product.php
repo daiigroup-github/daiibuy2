@@ -980,26 +980,131 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculatePriceFromCriteriaAtech($criteria, $brand, $provinceId){
+	public function calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId){
 		$res = array();
+		$total = 0.00;
+//		throw new Exception(print_r($criteria,true));
 		foreach($criteria as $item){
-	throw new Exception(print_r($item,true));
-			$category2Id = $this->getCategory2IdByBrandModelIdAndCategory1($brand->brandModelId,$item['category'],$item['type']);
+//	throw new Exception(print_r($item,true));
+			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId,$item['category'],$item['type']);
+
+			if(count($categoryArray)>0){
+			$category1Id = $categoryArray['cate1'];
+			$category2Id = $categoryArray['cate2'];
+//			throw new Exception(print_r($category1Id.', '.$category2Id,true));
 			$value = $item['size'];
 			$size = explode(" x ", $value);
 			$width = $size[0];
 			$height = $size[1];
-			$productModel = Product::model()->find('supplierId = 2 AND brandModelId = '.$brand->brandModelId . ' AND categoryId = '.$category2Id.' AND width = '.$width.' AND height = '.$height);
-			$res[$productModel->productId] = $productModel;
-			$res[$productModel->productId]['price'] = $price;
-			$res[$productModel->productId]['quantity'] = $item['quantity'];
+			$productModel = Product::model()->find('supplierId = 2 AND brandModelId = '.$brandModelId . ' AND categoryId = '.$category2Id.' AND width = '.$width.' AND height = '.$height);
+
+			if(isset($productModel)){
+			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$productModel->productId));
+			$res["items"][$productModel->productId]['productId'] = $productModel->productId;
+			$res["items"][$productModel->productId]['code'] = $productModel->code;
+			$res["items"][$productModel->productId]['width'] = $width;
+			$res["items"][$productModel->productId]['height'] = $height;
+			$res["items"][$productModel->productId]['category'] = $item['category'];
+			$res["items"][$productModel->productId]['type'] = $item['type'];
+			$res["items"][$productModel->productId]['description'] = $productModel->description;
+			$res["items"][$productModel->productId]['quantity'] = $item['quantity'];
+			if(isset($productPromotion))
+			{
+			//promotion price
+				$res["items"][$productModel->productId]['price'] = $this->calProductPromotionTotalPrice($productModel->productId, 1, $provinceId);
+			}
+			else
+			{
+			//normal price
+				$res["items"][$productModel->productId]['price'] = $this->calProductTotalPrice($productModel->productId, 1, $provinceId);
+			}
+			$subTotal = $res["items"][$productModel->productId]['price']*$res["items"][$productModel->productId]['quantity'];
+			$res["items"][$productModel->productId]['subTotal'] = $subTotal;
+
+			$total = $subTotal+$total;
+			}
+			}
 		}
+
+		$res["total"] = $total;
+		$res["brandModelId"] = $brandModelId;
+//		throw new Exception(print_r($res,true));
+//		$res["brandModelId"] = $brand->brandModelId;
+//		$res["category1Id"] = $category1Id;
+//		$res["category2Id"] = $category2Id;
+		return $res;
+	}
+
+	public function calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray, $isSave){
+		$res = array();
+		$total = 0.00;
+//		throw new Exception(print_r($criteria,true));
+		foreach($productArray as $item){
+
+			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+			":productId"=>$item->productId));
+			$res["items"][$item->productId]['productId'] = $item->productId;
+			$res["items"][$item->productId]['code'] = $item->code;
+			$res["items"][$item->productId]['width'] = $item->width;
+			$res["items"][$item->productId]['height'] = $item->height;
+//			$res["items"][$item->productId]['category'] = $item['category'];
+//			$res["items"][$item->productId]['type'] = $item['type'];
+			$res["items"][$item->productId]['description'] = $item->description;
+			$res["items"][$item->productId]['quantity'] = $item->quantity;
+			if(isset($productPromotion))
+			{
+			//promotion price
+				$res["items"][$item->productId]['price'] = $this->calProductPromotionTotalPrice($item->productId, 1, $provinceId);
+			}
+			else
+			{
+			//normal price
+				$res["items"][$item->productId]['price'] = $this->calProductTotalPrice($item->productId, 1, $provinceId);
+			}
+			$subTotal = $res["items"][$item->productId]['price']*$res["items"][$item->productId]['quantity'];
+			$res["items"][$item->productId]['subTotal'] = $subTotal;
+
+			$total = $subTotal+$total;
+
+			if($isSave){
+				$order;
+
+			}
+			}
+
+
+		$res["total"] = $total;
+		$res["brandModelId"] = $brandModelId;
+//		throw new Exception(print_r($res,true));
+//		$res["brandModelId"] = $brand->brandModelId;
+//		$res["category1Id"] = $category1Id;
+//		$res["category2Id"] = $category2Id;
+		return $res;
 	}
 
 	public function getCategory2IdByBrandModelIdAndCategory1($brandModelId,$cate1Title,$cate2Title){
+		$res = array();
 		$brandModel = BrandModel::model()->findByPk($brandModelId);
-		$cate1 = $brandModel->with('modelToCategory1s')->find('title = '.$cate1Title);
-		$cate2 = $cate1->with('categoryToSubs')->find('title = '.$cate2Title);
-		return $cate2->id;
+		foreach($brandModel->categorys as $item){
+			if($item->title == $cate1Title){
+				$cate1 = $item;
+				break;
+			}
+		}
+		if(isset($cate1)){
+//throw new Exception(print_r($cate1,true));
+		foreach($cate1->subCategorys as $subCat){
+			if($subCat->title == $cate2Title){
+				$cate2 = $subCat;
+				break;
+			}
+		}
+		if(isset($cate1))
+			$res['cate1'] = $cate1->categoryId;
+		if(isset($cate2))
+			$res['cate2'] = $cate2->categoryId;
+		}
+		return $res;
 	}
 }

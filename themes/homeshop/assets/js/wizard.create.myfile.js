@@ -42,6 +42,9 @@ $(document).ready(function() {
 	$('#backToStep2').on('click', function(e) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	});
+	$('#backToStep2-2').on('click', function(e) {
+		$('ul.setup-panel li a[href="#step-2-2"]').trigger('click');
+	});
 	$('#backToStep3').on('click', function(e) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 	});
@@ -180,7 +183,7 @@ $(document).ready(function() {
 		var base_url = window.location.origin;
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
-		alert($("#aa").serialize());
+//		alert($("#aa").serialize());
 //		alert(categoryId);
 //		alert(title + ", " + provinceId);
 		$.ajax({
@@ -188,10 +191,66 @@ $(document).ready(function() {
 			type: 'POST',
 			data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId,
 			success: function(data) {
-				alert("ya");
-				$("#result_content").html(data);
+//				alert("ya");
+				$("#atech_result").html(data);
 			}
 		});
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 	});
+
+	$(".atechNav").click(function() {
+		var base_url = window.location.origin;
+		var brandModelId = $(this).attr("name");
+		var title = $("#Order_title").attr("value");
+		var provinceId = $("#selectProvince").attr("value");
+		alert($("#aa").serialize());
+		alert($("#editTableForm").serialize());
+		alert(title + ", " + provinceId + ", " + brandModelId);
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/atechWindow/updatePriceMyFile',
+			type: 'POST',
+			data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + "&" + $("#editTableForm").serialize(),
+			success: function(data) {
+				$("#atech_result").html(data);
+			}
+		});
+//		this.setAttribute("class", "atechNav active");
+	});
+
+	$(".atechUpdate").click(function() {
+		var base_url = window.location.origin;
+		var brandModelId = $(this).attr("name");
+		var title = $("#Order_title").attr("value");
+		var provinceId = $("#selectProvince").attr("value");
+		alert($("#editTableForm").serialize());
+		alert(title + ", " + provinceId + ", " + brandModelId);
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/atechWindow/updatePriceMyFile',
+			type: 'POST',
+			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId,
+			success: function(data) {
+				$("#atech_result").html(data);
+			}
+		});
+//		this.setAttribute("class", "atechNav active");
+	});
+
+	$('#nextToStep4Atech').on('click', function(e) {
+
+//save order
+		var base_url = window.location.origin;
+		var brandModelId = $(this).attr("name");
+		var title = $("#Order_title").attr("value");
+		var provinceId = $("#selectProvince").attr("value");
+		$.ajax({
+			url: base_url + '/daiibuy2/myfile/atechWindow/saveMyFileAtech',
+			type: 'POST',
+			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId,
+			success: function(data) {
+				$("#atech_result").html(data);
+			}
+		});
+		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
+	});
+
 });

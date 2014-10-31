@@ -87,6 +87,11 @@ class Order extends OrderMaster
 					self::BELONGS_TO,
 					'user',
 					'userId'),
+				'orderGroups'=>array(
+					self::MANY_MANY,
+					'OrderGroup',
+					'order_group_to_order(orderId,orderGroupId)'
+				),
 		));
 	}
 
@@ -100,17 +105,40 @@ class Order extends OrderMaster
 
 	public function findAllMyFileBySupplierId($userId, $supplierId, $token)
 	{
+
 		$criteria = new CDbCriteria();
-		if(($this->userId == 0))
+		if(($userId != 0))
 		{
-			$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
+			if($supplierId == 4)
+			{
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ' OR type = ' . self::ORDER_TYPE_CART . ') AND (status = 1 OR status = 0)';
+			}
+			else if($supplierId == 3)
+			{
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status in(0,1,2,3))';
+			}
+			else
+			{
+
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
+			}
+
 			$criteria->params = array(
 				':userId'=>$userId,
 				':supplierId'=>$supplierId,);
 		}
 		else
 		{
-			$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
+
+			if($supplierId == 4)
+			{
+
+				$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ' OR type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status = 1 OR status = 0)';
+			}
+			else
+			{
+				$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
+			}
 			$criteria->params = array(
 				':token'=>$token,
 				':supplierId'=>$supplierId,);

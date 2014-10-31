@@ -45,11 +45,20 @@ class UserFavourite extends UserFavouriteMaster
 		));
 	}
 
-	public function findAllThemeByUserId($userId)
+	public function findAllThemeByUserId($userId, $theme = TRUE)
 	{
 		$criteria = new CDbCriteria();
-		$criteria->compare("userId", $userId);
-		$criteria->compare("category2Id", "<> null");
+		$criteria->join = " LEFT JOIN category_to_sub c ON c.subCategoryId = t.category2Id ";
+		$criteria->compare("t.userId", $userId);
+		$criteria->compare("t.category2Id", "<> null");
+		if($theme)
+		{
+			$criteria->compare("c.isTheme", 1);
+		}
+		else
+		{
+			$criteria->compare("c.isSet", 1);
+		}
 		return $this->findAll($criteria);
 	}
 
