@@ -2,11 +2,37 @@
 
 class ThemeController extends MasterMadridController
 {
-    public function actionIndex()
+    public $layout = '//layouts/cl1';
+    public function actionIndex($id)
     {
-        $title = 'Tile Theme';
-        $items = $this->showTheme();
+        $category = Category::model()->findByPk($id);
+        $title = $category->title;
 
+        $categoryToSub = CategoryToSub::model()->findAll(array(
+            'condition'=>'categoryId=:categoryId AND isTheme=1',
+            'params'=>array(
+                ':categoryId'=>$id,
+            ),
+        ));
+        //$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
+        $subCategorysId = implode(',', CHtml::listData($categoryToSub, 'subCategoryId', 'subCategoryId'));
+
+        $category2ToProducts = Category2ToProduct::model()->findAll(array(
+            'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
+            'params' => array(
+                ':category1Id'=>$id,
+                ':category2Id'=>$subCategorysId,
+            ),
+        ));
+
+        $products = Product::model()->findAll(array(
+            'condition'=>'productId IN (:productsId)',
+            'params'=>array(
+                ':productsId'=>implode(',',CHtml::listData($category2ToProducts, 'productId', 'productId')),
+            ),
+        ));
+
+        $items = $this->showTheme($products);
         $dataProvider = new CArrayDataProvider($items, array('keyField' => 'id'));
         $dataProvider->pagination->pageSize = 12;
         $template = "<div class='row'>
@@ -33,10 +59,11 @@ class ThemeController extends MasterMadridController
         ));
     }
 
-    public function showTheme()
+    public function showTheme($products)
     {
         $items = [];
         $i = 1;
+        /*
         foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/tile') as $file) {
             if(substr($file, 0, 1) == '.') continue;
 
@@ -54,7 +81,31 @@ class ThemeController extends MasterMadridController
 
             $i++;
         }
+        */
+        foreach ($products as $product) {
+            $image = '';
+            if (isset($product->productImages)) {
+                foreach ($product->productImages as $productImage) {
+                    $image = $productImage->image;
+                    break;
+                }
+            }
 
+            $items[$i] = array(
+                'id' => $product->productId,
+                'image' => Yii::app()->baseUrl . $image,
+                'url' => Yii::app()->createUrl('madrid/product/index/id/' . $product->productId),
+                'title' => $product->name,
+                //'price' => rand(1000, 99999),
+                'buttons' => [
+                    'favorites'
+                ],
+                'isQuickView'=>true
+            );
+            $i++;
+        }
+
+        $this->writeToFile('/tmp/theme', print_r($items, true));
         return $items;
     }
 

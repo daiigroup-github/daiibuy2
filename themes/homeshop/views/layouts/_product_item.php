@@ -41,7 +41,7 @@ $data = [
     </div>
 
     <?php if (isset($data['buttons'])): ?>
-        <div class="product-actions">
+        <div class="product-actions" id="<?php echo $data['id'];?>">
             <?php
             foreach ($data['buttons'] as $button):
                 switch ($button) {

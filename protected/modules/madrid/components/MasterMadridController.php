@@ -37,7 +37,8 @@ class MasterMadridController extends MasterController
             if(isset($categoryToSub)) {
                 if($categoryToSub->isTheme == 1) {
                     $nav['theme'] = array(
-                        'url' => $this->createUrl('theme'),
+                        'url' => $this->createUrl('theme/index/id/'.$category->categoryId),
+                        //'url' => $this->createUrl($this->module->id.'/../theme'),
                         'color' => 'orange',
                         'caption' => $category->title,
 //                        'description' => 'Description'
@@ -46,7 +47,8 @@ class MasterMadridController extends MasterController
 
                 if($categoryToSub->isSet == 1) {
                     $nav['set'] = array(
-                        'url' => $this->createUrl('set'),
+                        'url' => $this->createUrl('set/index/id/'.$category->categoryId),
+//                        'url' => $this->createUrl($this->module->id.'/../set'),
                         'color' => 'red',
                         'caption' => $category->title,
 //                        'description' => 'Description'
@@ -65,8 +67,8 @@ class MasterMadridController extends MasterController
             }
         }
 
-        $this->nav[$i+1] = $nav['theme'];
-        $this->nav[$i+1] = $nav['set'];
+        $this->nav[$i++] = $nav['theme'];
+        $this->nav[$i++] = $nav['set'];
     }
 
     //temp function

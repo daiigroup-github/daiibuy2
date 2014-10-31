@@ -6,6 +6,28 @@ class CategoryController extends MasterMadridController
     {
         $category = Category::model()->findByPk($id);
 
+        //theme
+        $hasTheme = CategoryToSub::model()->find(array(
+            'condition'=>'categoryId=:categoryId AND isTheme=1',
+            'params' => array(
+                ':categoryId'=>$id
+            ),
+        ));
+        if(isset($hasTheme)) {
+            $this->showTheme($id, $id2);
+        }
+
+        $hasSet = CategoryToSub::model()->find(array(
+            'condition'=>'categoryId=:category AND isSet=1',
+            'params' => array(
+                ':categoryId'=>$id
+            ),
+        ));
+        if(isset($hasSet)) {
+            $this->showSet($category);
+        }
+
+
         if(isset($id2)) {
             $subCategorysId = $id2;
         } else {
