@@ -232,7 +232,7 @@ $this->breadcrumbs = array(
 											<?php
 											$flag = FALSE;
 											?>
-											<form  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/4"); ?>">
+											<form id="payForm<?php echo $i; ?>"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/4"); ?>">
 
 												<?php
 												echo CHtml::hiddenField("orderGroupId", $parentId);
@@ -243,8 +243,11 @@ $this->breadcrumbs = array(
 													?>
 													<span class="label label-danger">รอการชำระเงิน</span>
 													<?php
-													echo CHtml::submitButton("ชำระเงิน", array(
-														'class'=>'button blue btn-xs'));
+													echo CHtml::link("ชำระเงิน", "", array(
+														'class'=>'button blue btn-xs',
+														'onclick'=>"payClick($i)"));
+													$this->renderPartial("_condition", array(
+														'period'=>$i));
 												}
 												else
 												{
@@ -282,23 +285,7 @@ $this->breadcrumbs = array(
 	<div class="row setup-content" id="step-4">
 		<div class="col-xs-12">
 			<div class="col-md-12 well">
-				<div class="row sidebar-box" id="confirm_content">
-					<div class="col-xs-12">
-						<div class="sidebar-box-heading">
-							<i class="fa fa-list"></i>
-							<h4>ยืนยันรายการสินค้า <?php // echo $model->title;                                                                                                                                             ?></h4>
-						</div>
-						<div class="row sidebox-content ">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-12">
 
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
 						<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderGroupId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
