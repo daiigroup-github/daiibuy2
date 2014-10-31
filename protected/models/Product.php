@@ -712,10 +712,11 @@ class Product extends ProductMaster
 
 	public function calculateItemSetFenzer($categoryId, $length, $provinceId, $productIdNew = NULL)
 	{
+//		throw new Exception(print_r($categoryId,true));
 		$type = Category2ToProduct::model()->findProductType($categoryId);
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
-		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 1');
+		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 2');
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
@@ -1036,7 +1037,7 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray, $isSave){
+	public function calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray){
 		$res = array();
 		$total = 0.00;
 //		throw new Exception(print_r($criteria,true));
@@ -1052,6 +1053,7 @@ class Product extends ProductMaster
 //			$res["items"][$item->productId]['type'] = $item['type'];
 			$res["items"][$item->productId]['description'] = $item->description;
 			$res["items"][$item->productId]['quantity'] = $item->quantity;
+			$res["items"][$item->productId]['name'] = $item->name;
 			if(isset($productPromotion))
 			{
 			//promotion price
@@ -1066,11 +1068,6 @@ class Product extends ProductMaster
 			$res["items"][$item->productId]['subTotal'] = $subTotal;
 
 			$total = $subTotal+$total;
-
-			if($isSave){
-				$order;
-
-			}
 			}
 
 

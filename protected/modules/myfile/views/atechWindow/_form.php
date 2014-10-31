@@ -346,11 +346,12 @@ $this->breadcrumbs = array(
 		<div class="col-xs-12">
 
             <div class="col-md-12 well">
-				<div class="row">
-					<div class="page-header myfile-fenzer-header" >
-						<h3>ตารางประเมิณราคาสินค้า</h3>
-					</div>
-				</div>
+				<div class="row sidebar-box" id="confirm_content">
+					<div class="col-xs-12">
+						<div class="sidebar-box-heading">
+							<i class="fa fa-list"></i>
+							<h4>ยืนยันรายการสินค้า <?php echo $model->title; ?></h4>
+						</div>
 
 				<div class="row">
 					<div class="col-md-3">
@@ -369,11 +370,6 @@ $this->breadcrumbs = array(
 								</a>
 							</li>
 							<?php endforeach; ?>
-							<li>
-								<a class="" href="#" name="" >
-								<?php echo $this->action->id; ?>
-								</a>
-							</li>
 						</ul>
 					</div>
 				</div>
@@ -402,33 +398,45 @@ $this->breadcrumbs = array(
 					</div>
 					<?php } ?>
 					<div class="pull-right">
-						<a id="nextToStep4" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
+						<a id="nextToStep4Atech" name="<?php echo $this->action->id == 'create'? "" : $model->orderId; ?>" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+					</div>
 	</div>
 
 	<div class="row setup-content" id="step-4">
 		<div class="col-xs-12">
-            <div class="col-md-12 well text-center">
-				<div class="row" id="confirm_content"></div>
+			<div class="col-md-12 well">
+				<div class="row sidebar-box" >
+					<div class="col-xs-12">
+						<div class="sidebar-box-heading">
+							<i class="fa fa-list"></i>
+							<h4>ยืนยันรายการสินค้า <?php echo $model->title; ?></h4>
+						</div>
+						<div class="row sidebar-box-content" id="confirm_product">
+							
+						</div>
+					</div>
+				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-
-						<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
-						<button id="finishAtech" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
-						<button id="addToCart" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
-						<button id="requestSpecial" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
+						<a id="backToStep3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
+						<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php if(!$model->isRequestSpacialProject): ?>
+							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+						<?php else: ?>
+							<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
+<?php endif; ?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </div>
-
-
 
 <!--********old code-->
 <!--<div class="form">

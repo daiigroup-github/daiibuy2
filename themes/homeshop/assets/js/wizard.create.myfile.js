@@ -141,9 +141,7 @@ $(document).ready(function() {
 		var base_url = window.location.origin;
 		var length = $("#length_input").attr("value");
 		var categoryId = $("#editTable").attr("name");
-//		alert(categoryId);
 		var productItems = $("#editTableForm").serialize();
-		alert(productItems);
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/fenzer/updatePrice',
 			type: 'POST',
@@ -152,8 +150,8 @@ $(document).ready(function() {
 				$("#result_content").html(data);
 			}
 		});
-//		alert($(this).attr("name"));
 	});
+
 //	$('#nextToStep3')
 
 //Upload Plan Atech
@@ -203,9 +201,9 @@ $(document).ready(function() {
 		var brandModelId = $(this).attr("name");
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
-		alert($("#aa").serialize());
-		alert($("#editTableForm").serialize());
-		alert(title + ", " + provinceId + ", " + brandModelId);
+//		alert($("#aa").serialize());
+//		alert($("#editTableForm").serialize());
+//		alert(title + ", " + provinceId + ", " + brandModelId);
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/atechWindow/updatePriceMyFile',
 			type: 'POST',
@@ -222,8 +220,8 @@ $(document).ready(function() {
 		var brandModelId = $(this).attr("name");
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
-		alert($("#editTableForm").serialize());
-		alert(title + ", " + provinceId + ", " + brandModelId);
+//		alert($("#editTableForm").serialize());
+//		alert(title + ", " + provinceId + ", " + brandModelId);
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/atechWindow/updatePriceMyFile',
 			type: 'POST',
@@ -239,15 +237,16 @@ $(document).ready(function() {
 
 //save order
 		var base_url = window.location.origin;
-		var brandModelId = $(this).attr("name");
+		var orderId = $(this).attr("name");
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
+		var brandModelId = $("#updateButton").attr("name");
 		$.ajax({
 			url: base_url + '/daiibuy2/myfile/atechWindow/saveMyFileAtech',
 			type: 'POST',
-			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId,
+			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&orderId=' + orderId + '&brandModelId=' + brandModelId,
 			success: function(data) {
-				$("#atech_result").html(data);
+				$("#confirm_product").html(data);
 			}
 		});
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');

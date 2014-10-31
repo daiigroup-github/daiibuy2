@@ -193,6 +193,7 @@ class AtechWindowController extends MasterMyFileController
 	}
 
 	public function actionSaveMyFileAtech(){
+		$isNew = true;
 		if(isset($_POST['provinceId']))
 		{
 			$provinceId = $_POST['provinceId'];
@@ -201,6 +202,11 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$title = $_POST['title'];
 		}
+		if(isset($_POST['orderId']) && !($_POST['orderId'] == "")){
+			$orderId = $_POST['orderId'];
+			$isNew =false;
+		}
+
 		if(isset($_POST['brandModelId'])){
 			$brandModelId = $_POST['brandModelId'];
 		}
@@ -216,10 +222,56 @@ class AtechWindowController extends MasterMyFileController
 				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 			}
 		}
-			$itemSetArray = Product::model()->calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray,1,$orderId);
-//		throw new Exception(print_r($itemSetArray,true));
-		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
-				'productResult'=>$itemSetArray,
+			$res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
+
+
+
+					if(!$isNew){
+						$model = Order::model()->findByPk($orderId);
+					}else{
+						$model = new Order();
+						$model->title = $title;
+						$model->provinceId = $provinceId;
+						$model->type = 1;
+
+						$model->supplierId = 2;
+						$model->userId = Yii::app()->user->id;
+						$model->createDateTime = new CDbExpression("NOW()");
+					}
+					$model->status = 1;
+					$model->updateDateTime = new CDbExpression("NOW()");
+					if($model->save()){
+						if($isNew){
+							$newOrderId = Yii::app()->db->lastInsertID;
+						}
+
+
+						foreach($res['items'] as $productId => $item){
+
+				if($isNew){
+					$orderItemModel = new OrderItems();
+					$orderItemModel->orderId = $newOrderId;
+					$orderItemModel->productId = $productId;
+					$orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
+					$orderItemModel->createDateTime = new CDbExpression("NOW()");
+				}else{
+					$orderItemModel = OrderItems::model()->find('orderId = '.$orderId.' AND productId = '. $productId);
+				}
+				$orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
+				$orderItemModel->price = $res['items'][$productId]['price'];
+				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
+				$orderItemModel->total = $res['items'][$productId]['price']*$res['items'][$productId]['quantity'];
+				$orderItemModel->updateDateTime = new CDbExpression("NOW()");
+				if(!($orderItemModel->save())){
+					throw new Exception(print_r($orderItemModel->errors, True));
+				}
+			}
+					}else{
+						throw new Exception(print_r($model->errors,true));
+					}
+
+		echo $this->renderPartial('/atechWindow/_confirm_product', array(
+				'productResult'=>$res,
 				),TRUE, TRUE);
 	}
 
@@ -360,11 +412,40 @@ class AtechWindowController extends MasterMyFileController
 		if(isset($criteria) && isset($brandModelId) && isset($provinceId)){
 		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
 		}else{
-			$itemSetArray = Product::model()->calculatePriceFromEstimateAtechAndSave($brandModelId, $provinceId, $productArray,0,NULL);
+			$itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 		}
 //		throw new Exception(print_r($itemSetArray,true));
 		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);
+	}
+
+	public function actionFinish($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->status = 3;
+		$model->save();
+		$this->redirect(array(
+			'index'));
+	}
+
+	public function actionRequestSpacialProject($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->isRequestSpacialProject = 1;
+		$model->save();
+		$this->redirect(array(
+			'view',
+			'id'=>$id));
+	}
+
+	public function actionAddtoCart($id)
+	{
+		throw new Exception(print_r($id,true));
+		$model = Order::model()->findByPk($id);
+		$model->type = 3;
+		$model->save();
+		$this->redirect(array(
+			'index'));
 	}
 }

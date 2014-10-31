@@ -170,7 +170,7 @@ class FenzerController extends MasterMyFileController
 			$length = 0;
 		}
 		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
-
+//		throw new Exception(print_r($itemSetArray,true));
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
 				'productResult'=>$itemSetArray,
 				),TRUE, TRUE);

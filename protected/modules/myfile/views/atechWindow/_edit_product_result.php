@@ -62,7 +62,7 @@
 				<div class="row">
 				<div class="col-lg-12 text-center">
 					<a name="<?php // throw new Exception(print_r($this->action->id,true));
-					echo isset($productResult["brandModelId"])? $productResult["brandModelId"] : ""; ?>" class="btn btn-warning btn-lg <?php echo $this->action->id == 'view'? 'atechUpdate': ($this->action->id == 'create'? 'atechNav':'atechUpdate'); ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
+					echo isset($productResult["brandModelId"])? $productResult["brandModelId"] : ""; ?>" id="updateButton" class="btn btn-warning btn-lg <?php echo $this->action->id == 'view'? 'atechUpdate': ($this->action->id == 'create'? 'atechNav':'atechUpdate'); ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
 				</div>
 			</div>
 		</div>
