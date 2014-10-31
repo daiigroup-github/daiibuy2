@@ -193,3 +193,23 @@ function updateSetPrice(no)
 		$("#total" + i).html(price * quantity);
 	}
 }
+
+function addFavourite(userId, category2Id, baseUrl)
+{
+	$.ajax({
+		'url': baseUrl + '/madrid/theme/addFavourite',
+		'dataType': 'json',
+		'type': 'POST',
+		'data': {'userId': userId, 'category2Id': category2Id},
+		'success': function (data) {
+			if (data)
+			{
+				alert("เพิ่ม Theme สู่รายการที่ชื่นชอบสำเร็จ");
+			}
+			else
+			{
+				alert("ไม่สามารถเพิ่ม Theme สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
+			}
+		},
+	});
+}
