@@ -27,7 +27,7 @@ $this->breadcrumbs = array(
 		<div class="<?php echo $class; ?>">
 			<div class="blog-item">
 
-				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $key=='atechwindow'? 'atechWindow':$key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $key . '.png'); ?>
+				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $key . '.png'); ?>
 					<div class="button blue" style="text-align: center;background-clip: border-box;color:white"><?php echo $value; ?></div>
 				</a>
 				<?php
