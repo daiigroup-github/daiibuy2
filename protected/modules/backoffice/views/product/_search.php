@@ -28,7 +28,6 @@ $form = $this->beginWidget('CActiveForm', array(
 		<div class="col-lg-6">
 			<?php
 			echo $form->dropdownList($model, "status", Product::model()->getStatusArray(), array(
-				'prompt'=>'-- เลือกสถานะ --',
 				'class'=>'form-control'));
 			?>
 		</div>
