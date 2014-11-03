@@ -52,7 +52,7 @@ $this->pageHeader = 'Price Group';
 		<?php
 		$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'price-group-grid',
-			'dataProvider'=>$model->search(isset(Yii::app()->user->supplierId) ? Yii::app()->user->supplierId : NULL),
+			'dataProvider'=>$model->search(),
 			//'filter'=>$model,
 			'itemsCssClass'=>'table table-striped table-bordered table-condensed table-hover',
 			'columns'=>array(

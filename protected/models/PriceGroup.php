@@ -116,10 +116,10 @@ class PriceGroup extends PriceGroupMaster
 		$criteria->compare('priceGroupName', $this->priceGroupName, true, 'OR');
 		$criteria->compare('priceRate', $this->priceRate, true, 'OR');
 		$criteria->compare('status', $this->status);
-		if(isset($supplierId))
+		if(isset(Yii::app()->user->supplierId))
 		{
 			if(Yii::app()->user->userType != 4)
-				$criteria->compare('supplierId', $supplierId);
+				$criteria->compare('supplierId', Yii::app()->user->supplierId);
 		}
 
 		return new CActiveDataProvider($this, array(
