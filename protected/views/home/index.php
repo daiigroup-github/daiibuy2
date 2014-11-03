@@ -33,7 +33,7 @@ $this->breadcrumbs = array(
 							<div class="<?php echo $class; ?>">
 								<div class="blog-item">
 
-									<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/' . $supplier->logo); ?></a>
+									<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . $supplier->logo); ?></a>
 
 									<div class="blog-info">
 										<h3>
@@ -41,26 +41,26 @@ $this->breadcrumbs = array(
 										</h3>
 										<?php
 										/*
-										<div class="blog-meta">
-											<span class="date"><i class="icons icon-clock"></i> 21 December 2012</span>
-											<span class="cat"><i class="icons icon-tag"></i> <a href="#">lorem</a>, <a href="#">tablet</a></span>
-											<span class="views"><i class="icons icon-eye-1"></i> 11 times</span>
-										</div>
-										*/
+										  <div class="blog-meta">
+										  <span class="date"><i class="icons icon-clock"></i> 21 December 2012</span>
+										  <span class="cat"><i class="icons icon-tag"></i> <a href="#">lorem</a>, <a href="#">tablet</a></span>
+										  <span class="views"><i class="icons icon-eye-1"></i> 11 times</span>
+										  </div>
+										 */
 										?>
-										<p><?php echo $supplier->description;?></p>
+										<p><?php echo $supplier->description; ?></p>
 									</div>
 									<?php
 									/*
-									<div class="product-actions blog-actions">
-										<span class="product-action dark-blue current">
-											<span class="action-wrapper">
-												<i class="icons icon-doc-text"></i>
-												<span class="action-name">Read more</span>
-											</span>
-										</span>
-									</div>
-									*/
+									  <div class="product-actions blog-actions">
+									  <span class="product-action dark-blue current">
+									  <span class="action-wrapper">
+									  <i class="icons icon-doc-text"></i>
+									  <span class="action-name">Read more</span>
+									  </span>
+									  </span>
+									  </div>
+									 */
 									?>
 								</div>
 
@@ -80,33 +80,33 @@ $this->breadcrumbs = array(
 
 <?php
 /*
-<!-- Banner -->
-<section class="banner">
+  <!-- Banner -->
+  <section class="banner">
 
-	<div class="left-side-banner banner-item icon-on-right gray">
-		<h4>8(802)234-5678</h4>
-		<p>Monday - Saturday: 8am - 5pm PST</p>
-		<i class="icons icon-phone-outline"></i>
-	</div>
+  <div class="left-side-banner banner-item icon-on-right gray">
+  <h4>8(802)234-5678</h4>
+  <p>Monday - Saturday: 8am - 5pm PST</p>
+  <i class="icons icon-phone-outline"></i>
+  </div>
 
-	<a href="#">
-		<div class="middle-banner banner-item icon-on-left light-blue">
-			<h4>Free shipping</h4>
-			<p>on all orders over $99</p>
-			<span class="button">Learn more</span>
-			<i class="icons icon-truck-1"></i>
-		</div>
-	</a>
+  <a href="#">
+  <div class="middle-banner banner-item icon-on-left light-blue">
+  <h4>Free shipping</h4>
+  <p>on all orders over $99</p>
+  <span class="button">Learn more</span>
+  <i class="icons icon-truck-1"></i>
+  </div>
+  </a>
 
-	<a href="#">
-		<div class="right-side-banner banner-item orange">
-			<h4>Crazy sale!</h4>
-			<p>on selected items</p>
-			<span class="button">Shop now</span>
-		</div>
-	</a>
+  <a href="#">
+  <div class="right-side-banner banner-item orange">
+  <h4>Crazy sale!</h4>
+  <p>on selected items</p>
+  <span class="button">Shop now</span>
+  </div>
+  </a>
 
-</section>
-<!-- /Banner -->
+  </section>
+  <!-- /Banner -->
  */
 ?>
