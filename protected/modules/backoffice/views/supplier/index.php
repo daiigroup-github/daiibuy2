@@ -62,6 +62,14 @@ return false;
 		'columns'=>array(
 			array(
 				'class'=>'IndexColumn'),
+			array(
+				'name'=>'logo',
+				'type'=>'html',
+				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->logo, "", array("style"=>"width:50px"))',
+				'htmlOptions'=>array(
+					'width'=>'50px'
+				)
+			),
 			'name',
 			array(
 				'name'=>'description',
