@@ -14,6 +14,15 @@ $this->menu = array(
 );
 
 //$this->pageHeader = 'Manage Products';
+
+Yii::app()->clientScript->registerScript('search', "
+$('#search-form').submit(function(){
+$('#product-grid').yiiGridView('update', {
+data: $(this).serialize()
+});
+return false;
+});
+");
 ?>
 
 <div class="panel panel-default">
