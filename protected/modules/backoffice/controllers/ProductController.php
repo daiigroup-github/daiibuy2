@@ -605,7 +605,7 @@ class ProductController extends MasterBackofficeController
 	{
 		$model = $this->loadModel($id);
 		$model->status = Product::STATUS_DELETE;
-		$model->save();
+		$model->save(false);
 
 // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
