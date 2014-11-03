@@ -185,7 +185,7 @@ if(isset($model->status))
 				<?php
 				if($pPriceGroup == FALSE)
 				{
-					echo $form->dropDownList($model, 'priceGroupId', PriceGroup::model()->getAllPriceGroup(Yii::app()->user->id), array(
+					echo $form->dropDownList($model, 'priceGroupId', PriceGroup::model()->getAllPriceGroup(Yii::app()->user->supplierId), array(
 						'prompt'=>'Price Group'));
 				}
 				else
