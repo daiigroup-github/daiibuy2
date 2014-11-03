@@ -10,15 +10,15 @@
  */
 
 /* global $, window */
-
-$(function() {
+var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin;
+$(function () {
 	'use strict';
 
 	// Initialize the jQuery File Upload widget:
 	$('#fileupload').fileupload({
 		// Uncomment the following to send cross-domain cookies:
 		//xhrFields: {withCredentials: true},
-		url: window.location.origin + '/daiibuy2/images/myfiles'
+		url: baseUrl + 'images/myfiles'
 	});
 
 	// Enable iframe cross-domain access via redirect option:
@@ -48,7 +48,7 @@ $(function() {
 			$.ajax({
 				url: '//jquery-file-upload.appspot.com/',
 				type: 'HEAD'
-			}).fail(function() {
+			}).fail(function () {
 				$('<div class="alert alert-danger"/>')
 						.text('Upload server currently unavailable - ' +
 								new Date())
@@ -64,9 +64,9 @@ $(function() {
 			url: $('#fileupload').fileupload('option', 'url'),
 			dataType: 'json',
 			context: $('#fileupload')[0]
-		}).always(function() {
+		}).always(function () {
 			$(this).removeClass('fileupload-processing');
-		}).done(function(result) {
+		}).done(function (result) {
 			$(this).fileupload('option', 'done')
 					.call(this, $.Event('done'), {result: result});
 		});
