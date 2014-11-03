@@ -3,7 +3,8 @@
 class AtechWindowController extends MasterMyFileController
 {
 
-	public function init(){
+	public function init()
+	{
 //		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/vendor/jquery.ui.widget.js');
 //		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.iframe-transport.js');
 //		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/jquery.fileupload.js');
@@ -52,43 +53,46 @@ class AtechWindowController extends MasterMyFileController
 		  }
 		 */
 //		throw new Exception(print_r($_FILES['OrderFile'],true));
-		if(isset($_FILES['OrderFile'])){
+		if(isset($_FILES['OrderFile']))
+		{
 //			$planFile = $_FILES['OrderFile'];
-		try{
-			if(isset($_POST['Order']))
+			try
 			{
-				$flag = false;
-				$transaction = Yii::app()->db->beginTransaction();
-				$model->attributes = $_POST['Order'];
-				$model->type = 1;
-				$model->status = 0;
-				$model->supplierId = 2;
-				$model->userId = Yii::app()->user->id;
-				$model->createDateTime = new CDbExpression("NOW()");
-
-				if($model->save())
+				if(isset($_POST['Order']))
 				{
-					$folderimage = "orderFile";
-					$orderId = Yii::app()->db->lastInsertID;
-					for($i=0;$i<=sizeof($_FILES["OrderFile"]);$i++){
-						$image = CUploadedFile::getInstanceByName("OrderFile[$i]");
+					$flag = false;
+					$transaction = Yii::app()->db->beginTransaction();
+					$model->attributes = $_POST['Order'];
+					$model->type = 1;
+					$model->status = 0;
+					$model->supplierId = 2;
+					$model->userId = Yii::app()->user->id;
+					$model->createDateTime = new CDbExpression("NOW()");
 
-						if(isset($image) && !empty($image))
+					if($model->save())
+					{
+						$folderimage = "orderFile";
+						$orderId = Yii::app()->db->lastInsertID;
+						for($i = 0; $i <= sizeof($_FILES["OrderFile"]); $i++)
 						{
-							$orderFileModel = new OrderFile();
-							$imgType = explode('.', $image->name);
-							$imgType = $imgType[count($imgType) - 1];
-							$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
-							$imagePathimage = '/../' . $imageUrl;
-							$orderFileModel->senderId = Yii::app()->user->id;
-							$orderFileModel->filePath = $imageUrl;
-							$orderFileModel->orderId = $orderId;
-							$orderFileModel->fileName = $image->name;
-							$orderFileModel->createDateTime =  new CDbExpression("NOW()");
-							$orderFileModel->userType = 1;
-							$orderFileModel->status = 1;
-							if($orderFileModel->save())
+							$image = CUploadedFile::getInstanceByName("OrderFile[$i]");
+
+							if(isset($image) && !empty($image))
 							{
+								$orderFileModel = new OrderFile();
+								$imgType = explode('.', $image->name);
+								$imgType = $imgType[count($imgType) - 1];
+								$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+								$imagePathimage = '/../' . $imageUrl;
+								$orderFileModel->senderId = Yii::app()->user->id;
+								$orderFileModel->filePath = $imageUrl;
+								$orderFileModel->orderId = $orderId;
+								$orderFileModel->fileName = $image->name;
+								$orderFileModel->createDateTime = new CDbExpression("NOW()");
+								$orderFileModel->userType = 1;
+								$orderFileModel->status = 1;
+								if($orderFileModel->save())
+								{
 									if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
 									{
 										mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
@@ -101,24 +105,26 @@ class AtechWindowController extends MasterMyFileController
 									{
 										$flag = false;
 									}
-							}else{
-								throw new Exception(print_r($orderFileModel->error,TRUE));
+								}
+								else
+								{
+									throw new Exception(print_r($orderFileModel->error, TRUE));
+								}
 							}
 						}
 					}
-				}
 
-				if($flag)
-				{
-					$transaction->commit();
-					$this->redirect(array(
-						'view',
-						'id'=>$model->orderId));
-						}
+					if($flag)
+					{
+						$transaction->commit();
+						$this->redirect(array(
+							'view',
+							'id'=>$model->orderId));
+					}
 					else
-						{
+					{
 						$transaction->rollback();
-						}
+					}
 				}
 			}
 			catch(Exception $e)
@@ -144,34 +150,36 @@ class AtechWindowController extends MasterMyFileController
 		$model = $this->loadModel($id);
 		$productResult = array();
 		$res = array();
-		if(count($model->orderItems)>0){
+		if(count($model->orderItems) > 0)
+		{
 			$total = 0.00;
-			foreach($model->orderItems as $item){
+			foreach($model->orderItems as $item)
+			{
 				$productModel = Product::model()->findByPk($item->productId);
 				$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
-			":productId"=>$productModel->productId));
-			$res["items"][$productModel->productId]['productId'] = $productModel->productId;
-			$res["items"][$productModel->productId]['code'] = $productModel->code;
-			$res["items"][$productModel->productId]['width'] = $productModel->width;
-			$res["items"][$productModel->productId]['height'] = $productModel->height;
+					":productId"=>$productModel->productId));
+				$res["items"][$productModel->productId]['productId'] = $productModel->productId;
+				$res["items"][$productModel->productId]['code'] = $productModel->code;
+				$res["items"][$productModel->productId]['width'] = $productModel->width;
+				$res["items"][$productModel->productId]['height'] = $productModel->height;
 //			$res["items"][$productModel->productId]['category'] = $productModel->categoryId;
 //			$res["items"][$productModel->productId]['type'] = $item['type'];
-			$res["items"][$productModel->productId]['description'] = $productModel->description;
-			$res["items"][$productModel->productId]['quantity'] = $item->quantity;
-			if(isset($productPromotion))
-			{
-			//promotion price
-				$res["items"][$productModel->productId]['price'] = Product::model()->calProductPromotionTotalPrice($productModel->productId, 1, $model->provinceId);
-			}
-			else
-			{
-			//normal price
-				$res["items"][$productModel->productId]['price'] = Product::model()->calProductTotalPrice($productModel->productId, 1, $model->provinceId);
-			}
-			$subTotal = $res["items"][$productModel->productId]['price']*$res["items"][$productModel->productId]['quantity'];
-			$res["items"][$productModel->productId]['subTotal'] = $subTotal;
+				$res["items"][$productModel->productId]['description'] = $productModel->description;
+				$res["items"][$productModel->productId]['quantity'] = $item->quantity;
+				if(isset($productPromotion))
+				{
+					//promotion price
+					$res["items"][$productModel->productId]['price'] = Product::model()->calProductPromotionTotalPrice($productModel->productId, 1, $model->provinceId);
+				}
+				else
+				{
+					//normal price
+					$res["items"][$productModel->productId]['price'] = Product::model()->calProductTotalPrice($productModel->productId, 1, $model->provinceId);
+				}
+				$subTotal = $res["items"][$productModel->productId]['price'] * $res["items"][$productModel->productId]['quantity'];
+				$res["items"][$productModel->productId]['subTotal'] = $subTotal;
 
-			$total = $subTotal+$total;
+				$total = $subTotal + $total;
 			}
 			$res["total"] = $total;
 			$res["brandModelId"] = $productModel->brandModelId;
@@ -193,7 +201,8 @@ class AtechWindowController extends MasterMyFileController
 		return $model;
 	}
 
-	public function actionSaveMyFileAtech(){
+	public function actionSaveMyFileAtech()
+	{
 		$isNew = true;
 		if(isset($_POST['provinceId']))
 		{
@@ -203,77 +212,93 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$title = $_POST['title'];
 		}
-		if(isset($_POST['orderId']) && !($_POST['orderId'] == "")){
+		if(isset($_POST['orderId']) && !($_POST['orderId'] == ""))
+		{
 			$orderId = $_POST['orderId'];
-			$isNew =false;
+			$isNew = false;
 		}
 
-		if(isset($_POST['brandModelId'])){
+		if(isset($_POST['brandModelId']))
+		{
 			$brandModelId = $_POST['brandModelId'];
 		}
 
-		if(isset($_POST['productItems'])){
+		if(isset($_POST['productItems']))
+		{
 			$productItems = $_POST['productItems'];
 			$productArray = array();
 
-		foreach($productItems as $productId => $item){
+			foreach($productItems as $productId=> $item)
+			{
 //	throw new Exception(print_r($item,true));
 				$productModel = Product::model()->findByPk($productId);
 				$productArray[$productModel->productId] = $productModel;
 				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 			}
 		}
-			$res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
+		$res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 
 
 
-					if(!$isNew){
-						$model = Order::model()->findByPk($orderId);
-					}else{
-						$model = new Order();
-						$model->title = $title;
-						$model->provinceId = $provinceId;
-						$model->type = 1;
+		if(!$isNew)
+		{
+			$model = Order::model()->findByPk($orderId);
+		}
+		else
+		{
+			$model = new Order();
+			$model->title = $title;
+			$model->provinceId = $provinceId;
+			$model->type = 1;
 
-						$model->supplierId = 2;
-						$model->userId = Yii::app()->user->id;
-						$model->createDateTime = new CDbExpression("NOW()");
-					}
-					$model->status = 1;
-					$model->updateDateTime = new CDbExpression("NOW()");
-					if($model->save()){
-						if($isNew){
-							$newOrderId = Yii::app()->db->lastInsertID;
-						}
+			$model->supplierId = 2;
+			$model->userId = Yii::app()->user->id;
+			$model->createDateTime = new CDbExpression("NOW()");
+		}
+		$model->status = 1;
+		$model->updateDateTime = new CDbExpression("NOW()");
+		if($model->save())
+		{
+			if($isNew)
+			{
+				$newOrderId = Yii::app()->db->lastInsertID;
+			}
 
 
-						foreach($res['items'] as $productId => $item){
+			foreach($res['items'] as $productId=> $item)
+			{
 
-				if($isNew){
+				if($isNew)
+				{
 					$orderItemModel = new OrderItems();
 					$orderItemModel->orderId = $newOrderId;
 					$orderItemModel->productId = $productId;
 					$orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
 					$orderItemModel->createDateTime = new CDbExpression("NOW()");
-				}else{
-					$orderItemModel = OrderItems::model()->find('orderId = '.$orderId.' AND productId = '. $productId);
+				}
+				else
+				{
+					$orderItemModel = OrderItems::model()->find('orderId = ' . $orderId . ' AND productId = ' . $productId);
 				}
 				$orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
 				$orderItemModel->price = $res['items'][$productId]['price'];
 				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
-				$orderItemModel->total = $res['items'][$productId]['price']*$res['items'][$productId]['quantity'];
+				$orderItemModel->total = $res['items'][$productId]['price'] * $res['items'][$productId]['quantity'];
 				$orderItemModel->updateDateTime = new CDbExpression("NOW()");
-				if(!($orderItemModel->save())){
+				if(!($orderItemModel->save()))
+				{
 					throw new Exception(print_r($orderItemModel->errors, True));
 				}
 			}
-					}else{
-						throw new Exception(print_r($model->errors,true));
-					}
+		}
+		else
+		{
+			throw new Exception(print_r($model->errors, true));
+		}
 
 		echo $this->renderPartial('/atechWindow/_confirm_product', array(
-				'productResult'=>$res,
-				),TRUE, TRUE);
+			'productResult'=>$res,
+			), TRUE, TRUE);
 	}
 
 //
@@ -289,7 +314,6 @@ class AtechWindowController extends MasterMyFileController
 //				'model'=>$model,
 //				),TRUE, TRUE);
 //	}
-
 	// Uncomment the following methods and override them if needed
 	/*
 	  public function filters()
@@ -318,29 +342,40 @@ class AtechWindowController extends MasterMyFileController
 	 */
 
 
-	public function actionAddNewProductItem(){
+	public function actionAddNewProductItem()
+	{
 
 		if(isset($_POST['rows']) && !empty($_POST['rows']))
 		{
-			$rowCount = $_POST['rows']-1;
-			$index = $rowCount-1;
+			$rowCount = $_POST['rows'] - 1;
+			$index = $rowCount - 1;
 //			throw new Exception(print_r($rowCount+1,true));
 		}
 		echo '<tr>'
-		. '<td>'.$rowCount.'</td>'
-		. '<td>'. CHtml::dropDownList('Criteria['.$index.'][category]', "category", array('ประตู'=>'ประตู','หน้าต่าง'=>'หน้าต่าง')).'</td>'
-			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][type]', "type", array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง')).'</td>'
-			. '<td>'. CHtml::dropDownList('Criteria['.$index.'][size]', "size", Product::model()->findAllAtechSizeArray()) .'</td>'
-			. '<td>'. CHtml::textField('Criteria['.$index.'][quantity]', 1,array('class'=>'edit-table-qty-input number')).'</td>'
-			. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
-			. '</tr>';
+		. '<td>' . $rowCount . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", array(
+			'ประตู'=>'ประตู',
+			'หน้าต่าง'=>'หน้าต่าง')) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
+			'บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน',
+			'บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน',
+			'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว',
+			'บานเปิดคู่'=>'บานเปิดคู่',
+			'บานกระทุ้ง'=>'บานกระทุ้ง',
+			'บานส่องแสง'=>'บานส่องแสง')) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][size]', "size", Product::model()->findAllAtechSizeArray()) . '</td>'
+		. '<td>' . CHtml::textField('Criteria[' . $index . '][quantity]', 1, array(
+			'class'=>'edit-table-qty-input number')) . '</td>'
+		. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
+		. '</tr>';
 	}
 
-
-	public function actionCalculatePriceMyFile(){
+	public function actionCalculatePriceMyFile()
+	{
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(2);
-		if(isset($_POST['Criteria'])){
+		if(isset($_POST['Criteria']))
+		{
 			$criteria = $_POST['Criteria'];
 		}
 		if(isset($_POST['provinceId']))
@@ -365,12 +400,14 @@ class AtechWindowController extends MasterMyFileController
 
 //		throw new Exception(print_r($itemSetArray,true));
 		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
-				'productResult'=>$itemSetArray,
-				),TRUE, TRUE);
+			'productResult'=>$itemSetArray,
+			), TRUE, TRUE);
 	}
 
-	public function actionUpdatePriceMyFile(){
-		if(isset($_POST['Criteria'])){
+	public function actionUpdatePriceMyFile()
+	{
+		if(isset($_POST['Criteria']))
+		{
 			$criteria = $_POST['Criteria'];
 		}
 		if(isset($_POST['provinceId']))
@@ -381,27 +418,32 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$title = $_POST['title'];
 		}
-		if(isset($_POST['brandModelId'])){
+		if(isset($_POST['brandModelId']))
+		{
 			$brandModelId = $_POST['brandModelId'];
 		}
 
-		if(isset($_POST['productItems']) && isset($_POST['Criteria'])){
+		if(isset($_POST['productItems']) && isset($_POST['Criteria']))
+		{
 			$productItems = $_POST['productItems'];
-			$i=0;
-			foreach($productItems as $item){
-			$criteria[$i]["quantity"] = $item["quantity"];
-			$i++;
+			$i = 0;
+			foreach($productItems as $item)
+			{
+				$criteria[$i]["quantity"] = $item["quantity"];
+				$i++;
+			}
 		}
-		}else if(isset($_POST['productItems'])){
+		else if(isset($_POST['productItems']))
+		{
 			$productItems = $_POST['productItems'];
 			$productArray = array();
-		foreach($productItems as $productId => $item){
+			foreach($productItems as $productId=> $item)
+			{
 //	throw new Exception(print_r($item,true));
 				$productModel = Product::model()->findByPk($productId);
 				$productArray[$productModel->productId] = $productModel;
 				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
-		}
-
+			}
 		}
 //		if(isset($_POST['size']))
 //		{
@@ -410,15 +452,18 @@ class AtechWindowController extends MasterMyFileController
 //			$width = $size[0];
 //			$height = $size[1];
 //		}
-		if(isset($criteria) && isset($brandModelId) && isset($provinceId)){
-		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
-		}else{
+		if(isset($criteria) && isset($brandModelId) && isset($provinceId))
+		{
+			$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
+		}
+		else
+		{
 			$itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 		}
 //		throw new Exception(print_r($itemSetArray,true));
 		echo $this->renderPartial('/atechWindow/_edit_product_result', array(
-				'productResult'=>$itemSetArray,
-				),TRUE, TRUE);
+			'productResult'=>$itemSetArray,
+			), TRUE, TRUE);
 	}
 
 	public function actionFinish($id)
@@ -442,11 +487,11 @@ class AtechWindowController extends MasterMyFileController
 
 	public function actionAddtoCart($id)
 	{
-		throw new Exception(print_r($id,true));
 		$model = Order::model()->findByPk($id);
 		$model->type = 3;
 		$model->save();
 		$this->redirect(array(
 			'index'));
 	}
+
 }

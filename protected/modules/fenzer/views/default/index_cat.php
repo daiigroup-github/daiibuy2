@@ -19,7 +19,7 @@ $this->breadcrumbs = array(
 	<div class="col-lg-12 col-md-12 col-sm-12">
 
 		<div class="carousel-heading">
-			<h4><?php echo $supplierModel->name; ?></h4>
+			<h4><?php echo $brandModel->title; ?></h4>
 		</div>
 
 	</div>
@@ -27,12 +27,9 @@ $this->breadcrumbs = array(
 </div>
 
 <?php
-foreach($supplierModel->brands as $brand)
+foreach($brandModel->categorys as $category)
 {
-	foreach($brand->brandModels as $brandModel)
-	{
-		$this->renderPartial('_brand_item', array(
-			'brandModel'=>$brandModel));
-	}
+	$this->renderPartial('_product_item', array(
+		'category'=>$category));
 }
 ?>
