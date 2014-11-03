@@ -31,7 +31,7 @@ $this->pageHeader = 'Price Group';
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Brands
+		Manage Price Group
 		<div class="pull-right">
 			<?php
 			echo CHtml::link('<i class="icon-plus-sign"></i> เพิ่มกลุ่มราคา', $this->createUrl('create'), array(

@@ -47,7 +47,7 @@ class PriceGroupController extends MasterBackofficeController
 		if(isset($_POST['PriceGroup']))
 		{
 			$model->attributes = $_POST['PriceGroup'];
-			$model->supplierId = Yii::app()->user->id;
+			$model->supplierId = Yii::app()->user->supplierId;
 			$flag = true;
 			$isHasRate = false;
 			$transaction = Yii::app()->db->beginTransaction();
