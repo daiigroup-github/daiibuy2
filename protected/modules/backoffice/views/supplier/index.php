@@ -65,7 +65,7 @@ return false;
 			array(
 				'name'=>'logo',
 				'type'=>'html',
-				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->logo, "", array("style"=>"width:50px"))',
+				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->logo, "", array("style"=>"width:100px"))',
 				'htmlOptions'=>array(
 					'width'=>'50px'
 				)
