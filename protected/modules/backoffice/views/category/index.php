@@ -103,7 +103,7 @@ return false;
 //					),
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId)'
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])'
 					),
 					'image'=>array(
 						'label'=>'<br><u>image</u>',
