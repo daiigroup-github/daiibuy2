@@ -161,7 +161,7 @@ class SupplierController extends MasterBackofficeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$oldimage = $model->image;
+				$oldimage = $model->logo;
 				$model->attributes = $_POST['Supplier'];
 				$model->attributes = $_POST['Supplier']["billing"];
 				$folderimage = 'supplier';
