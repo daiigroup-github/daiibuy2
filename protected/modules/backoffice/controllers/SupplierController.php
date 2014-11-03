@@ -83,10 +83,41 @@ class SupplierController extends MasterBackofficeController
 			{
 				$model->attributes = $_POST['Supplier'];
 				$model->attributes = $_POST['Supplier']["billing"];
-
+				$folderimage = 'supplier';
+				$image = CUploadedFile::getInstance($model, 'logo');
+				if(isset($image) && !empty($image))
+				{
+					$imgType = explode('.', $image->name);
+					$imgType = $imgType[count($imgType) - 1];
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePathimage = '/../' . $imageUrl;
+					$model->logo = $imageUrl;
+				}
+				else
+				{
+					$model->logo = null;
+				}
 				if($model->save())
 				{
-					$flag = true;
+					if(isset($image) && !empty($image))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
+						{
+							$flag = true;
+						}
+						else
+						{
+							$flag = false;
+						}
+					}
+					else
+					{
+						$flag = true;
+					}
 				}
 
 				if($flag)
@@ -132,10 +163,38 @@ class SupplierController extends MasterBackofficeController
 			{
 				$model->attributes = $_POST['Supplier'];
 				$model->attributes = $_POST['Supplier']["billing"];
-
+				$folderimage = 'supplier';
+				$image = CUploadedFile::getInstance($model, 'logo');
+				if(isset($image) && !empty($image))
+				{
+					$imgType = explode('.', $image->name);
+					$imgType = $imgType[count($imgType) - 1];
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$imagePath = '/../' . $imageUrl;
+					$model->logo = $imageUrl;
+				}
+				else
+				{
+					$model->logo = $oldimage;
+				}
 				if($model->save())
 				{
 					$flag = true;
+					if(isset($image) && !empty($image))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePath))
+						{
+							if(isset($oldimage) && !empty($oldimage))
+								@unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
+						}
+						else
+							$flag = false;
+					}
 				}
 
 				if($flag)

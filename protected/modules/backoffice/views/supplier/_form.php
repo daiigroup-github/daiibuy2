@@ -16,7 +16,7 @@
 		'enableAjaxValidation'=>true,
 		'htmlOptions'=>array(
 			'class'=>'form-horizontal',
-		//'enctype' => 'multipart/form-data',
+			'enctype'=>'multipart/form-data',
 		),
 	));
 	?>
