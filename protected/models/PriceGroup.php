@@ -132,7 +132,7 @@ class PriceGroup extends PriceGroupMaster
 	{
 		$criteria = new CDbCriteria();
 		if(isset($supplierId))
-			if(!(User::model()->findByPk($supplierId)->type == 4))
+			if(!(Yii::app()->user->userType == 4))
 			{
 				$criteria->compare("supplierId", $supplierId);
 			}
