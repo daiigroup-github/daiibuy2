@@ -5,24 +5,27 @@ class ThemeController extends MasterMadridController
 
 	public $layout = '//layouts/cl1';
 
-	public function actionIndex($id)
+	public function actionIndex()
 	{
-		$category = Category::model()->findByPk($id);
-		$title = $category->title;
+//		$category = Category::model()->findByPk($id);
+//		$title = $category->title;
+		$title = "Theme";
 
 		$categoryToSub = CategoryToSub::model()->findAll(array(
-			'condition'=>'categoryId=:categoryId AND isTheme=1',
-			'params'=>array(
-				':categoryId'=>$id,
-			),
+//			'condition'=>'categoryId=:categoryId AND isTheme=1',
+			'condition'=>' isTheme=1',
+//			'params'=>array(
+//				':categoryId'=>$id,
+//			),
 		));
 		//$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
 		$subCategorysId = implode(',', CHtml::listData($categoryToSub, 'subCategoryId', 'subCategoryId'));
 
 		$category2ToProducts = Category2ToProduct::model()->findAll(array(
-			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
+//			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
+			'condition'=>'category2Id IN (:category2Id)',
 			'params'=>array(
-				':category1Id'=>$id,
+//				':category1Id'=>$id,
 				':category2Id'=>$subCategorysId,
 			),
 		));
