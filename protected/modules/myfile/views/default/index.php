@@ -30,20 +30,20 @@ $this->breadcrumbs = array(
 		<div class="<?php echo $class; ?>">
 			<div class="blog-item">
 				<?php
-				switch(strtolower($key))
+				switch(strtolower($value->url))
 				{
-					case "atech window":
-						$key = "atechWindow";
+					case "atechwindow":
+						$url = "atechWindow";
 						break;
-					case "ginza home":
-						$key = "ginzaHome";
+					case "ginzahome":
+						$url = "ginzaHome";
 						break;
-					case "madrid bathroom":
-						$key = "madrid";
+					default :
+						$url = $value->url;
 						break;
 				}
 				?>
-				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $key); ?>"><?php
+				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $url); ?>"><?php
 					echo CHtml::image(Yii::app()->baseUrl . $value->logo, $value->name, array(
 						"style"=>"height:130px"));
 					?>
