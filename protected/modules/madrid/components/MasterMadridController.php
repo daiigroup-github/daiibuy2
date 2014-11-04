@@ -36,13 +36,8 @@ class MasterMadridController extends MasterController
 		);
 		foreach($categorys as $category)
 		{
-			$categoryToSub = CategoryToSub::model()->find(array(
-				'condition'=>'categoryId=:categoryId AND (isTheme=1 OR isSet=1)',
-				'params'=>array(
-					':categoryId'=>$category->categoryId,
-				),
-			));
 
+			$categoryToSub = CategoryToSub::model()->findSetAndTheme($category->categoryId);
 			if(isset($categoryToSub))
 			{
 				if($categoryToSub->isTheme == 1)
