@@ -45,27 +45,21 @@ class MasterMadridController extends MasterController
 				$i++;
 			}
 		}
-		if($categoryToSub->isTheme == 1)
-		{
-			$nav['theme'] = array(
-				'url'=>$this->createUrl('theme/index/id/' . $category->categoryId),
-				//'url' => $this->createUrl($this->module->id.'/../theme'),
-				'color'=>'orange',
-				'caption'=>$category->title,
+		$nav['theme'] = array(
+			'url'=>$this->createUrl('theme/index/'),
+			//'url' => $this->createUrl($this->module->id.'/../theme'),
+			'color'=>'orange',
+			'caption'=>$category->title,
 //                        'description' => 'Description'
-			);
-		}
+		);
 
-		if($categoryToSub->isSet == 1)
-		{
-			$nav['set'] = array(
-				'url'=>$this->createUrl('set/index/id/' . $category->categoryId),
+		$nav['set'] = array(
+			'url'=>$this->createUrl('set/index/'),
 //                        'url' => $this->createUrl($this->module->id.'/../set'),
-				'color'=>'red',
-				'caption'=>$category->title,
+			'color'=>'red',
+			'caption'=>$category->title,
 //                        'description' => 'Description'
-			);
-		}
+		);
 		if(isset($nav["theme"]))
 		{
 			$this->nav[$i++] = $nav['theme'];
