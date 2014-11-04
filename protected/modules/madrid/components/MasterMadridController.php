@@ -49,7 +49,7 @@ class MasterMadridController extends MasterController
 			'url'=>$this->createUrl('theme/index/'),
 			//'url' => $this->createUrl($this->module->id.'/../theme'),
 			'color'=>'orange',
-			'caption'=>$category->title,
+			'caption'=>"Theme",
 //                        'description' => 'Description'
 		);
 
@@ -57,7 +57,7 @@ class MasterMadridController extends MasterController
 			'url'=>$this->createUrl('set/index/'),
 //                        'url' => $this->createUrl($this->module->id.'/../set'),
 			'color'=>'red',
-			'caption'=>$category->title,
+			'caption'=>"Sanitary Set",
 //                        'description' => 'Description'
 		);
 		if(isset($nav["theme"]))
