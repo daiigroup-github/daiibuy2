@@ -69,9 +69,14 @@ class MasterMadridController extends MasterController
 				$i++;
 			}
 		}
-
-		$this->nav[$i++] = $nav['theme'];
-		$this->nav[$i++] = $nav['set'];
+		if(isset($nav["theme"]))
+		{
+			$this->nav[$i++] = $nav['theme'];
+		}
+		if(isset($nav["set"]))
+		{
+			$this->nav[$i++] = $nav['set'];
+		}
 	}
 
 	//temp function
