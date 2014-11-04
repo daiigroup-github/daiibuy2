@@ -241,29 +241,22 @@ class BrandModelController extends MasterBackofficeController
 	 */
 	public function actionDelete($id)
 	{
-		$transaction = Yii::app()->db->beginTransaction();
 		try
 		{
 
-//			Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 0;")->query();
+			Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 0;")->query();
 			$modelToCat = ModelToCategory1::model()->find("brandModelId=" . $id);
-
-			if($modelToCat->delete())
+			if(isset($modelToCat))
 			{
-
-				$this->loadModel($id)->delete();
-				$transaction->commit();
+				$modelToCat->delete();
 			}
-			else
-			{
-				$transaction->rollback();
-			}
-//			Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 1;")->query();
+			$this->loadModel($id)->delete();
+			Yii::app()->db->createCommand("SET FOREIGN_KEY_CHECKS = 1;")->query();
 		}
 		catch(Exception $exc)
 		{
 			$transaction->rollback();
-			echo $exc->getTraceAsString();
+			throw new Exception($exc->getMessage());
 		}
 
 

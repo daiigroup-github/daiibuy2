@@ -19,7 +19,7 @@
                     <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/"; ?>"><i class="icons fa fa-folder-open"></i>My Files</a>
                 </li>
                 <li class="blue">
-                    <a href="order_info.html"><i class="icons fa fa-shopping-cart"></i><span id="cartHeader"></span></a>
+                    <a href="#"><i class="icons fa fa-shopping-cart"></i><span id="cartHeader"></span></a>
                     <ul id="cart-dropdown" class="box-dropdown parent-arrow">
                         <li>
 							<?php $this->renderPartial('//layouts/_main_header_cart'); ?>

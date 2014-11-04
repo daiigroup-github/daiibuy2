@@ -73,7 +73,7 @@ return false;
 				'value'=>'"$data->name<br />".
 				"Last Update : $data->updateDateTime<br />".
 				"veiws : $data->viewed<br />"
-				//.$data->getBadgeStatus()
+				.$data->getBadgeStatus()
 				',
 			),
 			array(
