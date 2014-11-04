@@ -18,12 +18,7 @@ class MasterMadridController extends MasterController
 			),
 		));
 
-		$categorys = Category::model()->findAll(array(
-			'condition'=>'supplierId=:supplierId AND isRoot=1',
-			'params'=>array(
-				':supplierId'=>$supplier->supplierId
-			),
-		));
+		$categorys = Category::model()->findAll('supplierId=' . $supplier->supplierId . ' AND isRoot=1');
 
 		$nav = array();
 		$i = 1;
