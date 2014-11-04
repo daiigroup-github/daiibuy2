@@ -52,7 +52,7 @@ class MasterAtechwindowController extends MasterController
 			$this->nav[$i] = array(
 				'url'=>$this->createUrl('default/index/id/' . $category->categoryId),
 				'caption'=>strtoupper($category->title),
-				'description'=>'Company Profile',
+				'description'=>$category->description,
 				'color'=>$this->navColor[$i % 4],
 			);
 
