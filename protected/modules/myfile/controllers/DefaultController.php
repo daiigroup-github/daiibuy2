@@ -9,12 +9,14 @@ class DefaultController extends MasterMyFileController
 	{
 
 
-		$suppliers = array(
-			'fenzer'=>'Fenzer',
-			'atechwindow'=>'Atech Window',
-			'ginzahome'=>'Ginza Home',
-			'madrid'=>'Madrid Bathroom',
-		);
+//		$suppliers = array(
+//			'fenzer'=>'Fenzer',
+//			'atechwindow'=>'Atech Window',
+//			'ginzahome'=>'Ginza Home',
+//			'madrid'=>'Madrid Bathroom',
+//		);
+		$suppliers = Supplier::model()->findAll("status = 1");
+
 		$this->render('index', array(
 			'suppliers'=>$suppliers));
 	}
