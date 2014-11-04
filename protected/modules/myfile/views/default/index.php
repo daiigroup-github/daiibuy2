@@ -38,6 +38,9 @@ $this->breadcrumbs = array(
 					case "ginza home":
 						$key = "ginzaHome";
 						break;
+					case "madrid bathroom":
+						$key = "madrid";
+						break;
 				}
 				?>
 				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $key); ?>"><?php
