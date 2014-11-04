@@ -26,7 +26,17 @@ $this->breadcrumbs = array(
 		?>
 		<div class="<?php echo $class; ?>">
 			<div class="blog-item">
-
+				<?php
+				switch(strtolower($key))
+				{
+					case "atechwindow":
+						$key = "atechWindow";
+						break;
+					case "ginzahome":
+						$key = "ginzaHome";
+						break;
+				}
+				?>
 				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $key); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . '/images/myfiles/' . $key . '.png'); ?>
 					<div class="button blue" style="text-align: center;background-clip: border-box;color:white"><?php echo $value; ?></div>
 				</a>

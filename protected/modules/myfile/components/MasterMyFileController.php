@@ -13,25 +13,25 @@ class MasterMyFileController extends MasterController
 
 		$this->nav = array(
 			array(
-				'url'=>'#',
+				'url'=>Yii::app()->createUrl("/myfile/fenzer"),
 				'color'=>'green',
 				'caption'=>'FENZER',
 				'description'=>'Fence and wall'
 			),
 			array(
-				'url'=>'#',
+				'url'=>Yii::app()->createUrl("/myfile/atechWindow"),
 				'color'=>'blue',
 				'caption'=>'ATECH WINDOW',
 				'description'=>'Atech Doors and Windows'
 			),
 			array(
-				'url'=>'#',
+				'url'=>Yii::app()->createUrl("/myfile/ginzaHome"),
 				'color'=>'red',
 				'caption'=>'GINZA HOME',
 				'description'=>'Ginza Home'
 			),
 			array(
-				'url'=>'#',
+				'url'=>Yii::app()->createUrl("/myfile/madrid"),
 				'color'=>'orange',
 				'caption'=>'MADRID BATHROOM',
 				'description'=>'Madrid Bathroom'
