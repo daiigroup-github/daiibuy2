@@ -32,10 +32,10 @@ $this->breadcrumbs = array(
 				<?php
 				switch(strtolower($key))
 				{
-					case "atechwindow":
+					case "atech window":
 						$key = "atechWindow";
 						break;
-					case "ginzahome":
+					case "ginza home":
 						$key = "ginzaHome";
 						break;
 				}
@@ -62,6 +62,6 @@ $this->breadcrumbs = array(
 
 		</div>
 		<?php $i++; ?>
-<?php endforeach; ?>
+	<?php endforeach; ?>
 
 </div>
