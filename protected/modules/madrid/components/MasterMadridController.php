@@ -28,7 +28,7 @@ class MasterMadridController extends MasterController
 		$nav = array();
 		$i = 1;
 		$this->nav[0] = array(
-			'url'=>$this->createUrl('/ginzahome'),
+			'url'=>$this->createUrl('/madrid'),
 			'caption'=>"<i class='icon icon-home'></i>",
 //                        'description' => 'Company Profile',
 			'color'=>$this->navColor[0],

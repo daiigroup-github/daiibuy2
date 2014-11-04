@@ -45,8 +45,14 @@ class MasterAtechwindowController extends MasterController
 			),
 			'order'=>'title'
 		));
-
-		$i = 0;
+		$this->nav[0] = array(
+			'url'=>$this->createUrl('/atechwindow'),
+			'caption'=>"<i class='icon icon-home'></i>",
+//                        'description' => 'Company Profile',
+			'color'=>$this->navColor[0],
+			'class'=>' nav-search'
+		);
+		$i = 1;
 		foreach($categorys as $category)
 		{
 			$this->nav[$i] = array(
