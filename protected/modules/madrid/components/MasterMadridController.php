@@ -33,31 +33,7 @@ class MasterMadridController extends MasterController
 		{
 
 			$categoryToSub = CategoryToSub::model()->findSetAndTheme($category->categoryId);
-			if(isset($categoryToSub))
-			{
-				if($categoryToSub->isTheme == 1)
-				{
-					$nav['theme'] = array(
-						'url'=>$this->createUrl('theme/index/id/' . $category->categoryId),
-						//'url' => $this->createUrl($this->module->id.'/../theme'),
-						'color'=>'orange',
-						'caption'=>$category->title,
-//                        'description' => 'Description'
-					);
-				}
-
-				if($categoryToSub->isSet == 1)
-				{
-					$nav['set'] = array(
-						'url'=>$this->createUrl('set/index/id/' . $category->categoryId),
-//                        'url' => $this->createUrl($this->module->id.'/../set'),
-						'color'=>'red',
-						'caption'=>$category->title,
-//                        'description' => 'Description'
-					);
-				}
-			}
-			else
+			if(!isset($categoryToSub))
 			{
 				$this->nav[$i] = array(
 					'url'=>$this->createUrl('category/index/id/' . $category->categoryId),
@@ -68,6 +44,27 @@ class MasterMadridController extends MasterController
 
 				$i++;
 			}
+		}
+		if($categoryToSub->isTheme == 1)
+		{
+			$nav['theme'] = array(
+				'url'=>$this->createUrl('theme/index/id/' . $category->categoryId),
+				//'url' => $this->createUrl($this->module->id.'/../theme'),
+				'color'=>'orange',
+				'caption'=>$category->title,
+//                        'description' => 'Description'
+			);
+		}
+
+		if($categoryToSub->isSet == 1)
+		{
+			$nav['set'] = array(
+				'url'=>$this->createUrl('set/index/id/' . $category->categoryId),
+//                        'url' => $this->createUrl($this->module->id.'/../set'),
+				'color'=>'red',
+				'caption'=>$category->title,
+//                        'description' => 'Description'
+			);
 		}
 		if(isset($nav["theme"]))
 		{
