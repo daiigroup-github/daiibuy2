@@ -154,7 +154,8 @@ class CategoryToSubController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'index',
-						'categoryId'=>$_GET["categoryId"]));
+						'categoryId'=>$_GET["categoryId"],
+						"brandModelId"=>$model->brandModelId));
 				}
 				else
 				{
