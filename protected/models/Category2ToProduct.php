@@ -111,4 +111,13 @@ class Category2ToProduct extends Category2ToProductMaster
 		return $cate->type;
 	}
 
+	public function findProductWithCat1AndCat2($cat1Id, $cat2Id)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->compare("category1Id", $cat1Id);
+		$criteria->compare("category2Id", $cat2Id);
+
+		return $this->findAll($criteria);
+	}
+
 }

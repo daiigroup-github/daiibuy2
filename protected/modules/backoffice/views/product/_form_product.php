@@ -276,15 +276,18 @@ if(isset($model->status))
 			<label class="col-sm-3 control-label">Dimension (W x H x L)</label>
 			<div class="col-sm-9">
 				<?php
-				echo $form->numberField($model, 'width', $pDiWidth);
+				echo $form->numberField($model, 'width', $pDiWidth, array(
+					'step'=>'any'));
 				?>
 				<?php echo $form->error($model, 'width'); ?>
 				<?php
-				echo $form->numberField($model, 'height', $pDiHeight);
+				echo $form->numberField($model, 'height', $pDiHeight, array(
+					'step'=>'any'));
 				?>
 				<?php echo $form->error($model, 'height'); ?>
 				<?php
-				echo $form->numberField($model, 'length', $pDiLenght);
+				echo $form->numberField($model, 'length', $pDiLenght, array(
+					'step'=>'any'));
 				?>
 				<?php echo $form->error($model, 'length'); ?>
 
@@ -401,7 +404,7 @@ if(isset($model->status))
 			));
 			?>
 			<p style="color: red;">**คุณสามารถอัพโหลดรูปได้ มากสุด 10 รูป**</p>
-			<?php echo $form->error($model, 'image'); ?>
+<?php echo $form->error($model, 'image'); ?>
 		</div>
 	</div>
 </div>
