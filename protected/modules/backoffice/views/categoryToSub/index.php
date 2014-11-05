@@ -148,7 +148,7 @@ return false;
 								return false;
 							}
 						},
-						data: {subCategoryId: $("#subCategoryId").val(), categoryId: <?php echo $_GET["categoryId"] ?>},
+						data: {subCategoryId: $("#subCategoryId").val(), categoryId: <?php echo $_GET["categoryId"] ?>, brandModelId:<?php echo $_GET["brandModelId"] ?>},
 						success: function (data) {
 							if (data.status)
 							{

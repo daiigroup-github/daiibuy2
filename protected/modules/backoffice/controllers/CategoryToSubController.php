@@ -359,7 +359,7 @@ class CategoryToSubController extends MasterBackofficeController
 		}
 	}
 
-	public function actionSaveCategorytoSub($categoryId = null, $subCategoryId = null, $isTheme = false, $isSet = false)
+	public function actionSaveCategorytoSub($categoryId = null, $subCategoryId = null, $isTheme = false, $isSet = false, $brandModelId = NULL)
 	{
 //		throw new Exception(print_r($_REQUEST, true));
 		$result = array();
@@ -370,6 +370,7 @@ class CategoryToSubController extends MasterBackofficeController
 		{
 			$model->categoryId = $categoryId;
 			$model->subCategoryId = $subCategoryId;
+			$model->brandModelId = $brandModelId;
 			$model->isTheme = FALSE;
 			$model->isSet = false;
 			return $model->save();
@@ -378,6 +379,7 @@ class CategoryToSubController extends MasterBackofficeController
 		{
 			$model->categoryId = $_POST["categoryId"];
 			$model->subCategoryId = $_POST["subCategoryId"];
+			$model->brandModelId = $_POST["brandModelId"];
 			$result["status"] = $model->save();
 			echo CJSON::encode($result);
 		}
