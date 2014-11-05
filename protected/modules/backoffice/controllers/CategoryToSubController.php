@@ -77,6 +77,11 @@ class CategoryToSubController extends MasterBackofficeController
 			$model->categoryId = $_GET["categoryId"];
 		}
 
+		if($_GET["brandModelId"])
+		{
+			$model->brandModelId = $_GET["brandModelId"];
+		}
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -242,7 +247,8 @@ class CategoryToSubController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'index',
-						'categoryId'=>$model->categoryId));
+						'categoryId'=>$model->categoryId,
+						"brandModelId"=>$model->brandModelId));
 				}
 				else
 				{

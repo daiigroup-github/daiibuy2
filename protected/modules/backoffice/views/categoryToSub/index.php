@@ -127,7 +127,7 @@ return false;
 						<div class="col-lg-6">
 							<h3>New Category</h3>
 							<?php
-							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?categoryId=' . $_GET["categoryId"]), array(
+							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?categoryId=' . $_GET["categoryId"] . "&brandModelId=" . $_GET["brandModelId"]), array(
 								'class'=>'btn btn-xs btn-primary'));
 							?>
 						</div>
