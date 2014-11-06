@@ -82,17 +82,17 @@ $this->breadcrumbs = array(
                     </div>
                 </div>
 
-                <div class="form-group product-actions-single">
-                    <label for="h" class="col-sm-2 control-label">Color</label>
+				<!--                <div class="form-group product-actions-single">
+									<label for="h" class="col-sm-2 control-label">Color</label>
 
-                    <div class="col-sm-9">
-						<?php
-						echo CHtml::dropDownList('Color', '', $colors, array(
-							'class'=>'chosen-select-full-width',
-							'prompt'=>'-- Please Select --'));
-						?>
-                    </div>
-                </div>
+									<div class="col-sm-9">
+				<?php
+//						echo CHtml::dropDownList('Color', '', $colors, array(
+//							'class'=>'chosen-select-full-width',
+//							'prompt'=>'-- Please Select --'));
+				?>
+									</div>
+								</div>-->
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -175,7 +175,7 @@ $this->breadcrumbs = array(
                     <th>รหัสสินค้า</th>
                     <th>รายละเอียด</th>
                     <th>ขนาด</th>
-                    <th>สี</th>
+                    <!--<th>สี</th>-->
                     <th>ราคา</th>
                     <th>Qty</th>
                     <th>Actions</th>

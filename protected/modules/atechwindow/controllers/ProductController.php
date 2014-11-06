@@ -106,7 +106,7 @@ class ProductController extends MasterAtechwindowController
 					'<td>' . strtoupper($product->code) . '</td>' .
 					'<td>' . $product->name . '</td>' .
 					'<td>' . $product->width . ' x ' . $product->height . '</td>' .
-					'<td>' . $colors[rand(0, 4)] . '</td>' .
+//					'<td>' . $colors[rand(0, 4)] . '</td>' .
 					'<td>' . number_format($price, 2) . '</td>' .
 					'<td>' .
 					'<div class="numeric-input full-width">' .
