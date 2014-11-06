@@ -85,7 +85,7 @@ class CategoryController extends MasterAtechwindowController
 	{
 		$cat2ToProduct = Category2ToProduct::model()->findByPk($id);
 
-		$models = Category2ToProduct::model()->findAll("brandId=:brandId AND brandModelId=:brandModelId ");
+		$models = Category2ToProduct::model()->findAll("brandId=:brandId AND brandModelId=:brandModelId AND category1Id =:category1Id ");
 	}
 
 }
