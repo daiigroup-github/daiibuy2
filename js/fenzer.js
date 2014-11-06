@@ -16,7 +16,7 @@ $('#addToCartFenzer').live('click', function () {
 	if (confirm('Add To Cart?')) {
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'fenzer/product/addToCart',
+			url: baseUrl + '/fenzer/product/addToCart',
 			dataType: 'json',
 			data: $('#productItemsForm').serialize(),
 			success: function (data) {

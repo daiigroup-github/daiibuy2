@@ -6,7 +6,7 @@ $('#addToCartGinzaHome').live('click', function () {
 	if (confirm('Add To Cart?')) {
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'ginzahome/product/addToCart',
+			url: baseUrl + '/ginzahome/product/addToCart',
 			dataType: 'json',
 			data: $('#ginzaHomeForm').serialize(),
 			success: function (data) {

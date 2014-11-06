@@ -9,7 +9,7 @@ $('.add-to-cart').click(function () {
 	else
 		data = $('#productOptionForm').serialize();
 	$.ajax({
-		url: baseUrl + 'madrid/product/addToCart',
+		url: baseUrl + '/madrid/product/addToCart',
 		type: 'POST',
 		dataType: 'JSON',
 		data: data,
