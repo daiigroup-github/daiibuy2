@@ -198,6 +198,9 @@ $this->menu = array(
 							?>, category2Id:<?php
 							echo isset(
 								$_GET["category2Id"]) ? $_GET["category2Id"] : 0;
+							?>, brandModelId =<?php
+							echo isset(
+								$_GET["brandModelId"]) ? $_GET["brandModelId"] : 0;
 							?>},
 						success: function (data) {
 							alert(data.status);

@@ -758,7 +758,7 @@ class ProductController extends MasterBackofficeController
 		}
 	}
 
-	public function actionSaveCategory2toProduct($category1Id = null, $productId = null, $category2Id = null)
+	public function actionSaveCategory2toProduct($category1Id = null, $productId = null, $category2Id = null, $brandModelId = null)
 	{
 //		throw new Exception(print_r($_REQUEST, true));
 		$result = array();
@@ -780,8 +780,11 @@ class ProductController extends MasterBackofficeController
 					$model->category1Id = $cat1->categoryId;
 				}
 			}
-			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
-			$model->brandModelId = $modelToCat->brandModelId;
+//			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
+			if(isset($brandModelId))
+			{
+				$model->brandModelId = $brandModelId;
+			}
 			$brandModel = BrandModel::model()->findByPk($model->brandModelId);
 			$model->brandId = $brandModel->brandId;
 			$model->productId = $productId;
@@ -802,8 +805,8 @@ class ProductController extends MasterBackofficeController
 			{
 				$model->category1Id = $_POST["category1Id"];
 			}
-			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
-			$model->brandModelId = $modelToCat->brandModelId;
+//			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
+			$model->brandModelId = $_POST["brandModelId"];
 			$brandModel = BrandModel::model()->findByPk($model->brandModelId);
 			$model->brandId = $brandModel->brandId;
 			$model->productId = $_POST["productId"];
