@@ -21,7 +21,7 @@ echo CHtml::hiddenField("signed_field_names", "access_key,profile_id,transaction
 	//. ", item_0_name, item_1_name"
 );
 //Product Parameter
-echo CHtml::hiddenField("unsigned_field_names", ""
+$unsignedField = ""
 	. "bill_to_address_city,bill_to_address_country,bill_to_address_line1,bill_to_address_line2,bill_to_address_postal_code"
 	. ",bill_to_address_state,bill_to_email,bill_to_forename,bill_to_phone,bill_to_surname,bill_to_address_country"
 	. ",device_fingerprint_id,customer_ip_address,consumer_id"
@@ -29,8 +29,8 @@ echo CHtml::hiddenField("unsigned_field_names", ""
 	. ",ship_to_address_state,ship_to_forename,ship_to_phone,ship_to_surname,shipping_method"
 //	. ", item_0_name, item_1_name"
 	. ",merchant_defined_data1,merchant_defined_data2,merchant_defined_data3,merchant_defined_data4,merchant_defined_data5,merchant_defined_data6,merchant_defined_data7,merchant_defined_data8,merchant_defined_data9"
-	. ",merchant_defined_data10,merchant_defined_data11"
-);
+	. ",merchant_defined_data10,merchant_defined_data11";
+
 echo CHtml::hiddenField("transaction_type", "sale");
 echo CHtml::hiddenField("signed_date_time", gmdate("Y-m-d\TH:i:s\Z"));
 echo CHtml::hiddenField("locale", "en");
@@ -102,6 +102,7 @@ foreach($model->orders as $order)
 {
 	foreach($order->orderItems as $item)
 	{
+		$unsignedField .=",item_" . $i . "_unitPrice,item_" . $i . "_tax_amount,item_" . $i . "_code,item_" . $i . "_name,item_" . $i . "_sku,item_" . $i . "_quantity";
 		echo CHtml::hiddenField("item_" . $i . "_unitPrice", number_format($item->price, 2, ".", ""));
 		echo CHtml::hiddenField("item_" . $i . "_tax_amount", number_format(($item->total / 1.07), 2, ".", ""));
 		echo CHtml::hiddenField("item_" . $i . "_code", $item->product->code);
@@ -111,6 +112,8 @@ foreach($model->orders as $order)
 		$i++;
 	}
 }
+echo CHtml::hiddenField("unsigned_field_names", $unsignedField
+);
 echo CHtml::hiddenField("line_item_count", $i++);
-echo CHtml::hiddenField("merchant_defined_data11", $i);
+echo CHtml::hiddenField("merchant_defined_data11", $i++);
 ?>
