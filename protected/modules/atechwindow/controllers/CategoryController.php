@@ -25,10 +25,16 @@ class CategoryController extends MasterAtechwindowController
 			$images[] = Yii::app()->baseUrl . $category2->image;
 		endif;
 
+		//Create By Tong
+		$widthArray = Product::model()->findAtechWidthGroup($id);
+		$heightArray = Product::model()->findAtechHeightGroup($id);
+
 		$this->render('index', array(
 			'category2'=>$category2,
 			'images'=>$images,
-			'colors'=>$colors
+			'colors'=>$colors,
+			'widthArray'=>$widthArray,
+			'heightArray'=>$heightArray
 		));
 	}
 

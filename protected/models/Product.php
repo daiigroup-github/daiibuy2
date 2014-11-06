@@ -1139,4 +1139,24 @@ class Product extends ProductMaster
 		return $res;
 	}
 
+	public function findAtechWidthGroup($category2Id)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->join = " LEFT JOIN category2_to_product c ON c.productId = t.productId ";
+		$criteria->compare("c.category2Id", $category2Id);
+		$criteria->group = "t.width";
+
+		return $this->findAll($criteria);
+	}
+
+	public function findAtechHeightGroup($category2Id)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->join = " LEFT JOIN category2_to_product c ON c.productId = t.productId ";
+		$criteria->compare("c.category2Id", $category2Id);
+		$criteria->group = "t.height";
+
+		return $this->findAll($criteria);
+	}
+
 }

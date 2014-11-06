@@ -2,7 +2,7 @@
 /* @var $this ProductController */
 
 $this->breadcrumbs = array(
-    'Product',
+	'Product',
 );
 ?>
 
@@ -17,7 +17,9 @@ $this->breadcrumbs = array(
 
             <!-- Product Images Carousel -->
             <div class="col-lg-5 col-md-5 col-sm-5 product-single-image">
-                <?php $this->renderPartial('//layouts/_product_slider', array('images' => $images)); ?>
+				<?php $this->renderPartial('//layouts/_product_slider', array(
+					'images'=>$images));
+				?>
             </div>
             <!-- /Product Images Carousel -->
 
@@ -25,43 +27,45 @@ $this->breadcrumbs = array(
             <div class="col-lg-7 col-md-7 col-sm-7 product-single-info">
 
                 <h2><?php echo $category2->title; ?></h2>
-                <?php
-                /*
-                <div class="rating-box">
-                    <div class="rating readonly-rating" data-score="4"></div>
-                    <span>3 Review(s)</span>
-                </div>
-                */
-                ?>
+				<?php
+				/*
+				  <div class="rating-box">
+				  <div class="rating readonly-rating" data-score="4"></div>
+				  <span>3 Review(s)</span>
+				  </div>
+				 */
+				?>
 
                 <table>
                     <tr>
-                        <td colspan="2"><?php echo $category2->description;?></td>
+                        <td colspan="2"><?php echo $category2->description; ?></td>
                     </tr>
                 </table>
 
                 <span class="price"></span>
 
-                <?php
-                $form = $this->beginWidget('CActiveForm', array(
-                    'id' => 'atechWindowForm',
-                    //'enableClientValidation' => true,
-                    //'clientOptions' => array('validateOnSubmit' => true,),
-                    'htmlOptions' => array(
-                        'class' => 'form-horizontal',
-                        'role' => 'form',
-                        'onSubmit' => 'js:return(false);'
-                    ),
-                ));
-                ?>
+				<?php
+				$form = $this->beginWidget('CActiveForm', array(
+					'id'=>'atechWindowForm',
+					//'enableClientValidation' => true,
+					//'clientOptions' => array('validateOnSubmit' => true,),
+					'htmlOptions'=>array(
+						'class'=>'form-horizontal',
+						'role'=>'form',
+						'onSubmit'=>'js:return(false);'
+					),
+				));
+				?>
 
                 <div class="form-group product-actions-single">
                     <label for="h" class="col-sm-2 control-label">Width</label>
 
                     <div class="col-sm-9">
-                        <?php
-                        echo CHtml::dropDownList('width', '', CHtml::listData($category2->atechwindowWidth, 'width', 'width'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
-                        ?>
+						<?php
+						echo CHtml::dropDownList('width', '', CHtml::listData($widthArray, 'width', 'width'), array(
+							'class'=>'chosen-select-full-width',
+							'prompt'=>'-- Please Select --'));
+						?>
                     </div>
                 </div>
 
@@ -69,9 +73,11 @@ $this->breadcrumbs = array(
                     <label for="h" class="col-sm-2 control-label">Height</label>
 
                     <div class="col-sm-9">
-                        <?php
-                        echo CHtml::dropDownList('height', '', CHtml::listData($category2->atechwindowWidth, 'height', 'height'), array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
-                        ?>
+						<?php
+						echo CHtml::dropDownList('height', '', CHtml::listData($heightArray, 'height', 'height'), array(
+							'class'=>'chosen-select-full-width',
+							'prompt'=>'-- Please Select --'));
+						?>
                     </div>
                 </div>
 
@@ -79,20 +85,23 @@ $this->breadcrumbs = array(
                     <label for="h" class="col-sm-2 control-label">Color</label>
 
                     <div class="col-sm-9">
-                        <?php
-                        echo CHtml::dropDownList('Color', '', $colors, array('class' => 'chosen-select-full-width', 'prompt'=>'-- Please Select --'));
-                        ?>
+						<?php
+						echo CHtml::dropDownList('Color', '', $colors, array(
+							'class'=>'chosen-select-full-width',
+							'prompt'=>'-- Please Select --'));
+						?>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <?php echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/searchProductItems'), array(
-                            'dataType' => 'html',
-                            'method' => 'POST',
-                            'data' => 'js:$("#atechWindowForm").serialize()',
-                            'beforeSend'=>'js:function(){$("#spinner").css("display","inline-block");}',
-                            'success' => 'js:function(data){
+						<?php
+						echo CHtml::ajaxButton('Search', $this->createAbsoluteUrl('product/searchProductItems'), array(
+							'dataType'=>'html',
+							'method'=>'POST',
+							'data'=>'js:$("#atechWindowForm").serialize()',
+							'beforeSend'=>'js:function(){$("#spinner").css("display","inline-block");}',
+							'success'=>'js:function(data){
                                 $("#productItems").html(data);
                                 $("#showProduct").show();
 
@@ -130,17 +139,18 @@ $this->breadcrumbs = array(
 
 	                            $("#spinner").hide();
                             }',
-                        ), array(
-                            'class' => 'btn btn-default',
-                            'id' => 'searchProductItems'
-                        ));?>
+							), array(
+							'class'=>'btn btn-default',
+							'id'=>'searchProductItems'
+						));
+						?>
                         <i class="fa fa-spinner fa-spin spinner" id="spinner"></i>
                     </div>
                 </div>
 
-                <?php echo CHtml::hiddenField('categoryId', $category2->categoryId);?>
+				<?php echo CHtml::hiddenField('categoryId', $category2->categoryId); ?>
 
-                <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
                 <br/>
             </div>
@@ -176,9 +186,9 @@ $this->breadcrumbs = array(
         <div class="col-lg-3 col-md-3 col-sm-3 col-md-offset-9">
 
             <div class="product-actions">
-		        <span class="add-to-cart">
+				<span class="add-to-cart">
                     <span class="action-wrapper">
-					    <i class="fa fa-shopping-cart"></i>
+						<i class="fa fa-shopping-cart"></i>
 						<span class="action-name">View cart</span>
 					</span>
 				</span>
