@@ -43,7 +43,7 @@ class MasterAtechwindowController extends MasterController
 			'params'=>array(
 				':supplierId'=>$supplier->supplierId,
 			),
-			'order'=>'title'
+			'order'=>'title ASC'
 		));
 		$this->nav[0] = array(
 			'url'=>$this->createUrl('/atechwindow'),
