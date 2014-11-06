@@ -97,19 +97,20 @@ echo CHtml::hiddenField("merchant_defined_data10", $ePayment->ePaymentTel);
 
 //Merchant Parameter
 //
-$i = 1;
+$i = 0;
 foreach($model->orders as $order)
 {
 	foreach($order->orderItems as $item)
 	{
-		echo CHtml::hiddenField("item_" . $i . "_unit_price", number_format($item->price, 2, ".", ""));
+		echo CHtml::hiddenField("item_" . $i . "_unitPrice", number_format($item->price, 2, ".", ""));
 		echo CHtml::hiddenField("item_" . $i . "_tax_amount", number_format(($item->total / 1.07), 2, ".", ""));
-		echo CHtml::hiddenField("item_" . $i . "_code", "adult_content");
+		echo CHtml::hiddenField("item_" . $i . "_code", $item->product->code);
 		echo CHtml::hiddenField("item_" . $i . "_name", $item->product->name);
-		echo CHtml::hiddenField("item_" . $i . "_sku", "adult_content");
+		echo CHtml::hiddenField("item_" . $i . "_sku", $item->product->code);
 		echo CHtml::hiddenField("item_" . $i . "_quantity", $item->quantity);
 		$i++;
 	}
 }
+echo CHtml::hiddenField("line_item_count", $i++);
 echo CHtml::hiddenField("merchant_defined_data11", $i);
 ?>
