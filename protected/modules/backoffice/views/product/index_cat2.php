@@ -167,7 +167,7 @@ $this->menu = array(
 						<div class="col-lg-6 ">
 							<h3>New Product</h3>
 							<?php
-							echo CHtml::link('<i class = "icon-plus-sign"></i> Create', $this->createUrl(isset($_GET["category2Id"]) ? 'create?category2Id = ' . $_GET["category2Id"] : 'create?category1Id = ' . $_GET["category1Id"]), array(
+							echo CHtml::link('<i class = "icon-plus-sign"></i> Create', $this->createUrl((isset($_GET["category2Id"]) ? 'create?category2Id = ' . $_GET["category2Id"] : 'create?category1Id = ' . $_GET["category1Id"]) . "&brandModelId=" . $_GET["brandModelId"]), array(
 								'class'=>'btn btn-xs btn-primary'));
 							?>
 						</div>

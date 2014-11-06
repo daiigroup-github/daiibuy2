@@ -90,7 +90,7 @@ return false;
 				'buttons'=>array(
 					'product'=>array(
 						'label'=>'<br><u>Product</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?category1Id=".$data->categoryId)'
+						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?category1Id=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])'
 					),
 					'view'=>array(
 						'url'=>'Yii::app()->createUrl("/backoffice/category/view/id/".$data->categoryId)'
