@@ -12,7 +12,7 @@ $('.addToCart').live('click', function () {
 //	alert($(this).data('productid'));
 
 	$.ajax({
-		url: baseUrl + 'atechwindow/product/addToCart',
+		url: baseUrl + '/atechwindow/product/addToCart',
 		type: 'POST',
 		dataType: 'JSON',
 		data: data,
