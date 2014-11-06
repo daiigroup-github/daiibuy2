@@ -80,68 +80,9 @@ class MasterAtechwindowController extends MasterController
 			$i++;
 		}
 
-		$this->sideBarCategories = array(
-			'title'=>'Atech Window',
-			'items'=>array(
-				array(
-					'link'=>'ประตูบานเปิดคู่',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'ประตูบานเปิดเดี่ยว',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'หน้าต่างบานเปิดคู่',
-					'url'=>'#'
-				),
-				array(
-					'link'=>'บานช่องแสง',
-					'url'=>'#'
-				),
-			/*
-			  array(
-			  'link'=>'Madrid 7',
-			  'url'=>'#',
-			  'items'=>array(
-
-			  array(
-			  'link'=>'Madrid sub 1',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 2',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 3',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 4',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 5',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 6',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 7',
-			  'url'=>'#'
-			  ),
-			  array(
-			  'link'=>'Madrid sub 8',
-			  'url'=>'#'
-			  ),
-			  ),
-			  ),
-			 */
-			)
-		);
+//		$this->sideBarCategories = array(
+//			'title'=>'Atech Window',
+//			'items'=>$sideBar);
 
 		$this->cat1 = array(
 			array(
