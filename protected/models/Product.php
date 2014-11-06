@@ -1159,4 +1159,16 @@ class Product extends ProductMaster
 		return $this->findAll($criteria);
 	}
 
+	public function findAllProductByWidthHeightCategory2Id($width, $height, $category2Id)
+	{
+		$criteria = new CDbCriteria();
+		$criteria->join = " LEFT JOIN category2_to_product c ON c.productId = t.productId ";
+		$criteria->compare("c.category2Id", $category2Id);
+		$criteria->compare("t.width", $width);
+		$criteria->compare("t.height", $height);
+//		$criteria->group = "t.height";
+
+		return $this->findAll($criteria);
+	}
+
 }

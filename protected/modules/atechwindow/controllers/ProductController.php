@@ -2,146 +2,149 @@
 
 class ProductController extends MasterAtechwindowController
 {
-    public function actionIndex($id)
-    {
-        $product = array(
-            'title' => 'Madrid Sanitary #1',
-            'code' => 'PBS173',
-            'category' => 'Sanitary',
-            'stock' => '20',
-            'dimension' => array(
-                'w' => 100.00,
-                'h' => 100.00,
-                'l' => 100.00,
-            ),
-            'weight' => 80.50,
-            'price' => 300,
-            'pricePromotion' => 280,
-            'productId' => 1,
-            'options' => array(
-                array('option1'),
-                array('option2'),
-            ),
-            'tabs' => array(
-                array(
-                    'title' => 'Description',
-                    'detail' => 'Detail Tab1'
-                ),
-                array(
-                    'title' => 'Reviews',
-                    'detail' => 'Detail Tab2'
-                ),
-                array(
-                    'title' => 'Comments',
-                    'detail' => 'Detail Tab3'
-                ),
-            ),
-        );
 
-        $this->render('index', array('product' => $product));
-    }
+	public function actionIndex($id)
+	{
+		$product = array(
+			'title'=>'Madrid Sanitary #1',
+			'code'=>'PBS173',
+			'category'=>'Sanitary',
+			'stock'=>'20',
+			'dimension'=>array(
+				'w'=>100.00,
+				'h'=>100.00,
+				'l'=>100.00,
+			),
+			'weight'=>80.50,
+			'price'=>300,
+			'pricePromotion'=>280,
+			'productId'=>1,
+			'options'=>array(
+				array(
+					'option1'),
+				array(
+					'option2'),
+			),
+			'tabs'=>array(
+				array(
+					'title'=>'Description',
+					'detail'=>'Detail Tab1'
+				),
+				array(
+					'title'=>'Reviews',
+					'detail'=>'Detail Tab2'
+				),
+				array(
+					'title'=>'Comments',
+					'detail'=>'Detail Tab3'
+				),
+			),
+		);
 
-    // Uncomment the following methods and override them if needed
-    /*
-    public function filters()
-    {
-        // return the filter configuration for this controller, e.g.:
-        return array(
-            'inlineFilterName',
-            array(
-                'class'=>'path.to.FilterClass',
-                'propertyName'=>'propertyValue',
-            ),
-        );
-    }
+		$this->render('index', array(
+			'product'=>$product));
+	}
 
-    public function actions()
-    {
-        // return external action classes, e.g.:
-        return array(
-            'action1'=>'path.to.ActionClass',
-            'action2'=>array(
-                'class'=>'path.to.AnotherActionClass',
-                'propertyName'=>'propertyValue',
-            ),
-        );
-    }
-    */
+	// Uncomment the following methods and override them if needed
+	/*
+	  public function filters()
+	  {
+	  // return the filter configuration for this controller, e.g.:
+	  return array(
+	  'inlineFilterName',
+	  array(
+	  'class'=>'path.to.FilterClass',
+	  'propertyName'=>'propertyValue',
+	  ),
+	  );
+	  }
 
-    public function actionSearchProductItems()
-    {
-        if (isset($_POST)) {
-            $res = '';
-            $this->writeToFile('/tmp/searchproduct', print_r($_POST, true));
+	  public function actions()
+	  {
+	  // return external action classes, e.g.:
+	  return array(
+	  'action1'=>'path.to.ActionClass',
+	  'action2'=>array(
+	  'class'=>'path.to.AnotherActionClass',
+	  'propertyName'=>'propertyValue',
+	  ),
+	  );
+	  }
+	 */
 
-            $colors = array(
-                'ALL',
-                'White',
-                'Brown',
-                'Black',
-                'Gray',
-            );
+	public function actionSearchProductItems()
+	{
+		if(isset($_POST))
+		{
+			$res = '';
+			$this->writeToFile('/tmp/searchproduct', print_r($_POST, true));
 
-            $products = Product::model()->findAll(
-                array(
-                    'condition' => 'categoryId=:categoryId AND width=:width AND height=:height',
-                    'params' => array(':categoryId' => $_POST['categoryId'], ':width' => $_POST['width'], ':height' => $_POST['height'])
-                )
-            );
+			$colors = array(
+				'ALL',
+				'White',
+				'Brown',
+				'Black',
+				'Gray',
+			);
 
-            foreach ($products as $product) {
-               $category2ToProduct = Category2ToProduct::model()->find(array(
-                   'condition'=>'productId=:productId',
-                   'params'=>array(
-                     ':productId'=>$product->productId,
-                   ),
-               ));
+			$products = Product::model()->findAllProductByWidthHeightCategory2Id($_POST['width'], $_POST['height'], $_POST['categoryId']);
+			foreach($products as $product)
+			{
+				$category2ToProduct = Category2ToProduct::model()->find(array(
+					'condition'=>'productId=:productId',
+					'params'=>array(
+						':productId'=>$product->productId,
+					),
+				));
 
-                $price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
+				$price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
 
-                $res .= '<tr>' .
-                    '<td>' . $category2ToProduct->brandModel->title . '</td>' .
-                    '<td>' . strtoupper($product->code) . '</td>' .
-                    '<td>' . $product->name . '</td>' .
-                    '<td>' . $product->width.' x '.$product->height . '</td>' .
-                    '<td>' . $colors[rand(0, 4)] . '</td>' .
-                    '<td>' . number_format($price, 2) . '</td>' .
-                    '<td>' .
-                    '<div class="numeric-input full-width">' .
-                    '<input type="text" value="1" id="'.$product->productId.'" name="qty['.$product->productId.']"/>' .
-                    '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
-                    '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
-                    '</div>' .
-                    '</td>' .
-                    '<td><a class="btn btn-info btn-xs addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i></a></td>' .
-                    '</tr>';
-            }
+				$res .= '<tr>' .
+					'<td>' . (isset($category2ToProduct->brandModel) ? $category2ToProduct->brandModel->title : "") . '</td>' .
+					'<td>' . strtoupper($product->code) . '</td>' .
+					'<td>' . $product->name . '</td>' .
+					'<td>' . $product->width . ' x ' . $product->height . '</td>' .
+					'<td>' . $colors[rand(0, 4)] . '</td>' .
+					'<td>' . number_format($price, 2) . '</td>' .
+					'<td>' .
+					'<div class="numeric-input full-width">' .
+					'<input type="text" value="1" id="' . $product->productId . '" name="qty[' . $product->productId . ']"/>' .
+					'<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
+					'<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
+					'</div>' .
+					'</td>' .
+					'<td><a class="btn btn-info btn-xs addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i></a></td>' .
+					'</tr>';
+			}
 
-            echo $res;
-        }
-    }
+			echo $res;
+		}
+	}
 
-    public function actionAddToCart()
-    {
-        $this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
+	public function actionAddToCart()
+	{
+		$this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
 
-        $productId = $_POST['productId'];
-        $qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
+		$productId = $_POST['productId'];
+		$qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
 
-        $supplier = Supplier::model()->find(array(
-            'condition'=>'url=:url',
-            'params'=>array(':url'=>$this->module->id),
-        ));
+		$supplier = Supplier::model()->find(array(
+			'condition'=>'url=:url',
+			'params'=>array(
+				':url'=>$this->module->id),
+		));
 
-        $this->cookie = new DaiiBuy();
-        $this->cookie->loadCookie();
+		$this->cookie = new DaiiBuy();
+		$this->cookie->loadCookie();
 
-        $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
-        $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+		$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+		$orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
 
-        $orderModel->totalIncVAT = $orderModel->orderItemsSum;
-        $orderModel->save(false);
+		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
+		$orderModel->save(false);
 
-        echo CJSON::encode(array('result'=>true));
-    }
+		echo CJSON::encode(array(
+			'result'=>true));
+	}
+
 }
