@@ -16,10 +16,17 @@ class CategoryController extends MasterFenzerController
 		{
 			$i = 0;
 		}
-		foreach($categoryModel->images as $catImage)
+		if(count($categoryModel->images) > 0)
 		{
-			$images[$i] = Yii::app()->baseUrl . $catImage->image;
-			$i++;
+			foreach($categoryModel->images as $catImage)
+			{
+				$images[$i] = Yii::app()->baseUrl . $catImage->image;
+				$i++;
+			}
+		}
+		else
+		{
+			$images[0] = "";
 		}
 //		foreach($this->scanDir(Yii::app()->basePath . '/../images/fenzer') as $k=> $image)
 //		{
