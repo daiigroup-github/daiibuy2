@@ -76,6 +76,7 @@ class Category extends CategoryMaster
 					self::HAS_MANY,
 					'Category2ToProduct',
 					'category1Id',
+					'on'=>'category2Id is null',
 					'order'=>'sortOrder'
 				),
 //				'brandModel'=>array(
