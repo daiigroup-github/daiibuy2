@@ -8,6 +8,8 @@ class Category extends CategoryMaster
 	 * @param string $className active record class name.
 	 * @return Product the static model class
 	 */
+	public $category1Id;
+
 	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);

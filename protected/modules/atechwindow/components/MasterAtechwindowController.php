@@ -69,7 +69,7 @@ class MasterAtechwindowController extends MasterController
 				foreach($category->subCategorys as $subCategory)
 				{
 					$dropdown[$j] = array(
-						'url'=>$this->createUrl('category/index/id/' . $subCategory->categoryId),
+						'url'=>$this->createUrl('category/index?id=' . $subCategory->categoryId . "&category1Id=" . $category->categoryId),
 						'caption'=>strtoupper($subCategory->title),
 					);
 					$j++;

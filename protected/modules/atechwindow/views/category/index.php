@@ -17,7 +17,8 @@ $this->breadcrumbs = array(
 
             <!-- Product Images Carousel -->
             <div class="col-lg-5 col-md-5 col-sm-5 product-single-image">
-				<?php $this->renderPartial('//layouts/_product_slider', array(
+				<?php
+				$this->renderPartial('//layouts/_product_slider', array(
 					'images'=>$images));
 				?>
             </div>
@@ -147,10 +148,10 @@ $this->breadcrumbs = array(
                         <i class="fa fa-spinner fa-spin spinner" id="spinner"></i>
                     </div>
                 </div>
-
 				<?php echo CHtml::hiddenField('categoryId', $category2->categoryId); ?>
+				<?php echo CHtml::hiddenField('category1Id', isset($_GET["category1Id"]) ? $_GET["category1Id"] : NULL); ?>
 
-<?php $this->endWidget(); ?>
+				<?php $this->endWidget(); ?>
 
                 <br/>
             </div>

@@ -6,7 +6,7 @@
 
         <div class="col-lg-8 col-md-8 col-sm-8 product-content no-padding" style="height: 290px;">
             <div class="product-info">
-                <h5><?php echo CHtml::link($category->title, $this->createUrl('category/index/id/' . $category->categoryId)); ?></h5>
+                <h5><?php echo CHtml::link($category->title, $this->createUrl('category/index?id=' . $category->categoryId . (isset($category1Id) ? "&category1Id=" . $category1Id : ""))); ?></h5>
 
                 <p><?php echo $category->description; ?></p>
             </div>

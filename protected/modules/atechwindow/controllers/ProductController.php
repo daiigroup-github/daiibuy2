@@ -91,16 +91,18 @@ class ProductController extends MasterAtechwindowController
 			foreach($products as $product)
 			{
 				$category2ToProduct = Category2ToProduct::model()->find(array(
-					'condition'=>'productId=:productId',
+					'condition'=>'productId=:productId AND category2Id = :category2Id AND category1Id =:category1Id',
 					'params'=>array(
 						':productId'=>$product->productId,
+						':category2Id'=>$_POST['categoryId'],
+						':category1Id'=>$_POST['category1Id']
 					),
 				));
 
 				$price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
 
 				$res .= '<tr>' .
-					'<td>' . (isset($category2ToProduct->brandModel) ? $category2ToProduct->brandModel->title : "") . '</td>' .
+					'<td>' . (isset($category2ToProduct->brand) ? $category2ToProduct->brand->title : "") . "-" . (isset($category2ToProduct->brandModel) ? $category2ToProduct->brandModel->title : "") . '</td>' .
 					'<td>' . strtoupper($product->code) . '</td>' .
 					'<td>' . $product->name . '</td>' .
 					'<td>' . $product->width . ' x ' . $product->height . '</td>' .
