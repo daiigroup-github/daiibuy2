@@ -674,6 +674,10 @@ class ProductController extends MasterBackofficeController
 		{
 			$cat2ToProduct->category1Id = $_GET["category1Id"];
 		}
+		if(isset($_GET["brandModelId"]))
+		{
+			$cat2ToProduct->brandModelId = $_GET["brandModelId"];
+		}
 
 
 		$this->render('index_cat2', array(
