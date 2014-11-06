@@ -292,7 +292,7 @@ class ProductController extends MasterBackofficeController
 				}
 				if($flag && (isset($_GET["category2Id"]) || isset($_GET["category1Id"])))
 				{
-					$this->actionSaveCategory2toProduct(isset($_GET["category1Id"]) ? $_GET["category1Id"] : NULL, $productId, isset($_GET["category2Id"]) ? $_GET["category2Id"] : NULL);
+					$this->actionSaveCategory2toProduct(isset($_GET["category1Id"]) ? $_GET["category1Id"] : NULL, $productId, isset($_GET["category2Id"]) ? $_GET["category2Id"] : NULL, isset($_GET["brandModelId"]) ? $_GET["brandModelId"] : NULL);
 				}
 
 				if($flag)
