@@ -83,9 +83,17 @@ class CategoryController extends MasterAtechwindowController
 
 	public function actionViewOtherProduct($id)
 	{
+		$this->layout = '//layouts/cl1';
 		$cat2ToProduct = Category2ToProduct::model()->findByPk($id);
 
-		$models = Category2ToProduct::model()->findAll("brandId=:brandId AND brandModelId=:brandModelId AND category1Id =:category1Id ");
+		$models = Category2ToProduct::model()->findAll("brandId=:brandId AND brandModelId=:brandModelId AND category1Id =:category1Id ", array(
+			":brandId"=>$cat2ToProduct->brandId,
+			":brandModelId"=>$cat2ToProduct->brandModelId,
+			":category1Id"=>$cat2ToProduct->category1Id
+		));
+
+		$this->render("_product_list", array(
+			'models'=>$models));
 	}
 
 }

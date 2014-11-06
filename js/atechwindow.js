@@ -9,7 +9,7 @@ $('.addToCart').live('click', function () {
 	var qty = $('#' + productId).val();
 	var data = {productId: productId, qty: qty};
 
-	alert($(this).data('productid'));
+//	alert($(this).data('productid'));
 
 	$.ajax({
 		url: baseUrl + 'atechwindow/product/addToCart',
@@ -18,7 +18,7 @@ $('.addToCart').live('click', function () {
 		data: data,
 		success: function (data) {
 			//alert success message
-			alert(data.result);
+			alert("เพิ่มสินค้าลงตระกร้าสำเร็จ");
 		}
 	});
 });
