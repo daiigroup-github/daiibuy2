@@ -115,7 +115,9 @@ class ProductController extends MasterAtechwindowController
 					'<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
 					'</div>' .
 					'</td>' .
-					'<td><a class="btn btn-info btn-xs addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i></a></td>' .
+					'<td><a class="btn btn-primary btn-md addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>' .
+					'<a class="btn btn-success btn-xs" href="' . Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?cat2Product=" . $category2ToProduct->id) . '">ดูรายการอื่นๆ</a>' .
+					'</td>' .
 					'</tr>';
 			}
 

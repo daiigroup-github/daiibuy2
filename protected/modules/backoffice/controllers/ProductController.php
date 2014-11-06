@@ -826,11 +826,11 @@ class ProductController extends MasterBackofficeController
 			{
 				if(isset($model->category2Id))
 				{
-					$this->redirect("indexCat2?category2Id=" . $model->category2Id);
+					$this->redirect("indexCat2?category2Id=" . $model->category2Id . "&brandModelId=" . $_GET["brandModelId"]);
 				}
 				else
 				{
-					$this->redirect("indexCat2?category1Id=" . $model->category1Id);
+					$this->redirect("indexCat2?category1Id=" . $model->category1Id . "&brandModelId=" . $_GET["brandModelId"]);
 				}
 			}
 		}

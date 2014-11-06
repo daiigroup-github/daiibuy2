@@ -80,4 +80,12 @@ class CategoryController extends MasterAtechwindowController
 	  );
 	  }
 	 */
+
+	public function actionViewOtherProduct($id)
+	{
+		$cat2ToProduct = Category2ToProduct::model()->findByPk($id);
+
+		$models = Category2ToProduct::model()->findAll("brandId=:brandId AND brandModelId=:brandModelId ");
+	}
+
 }
