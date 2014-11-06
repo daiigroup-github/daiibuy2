@@ -240,10 +240,10 @@ class StepController extends MasterCheckoutController
 				$orderGroup = new OrderGroup();
 				$orderGroup->supplierId = $supplierId;
 				$orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
-				$orderGroup->summary = $orderSummary['grandTotal'];
-				$orderGroup->totalIncVAT = $orderSummary['total'];
-				$orderGroup->discountPercent = $orderSummary['discountPercent'];
-				$orderGroup->discountValue = $orderSummary['discount'];
+				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
 				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
 				$orderGroup->vatValue = $orderGroup->calVatValue();
 				$orderGroup->userId = Yii::app()->user->id;
