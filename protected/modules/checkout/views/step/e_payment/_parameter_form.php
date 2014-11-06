@@ -114,6 +114,7 @@ foreach($model->orders as $order)
 }
 echo CHtml::hiddenField("unsigned_field_names", $unsignedField
 );
-echo CHtml::hiddenField("line_item_count", $i++);
-echo CHtml::hiddenField("merchant_defined_data11", $i++);
+$itemCount = $i++;
+echo CHtml::hiddenField("line_item_count", $itemCount);
+echo CHtml::hiddenField("merchant_defined_data11", $itemCount);
 ?>
