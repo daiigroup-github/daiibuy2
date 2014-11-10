@@ -102,8 +102,8 @@ foreach($model->orders as $order)
 {
 	foreach($order->orderItems as $item)
 	{
-		$unsignedField .=",item_" . $i . "_unitPrice,item_" . $i . "_tax_amount,item_" . $i . "_code,item_" . $i . "_name,item_" . $i . "_sku,item_" . $i . "_quantity";
-		echo CHtml::hiddenField("item_" . $i . "_unitPrice", number_format($item->price, 2, ".", ""));
+		$unsignedField .=",item_" . $i . "_unit_price,item_" . $i . "_tax_amount,item_" . $i . "_code,item_" . $i . "_name,item_" . $i . "_sku,item_" . $i . "_quantity";
+		echo CHtml::hiddenField("item_" . $i . "_unit_price", number_format($item->price, 2, ".", ""));
 		echo CHtml::hiddenField("item_" . $i . "_tax_amount", number_format(($item->total / 1.07), 2, ".", ""));
 		echo CHtml::hiddenField("item_" . $i . "_code", $item->product->code);
 		echo CHtml::hiddenField("item_" . $i . "_name", $item->product->name);
