@@ -31,6 +31,8 @@ class CategoryController extends MasterAtechwindowController
 			'items'=>$sideBar);
 
 		//Tong Loop For Show Side Category By Cat1
+
+
 		$images = [];
 		if(count($category2->images) > 0):
 			foreach($category2->images as $image)

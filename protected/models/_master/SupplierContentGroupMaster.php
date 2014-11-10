@@ -9,13 +9,10 @@
  * @property string $title
  * @property string $description
  * @property string $image
+ * @property integer $sortOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
- *
- * The followings are the available model relations:
- * @property SupplierContent[] $supplierContents
- * @property Supplier $supplier
  */
 class SupplierContentGroupMaster extends MasterCActiveRecord
 {
@@ -36,14 +33,14 @@ class SupplierContentGroupMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('supplierId, title, createDateTime, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
+			array('sortOrder, status', 'numerical', 'integerOnly'=>true),
 			array('supplierId', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('supplierContentGroupId, supplierId, title, description, image, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('supplierContentGroupId, supplierId, title, description, image, sortOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,8 +52,6 @@ class SupplierContentGroupMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'supplierContents' => array(self::HAS_MANY, 'SupplierContent', 'supplierContentGroupId'),
-			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
 		);
 	}
 
@@ -71,6 +66,7 @@ class SupplierContentGroupMaster extends MasterCActiveRecord
 			'title' => 'Title',
 			'description' => 'Description',
 			'image' => 'Image',
+			'sortOrder' => 'Sort Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -102,6 +98,7 @@ class SupplierContentGroupMaster extends MasterCActiveRecord
 			$this->title = $this->searchText;
 			$this->description = $this->searchText;
 			$this->image = $this->searchText;
+			$this->sortOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -112,6 +109,7 @@ class SupplierContentGroupMaster extends MasterCActiveRecord
 		$criteria->compare('title',$this->title,true, 'OR');
 		$criteria->compare('description',$this->description,true, 'OR');
 		$criteria->compare('image',$this->image,true, 'OR');
+		$criteria->compare('sortOrder',$this->sortOrder);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

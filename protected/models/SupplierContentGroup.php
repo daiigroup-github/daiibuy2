@@ -32,6 +32,15 @@ class SupplierContentGroup extends SupplierContentGroupMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
+				'supplier'=>array(
+					self::BELONGS_TO,
+					"Supplier",
+					'supplierId'),
+				'supplierContents'=>array(
+					self::HAS_MANY,
+					"SupplierContent",
+					'supplierContentGroupId'
+				)
 		));
 	}
 
@@ -75,6 +84,9 @@ class SupplierContentGroup extends SupplierContentGroupMaster
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'sortOrder ASC'
+			)
 		));
 	}
 
