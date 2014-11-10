@@ -55,8 +55,10 @@
 </div>
 
 <?php
-$isShow = isset($this->cookie['provinceId']) && !empty($this->cookie['provinceId']) ? 'false' : 'true';
-Yii::app()->clientScript->registerScript('selectProvinceModal', "
+if(isset($this->module))
+{
+	$isShow = isset($this->cookie['provinceId']) && !empty($this->cookie['provinceId']) ? 'false' : 'true';
+	Yii::app()->clientScript->registerScript('selectProvinceModal', "
 
 	/*
 	$('#selectProvinceModal').on('show.bs.modal', function(e){
@@ -75,6 +77,7 @@ Yii::app()->clientScript->registerScript('selectProvinceModal', "
 		show : $isShow
 	});
 ");
+}
 ?>
 <?php Yii::app()->clientScript->registerScript('selectProvince', "
 	$('#selectProvince').select2();
