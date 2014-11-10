@@ -249,7 +249,7 @@ class CartController extends MasterCheckoutController
             $res['orderTotal'] = number_format($order->totalIncVAT, 2);
             $res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
 
-            $this->writeToFile('/tmp/updatecart', print_r($res, true));
+//            $this->writeToFile('/tmp/updatecart', print_r($res, true));
             echo CJSON::encode($res);
         }
     }
