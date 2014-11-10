@@ -29,7 +29,7 @@ $unsignedField = ""
 	. ",ship_to_address_state,ship_to_forename,ship_to_phone,ship_to_surname,shipping_method"
 //	. ", item_0_name, item_1_name"
 	. ",merchant_defined_data1,merchant_defined_data2,merchant_defined_data3,merchant_defined_data4,merchant_defined_data5,merchant_defined_data6,merchant_defined_data7,merchant_defined_data8,merchant_defined_data9"
-	. ",merchant_defined_data10,merchant_defined_data11";
+	. ",merchant_defined_data10,merchant_defined_data11,line_item_count";
 
 echo CHtml::hiddenField("transaction_type", "sale");
 echo CHtml::hiddenField("signed_date_time", gmdate("Y-m-d\TH:i:s\Z"));
