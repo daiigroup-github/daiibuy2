@@ -2,22 +2,23 @@
 
 class DefaultController extends MasterMadridController
 {
-    public function actionIndex()
-    {
-        $this->sideBarCategories = array(
-            'title' => 'Madrid Categories',
-            'items' => array(
-                array(
-                    'link' => 'Sanitary',
-                    'url' => 'madrid/category/index/id/1'
-                ),
-                array(
-                    'link' => 'Tile',
-                    'url' => 'madrid/category/index/id/2'
-                ),
-            )
-        );
 
+	public function actionIndex()
+	{
+
+//        $this->sideBarCategories = array(
+//            'title' => 'Madrid Categories',
+//            'items' => array(
+//                array(
+//                    'link' => 'Sanitary',
+//                    'url' => 'madrid/category/index/id/1'
+//                ),
+//                array(
+//                    'link' => 'Tile',
+//                    'url' => 'madrid/category/index/id/2'
+//                ),
+//            )
+//        );
 //        $i = 0;
 //        $sanitaryItems = array();
 //        foreach (Product::model()->findAll(array('limit' => 7)) as $s) {
@@ -61,58 +62,67 @@ class DefaultController extends MasterMadridController
 //            $j++;
 //        }
 
-        $supplier = Supplier::model()->find(array(
-            'condition' => 'url=:url',
-            'params' => array(
-                ':url' => $this->module->id,
-            ),
-        ));
+		$supplier = Supplier::model()->find(array(
+			'condition'=>'url=:url',
+			'params'=>array(
+				':url'=>$this->module->id,
+			),
+		));
 
-        $categorys = Category::model()->findAll(array(
-            'condition' => 'supplierId=:supplierId AND isRoot=1',
-            'params' => array(
-                ':supplierId' => $supplier->supplierId
-            ),
-        ));
+		$categorys = Category::model()->findAll(array(
+			'condition'=>'supplierId=:supplierId AND isRoot=1',
+			'params'=>array(
+				':supplierId'=>$supplier->supplierId
+			),
+		));
 
-        $i = 0;
-        foreach ($categorys as $category) {
-            $categoryToSub = CategoryToSub::model()->find(array(
-                'condition' => 'categoryId=:categoryId AND (isTheme=1 OR isSet=1)',
-                'params' => array(
-                    ':categoryId' => $category->categoryId,
-                ),
-            ));
+		$i = 0;
+		foreach($categorys as $category)
+		{
+			$categoryToSub = CategoryToSub::model()->find(array(
+				'condition'=>'categoryId=:categoryId AND (isTheme=1 OR isSet=1)',
+				'params'=>array(
+					':categoryId'=>$category->categoryId,
+				),
+			));
 
-            if (isset($categoryToSub)) {
-               continue;
-            } else {
-                $products[$i] = array(
-                    'title'=>$category->title,
-                    'maxItems'=>3,
-                    'moreUrl'=>$this->createUrl('category/index/id/'.$category->categoryId),
-                );
-                $items = array();
-                foreach($category->subCategorys as $subCategory) {
-                    foreach ($subCategory->products as $product) {
-                        $items[$i]['productId'] = $product->productId;
-                        $items[$i]['name'] = $product->name;
-                        $items[$i]['quantity'] = $product->quantity;
-                        $items[$i]['productUnits'] = $product->productUnits;
-                        $items[$i]['stockStatusId'] = $product->stockStatusId;
-                        $items[$i]['price'] = Product::model()->calProductPrice($product->productId);
-                        $items[$i]['promotionPrice'] = Product::model()->calProductPromotionPrice($product->price);
-                        $items[$i]['weight'] = $product->weight;
-                        $items[$i]['width'] = $product->width;
-                        $items[$i]['length'] = $product->length;
-                        $items[$i]['images'] = $product->productImages;
-                        $items[$i]['url'] = $this->createUrl('product/index/id/' . $product->productId);
-                    }
-                }
-                $products[$i]['items'] = $items;
-                $i++;
-            }
-        }
+			if(isset($categoryToSub))
+			{
+				continue;
+			}
+			else
+			{
+				$products[$i] = array(
+					'title'=>$category->title,
+					'maxItems'=>3,
+					'moreUrl'=>$this->createUrl('category/index/id/' . $category->categoryId),
+				);
+				$items = array();
+				foreach($category->subCategorys as $subCategory)
+				{
+					$cat2ToProducts = Category2ToProduct::model()->findAll("category2Id=:category2Id", array(
+						":category2Id"=>$subCategory->categoryId));
+					foreach($cat2ToProducts as $cat2ToProduct)
+					{
+						$items[$i]['productId'] = $cat2ToProduct->product->productId;
+						$items[$i]['name'] = $cat2ToProduct->product->name;
+						$items[$i]['description'] = $cat2ToProduct->product->description;
+						$items[$i]['quantity'] = $cat2ToProduct->product->quantity;
+						$items[$i]['productUnits'] = $cat2ToProduct->product->productUnits;
+						$items[$i]['stockStatusId'] = $cat2ToProduct->product->stockStatusId;
+						$items[$i]['price'] = Product::model()->calProductPrice($cat2ToProduct->product->productId);
+						$items[$i]['promotionPrice'] = Product::model()->calProductPromotionPrice($cat2ToProduct->product->price);
+						$items[$i]['weight'] = $cat2ToProduct->product->weight;
+						$items[$i]['width'] = $cat2ToProduct->product->width;
+						$items[$i]['length'] = $cat2ToProduct->product->length;
+						$items[$i]['images'] = $cat2ToProduct->product->productImages;
+						$items[$i]['url'] = $this->createUrl('product/index/id/' . $cat2ToProduct->product->productId);
+					}
+				}
+				$products[$i]['items'] = $items;
+				$i++;
+			}
+		}
 
 //        $products = array(
 //            array(
@@ -129,12 +139,15 @@ class DefaultController extends MasterMadridController
 //            ),
 //        );
 
-        $this->render('index', array('products' => $products));
-    }
+		$this->render('index', array(
+			'products'=>$products));
+	}
 
-    public function actionCategory($id)
-    {
-        $title = ($id == 1) ? 'Sanitary' : 'Tile';
-        $this->render('category', array('title' => $title));
-    }
+	public function actionCategory($id)
+	{
+		$title = ($id == 1) ? 'Sanitary' : 'Tile';
+		$this->render('category', array(
+			'title'=>$title));
+	}
+
 }

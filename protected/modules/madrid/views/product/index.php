@@ -2,8 +2,11 @@
 /* @var $this ProductController */
 
 $this->breadcrumbs = array(
-    'Product',
+	'Product',
 );
 ?>
 
-<?php $this->renderPartial('_product_single', array('product' => $product, 'productModel'=>$productModel, 'images'=>$images, 'descriptionTabs'=>$descriptionTabs)); ?>
+<?php $this->renderPartial('_product_single', array(
+	'productModel'=>$productModel,
+	'images'=>$images,
+	'descriptionTabs'=>$descriptionTabs)); ?>
