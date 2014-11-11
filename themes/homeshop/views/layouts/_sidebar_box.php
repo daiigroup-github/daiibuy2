@@ -1,5 +1,5 @@
 <?php if(isset($this->sideBarCategories) && $this->sideBarCategories !== []) $this->renderPartial('//layouts/_sidebar_box_category'); ?>
-<?php $this->renderPartial('//layouts/_sidebar_box_content'); ?>
+<?php if(isset(Yii::app()->controller->action->module) && Yii::app()->controller->action->module->id != "myfile") $this->renderPartial('//layouts/_sidebar_box_content'); ?>
 <?php if(isset($this->sideBarCompare) && $this->sideBarCompare !== []) $this->renderPartial('//layouts/_sidebar_box_compare'); ?>
 <?php if(isset($this->sideBarCarousel) && $this->sideBarCarousel !== []) $this->renderPartial('//layouts/_sidebar_box_carousel'); ?>
 <?php if(isset($this->sideBarBestSellers) && $this->sideBarBestSellers !== []) $this->renderPartial('//layouts/_sidebar_box_bestsellers'); ?>
