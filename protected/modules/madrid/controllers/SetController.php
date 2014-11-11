@@ -30,14 +30,14 @@ class SetController extends MasterMadridController
 			),
 		));
 
-		$products = Product::model()->findAll(array(
-			'condition'=>'productId IN (:productsId)',
+		$categorys = Category::model()->findAll(array(
+			'condition'=>'categoryId IN (:categoryIds)',
 			'params'=>array(
-				':productsId'=>implode(',', CHtml::listData($category2ToProducts, 'productId', 'productId')),
+				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
 			),
 		));
 
-		$items = $this->showSanitarySet($products);
+		$items = $this->showSanitarySet($categorys);
 		$dataProvider = new CArrayDataProvider($items, array(
 			'keyField'=>'id'));
 		$dataProvider->pagination->pageSize = 12;
@@ -113,28 +113,38 @@ class SetController extends MasterMadridController
 			'product'=>$product));
 	}
 
-	public function showSanitarySet($products)
+	public function actionView($id)
+	{
+		$model = Category::model()->findByPk($id);
+		$cat2Product = Category2ToProduct::model()->findAll("category2Id=:category2Id", array(
+			":category2Id"=>$id));
+		$this->render('view', array(
+			'model'=>$model,
+			'cat2Product'=>$cat2Product));
+	}
+
+	public function showSanitarySet($categorys)
 	{
 		$items = [];
 		$i = 1;
-		foreach($products as $product)
+		foreach($categorys as $category)
 		{
 			$image = '';
-			if(isset($product->productImages))
+			if(isset($category->productImages))
 			{
-				foreach($product->productImages as $productImage)
+				foreach($category->categoryImages as $categoryImage)
 				{
-					$image = $productImage->image;
+					$image = $categoryImage->image;
 					break;
 				}
 			}
 
 			$items[$i] = array(
-				'id'=>$product->productId,
+				'id'=>$category->categoryId,
 				'image'=>Yii::app()->baseUrl . $image,
-				'url'=>Yii::app()->createUrl('madrid/product/index/id/' . $product->productId),
-				'category2Id'=>Category2ToProduct::model()->find("productId =" . $product->productId)->category2Id,
-				'title'=>$product->name,
+				'url'=>Yii::app()->createUrl('madrid/set/view/id/' . $category->categoryId),
+				'category2Id'=>$category->categoryId,
+				'title'=>$category->title,
 				//'price' => rand(1000, 99999),
 				'buttons'=>[
 					'favorites'
