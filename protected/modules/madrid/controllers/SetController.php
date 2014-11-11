@@ -141,7 +141,7 @@ class SetController extends MasterMadridController
 
 			$items[$i] = array(
 				'id'=>$category->categoryId,
-				'image'=>Yii::app()->baseUrl . $image,
+				'image'=>Yii::app()->baseUrl . $category->image,
 				'url'=>Yii::app()->createUrl('madrid/set/view/id/' . $category->categoryId),
 				'category2Id'=>$category->categoryId,
 				'title'=>$category->title,
