@@ -130,7 +130,7 @@ class SetController extends MasterMadridController
 		foreach($categorys as $category)
 		{
 			$image = '';
-			if(isset($category->productImages))
+			if(isset($category->categoryImages))
 			{
 				foreach($category->categoryImages as $categoryImage)
 				{
