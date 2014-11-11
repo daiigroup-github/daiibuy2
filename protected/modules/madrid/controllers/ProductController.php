@@ -59,8 +59,7 @@ class ProductController extends MasterMadridController
 	public function actionAddToCart()
 	{
 		$this->writeToFile('/tmp/madridProduct', print_r($_POST, true));
-
-		$productId = $_POST['id'];
+		$productId = $_POST['productId'];
 		$qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
 
 		$supplier = Supplier::model()->find(array(
@@ -78,8 +77,8 @@ class ProductController extends MasterMadridController
 		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
 		$orderModel->save(false);
 
-		return CJSON::encode(array(
-				'result'=>OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId)));
+		echo CJSON::encode(array(
+			'result'=>OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId)));
 	}
 
 }
