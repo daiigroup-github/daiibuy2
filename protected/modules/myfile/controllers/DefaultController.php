@@ -3,7 +3,7 @@
 class DefaultController extends MasterMyFileController
 {
 
-//	public $layout = '//layouts/cl1';
+	public $layout = '//layouts/cl1';
 
 	public function actionIndex()
 	{
