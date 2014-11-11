@@ -155,7 +155,7 @@ class ThemeController extends MasterMadridController
 	public function actionView($id)
 	{
 		$model = Category::model()->findByPk($id);
-		$cat2Product = Category2ToProduct::model()->findAll("category2Id=:category2Id", array(
+		$cat2Product = Category2ToProduct::model()->findAll("category2Id=:category2Id order by groupName ASC", array(
 			":category2Id"=>$id));
 		$this->render('view', array(
 			'model'=>$model,
