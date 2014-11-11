@@ -11,7 +11,6 @@ class ProductController extends MasterMadridController
 		  } */
 
 		$productModel = Product::model()->findByPk($id);
-
 		foreach($productModel->productImagesSort as $productImage)
 		{
 			$images[] = Yii::app()->baseUrl . $productImage->image;
