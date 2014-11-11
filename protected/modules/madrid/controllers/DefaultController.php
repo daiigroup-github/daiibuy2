@@ -102,21 +102,23 @@ class DefaultController extends MasterMadridController
 				{
 					$cat2ToProducts = Category2ToProduct::model()->findAll("category2Id=:category2Id", array(
 						":category2Id"=>$subCategory->categoryId));
+					$j = 0;
 					foreach($cat2ToProducts as $cat2ToProduct)
 					{
-						$items[$i]['productId'] = $cat2ToProduct->product->productId;
-						$items[$i]['name'] = $cat2ToProduct->product->name;
-						$items[$i]['description'] = $cat2ToProduct->product->description;
-						$items[$i]['quantity'] = $cat2ToProduct->product->quantity;
-						$items[$i]['productUnits'] = $cat2ToProduct->product->productUnits;
-						$items[$i]['stockStatusId'] = $cat2ToProduct->product->stockStatusId;
-						$items[$i]['price'] = Product::model()->calProductPrice($cat2ToProduct->product->productId);
-						$items[$i]['promotionPrice'] = Product::model()->calProductPromotionPrice($cat2ToProduct->product->price);
-						$items[$i]['weight'] = $cat2ToProduct->product->weight;
-						$items[$i]['width'] = $cat2ToProduct->product->width;
-						$items[$i]['length'] = $cat2ToProduct->product->length;
-						$items[$i]['images'] = $cat2ToProduct->product->productImages;
-						$items[$i]['url'] = $this->createUrl('product/index/id/' . $cat2ToProduct->product->productId);
+						$items[$j]['productId'] = $cat2ToProduct->product->productId;
+						$items[$j]['name'] = $cat2ToProduct->product->name;
+						$items[$j]['description'] = $cat2ToProduct->product->description;
+						$items[$j]['quantity'] = $cat2ToProduct->product->quantity;
+						$items[$j]['productUnits'] = $cat2ToProduct->product->productUnits;
+						$items[$j]['stockStatusId'] = $cat2ToProduct->product->stockStatusId;
+						$items[$j]['price'] = Product::model()->calProductPrice($cat2ToProduct->product->productId);
+						$items[$j]['promotionPrice'] = Product::model()->calProductPromotionPrice($cat2ToProduct->product->price);
+						$items[$j]['weight'] = $cat2ToProduct->product->weight;
+						$items[$j]['width'] = $cat2ToProduct->product->width;
+						$items[$j]['length'] = $cat2ToProduct->product->length;
+						$items[$j]['images'] = $cat2ToProduct->product->productImages;
+						$items[$j]['url'] = $this->createUrl('product/index/id/' . $cat2ToProduct->product->productId);
+						$j++;
 					}
 				}
 				$products[$i]['items'] = $items;
