@@ -1,13 +1,13 @@
 <div id="product-slider">
     <ul class="slides">
         <li>
-			<?php if(isset($image[0])): ?>
+			<?php if(isset($images[0])): ?>
 				<img class="cloud-zoom" src="<?php echo $images[0]; ?>" data-large="<?php echo $images[0]; ?>" alt="" />
-	            <a class="fullscreen-button" href="<?php echo $images[0]; ?>">
-	                <div class="product-fullscreen">
-	                    <i class="icons icon-resize-full-1"></i>
-	                </div>
-	            </a>
+				<a class="fullscreen-button" href="<?php echo $images[0]; ?>">
+					<div class="product-fullscreen">
+						<i class="icons icon-resize-full-1"></i>
+					</div>
+				</a>
 			<?php endif; ?>
         </li>
     </ul>
