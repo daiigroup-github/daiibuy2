@@ -15,7 +15,14 @@ $('.add-to-cart').click(function () {
 		data: data,
 		success: function (data) {
 			//alert success message
-			alert(data.result);
+			if (data.result)
+			{
+				alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
+			}
+			else
+			{
+				alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+			}
 		}
 	});
 });
