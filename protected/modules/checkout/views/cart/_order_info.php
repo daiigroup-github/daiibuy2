@@ -35,7 +35,7 @@
                                 for (var i in data.orderItem) {
                                     $("#total"+i).html(data.orderItem[i].total);
                                 }
-
+				alert(data.summary.total);
                                 $("#summaryTotal").html(data.summary.total);
                                 $("#summaryDiscount").html(data.summary.discount);
                                 $("#summaryGrandTotal").html(data.summary.grandTotal);
@@ -58,25 +58,25 @@
                     <th>Total</th>
                 </tr>
 
-<?php $sum = 0; ?>
-<?php foreach($order->orderItems as $orderItem): ?>
+				<?php $sum = 0; ?>
+				<?php foreach($order->orderItems as $orderItem): ?>
 					<tr>
 						<td id="code<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->product->code . ' ' . $orderItem->productId; ?></td>
 						<td id="name<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->product->name; ?></td>
 						<td class="align-right" id="quantity<?php echo $orderItem->productId; ?>">
 							<?php if(($order->type & Order::ORDER_TYPE_MYFILE) > 0): /* myfile */ ?>
 								<?php echo number_format($orderItem->quantity); ?>
-	<?php else: ?>
+							<?php else: ?>
 								<input type="number" class="form-control" value="<?php echo $orderItem->quantity; ?>" name="quantity[<?php echo $orderItem->orderItemsId; ?>]" min="0"/>
-	<?php endif; ?>
+							<?php endif; ?>
 						</td>
 						<td class="align-right" id="price<?php echo $orderItem->orderItemsId; ?>"><?php echo number_format($orderItem->price, 2); ?></td>
 						<td class="align-right" id="total<?php echo $orderItem->orderItemsId; ?>"><?php echo number_format($orderItem->quantity * $orderItem->price, 2); ?></td>
 					</tr>
 					<?php $sum += $orderItem->quantity * $orderItem->price; ?>
-<?php endforeach; ?>
+				<?php endforeach; ?>
 
-<?php //summary ?>
+				<?php //summary ?>
                 <tr>
                     <td class="align-right" colspan="4"><span class="price big">Sub Total</span></td>
                     <td class="align-right"><span class="price big" id="order<?php echo $order->orderId; ?>"><?php echo number_format($sum, 2); ?></span></td>
@@ -84,8 +84,8 @@
 
             </table>
         </div>
-<?php echo CHtml::hiddenField('orderId', $order->orderId); ?>
-<?php $this->endWidget(); ?>
+		<?php echo CHtml::hiddenField('orderId', $order->orderId); ?>
+		<?php $this->endWidget(); ?>
     </div>
 
 </div>
