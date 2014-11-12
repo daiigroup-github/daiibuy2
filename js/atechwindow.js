@@ -16,6 +16,9 @@ $('.addToCart').live('click', function () {
 		type: 'POST',
 		dataType: 'JSON',
 		data: data,
+		beforeSend: function () {
+			return confirm('คุณต้องการเพิ่มสินค้าลงตะตร้าหรือไม่ ?')
+		},
 		success: function (data) {
 			//alert success message
 			if (data.result)
