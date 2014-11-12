@@ -7,52 +7,6 @@ class CategoryController extends MasterGinzahomeController
 
 	public function actionIndex($id)
 	{
-		$images = [];
-		foreach($this->scanDir(Yii::app()->basePath . '/../images/ginzahome') as $k=> $image)
-		{
-			$images[$k] = Yii::app()->baseUrl . '/images/ginzahome/' . $image;
-		}
-		$product = array(
-			'title'=>'Ginza Home :: บ้าน 2 ชั้น',
-			'code'=>'PBS173',
-			'category'=>'Sanitary',
-			'stock'=>'20',
-			'dimension'=>array(
-				'w'=>100.00,
-				'h'=>100.00,
-				'l'=>100.00,
-			),
-			'weight'=>80.50,
-			'productId'=>1,
-			'options'=>array(
-				array(
-					'option1'),
-				array(
-					'option2'),
-			),
-			'images'=>$images,
-			'description'=>'Control simulated sensors like battery, GPS, and accelerometer with a the user-friendly interface.<br /><br />Powerful command line tools allow you to build complex tests.',
-			'tabs'=>array(
-				array(
-					'title'=>'Items',
-					'detail'=>'No items',
-					'id'=>'items'
-				),
-				array(
-					'title'=>'Description',
-					'detail'=>'Detail Tab1'
-				),
-				array(
-					'title'=>'Reviews',
-					'detail'=>'Detail Tab2'
-				),
-				array(
-					'title'=>'Comments',
-					'detail'=>'Detail Tab3'
-				),
-			),
-		);
-
 		$brandModel = BrandModel::model()->findByPk($id);
 //        foreach ($brandModel->categorys as $category) {
 //            echo $category->title . ' ' . $category->categoryId . '<br />';

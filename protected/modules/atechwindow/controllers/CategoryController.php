@@ -12,7 +12,6 @@ class CategoryController extends MasterAtechwindowController
 			'Black',
 			'Gray',
 		);
-
 		$category2 = Category::model()->findByPk($id);
 		//Tong Loop For Show Side Category By Cat1
 		$catToSubs = CategoryToSub::model()->findAll("categoryId=" . $_GET["category1Id"] . " GROUP By subCategoryId");
