@@ -29,15 +29,17 @@ $this->breadcrumbs = array(
 					?>
 					<div class="page-header"><h1><?php echo $category->title; ?> :: Spec</h1></div>
 					<div class="row">
-						<div class="col-md-8 text-right">
-							<?php echo $category->description; ?>
-						</div>
 						<div class="col-md-4">
 							<?php
 							echo CHtml::image(Yii::app()->baseUrl . $category->image, $category->title, array(
 								'class'=>'pull-right'))
 							?>
 						</div>
+						<div class="col-md-8">
+							<h3>Functional</h3>
+							<?php echo $category->description; ?>
+						</div>
+
 					</div>
 					<table class="table table-bordered text-center ginzahome-compare">
 						<tr>
