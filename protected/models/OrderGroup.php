@@ -44,6 +44,9 @@ class OrderGroup extends OrderGroupMaster
 		// will receive user inputs.
 		return CMap::mergeArray(parent::rules(), array(
 				//code here
+				array(
+					'maxCode',
+					'self'),
 		));
 	}
 
@@ -351,7 +354,7 @@ class OrderGroup extends OrderGroupMaster
 	{
 		$supplierModel = Supplier::model()->findByPk($supplierId);
 		$prefix = $supplierModel->prefix;
-		$max_code = $this->findMaxOrderNo();
+		$max_code = intval($this->findMaxOrderNo($supplierId));
 		$max_code += 1;
 		return $prefix . date("Ym") . "-" . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
