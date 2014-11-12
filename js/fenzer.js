@@ -23,6 +23,7 @@ $('#addToCartFenzer').live('click', function () {
 				//alert success message
 				if (data.result)
 				{
+                    updateCartHeader();
 					alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
 				}
 				else
