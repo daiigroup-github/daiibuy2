@@ -138,7 +138,11 @@ class ProductController extends MasterGinzahomeController
 		{
 			if($i == 0)
 			{
-				$images[$i] = Yii::app()->baseUrl . $category2ToProduct->product->productImages[0]->image;
+				$imgIndex = 0;
+				foreach($category2ToProduct->product->productImages as $img):
+					$images[$imgIndex] = Yii::app()->baseUrl . $img->image;
+					$imgIndex++;
+				endforeach;
 			}
 			$price += ($category2ToProduct->product->calProductPromotionPrice() > 0) ? $category2ToProduct->product->calProductPromotionPrice() : $category2ToProduct->product->calProductPrice();
 
