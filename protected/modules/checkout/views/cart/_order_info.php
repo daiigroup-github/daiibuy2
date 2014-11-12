@@ -35,7 +35,6 @@
                                 for (var i in data.orderItem) {
                                     $("#total"+i).html(data.orderItem[i].total);
                                 }
-				alert(data.summary.total);
                                 $("#summaryTotal").html(data.summary.total);
                                 $("#summaryDiscount").html(data.summary.discount);
                                 $("#summaryGrandTotal").html(data.summary.grandTotal);
