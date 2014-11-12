@@ -50,6 +50,19 @@ $this->breadcrumbs = array(
 							<?php endforeach; ?>
 						</tr>
 						<tr>
+							<td>Spec</td>
+
+							<?php foreach($category->subCategorys as $subCategory): ?>
+								<td style="width: 20%">
+									<span>
+										<?php
+										echo $subCategory->description;
+										?>
+									</span>
+								</td>
+							<?php endforeach; ?>
+						</tr>
+						<tr>
 							<td>ราคา</td>
 
 							<?php foreach($category->subCategorys as $subCategory): ?>
