@@ -105,7 +105,7 @@ class DefaultController extends MasterMadridController
 					$j = 0;
 					foreach($cat2ToProducts as $cat2ToProduct)
 					{
-						$items[$j]['productId'] = $cat2ToProduct->product->productId;
+						$items[$j]['productId'] = $cat2ToProduct->productId;
 						$items[$j]['name'] = $cat2ToProduct->product->name;
 						$items[$j]['description'] = $cat2ToProduct->product->description;
 						$items[$j]['quantity'] = $cat2ToProduct->product->quantity;

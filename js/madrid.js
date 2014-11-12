@@ -4,10 +4,9 @@
 $('.add-to-cart').click(function () {
 
 	var data = {};
-	if ($(this).attr('id'))
-		data = {id: $(this).attr('id')};
-	else
-		data = $('#productOptionForm').serialize();
+	var productId = $(this).data('productid');
+	var qty = $('#' + productId).val();
+	var data = {productId: productId, qty: qty};
 	$.ajax({
 		url: baseUrl + '/madrid/product/addToCart',
 		type: 'POST',

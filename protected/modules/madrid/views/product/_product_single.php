@@ -108,25 +108,26 @@
                         <td>Quantity:</td>
                         <td>
                             <div class="numeric-input full-width">
-                                <input type="text" value="1" class="form-control" name="qty">
-                                <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
+                                <input type="text" value="1" class="form-control" name="qty[<?php echo $productModel->productId; ?>]">
+								<span class="arrow-up"><i class="icons icon-up-dir"></i></span>
                                 <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
                             </div>
                         </td>
                     </tr>
                 </table>
-				<?php echo CHtml::hiddenField('productId', $productModel->productId); ?>
-				<?php $this->endWidget(); ?>
+				<?php // echo CHtml::hiddenField('productId', $productModel->productId); ?>
+
 
 
                 <div class="product-actions">
-					<span class="add-to-cart">
+					<span class="add-to-cart" data-productid="<?php echo $productModel->productId; ?>">
                         <span class="action-wrapper">
 							<i class="icons icon-basket-2"></i>
 							<span class="action-name">Add to cart</span>
 						</span>
 					</span>
                 </div>
+				<?php $this->endWidget(); ?>
                 <br/>
             </div>
 

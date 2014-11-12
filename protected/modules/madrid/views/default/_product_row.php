@@ -46,10 +46,11 @@
 							</h5>
 							<span class="price"><?php echo $item['price']; ?></span>
 							<!-- <div class = "rating readonly-rating" data-score = "4"></div> -->
+							<input type="hidden" value="1" id=" <?php echo $item['productId']; ?>" name="qty[<?php echo $item['productId']; ?>]"/>
 						</div>
 
 						<div class="product-actions">
-							<span class="add-to-cart"  id="<?php echo $item['productId']; ?>">
+							<span class="add-to-cart"  data-productid="<?php echo $item['productId']; ?>">
 								<span class="action-wrapper">
 									<i class="icons icon-basket-2"></i>
 									<span class="action-name">Add To Cart</span>
