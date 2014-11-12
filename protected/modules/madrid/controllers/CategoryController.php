@@ -34,20 +34,20 @@ class CategoryController extends MasterMadridController
 		if(isset($id2))
 		{
 			$subCategorysId = $id2;
+			$category2ToProducts = Category2ToProduct::model()->findAll('category1Id=' . $id . ' AND category2Id IN (' . $subCategorysId . ')');
 		}
 		else
 		{
-			$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
-			$subCategorysId = implode(',', $subCategorys);
+			$category2ToProducts = Category2ToProduct::model()->findAll('category1Id=' . $id);
 		}
 
-		$category2ToProducts = Category2ToProduct::model()->findAll(array(
-			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
-			'params'=>array(
-				':category1Id'=>$id,
-				':category2Id'=>$subCategorysId,
-			),
-		));
+//		$category2ToProducts = Category2ToProduct::model()->findAll(array(
+//			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
+//			'params'=>array(
+//				':category1Id'=>$id,
+//				':category2Id'=>$subCategorysId,
+//			),
+//		));
 
 		$criteria = new CDbCriteria();
 		$criteria->addInCondition('productId', CHtml::listData($category2ToProducts, 'productId', 'productId'));
