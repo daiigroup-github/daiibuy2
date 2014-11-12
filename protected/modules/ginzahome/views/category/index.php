@@ -69,10 +69,13 @@ $this->breadcrumbs = array(
 								<td style="width: 20%">
 									<span class="price">
 										<?php
-										echo Product::model()->ginzaPriceByCategory1IdAndCategory2Id($category->categoryId, $subCategory->categoryId);
+										$price = Product::model()->ginzaPriceByCategory1IdAndCategory2Id($category->categoryId, $subCategory->categoryId);
+										echo ($price > 0) ? number_format($price, 2) : "Coming Soon";
 										?>
 									</span><br />
-									<a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/c/' . $category->categoryId . '/c2/' . $subCategory->categoryId); ?>">เลือก</a>
+									<?php if($price > 0): ?>
+										<a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/c/' . $category->categoryId . '/c2/' . $subCategory->categoryId); ?>">เลือก</a>
+									<?php endif; ?>
 								</td>
 							<?php endforeach; ?>
 						</tr>
