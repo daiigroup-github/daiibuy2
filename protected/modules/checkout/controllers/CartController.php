@@ -5,191 +5,6 @@ class CartController extends MasterCheckoutController
 
 	public function actionIndex($id)
 	{
-		$carts = array(
-			array(
-				'title'=>'Other',
-				'type'=>2,
-				'items'=>array(
-					array(
-						'title'=>'Tile',
-						'items'=>array(
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-						),
-					),
-				),
-			),
-			array(
-				'title'=>'WC1',
-				'type'=>3,
-				'items'=>array(
-					array(
-						'title'=>'Tile',
-						'items'=>array(
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-						),
-					),
-					array(
-						'title'=>'Sanitary',
-						'items'=>array(
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-						),
-					),
-				),
-			),
-			array(
-				'title'=>'WC2',
-				'type'=>3,
-				'items'=>array(
-					array(
-						'title'=>'Tile',
-						'items'=>array(
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-						),
-					),
-					array(
-						'title'=>'Sanitary',
-						'items'=>array(
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-							array(
-								'id'=>rand(0, 99999),
-								'code'=>rand(100000, 999999),
-								'name'=>substr(md5(uniqid()), 0, 10),
-								'qty'=>rand(1, 99),
-								'unitPrice'=>rand(100, 9999),
-							),
-						),
-					),
-				),
-			),
-		);
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 
@@ -263,6 +78,25 @@ class CartController extends MasterCheckoutController
 			$this->writeToFile('/tmp/updatecart', print_r($res, true));
 			echo CJSON::encode($res);
 		}
+	}
+
+	public function actionDeleteCart($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$supplierId = $model->supplierId;
+		if($model->type & 1 > 0)
+		{
+			$model->type = 1;
+			$model->save(FALSE);
+		}
+		else
+		{
+			OrderItems::model()->deleteAll("orderId = " . $id);
+			$model->delete();
+		}
+		$this->redirect(array(
+			'index',
+			"id"=>$supplierId));
 	}
 
 }

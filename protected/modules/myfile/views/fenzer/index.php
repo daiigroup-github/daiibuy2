@@ -29,7 +29,7 @@ $this->breadcrumbs = array(
 		<?php foreach($myfileArray as $myfile): ?>
 			<div class='col-lg-3 col-md-3 col-sm-12'>
 				<div class="blog-item">
-					<a style="height:100px;" class="btn <?php echo ($myfile->status == 1) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/fenzer/views/id/' . $myfile->orderId); ?>">
+					<a style="height:100px;" class="btn <?php echo ($myfile->status == 1) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/fenzer/view/id/' . $myfile->orderId); ?>">
 						<h3><?php echo $myfile->title; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
 					</a>
 				</div>

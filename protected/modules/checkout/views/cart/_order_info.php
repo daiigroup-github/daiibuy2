@@ -43,21 +43,22 @@
 						));
 					}
 					?>
-                    <a href="category_v1.html"><i class="icons fa fa-edit"></i></a>
-                    <a href="category_v2.html"><i class="icons fa fa-times"></i></a>
-                </div>
-            </div>
+					<?php if($order->type == Order::ORDER_TYPE_MYFILE_TO_CART): ?><a href="<?php echo Yii::app()->createUrl("/myfile/" . $order->supplier->url . "/view/id/" . $order->orderId) ?>"><i class="icons fa fa-edit"></i></a><?php endif; ?>
+                    <a href="<?php echo Yii::app()->createUrl("/checkout/cart/deleteCart/id/" . $order->orderId) ?>"><i class = "icons fa fa-times"></i></a>
+				</div>
+			</div>
 
-            <table class="orderinfo-table table-bordered">
-                <tr>
-                    <th>Code</th>
-                    <th>Product name</th>
-                    <th>Qty</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
-                </tr>
+			<table class = "orderinfo-table table-bordered">
+				<tr>
+					<th>Code</th>
+					<th>Product name</th>
+					<th>Qty</th>
+					<th>Unit Price</th>
+					<th>Total</th>
+				</tr>
 
-				<?php $sum = 0; ?>
+				<?php $sum = 0;
+				?>
 				<?php foreach($order->orderItems as $orderItem): ?>
 					<tr>
 						<td id="code<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->product->code . ' ' . $orderItem->productId; ?></td>
@@ -75,16 +76,16 @@
 					<?php $sum += $orderItem->quantity * $orderItem->price; ?>
 				<?php endforeach; ?>
 
-				<?php //summary ?>
-                <tr>
-                    <td class="align-right" colspan="4"><span class="price big">Sub Total</span></td>
-                    <td class="align-right"><span class="price big" id="order<?php echo $order->orderId; ?>"><?php echo number_format($sum, 2); ?></span></td>
-                </tr>
+				<?php //summary   ?>
+				<tr>
+					<td class="align-right" colspan="4"><span class="price big">Sub Total</span></td>
+					<td class="align-right"><span class="price big" id="order<?php echo $order->orderId; ?>"><?php echo number_format($sum, 2); ?></span></td>
+				</tr>
 
-            </table>
-        </div>
+			</table>
+		</div>
 		<?php echo CHtml::hiddenField('orderId', $order->orderId); ?>
 		<?php $this->endWidget(); ?>
-    </div>
+	</div>
 
 </div>

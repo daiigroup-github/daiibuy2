@@ -319,7 +319,7 @@ class StepController extends MasterCheckoutController
 						$order = new Order();
 						$order->userId = Yii::app()->user->id;
 						$order->supplierId = $supplierId;
-						$order->type = 3;
+						$order->type = 4;
 						$order->total = $product->price;
 						$order->totalIncVAT = $product->price * 1.07;
 						$order->provinceId = $og->orders[0]->provinceId;
