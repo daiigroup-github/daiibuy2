@@ -768,7 +768,7 @@ class Order extends OrderMaster
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 
-		$condition = 'supplierId=:supplierId AND status=0';
+		$condition = 'type =2 AND supplierId=:supplierId AND status=0';
 		$params = array(
 			':supplierId'=>$supplierId,
 		);
