@@ -41,6 +41,7 @@ $this->breadcrumbs = array(
 						</div>
 
 					</div>
+					<hr>
 					<table class="table table-bordered text-center ginzahome-compare">
 						<tr>
 							<td>Type</td>
