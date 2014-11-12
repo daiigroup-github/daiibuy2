@@ -72,8 +72,14 @@ class OrderItems extends OrderItemsMaster
 			$orderItem->productId = $productId;
 			$orderItem->createDateTime = new CDbExpression('NOW()');
 		}
-
-		$orderItem->quantity = $orderItem->quantity + $qty;
+		if(isset($orderItem->quantity))
+		{
+			$orderItem->quantity = $orderItem->quantity + $qty;
+		}
+		else
+		{
+			$orderItem->quantity = $qty;
+		}
 		$orderItem->price = (Product::model()->calProductPromotionPrice($productId, $daiibuy->provinceId) == 0) ? Product::model()->calProductPrice($productId, $daiibuy->provinceId) : Product::model()->calProductPromotionPrice($productId, $daiibuy->provinceId);
 		$orderItem->total = $orderItem->quantity * $orderItem->price;
 		$orderItem->updateDateTime = new CDbExpression('NOW()');
