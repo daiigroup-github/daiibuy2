@@ -248,7 +248,7 @@ class EmailSend
 			$message->view = 'completeOrderCustomer';
 			$message->setBody(array(
 				"name"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
-				"invoiceNo"=>$this->orderModel->orderNo,
+				"invoiceNo"=>$this->orderModel->invoiceNo,
 				"documentUrl"=>$mailObj->documentUrl), 'text/html', 'utf-8');
 
 			$message->subject = "จดหมายยืนยันการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
@@ -266,7 +266,7 @@ class EmailSend
 			$message->view = 'completeOrderCustomer';
 			$message->setBody(array(
 				"name"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
-				"invoiceNo"=>$this->orderModel->orderNo,
+				"invoiceNo"=>$this->orderModel->invoiceNo,
 				"documentUrl"=>$mailObj->documentUrl), 'text/html', 'utf-8');
 
 			$message->subject = "จดหมายยืนยันการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
@@ -290,7 +290,7 @@ class EmailSend
 				"name"=>$admin->firstname . " " . $admin->lastname,
 				"userName"=>$this->orderModel->email,
 				"documentUrl"=>$mailObj->documentUrl,
-				"invoiceNo"=>$this->orderModel->orderNo), 'text/html', 'utf-8');
+				"invoiceNo"=>$this->orderModel->invoiceNo), 'text/html', 'utf-8');
 			$message->subject = "จดหมายแจ้งมีผู้ซื้อสินค้าซื้อสินค้าออนไลน์ DaiiBuy.com";
 			$message->addTo($admin->email);
 			$message->setFrom(array(
@@ -309,11 +309,11 @@ class EmailSend
 		$message->view = 'completeOrderSupplierDealer';
 
 		$message->setBody(array(
-			"name"=>isset($this->supplierModel->businessAddress->company) ? $this->supplierModel->businessAddress->company : $this->supplierModel->firstname . " " . $this->supplierModel->lastname,
-			"customerName"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
-			"invoiceNo"=>$this->orderModel->orderNo,
+			"name"=>$this->supplierModel->name,
+			"customerName"=>$this->orderModel->firstname . " " . $this->orderModel->lastname,
+			"invoiceNo"=>$this->orderModel->invoiceNo,
 			"documentUrl"=>$mailObj->documentUrl,
-			"orderID"=>$this->orderModel->orderId), 'text/html', 'utf-8');
+			"orderID"=>$this->orderModel->orderGroupId), 'text/html', 'utf-8');
 
 		$message->subject = "จดหมายแจ้งการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
 		$message->addTo($this->supplierModel->email);
@@ -325,19 +325,19 @@ class EmailSend
 		}
 
 //to dealer
-		$message->setBody(array(
-			"name"=>isset($this->dealerModel->businessAddress->company) ? $this->dealerModel->businessAddress->company : $this->dealerModel->firstname . " " . $this->dealerModel->lastname,
-			"customerName"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
-			"invoiceNo"=>$this->orderModel->orderNo,
-			"documentUrl"=>$mailObj->documentUrl,
-			"orderID"=>$this->orderModel->orderId), 'text/html', 'utf-8');
-		$message->addTo($this->dealerModel->email);
-		$message->setFrom(array(
-			'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));
-		if(Yii::app()->getParams()->sendEmail)
-		{
-			Yii::app()->mail->send($message);
-		}
+//		$message->setBody(array(
+//			"name"=>isset($this->dealerModel->businessAddress->company) ? $this->dealerModel->businessAddress->company : $this->dealerModel->firstname . " " . $this->dealerModel->lastname,
+//			"customerName"=>$this->orderModel->firstname . " " . $this->orderModel->lastname,
+//			"invoiceNo"=>$this->orderModel->invoiceNo,
+//			"documentUrl"=>$mailObj->documentUrl,
+//			"orderID"=>$this->orderModel->orderGroupId), 'text/html', 'utf-8');
+//		$message->addTo($this->dealerModel->email);
+//		$message->setFrom(array(
+//			'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));
+//		if(Yii::app()->getParams()->sendEmail)
+//		{
+//			Yii::app()->mail->send($message);
+//		}
 	}
 
 	public function mailAddNewProductCompleted($mailObj)
