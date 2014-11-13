@@ -46,7 +46,7 @@ class OrderGroup extends OrderGroupMaster
 				//code here
 				array(
 					'maxCode',
-					'self'),
+					'safe'),
 		));
 	}
 
