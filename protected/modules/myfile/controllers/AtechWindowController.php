@@ -31,8 +31,10 @@ class AtechWindowController extends MasterMyFileController
 		$this->layout = '//layouts/cl1';
 
 		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 2, null);
+		$myfileHistoryArray = Order::model()->findAllMyFileHistoryBySupplierId(Yii::app()->user->id, 2, null);
 		$this->render('index', array(
-			'myfileArray'=>$myfileArray));
+			'myfileArray'=>$myfileArray,
+			'myfileHistoryArray'=>$myfileHistoryArray));
 	}
 
 	public function actionCreate()

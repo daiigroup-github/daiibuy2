@@ -149,6 +149,52 @@ class Order extends OrderMaster
 		return $res;
 	}
 
+	public function findAllMyFileHistoryBySupplierId($userId, $supplierId, $token)
+	{
+
+		$criteria = new CDbCriteria();
+		if(($userId != 0))
+		{
+			if($supplierId == 4)
+			{
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status = 1 OR status = 0)';
+			}
+			else if($supplierId == 3)
+			{
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status in(0,1,2,3))';
+			}
+			else
+			{
+
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status = 1 OR status = 0)';
+			}
+
+			$criteria->params = array(
+				':userId'=>$userId,
+				':supplierId'=>$supplierId,);
+		}
+		else
+		{
+
+			if($supplierId == 4)
+			{
+
+				$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ' OR type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status = 1 OR status = 0)';
+			}
+			else
+			{
+				$criteria->condition = 'token = :token AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_MYFILE . ' OR type = ' . self::ORDER_TYPE_MYFILE_TO_CART . ') AND (status = 1 OR status = 0)';
+			}
+			$criteria->params = array(
+				':token'=>$token,
+				':supplierId'=>$supplierId,);
+		}
+
+		$res = $this->findAll($criteria);
+
+		return $res;
+	}
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.

@@ -361,8 +361,10 @@ class MadridController extends MasterMyFileController
 		$this->layout = '//layouts/cl1';
 
 		$myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 3, $this->cookie->token);
+		$myfileHistoryArray = Order::model()->findAllMyFileHistoryBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 3, $this->cookie->token);
 		$this->render('index', array(
-			'myfileArray'=>$myfileArray));
+			'myfileArray'=>$myfileArray,
+			'myfileHistoryArray'=>$myfileHistoryArray));
 	}
 
 	/**
