@@ -442,10 +442,10 @@ class StepController extends MasterCheckoutController
 						$flag = TRUE;
 						$emailObj = new Email();
 						$sentMail = new EmailSend();
-						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderGroupId;
-						$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
-						$sentMail->mailCompleteOrderCustomer($emailObj);
-						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+//						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderGroupId;
+//						$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+//						$sentMail->mailCompleteOrderCustomer($emailObj);
+//						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 					}
 				}
 				else
