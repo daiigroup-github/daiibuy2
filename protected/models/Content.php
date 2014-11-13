@@ -103,7 +103,7 @@ class Content extends ContentMaster
 				self::HAS_MANY,
 				'Content',
 				array(
-					'parentId'=>'contentId')),
+					'parentId')),
 		);
 	}
 
@@ -159,7 +159,7 @@ class Content extends ContentMaster
 			self::CONTENT_TYPE_INDEX_SLIDE=>'รูปโปรโมชั่นหน้าหลัก',
 			self::CONTENT_TYPE_SELECT_PROVINCE_IMAGE=>'Image หน้าเลือกจังหวัด',
 			self::CONTENT_TYPE_SELECT_PROVINCE_VIDEO=>'Video หน้าเลือกจังหวัด',
-			self::CONTENT_TYPE_FOOTER=>'ลิ้งค์ที่ Footer',
+			self::CONTENT_TYPE_FOOTER=>'ลิ้งค์ที่ Content เกี่ยวกับ Daiibuy',
 			self::CONTENT_TYPE_FOOTER_SOCIAL=>'Social ที่ Footer',
 			self::CONTENT_TYPE_FOOTER_COMPANY=>'Company ที่ Footer',
 		);

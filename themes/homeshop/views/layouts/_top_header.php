@@ -5,12 +5,17 @@
 		<nav id="top-navigation" class="col-lg-7 col-md-7 col-sm-7">
 			<ul class="pull-left">
 				<?php if(isset(Yii::app()->user->id)): ?>
-					<li><a href="create_an_account.html">My Account</a></li>
-					<li><a href="orders_list.html">List Order</a></li>
-					<li><a href="order_info.html">Checkout</a></li>
+					<!--					<li><a href="create_an_account.html">My Account</a></li>
+										<li><a href="orders_list.html">List Order</a></li>
+										<li><a href="order_info.html">Checkout</a></li>-->
 				<?php endif; ?>
-				<li><a href="text_page.html">About Us</a></li>
-				<li><a href="contact.html">Contact</a></li>
+				<?php
+				$contentMenu = Content::model()->find("type = 3 AND parentId = 0");
+				foreach($contentMenu->childs as $content):
+					?>
+					<li><a href="<?php echo Yii::app()->createUrl("/content/view/id/" . $content->contentId) ?>"><?php echo $content->title; ?></a></li>
+					<!--<li><a href="contact.html">Contact</a></li>-->
+				<?php endforeach; ?>
 			</ul>
 		</nav>
 
