@@ -30,7 +30,7 @@ $this->breadcrumbs = array(
 					<div class="form-group">
 						<div class="col-md-12 text-center">
 							<?php
-							echo CHtml::image(Yii::app()->baseUrl . $model->orders[0]->orderItems[0]->product->image, "", array(
+							echo CHtml::image(Yii::app()->baseUrl . $model->orders[0]->orderItems[0]->product->productImagesSort[0]->image, "", array(
 								'style'=>'width:500px'))
 							?>
 						</div>
