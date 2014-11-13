@@ -289,7 +289,7 @@ class EmailSend
 			$message->setBody(array(
 				"name"=>$admin->firstname . " " . $admin->lastname,
 				"userName"=>$this->orderModel->email,
-				"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderGroupId,
+				"documentUrl"=>$mailObj->documentUrl,
 				"invoiceNo"=>$this->orderModel->orderNo), 'text/html', 'utf-8');
 			$message->subject = "จดหมายแจ้งมีผู้ซื้อสินค้าซื้อสินค้าออนไลน์ DaiiBuy.com";
 			$message->addTo($admin->email);
@@ -329,7 +329,7 @@ class EmailSend
 			"name"=>isset($this->dealerModel->businessAddress->company) ? $this->dealerModel->businessAddress->company : $this->dealerModel->firstname . " " . $this->dealerModel->lastname,
 			"customerName"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
 			"invoiceNo"=>$this->orderModel->orderNo,
-			"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderId,
+			"documentUrl"=>$mailObj->documentUrl,
 			"orderID"=>$this->orderModel->orderId), 'text/html', 'utf-8');
 		$message->addTo($this->dealerModel->email);
 		$message->setFrom(array(
