@@ -49,8 +49,8 @@ class CartController extends MasterController
 				'<span class="quantity">' . $orderSummary['grandTotal'] . ' บาท</span>' .
 				CHtml::link('<i class="fa fa-shopping-cart"></i> View Cart', Yii::app()->createUrl("/checkout/cart/index/id/" . $supplier->supplierId), array(
 					'class'=>'btn btn-info btn-xs')) .
-				CHtml::link('<i class="fa fa-ban"></i>', '', array(
-					'class'=>'btn btn-danger btn-xs')) .
+//				CHtml::link('<i class="fa fa-ban"></i>', '', array(
+//					'class'=>'btn btn-danger btn-xs')) .
 				'</td>' .
 				'</tr>';
 
