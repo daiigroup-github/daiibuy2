@@ -274,7 +274,7 @@ class Product extends ProductMaster
 		);
 	}
 
-	public function getStatusText()
+	public function getStatusText($status)
 	{
 		$statusArray = $this->getStatusArray();
 		return $statusArray[$this->status];
@@ -842,6 +842,7 @@ class Product extends ProductMaster
 				{
 					$orderItemModel = OrderItems::model()->find('productId = ' . $productId . ' AND orderId = ' . $oldOrderId);
 				}
+//				throw new Exception(print_r($res['items'][$productId]['price'] / $res['items'][$productId]['quantity'],true));
 				$orderItemModel->price = $res['items'][$productId]['price'] / $res['items'][$productId]['quantity'];
 				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
 				$orderItemModel->total = $res['items'][$productId]['price'];

@@ -47,9 +47,9 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <p>
                             <ul>
-                                <li>ธนาคารกรุงเทพ</li>
-                                <li>ธนาคารกรุงศรีอยุธยา</li>
-                                <li>ธนาคารธนชาต</li>
+								<?php foreach($bankArray as $bank){ ?>
+                                <li><?php echo BankName::model()->getBankNameByBankNameId($bank->bankNameId) . " ชื่อบัญชี : " . $bank->accName ?></li>
+								<?php } ?>
                             </ul>
                             </p>
                         </div>

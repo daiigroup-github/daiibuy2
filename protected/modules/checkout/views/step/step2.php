@@ -43,7 +43,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <p><?php echo $form->labelEx($billingAddressModel, 'firstname'); ?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($billingAddressModel, 'firstname', array('id'=>'billingFirstName', 'name'=>'billing[firstname]')); ?>
+                    <?php echo $form->textField($billingAddressModel, 'firstname', array('id'=>'billingFirstName', 'name'=>'billing[firstname]', 'onchange'=>'clicked(){document.getElementById("newBillingRadio").addClass("checked");}')); ?>
                 </div>
             </div>
             <div class="row">
@@ -190,7 +190,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     </p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo CHtml::dropDownList('existingShippingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_SHIPPING), array('class'=>'chosen-select-full-width', 'prompt'=>'--- Select ---')); ?>
+                    <?php echo CHtml::dropDownList('existingShippingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_SHIPPING), array('class'=>'chosen-select-full-width', 'prompt'=>'--- Select ---','onclick'=>'javascript:$("shippingRadio").addClass("checked");')); ?>
                 </div>
             </div>
             <hr />
@@ -212,7 +212,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <p><?php echo $form->labelEx($shippingAddressModel, 'firstname'); ?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($shippingAddressModel, 'firstname', array('id'=>'shippingFirstName', 'name'=>'shipping[firstname]')); ?>
+                    <?php echo $form->textField($shippingAddressModel, 'firstname', array('id'=>'shippingFirstName', 'name'=>'shipping[firstname]','onchange'=>'clicked(){document.getElementById("newShippingRadio").addClass("checked");}')); ?>
                 </div>
             </div>
             <div class="row">

@@ -15,7 +15,7 @@
         <table class="orderinfo-table">
 
             <tbody>
-            <tr>
+<!--            <tr>
                 <th>Order number</th>
                 <td>21512512</td>
             </tr>
@@ -46,16 +46,21 @@
                     adipiscing elit. Mauris fermentum dictum magna. Sed laoreet aliquam leo. Ut tellus dolor, dapibus
                     eget, elementum vel, cursus eleifend, elit. Aenean auctor wisi et urna.
                 </td>
-            </tr>
+            </tr>-->
 
-            <tr>
+<!--            <tr>
                 <th>Payment</th>
                 <td>PayPal</td>
-            </tr>
+            </tr>-->
+                
+                <tr>
+                    <th>Supplier Name</th>
+                    <td><?php echo $supplierName; ?></td>
+                </tr>
 
             <tr>
-                <th>Total</th>
-                <td><span class="price">$281.00</span></td>
+                <th>Total(Baht)</th>
+                <td><span class="price"><?php echo  $orderSummary['grandTotal'];  ?> </span></td>
             </tr>
 
             </tbody>
@@ -78,62 +83,57 @@
             <tbody>
             <tr>
                 <th>Email</th>
-                <td>info@companyname.com</td>
+                <td><?php echo $userModel->email; ?></td>
             </tr>
 
             <tr>
                 <th>Company name</th>
-                <td>company name</td>
+                <td><?php echo isset($billingAddress->company)? $billingAddress->company : "-"; ?></td>
             </tr>
 
             <tr>
                 <th>Title</th>
-                <td>Mr</td>
+                <td>Mr./Miss.</td>
             </tr>
 
             <tr>
                 <th>First name</th>
-                <td>John</td>
-            </tr>
-
-            <tr>
-                <th>Middle name</th>
-                <td>Allan</td>
+                <td><?php echo $billingAddress->firstname; ?></td>
             </tr>
 
             <tr>
                 <th>Last name</th>
-                <td>Doe</td>
+                <td><?php echo $billingAddress->lastname;; ?></td>
             </tr>
 
             <tr>
-                <th>Address 1</th>
-                <td>Marmora Road, 45</td>
+                <th>Address</th>
+                <td><?php echo $billingAddress->address_1; ?></td>
+            </tr>
+            
+            <tr>
+                <th>District</th>
+                <td><?php echo District::model()->getDistrictNameById($billingAddress->districtId); ?></td>
+            </tr>
+
+            <tr>
+                <th>Amphur</th>
+                <td><?php echo Amphur::model()->getAmphurNameById($billingAddress->amphurId); ?></td>
+            </tr>
+
+            <tr>
+                <th>Province</th>
+                <td><?php echo Province::model()->getProvinceNameById($billingAddress->provinceId); ?></td>
             </tr>
 
             <tr>
                 <th>ZIP / Postal code</th>
-                <td>8901</td>
+                <td><?php echo $billingAddress->postcode; ?></td>
             </tr>
-
-            <tr>
-                <th>City</th>
-                <td>London</td>
-            </tr>
-
-            <tr>
-                <th>Country</th>
-                <td>Great Britain</td>
-            </tr>
-
-            <tr>
-                <th>State / Province / Region</th>
-                <td>-</td>
-            </tr>
-
+            
             <tr>
                 <th>Phone</th>
-                <td>555-555-555</td>
+                <td><?php echo $userModel->telephone; ?></td>
             </tr>
 
             </tbody>
@@ -152,52 +152,47 @@
             <tbody>
             <tr>
                 <th>Company name</th>
-                <td>company name</td>
+                <td><?php echo isset($shippingAddress->company)? $shippingAddress->company : "-"; ?></td>
             </tr>
 
             <tr>
                 <th>First name</th>
-                <td>John</td>
-            </tr>
-
-            <tr>
-                <th>Middle name</th>
-                <td>Allan</td>
+                <td><?php echo $shippingAddress->firstname; ?></td>
             </tr>
 
             <tr>
                 <th>Last name</th>
-                <td>Doe</td>
+                <td><?php echo $shippingAddress->lastname; ?></td>
             </tr>
 
             <tr>
-                <th>Address 1</th>
-                <td>Marmora Road, 45</td>
+                <th>Address</th>
+                <td><?php echo $shippingAddress->address_1; ?></td>
+            </tr>
+
+           <tr>
+                <th>District</th>
+                <td><?php echo District::model()->getDistrictNameById($shippingAddress->districtId); ?></td>
+            </tr>
+
+            <tr>
+                <th>Amphur</th>
+                <td><?php echo Amphur::model()->getAmphurNameById($shippingAddress->amphurId); ?></td>
+            </tr>
+
+            <tr>
+                <th>Province</th>
+                <td><?php echo Province::model()->getProvinceNameById($shippingAddress->provinceId); ?></td>
             </tr>
 
             <tr>
                 <th>ZIP / Postal code</th>
-                <td>8901</td>
+                <td><?php echo $shippingAddress->postcode; ?></td>
             </tr>
-
-            <tr>
-                <th>City</th>
-                <td>London</td>
-            </tr>
-
-            <tr>
-                <th>Country</th>
-                <td>Great Britain</td>
-            </tr>
-
-            <tr>
-                <th>State / Province / Region</th>
-                <td>-</td>
-            </tr>
-
+            
             <tr>
                 <th>Phone</th>
-                <td>555-555-555</td>
+                <td><?php echo $userModel->telephone; ?></td>
             </tr>
 
             </tbody>
@@ -212,7 +207,7 @@
             <h4>Order Summary</h4>
         </div>
 
-        <div class="row sidebar-box green">
+<!--        <div class="row sidebar-box green">
 
             <div class="col-lg-12 col-md-12 col-sm-12">
 
@@ -421,8 +416,13 @@
                 </form>
             </div>
 
-        </div>
+        </div>-->
 
+<?php
+foreach ($orders as $order) {
+    $this->renderPartial('_order_info', array('order' => $order));
+}
+?>
         <?php $this->renderPartial('_order_info_summary', array('orderSummary' => $orderSummary)); ?>
     </div>
 </div>
@@ -430,7 +430,7 @@
 <div class="page-content">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <?php echo CHtml::link('&lt; Back', '', array('class'=>'button orange', 'name'=>'Register'));?>
+            <?php echo CHtml::link('&lt; Back', 'javascript:window.history.back();', array('class'=>'button orange', 'name'=>'Register'));?>
             <?php echo CHtml::link('Next &gt;', $this->createUrl(4), array('class'=>'button green pull-right'));?>
             <?php //echo CHtml::submitButton('Check out', array('class'=>'big green pull-right', 'name'=>'checkout'));?>
         </div>

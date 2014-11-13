@@ -50,6 +50,12 @@ class Amphur extends AmphurMaster
         return Cmap::mergeArray(parent::attributeLabels(), array(//code here
         ));
     }
+    
+        public function getAmphurNameById($id){
+        $model = $this->findByPk($id);
+        
+        return $model->amphurName;
+    }
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

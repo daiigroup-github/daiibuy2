@@ -53,6 +53,12 @@ class Province extends ProvinceMaster
         return Cmap::mergeArray(parent::attributeLabels(), array(//code here
         ));
     }
+    
+        public function getProvinceNameById($id){
+        $model = $this->findByPk($id);
+        
+        return $model->provinceName;
+    }
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

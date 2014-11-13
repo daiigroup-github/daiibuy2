@@ -63,4 +63,9 @@ class BankName extends BankNameMaster
 		return $result;
 	}
 
+	public function getBankNameByBankNameId($bankNameId){
+		$bankNameModel = $this->find('bankNameId = '. $bankNameId);
+		return $bankNameModel->title;
+	}
+
 }

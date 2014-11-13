@@ -44,6 +44,12 @@ class District extends DistrictMaster
         return Cmap::mergeArray(parent::attributeLabels(), array(//code here
         ));
     }
+    
+    public function getDistrictNameById($id){
+        $model = $this->findByPk($id);
+        
+        return $model->districtName;
+    }
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

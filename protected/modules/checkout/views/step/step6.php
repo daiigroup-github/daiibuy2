@@ -7,6 +7,11 @@
 			<h4>ขอบคุณที่สั่งซื้อสินค้าผ่านระบบสั่งซื้อสินค้าออนไลน์ www.daiibuy.com</h4>
 		</div>
 
+		<div>
+			<?php
+			$this->renderPartial('_show_transfer_bank', array('bankArray' => $bankArray)); ?>
+		</div>
+
 		<div class="sidebar-box-content sidebar-padding-box">
 			<div class="row">
 				<div class="col-md-12 text-center">
