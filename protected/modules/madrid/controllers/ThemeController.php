@@ -18,17 +18,21 @@ class ThemeController extends MasterMadridController
 //				':categoryId'=>$id,
 //			),
 		));
+
 		//$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
 		$subCategorysId = implode(',', CHtml::listData($categoryToSub, 'subCategoryId', 'subCategoryId'));
 
-		$category2ToProducts = Category2ToProduct::model()->findAll(array(
-//			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
-			'condition'=>'category2Id IN (:category2Id)',
-			'params'=>array(
-//				':category1Id'=>$id,
-				':category2Id'=>$subCategorysId,
-			),
-		));
+//		$category2ToProducts = Category2ToProduct::model()->findAll(array(
+////			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
+//			'condition'=>'category2Id IN (:category2Id)',
+//			'params'=>array(
+////				':category1Id'=>$id,
+//				':category2Id'=>$subCategorysId,
+//			),
+//		));
+
+		$category2ToProducts = Category2ToProduct::model()->findAll("category2Id in (" . $subCategorysId . ")");
+
 
 //		$products = Product::model()->findAll(array(
 //			'condition'=>'productId IN (:productsId)',
@@ -36,13 +40,14 @@ class ThemeController extends MasterMadridController
 //				':productsId'=>implode(',', CHtml::listData($category2ToProducts, 'productId', 'productId')),
 //			),
 //		));
-
-		$categorys = Category::model()->findAll(array(
-			'condition'=>'categoryId IN (:categoryIds)',
-			'params'=>array(
-				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
-			),
-		));
+//		$categorys = Category::model()->findAll(array(
+//			'condition'=>'categoryId IN (:categoryIds)',
+//			'params'=>array(
+//				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
+//			),
+//		));
+		$cat2Ids = implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id'));
+		$categorys = Category::model()->findAll("categoryId IN (" . $cat2Ids . ")");
 
 		$items = $this->showTheme($categorys);
 		$dataProvider = new CArrayDataProvider($items, array(
