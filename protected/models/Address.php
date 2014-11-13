@@ -2,8 +2,9 @@
 
 class Address extends AddressMaster
 {
-    const ADDRESS_TYPE_BILLING = 1;
-    const ADDRESS_TYPE_SHIPPING = 2;
+
+	const ADDRESS_TYPE_BILLING = 1;
+	const ADDRESS_TYPE_SHIPPING = 2;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -202,25 +203,37 @@ class Address extends AddressMaster
 		return $result;
 	}
 
-    public function getAllAddressByType($type)
-    {
-        $res = [];
-        $models = $this->findAll(array(
-            'condition' => 'userId=:userId AND type=:type',
-            'params' => array(
-                ':userId' => Yii::app()->user->id,
-                ':type' => $type,
-            ),
-            'order' => 'addressId'
-        ));
+	public function getAllAddressByType($type, $provinceId = NULL)
+	{
+		$res = [];
+		if(!isset($provinceId)):
+			$condition = 'userId=:userId AND type=:type ';
+			$params = array(
+				':userId'=>Yii::app()->user->id,
+				':type'=>$type,
+			);
+		else:
+			$condition = 'userId=:userId AND type=:type AND provinceId=:provinceId';
+			$params = array(
+				':userId'=>Yii::app()->user->id,
+				':type'=>$type,
+				':provinceId'=>$provinceId
+			);
+		endif;
+		$models = $this->findAll(array(
+			'condition'=>$condition,
+			'params'=>$params,
+			'order'=>'addressId'
+		));
 
-        foreach ($models as $model) {
-            $company = isset($model->company) ? $model->company . ' ' : '';
-            $res[$model->addressId] = $model->firstname . ' ' . $model->lastname . ' :: ' . $company . $model->address_1 . ' ' . $model->address_2 . ' ' .
-                $model->district->districtName . ' ' . $model->amphur->amphurName . ' ' . $model->province->provinceName . ' ' . $model->postcode;
-        }
+		foreach($models as $model)
+		{
+			$company = isset($model->company) ? $model->company . ' ' : '';
+			$res[$model->addressId] = $model->firstname . ' ' . $model->lastname . ' :: ' . $company . $model->address_1 . ' ' . $model->address_2 . ' ' .
+				$model->district->districtName . ' ' . $model->amphur->amphurName . ' ' . $model->province->provinceName . ' ' . $model->postcode;
+		}
 
-        return $res;
-    }
+		return $res;
+	}
 
 }
