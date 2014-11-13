@@ -36,7 +36,7 @@ class DefaultController extends MasterMadridController
 				$items = array();
 				$products[$i] = array(
 					'title'=>$category->title,
-					'maxItems'=>5,
+					'maxItems'=>4,
 					'moreUrl'=>$this->createUrl('category/index/id/' . $category->categoryId),
 				);
 				$cat2ToProducts = Category2ToProduct::model()->findAll("category1Id = :category1Id ", array(
