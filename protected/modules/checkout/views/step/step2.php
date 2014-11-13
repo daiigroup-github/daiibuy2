@@ -56,7 +56,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					<?php
 					echo CHtml::dropDownList('existingBillingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_BILLING, $this->cookie->provinceId), array(
 						'class'=>'chosen-select-full-width',
-						'prompt'=>' --- Select ---'));
+						'prompt'=>' --- Select ---',
+						'onchange'=>'ChkRadioBillAddress(1,this)'));
 					?>
                 </div>
             </div>
@@ -85,8 +86,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					echo $form->textField($billingAddressModel, 'firstname', array(
 						'id'=>'billingFirstName',
 						'name'=>'billing[firstname]',
-						'onchange'=>'JavaScript:billingCheck(){ document.getElementById("newBillingRadio").addClass("checked");
-}'));
+						'onchange'=>'ChkRadioBillAddress(2,null)'));
 					?>
                 </div>
             </div>
@@ -266,7 +266,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					echo CHtml::dropDownList('existingShippingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_SHIPPING, $this->cookie->provinceId), array(
 						'class'=>'chosen-select-full-width',
 						'prompt'=>'--- Select ---',
-						'onclick'=>'javascript:$("shippingRadio").addClass("checked");'));
+						'onchange'=>'ChkRadioShipAddress(1,this)'));
 					?>
 				</div>
 			</div>
@@ -300,7 +300,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					echo $form->textField($shippingAddressModel, 'firstname', array(
 						'id'=>'shippingFirstName',
 						'name'=>'shipping[firstname]',
-						'onchange'=>'JavaScript:shippingCheck(){ document.getElementById("newShippingRadio").addClass("checked"); }'));
+						'onchange'=>'ChkRadioShipAddress(2,null)'));
 					?>
 				</div>
 			</div>

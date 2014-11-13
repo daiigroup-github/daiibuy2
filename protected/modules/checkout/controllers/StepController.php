@@ -603,7 +603,7 @@ class StepController extends MasterCheckoutController
 				),
 				'order'=>'amphurName'
 			));
-
+			$res .= '<option value="">เลือกอำเภอ</option>';
 			foreach($amphurs as $amphur)
 			{
 				$res .= '<option value="' . $amphur->amphurId . '">' . $amphur->amphurName . '</option>';
