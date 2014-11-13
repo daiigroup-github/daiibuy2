@@ -48,7 +48,7 @@ $tabContent = '';
 									<div class="page-content row">
 										<?php foreach($child->productSpecs as $item):
 											?>
-											<div class="col-lg-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?> col-md-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?> col-sm-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?>">
+											<div class="col-lg-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?> col-md-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? "col-md=" . $item->spanWidth : "4"; ?> col-sm-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?>">
 												<?php if(isset($item->image)): ?>
 													<p><?php
 														echo CHtml::image(Yii::app()->baseUrl . $item->image, $item->title, array(
