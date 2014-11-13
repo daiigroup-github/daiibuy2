@@ -9,10 +9,10 @@
         </div>
 
         <div class="page-content">
-			<?php if(isset($model->image)): ?>
-	            <p><?php echo CHtml::image(Yii::app()->baseUrl . $model->image, $model->title); ?></p>
-			<?php endif; ?>
 			<?php echo $model->description; ?>
+			<?php if(isset($model->image)): ?>
+				<p><?php echo CHtml::image(Yii::app()->baseUrl . $model->image, $model->title); ?></p>
+			<?php endif; ?>
         </div>
 
     </div>
