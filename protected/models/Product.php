@@ -151,7 +151,7 @@ class Product extends ProductMaster
 					self::HAS_MANY,
 					'ProductSpecGroup',
 					'productId',
-					'condition'=>'type=1'),
+					'condition'=>'type=1 AND parentId = 0'),
 		));
 	}
 

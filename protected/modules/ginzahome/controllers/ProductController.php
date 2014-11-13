@@ -160,6 +160,7 @@ class ProductController extends MasterGinzahomeController
 		foreach($productSortOrder1->productSpecGroupsTypeDetails as $detail)
 		{
 			$tabs[$j] = array(
+				'id'=>$detail->productSpecGroupId,
 				'title'=>$detail->title,
 				'detail'=>$detail->description,
 			);
