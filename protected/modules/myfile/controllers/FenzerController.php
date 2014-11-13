@@ -91,7 +91,7 @@ class FenzerController extends MasterMyFileController
 		$cate1Model = Category::model()->with('subCategorys')->findAll(
 			array(
 				'condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 1 AND '
-				. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
+				. '(subCategorys.description >= :minHeight AND subCategorys.description <= :maxHeight)',
 				'params'=>array(
 					':minHeight'=>$height[0],
 					':maxHeight'=>$height[1])
