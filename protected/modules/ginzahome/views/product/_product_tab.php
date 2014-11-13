@@ -38,7 +38,6 @@ $tabContent = '';
 						<?php
 						$detailChilds = ProductSpecGroup::model()->findAll("parentId = " . $tab["id"]);
 						foreach($detailChilds as $child):
-
 							?>
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-sm-12">
@@ -48,16 +47,16 @@ $tabContent = '';
 									</div>
 									<div class="page-content row">
 										<?php foreach($child->productSpecs as $item):
-										?>
-										<div class="col-lg-3 col-md-3 col-sm-3">
-											<?php if(isset($item->image)): ?>
-												<p><?php
+											?>
+											<div class="col-lg-3 col-md-3 col-sm-3">
+												<?php if(isset($item->image)): ?>
+													<p><?php
 													echo CHtml::image(Yii::app()->baseUrl . $item->image, $item->title, array(
-														'class'=>isset($item->spanWidth) ? "col-md=" . $item->spanWidth : ""));
+														'class'=>isset($item->spanWidth) ? "cloud-zoom col-md=" . $item->spanWidth : "cloud-zoom"));
 													?></p>
-											<?php endif; ?>
-												</div>
-											<?php // echo $child->description . "<br>"; ?>
+													<?php endif; ?>
+											</div>
+											<?php // echo $child->description . "<br>";  ?>
 										<?php endforeach; ?>
 									</div>
 
