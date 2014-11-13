@@ -12,6 +12,7 @@ class EmailSend
 	private $subject = "No-Reply : ";
 	private $userModel;
 	private $supplierModel;
+	private $suppliers;
 	private $dealerModel;
 	private $orderModel;
 	private $productModel;
@@ -48,8 +49,13 @@ class EmailSend
 		}
 		if(isset($mailObj->supplierId))
 		{
-			$supplier = new Supplier();
-			$this->supplierModel = $supplier->findByPk($mailObj->supplierId);
+			$this->supplierModel = Supplier::model()->findByPk($mailObj->supplierId);
+			$supplierToUser = UserToSupplier::model()->findAll('supplierId = '. $mailObj->supplierId);
+			$i = 0;
+			foreach($supplierToUser as $sup){
+				$this->suppliers[$i] = User::model()->findByPk($sup->userId);
+				$i++;
+			}
 		}
 		if(isset($mailObj->orderId))
 		{
@@ -252,7 +258,7 @@ class EmailSend
 				"documentUrl"=>$mailObj->documentUrl), 'text/html', 'utf-8');
 
 			$message->subject = "จดหมายยืนยันการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
-			$message->addTo($this->orderModel->email);
+			$message->addTo($this->userModel->email);
 			$message->setFrom(array(
 				'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));
 			if(Yii::app()->getParams()->sendEmail)
@@ -271,7 +277,7 @@ class EmailSend
 
 			$message->subject = "จดหมายยืนยันการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
 //			throw new Exception(print_r($this->orderModel->email,true));
-			$message->addTo($this->orderModel->email);
+			$message->addTo($this->userModel->email);
 			$message->setFrom(array(
 				'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));
 			if(Yii::app()->getParams()->sendEmail)
@@ -288,7 +294,7 @@ class EmailSend
 			$message->view = 'completeOrderCustomerToAdmin';
 			$message->setBody(array(
 				"name"=>$admin->firstname . " " . $admin->lastname,
-				"userName"=>$this->orderModel->email,
+				"userName"=>$this->userModel->email,
 				"documentUrl"=>$mailObj->documentUrl,
 				"invoiceNo"=>$this->orderModel->invoiceNo), 'text/html', 'utf-8');
 			$message->subject = "จดหมายแจ้งมีผู้ซื้อสินค้าซื้อสินค้าออนไลน์ DaiiBuy.com";
@@ -316,12 +322,15 @@ class EmailSend
 			"orderID"=>$this->orderModel->orderGroupId), 'text/html', 'utf-8');
 
 		$message->subject = "จดหมายแจ้งการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
-		$message->addTo($this->supplierModel->email);
+		foreach($this->suppliers as $sup)
+		{
+		$message->addTo($sup->email);
 		$message->setFrom(array(
 			'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));
 		if(Yii::app()->getParams()->sendEmail)
 		{
 			Yii::app()->mail->send($message);
+		}
 		}
 
 //to dealer
