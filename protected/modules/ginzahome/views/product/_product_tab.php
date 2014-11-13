@@ -48,13 +48,13 @@ $tabContent = '';
 									<div class="page-content row">
 										<?php foreach($child->productSpecs as $item):
 											?>
-											<div class="col-lg-3 col-md-3 col-sm-3">
+											<div class="col-lg-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?> col-md-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?> col-sm-<?php echo isset($item->spanWidth) ? "col-md=" . $item->spanWidth : "4"; ?>">
 												<?php if(isset($item->image)): ?>
 													<p><?php
-													echo CHtml::image(Yii::app()->baseUrl . $item->image, $item->title, array(
-														'class'=>isset($item->spanWidth) ? "cloud-zoom col-md=" . $item->spanWidth : "cloud-zoom"));
-													?></p>
-													<?php endif; ?>
+														echo CHtml::image(Yii::app()->baseUrl . $item->image, $item->title, array(
+															'class'=>"cloud-zoom"));
+														?></p>
+												<?php endif; ?>
 											</div>
 											<?php // echo $child->description . "<br>";  ?>
 										<?php endforeach; ?>
