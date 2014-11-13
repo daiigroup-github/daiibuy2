@@ -25,16 +25,18 @@ $this->breadcrumbs = array(
 		<li class="orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/create"; ?>"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
 	</ul>
 	<div style="margin-top: 2%">
-	<?php $i = 0; ?>
+		<?php $i = 0; ?>
 		<?php foreach($myfileArray as $myfile): ?>
 			<div class='col-lg-3 col-md-3 col-sm-12'>
-			<div class="blog-item">
+				<div class="blog-item">
 					<a style="height:100px;" class="btn <?php echo ($myfile->status == 1) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/atechWindow/view/id/' . $myfile->orderId); ?>">
 						<h3><?php echo $myfile->title; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
+						<p>วันที่สร้าง :<?php echo $this->dateThai($myfile->createDateTime, 3, TRUE); ?></p>
+						<p>วันที่แก้ไข :<?php echo $this->dateThai($myfile->updateDateTime, 2, TRUE) ?></p>
 					</a>
 				</div>
 			</div>
-		<?php $i++; ?>
-	<?php endforeach;?>
+			<?php $i++; ?>
+		<?php endforeach; ?>
 	</div>
 </div>
