@@ -21,21 +21,23 @@ class SetController extends MasterMadridController
 		//$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
 		$subCategorysId = implode(',', CHtml::listData($categoryToSub, 'subCategoryId', 'subCategoryId'));
 
-		$category2ToProducts = Category2ToProduct::model()->findAll(array(
-//			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
-			'condition'=>'category2Id IN (:category2Id)',
-			'params'=>array(
-//				':category1Id'=>$id,
-				':category2Id'=>$subCategorysId,
-			),
-		));
+//		$category2ToProducts = Category2ToProduct::model()->findAll(array(
+//			'condition'=>'category2Id IN (:category2Id)',
+//			'params'=>array(
+//				':category2Id'=>$subCategorysId,
+//			),
+//		));
 
-		$categorys = Category::model()->findAll(array(
-			'condition'=>'categoryId IN (:categoryIds)',
-			'params'=>array(
-				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
-			),
-		));
+		$category2ToProducts = Category2ToProduct::model()->findAll("category2Id IN (" . $subCategorysId . ")");
+
+//		$categorys = Category::model()->findAll(array(
+//			'condition'=>'categoryId IN (:categoryIds)',
+//			'params'=>array(
+//				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
+//			),
+//		));
+		$cat2Ids = implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id'));
+		$categorys = Category::model()->findAll("categoryId IN (" . $cat2Ids . ")");
 
 		$items = $this->showSanitarySet($categorys);
 		$dataProvider = new CArrayDataProvider($items, array(
