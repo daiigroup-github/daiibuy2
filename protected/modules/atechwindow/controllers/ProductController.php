@@ -100,25 +100,26 @@ class ProductController extends MasterAtechwindowController
 				));
 
 				$price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
-
-				$res .= '<tr>' .
-					'<td>' . (isset($category2ToProduct->brand) ? $category2ToProduct->brand->title : "") . "-" . (isset($category2ToProduct->brandModel) ? $category2ToProduct->brandModel->title : "") . '</td>' .
-					'<td>' . strtoupper($product->code) . '</td>' .
-					'<td>' . $product->name . '</td>' .
-					'<td>' . $product->width . ' x ' . $product->height . '</td>' .
+				if(isset($category2ToProduct)):
+					$res .= '<tr>' .
+						'<td>' . (isset($category2ToProduct->brand) ? $category2ToProduct->brand->title : "") . "-" . (isset($category2ToProduct->brandModel) ? $category2ToProduct->brandModel->title : "") . '</td>' .
+						'<td>' . strtoupper($product->code) . '</td>' .
+						'<td>' . $product->name . '</td>' .
+						'<td>' . $product->width . ' x ' . $product->height . '</td>' .
 //					'<td>' . $colors[rand(0, 4)] . '</td>' .
-					'<td>' . number_format($price, 2) . '</td>' .
-					'<td>' .
-					'<div class="numeric-input full-width">' .
-					'<input type="text" value="1" id="' . $product->productId . '" name="qty[' . $product->productId . ']"/>' .
-					'<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
-					'<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
-					'</div>' .
-					'</td>' .
-					'<td><a class="btn btn-primary btn-md addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>' .
-					'<a class="btn btn-success btn-xs" href="' . Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id) . '">ดูรายการอื่นๆ</a>' .
-					'</td>' .
-					'</tr>';
+						'<td>' . number_format($price, 2) . '</td>' .
+						'<td>' .
+						'<div class="numeric-input full-width">' .
+						'<input type="text" value="1" id="' . $product->productId . '" name="qty[' . $product->productId . ']"/>' .
+						'<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
+						'<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
+						'</div>' .
+						'</td>' .
+						'<td><a class="btn btn-primary btn-md addToCart" data-productid="' . $product->productId . '"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>' .
+						'<a class="btn btn-success btn-xs" href="' . Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id) . '">ดูรายการอื่นๆ</a>' .
+						'</td>' .
+						'</tr>';
+				endif;
 			}
 
 			echo $res;
