@@ -43,7 +43,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <p><?php echo $form->labelEx($billingAddressModel, 'firstname'); ?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($billingAddressModel, 'firstname', array('id'=>'billingFirstName', 'name'=>'billing[firstname]', 'onchange'=>'clicked(){document.getElementById("newBillingRadio").addClass("checked");}')); ?>
+                    <?php echo $form->textField($billingAddressModel, 'firstname', array('id'=>'billingFirstName', 'name'=>'billing[firstname]', 'onchange'=>'JavaScript:billingCheck(){ document.getElementById("newBillingRadio").addClass("checked"); }')); ?>
                 </div>
             </div>
             <div class="row">
@@ -212,7 +212,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <p><?php echo $form->labelEx($shippingAddressModel, 'firstname'); ?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($shippingAddressModel, 'firstname', array('id'=>'shippingFirstName', 'name'=>'shipping[firstname]','onchange'=>'clicked(){document.getElementById("newShippingRadio").addClass("checked");}')); ?>
+                    <?php echo $form->textField($shippingAddressModel, 'firstname', array('id'=>'shippingFirstName', 'name'=>'shipping[firstname]','onchange'=>'JavaScript:shippingCheck(){ document.getElementById("newShippingRadio").addClass("checked"); }')); ?>
                 </div>
             </div>
             <div class="row">

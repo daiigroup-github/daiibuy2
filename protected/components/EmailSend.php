@@ -270,7 +270,7 @@ class EmailSend
 				"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderId), 'text/html', 'utf-8');
 
 			$message->subject = "จดหมายยืนยันการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
-//			throw new Exception(print_r($this->orderModel->email,true));
+			throw new Exception(print_r($this->orderModel->email,true));
 			$message->addTo($this->orderModel->email);
 			$message->setFrom(array(
 				'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));

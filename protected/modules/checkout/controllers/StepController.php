@@ -290,6 +290,7 @@ class StepController extends MasterCheckoutController
 				 * Todo:: billing & shipping address
 				 */
 				$userModel = User::model()->findByPk(Yii::app()->user->id);
+				$orderGroup->email = $userModel->email;
 				$orderGroup->firstname = $userModel->firstname;
 				$orderGroup->lastname = $userModel->lastname;
 				$orderGroup->telephone = $userModel->telephone;
