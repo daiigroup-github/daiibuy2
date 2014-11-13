@@ -37,8 +37,8 @@
 			<tr>
 				<td><?php echo $i; ?></td>
 				<td><?php echo $item['description']; ?></td>
-				<td><?php echo ($item['width']*1000) . " x " . ($item['height']*1000); ?></td>
-				<td><?php echo ($item['width']*1000) . " x " . ($item['height']*1000); ?></td>
+				<td><?php echo ($item['width']) . " x " . ($item['height']); ?></td>
+				<td><?php echo ($item['width']) . " x " . ($item['height']); ?></td>
 				<td><?php echo CHtml::textField('productItems['.$item['productId'].'][quantity]', $item['quantity'],array('class'=>'edit-table-qty-input')); ?></td>
 				<td><?php echo $item['code']; ?></td>
 				<td><?php echo AtechWindowController::formatMoney($item['price']); ?></td>

@@ -276,7 +276,7 @@ $this->breadcrumbs = array(
 				'dataType'=>'html',
 				'data'=>array("rows"=>"js:document.getElementById('criteriaTableAtech').rows.length"),
 				'success'=>'js:function(data){
-					alert("YESS");
+					//alert("YESS");
 					$("#criteriaTableAtech").append(data);
 				}',
 				),
@@ -303,26 +303,60 @@ $this->breadcrumbs = array(
 							</thead>
 							<tbody >
 						<?php // foreach($productResult['items'] as $item): ?>
-								<?php $categoryDropDownArray = array('ประตู'=>'ประตู','หน้าต่าง'=>'หน้าต่าง');
+								<?php $categoryDropDownArray = Category::model()->findAllParentCategoryArray(2);
 								$typeDropDownArray = array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง');
 								$sizeDropDownArray = Product::model()->findAllAtechSizeArray();
 								?>
 			<tr>
 				<td>1</td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][category]', "category",$categoryDropDownArray); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray); ?></td>
+				<td class="cat"><?php echo CHtml::dropDownList('Criteria[0][category]', "category",$categoryDropDownArray,array('class'=>'form-control','prompt'=>'เลือกประเภท','onchange'=>'findType(this)')); ?></td>
+				<td class="type"><?php // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
+				echo CHtml::dropDownList('Criteria[0][type]', "type", array(
+										), array(
+										'prompt'=>'เลือกรูปแบบ',
+										'class'=>'form-control',
+										'onchange'=>'findSize(this);',
+										'id'=>'type',
+									));?></td>
+				<td class="size"><?php // echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray);
+				echo CHtml::dropDownList('Criteria[0][size]', "size", array(
+										), array(
+										'prompt'=>'เลือกขนาด',
+										'class'=>'form-control',
+										'id'=>'"size"',
+									)); ?></td>
 				<td><?php echo CHtml::textField('Criteria[0][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>
 			<tr>
 				<td>2</td>
-				<td><?php echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray); ?></td>
-				<td><?php echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray); ?></td>
+				<td class="cat"><?php echo CHtml::dropDownList('Criteria[1][category]', "category",$categoryDropDownArray,array('class'=>'form-control','prompt'=>'เลือกประเภท','onchange'=>'findType(this)')); ?></td>
+				<td class="type"><?php // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
+				echo CHtml::dropDownList('Criteria[1][type]', "type", array(
+										), array(
+										'prompt'=>'เลือกรูปแบบ',
+										'class'=>'form-control',
+										'onchange'=>'findSize(this);',
+//										'id'=>'type',
+									));?></td>
+				<td class="size"><?php // echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray);
+				echo CHtml::dropDownList('Criteria[1][size]', "size", array(
+										), array(
+										'prompt'=>'เลือกขนาด',
+										'class'=>'form-control',
+//										'id'=>'"size"',
+									)); ?></td>
 				<td><?php echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
 				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 			</tr>
+<!--			<tr>
+				<td>2</td>
+				<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray); ?></td>
+				<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray); ?></td>
+				<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray); ?></td>
+				<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
+				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+			</tr>-->
 
 	</tbody>
 </table>
@@ -417,7 +451,7 @@ $this->breadcrumbs = array(
 							<h4>ยืนยันรายการสินค้า <?php echo $model->title; ?></h4>
 						</div>
 						<div class="row sidebar-box-content" id="confirm_product">
-							
+
 						</div>
 					</div>
 				</div>
@@ -437,6 +471,43 @@ $this->breadcrumbs = array(
 		</div>
 	</div>
 </div>
+
+<script>
+	function findSize(sel)
+	{
+		var attrName = sel.attributes['name'].value;
+		var obj = $('select[name=\"' + attrName + '\"]');
+		var cat2 = obj.val();
+
+		$.ajax({
+			'url': '<?php echo CController::createUrl('atechWindow/findAllSizeByCate2Id'); ?>',
+//			'dataType': 'json',
+			'type': 'POST',
+			'data': {'cat2': cat2},
+			'success': function (data) {
+				obj.parent().parent().children('.size').children('select').html(data);
+//				findProductByCat1(sel);
+			},
+		});
+	}
+	function findType(sel)
+	{
+		var attrName = sel.attributes['name'].value;
+		var obj = $('select[name=\"' + attrName + '\"]');
+		var cat1Id = obj.val();
+
+		$.ajax({
+			'url': '<?php echo CController::createUrl('atechWindow/findAllCat2ByCat1Id'); ?>',
+//			'dataType': 'json',
+			'type': 'POST',
+			'data': {'cat1Id': cat1Id},
+			'success': function (data) {
+				obj.parent().parent().children('.type').children('select').html(data);
+//				findProductByCat1(sel);
+			},
+		});
+	}
+</script>
 
 <!--********old code-->
 <!--<div class="form">

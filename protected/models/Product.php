@@ -769,7 +769,7 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId)
+	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId,$title)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
@@ -784,7 +784,9 @@ class Product extends ProductMaster
 			{
 				$orderModel = new Order();
 				$orderModel->userId = isset(Yii::app()->user->id) ? Yii::app()->user->id : 0;
-				$orderModel->title = $category->title;
+				if(isset($title)){
+					$orderModel->title = $title;
+				}
 				$orderModel->supplierId = 1;
 				$orderModel->provinceId = $provinceId;
 				$orderModel->type = 1;
@@ -1006,25 +1008,31 @@ class Product extends ProductMaster
 
 	public function calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId)
 	{
+//		throw new Exception(print_r($criteria,true));
 		$res = array();
 		$total = 0.00;
 //		throw new Exception(print_r($criteria,true));
 		foreach($criteria as $item)
 		{
 //	throw new Exception(print_r($item,true));
-			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId, $item['category'], $item['type']);
+//			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId, $item['category'], $item['type']);
 
-			if(count($categoryArray) > 0)
-			{
-				$category1Id = $categoryArray['cate1'];
-				$category2Id = $categoryArray['cate2'];
+//			if(count($categoryArray) > 0)
+//			{
+				$category1Id = $item['category'];
+				$category2Id = $item['type'];
 //			throw new Exception(print_r($category1Id.', '.$category2Id,true));
 				$value = $item['size'];
 				$size = explode(" x ", $value);
 				$width = $size[0];
 				$height = $size[1];
-				$productModel = Product::model()->find('supplierId = 2 AND brandModelId = ' . $brandModelId . ' AND categoryId = ' . $category2Id . ' AND width = ' . $width . ' AND height = ' . $height);
 
+				$cate2ToProduct = Category2ToProduct::model()->find('category2Id = '.$category2Id);
+				if(isset($cate2ToProduct->product)){
+				$productModel = $cate2ToProduct->product;
+				}
+//				$productModel = Product::model()->find('supplierId = 2 AND brandModelId = ' . $brandModelId . ' AND categoryId = ' . $category2Id . ' AND width = ' . intval($width) . ' AND height = ' . intval($height));
+//				throw new Exception(print_r($brandModelId . ', '. $category2Id. ', '. intval($width).', '. intval($height),true));
 				if(isset($productModel))
 				{
 					$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
@@ -1035,7 +1043,7 @@ class Product extends ProductMaster
 					$res["items"][$productModel->productId]['height'] = $height;
 					$res["items"][$productModel->productId]['category'] = $item['category'];
 					$res["items"][$productModel->productId]['type'] = $item['type'];
-					$res["items"][$productModel->productId]['description'] = $productModel->description;
+					$res["items"][$productModel->productId]['description'] = $productModel->name;
 					$res["items"][$productModel->productId]['quantity'] = $item['quantity'];
 					if(isset($productPromotion))
 					{
@@ -1052,7 +1060,7 @@ class Product extends ProductMaster
 
 					$total = $subTotal + $total;
 				}
-			}
+//			}
 		}
 
 		$res["total"] = $total;
@@ -1071,7 +1079,6 @@ class Product extends ProductMaster
 //		throw new Exception(print_r($criteria,true));
 		foreach($productArray as $item)
 		{
-
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 				":productId"=>$item->productId));
 			$res["items"][$item->productId]['productId'] = $item->productId;
@@ -1080,7 +1087,7 @@ class Product extends ProductMaster
 			$res["items"][$item->productId]['height'] = $item->height;
 //			$res["items"][$item->productId]['category'] = $item['category'];
 //			$res["items"][$item->productId]['type'] = $item['type'];
-			$res["items"][$item->productId]['description'] = $item->description;
+			$res["items"][$item->productId]['description'] = $item->name;
 			$res["items"][$item->productId]['quantity'] = $item->quantity;
 			$res["items"][$item->productId]['name'] = $item->name;
 			if(isset($productPromotion))

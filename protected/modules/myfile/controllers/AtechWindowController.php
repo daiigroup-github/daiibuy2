@@ -354,18 +354,21 @@ class AtechWindowController extends MasterMyFileController
 //			throw new Exception(print_r($rowCount+1,true));
 		}
 		echo '<tr>'
-		. '<td>' . $rowCount . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", array(
-			'ประตู'=>'ประตู',
-			'หน้าต่าง'=>'หน้าต่าง')) . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
-			'บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน',
-			'บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน',
-			'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว',
-			'บานเปิดคู่'=>'บานเปิดคู่',
-			'บานกระทุ้ง'=>'บานกระทุ้ง',
-			'บานส่องแสง'=>'บานส่องแสง')) . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][size]', "size", Product::model()->findAllAtechSizeArray()) . '</td>'
+		. '<td class="cat">' . $rowCount . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2),array('class'=>'form-control','prompt'=>'เลือกประเภท','onchange'=>'findType(this)')) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria['.$index.'][type]', "type", array(
+										), array(
+										'prompt'=>'เลือกรูปแบบ',
+										'class'=>'form-control',
+										'onchange'=>'findSize(this);',
+										'id'=>'type',
+									)) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria['. $index .'][size]', "size", array(
+										), array(
+										'prompt'=>'เลือกขนาด',
+										'class'=>'form-control',
+										'id'=>'"size"',
+									)) . '</td>'
 		. '<td>' . CHtml::textField('Criteria[' . $index . '][quantity]', 1, array(
 			'class'=>'edit-table-qty-input number')) . '</td>'
 		. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
@@ -495,5 +498,39 @@ class AtechWindowController extends MasterMyFileController
 		$this->redirect(array(
 			'index'));
 	}
+
+		public function actionFindAllCat2ByCat1Id()
+	{
+		$data = CategoryToSub::model()->findAll('categoryId=:categoryId', array(
+			':categoryId'=>(int) $_POST['cat1Id']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- เลือกรูปแบบ --"), true);
+		foreach($data as $item)
+		{
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->subCategoryId), CHtml::encode(isset($item->subCategory) ? $item->subCategory->title : ""), true);
+		}
+//		echo CJSON::encode($result);
+	}
+
+		public function actionFindAllSizeByCate2Id(){
+			$data = Category2ToProduct::model()->findAll('category2Id=:category2Id', array(
+			':category2Id'=>(int) $_POST['cat2']));
+//		$result = array(
+//			);
+		echo CHtml::tag('option', array(
+			'value'=>''), CHtml::encode("-- เลือกขนาด --"), true);
+
+		foreach($data as $item)
+		{
+//			throw new Exception(print_r($item->product->width. ' x '. $item->product->height,true));
+//			$result[$item->brandModelId] = $item->title;
+			echo CHtml::tag('option', array(
+				'value'=>$item->product->width . " x " .$item->product->height), CHtml::encode(isset($item->product) ? $item->product->width . " x " .$item->product->height : ""), true);
+		}
+		}
 
 }

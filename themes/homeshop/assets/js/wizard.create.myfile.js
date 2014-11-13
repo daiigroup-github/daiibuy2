@@ -80,7 +80,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: base_url + '/myfile/fenzer/saveOrderMyFile',
 			type: 'POST',
-			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
+			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
 			success: function(data) {
 				$("#confirm_content").html(data);
 			}

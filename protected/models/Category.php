@@ -149,6 +149,17 @@ class Category extends CategoryMaster
 		));
 	}
 
+	public function findAllParentCategoryArray($supplierId)
+	{
+		$res = array();
+		$cat = Category::model()->findAll('supplierId = '.$supplierId. ' AND isRoot = 1');
+
+		foreach($cat as $item){
+			$res[$item->categoryId] = $item->description;
+		}
+		return $res;
+	}
+
 	public function getAllParentCategory($status = 1)
 	{
 		$criteria = new CDbCriteria();

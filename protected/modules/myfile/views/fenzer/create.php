@@ -53,7 +53,20 @@ $this->breadcrumbs = array(
             </ul>
         </div>
 	</div>
-
+<?php
+			$form = $this->beginWidget('CActiveForm', array(
+			'id'=>'ggg',
+		// Please note: When you enable ajax validation, make sure the corresponding
+		// controller action is handling ajax validation correctly.
+		// There is a call to performAjaxValidation() commented in generated controller code.
+		// See class documentation of CActiveForm for details on this.
+			'enableAjaxValidation'=>false,
+			'htmlOptions'=>array(
+				'class'=>'form-horizontal',
+				'enctype'=>'multipart/form-data',
+			),
+		));
+				?>
 	<!--STEP 1 Select Province-->
     <div class="row setup-content" id="step-1">
         <div class="col-xs-12">
@@ -63,9 +76,15 @@ $this->breadcrumbs = array(
 						<div class="page-header select-province">
 							<h1>เลือกจังหวัด</h1><small> กรุณาเลือกจังหวัดที่ท่านต้องการสั่งซื้อสินค้า.</small>
 						</div>
+						<div class="form-group">
+							<div class="col-sm-10">
+							<?php echo $form->textField($model,'title',array('size'=>20,'maxlength'=>20, 'class'=>'form-control','placeholder'=>'กรุณากรอกชื่อ My File.')); ?>
+							<?php echo $form->error($model,'title'); ?>
+							</div>
+						</div>
 						<div>
 							<?php
-							echo CHtml::dropDownList('provinceId', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
+							echo CHtml::dropDownList('Order[provinceId]', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
 								'class'=>'form-control',
 								'id'=>'selectProvince',
 								'prompt'=>'--กรุณาเลือกจังหวัด--',
@@ -74,9 +93,10 @@ $this->breadcrumbs = array(
 						</div>
 					</div>
 				</div>
+				<?php $this->endWidget(); ?>
 				<div class="row wizard-control">
-					<div class="pull-right">
-						<button id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </button>
+						<div class="pull-right">
+							<a id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </a>
 					</div>
 				</div>
 			</div>
