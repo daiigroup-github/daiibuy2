@@ -43,7 +43,7 @@
 
 						<div class="product-info">
 							<h5><a href="<?php echo $item['url']; ?>"><?php echo $item['name']; ?></a></h5>
-							<span class="price"><?php echo $item['price']; ?></span>
+							<span class="price">ราคา <?php echo $item['price']; ?> บาท</span>
 							<!-- <div class = "rating readonly-rating" data-score = "4"></div> -->
 							<input type="hidden" value="1" id=" <?php echo $item['productId']; ?>" name="qty[<?php echo $item['productId']; ?>]"/>
 						</div>
