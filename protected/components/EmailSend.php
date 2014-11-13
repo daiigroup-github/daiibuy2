@@ -267,10 +267,10 @@ class EmailSend
 			$message->setBody(array(
 				"name"=>$this->orderModel->paymentFirstname . " " . $this->orderModel->paymentLastname,
 				"invoiceNo"=>$this->orderModel->orderNo,
-				"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderId), 'text/html', 'utf-8');
+				"documentUrl"=>$mailObj->documentUrl), 'text/html', 'utf-8');
 
 			$message->subject = "จดหมายยืนยันการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
-			throw new Exception(print_r($this->orderModel->email,true));
+//			throw new Exception(print_r($this->orderModel->email,true));
 			$message->addTo($this->orderModel->email);
 			$message->setFrom(array(
 				'No-Reply@daiibuy.com'=>'แจ้งเตือน DaiiBuy'));
@@ -289,7 +289,7 @@ class EmailSend
 			$message->setBody(array(
 				"name"=>$admin->firstname . " " . $admin->lastname,
 				"userName"=>$this->orderModel->email,
-				"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderId,
+				"documentUrl"=>$mailObj->documentUrl . $this->orderModel->orderGroupId,
 				"invoiceNo"=>$this->orderModel->orderNo), 'text/html', 'utf-8');
 			$message->subject = "จดหมายแจ้งมีผู้ซื้อสินค้าซื้อสินค้าออนไลน์ DaiiBuy.com";
 			$message->addTo($admin->email);
