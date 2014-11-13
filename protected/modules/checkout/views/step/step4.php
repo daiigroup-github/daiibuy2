@@ -1,12 +1,17 @@
-<?php $this->renderPartial('_step_header', array('step' => $step)); ?>
+<?php
+$this->renderPartial('_step_header', array(
+	'step'=>$step));
+?>
 
 <?php
 $form = $this->beginWidget('CActiveForm', array(
-    'id' => 'payment-form',
-    //'enableClientValidation' => true,
-    //'clientOptions' => array('validateOnSubmit' => true,),
-    'htmlOptions' => array('class' => '', 'role'=>'form'),
-));
+	'id'=>'payment-form',
+	//'enableClientValidation' => true,
+	//'clientOptions' => array('validateOnSubmit' => true,),
+	'htmlOptions'=>array(
+		'class'=>'',
+		'role'=>'form'),
+	));
 ?>
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-8">
@@ -47,8 +52,11 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <p>
                             <ul>
-								<?php foreach($bankArray as $bank){ ?>
-                                <li><?php echo BankName::model()->getBankNameByBankNameId($bank->bankNameId) . " ชื่อบัญชี : " . $bank->accName ?></li>
+								<?php
+								foreach($bankArray as $bank)
+								{
+									?>
+									<li><?php echo BankName::model()->getBankNameByBankNameId($bank->bankNameId) . " ชื่อบัญชี : " . $bank->accName ?></li>
 								<?php } ?>
                             </ul>
                             </p>
@@ -75,17 +83,17 @@ $form = $this->beginWidget('CActiveForm', array(
 
                         <tr>
                             <td class="align-right"><span class="price big">Total</span></td>
-                            <td class="align-right" style="width: 169px;"><span class="price big" id="summaryTotal"><?php echo $orderSummary['total'];?></span></td>
+                            <td class="align-right" style="width: 169px;"><span class="price big" id="summaryTotal"><?php echo $orderSummary['total']; ?></span></td>
                         </tr>
 
                         <tr>
-                            <td class="align-right"><span class="price big">Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['discountPercent'];?></span>%)</span></td>
-                            <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['discount'];?></span></td>
+                            <td class="align-right"><span class="price big">Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['discountPercent']; ?></span>%)</span></td>
+                            <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['discount']; ?></span></td>
                         </tr>
 
                         <tr>
                             <td class="align-right"><span class="price big">Grand Total</span></td>
-                            <td class="align-right" style="width: 169px;"><span class="price big" id="summaryGrandTotal"><?php echo $orderSummary['grandTotal'];?></span></td>
+                            <td class="align-right" style="width: 169px;"><span class="price big" id="summaryGrandTotal"><?php echo $orderSummary['grandTotal']; ?></span></td>
                         </tr>
 
                     </table>
@@ -96,12 +104,51 @@ $form = $this->beginWidget('CActiveForm', array(
         </div>
     </div>
 </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="carousel-heading">
+            <h4>กรุณาอ่านและยอมรับ ข้อตกลงและเงื่อนไขการชำระเงิน</h4>
+		</div>
+		<div class="page-content">
+			<input type="checkbox" name="accept" id="accept" />
+			<label class="checkbox-label" for="accept"> ฉันได้อ่านและยอมรับ <a id="readTermCondition" style="text-decoration: underline;color: red" href="#" >ข้อตกลงและเงื่อนไข</a> การสั่งซื้อสินค้า ของ www.daiibuy.com</label>
+		</div>
+	</div>
+</div>
+<div class="modal fade " id="termAndConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<?php $content = Content::model()->findByPk(16); ?>
+		<div class="modal-content">
+			<div class="modal-header">
+				<?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>?>
+				<h4 class="modal-title" id="myModalLabel"><?php echo $content->title; ?></h4>
+			</div>
+			<div class="modal-body">
+				<?php echo $content->description; ?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default orange" data-dismiss="modal" id="acceptModal">Accept</button>
+				<?php //<button type="button" class="btn btn-primary">Save changes</button>?>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="page-content">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <?php echo CHtml::link('&lt; Back', '', array('class' => 'button orange', 'name' => 'Register')); ?>
-            <?php echo CHtml::submitButton('Payment', array('class' => 'big green pull-right', 'name' => 'Payment')); ?>
+			<?php
+			echo CHtml::link('&lt; Back', '', array(
+				'class'=>'button orange',
+				'name'=>'Register'));
+			?>
+			<?php
+			echo CHtml::submitButton('Payment', array(
+				'class'=>'big green pull-right',
+				'name'=>'Payment',
+				'onClick'=>'return checkAcceptAgreement()'));
+			?>
         </div>
     </div>
 </div>
