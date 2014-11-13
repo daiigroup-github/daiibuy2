@@ -196,47 +196,49 @@ class StepController extends MasterCheckoutController
 	public function step3()
 	{
 		$supplierId = Yii::app()->session['supplierId'];
-                                     $userId = Yii::app()->user->id;
+		$userId = Yii::app()->user->id;
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$token = $daiibuy->token;
-        $orders = array();
+		$orders = array();
 
-        if (isset($userId)) {
-            $orders = Order::model()->findAll(array(
-                'condition' => 'type&'.Order::ORDER_TYPE_CART.' > 0 AND userId=:userId AND supplierId=:supplierId',
-                'params' => array(
-                    ':userId' => $userId,
-                    ':supplierId' => $supplierId,
-                ),
-                'order' => 'type, orderId'
-            ));
-        } else {
-            $orders = Order::model()->findAll(array(
-                'condition' => 'type&'.Order::ORDER_TYPE_CART.' > 0 AND token=:token AND supplierId=:supplierId',
-                'params' => array(
-                    ':token' =>$token,
-                    ':supplierId' => $supplierId,
-                ),
-            ));
-        }
+		if(isset($userId))
+		{
+			$orders = Order::model()->findAll(array(
+				'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
+				'params'=>array(
+					':userId'=>$userId,
+					':supplierId'=>$supplierId,
+				),
+				'order'=>'type, orderId'
+			));
+		}
+		else
+		{
+			$orders = Order::model()->findAll(array(
+				'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+				'params'=>array(
+					':token'=>$token,
+					':supplierId'=>$supplierId,
+				),
+			));
+		}
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
-                                       $supplierModel = Supplier::model()->findByPk($supplierId);
-                                       $userModel = User::model()->findByPk(Yii::app()->user->id);
-                                       $shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
-                                        $billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
+		$supplierModel = Supplier::model()->findByPk($supplierId);
+		$userModel = User::model()->findByPk(Yii::app()->user->id);
+		$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
+		$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
 
 //                                        throw new Exception(print_r(Yii::app()->session['shippingAddressId'].", ".Yii::app()->session['billingAddressId'],true));
-
 //                throw new Exception(print_r($daiibuy,true));
 		$this->render('step3', array(
 			'step'=>3,
 			'orderSummary'=>$orderSummary,
-                                                        'orders'=>$orders,
-                                                        'supplierName'=>$supplierModel->name,
-                                                        'billingAddress'=>$billingAddress,
-                                                        'shippingAddress'=>$shippingAddress,
-                                                        'userModel'=>$userModel,
+			'orders'=>$orders,
+			'supplierName'=>$supplierModel->name,
+			'billingAddress'=>$billingAddress,
+			'shippingAddress'=>$shippingAddress,
+			'userModel'=>$userModel,
 		));
 		//$this->redirect($this->createUrl(4));
 	}
@@ -285,6 +287,8 @@ class StepController extends MasterCheckoutController
 				{
 					$orderGroup->parentId = $_POST["orderGroupId"];
 				}
+				$orderGroup->createDateTime = new CDbExpression("NOW()");
+				$orderGroup->updateDateTime = new CDbExpression("NOW()");
 
 				/**
 				 * Todo:: billing & shipping address
@@ -413,9 +417,10 @@ class StepController extends MasterCheckoutController
 					else
 					{
 
-						$this->redirect(array('step6',
+						$this->redirect(array(
+							'step6',
 							"id"=>$orderGroupId,
-							));
+						));
 					}
 				}
 				else
@@ -551,34 +556,34 @@ class StepController extends MasterCheckoutController
 		$order = new OrderGroup();
 		$flag = FALSE;
 
-				$order = OrderGroup::model()->find("orderNo =:orderNo", array(
-					":orderNo"=>$id));
-				if(isset($order))
-				{
-					$order->status = 2;
-					$order->invoiceNo = OrderGroup::model()->genInvNo($order);
-					$order->paymentDateTime = new CDbExpression('NOW()');
-					if($order->save())
-					{
+		$order = OrderGroup::model()->find("orderNo =:orderNo", array(
+			":orderNo"=>$id));
+		if(isset($order))
+		{
+			$order->status = 2;
+			$order->invoiceNo = OrderGroup::model()->genInvNo($order);
+			$order->paymentDateTime = new CDbExpression('NOW()');
+			if($order->save())
+			{
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
 
-						$flag = TRUE;
-						$emailObj = new Email();
-						$sentMail = new EmailSend();
-						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderGroupId;
-						$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
-						$sentMail->mailCompleteOrderCustomer($emailObj);
-						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
-					}
-				}
-				else
-				{
-					echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
-				}
+				$flag = TRUE;
+				$emailObj = new Email();
+				$sentMail = new EmailSend();
+				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderGroupId;
+				$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+				$sentMail->mailCompleteOrderCustomer($emailObj);
+				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+			}
+		}
+		else
+		{
+			echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+		}
 
 		$bankArray = Bank::model()->findAllBankModelBySupplier(Yii::app()->session['supplierId']);
 		$this->render("step6", array(
