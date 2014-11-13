@@ -7,6 +7,7 @@ class GinzaHomeController extends MasterMyFileController
 	const ORDER_PERIOD_2 = 2;
 	const ORDER_PERIOD_3 = 3;
 	const ORDER_PERIOD_4 = 4;
+	const ORDER_PERIOD_5 = 5;
 
 	public function actionIndex()
 	{
@@ -47,8 +48,9 @@ class GinzaHomeController extends MasterMyFileController
 		$cat2ToProducts = Category2ToProduct::model()->findAll("category1Id = :catgory1Id AND category2Id=:category2Id", array(
 			":catgory1Id"=>$cat2ToProduct->category1Id,
 			':category2Id'=>$cat2ToProduct->category2Id));
-		$productWithOutPay = Category2ToProduct::model()->findAll("category2Id=:category2Id AND productId not in(" . $productId . ") ORDER BY sortOrder ASC", array(
+		$productWithOutPay = Category2ToProduct::model()->findAll("category1Id=:category1Id AND category2Id=:category2Id AND productId not in(" . $productId . ") ORDER BY sortOrder ASC", array(
 			":category2Id"=>$cat2ToProduct->category2Id,
+			":category1Id"=>$cat2ToProduct->category1Id,
 		));
 
 		$price = 0;
@@ -86,7 +88,8 @@ class GinzaHomeController extends MasterMyFileController
 		self::ORDER_PERIOD_2=>"งวดงานเข็ม<br>ชำระ ณ วันที่ทำสัญญา เพื่อดำเนินการ<br>เตรียมงานและขออนุญาติทำการก่อสร้าง<br>1.งานยื่นอนุญาติ<br>2.ตอกเข็มเสร็จแล้ว",
 		self::ORDER_PERIOD_3=>"งวดงานก่อสร้างโครงสร้าง<br>ชำระ ณ วันที่ทำสัญญา เพื่อดำเนินการ <br>เตรียมงานและขออนุญาติทำการก่อสร้าง<br>1.งานฐานรากอาคารเสร็จแล้ว<br>2.งานติดตั้งโครงสร้างผนังสำเร็จรูป 1-2 แล้วเสร็จ <br>3.งานจำกัดปลวกแล้วเสร็จ<br>4.งานติดตั้งพื้นสำเร็จรูปชั้น 1-2 พร้อมเท Topping<br>5.งานพื้นห้องน้ำพร้อมวาง Sleeve<br>6.งานซักล้าง + เทพื้นโรงจอดรถ",
 		self::ORDER_PERIOD_4=>"งวดงานก่อสร้างสถาปัตยกรรม<br>ชำระ ณ วันที่ทำสัญญา เพื่อดำเนินการ<br>1.งานติดตั้งโครงหลังคา แล้วเสร็จ<br>2.งานมุงหลังคา + เชิงชาย แล้วเสร็จ<br>3.เดินท่อประปาภายใน และ สุขาภิบาล ภายนอก<br>4.นำวัสดุไฟฟ้าเข้าหน่วยงาน + ร้อยสายไฟในท่อ<br>5.งานปูกระเบื้องพื้น และผนัง(ห้องน้ำ)<br>6.งานปูพื้นชั้น 1 และชั้น 2 <br>7.งานฝ้าภายใน และ งานฝ้าภายนอก<br>8.งานติดตั้งประตูภายนอก<br>9.งานบันไดสำเร็จรูปและราวระเบียงกันตก<br>10.ประตูหน้าต่าง UPVC (ภายนอก)<br>11.งานติดตั้งสุขภัณฑ์<br>12.งานติดตั้งดวงโคมและสวิตท์ปลั๊ก<br>13.งานทาสี",
-	);
+		self::ORDER_PERIOD_5=>"ส่งมอบงาน",
+		);
 
 	public function getOrderPeriodText($period)
 	{

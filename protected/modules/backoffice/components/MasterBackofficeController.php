@@ -331,7 +331,7 @@ class MasterBackofficeController extends MasterController
 	{
 		// Full month array
 		$monthFormat1 = array(
-			"01"=>"มกราคม",
+			"0001"=>"มกราคม",
 			"02"=>"กุมภาพันธ์",
 			"03"=>"มีนาคม",
 			"04"=>"เมษายน",
