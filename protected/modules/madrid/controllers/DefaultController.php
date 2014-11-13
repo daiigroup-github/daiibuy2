@@ -36,13 +36,12 @@ class DefaultController extends MasterMadridController
 				$items = array();
 				$products[$i] = array(
 					'title'=>$category->title,
-					'maxItems'=>3,
+					'maxItems'=>5,
 					'moreUrl'=>$this->createUrl('category/index/id/' . $category->categoryId),
 				);
 				$cat2ToProducts = Category2ToProduct::model()->findAll("category1Id = :category1Id ", array(
 					":category1Id"=>$category->categoryId,
 				));
-				echo count($cat2ToProducts);
 				$j = 0;
 				foreach($cat2ToProducts as $cat2ToProduct)
 				{
