@@ -54,7 +54,7 @@ $this->breadcrumbs = array(
 											{
 												break;
 											}
-											echo $detailValue->orderDetailTemplateField->title . " :" . $detailValue->value . " m. ";
+											echo ucfirst($detailValue->orderDetailTemplateField->title) . " :" . $detailValue->value . " m. ";
 											$i++;
 										endforeach;
 										?></p>
