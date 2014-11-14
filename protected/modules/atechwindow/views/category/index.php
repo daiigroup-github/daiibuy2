@@ -59,7 +59,7 @@ $this->breadcrumbs = array(
 				?>
 
                 <div class="form-group product-actions-single">
-                    <label for="h" class="col-sm-3 control-label">กว้าง (mm) </label>
+                    <label for="h" class="col-sm-3 control-label">กว้าง (มิลลิเมตร) </label>
 
                     <div class="col-sm-8">
 						<?php
@@ -71,7 +71,7 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="form-group product-actions-single">
-                    <label for="h" class="col-sm-3 control-label">สูง (mm)</label>
+                    <label for="h" class="col-sm-3 control-label">สูง (มิลลิเมตร)</label>
 
                     <div class="col-sm-8">
 						<?php
@@ -174,7 +174,7 @@ $this->breadcrumbs = array(
                     <th>รุ่น</th>
                     <th>รหัสสินค้า</th>
                     <th>รายละเอียด</th>
-                    <th>ขนาด(mm)</th>
+                    <th>ขนาด(มิลลิเมตร)</th>
                     <!--<th>สี</th>-->
                     <th>ราคา</th>
                     <th>Qty</th>
