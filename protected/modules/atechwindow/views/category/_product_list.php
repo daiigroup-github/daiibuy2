@@ -18,7 +18,7 @@ foreach($models as $model):
 					<p><?php echo $model->product->description; ?></p>
 				</div>
 			</div>
-			<div class="col-lg-2 col-md-2 col-sm-2">
+			<div class="col-lg-2 col-md-2 col-sm-2 red" style="font-size: large">
 				ราคา : <?php echo number_format($price); ?> บาท
 			</div>
 			<div class="col-lg-1 col-md-1 col-sm-1">
