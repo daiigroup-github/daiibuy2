@@ -85,7 +85,7 @@ class Order extends OrderMaster
 				),
 				'user'=>array(
 					self::BELONGS_TO,
-					'user',
+					'User',
 					'userId'),
 				'orderGroups'=>array(
 					self::MANY_MANY,
