@@ -27,7 +27,7 @@
 										?></td>
 									<td><?php echo $item->groupName; ?></td>
 									<td><?php echo $item->product->name; ?></td>
-									<td class="price"><?php echo $item->product->price; ?></td>
+									<td class="price"><?php echo number_format($item->product->price, 0) . " บาท/แผ่น"; ?> </td>
 									<td><?php echo $item->product->code; ?></td>
 								</tr>
 							<?php endforeach; ?>
