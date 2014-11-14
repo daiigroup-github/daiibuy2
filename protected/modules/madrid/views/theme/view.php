@@ -21,7 +21,7 @@
 						<tbody>
 							<?php foreach($cat2Product as $item): ?>
 								<tr>
-									<td class="col-md-2"><?php
+									<td class="col-md-3"><?php
 										echo CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
 											'class'=>'col-md-12'));
 										?></td>
