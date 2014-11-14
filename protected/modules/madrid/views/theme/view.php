@@ -27,6 +27,7 @@
 										?></td>
 									<td><?php echo $item->groupName; ?></td>
 									<td><?php echo $item->product->name; ?></td>
+									<td class="price"><?php echo $item->product->price; ?></td>
 									<td><?php echo $item->product->code; ?></td>
 								</tr>
 							<?php endforeach; ?>
