@@ -39,7 +39,7 @@
 				<div class="col-md-12 ">
 					<?php
 					if(isset(Yii::app()->user->id)):
-						echo CHtml::link('<i class="fa fa-heart-o"></i> Add to wishlist', "", array(
+						echo CHtml::link('<i class="fa fa-heart-o"></i> เก็บเข้า Myfile', "", array(
 							'class'=>'btn btn-danger pull-right',
 							'onClick'=>'addFavourite(' . Yii::app()->user->id . ',' . $model->categoryId . ",'" . Yii::app()->baseUrl . "',true" . ')',));
 					else:
