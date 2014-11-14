@@ -59,9 +59,9 @@ $this->breadcrumbs = array(
 				?>
 
                 <div class="form-group product-actions-single">
-                    <label for="h" class="col-sm-2 control-label">Width</label>
+                    <label for="h" class="col-sm-3 control-label">กว้าง (mm) </label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
 						<?php
 						echo CHtml::dropDownList('width', '', CHtml::listData($widthArray, 'width', 'width'), array(
 							'class'=>'chosen-select-full-width',
@@ -71,9 +71,9 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="form-group product-actions-single">
-                    <label for="h" class="col-sm-2 control-label">Height</label>
+                    <label for="h" class="col-sm-3 control-label">สูง (mm)</label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
 						<?php
 						echo CHtml::dropDownList('height', '', CHtml::listData($heightArray, 'height', 'height'), array(
 							'class'=>'chosen-select-full-width',
@@ -174,7 +174,7 @@ $this->breadcrumbs = array(
                     <th>รุ่น</th>
                     <th>รหัสสินค้า</th>
                     <th>รายละเอียด</th>
-                    <th>ขนาด</th>
+                    <th>ขนาด(mm)</th>
                     <!--<th>สี</th>-->
                     <th>ราคา</th>
                     <th>Qty</th>
