@@ -29,10 +29,10 @@ $(document).ready(function() {
 		$.ajax({
 			url: base_url + '/myfile/fenzer/showProductOrder',
 			type: 'POST',
-			data: {'categoryId': $('#height_input').attr('name'),
-				'length': $('#length_input').attr('value'),
-				'height': $('#selectHeight').attr('value'),
-			},
+			data: $("#ggg").serialize() + '&categoryId=' + $('#height_input').attr('name') + '&length=' + $('#length_input').attr('value') + '&height=' + $('#selectHeight').attr('value'),
+//				'length': $('#length_input').attr('value'),
+//				'height': $('#selectHeight').attr('value'),
+//			},
 			success: function(data) {
 				$("#order_list").html(data);
 			}
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: base_url + '/myfile/fenzer/saveOrderMyFile',
 			type: 'POST',
-			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + '&orderId=' + orderId,
+			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + '&orderId=' + orderId + "&" + $("#ggg").serialize(),
 			success: function(data) {
 				$("#confirm_content").html(data);
 			}
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: base_url + '/myfile/fenzer/updatePrice',
 			type: 'POST',
-			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId,
+			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
 			success: function(data) {
 				$("#result_content").html(data);
 			}

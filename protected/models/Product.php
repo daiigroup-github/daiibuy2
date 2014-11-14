@@ -478,6 +478,7 @@ class Product extends ProductMaster
 
 	public function calProductPrice($productId = NULL, $provinceId = NULL)
 	{
+//		throw new Exception(print_r($provinceId,true));
 		if(!isset($provinceId))
 		{
 			$daiibuy = new DaiiBuy();
@@ -491,7 +492,7 @@ class Product extends ProductMaster
 		$priceModel = Price::model()->find("provinceId=:provinceId AND priceGroupId=:priceGroupId", array(
 			":provinceId"=>$provinceId,
 			':priceGroupId'=>$product->priceGroupId));
-
+//		throw new Exception(print_r($priceModel,true));
 		if(isset($priceModel))
 		{
 			$price = $price * ((100 + $priceModel->priceRate) / 100);

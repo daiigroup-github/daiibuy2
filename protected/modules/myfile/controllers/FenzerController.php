@@ -146,9 +146,10 @@ class FenzerController extends MasterMyFileController
 	{
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
-		$daiibuy = new DaiiBuy();
-		$daiibuy->loadCookie();
-		$provinceId = $daiibuy->provinceId;
+		if(isset($_POST['Order'])){
+			$provinceId = $_POST['Order']['provinceId'];
+			$title = $_POST['Order']['title'];
+		}
 		$categoryId = $_POST['categoryId'];
 		if(isset($_POST['height']))
 		{
@@ -181,9 +182,10 @@ class FenzerController extends MasterMyFileController
 
 	public function actionAddNewProductItem()
 	{
-		$daiibuy = new DaiiBuy();
-		$daiibuy->loadCookie();
-		$provinceId = $daiibuy->provinceId;
+		if(isset($_POST['Order'])){
+			$provinceId = $_POST['Order']['provinceId'];
+			$title = $_POST['Order']['title'];
+		}
 		if(isset($_POST['productId']) && !empty($_POST['productId']))
 		{
 			$productId = $_POST['productId'];
@@ -210,9 +212,13 @@ class FenzerController extends MasterMyFileController
 
 	public function actionUpdatePrice()
 	{
-		$daiibuy = new DaiiBuy();
-		$daiibuy->loadCookie();
-		$provinceId = $daiibuy->provinceId;
+//		$daiibuy = new DaiiBuy();
+//		$daiibuy->loadCookie();
+//		$provinceId = $daiibuy->provinceId;
+		if(isset($_POST['Order'])){
+			$provinceId = $_POST['Order']['provinceId'];
+			$title = $_POST['Order']['title'];
+		}
 		$productItems = array();
 		if(isset($_POST['productItems']) && !empty($_POST['productItems']))
 		{
