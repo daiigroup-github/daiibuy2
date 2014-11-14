@@ -1110,6 +1110,7 @@ class Product extends ProductMaster
 
 		$res["total"] = $total;
 		$res["brandModelId"] = $brandModelId;
+		
 //		throw new Exception(print_r($res,true));
 //		$res["brandModelId"] = $brand->brandModelId;
 //		$res["category1Id"] = $category1Id;

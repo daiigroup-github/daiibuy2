@@ -270,4 +270,26 @@
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 	});
 
+<<<<<<< Updated upstream
 //});
+=======
+	$('#addToCartAtech').on('click', function(e) {
+		var base_url = baseUrl;
+		var orderId = $("#order").attr("name");
+		if (orderId === null)
+		{
+			orderId = $(this).attr("name");
+		}
+//		alert(orderId);
+		$.ajax({
+			url: base_url + '/myfile/atechWindow/addToCart',
+			type: 'POST',
+			data: {'orderId': orderId},
+			success: function(data) {
+			}
+		});
+		window.location.assign(base_url + '/myfile/fenzer/');
+	});
+
+});
+>>>>>>> Stashed changes

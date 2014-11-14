@@ -350,7 +350,9 @@ class FenzerController extends MasterMyFileController
 	{
 		$res = array();
 		$orderDetail = OrderDetail::model()->find('orderId = ' . $orderId);
+//		throw new Exception(print_r($orderDetail,true));
 		$orderDetailValues = OrderDetailValue::model()->findAll('orderDetailId = ' . $orderDetail->orderDetailId);
+
 		if(count($orderDetailValues) == 0)
 		{
 			$res['categoryId'] = 0;

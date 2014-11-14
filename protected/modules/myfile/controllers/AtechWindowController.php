@@ -264,6 +264,7 @@ class AtechWindowController extends MasterMyFileController
 			if($isNew)
 			{
 				$newOrderId = Yii::app()->db->lastInsertID;
+				$res['orderId'] = $newOrderId;
 			}
 
 
@@ -474,7 +475,7 @@ class AtechWindowController extends MasterMyFileController
 	public function actionFinish($id)
 	{
 		$model = Order::model()->findByPk($id);
-		$model->status = 3;
+		$model->status = 1;
 		$model->save();
 		$this->redirect(array(
 			'index'));
@@ -490,13 +491,20 @@ class AtechWindowController extends MasterMyFileController
 			'id'=>$id));
 	}
 
-	public function actionAddtoCart($id)
+	public function actionAddToCart()
 	{
-		$model = Order::model()->findByPk($id);
-		$model->type = 3;
-		$model->save();
-		$this->redirect(array(
-			'index'));
+		if(isset($_POST['orderId']) && !empty($_POST['orderId']))
+		{
+			$orderId = $_POST['orderId'];
+//			throw new Exception(print_r($orderId,true));
+			$model = Order::model()->findByPk($orderId);
+			$model->type = 3;
+			if($model->save())
+			{
+				echo 'success';
+			}
+		}
+		echo 'fail';
 	}
 
 		public function actionFindAllCat2ByCat1Id()
