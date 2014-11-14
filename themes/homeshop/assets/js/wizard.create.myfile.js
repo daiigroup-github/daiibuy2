@@ -81,7 +81,6 @@
 		var productItems = $("#editTableForm").serialize();
 
         if(fenzerSave == true) {
-            alert('true');
             $.ajax({
                 url: base_url + '/myfile/fenzer/saveOrderMyFile',
                 type: 'POST',
@@ -91,8 +90,6 @@
                     $('ul.setup-panel li a[href="#step-4"]').trigger('click');
                 }
             });
-        } else {
-            alert('false');
         }
 
         fenzerSave = false;
