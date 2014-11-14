@@ -227,12 +227,12 @@ function showImage($imageUrl, $title)
 	{
 		if(strpos($imageUrl, ".pdf"))
 		{
-			$imageUrl = Yii::app()->baseUrl . "/" . $imageUrl;
+			$imageUrl = Yii::app()->baseUrl . $imageUrl;
 			$image = "<a class='pdf' Title='$title' href='$imageUrl'><i class='fa fa-search'></i>View</a>";
 		}
 		else
 		{
-			$imageUrl = Yii::app()->baseUrl . "/" . $imageUrl;
+			$imageUrl = Yii::app()->baseUrl . $imageUrl;
 			//$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'><img src='$imageUrl' width='50px' alt='' /></a>";
 			$image = "<a class='fancyFrame' Title='$title' href='$imageUrl'><i class='fa fa-search'></i>View</a>";
 		}
