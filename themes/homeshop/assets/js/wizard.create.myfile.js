@@ -251,7 +251,7 @@ $(".atechUpdate").click(function() {
 //		this.setAttribute("class", "atechNav active");
 });
 
-$('#nextToStep4Atech').on('click', function(e) {
+$('#nextToStep4Atech').live('click', function(e) {
 
 //save order
 	var base_url = baseUrl;

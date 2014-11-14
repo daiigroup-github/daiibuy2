@@ -459,7 +459,7 @@ $this->breadcrumbs = array(
 					<div class="pull-right">
 						<a id="backToStep3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo ($this->action->id == 'create')? Yii::app()->createUrl("/myfile/atechWindow/") : Yii::app()->createUrl("/myfile/atechWindow/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-						<a id="addToCartAtech" class="btn btn-warning btn-lg" href="<?php echo ($this->action->id == 'create')? "#" : Yii::app()->createUrl("/myfile/atechWindow/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<a id="addToCartAtech" class="btn btn-warning btn-lg" href="<?php echo ($this->action->id == 'create')? "#" : Yii::app()->createUrl("/myfile/atechWindow/addToCartNow/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
 						<?php if(!$model->isRequestSpacialProject): ?>
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php else: ?>

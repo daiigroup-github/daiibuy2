@@ -252,7 +252,7 @@ class AtechWindowController extends MasterMyFileController
 			$model->title = $title;
 			$model->provinceId = $provinceId;
 			$model->type = 1;
-
+			$model->totalIncVAT = $res["total"];
 			$model->supplierId = 2;
 			$model->userId = Yii::app()->user->id;
 			$model->createDateTime = new CDbExpression("NOW()");
@@ -489,6 +489,15 @@ class AtechWindowController extends MasterMyFileController
 		$this->redirect(array(
 			'view',
 			'id'=>$id));
+	}
+
+	public function actionAddtoCartNow($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->type = 3;
+		$model->save();
+		$this->redirect(array(
+			'index'));
 	}
 
 	public function actionAddToCart()
