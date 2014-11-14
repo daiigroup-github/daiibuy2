@@ -1,4 +1,4 @@
-$(document).ready(function() {
+//$(document).ready(function() {
 
 	var navListItems = $('ul.setup-panel li a'),
 			allWells = $('.setup-content');
@@ -69,7 +69,9 @@ $(document).ready(function() {
 		var base_url = baseUrl;
 		window.location.assign(base_url + '/myfile/fenzer/');
 	});
-	$('#nextToStep4').on('click', function(e) {
+
+    var fenzerSave = true;
+	$('#nextToStep4').live('click', function(e) {
 
 //save order
 		var base_url = baseUrl;
@@ -77,15 +79,34 @@ $(document).ready(function() {
 		var categoryId = $("#editTable").attr("name");
 //		alert(categoryId);
 		var productItems = $("#editTableForm").serialize();
+
+        if(fenzerSave == true) {
+            alert('true');
+            $.ajax({
+                url: base_url + '/myfile/fenzer/saveOrderMyFile',
+                type: 'POST',
+                data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
+                success: function(data) {
+                    $("#confirm_content").html(data);
+                    $('ul.setup-panel li a[href="#step-4"]').trigger('click');
+                }
+            });
+        } else {
+            alert('false');
+        }
+
+        fenzerSave = false;
+        /*
 		$.ajax({
 			url: base_url + '/myfile/fenzer/saveOrderMyFile',
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
 			success: function(data) {
 				$("#confirm_content").html(data);
+                $('ul.setup-panel li a[href="#step-4"]').trigger('click');
 			}
 		});
-		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
+		*/
 	});
 //view Myfile Fenzer
 	$('#nextToStep4Edit').on('click', function(e) {
@@ -252,4 +273,4 @@ $(document).ready(function() {
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 	});
 
-});
+//});
