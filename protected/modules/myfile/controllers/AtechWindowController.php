@@ -166,7 +166,7 @@ class AtechWindowController extends MasterMyFileController
 				$res["items"][$productModel->productId]['height'] = $productModel->height;
 //			$res["items"][$productModel->productId]['category'] = $productModel->categoryId;
 //			$res["items"][$productModel->productId]['type'] = $item['type'];
-				$res["items"][$productModel->productId]['description'] = $productModel->description;
+				$res["items"][$productModel->productId]['description'] = $productModel->name;
 				$res["items"][$productModel->productId]['quantity'] = $item->quantity;
 				if(isset($productPromotion))
 				{
