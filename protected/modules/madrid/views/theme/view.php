@@ -21,13 +21,13 @@
 						<tbody>
 							<?php foreach($cat2Product as $item): ?>
 								<tr>
-									<td class="col-md-3"><?php
-										echo CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
-											'class'=>'col-md-12'));
-										?>
-										<a href="<?php echo $this->createUrl('product/index/id/' . $item->product->productId); ?>" class="product-hover">
-											<i class="icons icon-eye-1"></i> Quick View
-										</a>
+									<td class="col-md-3"><div class="product-image"><?php
+											echo CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
+												'class'=>'col-md-12'));
+											?>
+											<a href="<?php echo $this->createUrl('product/index/id/' . $item->product->productId); ?>" class="product-hover" style="margin-top: -60px">
+												<i class="icons icon-eye-1"></i> Quick View
+											</a></div>
 									</td>
 									<td><?php echo $item->groupName; ?></td>
 									<td><?php echo $item->product->name; ?></td>
