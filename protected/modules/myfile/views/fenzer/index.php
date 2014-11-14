@@ -47,6 +47,17 @@ $this->breadcrumbs = array(
 									<p>วันที่สร้าง :<?php echo $this->dateThai($myfile->createDateTime, 3, TRUE); ?></p>
 									<p>วันที่แก้ไข :<?php echo $this->dateThai($myfile->updateDateTime, 2, TRUE) ?></p>
 									<p>จังหวัดที่ส่ง : <?php echo Province::model()->findByPk($myfile->provinceId)->provinceName; ?></p>
+									<p><?php
+										$i = 1;
+										foreach($myfile->orderDetails[0]->orderDetailValues as $detailValue):
+											if($i == 3)
+											{
+												break;
+											}
+											echo $detailValue->orderDetailTemplateField->title . " :" . $detailValue->value . " m. ";
+											$i++;
+										endforeach;
+										?></p>
 								</a>
 							</div>
 
