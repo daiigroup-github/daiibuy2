@@ -46,6 +46,7 @@ $this->breadcrumbs = array(
 									<h3><?php echo $myfile->title; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
 									<p>วันที่สร้าง :<?php echo $this->dateThai($myfile->createDateTime, 3, TRUE); ?></p>
 									<p>วันที่แก้ไข :<?php echo $this->dateThai($myfile->updateDateTime, 2, TRUE) ?></p>
+									<p>จังหวัดที่ส่ง : <?php echo Province::model()->findByPk($myfile->provinceId)->provinceName; ?></p>
 								</a>
 							</div>
 						</div>
@@ -61,6 +62,7 @@ $this->breadcrumbs = array(
 									<h3><?php echo $myfile->title; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
 									<p>วันที่สร้าง :<?php echo $this->dateThai($myfile->createDateTime, 3, TRUE); ?></p>
 									<p>วันที่แก้ไข :<?php echo $this->dateThai($myfile->updateDateTime, 2, TRUE) ?></p>
+									<p>จังหวัดที่ส่ง : <?php echo Province::model()->findByPk($myfile->provinceId)->provinceName; ?></p>
 								</a>
 							</div>
 						</div>
