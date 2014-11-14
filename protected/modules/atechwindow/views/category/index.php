@@ -172,7 +172,7 @@ $this->breadcrumbs = array(
             <table class="table table-bordered atechwindow-items">
                 <tr>
                     <th>รุ่น</th>
-                    <th>รหัสสินค้า</th>
+                    <!--<th>รหัสสินค้า</th>-->
                     <th>รายละเอียด</th>
                     <th>ขนาด(มิลลิเมตร)</th>
                     <!--<th>สี</th>-->
