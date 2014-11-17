@@ -28,7 +28,8 @@ $this->breadcrumbs = array(
 
             <!-- Product Images Carousel -->
             <div class="col-lg-5 col-md-5 col-sm-5 product-single-image">
-				<?php $this->renderPartial('//layouts/_product_slider', array(
+				<?php
+				$this->renderPartial('//layouts/_product_slider', array(
 					'images'=>$images));
 				?>
             </div>
@@ -39,7 +40,8 @@ $this->breadcrumbs = array(
 
                 <h2><?php echo $categoryToSub->category->title . ' :: ' . $categoryToSub->subCategory->title; ?></h2>
 
-				<?php $this->renderPartial('//layouts/_product_description', array(
+				<?php
+				$this->renderPartial('//layouts/_product_description', array(
 					'description'=>$description));
 				?>
 
@@ -88,12 +90,13 @@ $this->breadcrumbs = array(
 				 */
 				if($productSortOrder1->productOptionGroups !== array()):
 					foreach($productSortOrder1->productOptionGroups as $productOptionGroup):
+//						throw new Exception(print_r($productOptionGroup->productOptions, true));
 						?>
 						<div class="form-group">
-							<label for="productOption" class="col-sm-4 control-label">Color</label>
+							<label for="productOption" class="col-sm-4 control-label"><?php echo $productOptionGroup->title; ?></label>
 							<div class="col-sm-7">
 								<?php
-								echo CHtml::dropDownList('productOption', '', CHtml::listData($productOptionGroup->productOptions, 'productOptionsId', 'title'), array(
+								echo CHtml::dropDownList('productOption', '', CHtml::listData($productOptionGroup->productOptions, 'productOptionId', 'title'), array(
 									'class'=>'chosen-select-full-width',
 									'prompt'=>'-- Select --'
 									)
@@ -125,8 +128,8 @@ $this->breadcrumbs = array(
 						</span>
 					</span>
                 </div>
-<?php echo CHtml::hiddenField('productId', $productSortOrder1->productId); ?>
-<?php $this->endWidget(); ?>
+				<?php echo CHtml::hiddenField('productId', $productSortOrder1->productId); ?>
+				<?php $this->endWidget(); ?>
 
 
                 <br/>
@@ -138,10 +141,11 @@ $this->breadcrumbs = array(
     <!-- /Product -->
 
     <!-- Product tabs -->
-<?php if($tabs !== array())
-	$this->renderPartial('_product_tab', array(
-		'tabs'=>$tabs));
-?>
+	<?php
+	if($tabs !== array())
+		$this->renderPartial('_product_tab', array(
+			'tabs'=>$tabs));
+	?>
 
 </div>
 
