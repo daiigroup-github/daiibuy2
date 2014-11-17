@@ -39,6 +39,11 @@ class ProductSpecGroup extends ProductSpecGroupMaster
 					self::BELONGS_TO,
 					'ProductSpecGroupMaster',
 					'parentId'),
+				'productSpecs'=>array(
+					self::HAS_MANY,
+					'ProductSpec',
+					'productSpecGroupId',
+					'order'=>'sortOrder ASC'),
 		));
 	}
 
