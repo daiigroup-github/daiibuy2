@@ -279,7 +279,8 @@ class CategoryToSubController extends MasterBackofficeController
 			{
 				$this->redirect(array(
 					'index',
-					'categoryId'=>$model->categoryId));
+					'categoryId'=>$model->categoryId,
+					'brandModelId'=>$model->brandModelId));
 			}
 		}
 		$this->render('update_description', array(
