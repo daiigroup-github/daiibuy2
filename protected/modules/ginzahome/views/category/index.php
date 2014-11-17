@@ -63,6 +63,19 @@ $this->breadcrumbs = array(
 							<?php endforeach; ?>
 						</tr>
 						<tr>
+							<td></td>
+							<?php foreach($category->subCategorys as $subCategory): ?>
+								<td style="width: 20%">
+									<span>
+										<?php
+										$catToSub = CategoryToSub::model()->find("categoryId =" . $category->categoryId . " AND subcategoryId=" . $subCategory->categoryId . " AND brandModelId=" . $brandModel->brandModelId);
+										echo $catToSub->description;
+										?>
+									</span>
+								</td>
+							<?php endforeach; ?>
+						</tr>
+						<tr>
 							<td>ราคา</td>
 
 							<?php foreach($category->subCategorys as $subCategory): ?>
