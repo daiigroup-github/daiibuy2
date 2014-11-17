@@ -2,8 +2,9 @@
 
 class ProductSpecGroup extends ProductSpecGroupMaster
 {
-    const SPEC_TYPE_DETAIL = 1;
-    const SPEC_TYPE_SPEC = 2;
+
+	const SPEC_TYPE_DETAIL = 1;
+	const SPEC_TYPE_SPEC = 2;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -84,7 +85,7 @@ class ProductSpecGroup extends ProductSpecGroupMaster
 			$this->updateDateTime = $this->searchText;
 		}
 		$criteria->compare('productSpecGroupId', $this->productSpecGroupId, true, 'OR');
-		$criteria->compare('productId', $this->productId, true, 'OR');
+		$criteria->compare('productId', $this->productId);
 		$criteria->compare('title', $this->title, true, 'OR');
 		$criteria->compare('description', $this->description, true, 'OR');
 		$criteria->compare('image', $this->image, true, 'OR');
