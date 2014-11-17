@@ -72,7 +72,7 @@ class ProductOptionGroup extends ProductOptionGroupMaster
 		}
 
 		$criteria->compare('productOptionGroupId', $this->productOptionGroupId, true, 'OR');
-		$criteria->compare('productId', $this->productId, true, 'OR');
+		$criteria->compare('productId', $this->productId);
 		$criteria->compare('title', $this->title, true, 'OR');
 		$criteria->compare('description', $this->description, true, 'OR');
 		$criteria->compare('image', $this->image, true, 'OR');
