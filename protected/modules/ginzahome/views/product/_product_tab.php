@@ -50,6 +50,7 @@ $tabContent = '';
 											?>
 											<div class="col-lg-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-md-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-sm-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?>">
 												<?php if(isset($item->image)): ?>
+													<h3><?php echo $item->title; ?></h3>
 													<p><?php
 														echo CHtml::image(Yii::app()->baseUrl . $item->image, $item->title, array(
 															'class'=>"cloud-zoom"));
