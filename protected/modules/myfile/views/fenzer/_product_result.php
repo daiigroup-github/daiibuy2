@@ -1,6 +1,6 @@
 
 
-<table class="edit-table table table-hover" style="background-color: #67ae73" >
+<table class="edit-table table table-hover" style="background-color: #DDD" >
 	<!--style="text-align: center;background-color: #67ae73"-->
 	<thead >
 		<tr>

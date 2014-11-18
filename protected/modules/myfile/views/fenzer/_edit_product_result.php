@@ -5,7 +5,7 @@
 				<div class="row" >
 					<div class="col-xs-12">
 						<form id="editTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php echo $productResult['categoryId']; ?>">
+						<table id="editTable" style="background-color: #DDD" class="table table-hover edit-table" name="<?php echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>
 								<th>Code</th>

@@ -1,15 +1,19 @@
 <?php
-
+//throw new Exception(print_r($productResult,true));
 ?>
 <div class="content-result">
+	<div class="carousel-heading no-margin">
+								<h4>Confirm Order My file</h4>
+							</div>
 	<div class="row" id="order" name="<?php echo $productResult['orderId']; ?>">
 					<div class="col-xs-12">
+
 						<form id="editTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php echo $productResult['categoryId']; ?>">
+							<table id="editTable" style="background-color: #DDD" class="table orderinfo-table table-hover edit-table" name="<?php echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>
 								<th>Code</th>
-								<th>รายละเอียด</th>
+								<th style="width: 40%;">รายละเอียด</th>
 								<th>หน่วย</th>
 								<th class="edit-table-qty" >จำนวน</th>
 								<th>ราคา/หน่วย</th>
@@ -58,6 +62,10 @@
 				<td><?php // echo ''; ?></td>
 			</tr>-->
 	</tbody>
+<!--	<tr>
+					<td class="align-right"><span class="price big">Total</span></td>
+					<td class="align-right" style="width: 169px;"><span class="price big" id="summaryTotal"><?php // echo $productResult['totalPrice'];?></span></td>
+				</tr>-->
 </table>
 							</form>
 					</div>

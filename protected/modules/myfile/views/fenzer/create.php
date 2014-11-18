@@ -155,10 +155,11 @@ $this->breadcrumbs = array(
 	</div>
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-12">
+			<div class="carousel-heading no-margin">
+								<h4>ประเมิณราคา</h4>
+							</div>
             <div class="col-md-12 well text-center">
-				<div class="row text-left">
-					ประเมินราคา
-				</div>
+
 				<div class="row">
 					<div class="col-md-6">
 						Height : <?php

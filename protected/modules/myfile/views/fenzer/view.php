@@ -104,10 +104,11 @@ $this->breadcrumbs = array(
 	</div>
 	<div class="row setup-content" id="step-3">
 		<div class="col-xs-12">
+			<div class="carousel-heading no-margin">
+								<h4>ประเมิณราคา</h4>
+							</div>
             <div class="col-md-12 well text-center">
-				<div class="row text-left">
-					ประเมินราคา
-				</div>
+
 				<div class="row">
 					<div class="col-md-6">
 						Height : <?php
@@ -133,7 +134,7 @@ $this->breadcrumbs = array(
 				<div class="row" >
 					<div class="col-xs-12">
 						<form id="editTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php echo $productResult['categoryId']; ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #DDD" name="<?php echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>
 								<th>Code</th>
