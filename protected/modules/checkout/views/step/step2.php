@@ -144,12 +144,12 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
-					$province = Province::model()->findByPk($this->cookie->provinceId);
-					echo $province->provinceName;
-//					echo $form->dropDownList($billingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll(array(
-//								'order'=>'provinceName')), 'provinceId', 'provinceName'), array(
-//						'id'=>'billingProvince',
-//						'name'=>'billing[provinceId]',
+//					$province = Province::model()->findByPk($this->cookie->provinceId);
+//					echo $province->provinceName;
+					echo $form->dropDownList($billingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
+						'id'=>'billingProvince',
+						'name'=>'billing[provinceId]',
+						'disabled'=>'disabled'));
 //						'prompt'=>' --- เลือกจังหวัด ---',
 //						'ajax'=>array(
 //							'type'=>'POST',
@@ -285,7 +285,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo CHtml::checkBox('sameAddress', false, array(
-						'id'=>'sameAddress'));
+						'id'=>'sameAddress',
+						'onclick'=>'ChkRadioShipAddress(2,null)'));
 					?>
 					<label for="sameAddress">ใช้ที่อยู่เดียวกับใบเสร็จ</label>
 				</div>
@@ -358,11 +359,11 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 				</div>
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
-					echo $province->provinceName;
-//					echo $form->dropDownList($shippingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll(array(
-//								'order'=>'provinceName')), 'provinceId', 'provinceName'), array(
-//						'id'=>'shippingProvince',
-//						'name'=>'shipping[provinceId]',
+//					echo $province->provinceName;
+					echo $form->dropDownList($shippingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
+						'id'=>'shippingProvince',
+						'name'=>'shipping[provinceId]',
+						'disabled'=>'disabled'));
 //						'prompt'=>'--- เลือกจังหวัด ---',
 //						'ajax'=>array(
 //							'type'=>'POST',
@@ -454,7 +455,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
 			<?php
-			echo CHtml::link('&lt; Back', '', array(
+			echo CHtml::link('&lt; Back', 'javascript:window.history.back();', array(
 				'class'=>'button orange',
 				'name'=>'Back'));
 			?>

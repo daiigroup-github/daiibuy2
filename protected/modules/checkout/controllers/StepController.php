@@ -170,6 +170,12 @@ class StepController extends MasterCheckoutController
 			{
 				//add new billing address
 				$billingAddressModel->attributes = $_POST['billing'];
+				$billingAddressModel->provinceId = $this->cookie->provinceId;
+				$billingAddressModel->userId = Yii::app()->user->id;
+				if(!$billingAddressModel->save()){
+					throw new Exception(print_r($billingAddressModel->errors,true));
+				}
+				Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
 			}
 
 			if($_POST['shippingRadio'] == 1)
@@ -180,6 +186,14 @@ class StepController extends MasterCheckoutController
 			{
 				//add new shipping address
 				$shippingAddressModel->attributes = $_POST['shipping'];
+				$shippingAddressModel->provinceId = $this->cookie->provinceId;
+				$shippingAddressModel->userId = Yii::app()->user->id;
+				Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
+				if(!$shippingAddressModel->save()){
+
+					throw new Exception(print_r($shippingAddressModel->errors,true));
+				}
+				Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
 			}
 
 			$this->redirect($this->createUrl(3));
@@ -226,11 +240,11 @@ class StepController extends MasterCheckoutController
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
 		$supplierModel = Supplier::model()->findByPk($supplierId);
 		$userModel = User::model()->findByPk(Yii::app()->user->id);
-		$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 		$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
+		$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 
 //                                        throw new Exception(print_r(Yii::app()->session['shippingAddressId'].", ".Yii::app()->session['billingAddressId'],true));
-//                throw new Exception(print_r($daiibuy,true));
+//                throw new Exception(print_r($billingAddress,true));
 		$this->render('step3', array(
 			'step'=>3,
 			'orderSummary'=>$orderSummary,
@@ -603,7 +617,7 @@ class StepController extends MasterCheckoutController
 				),
 				'order'=>'amphurName'
 			));
-			$res .= '<option value="">เลือกอำเภอ</option>';
+//			$res .= '<option value="">เลือกอำเภอ</option>';
 			foreach($amphurs as $amphur)
 			{
 				$res .= '<option value="' . $amphur->amphurId . '">' . $amphur->amphurName . '</option>';

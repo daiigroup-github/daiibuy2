@@ -141,7 +141,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
 			<?php
-			echo CHtml::link('&lt; Back', '', array(
+			echo CHtml::link('&lt; Back', 'javascript:window.history.back();', array(
 				'class'=>'button orange',
 				'name'=>'Register'));
 			?>
