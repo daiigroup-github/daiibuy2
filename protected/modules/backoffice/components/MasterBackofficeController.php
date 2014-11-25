@@ -63,6 +63,38 @@ class MasterBackofficeController extends MasterController
 				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
 			),
 			array(
+				'label'=>'Spacial Project<i class="fa fa-arrow-circle-o-down"></i>',
+				'url'=>array(
+					'#'),
+//				'active'=>$this->id == 'controllerId',
+				'items'=>array(
+					array(
+						'label'=>'User Request',
+						'url'=>array(
+							'/backoffice/userSpacialProject',
+						)),
+					array(
+						'label'=>'Spacial Code',
+						'url'=>array(
+							'/backoffice/supplierSpacialProject')
+					),
+//					array(
+//						'label'=>'Sub 2',
+//						'url'=>array(
+//							'/brand/view',
+//							'id'=>2)),
+				),
+				'itemOptions'=>array(
+					'class'=>'dropdown'),
+				'submenuOptions'=>array(
+					'class'=>'dropdown-menu'),
+				'linkOptions'=>array(
+					'class'=>'dropdown-toggle',
+					'data-toggle'=>'dropdown',
+				),
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
+			),
+			array(
 				'label'=>'User<i class="fa fa-arrow-circle-o-down"></i>',
 				'url'=>array(
 					'#'),
@@ -608,6 +640,10 @@ class MasterBackofficeController extends MasterController
 			{
 //				$sup = UserToSupplier::model()->find("userId =" . Yii::app()->user->id);
 				return User::model()->getSupplierId(Yii::app()->user->id);
+			}
+			else if($user->type == 4)
+			{
+				return Yii::app()->user->id;
 			}
 		}
 		else
