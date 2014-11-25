@@ -59,14 +59,14 @@ $this->breadcrumbs = array(
 				?>
 
                 <div class="form-group">
-                    <label for="h" class="col-sm-4 control-label">Booking Price</label>
+                    <label for="h" class="col-sm-4 control-label">ราคาจอง</label>
                     <div class="col-sm-7">
                         <input type="text" value="<?php echo number_format($bookingPrice, 2); ?>" class="form-control price" disabled />
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="h" class="col-sm-4 control-label">Contact Price</label>
+                    <label for="h" class="col-sm-4 control-label">ราคา(รวมราคาจอง)</label>
                     <div class="col-sm-7">
                         <input type="text" value="<?php echo number_format($price, 2); ?>" class="form-control price" disabled />
                     </div>
@@ -98,7 +98,8 @@ $this->breadcrumbs = array(
 								<?php
 								echo CHtml::dropDownList('productOption', '', CHtml::listData($productOptionGroup->productOptions, 'productOptionId', 'title'), array(
 									'class'=>'chosen-select-full-width',
-									'prompt'=>'-- Select --'
+									'prompt'=>'-- Select --',
+									'name'=>'productOption'
 									)
 								);
 								?>
@@ -110,7 +111,7 @@ $this->breadcrumbs = array(
 				?>
 
                 <div class="form-group">
-                    <label for="h" class="col-sm-4 control-label">Amount</label>
+                    <label for="h" class="col-sm-4 control-label">จำนวน(หลัง)</label>
                     <div class="col-sm-7">
                         <div class="numeric-input full-width">
                             <input type="text" value="1" class="form-control" name="quantity" />
@@ -124,7 +125,7 @@ $this->breadcrumbs = array(
 					<span class="add-to-cart" id="addToCartGinzaHome">
                         <span class="action-wrapper">
 							<i class="icons fa fa-shopping-cart"></i>
-							<span class="action-name">Add to cart</span>
+							<span class="action-name" ><b>ใส่ตระกร้าสินค้า</b></span>
 						</span>
 					</span>
                 </div>

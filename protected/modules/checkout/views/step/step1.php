@@ -15,6 +15,27 @@
             //'clientOptions' => array('validateOnSubmit' => true,),
             'htmlOptions' => array('class' => 'form-horizontal', 'role' => 'form'),
         ));
+
+		Yii::app()->clientScript->registerScript("loadProvince", "
+	$(document).ready(function(){
+	$.ajax({
+		type:'POST',
+		data:{provinceId:" . $this->cookie->provinceId . "},
+		url:'" . $this->createUrl('findAmphur') . "',
+		success:function(data){
+			$('#billingAmphur').html(data);
+			$('#billingAmphur').prop('disabled', false);
+			$('#billingDistrict').html('');
+			$('#billingDistrict').prop('disabled', true);
+
+			$('#shippingAmphur').html(data);
+			$('#shippingAmphur').prop('disabled', false);
+			$('#shippingDistrict').html('');
+			$('#shippingDistrict').prop('disabled', true);
+		}
+	})
+	});
+");
         ?>
         <div class="page-content">
             <p>If you are already registered please login directly here</p>

@@ -269,6 +269,7 @@ class FenzerController extends MasterMyFileController
 		if(isset($_POST['length']) && !empty($_POST['length']))
 		{
 			$length = $_POST['length'];
+//			throw new Exception(print_r($length,true));
 		}
 		else
 		{

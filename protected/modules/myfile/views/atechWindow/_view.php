@@ -84,7 +84,7 @@ $this->breadcrumbs = array(
 				<div class="row" >
 					<div class="col-xs-12">
 						<form id="editTableForm">
-						<table id="editTable" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php echo $productResult['categoryId']; ?>">
+						<table id="editTable" class="table table-hover edit-table" style="background-color: #DDD" name="<?php echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>
 								<th>Code</th>

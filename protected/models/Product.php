@@ -881,7 +881,7 @@ class Product extends ProductMaster
 							$orderDetailValue = new OrderDetailValue();
 							$orderDetailValue->orderDetailId = $orderDetailId;
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-							$orderDetailValue->value = $item->title == 'height' ? $height : ($item->title == 'length' ? $length : $categoryId);
+							$orderDetailValue->value = ($item->title == 'height')? $height : (($item->title == 'length')? $length : $categoryId);
 							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
 							$orderDetailValue->updateDateTime = new CDbExpression("NOW()");
 							if(!($orderDetailValue->save()))
@@ -1110,7 +1110,7 @@ class Product extends ProductMaster
 
 		$res["total"] = $total;
 		$res["brandModelId"] = $brandModelId;
-		
+
 //		throw new Exception(print_r($res,true));
 //		$res["brandModelId"] = $brand->brandModelId;
 //		$res["category1Id"] = $category1Id;

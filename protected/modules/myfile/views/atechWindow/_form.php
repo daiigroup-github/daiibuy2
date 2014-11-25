@@ -233,12 +233,11 @@ $this->breadcrumbs = array(
 	</div>
 	<div class="row setup-content" id="step-2-1">
 		<div class="col-xs-12">
+			<div class="carousel-heading no-margin">
+				<b><h4>รอ Call Center ประเมิณราคา</h4></b>
+							</div>
             <div class="col-md-12 well">
-				<div class="row">
-					<div class="page-header myfile-fenzer-header" >
-						<h3>รอ Call Center ประเมินราคา</h3>
-					</div>
-				</div>
+
 				<div class="row text-center">
 					<div style="margin-top: 2%">
 					<?php $i = 0; ?>
@@ -289,7 +288,7 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row text-center">
 					<form id="aa">
-						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #67ae73" name="<?php // echo $productResult['categoryId']; ?>">
+						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId']; ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>

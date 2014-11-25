@@ -225,6 +225,7 @@ class ProductController extends MasterGinzahomeController
 	{
 		if(isset($_POST['productId']))
 		{
+//			throw new Exception(print_r($_POST['productOption'],true));
 			$this->writeToFile('/tmp/ginzaAddCart', print_r($_POST, true));
 			$res = array();
 			$supplier = Supplier::model()->find(array(
