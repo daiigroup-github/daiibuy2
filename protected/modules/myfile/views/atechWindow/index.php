@@ -43,7 +43,13 @@ $this->breadcrumbs = array(
 						<div class='col-lg-3 col-md-3 col-sm-12'>
 							<div class="blog-item">
 								<a style="" class="btn <?php echo ($myfile->status == 1) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/atechWindow/view/id/' . $myfile->orderId); ?>">
-									<h3><?php echo $myfile->title; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
+									<h3><?php echo $myfile->title; ?><?php if($myfile->status == 1): ?><i class="fa fa-comments pull-left"></i><?php endif; ?>
+										<?php if(isset($myfile->userSpacialProject[0]) && $myfile->userSpacialProject[0]->status == 1): ?>
+											<span class="label label-danger">R</span>
+										<?php elseif(isset($myfile->userSpacialProject[0]) && $myfile->userSpacialProject[0]->status == 2): ?>
+											<span class="label label-danger">S</span>
+										<?php endif; ?>
+									</h3>
 									<p>วันที่สร้าง :<?php echo $this->dateThai($myfile->createDateTime, 3, TRUE); ?></p>
 									<p>วันที่แก้ไข :<?php echo $this->dateThai($myfile->updateDateTime, 2, TRUE) ?></p>
 									<p>จังหวัดที่ส่ง : <?php echo Province::model()->findByPk($myfile->provinceId)->provinceName; ?></p>

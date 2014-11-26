@@ -192,12 +192,12 @@ $this->breadcrumbs = array(
 //								),
 //					));
 											?></td>
-				<td><?php // echo '';      ?></td>
-				<td><?php // echo '';      ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));      ?></td>
-				<td><?php // echo '';      ?></td>
-				<td><?php // echo '';      ?></td>
-				<td><?php // echo '';      ?></td>
+				<td><?php // echo '';       ?></td>
+				<td><?php // echo '';       ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));       ?></td>
+				<td><?php // echo '';       ?></td>
+				<td><?php // echo '';       ?></td>
+				<td><?php // echo '';       ?></td>
 			</tr>-->
 										</tbody>
 									</table>
@@ -281,7 +281,7 @@ $this->breadcrumbs = array(
 							<?php elseif($model->userSpacialProject[0]->status == 2): ?>
 								<span class="btn btn-success btn-xs">อนุมัติคำขอ Spacial Project</span>
 							<?php elseif($model->userSpacialProject[0]->status == 3): ?>
-								<span class="btn btn-danger btn-xs">ไม่อนุมัติคำขอ Spacial Project</span>
+								<a id="requestSpecial" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/requestSpacialProject/id/$model->orderId") ?>"> ไม่อนุมัติคำขอ Spacial Project -<i class="glyphicon glyphicon-share"></i> Request อีกครั้ง</a>
 							<?php endif; ?>
 						<?php endif; ?>
 					</div>

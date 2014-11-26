@@ -298,7 +298,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="aa">
-						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];            ?>">
+						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];               ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -387,10 +387,10 @@ $form = $this->beginWidget('CActiveForm', array(
 								</tr>
 					<!--			<tr>
 									<td>2</td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);            ?></td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);            ?></td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);            ?></td>
-									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));            ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);               ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);               ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);               ?></td>
+									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));               ?></td>
 									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 								</tr>-->
 
@@ -446,7 +446,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								</div>
 								<!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-															<button name="<?php // echo $item->brandModelId;          ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;          ?></button>
+															<button name="<?php // echo $item->brandModelId;             ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;             ?></button>
 
 													</div>-->
 							</div>
@@ -512,8 +512,7 @@ $form = $this->beginWidget('CActiveForm', array(
 							<?php elseif($model->userSpacialProject[0]->status == 2): ?>
 								<span class="btn btn-success btn-xs">อนุมัติคำขอ Spacial Project</span>
 							<?php elseif($model->userSpacialProject[0]->status == 3): ?>
-								<span class="btn btn-danger btn-xs">ไม่อนุมัติคำขอ Spacial Project</span>
-								<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+								<a id="requestSpecial" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"> ไม่อนุมัติคำขอ Spacial Project -<i class="glyphicon glyphicon-share"></i> Request อีกครั้ง</a>
 							<?php endif; ?>
 						<?php endif; ?>
 					</div>
