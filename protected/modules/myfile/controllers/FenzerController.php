@@ -90,14 +90,14 @@ class FenzerController extends MasterMyFileController
 			$value = $_POST['height'];
 			$height = explode("-", $value);
 		}
-		$cate1Model = Category::model()->with('subCategorys')->findAll(
-			array(
-				'condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 1 AND '
-				. '(subCategorys.description >= :minHeight AND subCategorys.description <= :maxHeight)',
-				'params'=>array(
-					':minHeight'=>$height[0],
-					':maxHeight'=>$height[1])
-		));
+//		$productResult = Category::model()->with('subCategorys')->findAll(
+//			array(
+//				'condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 1  AND isRoot = 0 AND '
+//				. '(subCategorys.description >= :minHeight AND subCategorys.description <= :maxHeight)',
+//				'params'=>array(
+//					':minHeight'=>$height[0],
+//					':maxHeight'=>$height[1])
+//		));
 
 //			$cate2Model = $cate1Model->with('subCategorys')->findAll(
 //				array('condition'=>'subCategorys.status = 1 AND '
@@ -107,7 +107,7 @@ class FenzerController extends MasterMyFileController
 //					));
 
 
-		$productResult = Category::model()->findAll('supplierId = 1 AND status = 1 AND isRoot = 0 AND (description > ' . $height[0] . ' AND description < ' . $height[1] . ')');
+		$productResult = Category::model()->findAll('supplierId = 1 AND status = 1 AND (description >= ' . $height[0] . ' AND description <= ' . $height[1] . ')');
 		if(count($productResult) > 0)
 		{
 			echo $this->renderPartial('/fenzer/_product_result', array(

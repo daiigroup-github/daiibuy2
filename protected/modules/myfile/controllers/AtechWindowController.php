@@ -257,7 +257,7 @@ class AtechWindowController extends MasterMyFileController
 			$model->userId = Yii::app()->user->id;
 			$model->createDateTime = new CDbExpression("NOW()");
 		}
-		$model->status = 1;
+		$model->status = 2;
 		$model->updateDateTime = new CDbExpression("NOW()");
 		if($model->save())
 		{

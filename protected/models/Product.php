@@ -791,7 +791,7 @@ class Product extends ProductMaster
 				$orderModel->supplierId = 1;
 				$orderModel->provinceId = $provinceId;
 				$orderModel->type = 1;
-				$orderModel->status = 1;
+				$orderModel->status = 2;
 				$orderModel->createDateTime = new CDbExpression("NOW()");
 				if($orderModel->save())
 				{

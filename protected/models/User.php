@@ -57,7 +57,7 @@ class User extends UserMaster
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 				//code here
-				'confirmPassword'=>'Confirm Password',
+				'confirmPassword'=>'Confirm Password *',
 		));
 	}
 

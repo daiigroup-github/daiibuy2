@@ -9,6 +9,7 @@ class Category extends CategoryMaster
 	 * @return Product the static model class
 	 */
 	public $category1Id;
+	public $parentCategory;
 
 	public static function model($className = __CLASS__)
 	{
@@ -214,6 +215,12 @@ class Category extends CategoryMaster
 		}
 
 		return $result;
+	}
+
+	public function findModelTitleFenzer(){
+		$cateToSub = CategoryToSub::model()->find('subCategoryId = '.$this->categoryId);
+		$res = Category::model()->findByPk($cateToSub->categoryId);
+		return $res->title;
 	}
 
 }

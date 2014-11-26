@@ -1,21 +1,4 @@
-<?php $this->renderPartial('_step_header', array('step'=>$step));?>
-
-<div class="row">
-    <div class="col-md-4">
-
-
-        <div class="carousel-heading no-margin">
-            <h4>Your account details</h4>
-        </div>
-
-        <?php
-        $formLogin = $this->beginWidget('CActiveForm', array(
-            'id' => '{id}',
-            //'enableClientValidation' => true,
-            //'clientOptions' => array('validateOnSubmit' => true,),
-            'htmlOptions' => array('class' => 'form-horizontal', 'role' => 'form'),
-        ));
-
+<?php $this->renderPartial('_step_header', array('step'=>$step));
 		Yii::app()->clientScript->registerScript("loadProvince", "
 	$(document).ready(function(){
 	$.ajax({
@@ -36,10 +19,28 @@
 	})
 	});
 ");
+
+?>
+
+<div class="row">
+    <div class="col-md-4">
+
+
+        <div class="carousel-heading no-margin">
+            <h4>Your account details</h4>
+        </div>
+
+        <?php
+        $formLogin = $this->beginWidget('CActiveForm', array(
+            'id' => '{id}',
+            //'enableClientValidation' => true,
+            //'clientOptions' => array('validateOnSubmit' => true,),
+            'htmlOptions' => array('class' => 'form-horizontal', 'role' => 'form'),
+        ));
+
         ?>
         <div class="page-content">
             <p>If you are already registered please login directly here</p>
-
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="iconic-input">
@@ -107,7 +108,7 @@
                     <p><?php echo $form->labelEx($userModel, 'email');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <input type="text">
+                    <?php echo $form->textField($userModel, 'email');?>
                 </div>
             </div>
             <div class="row">
@@ -115,7 +116,7 @@
                     <p><?php echo $form->labelEx($userModel, 'password');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <input type="text">
+                    <?php echo $form->passwordField($userModel, 'password', array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;'));?>
                 </div>
             </div>
             <div class="row">
@@ -123,7 +124,7 @@
                     <p><?php echo $form->labelEx($userModel, 'confirmPassword');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <input type="text">
+                    <?php echo $form->passwordField($userModel, 'confirmPassword',array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;'));?>
                 </div>
             </div>
 
@@ -155,6 +156,14 @@
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'company');?>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <p><?php echo $form->labelEx($addressModel, 'taxNo');?></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <?php echo $form->textField($addressModel, 'taxNo');?>
                 </div>
             </div>
             <div class="row">
@@ -205,12 +214,21 @@
                     <?php echo $form->textField($addressModel, 'postcode');?>
                 </div>
             </div>
-            <div class="row">
+
+			<div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
-                    <p><?php echo $form->labelEx($addressModel, 'taxNo');?></p>
+                    <p><?php echo $form->labelEx($userModel, 'telephone');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($addressModel, 'taxNo');?>
+                    <?php echo $form->textField($userModel, 'telephone');?>
+                </div>
+            </div>
+			<div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <p><?php echo $form->labelEx($userModel, 'fax');?></p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <?php echo $form->textField($userModel, 'fax');?>
                 </div>
             </div>
 

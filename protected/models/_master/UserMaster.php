@@ -57,7 +57,7 @@ class UserMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('approved, type, status', 'required'),
+			array('firstname, lastname,password, email, telephone,approved, type, status', 'required'),
 			array('newsletter, approved, type, isFirstLogin, collectedPoint, collectedOrder, status', 'numerical', 'integerOnly'=>true),
 			array('firstname, lastname, telephone, fax', 'length', 'max'=>32),
 			array('email', 'length', 'max'=>96),
@@ -71,7 +71,7 @@ class UserMaster extends MasterCActiveRecord
 			array('cart, wishlist, description, logo, map, createDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('userId, firstname, lastname, email, telephone, fax, password, cart, wishlist, newsletter, ip, approved, token, type, isFirstLogin, description, logo, map, minimumOrder, referenceId, collectedPoint, collectedOrder, redirectURL, taxNumber, parentId, status, createDateTime, searchText', 'safe', 'on'=>'search'),
+			array('userId, fax, cart, wishlist, newsletter, ip, approved, token, type, isFirstLogin, description, logo, map, minimumOrder, referenceId, collectedPoint, collectedOrder, redirectURL, taxNumber, parentId, status, createDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 

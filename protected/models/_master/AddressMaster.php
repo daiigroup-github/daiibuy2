@@ -45,7 +45,7 @@ class AddressMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('userId, address_1, address_2, districtId, amphurId, provinceId, postcode, type', 'required'),
+			array('firstname, lastname,  address_1,  districtId, amphurId, provinceId, postcode, type', 'required'),
 			array('type', 'numerical', 'integerOnly'=>true),
 			array('latitude, longitude', 'numerical'),
 			array('userId, countryId', 'length', 'max'=>20),
@@ -57,7 +57,7 @@ class AddressMaster extends MasterCActiveRecord
 			array('taxNo', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('addressId, userId, firstname, lastname, company, address_1, address_2, districtId, amphurId, provinceId, countryId, postcode, type, latitude, longitude, taxNo, searchText', 'safe', 'on'=>'search'),
+			array('addressId,address_2, userId, company, countryId, postcode, type, latitude, longitude, taxNo, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 

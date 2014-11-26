@@ -89,12 +89,15 @@ class StepController extends MasterCheckoutController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				//code here
+				$userModel->type = 1;
+				$userModel->status = 1;
+				$userModel->approved = 1;
+				$userModel->password = $userModel->hashPassword($userModel->email, $userModel->password);
+				$userModel->createDateTime = new CDbExpression('NOW()');
 				if($userModel->save())
 				{
 					$addressModel->userId = Yii::app()->db->getlastInsertID();
 					$addressModel->type = $addressModel::ADDRESS_TYPE_BILLING;
-
 					if($addressModel->save())
 					{
 						/**
@@ -114,18 +117,39 @@ class StepController extends MasterCheckoutController
 							$order->save(false);
 						}
 						$flag = true;
+					}else{
+						throw new Exception(print_r($addressModel->errors,true));
 					}
+				}else{
+					throw new Exception(print_r($userModel->errors,true));
 				}
-
 				if($flag)
 				{
 					$transaction->commit();
-
 					//redirect to step 2
-					$identity = new UserIdentity($userModel->email, $userModel->password);
-					$identity->authenticate();
-					Yii::app()->user->login($identity);
-					$this->redirect($this->createUrl(2));
+//					$identity = new UserIdentity($userModel->email, $userModel->password);
+//					$identity->authenticate();
+//					Yii::app()->user->login($identity);
+
+					$loginModel->username = $_POST['User']['email'];
+					$loginModel->password = $_POST['User']['password'];
+			// validate user input and redirect to the previous page if valid
+					if($loginModel->validate() && $loginModel->login()){
+						$orders = Order::model()->findAll(array(
+					'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+					'params'=>array(
+						':token'=>$daiibuy->token,
+						':supplierId'=>Yii::app()->session['supplierId'],
+					),
+				));
+
+				foreach($orders as $order)
+				{
+					$order->userId = Yii::app()->user->id;
+					$order->save(false);
+				}
+							$this->redirect($this->createUrl(2));
+					}
 				}
 			}
 			catch(Exception $e)
@@ -174,8 +198,9 @@ class StepController extends MasterCheckoutController
 				$billingAddressModel->userId = Yii::app()->user->id;
 				if(!$billingAddressModel->save()){
 					throw new Exception(print_r($billingAddressModel->errors,true));
+				}else{
+					Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
 				}
-				Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
 			}
 
 			if($_POST['shippingRadio'] == 1)
@@ -192,8 +217,9 @@ class StepController extends MasterCheckoutController
 				if(!$shippingAddressModel->save()){
 
 					throw new Exception(print_r($shippingAddressModel->errors,true));
+				}else{
+					Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
 				}
-				Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
 			}
 
 			$this->redirect($this->createUrl(3));

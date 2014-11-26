@@ -16,7 +16,7 @@
 	<tbody>
 		<?php foreach($productResult as $item): ?>
 			<tr class="clickableRow" id="<?php echo $item->categoryId; ?>" name="<?php echo $item->description; ?>">
-				<td><?php echo $item->title; ?></td>
+				<td><?php echo $item->findModelTitleFenzer() ." ". $item->title; ?></td>
 				<td><?php echo $item->description; ?></td>
 				<td>3.00</td>
 				<td>เรียบ 1 ด้าน</td>
