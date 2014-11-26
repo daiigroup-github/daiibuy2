@@ -146,7 +146,8 @@ class FenzerController extends MasterMyFileController
 	{
 		$orderModel = new Order();
 		$orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
-		if(isset($_POST['Order'])){
+		if(isset($_POST['Order']))
+		{
 			$provinceId = $_POST['Order']['provinceId'];
 			$title = $_POST['Order']['title'];
 		}
@@ -182,7 +183,8 @@ class FenzerController extends MasterMyFileController
 
 	public function actionAddNewProductItem()
 	{
-		if(isset($_POST['Order'])){
+		if(isset($_POST['Order']))
+		{
 			$provinceId = $_POST['Order']['provinceId'];
 			$title = $_POST['Order']['title'];
 		}
@@ -215,7 +217,8 @@ class FenzerController extends MasterMyFileController
 //		$daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
 //		$provinceId = $daiibuy->provinceId;
-		if(isset($_POST['Order'])){
+		if(isset($_POST['Order']))
+		{
 			$provinceId = $_POST['Order']['provinceId'];
 			$title = $_POST['Order']['title'];
 		}
@@ -238,7 +241,7 @@ class FenzerController extends MasterMyFileController
 		}
 		if($length == 0)
 		{
-			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, FALSE, NULL,NULL);
+			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, FALSE, NULL, NULL);
 		}
 		else
 		{
@@ -257,7 +260,8 @@ class FenzerController extends MasterMyFileController
 
 //		throw new Exception(print_r($_POST['Order'],true));
 
-		if(isset($_POST['Order'])){
+		if(isset($_POST['Order']))
+		{
 			$provinceId = $_POST['Order']['provinceId'];
 			$title = $_POST['Order']['title'];
 		}
@@ -283,7 +287,7 @@ class FenzerController extends MasterMyFileController
 		{
 			$orderId = $_POST['orderId'];
 		}
-		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, TRUE, $orderId,$title);
+		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, TRUE, $orderId, $title);
 
 		echo $this->renderPartial('/fenzer/_confirm_order_myfile', array(
 			'productResult'=>$itemSetArray,
@@ -438,6 +442,15 @@ class FenzerController extends MasterMyFileController
 			}
 		}
 		echo 'fail';
+	}
+
+	public function actionFinish($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->status = 3;
+		$model->save();
+		$this->redirect(array(
+			'index'));
 	}
 
 }

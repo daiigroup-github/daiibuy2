@@ -177,7 +177,8 @@ $form = $this->beginWidget('CActiveForm', array(
 
 							<?php
 							echo CHtml::submitButton('Create', array(
-								'class'=>'btn btn-primary'));
+								'class'=>'btn btn-primary',
+								'onclick'=>'return checkComment()'));
 							?>
 						</div>
 					</div>
@@ -405,11 +406,13 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<?php if(!$model->isRequestSpacialProject): ?>
+						<?php if(!$model->isRequestSpacialProject && $model->type == 1): ?>
 							<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 						<?php endif; ?>
-						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-						<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<a id="" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
+						<?php if($model->type < 3): ?>
+							<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php endif; ?>
 						<?php if(!$model->isRequestSpacialProject): ?>
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php else: ?>
@@ -446,38 +449,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                                         ?>
+<?php // echo $form->errorSummary($model);                                          ?>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');         ?>
 <?php // echo $form->textField($model, 'supplierId');          ?>
-<?php // echo $form->error($model, 'supplierId');                                       ?>
+<?php // echo $form->error($model, 'supplierId');                                        ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'type');          ?>
 <?php // echo $form->textField($model, 'type');          ?>
-<?php // echo $form->error($model, 'type');                                       ?>
+<?php // echo $form->error($model, 'type');                                        ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'status');          ?>
 <?php // echo $form->textField($model, 'status');         ?>
-<?php // echo $form->error($model, 'status');                                       ?>
+<?php // echo $form->error($model, 'status');                                        ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'title');          ?>
 <?php // echo $form->textField($model, 'title');        ?>
-<?php // echo $form->error($model, 'title');                                        ?>
+<?php // echo $form->error($model, 'title');                                         ?>
 	</div>
 
 
 	<div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                           ?>
+<?php // echo CHtml::submitButton('Submit');                                            ?>
 	</div>
 
-<?php // $this->endWidget();                                           ?>
+<?php // $this->endWidget();                                            ?>
 
 </div>-->
 <!-- form -->

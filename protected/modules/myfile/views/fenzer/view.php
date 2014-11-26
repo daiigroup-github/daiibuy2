@@ -192,12 +192,12 @@ $this->breadcrumbs = array(
 //								),
 //					));
 											?></td>
-				<td><?php // echo '';       ?></td>
-				<td><?php // echo '';       ?></td>
-				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));       ?></td>
-				<td><?php // echo '';       ?></td>
-				<td><?php // echo '';       ?></td>
-				<td><?php // echo '';       ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));          ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo '';          ?></td>
+				<td><?php // echo '';          ?></td>
 			</tr>-->
 										</tbody>
 									</table>
@@ -271,8 +271,10 @@ $this->breadcrumbs = array(
 						<?php if(!$model->isRequestSpacialProject): ?>
 							<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
 						<?php endif; ?>
-						<button id="finish" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
-						<button id="addToCart" class="btn btn-warning btn-lg" name="<?php echo $model->orderId; ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
+						<a id="" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
+						<?php if($model->type != 3): ?>
+							<button id="addToCart" class="btn btn-warning btn-lg" name="<?php echo $model->orderId; ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
+						<?php endif; ?>
 						<?php if(!$model->isRequestSpacialProject): ?>
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php else: ?>

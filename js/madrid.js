@@ -233,3 +233,16 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 	});
 }
 
+function checkComment()
+{
+	if ($("#OrderDetailValue_4_value").val() == "")
+	{
+		alert("กรุณากรอกคำร้อง");
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+

@@ -417,4 +417,22 @@ class MasterMyFileController extends MasterController
 			'id'=>$id));
 	}
 
+	public function myfileColorClass($status, $requestSP = null)
+	{
+		switch($status)
+		{
+			case 1:
+				return "warning";
+				break;
+			case 2:
+				return "primary";
+				break;
+			case 3:
+				return "success";
+				break;
+			default:
+				break;
+		}
+	}
+
 }
