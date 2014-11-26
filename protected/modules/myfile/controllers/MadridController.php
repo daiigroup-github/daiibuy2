@@ -74,12 +74,15 @@ class MadridController extends MasterMyFileController
 		$orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
 		if(isset($_POST["OrderItems"]))
 		{
+
 			foreach($_POST["OrderItems"] as $k=> $v)
 			{
 				if(!empty($v["quantity"]))
 				{
 					$orderItems = OrderItems::model()->findByPk($k);
 					$orderItems->quantity = $v["quantity"];
+					$orderItems->price = $v["price"];
+					$orderItems->productId = $v["productId"];
 					$orderItems->total = $orderItems->quantity * $orderItems->price;
 					if($orderItems->save(FALSE))
 					{
