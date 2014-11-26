@@ -348,10 +348,4 @@ class UserSpacialProjectController extends MasterBackofficeController
 			'model'=>$model));
 	}
 
-	public function actionSaveSpacialProjectRequest()
-	{
-		$model = new UserSpacialProject();
-//		$model->
-	}
-
 }

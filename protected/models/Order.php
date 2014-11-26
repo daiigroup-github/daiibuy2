@@ -92,6 +92,10 @@ class Order extends OrderMaster
 					'OrderGroup',
 					'order_group_to_order(orderId,orderGroupId)'
 				),
+				'userSpacialProject'=>array(
+					self::HAS_MANY,
+					'UserSpacialProject',
+					'orderId'),
 		));
 	}
 

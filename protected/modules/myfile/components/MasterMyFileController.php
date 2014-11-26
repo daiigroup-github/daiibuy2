@@ -385,4 +385,36 @@ class MasterMyFileController extends MasterController
 		return $ret;
 	}
 
+	public function actionRequestSpacialProject($id)
+	{
+		$model = Order::model()->findByPk($id);
+		$model->isRequestSpacialProject = 1;
+		if($model->save())
+		{
+			$userSpacialProject = UserSpacialProject::model()->find("orderId = " . $id);
+			if(!isset($userSpacialProject))
+			{
+				$userSpacialProject = new UserSpacialProject();
+				$userSpacialProject->userId = Yii::app()->user->id;
+				$userSpacialProject->supplierId = $model->supplierId;
+				$userSpacialProject->orderId = $id;
+				$userSpacialProject->createDateTime = new CDbExpression("NOW()");
+			}
+			else
+			{
+				$userSpacialProject->reQuestNo = $userSpacialProject->reQuestNo + 1;
+			}
+			if(isset($_POST["orderGroupId"]))
+			{
+				$model->orderGroupId = $_POST["orderGroupId"];
+			}
+			$userSpacialProject->status = 1;
+			$userSpacialProject->updateDateTime = new CDbExpression("NOW()");
+			$userSpacialProject->save(false);
+		}
+		$this->redirect(array(
+			'view',
+			'id'=>$id));
+	}
+
 }

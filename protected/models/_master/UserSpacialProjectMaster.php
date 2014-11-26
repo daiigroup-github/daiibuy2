@@ -14,6 +14,7 @@
  * @property string $spacialPercent
  * @property string $image
  * @property string $remark
+ * @property integer $reQuestNo
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -37,7 +38,7 @@ class UserSpacialProjectMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('supplierId, userId, orderGroupId, orderId, supplierSpacialProjectId, createDateTime, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
+			array('reQuestNo, status', 'numerical', 'integerOnly'=>true),
 			array('supplierId, userId, orderGroupId, orderId, supplierSpacialProjectId', 'length', 'max'=>20),
 			array('spacialCode', 'length', 'max'=>50),
 			array('spacialPercent', 'length', 'max'=>5),
@@ -45,7 +46,7 @@ class UserSpacialProjectMaster extends MasterCActiveRecord
 			array('remark', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('userSpacialProjectId, supplierId, userId, orderGroupId, orderId, supplierSpacialProjectId, spacialCode, spacialPercent, image, remark, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('userSpacialProjectId, supplierId, userId, orderGroupId, orderId, supplierSpacialProjectId, spacialCode, spacialPercent, image, remark, reQuestNo, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +77,7 @@ class UserSpacialProjectMaster extends MasterCActiveRecord
 			'spacialPercent' => 'Spacial Percent',
 			'image' => 'Image',
 			'remark' => 'Remark',
+			'reQuestNo' => 'Re Quest No',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -112,6 +114,7 @@ class UserSpacialProjectMaster extends MasterCActiveRecord
 			$this->spacialPercent = $this->searchText;
 			$this->image = $this->searchText;
 			$this->remark = $this->searchText;
+			$this->reQuestNo = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -127,6 +130,7 @@ class UserSpacialProjectMaster extends MasterCActiveRecord
 		$criteria->compare('spacialPercent',$this->spacialPercent,true, 'OR');
 		$criteria->compare('image',$this->image,true, 'OR');
 		$criteria->compare('remark',$this->remark,true, 'OR');
+		$criteria->compare('reQuestNo',$this->reQuestNo);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

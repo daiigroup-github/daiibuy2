@@ -356,20 +356,23 @@ class AtechWindowController extends MasterMyFileController
 		}
 		echo '<tr>'
 		. '<td class="cat">' . $rowCount . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2),array('class'=>'form-control','prompt'=>'เลือกประเภท','onchange'=>'findType(this)')) . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria['.$index.'][type]', "type", array(
-										), array(
-										'prompt'=>'เลือกรูปแบบ',
-										'class'=>'form-control',
-										'onchange'=>'findSize(this);',
-										'id'=>'type',
-									)) . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria['. $index .'][size]', "size", array(
-										), array(
-										'prompt'=>'เลือกขนาด',
-										'class'=>'form-control',
-										'id'=>'"size"',
-									)) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2), array(
+			'class'=>'form-control',
+			'prompt'=>'เลือกประเภท',
+			'onchange'=>'findType(this)')) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
+			), array(
+			'prompt'=>'เลือกรูปแบบ',
+			'class'=>'form-control',
+			'onchange'=>'findSize(this);',
+			'id'=>'type',
+		)) . '</td>'
+		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][size]', "size", array(
+			), array(
+			'prompt'=>'เลือกขนาด',
+			'class'=>'form-control',
+			'id'=>'"size"',
+		)) . '</td>'
 		. '<td>' . CHtml::textField('Criteria[' . $index . '][quantity]', 1, array(
 			'class'=>'edit-table-qty-input number')) . '</td>'
 		. '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
@@ -481,16 +484,6 @@ class AtechWindowController extends MasterMyFileController
 			'index'));
 	}
 
-	public function actionRequestSpacialProject($id)
-	{
-		$model = Order::model()->findByPk($id);
-		$model->isRequestSpacialProject = 1;
-		$model->save();
-		$this->redirect(array(
-			'view',
-			'id'=>$id));
-	}
-
 	public function actionAddtoCartNow($id)
 	{
 		$model = Order::model()->findByPk($id);
@@ -516,7 +509,7 @@ class AtechWindowController extends MasterMyFileController
 		echo 'fail';
 	}
 
-		public function actionFindAllCat2ByCat1Id()
+	public function actionFindAllCat2ByCat1Id()
 	{
 		$data = CategoryToSub::model()->findAll('categoryId=:categoryId', array(
 			':categoryId'=>(int) $_POST['cat1Id']));
@@ -533,8 +526,9 @@ class AtechWindowController extends MasterMyFileController
 //		echo CJSON::encode($result);
 	}
 
-		public function actionFindAllSizeByCate2Id(){
-			$data = Category2ToProduct::model()->findAll('category2Id=:category2Id', array(
+	public function actionFindAllSizeByCate2Id()
+	{
+		$data = Category2ToProduct::model()->findAll('category2Id=:category2Id', array(
 			':category2Id'=>(int) $_POST['cat2']));
 //		$result = array(
 //			);
@@ -546,8 +540,8 @@ class AtechWindowController extends MasterMyFileController
 //			throw new Exception(print_r($item->product->width. ' x '. $item->product->height,true));
 //			$result[$item->brandModelId] = $item->title;
 			echo CHtml::tag('option', array(
-				'value'=>$item->product->width . " x " .$item->product->height), CHtml::encode(isset($item->product) ? $item->product->width . " x " .$item->product->height : ""), true);
+				'value'=>$item->product->width . " x " . $item->product->height), CHtml::encode(isset($item->product) ? $item->product->width . " x " . $item->product->height : ""), true);
 		}
-		}
+	}
 
 }

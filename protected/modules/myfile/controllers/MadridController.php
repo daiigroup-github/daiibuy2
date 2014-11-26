@@ -471,16 +471,6 @@ class MadridController extends MasterMyFileController
 			'index'));
 	}
 
-	public function actionRequestSpacialProject($id)
-	{
-		$model = Order::model()->findByPk($id);
-		$model->isRequestSpacialProject = 1;
-		$model->save();
-		$this->redirect(array(
-			'view',
-			'id'=>$id));
-	}
-
 	public function actionFindProductByPk()
 	{
 		$model = Product::model()->findByPk($_POST["productId"]);

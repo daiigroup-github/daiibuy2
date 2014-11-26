@@ -200,7 +200,7 @@ $form = $this->beginWidget('CActiveForm', array(
 		<div class="col-xs-12">
 			<div class="carousel-heading no-margin">
 				<b><h4>รอ Call Center ประเมิณราคา</h4></b>
-							</div>
+			</div>
             <div class="col-md-12 well">
 				<div class="row text-center">
 					<div style="margin-top: 2%">
@@ -374,14 +374,16 @@ $form = $this->beginWidget('CActiveForm', array(
 														</tr>
 													<?php else: ?>
 														<tr>
-															<td><?php echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(isset($item->product) ? Yii::app()->baseUrl . $item->product->productImagesSort[0]->image : "", "", array(
-														'style'=>"width:200px")) : ""; ?></td>
+															<td><?php
+																echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(isset($item->product) ? Yii::app()->baseUrl . $item->product->productImagesSort[0]->image : "", "", array(
+																		'style'=>"width:200px")) : "";
+																?></td>
 															<td><?php echo $item->product->code; ?></td>
 															<td><?php echo $item->product->name; ?></td>
 															<td style="color:red"><?php echo number_format($item->product->price, 2); ?>
 																<?php // echo CHtml::hiddenField("Order[createMyfileType]", 3) ?>
 																<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", $item->productId) ?>
-		<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price) ?>
+																<?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price) ?>
 															</td>
 															<td style="width: 20%">
 																<div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 0); ?></div></div>
@@ -403,14 +405,22 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+						<?php if(!$model->isRequestSpacialProject): ?>
+							<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+						<?php endif; ?>
 						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
 						<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
 						<?php if(!$model->isRequestSpacialProject): ?>
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php else: ?>
-							<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
-<?php endif; ?>
+							<?php if($model->userSpacialProject[0]->status == 1): ?>
+								<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
+							<?php elseif($model->userSpacialProject[0]->status == 2): ?>
+								<span class="btn btn-success btn-xs">อนุมัติคำขอ Spacial Project</span>
+							<?php elseif($model->userSpacialProject[0]->status == 3): ?>
+								<a id="requestSpecial" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"> ไม่อนุมัติคำขอ Spacial Project -<i class="glyphicon glyphicon-share"></i> Request อีกครั้ง</a>
+							<?php endif; ?>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -436,38 +446,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                                       ?>
+<?php // echo $form->errorSummary($model);                                         ?>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');         ?>
 <?php // echo $form->textField($model, 'supplierId');          ?>
-<?php // echo $form->error($model, 'supplierId');                                     ?>
+<?php // echo $form->error($model, 'supplierId');                                       ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'type');          ?>
 <?php // echo $form->textField($model, 'type');          ?>
-<?php // echo $form->error($model, 'type');                                     ?>
+<?php // echo $form->error($model, 'type');                                       ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'status');          ?>
 <?php // echo $form->textField($model, 'status');         ?>
-<?php // echo $form->error($model, 'status');                                     ?>
+<?php // echo $form->error($model, 'status');                                       ?>
 	</div>
 
 	<div class="row">
 <?php // echo $form->labelEx($model, 'title');          ?>
 <?php // echo $form->textField($model, 'title');        ?>
-<?php // echo $form->error($model, 'title');                                      ?>
+<?php // echo $form->error($model, 'title');                                        ?>
 	</div>
 
 
 	<div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                         ?>
+<?php // echo CHtml::submitButton('Submit');                                           ?>
 	</div>
 
-<?php // $this->endWidget();                                         ?>
+<?php // $this->endWidget();                                           ?>
 
 </div>-->
 <!-- form -->

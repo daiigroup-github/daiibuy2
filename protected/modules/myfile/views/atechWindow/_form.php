@@ -8,19 +8,19 @@ $this->breadcrumbs = array(
 ?>
 
 <?php
-			$form = $this->beginWidget('CActiveForm', array(
-			'id'=>'Order-form',
-		// Please note: When you enable ajax validation, make sure the corresponding
-		// controller action is handling ajax validation correctly.
-		// There is a call to performAjaxValidation() commented in generated controller code.
-		// See class documentation of CActiveForm for details on this.
-			'enableAjaxValidation'=>false,
-			'htmlOptions'=>array(
-				'class'=>'form-horizontal',
-				'enctype'=>'multipart/form-data',
-			),
-		));
-				?>
+$form = $this->beginWidget('CActiveForm', array(
+	'id'=>'Order-form',
+	// Please note: When you enable ajax validation, make sure the corresponding
+// controller action is handling ajax validation correctly.
+// There is a call to performAjaxValidation() commented in generated controller code.
+// See class documentation of CActiveForm for details on this.
+	'enableAjaxValidation'=>false,
+	'htmlOptions'=>array(
+		'class'=>'form-horizontal',
+		'enctype'=>'multipart/form-data',
+	),
+	));
+?>
 
 
 <div class="row">
@@ -49,7 +49,7 @@ $this->breadcrumbs = array(
 	<div class="row form-group hidden">
         <div class="col-xs-12">
             <ul class="nav nav-pills nav-justified thumbnail setup-panel">
-                <li class="<?php echo $this->action->id == 'create'? 'active' : ''; ?>"><a href="#step-1">
+                <li class="<?php echo $this->action->id == 'create' ? 'active' : ''; ?>"><a href="#step-1">
 						<h4 class="list-group-item-heading">Step 1</h4>
 						<p class="list-group-item-text">First step description</p>
 					</a></li>
@@ -57,7 +57,7 @@ $this->breadcrumbs = array(
 						<h4 class="list-group-item-heading">Step 2</h4>
 						<p class="list-group-item-text">Second step description</p>
 					</a></li>
-					  <li class="<?php echo ($this->action->id == 'view' && $model->status == 0)? 'active' : ''; ?>"><a href="#step-2-1">
+				<li class="<?php echo ($this->action->id == 'view' && $model->status == 0) ? 'active' : ''; ?>"><a href="#step-2-1">
 						<h4 class="list-group-item-heading">Step 2-1</h4>
 						<p class="list-group-item-text">Third step description</p>
 					</a></li>
@@ -65,12 +65,12 @@ $this->breadcrumbs = array(
 						<h4 class="list-group-item-heading">Step 2-2</h4>
 						<p class="list-group-item-text">ใส่ปริมาณเอง</p>
 					</a></li>
-                <li class="<?php echo ($this->action->id == 'view' && $model->status == 1)? 'active' : ''; ?>"><a href="#step-3">
+                <li class="<?php echo ($this->action->id == 'view' && $model->status == 1) ? 'active' : ''; ?>"><a href="#step-3">
 						<h4 class="list-group-item-heading">Step _</h4>
 						<p class="list-group-item-text">เปรียบเทียบประเมินราคา</p>
 					</a></li>
 
-					<li><a href="#step-4">
+				<li><a href="#step-4">
 						<h4 class="list-group-item-heading">Step 4</h4>
 						<p class="list-group-item-text">Third step description</p>
 					</a></li>
@@ -93,19 +93,25 @@ $this->breadcrumbs = array(
 						</div>
 						<div class="form-group">
 							<div class="col-sm-10">
-							<?php echo $form->textField($model,'title',array('size'=>20,'maxlength'=>20, 'class'=>'form-control','placeholder'=>'กรุณากรอกชื่อ My File.')); ?>
-							<?php echo $form->error($model,'title'); ?>
+								<?php
+								echo $form->textField($model, 'title', array(
+									'size'=>20,
+									'maxlength'=>20,
+									'class'=>'form-control',
+									'placeholder'=>'กรุณากรอกชื่อ My File.'));
+								?>
+								<?php echo $form->error($model, 'title'); ?>
 							</div>
 						</div>
-<!--						<div>
-							<?php
+						<!--						<div>
+						<?php
 //							echo CHtml::textField('title', $model->title, array(
 //								'class'=>'form-control',
 //								'id'=>'myfile_title',
 //								'placeholder'=>'กรุณากรอกชื่อ My File.'
 //							));
-							?>
-						</div>-->
+						?>
+												</div>-->
 						<div style="margin-top: 15px">
 							<?php
 							echo CHtml::dropDownList('Order[provinceId]', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
@@ -169,64 +175,62 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row">
 					<div class="col-md-12" id="upload_plan">
-						<?php // $this->renderPartial('_upload_plan', array('model'=>$model)); ?>
+						<?php // $this->renderPartial('_upload_plan', array('model'=>$model));   ?>
 
-	<div class="row">
-		<div class="col-sm-7">
+						<div class="row">
+							<div class="col-sm-7">
 
-			 <div class="form-group">
-					รูปแปลน : <input name="OrderFile[0]" type="file" class="file" data-show-upload="false">
-            </div>
-			 <div class="form-group">
-					รูปด้าน 1 : <input name="OrderFile[1]" type="file" class="file" data-show-upload="false">
-            </div>
-			 <div class="form-group">
-					รูปด้าน 2 : <input name="OrderFile[2]" type="file" class="file" data-show-upload="false">
-            </div>
-			 <div class="form-group">
-					รูปด้าน 3 : <input name="OrderFile[3]" type="file" class="file" data-show-upload="false">
-            </div>
-			 <div class="form-group">
-					รูปด้าน 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
-            </div>
+								<div class="form-group">
+									รูปแปลน : <input name="OrderFile[0]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 1 : <input name="OrderFile[1]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 2 : <input name="OrderFile[2]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 3 : <input name="OrderFile[3]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									รูปด้าน 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
 
-			<?php
+								<?php ?>
+							</div>
+							<div class="col-sm-5">
+								<div class="panel panel-info">
+									<div class="panel-heading text-left">
+										<h4><b><i class="glyphicon glyphicon-exclamation-sign"></i> หมายเหตุ</b></h4>
+									</div>
+									<div class="panel-body">
+										<small><b>1.หลังจากลูกค้าอัพโหลดแบบ รอ 3 วันทำการ เพื่อทำการประเมินราคา <br>
+												2.ขนาดที่ลูกค้าได้รับจากการประเมินราคาใน www.daiibuy.com จะเป็นขนาดมาตรฐานจากโรงงานเท่านั้น โดยจะมีการปรับขนาดหน้าต่าง ให้ใกล้เคียงกับขนาดมารฐาน<br>
+												3.หากลูกค้าต้องการสั่งซื้อขนาดอื่นๆ นอกเหนือจากขนาดมารฐาน<br>
+												โปรดติดต่อบริษัท ไดอิ กรุ๊ป จำกัด มหาชน โทร. 02-9383464</b></small>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row wizard-control">
 
-			?>
-		</div>
-		<div class="col-sm-5">
-			<div class="panel panel-info">
-				<div class="panel-heading text-left">
-					<h4><b><i class="glyphicon glyphicon-exclamation-sign"></i> หมายเหตุ</b></h4>
-				</div>
-				<div class="panel-body">
-					<small><b>1.หลังจากลูกค้าอัพโหลดแบบ รอ 3 วันทำการ เพื่อทำการประเมินราคา <br>
-							2.ขนาดที่ลูกค้าได้รับจากการประเมินราคาใน www.daiibuy.com จะเป็นขนาดมาตรฐานจากโรงงานเท่านั้น โดยจะมีการปรับขนาดหน้าต่าง ให้ใกล้เคียงกับขนาดมารฐาน<br>
-							3.หากลูกค้าต้องการสั่งซื้อขนาดอื่นๆ นอกเหนือจากขนาดมารฐาน<br>
-						โปรดติดต่อบริษัท ไดอิ กรุ๊ป จำกัด มหาชน โทร. 02-9383464</b></small>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row wizard-control">
-
-		<?php
-			echo CHtml::submitButton('Create', array(
-				'class'=>'btn btn-primary'));
-			?>
-	</div>
+							<?php
+							echo CHtml::submitButton('Create', array(
+								'class'=>'btn btn-primary'));
+							?>
+						</div>
 					</div>
 				</div>
-<!--				<div class="row wizard-control">-->
-<!--					<div class="pull-right">
-					<button id="commitUpload" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> ส่งข้อมูล</button>
-					</div>-->
-<!--					<div class="pull-left">
-						<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
-					</div>
-					<div class="pull-right">
-						<button id="nextToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
-					</div>-->
+				<!--				<div class="row wizard-control">-->
+				<!--					<div class="pull-right">
+									<button id="commitUpload" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> ส่งข้อมูล</button>
+									</div>-->
+				<!--					<div class="pull-left">
+										<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
+									</div>
+									<div class="pull-right">
+										<button id="nextToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+									</div>-->
 				<!--</div>-->
 			</div>
 		</div>
@@ -235,29 +239,32 @@ $this->breadcrumbs = array(
 		<div class="col-xs-12">
 			<div class="carousel-heading no-margin">
 				<b><h4>รอ Call Center ประเมิณราคา</h4></b>
-							</div>
+			</div>
             <div class="col-md-12 well">
 
 				<div class="row text-center">
 					<div style="margin-top: 2%">
-					<?php $i = 0; ?>
-					<?php foreach($model->orderFiles as $orderFile): ?>
-					<div class='col-lg-6 col-md-6 col-sm-12'>
-					<div class="blog-item">
-					<?php echo CHtml::image(Yii::app()->baseUrl.$orderFile->filePath, '', array('style'=>'width:300px;height:300px')); ?>
-						<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i==0? "แบบแปลน":"ด้านข้าง ".$i; ?></div>
-				</div>
-			</div>
-		<?php $i++; ?>
-	<?php endforeach;?>
-	</div>
+						<?php $i = 0; ?>
+						<?php foreach($model->orderFiles as $orderFile): ?>
+							<div class='col-lg-6 col-md-6 col-sm-12'>
+								<div class="blog-item">
+									<?php
+									echo CHtml::image(Yii::app()->baseUrl . $orderFile->filePath, '', array(
+										'style'=>'width:300px;height:300px'));
+									?>
+									<div class="blue button center-block" style="text-align: center;background-clip: border-box;color: white;width:300px;"><?php echo $i == 0 ? "แบบแปลน" : "ด้านข้าง " . $i; ?></div>
+								</div>
+							</div>
+							<?php $i++; ?>
+						<?php endforeach; ?>
+					</div>
 				</div>
 
 			</div>
 		</div>
 	</div>
 
-<?php $this->endWidget(); ?>
+	<?php $this->endWidget(); ?>
 
 
 	<div class="row setup-content" id="step-2-2">
@@ -265,21 +272,24 @@ $this->breadcrumbs = array(
             <div class="col-md-12 well">
 				<div class="row pull-right">
 
-		<!--<button id="addItemButton" class="btn btn-block btn-info">เพิ่มสินค้า</button>-->
-		<?php echo CHtml::button('เพิ่มสินค้า',
-			array('class'=>'btn btn-info',
-				'id'=>'addProductCriteriaAtech',
-				'ajax'=>array(
-				'type'=>'POST',
-				'url'=>CController::createUrl('atechWindow/addNewProductItem'),
-				'dataType'=>'html',
-				'data'=>array("rows"=>"js:document.getElementById('criteriaTableAtech').rows.length"),
-				'success'=>'js:function(data){
+					<!--<button id="addItemButton" class="btn btn-block btn-info">เพิ่มสินค้า</button>-->
+					<?php
+					echo CHtml::button('เพิ่มสินค้า', array(
+						'class'=>'btn btn-info',
+						'id'=>'addProductCriteriaAtech',
+						'ajax'=>array(
+							'type'=>'POST',
+							'url'=>CController::createUrl('atechWindow/addNewProductItem'),
+							'dataType'=>'html',
+							'data'=>array(
+								"rows"=>"js:document.getElementById('criteriaTableAtech').rows.length"),
+							'success'=>'js:function(data){
 					//alert("YESS");
 					$("#criteriaTableAtech").append(data);
 				}',
-				),
-			)); ?>
+						),
+					));
+					?>
 				</div>
 				<div class="row">
 					<div class="page-header myfile-fenzer-header" >
@@ -288,78 +298,105 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row text-center">
 					<form id="aa">
-						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId']; ?>">
+						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];            ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
-								<th>ลำดับ</th>
-								<th>ประเภท</th>
-								<th>รูปแบบ</th>
-								<th>ขนาด</th>
-								<th class="edit-table-qty" >จำนวน</th>
-								<th>Action</th>
+									<th>ลำดับ</th>
+									<th>ประเภท</th>
+									<th>รูปแบบ</th>
+									<th>ขนาด</th>
+									<th class="edit-table-qty" >จำนวน</th>
+									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody >
-						<?php // foreach($productResult['items'] as $item): ?>
-								<?php $categoryDropDownArray = Category::model()->findAllParentCategoryArray(2);
-								$typeDropDownArray = array('บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน','บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน', 'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว', 'บานเปิดคู่'=>'บานเปิดคู่', 'บานกระทุ้ง'=>'บานกระทุ้ง', 'บานส่องแสง'=>'บานส่องแสง');
+								<?php // foreach($productResult['items'] as $item): ?>
+								<?php
+								$categoryDropDownArray = Category::model()->findAllParentCategoryArray(2);
+								$typeDropDownArray = array(
+									'บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน',
+									'บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน',
+									'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว',
+									'บานเปิดคู่'=>'บานเปิดคู่',
+									'บานกระทุ้ง'=>'บานกระทุ้ง',
+									'บานส่องแสง'=>'บานส่องแสง');
 								$sizeDropDownArray = Product::model()->findAllAtechSizeArray();
 								?>
-			<tr>
-				<td>1</td>
-				<td class="cat"><?php echo CHtml::dropDownList('Criteria[0][category]', "category",$categoryDropDownArray,array('class'=>'form-control','prompt'=>'เลือกประเภท','onchange'=>'findType(this)')); ?></td>
-				<td class="type"><?php // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
-				echo CHtml::dropDownList('Criteria[0][type]', "type", array(
-										), array(
-										'prompt'=>'เลือกรูปแบบ',
-										'class'=>'form-control',
-										'onchange'=>'findSize(this);',
-										'id'=>'type',
-									));?></td>
-				<td class="size"><?php // echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray);
-				echo CHtml::dropDownList('Criteria[0][size]', "size", array(
-										), array(
-										'prompt'=>'เลือกขนาด',
-										'class'=>'form-control',
-										'id'=>'"size"',
-									)); ?></td>
-				<td><?php echo CHtml::textField('Criteria[0][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
-				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td class="cat"><?php echo CHtml::dropDownList('Criteria[1][category]', "category",$categoryDropDownArray,array('class'=>'form-control','prompt'=>'เลือกประเภท','onchange'=>'findType(this)')); ?></td>
-				<td class="type"><?php // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
-				echo CHtml::dropDownList('Criteria[1][type]', "type", array(
-										), array(
-										'prompt'=>'เลือกรูปแบบ',
-										'class'=>'form-control',
-										'onchange'=>'findSize(this);',
+								<tr>
+									<td>1</td>
+									<td class="cat"><?php
+										echo CHtml::dropDownList('Criteria[0][category]', "category", $categoryDropDownArray, array(
+											'class'=>'form-control',
+											'prompt'=>'เลือกประเภท',
+											'onchange'=>'findType(this)'));
+										?></td>
+									<td class="type"><?php
+										// echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
+										echo CHtml::dropDownList('Criteria[0][type]', "type", array(), array(
+											'prompt'=>'เลือกรูปแบบ',
+											'class'=>'form-control',
+											'onchange'=>'findSize(this);',
+											'id'=>'type',
+										));
+										?></td>
+									<td class="size"><?php
+										// echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray);
+										echo CHtml::dropDownList('Criteria[0][size]', "size", array(), array(
+											'prompt'=>'เลือกขนาด',
+											'class'=>'form-control',
+											'id'=>'"size"',
+										));
+										?></td>
+									<td><?php
+										echo CHtml::textField('Criteria[0][quantity]', 1, array(
+											'class'=>'edit-table-qty-input'));
+										?></td>
+									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td class="cat"><?php
+										echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray, array(
+											'class'=>'form-control',
+											'prompt'=>'เลือกประเภท',
+											'onchange'=>'findType(this)'));
+										?></td>
+									<td class="type"><?php
+										// echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
+										echo CHtml::dropDownList('Criteria[1][type]', "type", array(), array(
+											'prompt'=>'เลือกรูปแบบ',
+											'class'=>'form-control',
+											'onchange'=>'findSize(this);',
 //										'id'=>'type',
-									));?></td>
-				<td class="size"><?php // echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray);
-				echo CHtml::dropDownList('Criteria[1][size]', "size", array(
-										), array(
-										'prompt'=>'เลือกขนาด',
-										'class'=>'form-control',
+										));
+										?></td>
+									<td class="size"><?php
+										// echo CHtml::dropDownList('Criteria[0][size]', "size", $sizeDropDownArray);
+										echo CHtml::dropDownList('Criteria[1][size]', "size", array(), array(
+											'prompt'=>'เลือกขนาด',
+											'class'=>'form-control',
 //										'id'=>'"size"',
-									)); ?></td>
-				<td><?php echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
-				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
-			</tr>
-<!--			<tr>
-				<td>2</td>
-				<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray); ?></td>
-				<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray); ?></td>
-				<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray); ?></td>
-				<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input')); ?></td>
-				<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
-			</tr>-->
+										));
+										?></td>
+									<td><?php
+										echo CHtml::textField('Criteria[1][quantity]', 1, array(
+											'class'=>'edit-table-qty-input'));
+										?></td>
+									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+								</tr>
+					<!--			<tr>
+									<td>2</td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);            ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);            ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);            ?></td>
+									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));            ?></td>
+									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+								</tr>-->
 
-	</tbody>
-</table>
-</form>
+							</tbody>
+						</table>
+					</form>
 				</div>
 
 				<div class="row wizard-control">
@@ -386,58 +423,64 @@ $this->breadcrumbs = array(
 							<h4>ยืนยันรายการสินค้า <?php echo $model->title; ?></h4>
 						</div>
 
-				<div class="row">
-					<div class="col-md-3">
-				<div class="row sidebar-box blue" style="margin-top: 55px;">
-				<div class="col-sm-12">
-					<div class="sidebar-box-heading">
-						<i class="fa fa-apple"></i>
-						<h4>Brand</h4>
-					</div>
-					<div class="sidebar-box-content">
-						<ul>
-							<?php foreach($modelArray as $item): ?>
-							<li>
-								<a class="<?php echo $this->action->id == 'view'? 'atechUpdate': ($this->action->id == 'create'? 'atechNav':'atechUpdate'); ?>" href="#" name="<?php echo $item->brandModelId; ?>" >
-								<?php echo $item->title; ?>
-								</a>
-							</li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				</div>
-			</div>
-<!--						<div class="btn-group-vertical" style="margin-top: 50px">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="row sidebar-box blue" style="margin-top: 55px;">
+									<div class="col-sm-12">
+										<div class="sidebar-box-heading">
+											<i class="fa fa-apple"></i>
+											<h4>Brand</h4>
+										</div>
+										<div class="sidebar-box-content">
+											<ul>
+												<?php foreach($modelArray as $item): ?>
+													<li>
+														<a class="<?php echo $this->action->id == 'view' ? 'atechUpdate' : ($this->action->id == 'create' ? 'atechNav' : 'atechUpdate'); ?>" href="#" name="<?php echo $item->brandModelId; ?>" >
+															<?php echo $item->title; ?>
+														</a>
+													</li>
+												<?php endforeach; ?>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-							<button name="<?php // echo $item->brandModelId; ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title; ?></button>
+															<button name="<?php // echo $item->brandModelId;          ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;          ?></button>
 
-					</div>-->
-					</div>
-					<div class="col-md-9">
-						<div class="row" id="atech_result" >
-							<?php if(isset($productResult)){
+													</div>-->
+							</div>
+							<div class="col-md-9">
+								<div class="row" id="atech_result" >
+									<?php
+									if(isset($productResult))
+									{
 
-								$this->renderPartial('_edit_product_result', array('productResult'=>$productResult));
-							}
+										$this->renderPartial('_edit_product_result', array(
+											'productResult'=>$productResult));
+									}
 //							throw new Exception(print_r($productResult,true));
-								?>
+									?>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
-				<div class="row wizard-control">
-					<?php if($this->action->id == 'create'){ ?>
-					<div class="pull-left">
-						<a id="backToStep2-2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
-					</div>
-					<?php } ?>
-					<div class="pull-right">
-						<a id="nextToStep4Atech" name="<?php echo $this->action->id == 'create'? "" : $model->orderId; ?>" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
+						<div class="row wizard-control">
+							<?php
+							if($this->action->id == 'create')
+							{
+								?>
+								<div class="pull-left">
+									<a id="backToStep2-2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+								</div>
+							<?php } ?>
+							<div class="pull-right">
+								<a id="nextToStep4Atech" name="<?php echo $this->action->id == 'create' ? "" : $model->orderId; ?>" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-					</div>
 	</div>
 
 	<div class="row setup-content" id="step-4">
@@ -456,14 +499,23 @@ $this->breadcrumbs = array(
 				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<a id="backToStep3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
-						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo ($this->action->id == 'create')? Yii::app()->createUrl("/myfile/atechWindow/") : Yii::app()->createUrl("/myfile/atechWindow/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-						<a id="addToCartAtech" class="btn btn-warning btn-lg" href="<?php echo ($this->action->id == 'create')? "#" : Yii::app()->createUrl("/myfile/atechWindow/addToCartNow/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php if(!$model->isRequestSpacialProject): ?>
+							<a id="backToStep3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+						<?php endif; ?>
+						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo ($this->action->id == 'create') ? Yii::app()->createUrl("/myfile/atechWindow/") : Yii::app()->createUrl("/myfile/atechWindow/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
+						<a id="addToCartAtech" class="btn btn-warning btn-lg" href="<?php echo ($this->action->id == 'create') ? "#" : Yii::app()->createUrl("/myfile/atechWindow/addToCartNow/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
 						<?php if(!$model->isRequestSpacialProject): ?>
 							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php else: ?>
-							<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
-<?php endif; ?>
+							<?php if($model->userSpacialProject[0]->status == 1): ?>
+								<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>
+							<?php elseif($model->userSpacialProject[0]->status == 2): ?>
+								<span class="btn btn-success btn-xs">อนุมัติคำขอ Spacial Project</span>
+							<?php elseif($model->userSpacialProject[0]->status == 3): ?>
+								<span class="btn btn-danger btn-xs">ไม่อนุมัติคำขอ Spacial Project</span>
+								<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<?php endif; ?>
+						<?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -523,38 +575,38 @@ $this->breadcrumbs = array(
 ?>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);        ?>
+<?php // echo $form->errorSummary($model);         ?>
 
 	<div class="row">
-<?php // echo $form->labelEx($model, 'supplierId');   ?>
-<?php // echo $form->textField($model, 'supplierId');   ?>
-<?php // echo $form->error($model, 'supplierId');       ?>
+<?php // echo $form->labelEx($model, 'supplierId');      ?>
+<?php // echo $form->textField($model, 'supplierId');      ?>
+<?php // echo $form->error($model, 'supplierId');         ?>
 	</div>
 
 	<div class="row">
-<?php // echo $form->labelEx($model, 'type');    ?>
-<?php // echo $form->textField($model, 'type');   ?>
-<?php // echo $form->error($model, 'type');       ?>
+<?php // echo $form->labelEx($model, 'type');      ?>
+<?php // echo $form->textField($model, 'type');      ?>
+<?php // echo $form->error($model, 'type');         ?>
 	</div>
 
 	<div class="row">
-<?php // echo $form->labelEx($model, 'status');    ?>
-<?php // echo $form->textField($model, 'status');   ?>
-<?php // echo $form->error($model, 'status');       ?>
+<?php // echo $form->labelEx($model, 'status');       ?>
+<?php // echo $form->textField($model, 'status');      ?>
+<?php // echo $form->error($model, 'status');          ?>
 	</div>
 
 	<div class="row">
-<?php // echo $form->labelEx($model, 'title');    ?>
-<?php // echo $form->textField($model, 'title');   ?>
-<?php // echo $form->error($model, 'title');       ?>
+<?php // echo $form->labelEx($model, 'title');      ?>
+<?php // echo $form->textField($model, 'title');       ?>
+<?php // echo $form->error($model, 'title');           ?>
 	</div>
 
 
 	<div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');         ?>
+<?php // echo CHtml::submitButton('Submit');             ?>
 	</div>
 
-<?php // $this->endWidget();        ?>
+<?php // $this->endWidget();            ?>
 
 </div>-->
 <!-- form -->
