@@ -421,8 +421,11 @@ class MasterMyFileController extends MasterController
 	{
 		switch($status)
 		{
-			case 1:
+			case 0:
 				return "warning";
+				break;
+			case 1:
+				return "info";
 				break;
 			case 2:
 				return "primary";
