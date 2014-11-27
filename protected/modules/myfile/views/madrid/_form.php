@@ -414,7 +414,9 @@ $form = $this->beginWidget('CActiveForm', array(
 							<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
 						<?php endif; ?>
 						<?php if(!$model->isRequestSpacialProject): ?>
-							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<?php if(Yii::app()->user->userType == 2): ?>
+								<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<?php endif; ?>
 						<?php else: ?>
 							<?php if($model->userSpacialProject[0]->status == 1): ?>
 								<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>

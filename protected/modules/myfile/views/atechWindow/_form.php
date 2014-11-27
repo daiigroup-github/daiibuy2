@@ -298,7 +298,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="aa">
-						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                      ?>">
+						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                          ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -387,10 +387,10 @@ $form = $this->beginWidget('CActiveForm', array(
 								</tr>
 					<!--			<tr>
 									<td>2</td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                      ?></td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                      ?></td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                      ?></td>
-									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                      ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                          ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                          ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                          ?></td>
+									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                          ?></td>
 									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 								</tr>-->
 
@@ -446,7 +446,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								</div>
 								<!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-															<button name="<?php // echo $item->brandModelId;                    ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                    ?></button>
+															<button name="<?php // echo $item->brandModelId;                        ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                        ?></button>
 
 													</div>-->
 							</div>
@@ -509,9 +509,13 @@ $form = $this->beginWidget('CActiveForm', array(
 							<a id="backToStep3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 						<?php endif; ?>
 						<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo ($this->action->id == 'create') ? Yii::app()->createUrl("/myfile/atechWindow/") : Yii::app()->createUrl("/myfile/atechWindow/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-						<a id="addToCartAtech" class="btn btn-warning btn-lg" href="<?php echo ($this->action->id == 'create') ? "#" : Yii::app()->createUrl("/myfile/atechWindow/addToCartNow/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php if($model->type < 3): ?>
+							<a id="addToCartAtech" class="btn btn-warning btn-lg" href="<?php echo ($this->action->id == 'create') ? "#" : Yii::app()->createUrl("/myfile/atechWindow/addToCartNow/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php endif; ?>
 						<?php if(!$model->isRequestSpacialProject): ?>
-							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<?php if(Yii::app()->user->userType == 2): ?>
+								<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<?php endif; ?>
 						<?php else: ?>
 							<?php if($model->userSpacialProject[0]->status == 1): ?>
 								<span class="btn btn-danger btn-xs">Sending Request Spacial Project</span>

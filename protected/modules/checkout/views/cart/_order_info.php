@@ -3,8 +3,8 @@
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         <div class="sidebar-box-heading">
-            <i class="icons <?php echo ($order->type == Order::ORDER_TYPE_CART) ? 'fa fa-shopping-cart' : 'fa fa-file-o'; ?>"></i>
-            <h4><?php echo ($order->type == Order::ORDER_TYPE_CART) ? 'Cart' : $order->title; ?></h4>
+            <i class="icons <?php echo (($order->type == Order::ORDER_TYPE_CART) ? 'fa fa-shopping-cart' : 'fa fa-file-o'); ?>"></i>
+            <h4><?php echo $i . ". " . (($order->type == Order::ORDER_TYPE_CART) ? 'ตระกร้า' : "My File " . $order->title); ?></h4>
         </div>
 		<?php
 		$form = $this->beginWidget('CActiveForm', array(
@@ -18,7 +18,7 @@
 		?>
         <div class="sidebar-box-content sidebar-padding-box">
             <div class="category-heading" style="margin-bottom: 1px;padding-top: 15px;">
-				<strong><?php echo ($order->type == Order::ORDER_TYPE_CART) ? 'Cart' : "Myfile " . $order->title; ?></strong>
+				<strong><?php echo ($order->type == Order::ORDER_TYPE_CART) ? 'ตระกร้า' : "Myfile " . $order->title; ?></strong>
 
                 <div class="category-buttons">
 					<?php
@@ -50,11 +50,11 @@
 
 			<table class = "orderinfo-table table-bordered">
 				<tr>
-					<th>Code</th>
-					<th>Product name</th>
-					<th>Qty</th>
-					<th>Unit Price</th>
-					<th>Total</th>
+					<th style="text-align:center">รหัสสินค้า</th>
+					<th style="text-align:center">ชื่อสินค้า</th>
+					<th style="text-align:center">จำนวน</th>
+					<th style="text-align:center">ราคาต่อหน่วย</th>
+					<th style="text-align:center">รวม</th>
 				</tr>
 
 				<?php $sum = 0;
@@ -78,7 +78,7 @@
 
 				<?php //summary   ?>
 				<tr>
-					<td class="align-right" colspan="4"><span class="price big">Sub Total</span></td>
+					<td class="align-right" colspan="4"><span class="price big">ยอดรวม</span></td>
 					<td class="align-right"><span class="price big" id="order<?php echo $order->orderId; ?>"><?php echo number_format($sum, 2); ?></span></td>
 				</tr>
 

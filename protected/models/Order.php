@@ -170,7 +170,7 @@ class Order extends OrderMaster
 			else
 			{
 
-				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status = 1 OR status = 0)';
+				$criteria->condition = 'userId = :userId AND supplierId = :supplierId AND (type = ' . self::ORDER_TYPE_ADD_TO_ORDER_GROUP . ') AND (status = 2)';
 			}
 
 			$criteria->params = array(
@@ -899,13 +899,87 @@ class Order extends OrderMaster
 			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
 			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal + $sumLastTwelveMonth);
 		}
+		$discount = $model->sumTotal * $discountPercent / 100;
+		$grandTotal = $model->sumTotal - $discount;
+		$distributorDiscountPercent = 0;
 
+		if(isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2)
+		{
+			//edit 3 to other when change policy discount of distributor
+			$distributorDiscountPercent += 3;
+		}
+		$totalPostSupplierRangeDiscount = $grandTotal;
+		$res['totalPostSupplierRangeDiscount'] = number_format($grandTotal, 2);
+		if($distributorDiscountPercent > 0)
+		{
+			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
+			$grandTotal = $grandTotal - $distributorDiscount;
+		}
 		$res['total'] = number_format($model->sumTotal, 2);
 		$res['discountPercent'] = $discountPercent;
-		$res['discount'] = number_format($model->sumTotal * $discountPercent / 100, 2);
-		$res['grandTotal'] = number_format($model->sumTotal - ($model->sumTotal * $discountPercent / 100), 2);
-		$this->writeToFile('/tmp/sumOrderTotalBySupplierId', print_r($res, true));
+		$res['discount'] = number_format($discount, 2);
+		if($distributorDiscountPercent > 0 && isset($distributorDiscount))
+		{
+			$res['distributorDiscountPercent'] = $distributorDiscountPercent;
+			$res['distributorDiscount'] = number_format($distributorDiscount, 2);
+			$res['totalPostDistributorDiscount'] = number_format($grandTotal, 2);
+		}
+		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $totalPostSupplierRangeDiscount);
+		if(isset($extraDiscountArray))
+		{
+			$grandTotal -=$extraDiscountArray["totalExtraDiscount"];
+			$res["extraDiscount"] = number_format($extraDiscountArray["totalExtraDiscount"], 2);
+			$res["extraDiscountArray"] = $extraDiscountArray;
+			$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
+		}
+		$res['grandTotal'] = number_format($grandTotal, 2);
 		return $res;
+	}
+
+	public $spacialPercent;
+
+	public function sumExtraDiscount($supplierId, $grandTotal)
+	{
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent ";
+		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderId = t.orderId ";
+		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId AND type in (" . self::ORDER_TYPE_CART . "," . self::ORDER_TYPE_MYFILE_TO_CART . " ) ";
+		if(isset(Yii::app()->user->id))
+		{
+			$criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
+		}
+		else
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$daiibuy->token;
+			$criteria->condition .= " AND t.token =" . $daiibuy->token;
+		}
+
+		$models = $this->findAll($criteria);
+
+		$extraDiscount = 0;
+		foreach($models as $item)
+		{
+			$spacialValue = ($item->spacialPercent / 100) * $grandTotal;
+			$result[$item->orderId] = array(
+				'extraDiscountPercent'=>$item->spacialPercent,
+				'extraDiscount'=>$spacialValue,
+			);
+
+			$extraDiscount += $spacialValue;
+		}
+
+		$result["totalExtraDiscount"] = $extraDiscount;
+		if(count($models) > 0)
+		{
+			return $result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 }

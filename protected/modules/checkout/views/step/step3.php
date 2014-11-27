@@ -430,14 +430,17 @@ $this->renderPartial('_step_header', array(
 				</div>-->
 
 		<?php
+		$i = 1;
 		foreach($orders as $order)
 		{
-			$this->renderPartial('_order_info', array(
-				'order'=>$order));
+			$this->renderPartial('/cart/_order_info', array(
+				'order'=>$order,
+				"i"=>$i));
+			$i++;
 		}
 		?>
 		<?php
-		$this->renderPartial('_order_info_summary', array(
+		$this->renderPartial('/cart/_order_info_summary', array(
 			'orderSummary'=>$orderSummary));
 		?>
     </div>
@@ -455,7 +458,7 @@ $this->renderPartial('_step_header', array(
 			echo CHtml::link('Next &gt;', $this->createUrl(4), array(
 				'class'=>'button green pull-right'));
 			?>
-			<?php //echo CHtml::submitButton('Check out', array('class'=>'big green pull-right', 'name'=>'checkout'));   ?>
+			<?php //echo CHtml::submitButton('Check out', array('class'=>'big green pull-right', 'name'=>'checkout'));    ?>
         </div>
     </div>
 </div>

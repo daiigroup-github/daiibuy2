@@ -94,14 +94,14 @@ return false;
 				'template'=>'{approve} {reject}',
 				'buttons'=>array(
 					'approve'=>array(
-						'label'=>'<i class="fa fa-check"></i>อนุมัติคำขอ',
+						'label'=>'<u><i class="fa fa-check"></i>อนุมัติคำขอ</u>',
 						'url'=>'Yii::app()->createUrl("backoffice/userSpacialProject/approve/id/".$data->userSpacialProjectId)',
 						'visible'=>'($data->status ==1)',
 						'options'=>array(
 							'class'=>'text-success')
 					),
 					'reject'=>array(
-						'label'=>'<i class="fa fa-remove"></i>ไม่อนุมัติคำขอ',
+						'label'=>'<br><u><i class="fa fa-remove"></i>ไม่อนุมัติคำขอ</u>',
 						'url'=>'Yii::app()->createUrl("backoffice/userSpacialProject/reject/id/".$data->userSpacialProjectId)',
 						'visible'=>'($data->status ==1)',
 						'options'=>array(

@@ -19,6 +19,11 @@
  * @property string $totalIncVAT
  * @property string $discountPercent
  * @property string $discountValue
+ * @property string $totalPostDiscount
+ * @property string $distributorDiscountPercent
+ * @property string $distributorDiscount
+ * @property string $totalPostDistributorDiscount
+ * @property string $extraDiscount
  * @property string $summary
  * @property string $paymentDateTime
  * @property string $paymentCompany
@@ -49,8 +54,6 @@
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property OrderGroupMaster $parent
- * @property OrderGroupMaster[] $orderGroups
  * @property District $shippingDistrict
  * @property Amphur $paymentAmphur
  * @property District $paymentDistrict
@@ -84,13 +87,13 @@ class OrderGroupMaster extends MasterCActiveRecord
 			array('userId, supplierId, invoiceNo, telephone, parentId', 'length', 'max'=>20),
 			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
 			array('firstname, lastname, email, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
-			array('total, vatValue, totalIncVAT, discountValue, summary', 'length', 'max'=>15),
-			array('vatPercent, discountPercent', 'length', 'max'=>5),
+			array('total, vatValue, totalIncVAT, discountValue, totalPostDiscount, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary', 'length', 'max'=>15),
+			array('vatPercent, discountPercent, distributorDiscountPercent', 'length', 'max'=>5),
 			array('paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
 			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, parentId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, parentId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -102,8 +105,6 @@ class OrderGroupMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'parent' => array(self::BELONGS_TO, 'OrderGroupMaster', 'parentId'),
-			'orderGroups' => array(self::HAS_MANY, 'OrderGroupMaster', 'parentId'),
 			'shippingDistrict' => array(self::BELONGS_TO, 'District', 'shippingDistrictId'),
 			'paymentAmphur' => array(self::BELONGS_TO, 'Amphur', 'paymentAmphurId'),
 			'paymentDistrict' => array(self::BELONGS_TO, 'District', 'paymentDistrictId'),
@@ -137,6 +138,11 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'totalIncVAT' => 'Total Inc Vat',
 			'discountPercent' => 'Discount Percent',
 			'discountValue' => 'Discount Value',
+			'totalPostDiscount' => 'Total Post Discount',
+			'distributorDiscountPercent' => 'Distributor Discount Percent',
+			'distributorDiscount' => 'Distributor Discount',
+			'totalPostDistributorDiscount' => 'Total Post Distributor Discount',
+			'extraDiscount' => 'Extra Discount',
 			'summary' => 'Summary',
 			'paymentDateTime' => 'Payment Date Time',
 			'paymentCompany' => 'Payment Company',
@@ -203,6 +209,11 @@ class OrderGroupMaster extends MasterCActiveRecord
 			$this->totalIncVAT = $this->searchText;
 			$this->discountPercent = $this->searchText;
 			$this->discountValue = $this->searchText;
+			$this->totalPostDiscount = $this->searchText;
+			$this->distributorDiscountPercent = $this->searchText;
+			$this->distributorDiscount = $this->searchText;
+			$this->totalPostDistributorDiscount = $this->searchText;
+			$this->extraDiscount = $this->searchText;
 			$this->summary = $this->searchText;
 			$this->paymentDateTime = $this->searchText;
 			$this->paymentCompany = $this->searchText;
@@ -248,6 +259,11 @@ class OrderGroupMaster extends MasterCActiveRecord
 		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
 		$criteria->compare('discountPercent',$this->discountPercent,true, 'OR');
 		$criteria->compare('discountValue',$this->discountValue,true, 'OR');
+		$criteria->compare('totalPostDiscount',$this->totalPostDiscount,true, 'OR');
+		$criteria->compare('distributorDiscountPercent',$this->distributorDiscountPercent,true, 'OR');
+		$criteria->compare('distributorDiscount',$this->distributorDiscount,true, 'OR');
+		$criteria->compare('totalPostDistributorDiscount',$this->totalPostDistributorDiscount,true, 'OR');
+		$criteria->compare('extraDiscount',$this->extraDiscount,true, 'OR');
 		$criteria->compare('summary',$this->summary,true, 'OR');
 		$criteria->compare('paymentDateTime',$this->paymentDateTime,true, 'OR');
 		$criteria->compare('paymentCompany',$this->paymentCompany,true, 'OR');

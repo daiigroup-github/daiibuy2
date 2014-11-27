@@ -476,9 +476,9 @@ class AtechWindowController extends MasterMyFileController
 
 	public function actionFinish($id)
 	{
-		$model = Order::model()->findByPk($id);
-		$model->status = 1;
-		$model->save();
+//		$model = Order::model()->findByPk($id);
+//		$model->status = 1;
+//		$model->save();
 		$this->redirect(array(
 			'index'));
 	}

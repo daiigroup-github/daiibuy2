@@ -13,6 +13,7 @@
  * @property integer $type
  * @property string $total
  * @property string $totalIncVAT
+ * @property string $spacialProjectDiscount
  * @property string $remark
  * @property integer $isRequestSpacialProject
  * @property integer $isTheme
@@ -49,11 +50,11 @@ class OrderMaster extends MasterCActiveRecord
 			array('type, isRequestSpacialProject, isTheme, status', 'numerical', 'integerOnly'=>true),
 			array('userId, supplierId, provinceId', 'length', 'max'=>20),
 			array('token, title', 'length', 'max'=>200),
-			array('total, totalIncVAT', 'length', 'max'=>15),
+			array('total, totalIncVAT, spacialProjectDiscount', 'length', 'max'=>15),
 			array('remark, updateDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderId, userId, supplierId, provinceId, token, title, type, total, totalIncVAT, remark, isRequestSpacialProject, isTheme, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderId, userId, supplierId, provinceId, token, title, type, total, totalIncVAT, spacialProjectDiscount, remark, isRequestSpacialProject, isTheme, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +89,7 @@ class OrderMaster extends MasterCActiveRecord
 			'type' => 'Type',
 			'total' => 'Total',
 			'totalIncVAT' => 'Total Inc Vat',
+			'spacialProjectDiscount' => 'Spacial Project Discount',
 			'remark' => 'Remark',
 			'isRequestSpacialProject' => 'Is Request Spacial Project',
 			'isTheme' => 'Is Theme',
@@ -126,6 +128,7 @@ class OrderMaster extends MasterCActiveRecord
 			$this->type = $this->searchText;
 			$this->total = $this->searchText;
 			$this->totalIncVAT = $this->searchText;
+			$this->spacialProjectDiscount = $this->searchText;
 			$this->remark = $this->searchText;
 			$this->isRequestSpacialProject = $this->searchText;
 			$this->isTheme = $this->searchText;
@@ -143,6 +146,7 @@ class OrderMaster extends MasterCActiveRecord
 		$criteria->compare('type',$this->type);
 		$criteria->compare('total',$this->total,true, 'OR');
 		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
+		$criteria->compare('spacialProjectDiscount',$this->spacialProjectDiscount,true, 'OR');
 		$criteria->compare('remark',$this->remark,true, 'OR');
 		$criteria->compare('isRequestSpacialProject',$this->isRequestSpacialProject);
 		$criteria->compare('isTheme',$this->isTheme);

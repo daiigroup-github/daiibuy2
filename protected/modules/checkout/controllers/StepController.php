@@ -117,11 +117,15 @@ class StepController extends MasterCheckoutController
 							$order->save(false);
 						}
 						$flag = true;
-					}else{
-						throw new Exception(print_r($addressModel->errors,true));
 					}
-				}else{
-					throw new Exception(print_r($userModel->errors,true));
+					else
+					{
+						throw new Exception(print_r($addressModel->errors, true));
+					}
+				}
+				else
+				{
+					throw new Exception(print_r($userModel->errors, true));
 				}
 				if($flag)
 				{
@@ -133,22 +137,23 @@ class StepController extends MasterCheckoutController
 
 					$loginModel->username = $_POST['User']['email'];
 					$loginModel->password = $_POST['User']['password'];
-			// validate user input and redirect to the previous page if valid
-					if($loginModel->validate() && $loginModel->login()){
+					// validate user input and redirect to the previous page if valid
+					if($loginModel->validate() && $loginModel->login())
+					{
 						$orders = Order::model()->findAll(array(
-					'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
-					'params'=>array(
-						':token'=>$daiibuy->token,
-						':supplierId'=>Yii::app()->session['supplierId'],
-					),
-				));
+							'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+							'params'=>array(
+								':token'=>$daiibuy->token,
+								':supplierId'=>Yii::app()->session['supplierId'],
+							),
+						));
 
-				foreach($orders as $order)
-				{
-					$order->userId = Yii::app()->user->id;
-					$order->save(false);
-				}
-							$this->redirect($this->createUrl(2));
+						foreach($orders as $order)
+						{
+							$order->userId = Yii::app()->user->id;
+							$order->save(false);
+						}
+						$this->redirect($this->createUrl(2));
 					}
 				}
 			}
@@ -196,9 +201,12 @@ class StepController extends MasterCheckoutController
 				$billingAddressModel->attributes = $_POST['billing'];
 				$billingAddressModel->provinceId = $this->cookie->provinceId;
 				$billingAddressModel->userId = Yii::app()->user->id;
-				if(!$billingAddressModel->save()){
-					throw new Exception(print_r($billingAddressModel->errors,true));
-				}else{
+				if(!$billingAddressModel->save())
+				{
+					throw new Exception(print_r($billingAddressModel->errors, true));
+				}
+				else
+				{
 					Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
 				}
 			}
@@ -214,10 +222,13 @@ class StepController extends MasterCheckoutController
 				$shippingAddressModel->provinceId = $this->cookie->provinceId;
 				$shippingAddressModel->userId = Yii::app()->user->id;
 				Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
-				if(!$shippingAddressModel->save()){
+				if(!$shippingAddressModel->save())
+				{
 
-					throw new Exception(print_r($shippingAddressModel->errors,true));
-				}else{
+					throw new Exception(print_r($shippingAddressModel->errors, true));
+				}
+				else
+				{
 					Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
 				}
 			}
@@ -319,6 +330,13 @@ class StepController extends MasterCheckoutController
 				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
 				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
 				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+				//Distributor Discount & Spacial Project Discount
+				$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+				$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+				$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+				$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+				//Distributor Discount & Spacial Project Discount
 				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
 				$orderGroup->vatValue = $orderGroup->calVatValue();
 				$orderGroup->userId = Yii::app()->user->id;
@@ -385,6 +403,10 @@ class StepController extends MasterCheckoutController
 							}
 							$i++;
 
+							if(isset($orderSummary["extraDiscountArray"][$order->orderId]))
+							{
+								$order->spacialProjectDiscount = $orderSummary["extraDiscountArray"][$order->orderId]["extraDiscount"];
+							}
 							$order->type = 4;
 //							throw new Exception(print_r($order->type,true));
 							$order->save();
