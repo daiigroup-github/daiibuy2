@@ -440,65 +440,83 @@ class MasterMyFileController extends MasterController
 
 	public function actionDuplicateMyfile($id)
 	{
-		try
+		$this->layout = '//layouts/cl1';
+		$model = Order::model()->findByPk($id);
+		$orderOld = $model;
+		if(isset($_POST["Order"]))
 		{
-			$transaction = Yii::app()->db->beginTransaction();
-			$flag = FALSE;
-			$model = Order::model()->findByPk($id);
-			$orderOld = $model;
-			$model->isNewRecord = true;
-			$model->title .= " Copy";
-			$model->type = 1;
-			$model->status = 2;
-			$model->isRequestSpacialProject = 0;
-			$model->spacialProjectDiscount = null;
-			$model->orderId = null;
-			$model->createDateTime = new CDbExpression("NOW()");
-			$model->updateDateTime = new CDbExpression("NOW()");
-			if($model->save())
+			try
 			{
-				$flag = true;
-				$orderId = Yii::app()->db->lastInsertID;
-				$orderItems = OrderItems::model()->findAll("orderId=" . $id);
-				if(count($orderItems) > 0)
+				$transaction = Yii::app()->db->beginTransaction();
+				$flag = FALSE;
+
+				$model->isNewRecord = true;
+				if(isset($_POST["Order"]["title"]))
 				{
-					foreach($orderItems as $item)
-					{
-						$item->isNewRecord = true;
-						$item->orderId = $orderId;
-						$item->orderItemsId = null;
-						$item->createDateTime = new CDbExpression("NOW()");
-						$item->updateDateTime = new CDbExpression("NOW()");
-						if(!$item->save())
-						{
-							$flag = FALSE;
-							break;
-						}
-					}
+					$model->title = $_POST["Order"]["title"];
 				}
 				else
 				{
-					$flag = FALSE;
+					$model->title .= " Copy";
+				}
+				if(isset($_POST["Order"]["provinceId"]))
+				{
+					$model->provinceId = $_POST["Order"]["provinceId"];
+				}
+				$model->type = 1;
+				$model->status = 2;
+				$model->isRequestSpacialProject = 0;
+				$model->spacialProjectDiscount = null;
+				$model->orderId = null;
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
+				if($model->save())
+				{
+					$flag = true;
+					$orderId = Yii::app()->db->lastInsertID;
+					$orderItems = OrderItems::model()->findAll("orderId=" . $id);
+					if(count($orderItems) > 0)
+					{
+						foreach($orderItems as $item)
+						{
+							$item->isNewRecord = true;
+							$item->orderId = $orderId;
+							$item->orderItemsId = null;
+							$item->createDateTime = new CDbExpression("NOW()");
+							$item->updateDateTime = new CDbExpression("NOW()");
+							if(!$item->save())
+							{
+								$flag = FALSE;
+								break;
+							}
+						}
+					}
+					else
+					{
+						$flag = FALSE;
+					}
+				}
+
+				if(!$flag)
+				{
+					throw new Exception("Can't Duplicate MyFile");
+				}
+				else
+				{
+					$transaction->commit();
+					$this->redirect(array(
+						'index',
+					));
 				}
 			}
-
-			if(!$flag)
+			catch(Exception $exc)
 			{
-				throw new Exception("Can't Duplicate MyFile");
-			}
-			else
-			{
-				$transaction->commit();
-				$this->redirect(array(
-					'index',
-				));
+				$transaction->rollback();
+				echo $exc->getTraceAsString();
 			}
 		}
-		catch(Exception $exc)
-		{
-			$transaction->rollback();
-			echo $exc->getTraceAsString();
-		}
+		$this->render("/share/_duplicate_form", array(
+			'model'=>$model));
 	}
 
 }
