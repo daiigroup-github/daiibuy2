@@ -4,7 +4,7 @@
 
 		<div class="sidebar-box-heading">
 			<i class="icons icon-box-2"></i>
-			<h4>Summary</h4>
+			<h4>รวมทั้งสิ้น</h4>
 		</div>
 
 		<div class="sidebar-box-content sidebar-padding-box">

@@ -118,7 +118,7 @@ class MasterMyFileController extends MasterController
 		}
 	}
 
-	//temp function
+//temp function
 	public function scanDir($dir)
 	{
 		$files = scandir($dir);
@@ -205,7 +205,7 @@ class MasterMyFileController extends MasterController
 
 	public function dateThai($date, $format, $showTime = false)
 	{
-		// Full month array
+// Full month array
 		$monthFormat1 = array(
 			"0001"=>"มกราคม",
 			"02"=>"กุมภาพันธ์",
@@ -220,7 +220,7 @@ class MasterMyFileController extends MasterController
 			"11"=>"พฤศจิกายน",
 			"12"=>"ธันวาคม");
 
-		// Quick month array
+// Quick month array
 		$monthFormat2 = array(
 			"01"=>"ม.ค.",
 			"02"=>"ก.พ.",
@@ -301,7 +301,7 @@ class MasterMyFileController extends MasterController
 			return $strReturn;
 		}
 
-		//return $d[2].' '.(($format=1) ? $monthFormat1[$d[1]] : $monthFormat2[$d[1]]).' '.($d[0]+543);
+//return $d[2].' '.(($format=1) ? $monthFormat1[$d[1]] : $monthFormat2[$d[1]]).' '.($d[0]+543);
 		if(isset($timeStr) && $showTime)
 		{
 			$strReturn = $strReturn . " " . $timeStr;
@@ -313,7 +313,7 @@ class MasterMyFileController extends MasterController
 	function ThaiBahtConversion($amount_number)
 	{
 		$amount_number = number_format($amount_number, 2, ".", "");
-		//echo "<br/>amount = " . $amount_number . "<br/>";
+//echo "<br/>amount = " . $amount_number . "<br/>";
 		$pt = strpos($amount_number, ".");
 		$number = $fraction = "";
 		if($pt === false)
@@ -324,7 +324,7 @@ class MasterMyFileController extends MasterController
 			$fraction = substr($amount_number, $pt + 1);
 		}
 
-		//list($number, $fraction) = explode(".", $number);
+//list($number, $fraction) = explode(".", $number);
 		$ret = "";
 		$baht = $this->ReadNumber($number);
 		if($baht != "")
@@ -335,7 +335,7 @@ class MasterMyFileController extends MasterController
 			$ret .= $satang . "สตางค์";
 		else
 			$ret .= "ถ้วน";
-		//return iconv("UTF-8", "TIS-620", $ret);
+//return iconv("UTF-8", "TIS-620", $ret);
 		return $ret;
 	}
 
@@ -435,6 +435,69 @@ class MasterMyFileController extends MasterController
 				break;
 			default:
 				break;
+		}
+	}
+
+	public function actionDuplicateMyfile($id)
+	{
+		try
+		{
+			$transaction = Yii::app()->db->beginTransaction();
+			$flag = FALSE;
+			$model = Order::model()->findByPk($id);
+			$orderOld = $model;
+			$model->isNewRecord = true;
+			$model->title .= " Copy";
+			$model->type = 1;
+			$model->status = 2;
+			$model->isRequestSpacialProject = 0;
+			$model->spacialProjectDiscount = null;
+			$model->orderId = null;
+			$model->createDateTime = new CDbExpression("NOW()");
+			$model->updateDateTime = new CDbExpression("NOW()");
+			if($model->save())
+			{
+				$flag = true;
+				$orderId = Yii::app()->db->lastInsertID;
+				$orderItems = OrderItems::model()->findAll("orderId=" . $id);
+				if(count($orderItems) > 0)
+				{
+					foreach($orderItems as $item)
+					{
+						$item->isNewRecord = true;
+						$item->orderId = $orderId;
+						$item->orderItemsId = null;
+						$item->createDateTime = new CDbExpression("NOW()");
+						$item->updateDateTime = new CDbExpression("NOW()");
+						if(!$item->save())
+						{
+							$flag = FALSE;
+							break;
+						}
+					}
+				}
+				else
+				{
+					$flag = FALSE;
+				}
+			}
+
+			if(!$flag)
+			{
+				throw new Exception("Can't Duplicate MyFile");
+			}
+			else
+			{
+				$transaction->commit();
+				$this->redirect(array(
+					'index',
+				));
+			}
+		}
+		catch(Exception $exc)
+		{
+			$transaction->rollback();
+			echo $exc->getTraceAsString();
 		}
 	}
 

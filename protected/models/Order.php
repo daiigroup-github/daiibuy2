@@ -924,7 +924,7 @@ class Order extends OrderMaster
 			$res['distributorDiscount'] = number_format($distributorDiscount, 2);
 			$res['totalPostDistributorDiscount'] = number_format($grandTotal, 2);
 		}
-		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $totalPostSupplierRangeDiscount);
+		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $discountPercent);
 		if(isset($extraDiscountArray))
 		{
 			$grandTotal -=$extraDiscountArray["totalExtraDiscount"];
@@ -938,11 +938,11 @@ class Order extends OrderMaster
 
 	public $spacialPercent;
 
-	public function sumExtraDiscount($supplierId, $grandTotal)
+	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent)
 	{
 		$result = array();
 		$criteria = new CDbCriteria();
-		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent ";
+		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent , t.totalIncVAT as totalIncVAT ";
 		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderId = t.orderId ";
 		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId AND type in (" . self::ORDER_TYPE_CART . "," . self::ORDER_TYPE_MYFILE_TO_CART . " ) ";
 		if(isset(Yii::app()->user->id))
@@ -962,7 +962,7 @@ class Order extends OrderMaster
 		$extraDiscount = 0;
 		foreach($models as $item)
 		{
-			$spacialValue = ($item->spacialPercent / 100) * $grandTotal;
+			$spacialValue = ($item->totalIncVAT * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
 			$result[$item->orderId] = array(
 				'extraDiscountPercent'=>$item->spacialPercent,
 				'extraDiscount'=>$spacialValue,
