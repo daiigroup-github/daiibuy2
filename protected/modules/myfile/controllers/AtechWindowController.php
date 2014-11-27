@@ -150,7 +150,6 @@ class AtechWindowController extends MasterMyFileController
 	{
 		$modelArray = BrandModel::model()->findAll('supplierId = 2 AND status = 1');
 		$model = $this->loadModel($id);
-		$productResult = array();
 		$res = array();
 		if(count($model->orderItems) > 0)
 		{
