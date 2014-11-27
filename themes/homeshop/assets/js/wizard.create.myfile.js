@@ -128,25 +128,29 @@ $('#nextToStep4Edit').on('click', function(e) {
 	$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 });
 //clickable Row
+var clickable = true;
 $(".clickableRow").click(function() {
-	var base_url = baseUrl;
-	var categoryId = $(this).attr("id");
+	if (clickable == true) {
+		var base_url = baseUrl;
+		var categoryId = $(this).attr("id");
 //		alert(categoryId);
-	var height = $(this).attr("name");
+		var height = $(this).attr("name");
 //	alert($(this).attr("style"));
-	var cat1Id = $(this).attr("style");
-	$.ajax({
-		url: base_url + '/myfile/fenzer/showProductSelected',
-		type: 'POST',
-		data: {'categoryId': categoryId},
-		success: function(data) {
-			$("#select_content").html(data);
-		}
-	});
-	$('#height_input')[0].setAttribute('value', height);
-	$('#height_input')[0].setAttribute('name', categoryId);
-	$('#length_input')[0].setAttribute('name', cat1Id);
-	this.setAttribute("class", "clickableRow active");
+		var cat1Id = $(this).attr("style");
+		$.ajax({
+			url: base_url + '/myfile/fenzer/showProductSelected',
+			type: 'POST',
+			data: {'categoryId': categoryId},
+			success: function(data) {
+				$("#select_content").html(data);
+			}
+		});
+		$('#height_input')[0].setAttribute('value', height);
+		$('#height_input')[0].setAttribute('name', categoryId);
+		$('#length_input')[0].setAttribute('name', cat1Id);
+		this.setAttribute("class", "clickableRow active");
+		clickable = false;
+	}
 });
 //delete row
 //	$(".deleteRow").click(function() {
