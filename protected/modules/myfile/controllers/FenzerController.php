@@ -87,8 +87,23 @@ class FenzerController extends MasterMyFileController
 //			$categoryModel = Category::model()->findByPk($categoryId);
 		if(isset($_POST['height']))
 		{
+
 			$value = $_POST['height'];
 			$height = explode("-", $value);
+			$cate1 = Category::model()->findAll('supplierId = 1 and status = 1 and isRoot = 1');
+			$productResult = array();
+			$i = 0;
+			foreach($cate1 as $cat){
+			foreach($cat->subCategorys as $cat2){
+				if(($cat2->description >= $height[0]) and ($cat2->description <= $height[1])){
+					$productResult[$i]['cat1'] = $cat;
+					$productResult[$i]['title'] = $cat2->title;
+					$productResult[$i]['categoryId'] = $cat2->categoryId;
+					$productResult[$i]['description'] = $cat2->description;
+					$i++;
+				}
+			}
+		}
 		}
 //		$productResult = Category::model()->with('subCategorys')->findAll(
 //			array(
@@ -107,7 +122,10 @@ class FenzerController extends MasterMyFileController
 //					));
 
 
-		$productResult = Category::model()->findAll('supplierId = 1 AND status = 1 AND (description >= ' . $height[0] . ' AND description <= ' . $height[1] . ')');
+//		$productResult = Category::model()->findAll('supplierId = 1 AND status = 1 AND (description >= ' . $height[0] . ' AND description <= ' . $height[1] . ')');
+
+
+
 		if(count($productResult) > 0)
 		{
 			echo $this->renderPartial('/fenzer/_product_result', array(
@@ -152,6 +170,7 @@ class FenzerController extends MasterMyFileController
 			$title = $_POST['Order']['title'];
 		}
 		$categoryId = $_POST['categoryId'];
+		$cat1Id = $_POST['cat1Id'];
 		if(isset($_POST['height']))
 		{
 			$value = $_POST['height'];
@@ -161,7 +180,6 @@ class FenzerController extends MasterMyFileController
 		{
 			$length = $_POST['length'];
 		}
-		$categoryModel = Category::model()->findByPk($categoryId);
 //		$cate2 = $categoryModel->with('subCategorys')->findAll(
 //				array('condition'=>'subCategorys.status = 1 AND '
 //					. '(subCategorys.description > :minHeight AND subCategorys.description < :maxHeight)',
@@ -174,7 +192,7 @@ class FenzerController extends MasterMyFileController
 		{
 			$length = 0;
 		}
-		$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
+		$itemSetArray = Product::model()->calculateItemSetFenzer($cat1Id, $categoryId, $length, $provinceId);
 //		throw new Exception(print_r($itemSetArray,true));
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
 			'productResult'=>$itemSetArray,
@@ -239,13 +257,17 @@ class FenzerController extends MasterMyFileController
 		{
 			$categoryId = $_POST['categoryId'];
 		}
+		if(isset($_POST['cat1Id']) && !empty($_POST['cat1Id']))
+		{
+			$cat1Id = $_POST['cat1Id'];
+		}
 		if($length == 0)
 		{
-			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, FALSE, NULL, NULL);
+			$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($cat1Id,$categoryId, $productItems, $provinceId, $length, FALSE, NULL, NULL);
 		}
 		else
 		{
-			$itemSetArray = Product::model()->calculateItemSetFenzer($categoryId, $length, $provinceId);
+			$itemSetArray = Product::model()->calculateItemSetFenzer($cat1Id,$categoryId, $length, $provinceId);
 		}
 
 		echo $this->renderPartial('/fenzer/_edit_product_result', array(
@@ -283,11 +305,15 @@ class FenzerController extends MasterMyFileController
 		{
 			$categoryId = $_POST['categoryId'];
 		}
+		if(isset($_POST['cat1Id']) && !empty($_POST['cat1Id']))
+		{
+			$cat1Id = $_POST['cat1Id'];
+		}
 		if(isset($_POST['orderId']) && !empty($_POST['orderId']))
 		{
 			$orderId = $_POST['orderId'];
 		}
-		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, TRUE, $orderId, $title);
+		$itemSetArray = Product::model()->calculateItemSetFenzerManualAndSave($cat1Id,$categoryId, $productItems, $provinceId, $length, TRUE, $orderId, $title);
 
 		echo $this->renderPartial('/fenzer/_confirm_order_myfile', array(
 			'productResult'=>$itemSetArray,
@@ -344,6 +370,7 @@ class FenzerController extends MasterMyFileController
 		}
 		else
 		{
+//			throw new Exception(print_r($productItems,true));
 			$this->render('view', array(
 				'model'=>$model,
 				'productResult'=>$productItems,
@@ -360,9 +387,10 @@ class FenzerController extends MasterMyFileController
 
 		if(count($orderDetailValues) == 0)
 		{
-			$res['categoryId'] = 0;
+			$res['category1Id'] = 0;
 			$res['height'] = 0;
 			$res['length'] = 0;
+			$res['category2Id'] = 0;
 		}
 		else
 		{
@@ -376,9 +404,11 @@ class FenzerController extends MasterMyFileController
 				{
 					$res['length'] = $item->value;
 				}
-				else
+				else if($item->orderDetailTemplateFieldId == 3)
 				{
-					$res['categoryId'] = $item->value;
+					$res['category1Id'] = $item->value;
+				}else{
+					$res['category2Id'] = $item->value;
 				}
 			}
 		}
@@ -395,7 +425,8 @@ class FenzerController extends MasterMyFileController
 		$result = $this->findLengthHeigtByOrderId($model->orderId);
 		$res['height'] = $result['height'];
 		$res['length'] = $result['length'];
-		$res['categoryId'] = $result['categoryId'];
+		$res['categoryId'] = $result['category2Id'];
+		$res['cat1Id'] = $result['category1Id'];
 		foreach($orderItems as $item)
 		{
 			$productId = $item->productId;

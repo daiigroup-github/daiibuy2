@@ -96,7 +96,6 @@ class ProductController extends MasterFenzerController
 				$qty = ($fenzerProduct->type == 1) ? $fenzerProduct->quantity * $noSpan : $fenzerProduct->quantity * ($noSpan + 1);
 				$res .= $this->generateTrByProductId($fenzerProduct->productId, $qty);
 			}
-
 			echo $res;
 		}
 	}

@@ -704,13 +704,14 @@ class Product extends ProductMaster
 			),);
 	}
 
-	public function calculateItemSetFenzer($categoryId, $length, $provinceId, $productIdNew = NULL)
+	public function calculateItemSetFenzer($cat1Id,$categoryId, $length, $provinceId, $productIdNew = NULL)
 	{
 //		throw new Exception(print_r($categoryId,true));
 		$type = Category2ToProduct::model()->findProductType($categoryId);
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
-		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 2');
+//		$products = Product::model()->findAll('categoryId = ' . $categoryId . ' AND status = 2');
+		$cat2ToProducts = Category2ToProduct::model()->findProductWithCat1AndCat2($cat1Id, $categoryId);
 		$res = array();
 		$res['categoryId'] = $categoryId;
 		$res['height'] = $height;
@@ -728,11 +729,11 @@ class Product extends ProductMaster
 		$noSpanSet = ceil(intval($length) / $span);
 		$totalPrice = 0.00;
 
-		foreach($products as $product)
+		foreach($cat2ToProducts as $item)
 		{
-			$productId = strval($product->productId);
-			$category2toProduct = Category2ToProduct::model()->find('productId = ' . $productId . ' AND category2Id = ' . $product->categoryId . ' AND status = 1');
-			$quantity = $category2toProduct->quantity;
+			$productId = $item->productId;
+			$product = Product::model()->findByPk($productId);
+			$quantity = $item->quantity;
 			//product
 			$res['items'][$productId] = $product;
 			$type = Category2ToProduct::model()->findProductType($categoryId, $productId);
@@ -764,13 +765,10 @@ class Product extends ProductMaster
 			$totalPrice = $totalPrice + $res['items'][$productId]['price'];
 		}
 		$res['totalPrice'] = $totalPrice;
-
-
-
 		return $res;
 	}
 
-	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId, $title)
+	public function calculateItemSetFenzerManualAndSave($cat1Id,$categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId, $title)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
@@ -882,7 +880,7 @@ class Product extends ProductMaster
 							$orderDetailValue = new OrderDetailValue();
 							$orderDetailValue->orderDetailId = $orderDetailId;
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-							$orderDetailValue->value = ($item->title == 'height') ? $height : (($item->title == 'length') ? $length : $categoryId);
+							$orderDetailValue->value = ($item->title == 'height') ? $height : (($item->title == 'length') ? $length : (($item->title == 'category1Id') ? $cat1Id : $categoryId));
 							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
 							$orderDetailValue->updateDateTime = new CDbExpression("NOW()");
 							if(!($orderDetailValue->save()))

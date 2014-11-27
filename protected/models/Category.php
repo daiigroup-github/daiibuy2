@@ -217,10 +217,10 @@ class Category extends CategoryMaster
 		return $result;
 	}
 
-	public function findModelTitleFenzer(){
+	public function findCat1ByCat2(){
 		$cateToSub = CategoryToSub::model()->find('subCategoryId = '.$this->categoryId);
 		$res = Category::model()->findByPk($cateToSub->categoryId);
-		return $res->title;
+		return $res;
 	}
 
 }

@@ -74,7 +74,7 @@
 	<form id="addItem" action="#">
 
 	<?php echo CHtml::dropDownList('productId', 'selectedCode',
-					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
+					CHtml::listData(Product::model()->findAll('supplierId = 1'), 'productId', 'code'),
 					array('class'=>'form-control',
 						'id'=>'itemCode',
 						'prompt'=>'เลือกรหัสสินค้า',
@@ -98,9 +98,13 @@
 				'type'=>'POST',
 				'url'=>CController::createUrl('fenzer/addNewProductItem'),
 				'dataType'=>'html',
-				'data'=>'js:$("#addItem").serialize()',
+				'data'=>'js:$("#addItem").serialize()+ "&" + $("#ggg").serialize()',
 				'success'=>'js:function(data){
-					$("#editTable").append(data);
+					if(added == true){
+						$("#editTable").append(data);
+						added = false;
+					}
+
 				}',
 				),
 			)); ?>

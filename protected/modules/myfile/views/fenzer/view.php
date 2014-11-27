@@ -127,7 +127,7 @@ $this->breadcrumbs = array(
 					</div>
 					<div class="col-md-6 pull-left">
 						Length : <?php
-						echo CHtml::textField('length', $productResult['length'], array(
+						echo CHtml::textField($productResult['cat1Id'], $productResult['length'], array(
 							'id'=>'length_input',
 							'class'=>'input-lg',
 						));
