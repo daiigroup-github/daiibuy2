@@ -164,20 +164,24 @@ $("#deleteRow").live('click', function() {
 	}
 });
 //calculatePrice
+
 $('#calculatePrice').on('click', function() {
-	var base_url = baseUrl;
-	var length = $("#length_input").attr("value");
-	var categoryId = $("#editTable").attr("name");
-	var cat1Id = $("#length_input").attr("name");
-	var productItems = $("#editTableForm").serialize();
-	$.ajax({
-		url: base_url + '/myfile/fenzer/updatePrice',
-		type: 'POST',
-		data: $("#editTableForm").serialize() + '&length=' + length + '&cat1Id=' + cat1Id + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
-		success: function(data) {
-			$("#result_content").html(data);
-		}
-	});
+	var update = 1;
+	if (update == 1) {
+		var length = $("#length_input").attr("value");
+		var categoryId = $("#editTable").attr("name");
+		var cat1Id = $("#length_input").attr("name");
+		var productItems = $("#editTableForm").serialize();
+		$.ajax({
+			url: baseUrl + '/myfile/fenzer/updatePrice',
+			type: 'POST',
+			data: $("#editTableForm").serialize() + '&length=' + length + '&cat1Id=' + cat1Id + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
+			success: function(data) {
+				$("#result_content").html(data);
+				update = update + 1;
+			}
+		});
+	}
 });
 
 //	$('#nextToStep3')
@@ -282,6 +286,22 @@ $('#nextToStep4Atech').live('click', function(e) {
 		});
 	}
 	atechSave = false;
+});
+var addData = true;
+$('#addNewItemFenzer').on('click', function(e) {
+	if (addData == true)
+	{
+		$.ajax({
+			url: baseUrl + '/myfile/fenzer/addNewProductItem',
+			type: 'POST',
+			dataType: 'html',
+			data: $("#addItem").serialize() + "&" + $("#ggg").serialize(),
+			success: function(data) {
+				$("#editTable").append(data);
+				addData = false;
+			}
+		});
+	}
 });
 
 $('#addToCartAtech').on('click', function(e) {

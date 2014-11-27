@@ -94,19 +94,16 @@
 		<!--<button id="addItemButton" class="btn btn-block btn-info">เพิ่มสินค้า</button>-->
 		<?php echo CHtml::button('เพิ่มสินค้า',
 			array('class'=>'btn btn-info',
-				'ajax'=>array(
-				'type'=>'POST',
-				'url'=>CController::createUrl('fenzer/addNewProductItem'),
-				'dataType'=>'html',
-				'data'=>'js:$("#addItem").serialize()+ "&" + $("#ggg").serialize()',
-				'success'=>'js:function(data){
-					if(added == true){
-						$("#editTable").append(data);
-						added = false;
-					}
-
-				}',
-				),
+				'id'=>'addNewItemFenzer',
+//				'ajax'=>array(
+//				'type'=>'POST',
+//				'url'=>CController::createUrl('fenzer/addNewProductItem'),
+//				'dataType'=>'html',
+//				'data'=>'js:$("#addItem").serialize()+ "&" + $("#ggg").serialize()',
+//				'success'=>'js:function(data){
+//						$("#editTable").append(data);
+//				}',
+//				),
 			)); ?>
 	</div>
 	</div>
