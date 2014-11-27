@@ -23,9 +23,9 @@ class OrderController extends MasterMyFileController
 				case 1:
 					$serchFn = $model->findAllUserOrder();
 					break;
-//				case 2:
-//					$serchFn = $model->findAllDealerOrder();
-//					break;
+				case 2:
+					$serchFn = $model->findAllUserOrder();
+					break;
 //				case 3:
 //					$serchFn = $model->findAllSupplierOrder();
 //					break;
