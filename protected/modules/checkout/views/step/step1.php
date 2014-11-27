@@ -19,7 +19,26 @@
 	})
 	});
 ");
+Yii::app()->clientScript->registerScript("loadProvince", "
+	$(document).ready(function(){
+	$.ajax({
+		type:'POST',
+		data:{provinceId:" . $this->cookie->provinceId . "},
+		url:'" . $this->createUrl('findAmphur') . "',
+		success:function(data){
+			$('#billingAmphur').html(data);
+			$('#billingAmphur').prop('disabled', false);
+			$('#billingDistrict').html('');
+			$('#billingDistrict').prop('disabled', true);
 
+			$('#shippingAmphur').html(data);
+			$('#shippingAmphur').prop('disabled', false);
+			$('#shippingDistrict').html('');
+			$('#shippingDistrict').prop('disabled', true);
+		}
+	})
+	});
+");
 ?>
 
 <div class="row">
@@ -182,30 +201,72 @@
                     <?php echo $form->textField($addressModel, 'address_2');?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                    <p><?php echo $form->labelEx($addressModel, 'districtId');?></p>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($addressModel, 'districtId');?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                    <p><?php echo $form->labelEx($addressModel, 'amphurId');?></p>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($addressModel, 'amphurId');?>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                    <p><?php echo $form->labelEx($addressModel, 'provinceId');?></p>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($addressModel, 'provinceId');?>
-                </div>
-            </div>
+						<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-4">
+					<p><?php echo $form->labelEx($addressModel, 'provinceId'); ?></p>
+				</div>
+				<div class="col-lg-8 col-md-8 col-sm-8">
+					<?php
+//					echo $province->provinceName;
+					echo $form->dropDownList($addressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
+						'id'=>'shippingProvince',
+						'disabled'=>'disabled',
+						));
+//						'prompt'=>'--- เลือกจังหวัด ---',
+//						'ajax'=>array(
+//							'type'=>'POST',
+//							'data'=>array(
+//								'provinceId'=>'js:this.value'),
+//							'url'=>$this->createUrl('findAmphur'),
+//							'success'=>'js:function(data){
+//                                    $("#shippingAmphur").html(data);
+//                                    $("#shippingAmphur").prop("disabled", false);
+//                                    $("#shippingDistrict").html("");
+//                                    $("#shippingDistrict").prop("disabled", true);
+//                                }',
+//						),
+//					));
+					?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-4">
+					<p><?php echo $form->labelEx($addressModel, 'amphurId'); ?></p>
+				</div>
+				<div class="col-lg-8 col-md-8 col-sm-8">
+					<?php
+					echo $form->dropDownList($addressModel, 'amphurId', array(), array(
+//                            'class'=>'chosen-select-full-width',
+						'id'=>'shippingAmphur',
+						'ajax'=>array(
+							'type'=>'POST',
+							'data'=>array(
+								'amphurId'=>'js:this.value'),
+							'url'=>$this->createUrl('findDistrict'),
+							'success'=>'js:function(data){
+                                    $("#shippingDistrict").html(data);
+                                    $("#shippingDistrict").prop("disabled", false);
+                                }',
+						),
+						)
+					);
+					?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-4">
+					<p><?php echo $form->labelEx($addressModel, 'districtId'); ?></p>
+				</div>
+				<div class="col-lg-8 col-md-8 col-sm-8">
+					<?php
+					echo $form->dropDownList($addressModel, 'districtId', array(), array(
+//                            'class'=>'chosen-select-full-width',
+						'id'=>'shippingDistrict',
+						)
+					);
+					?>
+				</div>
+			</div>
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
                     <p><?php echo $form->labelEx($addressModel, 'postcode');?></p>
