@@ -354,19 +354,19 @@ class AtechWindowController extends MasterMyFileController
 //			throw new Exception(print_r($rowCount+1,true));
 		}
 		echo '<tr>'
-		. '<td class="cat">' . $rowCount . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2), array(
+		. '<td>' . $rowCount . '</td>'
+		. '<td class="cat">' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2), array(
 			'class'=>'form-control',
 			'prompt'=>'เลือกประเภท',
 			'onchange'=>'findType(this)')) . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
+		. '<td class="type">' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
 			), array(
 			'prompt'=>'เลือกรูปแบบ',
 			'class'=>'form-control',
 			'onchange'=>'findSize(this);',
 			'id'=>'type',
 		)) . '</td>'
-		. '<td>' . CHtml::dropDownList('Criteria[' . $index . '][size]', "size", array(
+		. '<td class="size">' . CHtml::dropDownList('Criteria[' . $index . '][size]', "size", array(
 			), array(
 			'prompt'=>'เลือกขนาด',
 			'class'=>'form-control',
