@@ -227,26 +227,29 @@ $('#nextToStep3Atech').on('click', function() {
 	});
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
-
+var navClick = true;
 $(".atechNav").click(function() {
-	var base_url = baseUrl;
-	var brandModelId = $(this).attr("name");
-	var title = $("#Order_title").attr("value");
-	var provinceId = $("#selectProvince").attr("value");
+	if (navClick == true) {
+		var base_url = baseUrl;
+		var brandModelId = $(this).attr("name");
+		var title = $("#Order_title").attr("value");
+		var provinceId = $("#selectProvince").attr("value");
 //		alert($("#aa").serialize());
 //		alert($("#editTableForm").serialize());
 //		alert(title + ", " + provinceId + ", " + brandModelId);
-	$.ajax({
-		url: base_url + '/myfile/atechWindow/updatePriceMyFile',
-		type: 'POST',
-		data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + "&" + $("#editTableForm").serialize(),
-		success: function(data) {
-			$("#atech_result").html(data);
-		}
-	});
-//		this.setAttribute("class", "atechNav active");
-});
+		$.ajax({
+			url: base_url + '/myfile/atechWindow/updatePriceMyFile',
+			type: 'POST',
+			data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + "&" + $("#editTableForm").serialize(),
+			success: function(data) {
+				$("#atech_result").html(data);
+				navClick = false;
+			}
+		});
 
+//		this.setAttribute("class", "atechNav active");
+	}
+});
 $(".atechUpdate").click(function() {
 	var base_url = baseUrl;
 	var brandModelId = $(this).attr("name");
@@ -282,10 +285,11 @@ $('#nextToStep4Atech').live('click', function(e) {
 			success: function(data) {
 				$("#confirm_product").html(data);
 				$('ul.setup-panel li a[href="#step-4"]').trigger('click');
+				atechSave = false;
 			}
 		});
 	}
-	atechSave = false;
+
 });
 var addData = true;
 $('#addNewItemFenzer').on('click', function(e) {
@@ -303,7 +307,6 @@ $('#addNewItemFenzer').on('click', function(e) {
 		});
 	}
 });
-
 $('#addToCartAtech').on('click', function(e) {
 	var base_url = baseUrl;
 	var orderId = $("#order").attr("name");

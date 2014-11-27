@@ -1026,10 +1026,11 @@ class Product extends ProductMaster
 			$width = $size[0];
 			$height = $size[1];
 
-			$cate2ToProduct = Category2ToProduct::model()->find('category2Id = ' . $category2Id);
+			$cate2ToProduct = Category2ToProduct::model()->find('category2Id = ' . $category2Id . ' AND category1Id = ' . $category1Id . ' AND brandModelId = ' . $brandModelId);
 			if(isset($cate2ToProduct->product))
 			{
 				$productModel = $cate2ToProduct->product;
+
 			}
 //				$productModel = Product::model()->find('supplierId = 2 AND brandModelId = ' . $brandModelId . ' AND categoryId = ' . $category2Id . ' AND width = ' . intval($width) . ' AND height = ' . intval($height));
 //				throw new Exception(print_r($brandModelId . ', '. $category2Id. ', '. intval($width).', '. intval($height),true));
@@ -1069,6 +1070,7 @@ class Product extends ProductMaster
 //		$res["brandModelId"] = $brand->brandModelId;
 //		$res["category1Id"] = $category1Id;
 //		$res["category2Id"] = $category2Id;
+//		throw new Exception(print_r($res,true));
 		return $res;
 	}
 
