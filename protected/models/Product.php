@@ -770,7 +770,7 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId,$title)
+	public function calculateItemSetFenzerManualAndSave($categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId, $title)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
@@ -785,7 +785,8 @@ class Product extends ProductMaster
 			{
 				$orderModel = new Order();
 				$orderModel->userId = isset(Yii::app()->user->id) ? Yii::app()->user->id : 0;
-				if(isset($title)){
+				if(isset($title))
+				{
 					$orderModel->title = $title;
 				}
 				$orderModel->supplierId = 1;
@@ -881,7 +882,7 @@ class Product extends ProductMaster
 							$orderDetailValue = new OrderDetailValue();
 							$orderDetailValue->orderDetailId = $orderDetailId;
 							$orderDetailValue->orderDetailTemplateFieldId = $item->orderDetailTemplateFieldId;
-							$orderDetailValue->value = ($item->title == 'height')? $height : (($item->title == 'length')? $length : $categoryId);
+							$orderDetailValue->value = ($item->title == 'height') ? $height : (($item->title == 'length') ? $length : $categoryId);
 							$orderDetailValue->createDateTime = new CDbExpression("NOW()");
 							$orderDetailValue->updateDateTime = new CDbExpression("NOW()");
 							if(!($orderDetailValue->save()))
@@ -1017,50 +1018,50 @@ class Product extends ProductMaster
 		{
 //	throw new Exception(print_r($item,true));
 //			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId, $item['category'], $item['type']);
-
 //			if(count($categoryArray) > 0)
 //			{
-				$category1Id = $item['category'];
-				$category2Id = $item['type'];
+			$category1Id = $item['category'];
+			$category2Id = $item['type'];
 //			throw new Exception(print_r($category1Id.', '.$category2Id,true));
-				$value = $item['size'];
-				$size = explode(" x ", $value);
-				$width = $size[0];
-				$height = $size[1];
+			$value = $item['size'];
+			$size = explode(" x ", $value);
+			$width = $size[0];
+			$height = $size[1];
 
-				$cate2ToProduct = Category2ToProduct::model()->find('category2Id = '.$category2Id);
-				if(isset($cate2ToProduct->product)){
+			$cate2ToProduct = Category2ToProduct::model()->find('category2Id = ' . $category2Id);
+			if(isset($cate2ToProduct->product))
+			{
 				$productModel = $cate2ToProduct->product;
-				}
+			}
 //				$productModel = Product::model()->find('supplierId = 2 AND brandModelId = ' . $brandModelId . ' AND categoryId = ' . $category2Id . ' AND width = ' . intval($width) . ' AND height = ' . intval($height));
 //				throw new Exception(print_r($brandModelId . ', '. $category2Id. ', '. intval($width).', '. intval($height),true));
-				if(isset($productModel))
+			if(isset($productModel))
+			{
+				$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
+					":productId"=>$productModel->productId));
+				$res["items"][$productModel->productId]['productId'] = $productModel->productId;
+				$res["items"][$productModel->productId]['code'] = $productModel->code;
+				$res["items"][$productModel->productId]['width'] = $width;
+				$res["items"][$productModel->productId]['height'] = $height;
+				$res["items"][$productModel->productId]['category'] = $item['category'];
+				$res["items"][$productModel->productId]['type'] = $item['type'];
+				$res["items"][$productModel->productId]['description'] = $productModel->name;
+				$res["items"][$productModel->productId]['quantity'] = $item['quantity'];
+				if(isset($productPromotion))
 				{
-					$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
-						":productId"=>$productModel->productId));
-					$res["items"][$productModel->productId]['productId'] = $productModel->productId;
-					$res["items"][$productModel->productId]['code'] = $productModel->code;
-					$res["items"][$productModel->productId]['width'] = $width;
-					$res["items"][$productModel->productId]['height'] = $height;
-					$res["items"][$productModel->productId]['category'] = $item['category'];
-					$res["items"][$productModel->productId]['type'] = $item['type'];
-					$res["items"][$productModel->productId]['description'] = $productModel->name;
-					$res["items"][$productModel->productId]['quantity'] = $item['quantity'];
-					if(isset($productPromotion))
-					{
-						//promotion price
-						$res["items"][$productModel->productId]['price'] = $this->calProductPromotionTotalPrice($productModel->productId, 1, $provinceId);
-					}
-					else
-					{
-						//normal price
-						$res["items"][$productModel->productId]['price'] = $this->calProductTotalPrice($productModel->productId, 1, $provinceId);
-					}
-					$subTotal = $res["items"][$productModel->productId]['price'] * $res["items"][$productModel->productId]['quantity'];
-					$res["items"][$productModel->productId]['subTotal'] = $subTotal;
-
-					$total = $subTotal + $total;
+					//promotion price
+					$res["items"][$productModel->productId]['price'] = $this->calProductPromotionTotalPrice($productModel->productId, 1, $provinceId);
 				}
+				else
+				{
+					//normal price
+					$res["items"][$productModel->productId]['price'] = $this->calProductTotalPrice($productModel->productId, 1, $provinceId);
+				}
+				$subTotal = $res["items"][$productModel->productId]['price'] * $res["items"][$productModel->productId]['quantity'];
+				$res["items"][$productModel->productId]['subTotal'] = $subTotal;
+
+				$total = $subTotal + $total;
+			}
 //			}
 		}
 
