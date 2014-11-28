@@ -589,7 +589,7 @@ class StepController extends MasterCheckoutController
 		$order = OrderGroup::model()->findByPk($id);
 		if(isset($order))
 		{
-			$order->status = 2;
+			$order->status = 1;
 //			$order->invoiceNo = OrderGroup::model()->genInvNo($order);
 //			$order->paymentDateTime = new CDbExpression('NOW()');
 			if($order->save())
