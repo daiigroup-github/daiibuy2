@@ -116,15 +116,13 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 						'model'=>$model,
 						'title'=>"ส่วนที่ 1 สำหรับธนาคาร"));
 					?>
-					<p style="margin-bottom: 10px"><image src = "<?php echo Yii::app()->request->baseUrl . "/images/payin-cut.png"; ?>" style = "width: 750px" /><p>
+					<p style="margin-left:20px"><image src = "<?php echo Yii::app()->request->baseUrl . "/images/payin-cut.png"; ?>" style = "width: 750px" /><p>
 						<?php
 						$this->renderPartial("transfer_form_print", array(
 							'supplierId'=>$model->supplierId,
 							'model'=>$model,
 							'title'=>"ส่วนที่ 2 สำหรับลูกค้า"));
 					}
-					?>
-					<?php
 				}
 			}
 			?>

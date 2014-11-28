@@ -236,7 +236,7 @@ class OrderController extends MasterMyFileController
 			case 1://User
 				return array(
 					'1'=>array(
-						'pageTitle'=>"ใบสั่งซื้อสินค้า",
+						'pageTitle'=>"ใบสั่งซื้อสินค้า/ใบแจ้งหนี้",
 						'defaultStatus'=>'1',
 						'optionButtonText'=>'ยืนยันชำระเงิน',
 						'comfirmText'=>'ต้องการยืนยันโอนเงิน ?',
