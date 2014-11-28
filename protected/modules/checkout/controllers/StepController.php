@@ -584,8 +584,9 @@ class StepController extends MasterCheckoutController
 		$order = new OrderGroup();
 		$flag = FALSE;
 
-		$order = OrderGroup::model()->find("orderNo =:orderNo", array(
-			":orderNo"=>$id));
+//		$order = OrderGroup::model()->find("orderNo =:orderNo", array(
+//			":orderNo"=>$id));
+		$order = OrderGroup::model()->findByPk($id);
 		if(isset($order))
 		{
 			$order->status = 2;
