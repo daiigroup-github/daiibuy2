@@ -149,7 +149,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					echo $form->dropDownList($billingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
 						'id'=>'billingProvince',
 						'name'=>'billing[provinceId]',
-						'disabled'=>'disabled'));
+//						'disabled'=>'disabled'
+						));
 //						'prompt'=>' --- เลือกจังหวัด ---',
 //						'ajax'=>array(
 //							'type'=>'POST',
