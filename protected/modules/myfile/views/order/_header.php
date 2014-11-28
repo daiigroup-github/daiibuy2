@@ -10,7 +10,7 @@
 		{
 			if(isset($supplier->logo) && !empty($supplier->logo))
 			{
-				echo CHtml::image(Yii::app()->baseUrl . "/" . $supplier->logo, '', array(
+				echo CHtml::image(Yii::app()->baseUrl . $supplier->logo, '', array(
 					'style'=>'width:100px;'));
 			}
 			else
