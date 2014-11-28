@@ -84,6 +84,7 @@ class StepController extends MasterCheckoutController
 		{
 			$userModel->attributes = $_POST['User'];
 			$addressModel->attributes = $_POST['Address'];
+//			throw new Exception(print_r($_POST['Address'],true));
 
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();

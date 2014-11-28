@@ -210,7 +210,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 //					echo $province->provinceName;
 					echo $form->dropDownList($addressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
 						'id'=>'shippingProvince',
-						'disabled'=>'disabled',
+//						'disabled'=>'disabled',
 						));
 //						'prompt'=>'--- เลือกจังหวัด ---',
 //						'ajax'=>array(
