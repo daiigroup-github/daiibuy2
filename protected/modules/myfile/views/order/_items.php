@@ -89,7 +89,7 @@
 					foreach($model->orders as $order)
 					{
 						?>
-						<?php if(isset($order->title) && !empty($order->title)): ?><tr><td colspan="7"><?php echo $order->title; ?></td></tr><?php endif; ?>
+						<?php if(isset($order->title) && !empty($order->title)): ?><tr><td colspan="7"><b><?php echo "ชื่อรายการสินค้า : " . $order->title; ?></b></td></tr><?php endif; ?>
 						<?php
 						foreach($order->orderItems as $item)
 						{
