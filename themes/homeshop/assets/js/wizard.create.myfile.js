@@ -37,7 +37,6 @@ $('#nextToStep3').on('click', function(e) {
 			$("#order_list").html(data);
 		}
 	});
-
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
 $('#backToStep2').on('click', function(e) {
@@ -70,7 +69,6 @@ $('#finish').on('click', function(e) {
 	var base_url = baseUrl;
 	window.location.assign(base_url + '/myfile/fenzer/');
 });
-
 var fenzerSave = true;
 $('#nextToStep4').live('click', function(e) {
 
@@ -81,7 +79,6 @@ $('#nextToStep4').live('click', function(e) {
 	var categoryId = $("#editTable").attr("name");
 //		alert(categoryId);
 	var productItems = $("#editTableForm").serialize();
-
 	if (fenzerSave == true) {
 		$.ajax({
 			url: base_url + '/myfile/fenzer/saveOrderMyFile',
@@ -189,22 +186,24 @@ $('#calculatePrice').on('click', function() {
 		});
 	}
 });
-
 //	$('#nextToStep3')
 
 //Upload Plan Atech
 $('#uploadPlanAtech').on('click', function() {
-
-	var data = $('selectProvince').val();
-	alert(data);
-
-	if (!($("#Order_title").attr("value") == "")) {
+//check title and province
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
 });
 $('#manualQuantityAtech').on('click', function() {
+	//check title and province
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+		$('ul.setup-panel li a[href="#step-2-2"]').trigger('click');
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
 //		var base_url = baseUrl;
 //		var title = $("#myfile_title").attr("value");
 //		var provinceId = $("#selectProvince").attr("value");
@@ -219,9 +218,8 @@ $('#manualQuantityAtech').on('click', function() {
 //				$("#upload_plan").html(data);
 //			}
 //		});
-	$('ul.setup-panel li a[href="#step-2-2"]').trigger('click');
-});
 
+});
 $('#nextToStep3Atech').on('click', function() {
 
 	var base_url = baseUrl;
@@ -241,7 +239,6 @@ $('#nextToStep3Atech').on('click', function() {
 	});
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
-
 $(".atechNav").click(function() {
 	var base_url = baseUrl;
 	var brandModelId = $(this).attr("name");
@@ -259,7 +256,6 @@ $(".atechNav").click(function() {
 			navClick = false;
 		}
 	});
-
 //		this.setAttribute("class", "atechNav active");
 
 });
@@ -291,7 +287,6 @@ $('#nextToStep4Atech').click(function(e) {
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
 		var brandModelId = $("#updateButton").attr("name");
-
 		$.ajax({
 			url: base_url + '/myfile/atechWindow/saveMyFileAtech',
 			type: 'POST',
