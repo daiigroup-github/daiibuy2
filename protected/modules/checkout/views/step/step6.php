@@ -23,7 +23,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<?php
-								echo CHtml::link('<i class="icon-folder-close icon-white"></i> การจัดการสั่งซื้อสินค้า', Yii::app()->createUrl("order"), array(
+								echo CHtml::link('<i class="icon-folder-close icon-white"></i> การจัดการสั่งซื้อสินค้า', Yii::app()->createUrl("/myfile/order"), array(
 									'class'=>'btn btn-info',));
 								?>
 								<?php
