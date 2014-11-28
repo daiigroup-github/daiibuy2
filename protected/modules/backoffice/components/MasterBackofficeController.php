@@ -56,6 +56,12 @@ class MasterBackofficeController extends MasterController
 				),
 				'visible'=>!Yii::app()->user->isGuest),
 			array(
+				'label'=>'Order History',
+				'url'=>array(
+					'/backoffice/order/orderHistory',
+				),
+				'visible'=>Yii::app()->user->userType == 5),
+			array(
 				'label'=>'Myfile',
 				'url'=>array(
 					'/backoffice/myfile',

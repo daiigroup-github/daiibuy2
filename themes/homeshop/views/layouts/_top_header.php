@@ -74,7 +74,7 @@
 								<!--<li><a href="#"><i class="icons icon-lock"></i> Create an Account</a></li>-->
 				<?php else: ?>
 					<li><a href="<?php echo Yii::app()->createUrl("site/logout") ?>"><i class="icons icon-user"></i> <?php echo Yii::app()->user->name . "(Logout)"; ?></a></li>
-					<?php if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 3): ?>
+					<?php if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 3 || Yii::app()->user->userType == 5): ?>
 						<li><a href="<?php echo Yii::app()->createUrl("backend.php/backoffice/default") ?>"><i class="icons icon-lock"></i> Backoffice</a></li>
 						<?php endif; ?>
 					<?php endif; ?>

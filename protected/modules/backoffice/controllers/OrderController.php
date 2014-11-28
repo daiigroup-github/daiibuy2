@@ -295,6 +295,30 @@ class OrderController extends MasterBackofficeController
 			'searchFn'=>$serchFn));
 	}
 
+	public function actionOrderHistory()
+	{
+		$model = new OrderGroup('search');
+		$model->unsetAttributes(); // clear any default values
+		if(isset($_GET['OrderGroup']))
+			$model->attributes = $_GET['OrderGroup'];
+
+		if(Yii::app()->user->id != 0)
+		{
+			$user = User::model()->findByPk(Yii::app()->user->id);
+			if($user->type != 5)
+				throw new CHttpException("คุณไม่สามารถเข้าถึงข้อมูลในส่วนนี้ได้", 'เนื่องจากคุณไม่ใช่ผู้ดูแลระบบ');
+			$serchFn = $model->findAllFinanceAdminOrderPay();
+		}
+		else
+		{
+			$this->redirect(array(
+				"//site/login"));
+		}
+		$this->render('orderHistory', array(
+			'model'=>$model,
+			'searchFn'=>$serchFn));
+	}
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
