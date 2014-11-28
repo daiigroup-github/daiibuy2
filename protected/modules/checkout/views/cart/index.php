@@ -1,8 +1,7 @@
 <?php
 /* @var $this DefaultController */
-
 $this->breadcrumbs = array(
-    $this->module->id,
+	$this->module->id,
 );
 ?>
 
@@ -13,23 +12,27 @@ $this->breadcrumbs = array(
         <div class="carousel-heading">
             <h4>Check Out</h4>
 
-            <?php /*
-			<div class="carousel-arrows">
-				<a href="#"><i class="icons icon-reply"></i></a>
-			</div>
-            */
-            ?>
+			<?php /*
+			  <div class="carousel-arrows">
+			  <a href="#"><i class="icons icon-reply"></i></a>
+			  </div>
+			 */
+			?>
         </div>
     </div>
 </div>
 
 <?php
-foreach ($carts as $cart) {
-    $this->renderPartial('_order_info', array('cart' => $cart));
+foreach($carts as $cart)
+{
+	$this->renderPartial('_order_info', array(
+		'cart'=>$cart));
 }
 ?>
 
-<?php $this->renderPartial('_order_info_summary', array('cart' => $cart)); ?>
+<?php $this->renderPartial('_order_info_summary', array(
+	'cart'=>$cart));
+?>
 
 <p class="pull-right">
     <a class="button big orange" href="#"><i class="icons icon-reply"></i>Continue Shopping</a>

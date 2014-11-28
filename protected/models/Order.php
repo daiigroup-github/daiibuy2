@@ -876,31 +876,44 @@ class Order extends OrderMaster
 		}
 		else
 		{
-			$condition .= ' AND token=:token';
+			$condition .= " AND token=:token";
 
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
 			$params[':token'] = $daiibuy->token;
 		}
 
-		$model = $this->find(array(
-			'select'=>'sum(totalIncVAT) as sumTotal',
+//		$model = $this->find(array(
+//			'select'=>'sum(totalIncVAT) as sumTotal',
+//			'condition'=>$condition,
+//			'params'=>$params,
+//		));
+
+		$models = $this->findAll(array(
 			'condition'=>$condition,
 			'params'=>$params,
 		));
+		$sumTotal = 0;
+		foreach($models as $order)
+		{
+			foreach($order->orderItems as $item)
+			{
+				$price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
 
-
+				$sumTotal+=($price * $item->quantity);
+			}
+		}
 		if(!isset(Yii::app()->user->id))
 		{
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal);
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
 		}
 		else
 		{
 			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $model->sumTotal + $sumLastTwelveMonth);
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal + $sumLastTwelveMonth);
 		}
-		$discount = $model->sumTotal * $discountPercent / 100;
-		$grandTotal = $model->sumTotal - $discount;
+		$discount = $sumTotal * $discountPercent / 100;
+		$grandTotal = $sumTotal - $discount;
 		$distributorDiscountPercent = 0;
 
 		if(isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2)
@@ -915,7 +928,7 @@ class Order extends OrderMaster
 			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
 			$grandTotal = $grandTotal - $distributorDiscount;
 		}
-		$res['total'] = number_format($model->sumTotal, 2);
+		$res['total'] = number_format($sumTotal, 2);
 		$res['discountPercent'] = $discountPercent;
 		$res['discount'] = number_format($discount, 2);
 		if($distributorDiscountPercent > 0 && isset($distributorDiscount))
