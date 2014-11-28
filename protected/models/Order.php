@@ -869,18 +869,12 @@ class Order extends OrderMaster
 		{
 			$condition .= ' AND userId=:userId';
 			$params[':userId'] = Yii::app()->user->id;
-
-			/**
-			 * @TODO find discount
-			 */
 		}
 		else
 		{
-			$condition .= " AND token=:token";
-
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
-			$params[':token'] = $daiibuy->token;
+			$condition .= " AND token='" . $daiibuy->token . "'";
 		}
 
 //		$model = $this->find(array(
@@ -966,8 +960,7 @@ class Order extends OrderMaster
 		{
 			$daiibuy = new DaiiBuy();
 			$daiibuy->loadCookie();
-			$daiibuy->token;
-			$criteria->condition .= " AND t.token =" . $daiibuy->token;
+			$criteria->condition .= " AND t.token ='" . $daiibuy->token . "'";
 		}
 
 		$models = $this->findAll($criteria);
