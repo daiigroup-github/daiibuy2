@@ -88,6 +88,7 @@ $this->breadcrumbs = array(
 								'class'=>'form-control',
 								'id'=>'selectProvince',
 								'prompt'=>'--กรุณาเลือกจังหวัด--',
+								'onclick'=>'showStep2Button()'
 							));
 							?>
 						</div>
@@ -96,7 +97,7 @@ $this->breadcrumbs = array(
 				<?php $this->endWidget(); ?>
 				<div class="row wizard-control">
 						<div class="pull-right">
-							<a id="nextToStep2" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </a>
+							<a id="nextToStep2" class="btn btn-primary btn-lg hidden" >ต่อไป <i class="glyphicon glyphicon-chevron-right"></i> </a>
 					</div>
 				</div>
 			</div>
@@ -129,6 +130,7 @@ $this->breadcrumbs = array(
 										"height"=>"js:this.value"),
 									'success'=>'js:function(data){
 										$("#height_content").html(data);
+
 									}',
 								),
 							));
@@ -147,7 +149,7 @@ $this->breadcrumbs = array(
 						<button id="backToStep1" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i>ย้อนกลับ</button>
 					</div>
 					<div class="pull-right">
-						<button id="nextToStep3" class="btn btn-primary btn-lg">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
+						<button id="nextToStep3" class="btn btn-primary btn-lg hidden">ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
 					</div>
 				</div>
 			</div>
@@ -205,6 +207,7 @@ $this->breadcrumbs = array(
 					<div class="pull-right">
 						<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
 						<button id="finish" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
+						<a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
 						<button id="addToCart" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
 						<button id="requestSpecial" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
 					</div>
@@ -214,7 +217,15 @@ $this->breadcrumbs = array(
 	</div>
 </div>
 
-
+<script>
+	function showStep2Button()
+	{
+		var title = document.getElementById('Order_title').value;
+		if(!($("#Order_title").attr("value") == "")){
+			$("#nextToStep2").removeClass('hidden');
+		}
+	}
+</script>
 
 <!--********old code-->
 <!--<div class="form">

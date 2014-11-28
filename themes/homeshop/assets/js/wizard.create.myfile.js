@@ -37,6 +37,7 @@ $('#nextToStep3').on('click', function(e) {
 			$("#order_list").html(data);
 		}
 	});
+
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
 $('#backToStep2').on('click', function(e) {
@@ -150,6 +151,7 @@ $(".clickableRow").click(function() {
 		$('#length_input')[0].setAttribute('name', cat1Id);
 		this.setAttribute("class", "clickableRow active");
 		clickable = false;
+		$("#nextToStep3").removeClass('hidden');
 	}
 });
 //delete row
@@ -164,6 +166,10 @@ $("#deleteRow").live('click', function() {
 	}
 });
 //calculatePrice
+
+//$("#selectProvince").live('click', function() {
+//	$("#nextToStep2").show();
+//});
 
 $('#calculatePrice').on('click', function() {
 	var update = 1;
@@ -188,7 +194,15 @@ $('#calculatePrice').on('click', function() {
 
 //Upload Plan Atech
 $('#uploadPlanAtech').on('click', function() {
-	$('ul.setup-panel li a[href="#step-2"]').trigger('click');
+
+	var data = $('selectProvince').val();
+	alert(data);
+
+	if (!($("#Order_title").attr("value") == "")) {
+		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
 });
 $('#manualQuantityAtech').on('click', function() {
 //		var base_url = baseUrl;
@@ -227,28 +241,27 @@ $('#nextToStep3Atech').on('click', function() {
 	});
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
-var navClick = true;
+
 $(".atechNav").click(function() {
-	if (navClick == true) {
-		var base_url = baseUrl;
-		var brandModelId = $(this).attr("name");
-		var title = $("#Order_title").attr("value");
-		var provinceId = $("#selectProvince").attr("value");
+	var base_url = baseUrl;
+	var brandModelId = $(this).attr("name");
+	var title = $("#Order_title").attr("value");
+	var provinceId = $("#selectProvince").attr("value");
 //		alert($("#aa").serialize());
 //		alert($("#editTableForm").serialize());
 //		alert(title + ", " + provinceId + ", " + brandModelId);
-		$.ajax({
-			url: base_url + '/myfile/atechWindow/updatePriceMyFile',
-			type: 'POST',
-			data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + "&" + $("#editTableForm").serialize(),
-			success: function(data) {
-				$("#atech_result").html(data);
-				navClick = false;
-			}
-		});
+	$.ajax({
+		url: base_url + '/myfile/atechWindow/updatePriceMyFile',
+		type: 'POST',
+		data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + "&" + $("#editTableForm").serialize(),
+		success: function(data) {
+			$("#atech_result").html(data);
+			navClick = false;
+		}
+	});
 
 //		this.setAttribute("class", "atechNav active");
-	}
+
 });
 $(".atechUpdate").click(function() {
 	var base_url = baseUrl;
@@ -268,16 +281,17 @@ $(".atechUpdate").click(function() {
 //		this.setAttribute("class", "atechNav active");
 });
 var atechSave = true;
-$('#nextToStep4Atech').live('click', function(e) {
+$('#nextToStep4Atech').click(function(e) {
 
 //save order
-	var base_url = baseUrl;
-	var orderId = $(this).attr("name");
-	var title = $("#Order_title").attr("value");
-	var provinceId = $("#selectProvince").attr("value");
-	var brandModelId = $("#updateButton").attr("name");
 	if (atechSave)
 	{
+		var base_url = baseUrl;
+		var orderId = $(this).attr("name");
+		var title = $("#Order_title").attr("value");
+		var provinceId = $("#selectProvince").attr("value");
+		var brandModelId = $("#updateButton").attr("name");
+
 		$.ajax({
 			url: base_url + '/myfile/atechWindow/saveMyFileAtech',
 			type: 'POST',
@@ -289,7 +303,6 @@ $('#nextToStep4Atech').live('click', function(e) {
 			}
 		});
 	}
-
 });
 var addData = true;
 $('#addNewItemFenzer').on('click', function(e) {

@@ -272,6 +272,7 @@ $this->breadcrumbs = array(
 							<button id="backToStep3" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</button>
 						<?php endif; ?>
 						<a id="" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
+						<a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
 						<?php if($model->type != 3): ?>
 							<button id="addToCart" class="btn btn-warning btn-lg" name="<?php echo $model->orderId; ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
 						<?php endif; ?>
