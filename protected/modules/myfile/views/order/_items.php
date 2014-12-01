@@ -163,9 +163,10 @@
 					<!--</tr>-->
 					<tr>
 						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT/1.07, 2, ".", ",");
-					?></td>
-											<tr>
+						<td style="text-align: right"><?php echo number_format($model->totalIncVAT / 1.07, 2, ".", ","); ?></td>
+					</tr>
+
+					<tr>
 						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/vat 7%</td>
 						<td style="text-align: right"><?php echo number_format($model->vatValue, 2, ".", ","); ?></td>
 					</tr>
@@ -197,9 +198,9 @@
 
 					<tr>
 						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Total excluded VAT</td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT/1.07, 2, ".", ",");
+						<td style="text-align: right"><?php echo number_format($model->totalIncVAT / 1.07, 2, ".", ",");
 					?></td>
-											<tr>
+					<tr>
 						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/vat 7%</td>
 						<td style="text-align: right"><?php echo number_format($model->vatValue, 2, ".", ","); ?></td>
 					</tr>

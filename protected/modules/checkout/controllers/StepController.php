@@ -454,11 +454,6 @@ class StepController extends MasterCheckoutController
 				else
 				{
 					$transaction->rollback();
-					if(isset($productId))
-					{
-						$this->redirect(array(
-							"/myfile/ginzaHome/view/id/" . $_POST["orderGroupId"]));
-					}
 				}
 			}
 			catch(Exception $e)

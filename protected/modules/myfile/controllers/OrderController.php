@@ -130,6 +130,19 @@ class OrderController extends MasterMyFileController
 		));
 	}
 
+	public function actionPrintProductList($id)
+	{
+		$model = OrderGroup::model()->findByPk($id);
+		$this->layout = '//layouts/print';
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
+		$this->render('view', array(
+			'model'=>$model,
+			'pageText'=>$this->selectPageTitle($model),
+			'daiibuy'=>$daiibuy
+		));
+	}
+
 	public function actionUserConfirmTransfer($id)
 	{
 		$order = OrderGroup::model()->findByPk($id);
