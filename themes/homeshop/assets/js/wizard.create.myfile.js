@@ -276,11 +276,11 @@ $(".atechUpdate").click(function() {
 	});
 //		this.setAttribute("class", "atechNav active");
 });
-var atechSave = true;
-$('#nextToStep4Atech').click(function(e) {
-
 //save order
-	if (atechSave)
+var atechSave = true;
+$('#nextToStep4Atech').live('click', function(e) {
+
+	if (atechSave == true)
 	{
 		var base_url = baseUrl;
 		var orderId = $(this).attr("name");
