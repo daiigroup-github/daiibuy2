@@ -122,10 +122,10 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 						<tbody class="table table-bordered">
 							<tr>
 								<td style="text-align: center">เงินสด</td>
-								<td style="text-align: center"><b><?php echo $this->ThaiBahtConversion(floatval($model->totalIncVAT)); ?></b>
+								<td style="text-align: center"><b><?php echo $this->ThaiBahtConversion(floatval($model->summary)); ?></b>
 									<br><span style="border-top:1px dotted;">จำนวนเงินเป็นตัวอักษร</span>
 								</td>
-								<td style="text-align: center"><b><?php echo number_format($model->totalIncVAT, 2); ?></b>
+								<td style="text-align: center"><b><?php echo number_format($model->summary, 2); ?></b>
 									<br><span style="border-top:1px dotted;">จำนวนเงิน (บาท)</span>
 								</td>
 							</tr>
@@ -152,7 +152,7 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 			$ref1 = "01" . str_replace("-", "", substr($model->orderNo, 2));
 			$ref2 = str_replace("-", "", $model->telephone);
 			$taxId = str_replace("-", "", $tax) . "00";
-			$amount = str_replace(",", "", str_replace(".", "", number_format($model->totalIncVAT, 2)));
+			$amount = str_replace(",", "", str_replace(".", "", number_format($model->summary, 2)));
 			$data = "|" . $taxId . " " . $ref1 . " " . $ref2 . " " . $amount;
 			$dataName = $ref1 . rand(0000, 9999);
 			$folderName = "barcode";
