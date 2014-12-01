@@ -71,7 +71,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="iconic-input">
-                        <?php echo $formLogin->textField($userModel, 'password', array('placeholder' => $userModel->attributeLabels()['password'])); ?>
+                        <?php echo $formLogin->passwordField($userModel, 'password', array('placeholder' => $userModel->attributeLabels()['password'],
+							'style'=>"width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px; padding: 5px 10px;")); ?>
                         <i class="icons icon-lock"></i>
                     </div>
                 </div>
