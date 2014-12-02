@@ -64,7 +64,7 @@
 					$price = ($orderItem->product->calProductPromotionPrice() != 0) ? $orderItem->product->calProductPromotionPrice() : $orderItem->product->calProductPrice();
 					?>
 					<tr>
-						<td id="code<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->product->code . ' ' . $orderItem->productId; ?></td>
+						<td id="code<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->product->code; ?></td>
 						<td id="name<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->title; ?></td>
 						<td class="align-right" id="quantity<?php echo $orderItem->productId; ?>">
 							<?php if(($order->type & Order::ORDER_TYPE_MYFILE) > 0): /* myfile */ ?>
