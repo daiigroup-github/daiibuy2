@@ -73,13 +73,14 @@ var fenzerSave = true;
 $('#nextToStep4').live('click', function(e) {
 
 //save order
-	var base_url = baseUrl;
-	var length = $("#length_input").attr("value");
-	var cat1Id = $("#length_input").attr("name");
-	var categoryId = $("#editTable").attr("name");
-//		alert(categoryId);
-	var productItems = $("#editTableForm").serialize();
 	if (fenzerSave == true) {
+		var base_url = baseUrl;
+		var length = $("#length_input").attr("value");
+		var cat1Id = $("#length_input").attr("name");
+		var categoryId = $("#editTable").attr("name");
+//		alert(categoryId);
+		var productItems = $("#editTableForm").serialize();
+
 		$.ajax({
 			url: base_url + '/myfile/fenzer/saveOrderMyFile',
 			type: 'POST',
@@ -157,9 +158,13 @@ $(".clickableRow").click(function() {
 //			$(this).parent().parent().remove();
 //		}
 //	});
+var isDelete = true;
 $("#deleteRow").live('click', function() {
-	if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
-		$(this).parent().parent().remove();
+	if (isDelete == true) {
+		if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
+			$(this).parent().parent().remove();
+			isDelete = false;
+		}
 	}
 });
 //calculatePrice
@@ -294,11 +299,13 @@ $('#nextToStep4Atech').live('click', function(e) {
 			success: function(data) {
 				$("#confirm_product").html(data);
 				$('ul.setup-panel li a[href="#step-4"]').trigger('click');
-				atechSave = false;
+
 			}
 		});
 	}
+	atechSave = false;
 });
+
 var addData = true;
 $('#addNewItemFenzer').on('click', function(e) {
 	if (addData == true)

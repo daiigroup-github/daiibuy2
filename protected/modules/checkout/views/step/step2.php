@@ -146,7 +146,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					<?php
 //					$province = Province::model()->findByPk($this->cookie->provinceId);
 //					echo $province->provinceName;
-					echo $form->dropDownList($billingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
+					echo $form->dropDownList($billingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
 						'id'=>'billingProvince',
 						'name'=>'billing[provinceId]',
 //						'disabled'=>'disabled'

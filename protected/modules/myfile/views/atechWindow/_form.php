@@ -314,13 +314,6 @@ $form = $this->beginWidget('CActiveForm', array(
 								<?php // foreach($productResult['items'] as $item): ?>
 								<?php
 								$categoryDropDownArray = Category::model()->findAllParentCategoryArray(2);
-								$typeDropDownArray = array(
-									'บานเลื่อน 2 บาน'=>'บานเลื่อน 2 บาน',
-									'บานเลื่อน 4 บาน'=>'บานเลื่อน 4 บาน',
-									'บานเปิดเดี่ยว'=>'บานเปิดเดี่ยว',
-									'บานเปิดคู่'=>'บานเปิดคู่',
-									'บานกระทุ้ง'=>'บานกระทุ้ง',
-									'บานส่องแสง'=>'บานส่องแสง');
 								$sizeDropDownArray = Product::model()->findAllAtechSizeArray();
 								?>
 								<tr>

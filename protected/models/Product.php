@@ -1011,6 +1011,7 @@ class Product extends ProductMaster
 //		throw new Exception(print_r($criteria,true));
 		$res = array();
 		$total = 0.00;
+		$i = 0;
 //		throw new Exception(print_r($criteria,true));
 		foreach($criteria as $item)
 		{
@@ -1038,30 +1039,31 @@ class Product extends ProductMaster
 			{
 				$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 					":productId"=>$productModel->productId));
-				$res["items"][$productModel->productId]['productId'] = $productModel->productId;
-				$res["items"][$productModel->productId]['code'] = $productModel->code;
-				$res["items"][$productModel->productId]['width'] = $width;
-				$res["items"][$productModel->productId]['height'] = $height;
-				$res["items"][$productModel->productId]['category'] = $item['category'];
-				$res["items"][$productModel->productId]['type'] = $item['type'];
-				$res["items"][$productModel->productId]['description'] = $productModel->name;
-				$res["items"][$productModel->productId]['quantity'] = $item['quantity'];
+				$res["items"][$i]['productId'] = $productModel->productId;
+				$res["items"][$i]['code'] = $productModel->code;
+				$res["items"][$i]['width'] = $width;
+				$res["items"][$i]['height'] = $height;
+				$res["items"][$i]['category'] = $item['category'];
+				$res["items"][$i]['type'] = $item['type'];
+				$res["items"][$i]['description'] = $productModel->name;
+				$res["items"][$i]['quantity'] = $item['quantity'];
 				if(isset($productPromotion))
 				{
 					//promotion price
-					$res["items"][$productModel->productId]['price'] = $this->calProductPromotionTotalPrice($productModel->productId, 1, $provinceId);
+					$res["items"][$i]['price'] = $this->calProductPromotionTotalPrice($productModel->productId, 1, $provinceId);
 				}
 				else
 				{
 					//normal price
-					$res["items"][$productModel->productId]['price'] = $this->calProductTotalPrice($productModel->productId, 1, $provinceId);
+					$res["items"][$i]['price'] = $this->calProductTotalPrice($productModel->productId, 1, $provinceId);
 				}
-				$subTotal = $res["items"][$productModel->productId]['price'] * $res["items"][$productModel->productId]['quantity'];
-				$res["items"][$productModel->productId]['subTotal'] = $subTotal;
+				$subTotal = $res["items"][$i]['price'] * $res["items"][$i]['quantity'];
+				$res["items"][$i]['subTotal'] = $subTotal;
 
 				$total = $subTotal + $total;
 			}
 //			}
+			$i++;
 		}
 
 		$res["total"] = $total;
@@ -1071,6 +1073,7 @@ class Product extends ProductMaster
 //		$res["category1Id"] = $category1Id;
 //		$res["category2Id"] = $category2Id;
 //		throw new Exception(print_r($res,true));
+
 		return $res;
 	}
 

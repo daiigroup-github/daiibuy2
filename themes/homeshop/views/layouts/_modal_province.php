@@ -28,6 +28,8 @@
 					'class'=>'form-control',
 					'id'=>'selectProvince'
 				));
+
+				echo CHtml::textField('flag', $this->action->id=='step', array('style'=>'display:none'));
 				?>
 			</div>
 			<div class="modal-footer">
@@ -42,7 +44,7 @@
 							//alert(data.provinceId);
 							$("#selectProvinceModal").modal("hide");
 							$("#selectProvinceModal").on("hidden.bs.modal", function (e) {
-								location.reload();
+								window.location.assign(2);
 							});
 						}'
 					), array(
