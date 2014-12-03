@@ -209,7 +209,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 //					echo $province->provinceName;
-					echo $form->dropDownList($addressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
+					echo $form->dropDownList($addressModel, 'provinceId', CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
 						'id'=>'shippingProvince',
 //						'disabled'=>'disabled',
 						));
