@@ -1081,34 +1081,36 @@ class Product extends ProductMaster
 	{
 		$res = array();
 		$total = 0.00;
+		$i = 0;
 //		throw new Exception(print_r($criteria,true));
 		foreach($productArray as $item)
 		{
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 				":productId"=>$item->productId));
-			$res["items"][$item->productId]['productId'] = $item->productId;
-			$res["items"][$item->productId]['code'] = $item->code;
-			$res["items"][$item->productId]['width'] = $item->width;
-			$res["items"][$item->productId]['height'] = $item->height;
+			$res["items"][$i]['productId'] = $item->productId;
+			$res["items"][$i]['code'] = $item->code;
+			$res["items"][$i]['width'] = $item->width;
+			$res["items"][$i]['height'] = $item->height;
 //			$res["items"][$item->productId]['category'] = $item['category'];
 //			$res["items"][$item->productId]['type'] = $item['type'];
-			$res["items"][$item->productId]['description'] = $item->name;
-			$res["items"][$item->productId]['quantity'] = $item->quantity;
-			$res["items"][$item->productId]['name'] = $item->name;
+			$res["items"][$i]['description'] = $item->name;
+			$res["items"][$i]['quantity'] = $item->quantity;
+			$res["items"][$i]['name'] = $item->name;
 			if(isset($productPromotion))
 			{
 				//promotion price
-				$res["items"][$item->productId]['price'] = $this->calProductPromotionTotalPrice($item->productId, 1, $provinceId);
+				$res["items"][$i]['price'] = $this->calProductPromotionTotalPrice($item->productId, 1, $provinceId);
 			}
 			else
 			{
 				//normal price
-				$res["items"][$item->productId]['price'] = $this->calProductTotalPrice($item->productId, 1, $provinceId);
+				$res["items"][$i]['price'] = $this->calProductTotalPrice($item->productId, 1, $provinceId);
 			}
-			$subTotal = $res["items"][$item->productId]['price'] * $res["items"][$item->productId]['quantity'];
-			$res["items"][$item->productId]['subTotal'] = $subTotal;
+			$subTotal = $res["items"][$i]['price'] * $res["items"][$i]['quantity'];
+			$res["items"][$i]['subTotal'] = $subTotal;
 
 			$total = $subTotal + $total;
+			$i++;
 		}
 
 

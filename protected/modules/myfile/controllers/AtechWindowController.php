@@ -228,19 +228,28 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$productItems = $_POST['productItems'];
 			$productArray = array();
-
-			foreach($productItems as $productId=> $item)
+			$a = 0;
+			foreach($productItems as $z)
 			{
-//	throw new Exception(print_r($item,true));
-				$productModel = Product::model()->findByPk($productId);
-				$productArray[$productModel->productId] = $productModel;
-				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
+				foreach($z as $productId=> $item){
+					$productModel = Product::model()->findByPk($productId);
+					$productArray[$a] = $productModel;
+					$productArray[$a]['quantity'] = $item["quantity"];
+				}
+				$a++;
 			}
+//			foreach($productItems as $productId=> $item)
+//			{
+
+//				$productModel = Product::model()->findByPk($productId);
+//				$productArray[$productModel->productId] = $productModel;
+//				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
+//			}
 		}
 		$res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 
 
-
+//	throw new Exception(print_r($res,true));
 		if(!$isNew)
 		{
 			$model = Order::model()->findByPk($orderId);
@@ -272,6 +281,7 @@ class AtechWindowController extends MasterMyFileController
 
 				if($isNew)
 				{
+throw new Exception(print_r($res,true));
 					$orderItemModel = new OrderItems();
 					$orderItemModel->orderId = $newOrderId;
 					$orderItemModel->productId = $productId;
@@ -287,6 +297,7 @@ class AtechWindowController extends MasterMyFileController
 				$orderItemModel->quantity = $res['items'][$productId]['quantity'];
 				$orderItemModel->total = $res['items'][$productId]['price'] * $res['items'][$productId]['quantity'];
 				$orderItemModel->updateDateTime = new CDbExpression("NOW()");
+
 				if(!($orderItemModel->save()))
 				{
 					throw new Exception(print_r($orderItemModel->errors, True));
@@ -437,7 +448,9 @@ class AtechWindowController extends MasterMyFileController
 			$i = 0;
 			foreach($productItems as $item)
 			{
-				$criteria[$i]["quantity"] = $item["quantity"];
+				foreach($item as $p){
+				$criteria[$i]["quantity"] = $p["quantity"];
+				}
 				$i++;
 			}
 		}
@@ -445,14 +458,18 @@ class AtechWindowController extends MasterMyFileController
 		{
 			$productItems = $_POST['productItems'];
 			$productArray = array();
-			foreach($productItems as $productId=> $item)
+			$a = 0;
+			foreach($productItems as $z)
 			{
-//	throw new Exception(print_r($item,true));
-				$productModel = Product::model()->findByPk($productId);
-				$productArray[$productModel->productId] = $productModel;
-				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
+				foreach($z as $productId=> $item){
+					$productModel = Product::model()->findByPk($productId);
+					$productArray[$a] = $productModel;
+					$productArray[$a]['quantity'] = $item["quantity"];
+				}
+				$a++;
 			}
 		}
+//		throw new Exception(print_r($productItems,true));
 //		if(isset($_POST['size']))
 //		{
 //			$value = $_POST['size'];

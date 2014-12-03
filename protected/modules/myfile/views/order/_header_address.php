@@ -185,7 +185,7 @@
 		</thead>
 		<tbody style="font-size:small">
 			<tr>
-				<td style="text-align: left"><?php
+				<td style="text-align: center"><?php
 					if(isset($user))
 					{
 						if($model->status >= 3 && ($user->type == 4 || $user->type == 3 || $user->type == 5))
@@ -203,7 +203,7 @@
 						}
 						else
 						{
-//							echo $model->orderNo;
+							echo $model->orderNo;
 						}
 					}
 					else
