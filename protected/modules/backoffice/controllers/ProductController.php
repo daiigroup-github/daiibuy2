@@ -307,11 +307,11 @@ class ProductController extends MasterBackofficeController
 					if(Yii::app()->params["sendEmail"])
 					{
 						//send mail
-						$emailObj = new Email();
-						$sentMail = new EmailSend();
-						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
-						$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
-						$sentMail->mailAddNewProductToAdmin($emailObj);
+//						$emailObj = new Email();
+//						$sentMail = new EmailSend();
+//						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
+//						$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
+//						$sentMail->mailAddNewProductToAdmin($emailObj);
 
 
 //						$emailObj = new Email();
