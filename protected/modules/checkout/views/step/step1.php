@@ -212,7 +212,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					echo $form->dropDownList($addressModel, 'provinceId', CHtml::listData(Province::model()->findAll()), 'provinceId', 'provinceName'), array(
 						'id'=>'shippingProvince',
 //						'disabled'=>'disabled',
-						));
+						);
 //						'prompt'=>'--- เลือกจังหวัด ---',
 //						'ajax'=>array(
 //							'type'=>'POST',
