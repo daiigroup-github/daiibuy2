@@ -150,21 +150,27 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 						'id'=>'billingProvince',
 						'name'=>'billing[provinceId]',
 //						'disabled'=>'disabled'
-						));
-//						'prompt'=>' --- เลือกจังหวัด ---',
-//						'ajax'=>array(
-//							'type'=>'POST',
-//							'data'=>array(
-//								'provinceId'=>'js:this.value'),
-//							'url'=>$this->createUrl('findAmphur'),
-//							'success'=>'js:function(data){
-//                                    $("#billingAmphur").html(data);
-//                                    $("#billingAmphur").prop("disabled", false);
-//                                    $("#billingDistrict").html("");
-//                                    $("#billingDistrict").prop("disabled", true);
-//                                }',
-//						),
-//					));
+//						));
+						'prompt'=>' --- เลือกจังหวัด ---',
+						'ajax'=>array(
+							'type'=>'POST',
+							'data'=>array(
+								'provinceId'=>'js:this.value'),
+							'url'=>$this->createUrl('findAmphur'),
+							'success'=>'js:function(data){
+
+//									if(chooseProvince == this.value)
+										$("#sameAddress").prop("disabled", true);
+
+
+                                    $("#billingAmphur").html(data);
+                                    $("#billingAmphur").prop("disabled", false);
+                                    $("#billingDistrict").html("");
+                                    $("#billingDistrict").prop("disabled", true);
+
+                                }',
+						),
+					));
 					?>
 				</div>
 			</div>

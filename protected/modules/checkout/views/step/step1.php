@@ -212,21 +212,21 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					echo $form->dropDownList($addressModel, 'provinceId', CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
 						'id'=>'shippingProvince',
 //						'disabled'=>'disabled',
-						));
-//						'prompt'=>'--- เลือกจังหวัด ---',
-//						'ajax'=>array(
-//							'type'=>'POST',
-//							'data'=>array(
-//								'provinceId'=>'js:this.value'),
-//							'url'=>$this->createUrl('findAmphur'),
-//							'success'=>'js:function(data){
-//                                    $("#shippingAmphur").html(data);
-//                                    $("#shippingAmphur").prop("disabled", false);
-//                                    $("#shippingDistrict").html("");
-//                                    $("#shippingDistrict").prop("disabled", true);
-//                                }',
-//						),
-//					));
+//						));
+						'prompt'=>'--- เลือกจังหวัด ---',
+						'ajax'=>array(
+							'type'=>'POST',
+							'data'=>array(
+								'provinceId'=>'js:this.value'),
+							'url'=>$this->createUrl('findAmphur'),
+							'success'=>'js:function(data){
+                                    $("#shippingAmphur").html(data);
+                                    $("#shippingAmphur").prop("disabled", false);
+                                    $("#shippingDistrict").html("");
+                                    $("#shippingDistrict").prop("disabled", true);
+                                }',
+						),
+					));
 					?>
 				</div>
 			</div>
