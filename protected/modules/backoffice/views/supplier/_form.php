@@ -163,7 +163,7 @@
 		<div class="col-sm-10">
 			<?php
 			if($this->action->id == 'update')
-				echo CHtml::image(Yii::app()->baseUrl . "/" . $model->logo, '', array(
+				echo CHtml::image(Yii::app()->baseUrl . $model->logo, '', array(
 					'style'=>'width:150px;'));
 			?>
 			<?php
