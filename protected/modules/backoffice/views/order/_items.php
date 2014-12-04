@@ -76,11 +76,11 @@
 					<tr>
 						<td style="text-align: center"><?php echo $i; ?></td>
 						<td style="text-align: center"><?php echo "-"; ?></td>
-						<td><?php echo $model->supplierId == 204 ? "ค่างานก่อสร้างเรียกเก็บตามสัญญา" : "เงินรับล่วงหน้าค่าสินค้า"; ?></td>
+						<td><?php echo $model->supplierId == 4 ? "ค่างานก่อสร้างเรียกเก็บตามสัญญา" : "เงินรับล่วงหน้าค่าสินค้า"; ?></td>
 						<td style="text-align: center"><?php echo 1; ?></td>
 						<td style="text-align: center"><?php echo "-"; ?></td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT + $model->usedPoint, 2, ".", ","); ?></td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT + $model->usedPoint, 2, ".", ","); ?></td>
+						<td style="text-align: right"><?php echo number_format($model->total, 2, ".", ","); ?></td>
+						<td style="text-align: right"><?php echo number_format($model->total, 2, ".", ","); ?></td>
 					</tr>
 					<?php
 				}
@@ -251,6 +251,7 @@
 					<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 				</tr>
 				<?php
+				}
 				if(!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
 				{
 					if(isset(Yii::app()->user->id))
@@ -340,7 +341,7 @@
 					</td>
 					</tr>";
 				}
-			}
+
 			?>
 		</tfoot>
 	</table>
