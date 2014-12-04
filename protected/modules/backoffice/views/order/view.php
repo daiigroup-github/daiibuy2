@@ -160,13 +160,13 @@ function getOrderShippingAddress($model)
 
 function getOrderPaymentAddress($model)
 {
-	$res = "";
+		$res = "";
 	if(isset($model->paymentCompany))
 	{
-		$res.= "บริษัท " . $model->paymentCompany . (isset($model->paymentTaxNo) ? " เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
+		$res.= "บริษัท " . $model->paymentCompany . (isset($model->paymentTaxNo) ? "<br> เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
 		$res.="<br>";
 	}
-	$res .="โดย : " . $model->paymentFirstname . " " . $model->paymentLastname . "<p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";
+	$res .="โดย : คุณ". $model->paymentFirstname . " " . $model->paymentLastname . "<p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";
 	return $res;
 }
 

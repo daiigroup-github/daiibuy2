@@ -124,12 +124,19 @@
 											<?php
 										}
 									}
-									else
+									else if($user->type == 3)
 									{
 										?>
 										<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
 										<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
 										<?php
+									}else{
+										?>
+											<td style="text-align: center"><?php echo $item->quantity; ?></td>
+											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+											<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+											<?php
 									}
 								}
 								else

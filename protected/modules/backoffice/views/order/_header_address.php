@@ -88,14 +88,14 @@
 				{
 					?>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->orderNo ?></p></div>
-					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? $model->orderNo : $model->invoiceNo; ?></p></div>
+					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? '-' : $model->invoiceNo; ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px; color: red;"><?php echo $model->paymentDateTime == null ? "กำหนดชำระเงิน : " . $deadlinePayment : "วันที่ : " . $this->dateThai($model->paymentDateTime, 1); ?></p></div>
 					<?php
 				}
 				else
 				{
 					?>
-					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo ($user->type == 1 || $user->type == 5 || $userType == 4) ? "วันที่สั่งซื้อ : " . $this->dateThai($model->createDateTime, 1) : (($model->invoiceNo == null) ? $model->orderNo : $model->invoiceNo); ?></p></div>
+					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo ($user->type == 1 || $user->type == 5 || $userType == 4) ? "วันที่สั่งซื้อ : " . $this->dateThai($model->createDateTime, 1) : (($model->invoiceNo == null) ? '-' : $model->invoiceNo); ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->paymentDateTime == null ? "กำหนดชำระเงิน : " . $deadlinePayment : "วันที่ : " . $this->dateThai($model->paymentDateTime, 1)
 					?></p></div>
 					<?php
@@ -107,7 +107,7 @@
 				{
 					?>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->orderNo ?></p></div>
-					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? $model->orderNo : $model->invoiceNo; ?></p></div>
+					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? '-' : $model->invoiceNo; ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px; color: red;"><?php echo $model->paymentDateTime == null ? "กำหนดชำระเงิน : " . $deadlinePayment : "วันที่ : " . $this->dateThai($model->paymentDateTime, 1); ?></p></div>
 					<?php
 				}
@@ -150,7 +150,7 @@
 						if($user->type == 1)
 						{
 							?>
-																						<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขทื่ใบสั่งซื้อสินค้า</b></td>
+																						<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขที่ใบสั่งซื้อสินค้า</b></td>
 																											<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
 							<?php
 						}
@@ -185,7 +185,7 @@
 		</thead>
 		<tbody style="font-size:small">
 			<tr>
-				<td style="text-align: left"><?php
+				<td style="text-align: center"><?php
 					if(isset($user))
 					{
 						if($model->status >= 3 && ($user->type == 4 || $user->type == 3 || $user->type == 5))
@@ -203,7 +203,7 @@
 						}
 						else
 						{
-//							echo $model->orderNo;
+							echo $model->orderNo;
 						}
 					}
 					else

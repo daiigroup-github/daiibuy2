@@ -88,14 +88,14 @@
 				{
 					?>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->orderNo ?></p></div>
-					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? $model->orderNo : $model->invoiceNo; ?></p></div>
+					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? '-' : $model->invoiceNo; ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px; color: red;"><?php echo $model->paymentDateTime == null ? "กำหนดชำระเงิน : " . $deadlinePayment : "วันที่ : " . $this->dateThai($model->paymentDateTime, 1); ?></p></div>
 					<?php
 				}
 				else
 				{
 					?>
-					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo ($user->type == 1 || $user->type == 5 || $userType == 4) ? "วันที่สั่งซื้อ : " . $this->dateThai($model->createDateTime, 1) : (($model->invoiceNo == null) ? $model->orderNo : $model->invoiceNo); ?></p></div>
+					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo ($user->type == 1 || $user->type == 5 || $userType == 4) ? "วันที่สั่งซื้อ : " . $this->dateThai($model->createDateTime, 1) : (($model->invoiceNo == null) ? '-' : $model->invoiceNo); ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->paymentDateTime == null ? "กำหนดชำระเงิน : " . $deadlinePayment : "วันที่ : " . $this->dateThai($model->paymentDateTime, 1)
 					?></p></div>
 					<?php
@@ -107,7 +107,7 @@
 				{
 					?>
 					<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php echo $model->orderNo ?></p></div>
-					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? $model->orderNo : $model->invoiceNo; ?></p></div>
+					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo == null ? '-' : $model->invoiceNo; ?></p></div>
 					<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px; color: red;"><?php echo $model->paymentDateTime == null ? "กำหนดชำระเงิน : " . $deadlinePayment : "วันที่ : " . $this->dateThai($model->paymentDateTime, 1); ?></p></div>
 					<?php
 				}
