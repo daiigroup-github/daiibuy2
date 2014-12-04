@@ -83,7 +83,7 @@ return false;
 			//'totalIncVAT',
 			array(
 				'header'=>'ราคารวมภาษี(บาท)',
-				'name'=>'totalIncVAT',
+				'name'=>'summary',
 				//'footer'=>'$data->total',
 				'type'=>'text',
 				'htmlOptions'=>array(
