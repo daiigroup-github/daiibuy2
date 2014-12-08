@@ -218,6 +218,7 @@ class OrderGroup extends OrderGroupMaster
 		$criteria->compare('lastname', $this->lastname, true);
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
+		$criteria->compare("status", ">0");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(

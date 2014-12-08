@@ -52,6 +52,7 @@ return array(
 		 */
 		// uncomment the following to use a MySQL database
 		'db'=>$params['db'],
+		'dbDaiibuy1'=>$params['dbDaiibuy1'],
 		'mail'=>array(
 			'class'=>'application.extensions.yii-mail.YiiMail',
 			'transportType'=>'smtp', // change to 'php' when running in real domain.
