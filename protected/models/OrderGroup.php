@@ -102,7 +102,7 @@ class OrderGroup extends OrderGroupMaster
 		$lastYear = date('Y-m-d', strtotime($today . ' -12 months'));
 
 		$model = $this->find(array(
-			'condition'=>'userId=:userId AND (updateDateTime BETWEEN :today AND :lastYear)',
+			'condition'=>'userId=:userId AND (updateDateTime BETWEEN :lastYear  AND :today)',
 			'select'=>'sum(summary) as sumTotal',
 			'params'=>array(
 				':userId'=>Yii::app()->user->id,
