@@ -14,9 +14,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach($productResult as $item):
+		<?php
+//		throw new Exception(print_r($productResult,true));
+		foreach($productResult as $item):
 			$cat1 = $item['cat1'];
+
 			$descArray = explode("*", $cat1->description);
+
 			?>
 			<tr class="clickableRow" id="<?php echo $item['categoryId']; ?>" name="<?php echo $item['description']; ?>" style="<?php echo $cat1->categoryId; ?>" >
 				<td><?php echo $cat1->title ." ". $item['title']; ?></td>

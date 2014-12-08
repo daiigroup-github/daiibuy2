@@ -104,7 +104,7 @@ class FenzerController extends MasterMyFileController
 				}
 			}
 		}
-		}
+
 //		$productResult = Category::model()->with('subCategorys')->findAll(
 //			array(
 //				'condition'=>'subCategorys.status = 1 AND subCategorys.supplierId = 1  AND isRoot = 0 AND '
@@ -125,12 +125,11 @@ class FenzerController extends MasterMyFileController
 //		$productResult = Category::model()->findAll('supplierId = 1 AND status = 1 AND (description >= ' . $height[0] . ' AND description <= ' . $height[1] . ')');
 
 
+//		throw new Exception(print_r($productResult,true));
 
-		if(count($productResult) > 0)
-		{
 			echo $this->renderPartial('/fenzer/_product_result', array(
 				'productResult'=>$productResult), TRUE, TRUE);
-//				throw new Exception();
+//
 		}
 		else
 		{
