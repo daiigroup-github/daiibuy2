@@ -73,7 +73,7 @@
 	<div class="col-sm-3">
 	<form id="addItem" action="#">
 
-	<?php echo CHtml::dropDownList('productId', 'selectedCode',
+	<?php echo Select2::dropDownList('productId', 'selectedCode',
 					CHtml::listData(Product::model()->findAll('supplierId = 1'), 'productId', 'code'),
 					array('class'=>'form-control',
 						'id'=>'itemCode',
