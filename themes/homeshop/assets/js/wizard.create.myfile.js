@@ -306,21 +306,21 @@ $('#nextToStep4Atech').live('click', function(e) {
 	atechSave = false;
 });
 
-var addData = true;
+//var addData = true;
 $('#addNewItemFenzer').on('click', function(e) {
-	if (addData == true)
-	{
-		$.ajax({
-			url: baseUrl + '/myfile/fenzer/addNewProductItem',
-			type: 'POST',
-			dataType: 'html',
-			data: $("#addItem").serialize() + "&" + $("#ggg").serialize(),
-			success: function(data) {
-				$("#editTable").append(data);
-				addData = false;
-			}
-		});
-	}
+//	if (addData == true)
+//	{
+	$.ajax({
+		url: baseUrl + '/myfile/fenzer/addNewProductItem',
+		type: 'POST',
+		dataType: 'html',
+		data: $("#addItem").serialize() + "&" + $("#ggg").serialize(),
+		success: function(data) {
+			$("#editTable").append(data);
+//			addData = false;
+		}
+	});
+//	}
 });
 $('#addToCartAtech').on('click', function(e) {
 	var base_url = baseUrl;
