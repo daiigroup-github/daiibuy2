@@ -79,8 +79,8 @@
 						<td><?php echo $model->supplierId == 4 ? "ค่างานก่อสร้างเรียกเก็บตามสัญญา" : "เงินรับล่วงหน้าค่าสินค้า"; ?></td>
 						<td style="text-align: center"><?php echo 1; ?></td>
 						<td style="text-align: center"><?php echo "-"; ?></td>
-						<td style="text-align: right"><?php echo number_format($model->total, 2, ".", ","); ?></td>
-						<td style="text-align: right"><?php echo number_format($model->total, 2, ".", ","); ?></td>
+						<td style="text-align: right"><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
+						<td style="text-align: right"><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
 					<?php
 				}
@@ -124,12 +124,19 @@
 											<?php
 										}
 									}
-									else
+									else if($user->type == 3)
 									{
 										?>
 										<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
 										<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
 										<?php
+									}else{
+										?>
+											<td style="text-align: center"><?php echo $item->quantity; ?></td>
+											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+											<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+											<?php
 									}
 								}
 								else
@@ -162,33 +169,32 @@
 
 					<!--</tr>-->
 					<tr>
-						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT / 1.07, 2, ".", ","); ?></td>
+							<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
+							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
 
-					<tr>
-						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
-						<td style="text-align: right"><?php echo number_format($model->vatValue, 2, ".", ","); ?></td>
-					</tr>
 					<?php
 					if($model->discountValue > 0)
 					{
 						?>
-						<tr>
-							<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
-							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
-						</tr>
+
 						<tr>
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
 					<?php } ?>
-
-					</tr>
-					<tr>
-						<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
-						<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
-					</tr>
+						<tr>
+							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
+							<td style="text-align: right"><?php echo number_format($model->summary*0.07, 2, ".", ","); ?></td>
+						</tr>
+						<tr>
+							<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
+							<td style="text-align: right"><?php echo number_format($model->summary -($model->summary*0.07), 2, ".", ","); ?></td>
+						</tr>
+						<tr>
+							<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
+							<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
+						</tr>
 					<?php
 //									}
 				}
@@ -197,32 +203,32 @@
 					?>
 
 					<tr>
-						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Total excluded VAT</td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT / 1.07, 2, ".", ",");
-					?></td>
-					<tr>
-						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
-						<td style="text-align: right"><?php echo number_format($model->vatValue, 2, ".", ","); ?></td>
+							<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
+							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
+
 					<?php
 					if($model->discountValue > 0)
 					{
 						?>
-						<tr>
-							<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
-							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
-						</tr>
+
 						<tr>
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
 					<?php } ?>
-
-					</tr>
-					<tr>
-						<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
-						<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
-					</tr>
+						<tr>
+							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
+							<td style="text-align: right"><?php echo number_format($model->summary*0.07, 2, ".", ","); ?></td>
+						</tr>
+						<tr>
+							<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
+							<td style="text-align: right"><?php echo number_format($model->summary -($model->summary*0.07), 2, ".", ","); ?></td>
+						</tr>
+						<tr>
+							<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
+							<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
+						</tr>
 					<?php
 				}
 			}
@@ -244,6 +250,7 @@
 					<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 				</tr>
 				<?php
+				}
 				if(!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
 				{
 					if(isset(Yii::app()->user->id))
@@ -333,7 +340,7 @@
 					</td>
 					</tr>";
 				}
-			}
+
 			?>
 		</tfoot>
 	</table>
