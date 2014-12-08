@@ -158,13 +158,13 @@ $(".clickableRow").click(function() {
 //			$(this).parent().parent().remove();
 //		}
 //	});
-var isDelete = true;
+//var isDelete = true;
 $("#deleteRow").live('click', function() {
-	if (isDelete == true) {
-		if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
-			$(this).parent().parent().remove();
-			isDelete = false;
-		}
+//	if (isDelete == true) {
+	if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
+		$(this).parent().parent().remove();
+//			isDelete = false;
+//		}
 	}
 });
 //calculatePrice
