@@ -13,7 +13,7 @@
 			}
 			else
 			{
-				if(($model->status == 4 && $user->type == 3) || $model->status == 1 && $user->type == 4)
+				if($model->status == 1 && $user->type == 4)
 				{
 					?>
 					<div class="col-md-3 table-condensed" ><h6 style='margin-left: 8px; text-align: Right'>ผู้ซื้อ : &nbsp;</h6></div>
@@ -46,7 +46,7 @@
 				$shippingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 2');
 				$billingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 1');
 //					(Yii::app()->controller->action->id == "viewOrder" && $userType <> 1 && $userType <> 5)
-				if(($model->status == 3 && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1)) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1 && $userType <> 2))
+				if((($model->status == 3 || $model->status == 4 ) && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1)) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1 && $userType <> 2))
 				{
 					if(($model->status < 3 && $user->type <> 3) || $model->status == 1 && $user->type == 4)
 					{
@@ -160,7 +160,7 @@
 						}
 						else
 						{
-							if($model->status == 3 && $user->type == 3)
+							if(($model->status == 3 || $model->status == 4) && $user->type == 3)
 							{
 								?>
 								<td style="width:50%;text-align: center"><b style="font-size:small">ผู้ซื้อ</b></td>
