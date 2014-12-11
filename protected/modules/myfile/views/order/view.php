@@ -162,7 +162,7 @@ function getOrderPaymentAddress($model)
 	$res = "";
 	if(isset($model->paymentCompany))
 	{
-		$res.= "บริษัท " . $model->paymentCompany ."โดย : คุณ". $model->paymentFirstname . " " . $model->paymentLastname . (isset($model->paymentTaxNo) ? "<br> เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
+		$res.= "บริษัท " . $model->paymentCompany ." โดย : คุณ". $model->paymentFirstname . " " . $model->paymentLastname . (isset($model->paymentTaxNo) ? "<br> เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
 		$res.="<br>";
 	}
 	$res .= "<p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";

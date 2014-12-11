@@ -84,6 +84,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 					<?php
 					$this->renderPartial("_header_address", array(
 						'model'=>$model,
+						'user'=>$user,
 					));
 					?>
 				<?php endif; ?>
@@ -116,15 +117,13 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 						'model'=>$model,
 						'title'=>"ส่วนที่ 1 สำหรับธนาคาร"));
 					?>
-					<p style="margin-bottom: 10px"><image src = "<?php echo Yii::app()->request->baseUrl . "/images/payin-cut.png"; ?>" style = "width: 750px" /><p>
+					<p style="margin-left:20px"><image src = "<?php echo Yii::app()->request->baseUrl . "/images/payin-cut.png"; ?>" style = "width: 750px" /><p>
 						<?php
 						$this->renderPartial("transfer_form_print", array(
 							'supplierId'=>$model->supplierId,
 							'model'=>$model,
 							'title'=>"ส่วนที่ 2 สำหรับลูกค้า"));
 					}
-					?>
-					<?php
 				}
 			}
 			?>
@@ -160,13 +159,13 @@ function getOrderShippingAddress($model)
 
 function getOrderPaymentAddress($model)
 {
-		$res = "";
+	$res = "";
 	if(isset($model->paymentCompany))
 	{
-		$res.= "บริษัท " . $model->paymentCompany . (isset($model->paymentTaxNo) ? "<br> เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
+		$res.= "บริษัท " . $model->paymentCompany ." โดย : คุณ". $model->paymentFirstname . " " . $model->paymentLastname . (isset($model->paymentTaxNo) ? "<br> เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "");
 		$res.="<br>";
 	}
-	$res .="โดย : คุณ". $model->paymentFirstname . " " . $model->paymentLastname . "<p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";
+	$res .= "<p>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "<p>";
 	return $res;
 }
 
