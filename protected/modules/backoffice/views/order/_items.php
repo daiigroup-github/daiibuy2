@@ -185,11 +185,11 @@
 					<?php } ?>
 						<tr>
 							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
-							<td style="text-align: right"><?php echo number_format($model->summary*0.07, 2, ".", ","); ?></td>
+							<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107)*0.07, 2, ".", ","); ?></td>
 						</tr>
 						<tr>
 							<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
-							<td style="text-align: right"><?php echo number_format($model->summary -($model->summary*0.07), 2, ".", ","); ?></td>
+							<td style="text-align: right"><?php echo number_format(($model->summary * 100) / 107, 2, ".", ","); ?></td>
 						</tr>
 						<tr>
 							<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
@@ -210,6 +210,7 @@
 					<?php
 					if($model->discountValue > 0)
 					{
+//						throw new Exception(print_r("yo",true));
 						?>
 
 						<tr>
@@ -219,11 +220,11 @@
 					<?php } ?>
 						<tr>
 							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
-							<td style="text-align: right"><?php echo number_format($model->summary*0.07, 2, ".", ","); ?></td>
+							<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107)*0.07, 2, ".", ","); ?></td>
 						</tr>
 						<tr>
 							<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
-							<td style="text-align: right"><?php echo number_format($model->summary -($model->summary*0.07), 2, ".", ","); ?></td>
+							<td style="text-align: right"><?php echo number_format(($model->summary * 100) / 107, 2, ".", ","); ?></td>
 						</tr>
 						<tr>
 							<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
