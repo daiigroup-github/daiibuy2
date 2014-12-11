@@ -46,15 +46,16 @@
 				$shippingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 2');
 				$billingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 1');
 //					(Yii::app()->controller->action->id == "viewOrder" && $userType <> 1 && $userType <> 5)
-				if(($model->status == 3 && ($userType <> 1 && $userType <> 2 && $userType <> 5 && $userType <> 3)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1 && $userType <> 3)) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1 && $userType <> 2 && $userType <> 3))
+				if(($model->status == 3 && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1)) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1 && $userType <> 2))
 				{
-					if(($model->status == 4 && $user->type == 3) || $model->status == 1 && $user->type == 4)
+					if(($model->status < 3 && $user->type <> 3) || $model->status == 1 && $user->type == 4)
 					{
 						echo getOrderShippingAddress($model);
 					}
 					else
 					{
-						echo getOrderSupplierBillingAddress($model, TRUE);
+						$res = getOrderSupplierBillingAddress($model, TRUE);
+						echo $res;
 					}
 				}
 				else

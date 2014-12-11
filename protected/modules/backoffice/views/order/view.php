@@ -174,7 +174,7 @@ function getOrderSupplierBillingAddress($model, $isFull = false)
 	$supplier = $model->supplier;
 	if($isFull)
 	{
-		return "<p> บริษัท " . $supplier->companyName . "</p>" . "<p>" . isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>";
+		return "บริษัท ". $supplier->companyName ."<br>". (isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>");
 	}
 	else
 	{
