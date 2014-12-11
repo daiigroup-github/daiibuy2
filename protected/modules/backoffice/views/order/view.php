@@ -178,7 +178,7 @@ function getOrderSupplierBillingAddress($model, $isFull = false)
 	}
 	else
 	{
-		return "<h4>" . $supplier->companyName . "</h4>" . $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode;
+		return "<h4>บริษัท " . $supplier->companyName . "</h4>" . $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode;
 	}
 }
 ?>
