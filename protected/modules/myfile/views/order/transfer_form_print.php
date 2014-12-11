@@ -48,7 +48,8 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 								$bankNameModel = BankName::model()->find("bankNameId = " . $data->bankNameId);
 								?>
 								<input type='checkbox' /> <image src = "<?php echo Yii::app()->request->baseUrl . $bankNameModel->logo; ?>" style = "width: 18px" />
-								<?php echo $bankNameModel->title . " (" . (isset($data->compCode) ? "CompCode : " . $data->compCode : "เลขที่บัญชี : " . $data->accNo) . "  ชื่อบัญชี " . $data->accName . ")"; ?>
+								<?php // throw new Exception(print_r($data,true)); ?>
+								<?php echo $bankNameModel->title . " (" . (isset($data->compCode)&& $data->compCode != "" ? "CompCode : " . $data->compCode : "เลขที่บัญชี : " . $data->accNo) . "  ชื่อบัญชี " . $data->accName . ")"; ?>
 							</div>
 						</div>
 						<?php

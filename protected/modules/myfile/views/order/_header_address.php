@@ -3,6 +3,7 @@
 		<?php
 		if(isset($user))
 		{
+//			throw new Exception(print_r($model->status.' ,'.$user->type,true));
 			if(($model->status != 3 && ($user->type != 4 && $user->type != 3 && $user->type != 2 )) || ($model->status >= 3 && ($user->type != 4 && $user->type != 3 )))
 			{
 				?>
@@ -29,6 +30,7 @@
 		}
 		else
 		{
+
 			?>
 			<div class="col-md-3 table-condensed" ><h6 style='margin-left: 8px;'>ได้รับเงินจาก :
 				</h6></div>
@@ -44,7 +46,7 @@
 				$shippingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 2');
 				$billingAddress = Address::model()->find('userId = ' . $model->userId . ' and type = 1');
 //					(Yii::app()->controller->action->id == "viewOrder" && $userType <> 1 && $userType <> 5)
-				if(($model->status == 3 && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1 )) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1))
+				if(($model->status == 3 && ($userType <> 1 && $userType <> 2 && $userType <> 5)) || (Yii::app()->controller->action->id == "view" && ($userType <> 5 && $userType <> 1 )) || (Yii::app()->controller->action->id == "print" && $userType <> 5 && $userType <> 1 && $userType <> 2))
 				{
 					if(($model->status == 4 && $user->type == 3) || $model->status == 1 && $user->type == 4)
 					{
@@ -57,6 +59,7 @@
 				}
 				else
 				{
+//					throw new Exception(print_r(1,true));
 					echo getOrderPaymentAddress($model);
 				}
 			}

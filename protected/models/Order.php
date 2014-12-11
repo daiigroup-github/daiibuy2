@@ -947,6 +947,7 @@ class Order extends OrderMaster
 
 	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent)
 	{
+
 		$result = array();
 		$criteria = new CDbCriteria();
 		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent , t.totalIncVAT as totalIncVAT ";
@@ -964,7 +965,7 @@ class Order extends OrderMaster
 		}
 
 		$models = $this->findAll($criteria);
-
+//				throw new Exception(print_r($models,true));
 		$extraDiscount = 0;
 		foreach($models as $item)
 		{

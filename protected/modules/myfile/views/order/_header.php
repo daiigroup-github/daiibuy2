@@ -51,7 +51,8 @@
 		?>
 	</div>
 	<div class="col-md-4" style="text-align: center;height: 120px;border: 1px #dddddd solid">
-		<h4 style="margin-top: 43px;"><?php echo (Yii::app()->controller->action->id == "printProductList") ? "ใบรายการสินค้า" : ((Yii::app()->controller->action->id == "viewOrder" && $user->type == 3) ? "ใบสั่งซื้อสินค้า" : $pageText[$model->status]['pageTitle']); ?></h4>
+		<?php // throw new Exception(print_r($model->status.", ".$user->type.", ".Yii::app()->controller->action->id,true)); ?>
+		<h4 style="margin-top: 43px;"><?php echo (Yii::app()->controller->action->id == "printProductList") ? "ใบรายการสินค้า" : ((Yii::app()->controller->action->id == "viewOrder" && $user->type == 3 && $model->status == 1) ? "ใบสั่งซื้อสินค้า" : ((($user->type == 1 || $user->type == 2) && $model->status > 1)? "ใบเสร็จรับเงิน/ใบกำกับภาษี":$pageText[$model->status]['pageTitle'])); ?></h4>
 	</div>
 </div>
 <div class="form-group" >
