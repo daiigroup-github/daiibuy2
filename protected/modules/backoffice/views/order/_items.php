@@ -36,10 +36,12 @@
 					{
 						?>
 						<td style="width:7%;text-align: center">ลำดับ</td>
-						<td style="width:16%;text-align: center">รหัสสินค้า</td>
-						<td style="width:80%;text-align: center">รายการ</td>
-						<td style="text-align: center">จำนวน</td>
-						<td style="text-align: center">หน่วย</td>
+							<td style="width:16%;text-align: center">รหัสสินค้า</td>
+							<td style="width:50%;text-align: center">รายการ</td>
+							<td style="text-align: center">จำนวน</td>
+							<td style="text-align: center">หน่วย</td>
+							<td style="text-align: center">ราคา/หน่วย(บาท)</td>
+							<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>
 						<?php // if ($user->type <> 2) {                               ?>
 		<!--										<td style="text-align: center">ราคา/หน่วย(บาท)</td>
 							<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>-->

@@ -54,7 +54,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
-					echo CHtml::dropDownList('existingBillingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_BILLING, $this->cookie->provinceId), array(
+					echo CHtml::dropDownList('existingBillingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_BILLING), array(
 						'class'=>'chosen-select-full-width',
 						'prompt'=>' --- Select ---',
 						'onchange'=>'ChkRadioBillAddress(1,this)'));
