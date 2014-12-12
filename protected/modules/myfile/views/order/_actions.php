@@ -66,7 +66,7 @@
 			'class'=>'btn btn-warning',
 			'target'=>'_blank',));
 	}
-	if(((!isset(Yii::app()->user->userType) && ($model->status == 1)) || ( Yii::app()->user->userType == 1) && ($model->status == 1)))
+	if(((!isset(Yii::app()->user->userType) && ($model->status == 1)) || ( Yii::app()->user->userType == 1 || Yii::app()->user->userType == 2) && ($model->status == 1)))
 	{
 		echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์ใบ Pay-in', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printPayForm", array(
 				"id"=>$model->orderGroupId)), array(
