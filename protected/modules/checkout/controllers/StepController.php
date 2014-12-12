@@ -200,7 +200,6 @@ class StepController extends MasterCheckoutController
 			{
 				//add new billing address
 				$billingAddressModel->attributes = $_POST['billing'];
-				$billingAddressModel->provinceId = $this->cookie->provinceId;
 				$billingAddressModel->userId = Yii::app()->user->id;
 				if(!$billingAddressModel->save())
 				{
@@ -281,6 +280,7 @@ class StepController extends MasterCheckoutController
 		$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
 		$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 
+
 //                                        throw new Exception(print_r(Yii::app()->session['shippingAddressId'].", ".Yii::app()->session['billingAddressId'],true));
 //                throw new Exception(print_r($billingAddress,true));
 		$this->render('step3', array(
@@ -347,28 +347,32 @@ class StepController extends MasterCheckoutController
 				/**
 				 * Todo:: billing & shipping address
 				 */
+				$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
+				$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 				$userModel = User::model()->findByPk(Yii::app()->user->id);
 				$orderGroup->email = $userModel->email;
 				$orderGroup->firstname = $userModel->firstname;
 				$orderGroup->lastname = $userModel->lastname;
 				$orderGroup->telephone = $userModel->telephone;
-				$orderGroup->paymentFirstname = $userModel->billingAddress->firstname;
-				$orderGroup->paymentLastname = $userModel->billingAddress->lastname;
-				$orderGroup->paymentAddress1 = $userModel->billingAddress->address_1;
-				$orderGroup->paymentAddress2 = $userModel->billingAddress->address_2;
-				$orderGroup->paymentDistrictId = $userModel->billingAddress->districtId;
-				$orderGroup->paymentAmphurId = $userModel->billingAddress->amphurId;
-				$orderGroup->paymentProvinceId = $userModel->billingAddress->provinceId;
-				$orderGroup->paymentPostcode = $userModel->billingAddress->postcode;
+				$orderGroup->paymentCompany = $billingAddress->company;
+				$orderGroup->paymentFirstname = $billingAddress->firstname;
+				$orderGroup->paymentLastname = $billingAddress->lastname;
+				$orderGroup->paymentAddress1 = $billingAddress->address_1;
+				$orderGroup->paymentAddress2 = $billingAddress->address_2;
+				$orderGroup->paymentDistrictId = $billingAddress->districtId;
+				$orderGroup->paymentAmphurId = $billingAddress->amphurId;
+				$orderGroup->paymentProvinceId = $billingAddress->provinceId;
+				$orderGroup->paymentPostcode = $billingAddress->postcode;
 
-//				$orderGroup->shippingFirstname = $userModel->shippingAddress->firstname;
-//				$orderGroup->shippingLastname = $userModel->shippingAddress->lastname;
-				$orderGroup->shippingAddress1 = $userModel->shippingAddress->address_1;
-				$orderGroup->shippingAddress2 = $userModel->shippingAddress->address_2;
-				$orderGroup->shippingDistrictId = $userModel->shippingAddress->districtId;
-				$orderGroup->shippingAmphurId = $userModel->shippingAddress->amphurId;
-				$orderGroup->shippingProvinceId = $userModel->shippingAddress->provinceId;
-				$orderGroup->shippingPostCode = $userModel->shippingAddress->postcode;
+//				$orderGroup->shippingFirstname = $shippingAddress->firstname;
+//				$orderGroup->shippingLastname = $shippingAddress->lastname;
+				$orderGroup->shippingCompany = $shippingAddress->company;
+				$orderGroup->shippingAddress1 = $shippingAddress->address_1;
+				$orderGroup->shippingAddress2 = $shippingAddress->address_2;
+				$orderGroup->shippingDistrictId = $shippingAddress->districtId;
+				$orderGroup->shippingAmphurId = $shippingAddress->amphurId;
+				$orderGroup->shippingProvinceId = $shippingAddress->provinceId;
+				$orderGroup->shippingPostCode = $shippingAddress->postcode;
 				/**
 				 * TODO:: remove false after add address
 				 */

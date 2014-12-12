@@ -44,7 +44,12 @@
 							//alert(data.provinceId);
 							$("#selectProvinceModal").modal("hide");
 							$("#selectProvinceModal").on("hidden.bs.modal", function (e) {
-								window.location.assign(2);
+							var action = "'.$this->action->id.'";
+								if(action=="step"){
+									window.location.assign(2);
+								}else{
+									location.reload();
+								}
 							});
 						}'
 					), array(
