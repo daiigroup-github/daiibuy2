@@ -365,8 +365,8 @@ class StepController extends MasterCheckoutController
 				$orderGroup->paymentProvinceId = $billingAddress->provinceId;
 				$orderGroup->paymentPostcode = $billingAddress->postcode;
 
-				$orderGroup->shippingFirstname = $shippingAddress->firstname;
-				$orderGroup->shippingLastname = $shippingAddress->lastname;
+//				$orderGroup->shippingFirstname = $shippingAddress->firstname;
+//				$orderGroup->shippingLastname = $shippingAddress->lastname;
 				$orderGroup->shippingCompany = $shippingAddress->company;
 				$orderGroup->shippingAddress1 = $shippingAddress->address_1;
 				$orderGroup->shippingAddress2 = $shippingAddress->address_2;
