@@ -442,18 +442,6 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 					?>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-4 col-md-4 col-sm-4">
-					<p><?php echo $form->labelEx($shippingAddressModel, 'taxNo'); ?></p>
-				</div>
-				<div class="col-lg-8 col-md-8 col-sm-8">
-					<?php
-					echo $form->textField($shippingAddressModel, 'taxNo', array(
-						'id'=>'shippingTaxNo',
-						'name'=>'shipping[taxNo]'));
-					?>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>

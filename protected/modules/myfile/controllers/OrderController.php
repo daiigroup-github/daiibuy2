@@ -286,7 +286,7 @@ class OrderController extends MasterMyFileController
 			case 2://Dealer
 				return array(
 					'1'=>(Yii::app()->user->userType == $userOrder->type) ? array(
-						'pageTitle'=>"ใบสั่งซื้อสินค้า",
+						'pageTitle'=>"ใบสั่งซื้อสินค้า/ใบแจ้งหนี้",
 						'defaultStatus'=>'1',
 						'optionButtonText'=>'ยืนยันชำระเงิน',
 						'comfirmText'=>'ต้องการยืนยันโอนเงิน ?',

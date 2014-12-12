@@ -8,7 +8,7 @@
 				{
 					if(!($user->type == 2))
 					{
-						if(($user->type == 1 && $model->status == 1) || ($user->type == 4 && $model->status == 1) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && ($model->status == 3 || $model->status == 4) && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
+						if((($user->type == 1 || $user->type == 2 ) && $model->status == 1) || ($user->type == 4 && $model->status == 1) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && ($model->status == 3 || $model->status == 4) && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
 						{
 							?>
 							<td style="width:7%;text-align: center">ลำดับ</td>
