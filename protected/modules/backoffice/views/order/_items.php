@@ -8,7 +8,7 @@
 				{
 					if(!($user->type == 2))
 					{
-						if(($user->type == 1 && $model->status == 1) || ($user->type == 4 && $model->status == 1) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && ($model->status == 3 || $model->status == 4) && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
+						if((($user->type == 1 || $user->type == 2 ) && $model->status == 1) || ($user->type == 4 && $model->status == 1) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && ($model->status == 3 || $model->status == 4) && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
 						{
 							?>
 							<td style="width:7%;text-align: center">ลำดับ</td>
@@ -175,7 +175,8 @@
 							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
 
-					<?php
+				<?php
+
 					if($model->discountValue > 0)
 					{
 						?>
@@ -184,7 +185,24 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
-					<?php } ?>
+					<?php }
+					if($model->distributorDiscount > 0)
+					{
+						?>
+						<tr>
+							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
+							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->distributorDiscount, 2, ".", ","); ?></td>
+						</tr>
+					<?php }
+					if($model->extraDiscount > 0)
+					{
+						?>
+						<tr>
+							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
+							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
+						</tr>
+					<?php }
+						?>
 						<tr>
 							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
 							<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107)*0.07, 2, ".", ","); ?></td>
@@ -210,16 +228,34 @@
 					</tr>
 
 					<?php
+
 					if($model->discountValue > 0)
 					{
-//						throw new Exception(print_r("yo",true));
 						?>
 
 						<tr>
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
-					<?php } ?>
+					<?php }
+					if($model->distributorDiscount > 0)
+					{
+						?>
+						<tr>
+							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
+							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->distributorDiscount, 2, ".", ","); ?></td>
+						</tr>
+					<?php }
+					if($model->extraDiscount > 0)
+					{
+						?>
+						<tr>
+							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
+							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
+						</tr>
+					<?php }
+						?>
+
 						<tr>
 							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
 							<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107)*0.07, 2, ".", ","); ?></td>
