@@ -60,7 +60,7 @@ class MasterBackofficeController extends MasterController
 				'url'=>array(
 					'/backoffice/order/orderHistory',
 				),
-				'visible'=>Yii::app()->user->userType == 5),
+				'visible'=>!Yii::app()->user->isGuest && Yii::app()->user->userType == 5),
 			array(
 				'label'=>'Myfile',
 				'url'=>array(
