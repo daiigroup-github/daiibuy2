@@ -113,6 +113,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($userModel, 'firstname');?>
+					<?php echo $form->error($userModel,'firstname'); ?>
                 </div>
             </div>
             <div class="row">
@@ -121,6 +122,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($userModel, 'lastname');?>
+					<?php echo $form->error($userModel,'lastname'); ?>
                 </div>
             </div>
             <div class="row">
@@ -129,6 +131,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($userModel, 'email');?>
+					<?php echo $form->error($userModel,'email'); ?>
                 </div>
             </div>
             <div class="row">
@@ -137,6 +140,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->passwordField($userModel, 'password', array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;'));?>
+					<?php echo $form->error($userModel,'password'); ?>
                 </div>
             </div>
             <div class="row">
@@ -145,6 +149,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->passwordField($userModel, 'confirmPassword',array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;'));?>
+					<?php echo $form->error($userModel,'confirmPassword'); ?>
                 </div>
             </div>
 
@@ -160,6 +165,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'firstname');?>
+					<?php echo $form->error($addressModel,'firstname'); ?>
                 </div>
             </div>
             <div class="row">
@@ -168,6 +174,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'lastname');?>
+					<?php echo $form->error($addressModel,'lastname'); ?>
                 </div>
             </div>
             <div class="row">
@@ -176,6 +183,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'company');?>
+					<?php echo $form->error($addressModel,'company'); ?>
                 </div>
             </div>
 			<div class="row">
@@ -184,6 +192,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'taxNo');?>
+					<?php echo $form->error($addressModel,'taxNo'); ?>
                 </div>
             </div>
             <div class="row">
@@ -192,6 +201,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'address_1');?>
+					<?php echo $form->error($addressModel,'address_1'); ?>
                 </div>
             </div>
             <div class="row">
@@ -200,6 +210,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'address_2');?>
+					<?php echo $form->error($addressModel,'address_2'); ?>
                 </div>
             </div>
 						<div class="row">
@@ -274,6 +285,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'postcode');?>
+					<?php echo $form->error($addressModel,'postcode'); ?>
                 </div>
             </div>
 
@@ -283,6 +295,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($userModel, 'telephone');?>
+					<?php echo $form->error($userModel,'telephone'); ?>
                 </div>
             </div>
 			<div class="row">
@@ -291,6 +304,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($userModel, 'fax');?>
+					<?php echo $form->error($userModel,'fax'); ?>
                 </div>
             </div>
 
