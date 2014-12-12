@@ -290,7 +290,7 @@ class OrderController extends MasterMyFileController
 						'defaultStatus'=>'1',
 						'optionButtonText'=>'ยืนยันชำระเงิน',
 						'comfirmText'=>'ต้องการยืนยันโอนเงิน ?',
-						'actionUrl'=>"order/UserConfirmTransfer",
+						'actionUrl'=>(isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/UserConfirmTransfer",
 						'description'=>"รอการยืนยันโอนเงินจากลูกค้า"
 						) : array(
 						'pageTitle'=>"แบบร่างใบสั่งซื้อสินค้า",
