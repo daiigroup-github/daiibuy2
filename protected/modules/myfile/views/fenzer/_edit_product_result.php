@@ -74,7 +74,7 @@
 	<form id="addItem" action="#">
 
 	<?php echo Select2::dropDownList('productId', 'selectedCode',
-					CHtml::listData(Product::model()->findAll('supplierId = 1'), 'productId', 'code'),
+					CHtml::listData(Product::model()->findAll('supplierId = 1 and status = 2'), 'productId', 'code'),
 					array('class'=>'form-control',
 						'id'=>'itemCode',
 						'prompt'=>'เลือกรหัสสินค้า',

@@ -214,7 +214,7 @@ $this->breadcrumbs = array(
 								<form id="addItem" action="#">
 
 									<?php
-									echo CHtml::dropDownList('productId', 'selectedCode', CHtml::listData(Product::model()->findAll('supplierId =' . 176 . ' AND Status = 1'), 'productId', 'code'), array(
+									echo CHtml::dropDownList('productId', 'selectedCode', CHtml::listData(Product::model()->findAll('supplierId =' . 176 . ' AND Status = 2'), 'productId', 'code'), array(
 										'class'=>'form-control',
 										'id'=>'itemCode',
 										'prompt'=>'เลือกรหัสสินค้า',
