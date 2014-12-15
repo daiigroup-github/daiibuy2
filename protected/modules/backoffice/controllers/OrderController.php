@@ -470,13 +470,15 @@ class OrderController extends MasterBackofficeController
 
 	public function actionAdminDefinePaymentDateTime($id, $paymentDateTime)
 	{
+//		throw new Exception(print_r(date_create($paymentDateTime),true));
 		$order = OrderGroup::model()->findByPk($id);
 		if(isset($order))
 		{
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$order->paymentDateTime = $paymentDateTime;
+				$order->paymentDateTime = date_format(date_create($paymentDateTime), 'Y-m-d H:i:s');
+
 				if($order->save())
 				{
 					$transaction->commit();
