@@ -476,9 +476,9 @@ class FenzerController extends MasterMyFileController
 
 	public function actionFinish($id)
 	{
-		$model = Order::model()->findByPk($id);
-		$model->status = 3;
-		$model->save();
+//		$model = Order::model()->findByPk($id);
+//		$model->status = 3;
+//		$model->save();
 		$this->redirect(array(
 			'index'));
 	}
