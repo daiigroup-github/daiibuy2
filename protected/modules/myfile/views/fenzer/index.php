@@ -55,6 +55,7 @@ $this->breadcrumbs = array(
 									<p>จังหวัดที่ส่ง : <?php echo Province::model()->findByPk($myfile->provinceId)->provinceName; ?></p>
 									<p><?php
 										$i = 1;
+										if(count($myfile->orderDetails)>0){
 										foreach($myfile->orderDetails[0]->orderDetailValues as $detailValue):
 											if($i == 3)
 											{
@@ -63,6 +64,7 @@ $this->breadcrumbs = array(
 											echo ucfirst($detailValue->orderDetailTemplateField->title) . " :" . $detailValue->value . " m. ";
 											$i++;
 										endforeach;
+										}
 										?></p>
 								</a>
 							</div>
