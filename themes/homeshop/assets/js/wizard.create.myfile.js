@@ -88,6 +88,9 @@ $('#nextToStep4').live('click', function(e) {
 			success: function(data) {
 				$("#confirm_content").html(data);
 				$('ul.setup-panel li a[href="#step-4"]').trigger('click');
+				var orderId = $("#order").attr("name");
+				$('#requestSpecial')[0].setAttribute('href', base_url + '/myfile/fenzer/requestSpacialProject/id/' + orderId);
+
 			}
 		});
 	}

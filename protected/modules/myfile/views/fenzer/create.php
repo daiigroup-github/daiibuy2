@@ -209,7 +209,9 @@ $this->breadcrumbs = array(
 						<button id="finish" class="btn btn-success btn-lg"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</button>
 						<a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
 						<button id="addToCart" class="btn btn-warning btn-lg"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</button>
-						<button id="requestSpecial" class="btn btn-info btn-lg"><i class="glyphicon glyphicon-share"></i> Request Special Project</button>
+						<?php if(!$model->isRequestSpacialProject){ ?>
+							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/fenzer/requestSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+						<?php } ?>
 					</div>
 				</div>
 			</div>
