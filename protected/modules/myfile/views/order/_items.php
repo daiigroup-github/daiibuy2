@@ -346,7 +346,7 @@
 													":userId"=>$model->userId));
 												if(isset($userAddr))
 												{
-													echo $userAddr->company != "---" ? "บริษัท " . $userAddr->company : "บริษัท " . $model->paymentCompany;
+													echo $userAddr->company != "---" ? $userAddr->company : $model->paymentCompany;
 												}
 												?>
 											</td>

@@ -80,7 +80,7 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 								$comName = User::model()->showUserCompany($model->userId);
 								if((($comName != "---") && ($comName != "") && isset($comName)) || isset($model->paymentCompany))
 								{
-									echo "บริษัท " . ((($comName != "---") && ($comName != "") && isset($comName)) ? $comName : $model->paymentCompany);
+									echo ((($comName != "---") && ($comName != "") && isset($comName)) ? $comName : $model->paymentCompany);
 								}
 								else
 								{

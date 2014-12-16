@@ -196,13 +196,13 @@
 						{
 							if($model->status >= 3 && $user->type == 3)
 							{
-								echo "<p style='margin-left: 20px'>" . ( isset($model->paymentCompany) ? "บริษัท " . $model->paymentCompany : $model->paymentFirstname . " " . $model->paymentLastname) . "</p>"
+								echo "<p style='margin-left: 20px'>" . ( isset($model->paymentCompany) ? $model->paymentCompany : $model->paymentFirstname . " " . $model->paymentLastname) . "</p>"
 								. "<p style='margin-left: 20px;font-weight:bold;'>สถานที่จัดส่ง : "
 								. (isset($model->shippingAddress1) ? $model->shippingAddress1 : "") . " " . (isset($model->shippingAddress2) ? $model->shippingAddress2 : "") . " " . $model->shippingDistrict->districtName . " " . $model->shippingAmphur->amphurName . " " . $model->shippingProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "</p>";
 							}
 							else
 							{
-								echo "บริษัท Daii Group จำกัด มหาชน.";
+								echo "บริษัทไดอิ กรุ๊ป จำกัด มหาชน.";
 							}
 						}
 						else

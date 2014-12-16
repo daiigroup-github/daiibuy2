@@ -154,7 +154,7 @@ function showImage($imageUrl, $title)
 
 function getOrderShippingAddress($model)
 {
-	return "<p style='text-align: left'>" . isset($model->shippingCompany) ? "บริษัท " . $model->shippingCompany : $model->paymentFirstname . " " . $model->paymentLastname . "</p><p style='text-align: left'>" . $model->shippingAddress1 . $model->shippingAddress2 . " " . $model->shippingDistrict->districtName . " " . $model->shippingAmphur->amphurName . " " . $model->shippingProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . " Email : " . $model->email . "<p>";
+	return "<p style='text-align: left'>" . isset($model->shippingCompany) ? $model->shippingCompany : $model->paymentFirstname . " " . $model->paymentLastname . "</p><p style='text-align: left'>" . $model->shippingAddress1 . $model->shippingAddress2 . " " . $model->shippingDistrict->districtName . " " . $model->shippingAmphur->amphurName . " " . $model->shippingProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . " Email : " . $model->email . "<p>";
 }
 
 function getOrderPaymentAddress($model)
@@ -163,7 +163,7 @@ function getOrderPaymentAddress($model)
 	$res = "";
 	if(isset($model->paymentCompany))
 	{
-		$res.= "บริษัท " . $model->paymentCompany . " โดย ";
+		$res.= $model->paymentCompany . " โดย ";
 	}
 	$res .= " คุณ". $model->paymentFirstname . " " . $model->paymentLastname ."<br>" . (isset($model->paymentTaxNo) ? "<br>เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo ."<br>" : "") . "". $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . "<br>โทรศัพท์ :  " . $model->telephone;
 	return $res;
@@ -174,11 +174,11 @@ function getOrderSupplierBillingAddress($model, $isFull = false)
 	$supplier = $model->supplier;
 	if($isFull)
 	{
-		return "บริษัท ". $supplier->companyName ."<br>". (isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>");
+		return $supplier->companyName ."<br>". (isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>");
 	}
 	else
 	{
-		return "<h4>บริษัท " . $supplier->companyName . "</h4>" . $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode;
+		return "<h4>" . $supplier->companyName . "</h4>" . $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode;
 	}
 }
 ?>
