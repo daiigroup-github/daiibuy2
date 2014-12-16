@@ -41,7 +41,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
 ?>
 
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-xs-12">
 
 		<?php
 		if((Yii::app()->controller->action->id == "view" || Yii::app()->controller->action->id == "UserConfirmFromMail") && Yii::app()->controller->id == "order")

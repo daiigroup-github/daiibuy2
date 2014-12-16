@@ -1,5 +1,5 @@
 <div class="form-group" >
-	<div class="col-md-2" style="text-align: center;height: 120px;">
+	<div class="col-xs-2" style="text-align: center;height: 120px;">
 		<?php
 		if(isset(Yii::app()->user->id))
 		{
@@ -21,7 +21,7 @@
 		}
 		?>
 	</div>
-	<div class="col-md-6" style="text-align: center;height: 120px;border: 1px #dddddd solid">
+	<div class="col-xs-6" style="text-align: center;height: 120px;border: 1px #dddddd solid">
 		<?php
 //		if(isset(Yii::app()->user->id))
 //		{
@@ -50,9 +50,9 @@
 //		}
 		?>
 	</div>
-	<div class="col-md-4" style="text-align: center;height: 120px;border: 1px #dddddd solid">
+	<div class="col-xs-4" style="text-align: center;height: 120px;border: 1px #dddddd solid">
 		<?php // throw new Exception(print_r($model->status.", ".$user->type.", ".Yii::app()->controller->action->id,true)); ?>
-		<h4 style="margin-top: 43px;"><?php echo (Yii::app()->controller->action->id == "printProductList") ? "ใบรายการสินค้า" : ((Yii::app()->controller->action->id == "viewOrder" && $user->type == 3 && $model->status == 1) ? "ใบสั่งซื้อสินค้า" : ((($user->type == 1 || $user->type == 2) && $model->status > 1)? "ใบเสร็จรับเงิน/ใบกำกับภาษี": (($model->status == 3 && $user->type == 3)? "ใบส่งสินค้า" : $pageText[$model->status]['pageTitle']))); ?></h4>
+		<h5 style="margin-top: 43px;"><?php echo (Yii::app()->controller->action->id == "printProductList") ? "ใบรายการสินค้า" : ((Yii::app()->controller->action->id == "viewOrder" && $user->type == 3 && $model->status == 1) ? "ใบสั่งซื้อสินค้า" : ((($user->type == 1 || $user->type == 2) && $model->status > 1)? "ใบเสร็จรับเงิน/<br>ใบกำกับภาษี": (($model->status == 3 && $user->type == 3)? "ใบส่งสินค้า" : $pageText[$model->status]['pageTitle']))); ?></h5>
 	</div>
 </div>
 <div class="form-group" >
@@ -63,9 +63,9 @@
 		if($model->status != 3 && ($user->type != 4 || $user->type != 2 ))
 		{
 			?>
-			<div class="col-md-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $supplier->taxNumber; ?>
+			<div class="col-xs-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $supplier->taxNumber; ?>
 				</h5></div>
-			<div class="col-md-6 table-condensed" style="text-align: right" >
+			<div class="col-xs-6 table-condensed" style="text-align: right" >
 				<?php
 				if(isset($user))
 				{
@@ -89,9 +89,9 @@
 		else
 		{
 			?>
-			<div class="col-md-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $supplier->taxNumber; ?>
+			<div class="col-xs-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $supplier->taxNumber; ?>
 				</h5></div>
-			<div class="col-md-6 table-condensed" style="text-align: right" >
+			<div class="col-xs-6 table-condensed" style="text-align: right" >
 				<?php
 				if(isset($user))
 				{
@@ -116,9 +116,9 @@
 	else
 	{
 		?>
-		<div class="col-md-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $numberOfTax; ?>
+		<div class="col-xs-6 table-condensed" ><h5 style='margin-left: 10px;'>เลขประจำตัวผู้เสียภาษี : <?php echo $numberOfTax; ?>
 			</h5></div>
-		<div class="col-md-6 table-condensed" style="text-align: right;font-size:small" >
+		<div class="col-xs-6 table-condensed" style="text-align: right;font-size:small" >
 			<?php
 			if(isset($user))
 			{

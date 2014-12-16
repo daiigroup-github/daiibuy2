@@ -16,12 +16,12 @@ footer {
 }
 
 .wrapper {
-	width: 20cm;
+	width: 5cm;
 	height: 27cm;
 	margin: 0px;
 	margin-left: auto;
 	margin-right: auto;
-	position: relative;
+	position: static;
 	page-break-after:always;
 }
 
@@ -38,9 +38,9 @@ footer {
 }
 
 table {
-	width: 19cm;
+	width: 5cm;
 	margin: auto;
-	position: relative;
+	position: static;
 }
 
 td table {

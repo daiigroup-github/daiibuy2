@@ -1,3 +1,93 @@
+<div class="form-group" style="margin-top: 5px">
+	<table class="table table-striped table-bordered table-condensed">
+		<thead style="font-size:small">
+			<tr>
+				<?php
+				if(isset($user))
+				{
+					if($model->status < 3 && ($user->type != 4 || $user->type != 3 || $user->type != 5 ))
+					{
+						?>
+						<td style="width:30%;text-align: center"><b style="font-size:small">เลขทื่ใบสั่งซื้อสินค้า</b></td>
+						<!--<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
+						<?php
+					}
+					else
+					{
+						if($user->type == 1)
+						{
+							?>
+																						<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขที่ใบสั่งซื้อสินค้า</b></td>
+																											<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
+							<?php
+						}
+						else
+						{
+							if($model->status == 3 && $user->type == 3)
+							{
+								?>
+								<td style="width:50%;text-align: center"><b style="font-size:small">ผู้ซื้อ</b></td>
+								<!--<td style="width:50%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
+								<?php
+							}
+							else
+							{
+								?>
+								<td style="width:30%;text-align: center"><b style="font-size:small">สถานที่วางบิล</b></td>
+								<!--<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
+								<?php
+							}
+						}
+					}
+				}
+				else
+				{
+					?>
+					<td style="width:30%;text-align: center;font-size:small"><b>เลขที่ใบสั่งซื้อสินค้า</b></td>
+					<!--<td style="width:70%;text-align: center;font-size:small"><b>ตัวแทนกระจายสินค้า</b></td>-->
+					<?php
+				}
+				?>
+			</tr>
+		</thead>
+		<tbody style="font-size:small">
+			<tr>
+				<td style="text-align: center"><?php
+					if(isset($user))
+					{
+						if($model->status >= 3 && ($user->type == 4 || $user->type == 3 || $user->type == 5))
+						{
+							if($model->status >= 3 && $user->type == 3)
+							{
+								echo "<p style='margin-left: 20px'>" . ( isset($model->paymentCompany) ? $model->paymentCompany : $model->paymentFirstname . " " . $model->paymentLastname) . "</p>"
+								. "<p style='margin-left: 20px;font-weight:bold;'>สถานที่จัดส่ง : "
+								. (isset($model->shippingAddress1) ? $model->shippingAddress1 : "") . " " . (isset($model->shippingAddress2) ? $model->shippingAddress2 : "") . " " . $model->shippingDistrict->districtName . " " . $model->shippingAmphur->amphurName . " " . $model->shippingProvince->provinceName . " " . $model->paymentPostcode . " โทรศัพท์ :  " . $model->telephone . "</p>";
+							}
+							else
+							{
+								echo "บริษัทไดอิ กรุ๊ป จำกัด มหาชน.";
+							}
+						}
+						else
+						{
+							echo $model->orderNo;
+						}
+					}
+					else
+					{
+						echo $model->orderNo;
+					}
+					?></td>
+					<!--<td>-->
+				<?php
+//						echo getOrderShippingAddress($model);
+//					echo isset($dealerAddr) ? "<p style='margin-left: 20px'>" . $dealerAddr->company . ", " . $dealerAddr->address_1 . " " . $dealerAddr->district->districtName . " " . $dealerAddr->amphur->amphurName . " " . $dealerAddr->province->provinceName . " " . $dealerAddr->postcode . "</p>" . "<p style='margin-left: 20px'> ผู้ติดต่อ : " . $dealerAddr->firstname . " " . $dealerAddr->lastname . " โทรศัพท์ : " . $dealer->telephone . "</p><p style='margin-left: 20px'> Email : " . $dealer->email . " </p>" : "-";
+				?>
+				<!--</td>-->
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div class="form-group">
 	<table class="table table-striped table-bordered table-condensed" style="font-size:small">
 		<thead style="font-size:small">

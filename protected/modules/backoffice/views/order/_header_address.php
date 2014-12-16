@@ -1,5 +1,5 @@
 <div class="form-group" >
-	<div class="col-md-8 table-bordered table-condensed" style="border-left: 1px; border-left-style: solid; border-left-color: #dddddd;height: 110px;">
+	<div class="col-xs-8 table-bordered table-condensed" style="border-left: 1px; border-left-style: solid; border-left-color: #dddddd;height: 110px;">
 		<?php
 		if(isset($user))
 		{
@@ -7,7 +7,7 @@
 			if(($model->status != 3 && ($user->type != 4 && $user->type != 3 && $user->type != 2 )) || ($model->status >= 3 && ($user->type != 4 && $user->type != 3 )))
 			{
 				?>
-				<div class="col-md-3 table-condensed"  ><h6 style='margin-left: 8px;'>ได้รับเงินจาก :
+				<div class="col-xs-3 table-condensed"  ><h6 style='margin-left: 8px;'>ได้รับเงินจาก :
 					</h6></div>
 				<?php
 			}
@@ -16,13 +16,13 @@
 				if($model->status == 1 && $user->type == 4)
 				{
 					?>
-					<div class="col-md-3 table-condensed" ><h6 style='margin-left: 8px; text-align: Right'>ผู้ซื้อ : &nbsp;</h6></div>
+					<div class="col-xs-3 table-condensed" ><h6 style='margin-left: 8px; text-align: Right'>ผู้ซื้อ : &nbsp;</h6></div>
 					<?php
 				}
 				else
 				{
 					?>
-					<div class="col-md-3 table-condensed" ><h6 style='margin-left: 8px;'>ผู้ผลิตสินค้า :
+					<div class="col-xs-3 table-condensed" ><h6 style='margin-left: 8px;'>ผู้ผลิตสินค้า :
 						</h6></div>
 					<?php
 				}
@@ -32,11 +32,11 @@
 		{
 
 			?>
-			<div class="col-md-3 table-condensed" ><h6 style='margin-left: 8px;'>ได้รับเงินจาก :
+			<div class="col-xs-3 table-condensed" ><h6 style='margin-left: 8px;'>ได้รับเงินจาก :
 				</h6></div>
 		<?php }
 		?>
-		<div class="col-md-9 table-condensed" style="margin-left: -25px;text-align: left; height: 90px;margin-top: 10px" >
+		<div class="col-xs-9 table-condensed" style="margin-left: -25px;text-align: left; height: 90px;margin-top: 10px" >
 			<?php
 			if(isset(Yii::app()->user->id))
 			{
@@ -71,7 +71,7 @@
 			?>
 		</div>
 	</div>
-	<div class="col-md-4 table-condensed" >
+	<div class="col-xs-4 table-condensed" >
 		<?php
 		if(isset($user))
 		{
@@ -136,7 +136,7 @@
 	</div>
 </div>
 <div class="form-group" style="margin-top: 5px">
-	<table class="<?php echo (isset($user) && $user->type != 1) ? 'table table-striped table-bordered table-condensed' : '' ?> ">
+	<table class="table table-striped table-bordered table-condensed">
 		<thead style="font-size:small">
 			<tr>
 				<?php
