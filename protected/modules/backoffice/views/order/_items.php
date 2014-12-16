@@ -1,6 +1,6 @@
 <div class="form-group">
-	<table class="table table-striped table-bordered table-condensed" style="font-size:small">
-		<thead style="font-size:small">
+	<table class="table table-striped table-bordered table-condensed" style="font-size:11px">
+		<thead>
 			<tr>
 
 				<?php
@@ -11,37 +11,37 @@
 						if((($user->type == 1 || $user->type == 2 ) && $model->status == 1) || ($user->type == 4 && $model->status == 1) || ((Yii::app()->controller->action->id == "print") && !($user->type == 3)) || (($user->type == 3) && ($model->status == 3 || $model->status == 4) && !(Yii::app()->controller->action->id == "print")) || (($user->type == 5 || $user->type == 4) && $model->status >= 3))
 						{
 							?>
-							<td style="width:7%;text-align: center">ลำดับ</td>
-							<td style="width:16%;text-align: center">รหัสสินค้า</td>
-							<td style="width:50%;text-align: center">รายการ</td>
-							<td style="text-align: center">จำนวน</td>
-							<td style="text-align: center">หน่วย</td>
-							<td style="text-align: center">ราคา/หน่วย(บาท)</td>
-							<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>
+							<td style="width:7%;text-align: center;font-size:11px">ลำดับ</td>
+							<td style="width:16%;text-align: center;font-size:11px">รหัสสินค้า</td>
+							<td style="width:50%;text-align: center;font-size:11px">รายการ</td>
+							<td style="text-align: center;font-size:11px">จำนวน</td>
+							<td style="text-align: center;font-size:11px">หน่วย</td>
+							<td style="text-align: center;font-size:11px">ราคา/หน่วย(บาท)</td>
+							<td style="text-align: center;font-size:11px">มูลค่าสินค้ารวมภาษี(บาท)</td>
 
 							<?php
 						}
 						else
 						{
 							?>
-							<td style="width:7%;text-align: center">ลำดับ</td>
-							<td style="width:16%;text-align: center">รหัสสินค้า</td>
-							<td style="width:80%;text-align: center">รายการ</td>
-							<td style="text-align: center">จำนวน</td>
-							<td style="text-align: center">หน่วย</td>
+							<td style="width:7%;text-align: center;font-size:11px">ลำดับ</td>
+							<td style="width:16%;text-align: center;font-size:11px">รหัสสินค้า</td>
+							<td style="width:80%;text-align: center;font-size:11px">รายการ</td>
+							<td style="text-align: center;font-size:11px">จำนวน</td>
+							<td style="text-align: center;font-size:11px">หน่วย</td>
 							<?php
 						}
 					}
 					else
 					{
 						?>
-						<td style="width:7%;text-align: center">ลำดับ</td>
-							<td style="width:16%;text-align: center">รหัสสินค้า</td>
-							<td style="width:50%;text-align: center">รายการ</td>
-							<td style="text-align: center">จำนวน</td>
-							<td style="text-align: center">หน่วย</td>
-							<td style="text-align: center">ราคา/หน่วย(บาท)</td>
-							<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>
+						<td style="width:7%;text-align: center;font-size:11px">ลำดับ</td>
+							<td style="width:16%;text-align: center;font-size:11px">รหัสสินค้า</td>
+							<td style="width:50%;text-align: center;font-size:11px">รายการ</td>
+							<td style="text-align: center;font-size:11px">จำนวน</td>
+							<td style="text-align: center;font-size:11px">หน่วย</td>
+							<td style="text-align: center;font-size:11px">ราคา/หน่วย(บาท)</td>
+							<td style="text-align: center;font-size:11px">มูลค่าสินค้ารวมภาษี(บาท)</td>
 						<?php // if ($user->type <> 2) {                               ?>
 		<!--										<td style="text-align: center">ราคา/หน่วย(บาท)</td>
 							<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>-->
@@ -52,16 +52,16 @@
 				else
 				{
 					?>
-					<td style="width:7%;text-align: center">ลำดับ</td>
-					<td style="width:16%;text-align: center">รหัสสินค้า</td>
-					<td style="width:50%;text-align: center">รายการ</td>
-					<td style="text-align: center">จำนวน</td>
-					<td style="text-align: center">หน่วย</td>
+					<td style="width:7%;text-align: center;font-size:11px">ลำดับ</td>
+					<td style="width:16%;text-align: center;font-size:11px">รหัสสินค้า</td>
+					<td style="width:50%;text-align: center;font-size:11px">รายการ</td>
+					<td style="text-align: center;font-size:11px">จำนวน</td>
+					<td style="text-align: center;font-size:11px">หน่วย</td>
 				<?php }
 				?>
 			</tr>
 		</thead>
-		<tbody style="font-size:small">
+		<tbody style="font-size:11px">
 			<?php
 			if(count($model->orders) > 0)
 			{
@@ -76,13 +76,13 @@
 				{
 					?>
 					<tr>
-						<td style="text-align: center"><?php echo $i; ?></td>
-						<td style="text-align: center"><?php echo "-"; ?></td>
+						<td style="text-align: center;font-size:11px"><?php echo $i; ?></td>
+						<td style="text-align: center;font-size:11px"><?php echo "-"; ?></td>
 						<td><?php echo $model->supplierId == 4 ? "ค่างานก่อสร้างเรียกเก็บตามสัญญา" : "เงินรับล่วงหน้าค่าสินค้า"; ?></td>
-						<td style="text-align: center"><?php echo 1; ?></td>
-						<td style="text-align: center"><?php echo "-"; ?></td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
-						<td style="text-align: right"><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
+						<td style="text-align: center;font-size:11px"><?php echo 1; ?></td>
+						<td style="text-align: center;font-size:11px"><?php echo "-"; ?></td>
+						<td style="text-align: right;font-size:11px"><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
+						<td style="text-align: right;font-size:11px"><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
 					<?php
 				}
@@ -97,9 +97,9 @@
 						{
 							?>
 							<tr>
-								<td style="text-align: center"><?php echo $i; ?></td>
-								<td style="text-align: center"><?php echo isset($item->product->code) ? $item->product->code : ""; ?></td>
-								<td><?php echo $item->product->name; ?></td>
+								<td style="text-align: center;font-size:11px"><?php echo $i; ?></td>
+								<td style="text-align: center;font-size:10px"><?php echo isset($item->product->code) ? $item->product->code : ""; ?></td>
+								<td style="font-size:10px"><?php echo $item->product->name; ?></td>
 								<?php
 								$priceTotal = number_format($priceTotalTemp, 2, ".", ",");
 //                                                                        $priceTotalDouble = floor($priceTotalDouble);
@@ -110,44 +110,44 @@
 										if(($model->status == 99) || ($model->status == 1) || ($user->type == 4 && $model->status == 1) || ((!(($user->type == 5) && $model->status > 3))) || (($user->type == 5 || $user->type == 4) && $model->status >= 3) || (($model->status == 3 || $model->status == 4) && $user->type == 3 && !(Yii::app()->controller->action->id == "print")))
 										{
 											?>
-											<td style="text-align: center"><?php echo $item->quantity; ?></td>
-											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-											<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
-											<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+											<td style="text-align: center;font-size:11px"><?php echo $item->quantity; ?></td>
+											<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right;font-size:11px"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+											<td style="text-align: right;font-size:11px"><?php echo number_format($item->total, 2, ".", ","); ?></td>
 											<?php
 										}
 										else
 										{
 											?>
-											<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
-											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-											<td style="text-align: right"><?php echo number_format($item->price * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
-											<td style="text-align: right"><?php echo number_format($item->total * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
+											<td style="text-align: center;font-size:11px"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
+											<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right;font-size:11px"><?php echo number_format($item->price * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
+											<td style="text-align: right;font-size:11px"><?php echo number_format($item->total * (100 + $margin['daiiMargin']) / 100, 2, ".", ","); ?></td>
 											<?php
 										}
 									}
 									else if($user->type == 3)
 									{
 										?>
-										<td style="text-align: center"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
-										<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+										<td style="text-align: center;font-size:11px"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
+										<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
 										<?php
 									}else{
 										?>
-											<td style="text-align: center"><?php echo $item->quantity; ?></td>
-											<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-											<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
-											<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+											<td style="text-align: center;font-size:11px"><?php echo $item->quantity; ?></td>
+											<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+											<td style="text-align: right;font-size:11px"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+											<td style="text-align: right;font-size:11px"><?php echo number_format($item->total, 2, ".", ","); ?></td>
 											<?php
 									}
 								}
 								else
 								{
 									?>
-									<td style="text-align: center"><?php echo $item->quantity; ?></td>
-									<td style="text-align: center"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-									<td style="text-align: right"><?php echo number_format($item->price, 2, ".", ","); ?></td>
-									<td style="text-align: right"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+									<td style="text-align: center;font-size:11px"><?php echo $item->quantity; ?></td>
+									<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+									<td style="text-align: right;font-size:11px"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+									<td style="text-align: right;font-size:11px"><?php echo number_format($item->total, 2, ".", ","); ?></td>
 									<?php
 								}
 								?>
@@ -161,7 +161,7 @@
 			}
 			?>
 		</tbody>
-		<tfoot style="font-size:small">
+		<tfoot style="font-size:11px">
 			<?php
 			if(isset(Yii::app()->user->id))
 			{

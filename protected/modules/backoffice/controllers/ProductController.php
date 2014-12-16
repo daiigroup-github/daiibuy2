@@ -543,11 +543,11 @@ class ProductController extends MasterBackofficeController
 							$transaction->commit();
 
 							//sent mail to admin
-							$emailObj = new Email();
-							$sentMail = new EmailSend();
-							$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
-							$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
-							$sentMail->mailAddNewProductEditedToAdmin($emailObj);
+//							$emailObj = new Email();
+//							$sentMail = new EmailSend();
+//							$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
+//							$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
+//							$sentMail->mailAddNewProductEditedToAdmin($emailObj);
 
 							if(isset($_GET["categoryId"]))
 							{
