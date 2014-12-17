@@ -17,7 +17,7 @@ $css = Yii::app()->baseUrl . '/css';
 		<link href="<?php echo $css; ?>/print/print.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="container">
+		<div class="wrapper">
 			<?php echo $content; ?>
 		</div>
 	</body>

@@ -7,26 +7,26 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 ?>
 <div class="form img img-polaroid" style="border:1px solid;margin-top: <?php echo $title == 'ส่วนที่ 2 สำหรับลูกค้า' ? "0.5cm" : "0px" ?>;margin-left:15px;margin-right:15px">
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-xs-8">
 			<div class="row">
-				<div class="col-md-12" style="margin-left:2px">
+				<div class="col-xs-12" style="margin-left:2px">
 					<span class="badge badge-success" >แบบฟอร์มสำหรับชำระเงิน (Bill Payment / Pay-in Slip)</span>
 				</div>
 			</div>
 			<div class="row" style="font-size:12px;">
-				<div class="col-md-12" style="margin-left:5px">
+				<div class="col-xs-12" style="margin-left:5px">
 					<b> เพื่อนำเข้าบัญชี  <?php echo $bank->accName; ?>  / เลขประจำตัวผู้เสียภาษี <?php echo $supplier->taxNumber; ?> </b>
 				</div>
 			</div>
 			<div class="row" style="font-size:x-small;">
-				<div class="col-md-12" style="margin-top: -5px;margin-left:5px">
+				<div class="col-xs-12" style="margin-top: -5px;margin-left:5px">
 					<?php
 					echo $supplier->address1 . " " . $supplier->address2 . " " . $supplier->postcode . " โทร." . $supplier->tel;
 					?>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-xs-12">
 					<hr style="margin: -1px 0px 10px 0px;height: 2px">
 					<?php
 					$i = 1;
@@ -42,7 +42,7 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 						}
 						?>
 						<div class="row" style="font-size:11px;">
-							<div class="col-md-12" style="margin-left:2px;margin-top:<?php echo $marginTop; ?>">
+							<div class="col-xs-12" style="margin-left:2px;margin-top:<?php echo $marginTop; ?>">
 
 								<?php
 								$bankNameModel = BankName::model()->find("bankNameId = " . $data->bankNameId);
@@ -60,22 +60,22 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-xs-4">
 			<div class="row">
-				<div class="col-md-12 text-right" style="font-size:small;margin-right: 2px">
+				<div class="col-xs-12 text-right" style="font-size:small;margin-right: 2px">
 					<?php echo isset($title) ? $title : "" ?>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-xs-12">
                     <div style="border:1px solid;margin-right: 3px">
 						<div class="row">
-							<div class="col-md-12" style="font-size:small;">
+							<div class="col-xs-12" style="font-size:small;">
 								สาขา_____________วันที่____________
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12" style="font-size:small;">
+							<div class="col-xs-12" style="font-size:small;">
 								ชื่อลูกค้า :
 								<b><?php
 									$comName = User::model()->showUserCompany($model->userId);
@@ -94,13 +94,13 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12" style="font-size:small;">
+							<div class="col-xs-12" style="font-size:small;">
 								เลขที่ใบสั่งซื้อ(Ref.1)
 								<b><?php echo "01" . str_replace("-", "", substr($model->orderNo, 2)); ?></b>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12" style="font-size:small;">
+							<div class="col-xs-12" style="font-size:small;">
 								เบอร์โทรศัพท(Ref.2)
 								<b><?php echo str_replace("-", "", $model->telephone); ?></b>
 							</div>
@@ -111,14 +111,14 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12" >
+		<div class="col-xs-12" >
 			<div class="row">
-				<div class="col-md-12" style="font-size:x-small;margin-left: 10px">
+				<div class="col-xs-12" style="font-size:x-small;margin-left: 10px">
 					<input type="checkbox" /> <span>เช็คหมายเลข ____________________________ธนาคาร_________________________สาขา___________________ลงวันที่_________________</span>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-xs-12">
 					<table style="width:98%">
 						<tbody class="table table-bordered">
 							<tr>
@@ -135,20 +135,20 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 				</div>
 			</div>
 			<div class="row" style="margin-bottom: 5px;font-size:x-small;margin-top: 10px">
-				<div class="col-md-12 text-right">
+				<div class="col-xs-12 text-right">
 					ชื่อผู้นำฝาก/Deposit by________________________โทรศัพท์/Tel_________________ เจ้าหน้าที่ธนาคาร___________________
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row" >
-		<div class="col-md-3 text-center">
+		<div class="col-xs-3 text-center">
 			<?php
 			echo CHtml::image(Yii::app()->baseUrl . "/images/daii_logo.png", "", array(
 				'style'=>'width:150px'))
 			?>
 		</div>
-		<div class="col-md-9 text-center"  style="text-align:right">
+		<div class="col-xs-9 text-center"  style="text-align:right">
 			<?php
 			$ref1 = "01" . str_replace("-", "", substr($model->orderNo, 2));
 			$ref2 = str_replace("-", "", $model->telephone);
