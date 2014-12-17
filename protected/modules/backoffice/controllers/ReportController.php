@@ -352,7 +352,7 @@ class ReportController extends MasterBackofficeController
 
 	public function actionViewSummaryReport()
 	{
-		$model = new Order();
+		$model = new OrderGroup();
 
 
 		$model->unsetAttributes();  // clear any default values

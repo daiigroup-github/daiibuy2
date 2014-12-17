@@ -17,6 +17,11 @@
  */
 class OrderGroup extends OrderGroupMaster
 {
+	//Summary Report
+
+	public $paymentYear;
+	public $paymentMonth;
+	public $totalSummary;
 
 	public $maxCode;
 	public $sumTotal;
@@ -399,6 +404,72 @@ class OrderGroup extends OrderGroupMaster
 	{
 		$total = isset($total) ? $total : $this->totalIncVAT;
 		return $total - ($total / (1 + (self::VAT_PERCENT / 100)));
+	}
+
+		public function findAllSummaryReport()
+	{
+// Warning: Please modify the following code to remove attributes that
+// should not be searched.
+		$criteria = new CDbCriteria;
+		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
+		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
+		$criteria->compare("paymentDateTime", "<> '' ", TRUE, "AND");
+		$criteria->compare("status", ">2");
+		$criteria->compare("status", "<> 99");
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'t.orderNo',
+			),
+			'pagination'=>array(
+				'pageSize'=>50
+			),
+		));
+	}
+
+	public function findTotalSummaryReport()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->select = "sum(summary) as totalSummary";
+		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
+		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
+		$criteria->compare("paymentDateTime", "<> '' ", TRUE, "AND");
+		$criteria->compare("status", ">2");
+		$criteria->compare("status", "<> 99");
+		return $this->find($criteria)->totalSummary;
+	}
+
+	public function findAllYearSalesArray()
+	{
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->select = "YEAR(paymentDateTime) as paymentYear";
+		$criteria->compare("status", ">2");
+		$criteria->compare("paymentDateTime", "<>''");
+		$criteria->group = "YEAR(paymentDateTime)";
+		foreach($this->findAll($criteria) as $item)
+		{
+			$result[$item->paymentYear] = $item->paymentYear;
+		}
+		return $result;
+	}
+
+	public function findAllMonthSalesArray()
+	{
+		$result = array();
+		$result[1] = "ม.ค.";
+		$result[2] = "ก.พ.";
+		$result[3] = "มี.ค.";
+		$result[4] = "เม.ย.";
+		$result[5] = "พ.ค.";
+		$result[6] = "มิ.ย.";
+		$result[7] = "ก.ค.";
+		$result[8] = "ส.ค.";
+		$result[9] = "ก.ย.";
+		$result[10] = "ต.ค.";
+		$result[11] = "พ.ย.";
+		$result[12] = "ธ.ค.";
+		return $result;
 	}
 
 }

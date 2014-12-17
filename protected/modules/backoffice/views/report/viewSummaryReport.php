@@ -94,7 +94,7 @@ $('#search-form').submit(function(){
 				'htmlOptions'=>array(
 					'style'=>'text-align:center;width:15%'),
 //			'value' => 'date("d-m-Y", $data->createDateTime)',
-				'value'=>'MasterAdminController::dateThai(date("Y-m-d",strtotime($data->createDateTime)),1)',
+				'value'=>'MasterBackofficeController::dateThai(date("Y-m-d",strtotime($data->createDateTime)),1)',
 			),
 			'firstname',
 			'lastname',
@@ -120,11 +120,11 @@ $('#search-form').submit(function(){
 			),
 			//'orderStatusid',
 			array(
-				'name'=>'orderStatusid',
+				'name'=>'orderGroupId',
 				'type'=>'raw',
 				'htmlOptions'=>array(
 					'style'=>'text-align:left;width:20%'),
-				'value'=>'$data->showOrderStatus($data->orderStatusid)',
+				'value'=>'$data->showOrderStatus($data->orderGroupId)',
 			),
 //		array(
 //			'header'=>'',
