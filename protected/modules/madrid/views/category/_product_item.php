@@ -17,7 +17,7 @@
 $image = '';
 if(isset($data->productImages))
 {
-	foreach($data->productImages as $productImage)
+	foreach($data->productImagesSort as $productImage)
 	{
 		$image = $productImage->image;
 		break;
@@ -50,8 +50,8 @@ if(isset($data->productImages))
 				<span class="price"><del><?php echo number_format($data->price, 2); ?></del><?php echo number_format($data->productPromotion->price, 2); ?></span>
 			<?php else: ?>
 				<span class="price">ราคา <?php echo number_format($data->price, 2); ?> บาท</span>
-	<?php endif; ?>
-<?php endif; ?>
+			<?php endif; ?>
+		<?php endif; ?>
     </div>
 
     <div class="product-actions">
