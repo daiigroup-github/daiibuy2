@@ -24,6 +24,7 @@
 					<?php
 					if(($order->type & 1) == 0)
 					{
+						$minValue = Configuration::model()->find('name = "minValueToBuy"');
 						echo CHtml::ajaxLink('<i class="icons fa fa-refresh"></i>', $this->createUrl('updateCart'), array(
 							'data'=>'js:$("#cart' . $order->orderId . '").serialize()',
 							'dataType'=>'json',
@@ -39,6 +40,11 @@
                                 $("#summaryDiscount").html(data.summary.discount);
                                 $("#summaryGrandTotal").html(data.summary.grandTotal);
                                 $("#summaryDiscountPercent").html(data.summary.discountPercent);
+								if(parseInt(data.summary.total.replace(",", "")) < ' . $minValue->value .'){
+									$("#checkoutBtn").addClass("hidden");
+								}else{
+									$("#checkoutBtn").removeClass("hidden");
+								}
                             }',
 						));
 					}
