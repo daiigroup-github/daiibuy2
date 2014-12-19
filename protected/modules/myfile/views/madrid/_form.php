@@ -262,7 +262,7 @@ $form = $this->beginWidget('CActiveForm', array(
 					<div class="sidebar-box-content">
 						<ul>
 							<?php foreach($themes as $theme): ?>
-								<li><a href="#" onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php echo isset($model->orderId) ? $model->orderId : 0 ?>)"><?php echo $theme->category2->title; ?></li></a>
+								<li><a href="#"  onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php echo isset($model->orderId) ? $model->orderId : 0 ?>)"><?php echo $theme->category2->title; ?></li></a>
 							<?php endforeach; ?>
 						</ul>
 					</div>
@@ -411,7 +411,7 @@ $form = $this->beginWidget('CActiveForm', array(
 						<?php endif; ?>
 						<a id="" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
 						<a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
-							<?php if($model->type < 3): ?>
+						<?php if($model->type < 3): ?>
 							<a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
 						<?php endif; ?>
 						<?php if(!$model->isRequestSpacialProject): ?>

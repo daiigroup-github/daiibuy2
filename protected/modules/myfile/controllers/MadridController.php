@@ -401,20 +401,47 @@ class MadridController extends MasterMyFileController
 	public function actionLoadThemeItem()
 	{
 		$result = array();
+
+		if(isset($_POST["orderId"]) && $_POST["orderId"] > 0)
+		{
+			$model = $this->loadModel($_POST["orderId"]);
+		}
+		if(!isset($model))
+		{
+			$model = new Order();
+		}
+		$model->isTheme = 1;
+		$result['view'] = $this->renderPartial("_theme", array(
+			'model'=>$model), true);
+
 		if(isset($_POST["category2Id"]))
 		{
 			$cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
-			foreach($cat2ToProduct as $item)
+			if(count($cat2ToProduct) > 0)
 			{
-				$result[strtolower($item->groupName)]["productId"] = $item->productId;
-				$result[strtolower($item->groupName)]["code"] = $item->product->code;
-				$result[strtolower($item->groupName)]["name"] = $item->product->name;
-				$result[strtolower($item->groupName)]["width"] = $item->product->width;
-				$result[strtolower($item->groupName)]["height"] = $item->product->height;
-				$result[strtolower($item->groupName)]["productArea"] = ($item->product->width * $item->product->width) / 10000;
-				$result[strtolower($item->groupName)]["price"] = $item->product->price;
-				$result[strtolower($item->groupName)]["productUnits"] = $item->product->productUnits;
+				$result["status"] = TRUE;
+				foreach($cat2ToProduct as $item)
+				{
+					$result[strtolower($item->groupName)]["productId"] = $item->productId;
+					$result[strtolower($item->groupName)]["code"] = $item->product->code;
+					$result[strtolower($item->groupName)]["name"] = $item->product->name;
+					$result[strtolower($item->groupName)]["width"] = $item->product->width;
+					$result[strtolower($item->groupName)]["height"] = $item->product->height;
+					$result[strtolower($item->groupName)]["productArea"] = ($item->product->width * $item->product->width) / 10000;
+					$result[strtolower($item->groupName)]["price"] = $item->product->price;
+					$result[strtolower($item->groupName)]["productUnits"] = $item->product->productUnits;
+				}
 			}
+			else
+			{
+				$result["status"] = FALSE;
+				$result["errorMessage"] = "Cant' find Product Array";
+			}
+		}
+		else
+		{
+			$result["status"] = FALSE;
+			$result["errorMessage"] = "Cant' find POST Parameter";
 		}
 		echo CJSON::encode($result);
 	}

@@ -1,7 +1,7 @@
 /**
  * Created by NPR on 8/13/14.
  */
-$('.add-to-cart').click(function() {
+$('.add-to-cart').click(function () {
 
 	var data = {};
 	var productId = $(this).data('productid');
@@ -12,10 +12,10 @@ $('.add-to-cart').click(function() {
 		type: 'POST',
 		dataType: 'JSON',
 		data: data,
-		beforeSend: function() {
+		beforeSend: function () {
 			return confirm('คุณต้องการเพิ่มสินค้าลงตะตร้าหรือไม่ ?')
 		},
-		success: function(data) {
+		success: function (data) {
 			//alert success message
 			if (data.result)
 			{
@@ -31,69 +31,64 @@ $('.add-to-cart').click(function() {
 });
 function loadThemeItem(cat2Id, baseUrl, orderId)
 {
-	renderThemeItem(baseUrl, orderId);
 	$("#sanitary-item").html("");
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadThemeItem',
 		type: 'POST',
 		dataType: 'JSON',
 		data: {category2Id: cat2Id, orderId: orderId},
-		success: function(data) {
+		success: function (data) {
 			//alert success message
-//			$("#item-table").removeClass('hide');
-			$("#action-button").removeClass('hide');
-			for (var groupName in data)
+			if (data.status)
 			{
-				if (groupName != "")
+				$("#item-table").removeClass('hide');
+				$("#item-table").removeClass("hide");
+				$("#item-table").html(data.view);
+
+				for (var groupName in data)
 				{
-					$("#productCode" + groupName).html(data[groupName]["code"]);
-					$("#productName" + groupName).html(data[groupName]["name"]);
-					$("#productUnits" + groupName).html(data[groupName]["productUnits"]);
-					$("#productArea" + groupName).html(data[groupName]["productArea"]);
-					var estimateQuantity = data[groupName]["productArea"] * $("#supplierArea" + groupName).val();
-					$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
-//					$("#quantityText_" + groupName).removeClass("hide");
-					$("#quantityText_" + groupName).val(estimateQuantity);
-					$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
-					$("#priceHidden" + groupName).val(data[groupName]["price"]);
-					$("#productId" + groupName).val(data[groupName]["productId"]);
-				}
-				else
-				{
-					groupNames = {a: "a", b: "b", c: "c", d: "d", e: "e"};
-					for (var groupName in groupNames)
+					if (groupName != "")
 					{
-						$("#productCode" + groupName).html("");
-						$("#productName" + groupName).html("");
-						$("#productUnits" + groupName).html("");
-						$("#productArea" + groupName).html("");
-						$("#estimateAreaQuantity" + groupName).html("");
+
+						$("#productCode" + groupName).html(data[groupName]["code"]);
+						$("#productName" + groupName).html(data[groupName]["name"]);
+						$("#productUnits" + groupName).html(data[groupName]["productUnits"]);
+						$("#productArea" + groupName).html(data[groupName]["productArea"]);
+						var estimateQuantity = data[groupName]["productArea"] * $("#supplierArea" + groupName).val();
+						$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
+//					$("#quantityText_" + groupName).removeClass("hide");
+						$("#quantityText_" + groupName).val(estimateQuantity);
+						$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
+						$("#priceHidden" + groupName).val(data[groupName]["price"]);
+						$("#productId" + groupName).val(data[groupName]["productId"]);
+					}
+					else
+					{
+						groupNames = {a: "a", b: "b", c: "c", d: "d", e: "e"};
+						for (var groupName in groupNames)
+						{
+							$("#productCode" + groupName).html("");
+							$("#productName" + groupName).html("");
+							$("#productUnits" + groupName).html("");
+							$("#productArea" + groupName).html("");
+							$("#estimateAreaQuantity" + groupName).html("");
 //						$("#quantityText_" + groupName).addClass("hide");
-						$("#quantityText_" + groupName).val(0);
-						$("#price" + groupName).html("");
-						$("#priceHidden" + groupName).val(0);
-						$("#productId" + groupName).val(0);
+							$("#quantityText_" + groupName).val(0);
+							$("#price" + groupName).html("");
+							$("#priceHidden" + groupName).val(0);
+							$("#productId" + groupName).val(0);
+						}
 					}
 				}
 			}
-		}
+			else
+			{
+				alert(data.errorMessage);
+			}
+		},
 	});
 }
-function renderThemeItem(baseUrl, orderId)
-{
-	$("#item-table").addClass('hide');
-	$("#action-button").removeClass('hide');
-	$.ajax({
-		url: baseUrl + '/myfile/madrid/renderThemeView',
-		type: 'POST',
-//		dataType: 'JSON',
-		data: {orderId: orderId},
-		success: function(data) {
-			$("#item-table").removeClass("hide");
-			$("#item-table").html(data);
-		}
-	});
-}
+
 function loadSetItem(cat2Id, baseUrl)
 {
 	$("#item-table").html('');
@@ -103,7 +98,7 @@ function loadSetItem(cat2Id, baseUrl)
 		type: 'POST',
 //		dataType: 'JSON',
 		data: {category2Id: cat2Id},
-		success: function(data) {
+		success: function (data) {
 			$("#sanitary-item").removeClass("hide");
 			$("#sanitary-item").html(data);
 		}
@@ -121,7 +116,7 @@ function updatePrice()
 	}
 }
 
-$('#manualQuantityMadrid').on('click', function() {
+$('#manualQuantityMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
@@ -130,7 +125,7 @@ $('#manualQuantityMadrid').on('click', function() {
 	}
 
 });
-$('#uploadPlanMadrid').on('click', function() {
+$('#uploadPlanMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
@@ -139,8 +134,6 @@ $('#uploadPlanMadrid').on('click', function() {
 	}
 
 });
-
-
 function findModel(sel, baseUrl)
 {
 	var attrName = sel.attributes['name'].value;
@@ -151,7 +144,7 @@ function findModel(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandId': brandId},
-		'success': function(data) {
+		'success': function (data) {
 			obj.parent().parent().children('.model').children('select').html(data);
 		},
 	});
@@ -166,7 +159,7 @@ function findCat1(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandModelId': brandModelId},
-		'success': function(data) {
+		'success': function (data) {
 			obj.parent().parent().children('.cat1').children('select').html(data);
 		},
 	});
@@ -181,7 +174,7 @@ function findCat2Product(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'cat1Id': cat1Id},
-		'success': function(data) {
+		'success': function (data) {
 			obj.parent().parent().children('.product').children('select').html(data);
 		},
 	});
@@ -197,7 +190,7 @@ function chooseProduct(sel, baseUrl)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'productId': productId},
-		'success': function(data) {
+		'success': function (data) {
 			obj.parent().parent().children('.price').children('.priceText').html(data.price);
 			obj.parent().parent().children('.unit').children('.unitText').html(data.productUnits);
 		},
@@ -230,7 +223,7 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'userId': userId, 'category2Id': category2Id, },
-		'success': function(data) {
+		'success': function (data) {
 			if (data)
 			{
 				alert("เพิ่ม Theme สู่รายการที่ชื่นชอบสำเร็จ");
@@ -255,4 +248,5 @@ function checkComment()
 		return true;
 	}
 }
+
 
