@@ -290,6 +290,7 @@ class StepController extends MasterCheckoutController
 			'supplierName'=>$supplierModel->name,
 			'billingAddress'=>$billingAddress,
 			'shippingAddress'=>$shippingAddress,
+			'supplierId'=>$supplierId,
 			'userModel'=>$userModel,
 		));
 		//$this->redirect($this->createUrl(4));
@@ -316,7 +317,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
 				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-				$orderGroup->total = $orderGroup->totalIncVAT/1.07;
+				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
 				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
 				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
 				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);

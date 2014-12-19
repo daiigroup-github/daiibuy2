@@ -26,11 +26,13 @@ $this->breadcrumbs = array(
 foreach($carts as $cart)
 {
 	$this->renderPartial('_order_info', array(
-		'cart'=>$cart));
+		'cart'=>$cart,
+		'supplierId'=>$id));
 }
 ?>
 
-<?php $this->renderPartial('_order_info_summary', array(
+<?php
+$this->renderPartial('_order_info_summary', array(
 	'cart'=>$cart));
 ?>
 

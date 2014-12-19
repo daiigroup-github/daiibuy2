@@ -435,6 +435,7 @@ $this->renderPartial('_step_header', array(
 		{
 			$this->renderPartial('/cart/_order_info', array(
 				'order'=>$order,
+				'supplierId'=>$supplierId,
 				"i"=>$i));
 			$i++;
 		}

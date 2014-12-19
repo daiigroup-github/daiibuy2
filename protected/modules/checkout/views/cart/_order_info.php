@@ -54,7 +54,6 @@
                     <a href="<?php echo Yii::app()->createUrl("/checkout/cart/deleteCart/id/" . $order->orderId) ?>"><i class = "icons fa fa-times"></i></a>
 				</div>
 			</div>
-
 			<table class = "orderinfo-table table-bordered">
 				<tr>
 					<th style="text-align:center">รหัสสินค้า</th>
