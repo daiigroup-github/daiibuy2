@@ -32,6 +32,7 @@ $('.add-to-cart').click(function () {
 function loadThemeItem(cat2Id, baseUrl, orderId)
 {
 	$("#sanitary-item").html("");
+//	renderThemeItem(baseUrl, orderId);
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadThemeItem',
 		type: 'POST',
@@ -41,7 +42,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 			//alert success message
 			if (data.status)
 			{
-				$("#item-table").removeClass('hide');
+				$("#action-button").removeClass('hide');
 				$("#item-table").removeClass("hide");
 				$("#item-table").html(data.view);
 
@@ -88,7 +89,6 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 		},
 	});
 }
-
 function loadSetItem(cat2Id, baseUrl)
 {
 	$("#item-table").html('');
