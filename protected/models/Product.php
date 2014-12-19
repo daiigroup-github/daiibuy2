@@ -86,6 +86,10 @@ class Product extends ProductMaster
 				array(
 					'dateAvailable, name, quantity, productUnits, price, priceGroupId, supplierId, sortOrder',
 					'required'),
+				array(
+					'searchText',
+					'safe'
+				)
 //				array(
 //					'createDateTime, updateDateTime',
 //					'default',
@@ -213,12 +217,13 @@ class Product extends ProductMaster
 		$criteria = new CDbCriteria;
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
+			$this->code = $this->searchText;
 			$this->name = $this->searchText;
 			$this->description = $this->searchText;
 			$this->status = $this->searchText;
 		}
-
 		$criteria->compare("categoryId", $this->categoryId);
+		$criteria->compare('LOWER(code)', strtolower($this->searchText), true, "OR");
 		$criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
 		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
 		$criteria->compare("status", $this->status);
@@ -704,7 +709,7 @@ class Product extends ProductMaster
 			),);
 	}
 
-	public function calculateItemSetFenzer($cat1Id,$categoryId, $length, $provinceId, $productIdNew = NULL)
+	public function calculateItemSetFenzer($cat1Id, $categoryId, $length, $provinceId, $productIdNew = NULL)
 	{
 //		throw new Exception(print_r($categoryId,true));
 		$type = Category2ToProduct::model()->findProductType($categoryId);
@@ -768,7 +773,7 @@ class Product extends ProductMaster
 		return $res;
 	}
 
-	public function calculateItemSetFenzerManualAndSave($cat1Id,$categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId, $title)
+	public function calculateItemSetFenzerManualAndSave($cat1Id, $categoryId, $productItems, $provinceId, $length, $isSave, $oldOrderId, $title)
 	{
 		$category = Category::model()->findByPk($categoryId);
 		$height = $category->description;
@@ -1031,7 +1036,6 @@ class Product extends ProductMaster
 			if(isset($cate2ToProduct->product))
 			{
 				$productModel = $cate2ToProduct->product;
-
 			}
 //				$productModel = Product::model()->find('supplierId = 2 AND brandModelId = ' . $brandModelId . ' AND categoryId = ' . $category2Id . ' AND width = ' . intval($width) . ' AND height = ' . intval($height));
 //				throw new Exception(print_r($brandModelId . ', '. $category2Id. ', '. intval($width).', '. intval($height),true));

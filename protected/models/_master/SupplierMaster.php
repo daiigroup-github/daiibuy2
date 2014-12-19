@@ -20,7 +20,9 @@
  * @property string $tel
  * @property string $fax
  * @property string $logo
+ * @property string $logoDoc
  * @property string $url
+ * @property string $minimumOrder
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -63,11 +65,12 @@ class SupplierMaster extends MasterCActiveRecord
 			array('districtId, amphurId, provinceId, postcode', 'length', 'max'=>10),
 			array('taxNumber', 'length', 'max'=>50),
 			array('tel, fax', 'length', 'max'=>25),
-			array('logo, url', 'length', 'max'=>255),
+			array('logo, logoDoc, url', 'length', 'max'=>255),
+			array('minimumOrder', 'length', 'max'=>14),
 			array('description, address1, address2', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('supplierId, name, prefix, description, companyName, address1, address2, districtId, amphurId, provinceId, postcode, taxNumber, email, tel, fax, logo, url, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('supplierId, name, prefix, description, companyName, address1, address2, districtId, amphurId, provinceId, postcode, taxNumber, email, tel, fax, logo, logoDoc, url, minimumOrder, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -115,7 +118,9 @@ class SupplierMaster extends MasterCActiveRecord
 			'tel' => 'Tel',
 			'fax' => 'Fax',
 			'logo' => 'Logo',
+			'logoDoc' => 'Logo Doc',
 			'url' => 'Url',
+			'minimumOrder' => 'Minimum Order',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -158,7 +163,9 @@ class SupplierMaster extends MasterCActiveRecord
 			$this->tel = $this->searchText;
 			$this->fax = $this->searchText;
 			$this->logo = $this->searchText;
+			$this->logoDoc = $this->searchText;
 			$this->url = $this->searchText;
+			$this->minimumOrder = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -180,7 +187,9 @@ class SupplierMaster extends MasterCActiveRecord
 		$criteria->compare('tel',$this->tel,true, 'OR');
 		$criteria->compare('fax',$this->fax,true, 'OR');
 		$criteria->compare('logo',$this->logo,true, 'OR');
+		$criteria->compare('logoDoc',$this->logoDoc,true, 'OR');
 		$criteria->compare('url',$this->url,true, 'OR');
+		$criteria->compare('minimumOrder',$this->minimumOrder,true, 'OR');
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

@@ -66,6 +66,7 @@ return false;
 				'type'=>'html',
 				'value'=>'CHtml::image(Yii::app()->request->baseUrl.$data->findFirstImageProduct($data->productId), "image", array("style"=>"width:100px;"))',
 			),
+			'code',
 			array(
 				'header'=>'Product',
 				'name'=>'name',

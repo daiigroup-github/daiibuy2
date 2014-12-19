@@ -157,6 +157,21 @@
 	</div>
 	<div class="form-group">
 		<?php
+		echo $form->labelEx($model, 'minimumOrder', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->numberField($model, 'minimumOrder', array(
+				'size'=>14,
+				'maxlength'=>14,
+				'class'=>'form-control'));
+			?>
+			<?php echo $form->error($model, 'minimumOrder'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
 		echo $form->labelEx($model, 'logo', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
@@ -173,6 +188,26 @@
 				'class'=>'form-control'));
 			?>
 			<?php echo $form->error($model, 'logo'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'logoDoc', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			if($this->action->id == 'update')
+				echo CHtml::image(Yii::app()->baseUrl . $model->logoDoc, '', array(
+					'style'=>'width:150px;'));
+			?>
+			<?php
+			echo $form->fileField($model, 'logoDoc', array(
+				'size'=>60,
+				'maxlength'=>255,
+				'class'=>'form-control'));
+			?>
+			<?php echo $form->error($model, 'logoDoc'); ?>
 		</div>
 	</div>
 	<div class="form-group">

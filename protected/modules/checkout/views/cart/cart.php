@@ -29,6 +29,7 @@ foreach($orders as $order)
 {
 	$this->renderPartial('_order_info', array(
 		'order'=>$order,
+		'supplierId'=>$supplierId,
 		'i'=>$i));
 	$i++;
 }
@@ -43,8 +44,10 @@ $this->renderPartial('_order_info_summary', array(
     <a class="button big orange" href="<?php echo Yii::app()->homeUrl; ?>"><i class="icons icon-reply"></i>Continue Shopping</a>
     <!--<a class="button big blue" href="#"><i class="glyphicon glyphicon-refresh"></i> Update</a>-->
 	<?php
-		$minValue = Configuration::model()->find('name = "minValueToBuy"');
-		$checkOutClass = $orderSummary['total'] < $minValue->value ? "button big green hidden" : "button big green" ;
-		?>
+	$supplier = Supplier::model()->findByPk($supplierId);
+	$minValue = (isset($supplier) && $supplier->minimumOrder > 0) ? $supplier->minimumOrder : Configuration::model()->find('name = "minValueToBuy"')->value;
+	$orderTotal = str_replace(",", "", $orderSummary['total']);
+	$checkOutClass = ($orderTotal < $minValue) ? "button big green hide" : "button big green";
+	?>
     <a id="checkoutBtn" class="<?php echo $checkOutClass; ?>" href="<?php echo $this->createUrl('cart/checkout/id/' . $supplierId); ?>"><i class="glyphicon glyphicon-shopping-cart"></i> Check out</a>
 </p>

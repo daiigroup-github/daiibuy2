@@ -97,6 +97,19 @@ class SupplierController extends MasterBackofficeController
 				{
 					$model->logo = null;
 				}
+				$logoDoc = CUploadedFile::getInstance($model, 'logoDoc');
+				if(isset($logoDoc) && !empty($logoDoc))
+				{
+					$imgType = explode('.', $logoDoc->name);
+					$imgType = $imgType[count($imgType) - 1];
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$logoDocPathimage = '/../' . $imageUrl;
+					$model->logoDoc = $imageUrl;
+				}
+				else
+				{
+					$model->logoDoc = null;
+				}
 				if($model->save())
 				{
 					if(isset($image) && !empty($image))
@@ -106,6 +119,25 @@ class SupplierController extends MasterBackofficeController
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 						if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
+						{
+							$flag = true;
+						}
+						else
+						{
+							$flag = false;
+						}
+					}
+					else
+					{
+						$flag = true;
+					}
+					if(isset($logoDoc) && !empty($logoDoc))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+						if($image->saveAs(Yii::app()->getBasePath() . $logoDocPathimage))
 						{
 							$flag = true;
 						}
@@ -162,6 +194,7 @@ class SupplierController extends MasterBackofficeController
 			try
 			{
 				$oldimage = $model->logo;
+				$oldLogoDoc = $model->logoDoc;
 				$model->attributes = $_POST['Supplier'];
 				$model->attributes = $_POST['Supplier']["billing"];
 				$folderimage = 'supplier';
@@ -178,6 +211,19 @@ class SupplierController extends MasterBackofficeController
 				{
 					$model->logo = $oldimage;
 				}
+				$logoDoc = CUploadedFile::getInstance($model, 'logoDoc');
+				if(isset($logoDoc) && !empty($logoDoc))
+				{
+					$imgType = explode('.', $logoDoc->name);
+					$imgType = $imgType[count($imgType) - 1];
+					$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+					$logoDocPath = '/../' . $imageUrl;
+					$model->logoDoc = $imageUrl;
+				}
+				else
+				{
+					$model->logoDoc = $oldLogoDoc;
+				}
 				if($model->save())
 				{
 					$flag = true;
@@ -192,6 +238,21 @@ class SupplierController extends MasterBackofficeController
 						{
 							if(isset($oldimage) && !empty($oldimage))
 								@unlink(Yii::app()->getBasePath() . '/..' . $oldimage);
+						}
+						else
+							$flag = false;
+					}
+					if(isset($logoDoc) && !empty($logoDoc))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+
+						if($image->saveAs(Yii::app()->getBasePath() . $logoDocPath))
+						{
+							if(isset($oldLogoDoc) && !empty($oldLogoDoc))
+								@unlink(Yii::app()->getBasePath() . '/..' . $oldLogoDoc);
 						}
 						else
 							$flag = false;
