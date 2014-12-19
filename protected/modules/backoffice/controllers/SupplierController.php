@@ -137,7 +137,7 @@ class SupplierController extends MasterBackofficeController
 						{
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
-						if($image->saveAs(Yii::app()->getBasePath() . $logoDocPathimage))
+						if($logoDoc->saveAs(Yii::app()->getBasePath() . $logoDocPathimage))
 						{
 							$flag = true;
 						}
@@ -249,7 +249,7 @@ class SupplierController extends MasterBackofficeController
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 
-						if($image->saveAs(Yii::app()->getBasePath() . $logoDocPath))
+						if($logoDoc->saveAs(Yii::app()->getBasePath() . $logoDocPath))
 						{
 							if(isset($oldLogoDoc) && !empty($oldLogoDoc))
 								@unlink(Yii::app()->getBasePath() . '/..' . $oldLogoDoc);
