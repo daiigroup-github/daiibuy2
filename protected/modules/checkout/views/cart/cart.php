@@ -29,7 +29,6 @@ foreach($orders as $order)
 {
 	$this->renderPartial('_order_info', array(
 		'order'=>$order,
-		'supplierId'=>$supplierId,
 		'i'=>$i));
 	$i++;
 }

@@ -24,7 +24,7 @@
 					<?php
 					if(($order->type & 1) == 0)
 					{
-						$supplier = Supplier::model()->findByPk($supplierId);
+						$supplier = Supplier::model()->findByPk(Yii::app()->session['supplierId']);
 						$minValue = (isset($supplier) && $supplier->minimumOrder > 0) ? $supplier->minimumOrder : Configuration::model()->find('name = "minValueToBuy"')->value;
 						echo CHtml::ajaxLink('<i class="icons fa fa-refresh"></i>', $this->createUrl('updateCart'), array(
 							'data'=>'js:$("#cart' . $order->orderId . '").serialize()',
