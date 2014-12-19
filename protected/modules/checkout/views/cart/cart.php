@@ -29,6 +29,7 @@ foreach($orders as $order)
 {
 	$this->renderPartial('_order_info', array(
 		'order'=>$order,
+		'supplierId'=>isset($supplierId) ? $supplierId : Yii::app()->session['supplierId'],
 		'i'=>$i));
 	$i++;
 }
