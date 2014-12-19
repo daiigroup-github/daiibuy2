@@ -5,12 +5,11 @@
 		{
 			$user = User::model()->findByPk(Yii::app()->user->id);
 		}
-		$urlLogo = Yii::app()->baseUrl . "/images/daii_logo.png";
 		if(isset(Yii::app()->user->id))
 		{
-			if(isset($supplier->logo) && !empty($supplier->logo))
+			if(isset($supplier->logoDoc) && !empty($supplier->logoDoc))
 			{
-				echo CHtml::image(Yii::app()->baseUrl . $supplier->logo, '', array(
+				echo CHtml::image(Yii::app()->baseUrl . $supplier->logoDoc, '', array(
 					'style'=>'width:100px;'));
 			}
 			else
@@ -52,7 +51,7 @@
 	</div>
 	<div class="col-xs-4" style="text-align: center;height: 120px;border: 1px #dddddd solid">
 		<?php // throw new Exception(print_r($model->status.", ".$user->type.", ".Yii::app()->controller->action->id,true)); ?>
-		<h5 style="margin-top: 43px;"><?php echo (Yii::app()->controller->action->id == "printProductList") ? "ใบรายการสินค้า" : ((Yii::app()->controller->action->id == "viewOrder" && $user->type == 3) ? "ใบสั่งซื้อสินค้า" : ((($user->type == 1 || $user->type == 2) && $model->status > 2)? "ใบเสร็จรับเงิน/<br>ใบกำกับภาษี": (($model->status == 3 && $user->type == 3)? "ใบส่งสินค้า" : $pageText[$model->status]['pageTitle']))); ?></h5>
+		<h5 style="margin-top: 43px;"><?php echo (Yii::app()->controller->action->id == "printProductList") ? "ใบรายการสินค้า" : ((Yii::app()->controller->action->id == "viewOrder" && $user->type == 3) ? "ใบสั่งซื้อสินค้า" : ((($user->type == 1 || $user->type == 2) && $model->status > 2) ? "ใบเสร็จรับเงิน/<br>ใบกำกับภาษี" : (($model->status == 3 && $user->type == 3) ? "ใบส่งสินค้า" : $pageText[$model->status]['pageTitle']))); ?></h5>
 	</div>
 </div>
 <div class="form-group" >

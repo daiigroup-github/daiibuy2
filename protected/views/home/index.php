@@ -29,18 +29,11 @@ $this->breadcrumbs = array(
 							$class = 'col-lg-3 col-md-3 col-sm-12';
 							//$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
 							//$class = 'col-lg-6 col-md-6 col-sm-12';
-							$supplierContentGroup = SupplierContentGroup::model()->findAll('supplierId='.$supplier->supplierId);
-
-								foreach($supplierContentGroup as $content){
-									if($content->title == 'link'){
-										$link = $content->image;
-									}
-								}
 							?>
 							<div class="<?php echo $class; ?>">
 								<div class="blog-item">
 
-									<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . $link); ?></a>
+									<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . $supplier->logo); ?></a>
 
 									<div class="blog-info">
 										<h3>
