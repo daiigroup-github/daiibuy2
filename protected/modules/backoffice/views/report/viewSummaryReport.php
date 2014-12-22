@@ -96,8 +96,14 @@ $('#search-form').submit(function(){
 //			'value' => 'date("d-m-Y", $data->createDateTime)',
 				'value'=>'MasterBackofficeController::dateThai(date("Y-m-d",strtotime($data->createDateTime)),1)',
 			),
-			'firstname',
-			'lastname',
+			array(
+				'header'=>'ชื่อ',
+				'name'=>'firstname',
+			),
+			array(
+				'header'=>'นามสกุล',
+				'name'=>'lastname',
+			),
 			array(
 				'header'=>'ช่องทางการชำระ',
 				'name'=>'paymentMethod',
@@ -111,20 +117,21 @@ $('#search-form').submit(function(){
 			//'totalIncVAT',
 			array(
 				'header'=>'ราคารวมภาษี(บาท)',
-				'name'=>'totalIncVAT',
+				'name'=>'summary',
 				//'footer'=>'$data->total',
 				'type'=>'text',
 				'htmlOptions'=>array(
 					'style'=>'text-align:center;width:10%'),
-				'value'=>'number_format($data->totalIncVAT, 2, ".", ",")',
+				'value'=>'number_format($data->summary, 2, ".", ",")',
 			),
 			//'orderStatusid',
 			array(
-				'name'=>'orderGroupId',
+				'header'=>'Order Status',
+				'name'=>'status',
 				'type'=>'raw',
 				'htmlOptions'=>array(
 					'style'=>'text-align:left;width:20%'),
-				'value'=>'$data->showOrderStatus($data->orderGroupId)',
+				'value'=>'$data->showOrderStatus($data->status)',
 			),
 //		array(
 //			'header'=>'',
