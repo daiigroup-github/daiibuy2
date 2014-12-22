@@ -281,7 +281,7 @@ class AtechWindowController extends MasterMyFileController
 
 				if($isNew)
 				{
-throw new Exception(print_r($res,true));
+//throw new Exception(print_r($res,true));
 					$orderItemModel = new OrderItems();
 					$orderItemModel->orderId = $newOrderId;
 					$orderItemModel->productId = $productId;
@@ -479,10 +479,12 @@ throw new Exception(print_r($res,true));
 //		}
 		if(isset($criteria) && isset($brandModelId) && isset($provinceId))
 		{
+//			throw new Exception(print_r("criteria",true));
 			$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
 		}
 		else
 		{
+//			throw new Exception(print_r("update",true));
 			$itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 		}
 //		throw new Exception(print_r($itemSetArray,true));

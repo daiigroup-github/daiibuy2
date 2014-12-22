@@ -220,14 +220,14 @@ class Product extends ProductMaster
 			$this->code = $this->searchText;
 			$this->name = $this->searchText;
 			$this->description = $this->searchText;
-			$this->status = $this->searchText;
 		}
 		$criteria->compare("categoryId", $this->categoryId);
-		$criteria->compare('LOWER(code)', strtolower($this->searchText), true, "OR");
-		$criteria->compare('LOWER(name)', strtolower($this->searchText), true, "OR");
-		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, "OR");
+		$criteria->compare('code', $this->code, true, "OR");
+		$criteria->compare('name', $this->name, true, "OR");
+		$criteria->compare('description', $this->description, true, "OR");
 		$criteria->compare("status", $this->status);
 		$criteria->compare("supplierId", $this->supplierId);
+
 		/*
 		  $criteria->compare('productId',$this->productId,true);
 		  $criteria->compare('quantity',$this->quantity);
@@ -1013,7 +1013,7 @@ class Product extends ProductMaster
 
 	public function calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId)
 	{
-//		throw new Exception(print_r($criteria,true));
+//		throw new Exception(print_r($brandModelId,true));
 		$res = array();
 		$total = 0.00;
 		$i = 0;
@@ -1031,11 +1031,17 @@ class Product extends ProductMaster
 			$size = explode(" x ", $value);
 			$width = $size[0];
 			$height = $size[1];
-
-			$cate2ToProduct = Category2ToProduct::model()->find('category2Id = ' . $category2Id . ' AND category1Id = ' . $category1Id . ' AND brandModelId = ' . $brandModelId);
-			if(isset($cate2ToProduct->product))
+//			throw new Exception(print_r("brandModelId = ".$brandModelId. ", category1Id = ".$category1Id.", category2Id = ".$category2Id,true));
+			$cate2ToProduct = Category2ToProduct::model()->findAll('category2Id = ' . $category2Id . ' AND category1Id = ' . $category1Id . ' AND brandModelId = ' . $brandModelId);
+			if(isset($cate2ToProduct))
 			{
-				$productModel = $cate2ToProduct->product;
+//				throw new Exception(print_r($cate2ToProduct,true));
+				foreach($cate2ToProduct as $item){
+					$product = Product::model()->findByPk($item->productId);
+					if($product->width == $width && $product->height == $height){
+						$productModel = $product;
+					}
+				}
 			}
 //				$productModel = Product::model()->find('supplierId = 2 AND brandModelId = ' . $brandModelId . ' AND categoryId = ' . $category2Id . ' AND width = ' . intval($width) . ' AND height = ' . intval($height));
 //				throw new Exception(print_r($brandModelId . ', '. $category2Id. ', '. intval($width).', '. intval($height),true));
@@ -1045,8 +1051,8 @@ class Product extends ProductMaster
 					":productId"=>$productModel->productId));
 				$res["items"][$i]['productId'] = $productModel->productId;
 				$res["items"][$i]['code'] = $productModel->code;
-				$res["items"][$i]['width'] = $width;
-				$res["items"][$i]['height'] = $height;
+				$res["items"][$i]['width'] = $productModel->width;
+				$res["items"][$i]['height'] = $productModel->height;
 				$res["items"][$i]['category'] = $item['category'];
 				$res["items"][$i]['type'] = $item['type'];
 				$res["items"][$i]['description'] = $productModel->name;

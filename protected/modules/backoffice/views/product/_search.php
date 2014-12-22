@@ -22,7 +22,7 @@ $form = $this->beginWidget('CActiveForm', array(
 		<div class="col-lg-6">
 			<?php
 			echo $form->textField($model, 'searchText', array(
-				'class'=>'form-control'));
+				'class'=>'form-control',));
 			?>
 		</div>
 		<div class="col-lg-6">
