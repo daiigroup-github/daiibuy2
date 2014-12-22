@@ -82,7 +82,7 @@ class Product extends ProductMaster
 // NOTE: you should only define rules for those attributes that
 // will receive user inputs.
 		return CMap::mergeArray(parent::rules(), array(
-				//code here
+//code here
 				array(
 					'dateAvailable, name, quantity, productUnits, price, priceGroupId, supplierId, sortOrder',
 					'required'),
@@ -115,7 +115,7 @@ class Product extends ProductMaster
 // NOTE: you may need to adjust the relation name and the related
 // class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
-				//code here
+//code here
 				'productImagesSort'=>array(
 					self::HAS_MANY,
 					'ProductImage',
@@ -221,7 +221,8 @@ class Product extends ProductMaster
 			$this->name = $this->searchText;
 			$this->description = $this->searchText;
 		}
-		$criteria->compare("categoryId", $this->categoryId);
+
+//		$criteria->compare("categoryId", $this->categoryId);
 		$criteria->compare('code', $this->code, true, "OR");
 		$criteria->compare('name', $this->name, true, "OR");
 		$criteria->compare('description', $this->description, true, "OR");
@@ -686,8 +687,8 @@ class Product extends ProductMaster
 		$criteria->params = array(
 			':provinceId'=>$provinceId,
 			':searchText'=>'%' . $searchText . '%');
-		//$criteria->order = 't.categoryId =' . $categoryId . " ASC";
-		//$criteria->order = 't.categoryId ASC';
+//$criteria->order = 't.categoryId =' . $categoryId . " ASC";
+//$criteria->order = 't.categoryId ASC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -702,8 +703,7 @@ class Product extends ProductMaster
 		return array(
 			'ERememberFiltersBehavior'=>array(
 				'class'=>'application.components.ERememberFiltersBehavior',
-				'defaults'=>array(
-				),
+				'defaults'=>array(),
 				/* optional line */
 				'defaultStickOnClear'=>false /* optional line */
 			),);
@@ -739,14 +739,14 @@ class Product extends ProductMaster
 			$productId = $item->productId;
 			$product = Product::model()->findByPk($productId);
 			$quantity = $item->quantity;
-			//product
+//product
 			$res['items'][$productId] = $product;
 			$type = Category2ToProduct::model()->findProductType($categoryId, $productId);
 
-			//quantity
+//quantity
 			if($noSpanSet == 0)
 			{
-				//default Qty = 1
+//default Qty = 1
 				$res['items'][$productId]['quantity'] = 1;
 			}
 			else
@@ -754,17 +754,17 @@ class Product extends ProductMaster
 				$res['items'][$productId]['quantity'] = ($quantity * $noSpanSet) + ($type == 2 ? 1 : 0);
 			}
 
-			//price
+//price
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 				":productId"=>$productId));
 			if(isset($productPromotion))
 			{
-				//promotion price
+//promotion price
 				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId);
 			}
 			else
 			{
-				//normal price
+//normal price
 				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId);
 			}
 			$totalPrice = $totalPrice + $res['items'][$productId]['price'];
@@ -783,7 +783,7 @@ class Product extends ProductMaster
 		unset($productItems['categoryId']);
 		if(isset($isSave) && $isSave == TRUE)
 		{
-			//SAVE NEW ORDER
+//SAVE NEW ORDER
 			if($oldOrderId == NULL)
 			{
 				$orderModel = new Order();
@@ -815,23 +815,23 @@ class Product extends ProductMaster
 		foreach($productItems as $productId=> $qty)
 		{
 			$product = Product::model()->findByPk($productId);
-			//product
+//product
 			$res['items'][$productId] = $product;
 
-			//quantity
+//quantity
 			$res['items'][$productId]['quantity'] = intval($qty['quantity']);
 //			print_r($qty);
-			//price
+//price
 			$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 				":productId"=>$productId));
 			if(isset($productPromotion))
 			{
-				//promotion price
+//promotion price
 				$res['items'][$productId]['price'] = $this->calProductPromotionTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId) * 1;
 			}
 			else
 			{
-				//normal price
+//normal price
 				$res['items'][$productId]['price'] = $this->calProductTotalPrice($productId, $res['items'][$productId]['quantity'], $provinceId) * 1;
 			}
 			$totalPrice = $totalPrice + $res['items'][$productId]['price'];
@@ -865,7 +865,7 @@ class Product extends ProductMaster
 
 		if(isset($isSave) && $isSave == TRUE)
 		{
-			//SAVE NEW ORDER
+//SAVE NEW ORDER
 			$orderModel->totalIncVAT = $totalPrice;
 			$orderModel->total = $totalPrice / 1.07;
 			if($orderModel->save())
@@ -926,19 +926,19 @@ class Product extends ProductMaster
 		$productIdNew = intval($productId);
 		$newProduct = Product::model()->findByPk($productIdNew);
 		$res["item"] = $newProduct;
-		//default Qty = 1
+//default Qty = 1
 		$res["item"]['quantity'] = 1;
 
 		$productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
 			":productId"=>$productIdNew));
 		if(isset($productPromotion))
 		{
-			//promotion price
+//promotion price
 			$res["item"]['price'] = $this->calProductPromotionTotalPrice($productIdNew, 1, $provinceId) * 1;
 		}
 		else
 		{
-			//normal price
+//normal price
 			$res["item"]['price'] = $this->calProductTotalPrice($productIdNew, 1, $provinceId) * 1;
 		}
 		return $res;
@@ -1036,9 +1036,11 @@ class Product extends ProductMaster
 			if(isset($cate2ToProduct))
 			{
 //				throw new Exception(print_r($cate2ToProduct,true));
-				foreach($cate2ToProduct as $item){
+				foreach($cate2ToProduct as $item)
+				{
 					$product = Product::model()->findByPk($item->productId);
-					if($product->width == $width && $product->height == $height){
+					if($product->width == $width && $product->height == $height)
+					{
 						$productModel = $product;
 					}
 				}
@@ -1059,12 +1061,12 @@ class Product extends ProductMaster
 				$res["items"][$i]['quantity'] = $item['quantity'];
 				if(isset($productPromotion))
 				{
-					//promotion price
+//promotion price
 					$res["items"][$i]['price'] = $this->calProductPromotionTotalPrice($productModel->productId, 1, $provinceId);
 				}
 				else
 				{
-					//normal price
+//normal price
 					$res["items"][$i]['price'] = $this->calProductTotalPrice($productModel->productId, 1, $provinceId);
 				}
 				$subTotal = $res["items"][$i]['price'] * $res["items"][$i]['quantity'];
@@ -1108,12 +1110,12 @@ class Product extends ProductMaster
 			$res["items"][$i]['name'] = $item->name;
 			if(isset($productPromotion))
 			{
-				//promotion price
+//promotion price
 				$res["items"][$i]['price'] = $this->calProductPromotionTotalPrice($item->productId, 1, $provinceId);
 			}
 			else
 			{
-				//normal price
+//normal price
 				$res["items"][$i]['price'] = $this->calProductTotalPrice($item->productId, 1, $provinceId);
 			}
 			$subTotal = $res["items"][$i]['price'] * $res["items"][$i]['quantity'];

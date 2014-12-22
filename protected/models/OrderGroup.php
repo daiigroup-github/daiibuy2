@@ -17,12 +17,12 @@
  */
 class OrderGroup extends OrderGroupMaster
 {
+
 	//Summary Report
 
 	public $paymentYear;
 	public $paymentMonth;
 	public $totalSummary;
-
 	public $maxCode;
 	public $sumTotal;
 
@@ -52,6 +52,10 @@ class OrderGroup extends OrderGroupMaster
 				array(
 					'maxCode',
 					'safe'),
+				array(
+					' paymentYear, paymentMonth',
+					'safe',
+					'on'=>'search'),
 		));
 	}
 
@@ -406,7 +410,7 @@ class OrderGroup extends OrderGroupMaster
 		return $total - ($total / (1 + (self::VAT_PERCENT / 100)));
 	}
 
-		public function findAllSummaryReport()
+	public function findAllSummaryReport()
 	{
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.

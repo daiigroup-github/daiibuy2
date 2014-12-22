@@ -312,8 +312,6 @@ class ProductController extends MasterBackofficeController
 //						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
 //						$emailObj->Setmail(null, null, Yii::app()->user->id, null, $productId, $documentUrl);
 //						$sentMail->mailAddNewProductToAdmin($emailObj);
-
-
 //						$emailObj = new Email();
 //						$sentMail = new EmailSend();
 //						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/admin/product/view/id/";
@@ -631,10 +629,15 @@ class ProductController extends MasterBackofficeController
 	public function actionIndex()
 	{
 		$model = new Product('search');
-		$model->supplierId = $this->checkSupplierAndAdminAccessMenu();
+
 		//$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Product']))
 			$model->attributes = $_GET['Product'];
+
+		if(Yii::app()->user->userType != 4)
+		{
+			$model->supplierId = $this->checkSupplierAndAdminAccessMenu();
+		}
 
 		$this->render('index', array(
 			'model'=>$model,

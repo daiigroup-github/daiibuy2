@@ -3,7 +3,7 @@
 	function calTotalSummary()
 	{
 		$.ajax({
-			url: '<?php echo Yii::app()->createUrl("admin/report/calTotalSummary"); ?>',
+			url: '<?php echo Yii::app()->createUrl("backoffice/report/calTotalSummary"); ?>',
 			type: "GET",
 			dataType: "json",
 			data: $("#search-form").serialize(),

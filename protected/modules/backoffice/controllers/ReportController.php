@@ -352,13 +352,13 @@ class ReportController extends MasterBackofficeController
 
 	public function actionViewSummaryReport()
 	{
-		$model = new OrderGroup();
+		$model = new OrderGroup("search");
 
 
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Order']))
+		if(isset($_GET['OrderGroup']))
 		{
-			$model->attributes = $_GET['Order'];
+			$model->attributes = $_GET['OrderGroup'];
 		}
 		$totalSummary = $model->findTotalSummaryReport();
 		if(isset($totalSummary) && intval($totalSummary) > 0)
@@ -379,11 +379,11 @@ class ReportController extends MasterBackofficeController
 	{
 
 		$result = array();
-		$model = new Order();
-		if(isset($_GET['Order']))
+		$model = new OrderGroup("search");
+		if(isset($_GET['OrderGroup']))
 		{
 
-			$model->attributes = $_GET['Order'];
+			$model->attributes = $_GET['OrderGroup'];
 		}
 		$totalSummary = $model->findTotalSummaryReport();
 		if(isset($totalSummary))
