@@ -36,11 +36,12 @@ class BrandModel extends BrandModelMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
-            'categorys' => array(
-                self::MANY_MANY,
-                'Category',
-                'model_to_category1(brandModelId, categoryId)',
-            ),
+				'categorys'=>array(
+					self::MANY_MANY,
+					'Category',
+					'model_to_category1(brandModelId, categoryId)',
+					'order'=>'categorys_categorys.sortOrder ASC'
+				),
 		));
 	}
 
@@ -88,12 +89,15 @@ class BrandModel extends BrandModelMaster
 		));
 	}
 
-	public function findAllBrandModelArrayBySupplierId($supplierId){
-		$model = $this->findAll('supplierId = '.$supplierId);
+	public function findAllBrandModelArrayBySupplierId($supplierId)
+	{
+		$model = $this->findAll('supplierId = ' . $supplierId);
 		$res = array();
-		foreach($model as $item){
+		foreach($model as $item)
+		{
 			$res[$item->brandModelId] = $item;
 		}
 		return $model;
 	}
+
 }
