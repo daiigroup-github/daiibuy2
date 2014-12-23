@@ -717,38 +717,7 @@ class Order extends OrderMaster
 	public $paymentMonth;
 	public $totalSummary;
 
-	public function findAllYearSalesArray()
-	{
-		$result = array();
-		$criteria = new CDbCriteria();
-		$criteria->select = "YEAR(paymentDateTime) as paymentYear";
-		$criteria->compare("status", ">2");
-		$criteria->compare("paymentDateTime", "<>''");
-		$criteria->group = "YEAR(paymentDateTime)";
-		foreach($this->findAll($criteria) as $item)
-		{
-			$result[$item->paymentYear] = $item->paymentYear;
-		}
-		return $result;
-	}
 
-	public function findAllMonthSalesArray()
-	{
-		$result = array();
-		$result[1] = "ม.ค.";
-		$result[2] = "ก.พ.";
-		$result[3] = "มี.ค.";
-		$result[4] = "เม.ย.";
-		$result[5] = "พ.ค.";
-		$result[6] = "มิ.ย.";
-		$result[7] = "ก.ค.";
-		$result[8] = "ส.ค.";
-		$result[9] = "ก.ย.";
-		$result[10] = "ต.ค.";
-		$result[11] = "พ.ย.";
-		$result[12] = "ธ.ค.";
-		return $result;
-	}
 
 	public function findAllSummaryReport()
 	{

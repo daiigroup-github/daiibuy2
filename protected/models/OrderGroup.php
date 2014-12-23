@@ -141,7 +141,9 @@ class OrderGroup extends OrderGroupMaster
 			$this->orderNo = $this->searchText;
 			$this->type = $this->searchText;
 		}
-
+//		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear,true));
+		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
+		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, true, 'OR');
 		$criteria->compare('orderNo', $this->orderNo, true, 'OR');
 //		$criteria->compare('title', $this->title, true, 'OR');
 
@@ -431,6 +433,24 @@ class OrderGroup extends OrderGroupMaster
 		));
 	}
 
+	public function findAllMonthSalesArray()
+	{
+		$result = array();
+		$result[1] = "ม.ค.";
+		$result[2] = "ก.พ.";
+		$result[3] = "มี.ค.";
+		$result[4] = "เม.ย.";
+		$result[5] = "พ.ค.";
+		$result[6] = "มิ.ย.";
+		$result[7] = "ก.ค.";
+		$result[8] = "ส.ค.";
+		$result[9] = "ก.ย.";
+		$result[10] = "ต.ค.";
+		$result[11] = "พ.ย.";
+		$result[12] = "ธ.ค.";
+		return $result;
+	}
+
 	public function findTotalSummaryReport()
 	{
 		$criteria = new CDbCriteria;
@@ -458,22 +478,5 @@ class OrderGroup extends OrderGroupMaster
 		return $result;
 	}
 
-	public function findAllMonthSalesArray()
-	{
-		$result = array();
-		$result[1] = "ม.ค.";
-		$result[2] = "ก.พ.";
-		$result[3] = "มี.ค.";
-		$result[4] = "เม.ย.";
-		$result[5] = "พ.ค.";
-		$result[6] = "มิ.ย.";
-		$result[7] = "ก.ค.";
-		$result[8] = "ส.ค.";
-		$result[9] = "ก.ย.";
-		$result[10] = "ต.ค.";
-		$result[11] = "พ.ย.";
-		$result[12] = "ธ.ค.";
-		return $result;
-	}
 
 }
