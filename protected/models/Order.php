@@ -153,6 +153,17 @@ class Order extends OrderMaster
 		return $res;
 	}
 
+	public function isAddThisModel($productId, $userId, $provinceId){
+		$res= true;
+		$orders = Order::model()->findAll('supplierId = 4 AND userId = '.$userId.' AND provinceId = '.$provinceId.' AND type = 2');
+		foreach($order as $order){
+			foreach($order as $item){
+				$res = ($item->productId == $productId)? true:false;
+			}
+		}
+		return $res;
+	}
+
 	public function findAllMyFileHistoryBySupplierId($userId, $supplierId, $token)
 	{
 

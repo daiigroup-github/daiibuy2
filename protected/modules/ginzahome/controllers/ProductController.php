@@ -241,9 +241,12 @@ class ProductController extends MasterGinzahomeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
+				$isAdd = Order::model()->isAddThisModel($_POST['productId']);
+				if($isAdd){
 				//code here
-				$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
-				$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
+					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
+				}
 
 				if($flag)
 				{
