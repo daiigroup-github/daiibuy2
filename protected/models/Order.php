@@ -153,11 +153,16 @@ class Order extends OrderMaster
 		return $res;
 	}
 
-	public function isAddThisModel($productId, $userId, $provinceId){
+	public function isAddThisModel($productId, $provinceId, $userId=NULL,$token=NULL){
 		$res= true;
-		$orders = Order::model()->findAll('supplierId = 4 AND userId = '.$userId.' AND provinceId = '.$provinceId.' AND type = 2');
-		foreach($order as $order){
-			foreach($order as $item){
+		if(isset($userId)){
+			$orders = Order::model()->findAll('supplierId = 4 AND userId = '.$userId.' AND provinceId = '.$provinceId.' AND type = 2');
+		}else{
+			$orders = Order::model()->findAll('supplierId = 4 AND token = "'.$token.'" AND provinceId = '.$provinceId.' AND type = 2');
+		}
+		foreach($orders as $order){
+			foreach($order->orderItems as $item){
+//	throw new Exception(print_r($item,true));
 				$res = ($item->productId == $productId)? true:false;
 			}
 		}

@@ -225,7 +225,7 @@ class ProductController extends MasterGinzahomeController
 	{
 		if(isset($_POST['productId']))
 		{
-//			throw new Exception(print_r($_POST['productOption'],true));
+//			throw new Exception(print_r(isset(Yii::app()->user->id),true));
 			$this->writeToFile('/tmp/ginzaAddCart', print_r($_POST, true));
 			$res = array();
 			$supplier = Supplier::model()->find(array(
@@ -241,13 +241,18 @@ class ProductController extends MasterGinzahomeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$isAdd = Order::model()->isAddThisModel($_POST['productId']);
+
+				if(isset(Yii::app()->user->id)){
+					$isAdd = Order::model()->isAddThisModel($_POST['productId'],$this->cookie->provinceId,Yii::app()->user->id);
+				}else{
+					$isAdd = Order::model()->isAddThisModel($_POST['productId'],$this->cookie->provinceId,NULL,$this->cookie->token);
+				}
 				if($isAdd){
 				//code here
 					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
 					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
 				}
-
+				$flag = $isAdd;
 				if($flag)
 				{
 					$orderModel->totalIncVAT = $orderModel->orderItemsSum;
