@@ -88,7 +88,7 @@ return false;
 				'type'=>'text',
 				'htmlOptions'=>array(
 					'style'=>'text-align:center;width:10%'),
-				'value'=>'number_format($data->totalIncVAT, 2, ".", ",")',
+				'value'=>'number_format($data->summary, 2, ".", ",")',
 			),
 			//'orderStatusid',
 			array(

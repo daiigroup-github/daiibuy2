@@ -85,12 +85,17 @@ $this->breadcrumbs = array(
 							$i = 1;
 							$parentId = $model->orderGroupId;
 							$isShowPayButton = true;
+							$payButton = CHtml::link("ชำระเงิน", "", array(
+									'class'=>'button blue btn-xs',
+									'onclick'=>"payClick($i)"));
+//							$this->renderPartial("_condition", array(
+//								'period'=>$i));
 							foreach($model->orders as $item):
 								?>
 								<tr>
 									<td><?php echo $i; ?></td>
 									<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-									<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+									<td><?php echo number_format($item->totalIncVAT); ?></td>
 									<td style="color:green;text-align: center">ชำระ
 									</td>
 									<td style="width: 15%;text-align: center">
@@ -112,7 +117,7 @@ $this->breadcrumbs = array(
 									<tr>
 										<td><?php echo $i; ?></td>
 										<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-										<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+										<td><?php echo number_format($item->totalIncVAT); ?></td>
 										<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child1->status); ?>
 										</td>
 										<td style="width: 15%;text-align: center">
@@ -120,6 +125,7 @@ $this->breadcrumbs = array(
 												<span class="label label-success">อนุมัติ</span>
 											<?php else: ?>
 												<span class="label label-danger">รอการอนุมัติ</span>
+												<?php echo $payButton; ?>
 											<?php endif; ?>
 										</td>
 									</tr>
@@ -140,7 +146,7 @@ $this->breadcrumbs = array(
 										<tr>
 											<td><?php echo $i; ?></td>
 											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-											<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+											<td><?php echo number_format($item->totalIncVAT); ?></td>
 											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child2->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
@@ -169,7 +175,7 @@ $this->breadcrumbs = array(
 										<tr>
 											<td><?php echo $i; ?></td>
 											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-											<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
+											<td><?php echo number_format($item->totalIncVAT); ?></td>
 											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child3->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
@@ -177,6 +183,7 @@ $this->breadcrumbs = array(
 													<span class="label label-success">อนุมัติ</span>
 												<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
+
 												<?php endif; ?>
 											</td>
 										</tr>
@@ -206,6 +213,9 @@ $this->breadcrumbs = array(
 													<span class="label label-success">อนุมัติ</span>
 												<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
+													<?php
+													echo $payButton;
+													?>
 												<?php endif; ?>
 											</td>
 										</tr>

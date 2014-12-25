@@ -230,6 +230,7 @@ class OrderGroup extends OrderGroupMaster
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('telephone', $this->telephone, true);
 		$criteria->compare("status", ">0");
+		$criteria->addCondition("parentId is null");
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
@@ -478,5 +479,88 @@ class OrderGroup extends OrderGroupMaster
 		return $result;
 	}
 
+	public function updateSumOrderGroupTotalByOrderGroupId($orderGroupId = NULL)
+	{
+		$orderGroup = OrderGroup::model()->findByPk($orderGroupId);
+		$sumTotal = 0;
+		foreach($orderGroup->orders as $order)
+		{
+			foreach($order->orderItems as $item)
+			{
+				$price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
+
+				$sumTotal+=($price * $item->quantity);
+			}
+		}
+		if(!isset(Yii::app()->user->id))
+		{
+			if($supplierId == 4)
+			{
+				$sumTotal = 0;
+			}
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
+		}
+		else
+		{
+			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
+			$sumAll = $sumTotal + $sumLastTwelveMonth;
+			if($supplierId == 4)
+			{
+				$noOfBuy = 0;
+				$og = OrderGroup::model()->findAll("supplierId =" . $supplierId . " AND userId=" . Yii::app()->user->id . " AND parentId is null");
+				foreach($og->orders[0]->orderItems as $item)
+				{
+					$noOfBuy+=$item->quantity;
+				}
+				$sumAll = $noOfBuy;
+			}
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+		}
+		$discount = $sumTotal * $discountPercent / 100;
+		$grandTotal = $sumTotal - $discount;
+		$distributorDiscountPercent = 0;
+		$orderGroup->totalIncVAT = number_format($sumTotal, 2);
+		$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+		$orderGroup->vatValue = $orderGroup->calVatValue();
+		$orderGroup->userId = Yii::app()->user->id;
+
+		if(isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2)
+		{
+			//edit 3 to other when change policy discount of distributor
+			$distributorDiscountPercent += 3;
+		}
+		$totalPostSupplierRangeDiscount = $grandTotal;
+		if($distributorDiscountPercent > 0)
+		{
+			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
+			$grandTotal = $grandTotal - $distributorDiscount;
+		}
+
+		$orderGroup->discountPercent = $discountPercent;
+		$orderGroup->discountValue = number_format($discount, 2);
+		if($distributorDiscountPercent > 0 && isset($distributorDiscount))
+		{
+			$orderGroup->distributorDiscountPercent = $distributorDiscountPercent;
+			$orderGroup->distributorDiscount = number_format($distributorDiscount, 2);
+			$orderGroup->totalPostDistributorDiscount = number_format($grandTotal, 2);
+		}
+		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $discountPercent);
+		if(isset($extraDiscountArray))
+		{
+			$grandTotal -=$extraDiscountArray["totalExtraDiscount"];
+			$orderGroup->extraDiscount = number_format($extraDiscountArray["totalExtraDiscount"], 2);
+//			$res["extraDiscountArray"] = $extraDiscountArray;
+//			$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
+		}
+		$orderGroup->summary = $grandTotal;
+		if($orderGroup->save())
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 
 }

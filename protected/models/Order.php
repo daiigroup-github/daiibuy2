@@ -153,17 +153,23 @@ class Order extends OrderMaster
 		return $res;
 	}
 
-	public function isAddThisModel($productId, $provinceId, $userId=NULL,$token=NULL){
-		$res= true;
-		if(isset($userId)){
-			$orders = Order::model()->findAll('supplierId = 4 AND userId = '.$userId.' AND provinceId = '.$provinceId.' AND type = 2');
-		}else{
-			$orders = Order::model()->findAll('supplierId = 4 AND token = "'.$token.'" AND provinceId = '.$provinceId.' AND type = 2');
+	public function isAddThisModel($productId, $provinceId, $userId = NULL, $token = NULL)
+	{
+		$res = true;
+		if(isset($userId))
+		{
+			$orders = Order::model()->findAll('supplierId = 4 AND userId = ' . $userId . ' AND provinceId = ' . $provinceId . ' AND type = 2');
 		}
-		foreach($orders as $order){
-			foreach($order->orderItems as $item){
+		else
+		{
+			$orders = Order::model()->findAll('supplierId = 4 AND token = "' . $token . '" AND provinceId = ' . $provinceId . ' AND type = 2');
+		}
+		foreach($orders as $order)
+		{
+			foreach($order->orderItems as $item)
+			{
 //	throw new Exception(print_r($item,true));
-				$res = ($item->productId == $productId)? true:false;
+				$res = ($item->productId == $productId) ? true : false;
 			}
 		}
 		return $res;
@@ -733,8 +739,6 @@ class Order extends OrderMaster
 	public $paymentMonth;
 	public $totalSummary;
 
-
-
 	public function findAllSummaryReport()
 	{
 // Warning: Please modify the following code to remove attributes that
@@ -884,12 +888,46 @@ class Order extends OrderMaster
 		}
 		if(!isset(Yii::app()->user->id))
 		{
+			if($supplierId == 4)
+			{
+				$sumTotal = 0;
+			}
 			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
 		}
 		else
 		{
 			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal + $sumLastTwelveMonth);
+			$sumAll = $sumTotal + $sumLastTwelveMonth;
+			if($supplierId == 4)
+			{
+				if(isset(Yii::app()->user->id))
+				{
+					$user = " AND userId= " . Yii::app()->user->id . " ";
+				}
+				else
+				{
+					$daiibuy = new DaiiBuy();
+					$daiibuy->loadCookie();
+					$user = " AND token= '" . $daiibuy->token . "' ";
+				}
+				$noOfBuy = 0;
+				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3");
+				if(isset($ogs) && count($ogs) > 0)
+				{
+					foreach($ogs as $og)
+					{
+						foreach($og->orders as $orders)
+						{
+							foreach($orders->orderItems as $item)
+							{
+								$noOfBuy+=$item->quantity;
+							}
+						}
+					}
+				}
+				$sumAll = $noOfBuy;
+			}
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
 		}
 		$discount = $sumTotal * $discountPercent / 100;
 		$grandTotal = $sumTotal - $discount;
@@ -972,6 +1010,81 @@ class Order extends OrderMaster
 		{
 			return null;
 		}
+	}
+
+	public function sumOrderTotalByProductIdAndQuantity($productId, $quantity, $supplierId)
+	{
+		$res = [];
+		if(isset(Yii::app()->user->id))
+		{
+			$user = " AND userId= " . Yii::app()->user->id . " ";
+		}
+		else
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$user = " AND token= '" . $daiibuy->token . "' ";
+		}
+		$sumTotal = 0;
+		$product = Product::model()->findByPk($productId);
+		$price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
+		$sumTotal+=($price * $quantity);
+		$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
+		$sumAll = $sumTotal + $sumLastTwelveMonth;
+		if($supplierId == 4)
+		{
+			$noOfBuy = 0;
+			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3");
+			if(isset($ogs) && count($ogs) > 0)
+			{
+				foreach($ogs as $og)
+				{
+					foreach($og->orders as $orders)
+					{
+						foreach($orders->orderItems as $item)
+						{
+							$noOfBuy+=$item->quantity;
+						}
+					}
+				}
+			}
+			$sumAll = $noOfBuy;
+		}
+		$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+		$discount = $sumTotal * $discountPercent / 100;
+		$grandTotal = $sumTotal - $discount;
+		$distributorDiscountPercent = 0;
+
+		if(isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2)
+		{
+			//edit 3 to other when change policy discount of distributor
+			$distributorDiscountPercent += 3;
+		}
+		$res['totalPostSupplierRangeDiscount'] = number_format($grandTotal, 2);
+		if($distributorDiscountPercent > 0)
+		{
+			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
+			$grandTotal = $grandTotal - $distributorDiscount;
+		}
+		$res['total'] = number_format($sumTotal, 2);
+		$res['discountPercent'] = $discountPercent;
+		$res['discount'] = number_format($discount, 2);
+		if($distributorDiscountPercent > 0 && isset($distributorDiscount))
+		{
+			$res['distributorDiscountPercent'] = $distributorDiscountPercent;
+			$res['distributorDiscount'] = number_format($distributorDiscount, 2);
+			$res['totalPostDistributorDiscount'] = number_format($grandTotal, 2);
+		}
+		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $discountPercent);
+		if(isset($extraDiscountArray))
+		{
+			$grandTotal -=$extraDiscountArray["totalExtraDiscount"];
+			$res["extraDiscount"] = number_format($extraDiscountArray["totalExtraDiscount"], 2);
+			$res["extraDiscountArray"] = $extraDiscountArray;
+			$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
+		}
+		$res['grandTotal'] = number_format($grandTotal, 2);
+		return $res;
 	}
 
 }
