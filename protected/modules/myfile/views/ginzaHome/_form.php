@@ -88,8 +88,6 @@ $this->breadcrumbs = array(
 							$payButton = CHtml::link("ชำระเงิน", "", array(
 									'class'=>'button blue btn-xs',
 									'onclick'=>"payClick($i)"));
-//							$this->renderPartial("_condition", array(
-//								'period'=>$i));
 							foreach($model->orders as $item):
 								?>
 								<tr>
@@ -125,8 +123,13 @@ $this->breadcrumbs = array(
 												<span class="label label-success">อนุมัติ</span>
 											<?php else: ?>
 												<span class="label label-danger">รอการอนุมัติ</span>
-												<?php echo $payButton; ?>
-											<?php endif; ?>
+												<?php
+												echo $payButton;
+												$this->renderPartial("_condition", array(
+													'period'=>$i));
+												?>
+
+		<?php endif; ?>
 										</td>
 									</tr>
 									<?php
@@ -154,7 +157,7 @@ $this->breadcrumbs = array(
 													<span class="label label-success">อนุมัติ</span>
 												<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
-												<?php endif; ?>
+			<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -181,10 +184,10 @@ $this->breadcrumbs = array(
 											<td style="width: 15%;text-align: center">
 												<?php if($child3->status >= 3): ?>
 													<span class="label label-success">อนุมัติ</span>
-												<?php else: ?>
+			<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
 
-												<?php endif; ?>
+			<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -216,7 +219,7 @@ $this->breadcrumbs = array(
 													<?php
 													echo $payButton;
 													?>
-												<?php endif; ?>
+			<?php endif; ?>
 											</td>
 										</tr>
 										<?php

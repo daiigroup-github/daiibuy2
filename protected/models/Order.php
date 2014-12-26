@@ -890,9 +890,12 @@ class Order extends OrderMaster
 		{
 			if($supplierId == 4)
 			{
-				$sumTotal = 0;
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, 0);
 			}
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
+			else
+			{
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
+			}
 		}
 		else
 		{

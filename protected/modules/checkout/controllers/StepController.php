@@ -299,8 +299,6 @@ class StepController extends MasterCheckoutController
 	public function step4()
 	{
 		$supplierId = Yii::app()->session['supplierId'];
-		if(isset($_POST["productId"]))
-			$productId = $_POST["productId"];
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
 		$provinceId = $daiibuy['provinceId'];
@@ -437,11 +435,7 @@ class StepController extends MasterCheckoutController
 				if($flag)
 				{
 					$transaction->commit();
-					if(isset($productId))
-					{
-						$this->redirect(array(
-							"/myfile/ginzaHome/view/id/" . $_POST["orderGroupId"]));
-					}
+
 					/**
 					 * 1 = card, 2 = transfer
 					 * orderNo = $orderGroup->orderNo
@@ -469,11 +463,6 @@ class StepController extends MasterCheckoutController
 				else
 				{
 					$transaction->rollback();
-					if(isset($productId))
-					{
-						$this->redirect(array(
-							"/myfile/ginzaHome/view/id/" . $_POST["orderGroupId"]));
-					}
 				}
 			}
 			catch(Exception $e)
@@ -805,6 +794,23 @@ class StepController extends MasterCheckoutController
 			throw new Exception($e->getMessage());
 			$transaction->rollback();
 		}
+	}
+
+	public function actionMyfileGinzaStep()
+	{
+		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
+		if(isset($_POST['paymentMethod']))
+		{
+			$this->redirect(array(
+				"/myfile/ginzaHome/view/id/" . $_POST["orderGroupId"]));
+		}
+
+		$bankArray = Bank::model()->findAllBankModelBySupplier($supplierId);
+
+		$this->render('step4', array(
+			'step'=>4,
+			'orderSummary'=>$orderGroup,
+			'bankArray'=>$bankArray,));
 	}
 
 }
