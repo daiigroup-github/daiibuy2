@@ -617,7 +617,7 @@ class StepController extends MasterCheckoutController
 			echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
 		}
 
-		$bankArray = Bank::model()->findAllBankModelBySupplier(Yii::app()->session['supplierId']);
+		$bankArray = Bank::model()->findAllBankModelBySupplier($order->supplierId);
 		$this->render("step6", array(
 			'bankArray'=>$bankArray,
 			'model'=>$order));
@@ -799,17 +799,48 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
+
+
+		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+		$res = array();
+		$res['total'] = number_format($orderGroup->total, 2);
+		$res['totalPostSupplierRangeDiscount'] = number_format($orderGroup->totalPostDiscount, 2);
+
+		$res['discountPercent'] = $orderGroup->discountPercent;
+		$res['discount'] = number_format($orderGroup->discountValue, 2);
+		$res['distributorDiscountPercent'] = $orderGroup->distributorDiscountPercent;
+		$res['distributorDiscount'] = number_format($orderGroup->distributorDiscount, 2);
+		$res['totalPostDistributorDiscount'] = number_format($orderGroup->totalPostDistributorDiscount, 2);
+		$res["extraDiscount"] = number_format($orderGroup->extraDiscount, 2);
+//		$res["extraDiscountArray"] = $extraDiscountArray;
+//		$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
+		$res['grandTotal'] = number_format($orderGroup->summary, 2);
+
 		if(isset($_POST['paymentMethod']))
 		{
-			$this->redirect(array(
-				"/myfile/ginzaHome/view/id/" . $_POST["orderGroupId"]));
+			if($orderGroup->paymentMethod == 1)
+			{
+				$this->redirect(array(
+					"confirmCheckout",
+					'id'=>$orderGroupId));
+			}
+			else
+			{
+				$emailObj = new Email();
+				$sentMail = new EmailSend();
+				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+				$emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
+				$sentMail->mailCompleteOrderCustomer($emailObj);
+				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+				$this->redirect(array(
+					'step6',
+					"id"=>$orderGroup->orderGroupId,
+				));
+			}
 		}
-
-		$bankArray = Bank::model()->findAllBankModelBySupplier($supplierId);
-
 		$this->render('step4', array(
 			'step'=>4,
-			'orderSummary'=>$orderGroup,
+			'orderSummary'=>$res,
 			'bankArray'=>$bankArray,));
 	}
 
