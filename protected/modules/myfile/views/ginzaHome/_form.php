@@ -85,9 +85,6 @@ $this->breadcrumbs = array(
 							$i = 1;
 							$parentId = $model->orderGroupId;
 							$isShowPayButton = true;
-							$payButton = CHtml::link("ชำระเงิน", "", array(
-									'class'=>'button blue btn-xs',
-									'onclick'=>"payClick($i)"));
 							foreach($model->orders as $item):
 								?>
 								<tr>
@@ -121,15 +118,24 @@ $this->breadcrumbs = array(
 										<td style="width: 15%;text-align: center">
 											<?php if($child1->status >= 3): ?>
 												<span class="label label-success">อนุมัติ</span>
-											<?php else: ?>
-												<span class="label label-danger">รอการอนุมัติ</span>
 												<?php
-												echo $payButton;
-												$this->renderPartial("_condition", array(
-													'period'=>$i));
-												?>
-
-		<?php endif; ?>
+											else:
+												if($model->status >= 3 && $child1->status == 0):
+													?>
+													<span class="label label-danger">รอการชำระเงิน</span>
+													<form id="payForm2"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child1->orderGroupId); ?>">
+														<?php
+														echo CHtml::link("ชำระเงิน", "", array(
+															'class'=>'button blue btn-xs',
+															'onclick'=>"payClick(2)"));
+														$this->renderPartial("_condition", array(
+															'period'=>2));
+														?>
+													</form>
+												<?php else: ?>
+													<span class="label label-danger">รอการอนุมัติ</span>
+												<?php endif; ?>
+											<?php endif; ?>
 										</td>
 									</tr>
 									<?php
@@ -155,9 +161,24 @@ $this->breadcrumbs = array(
 											<td style="width: 15%;text-align: center">
 												<?php if($child2->status >= 3): ?>
 													<span class="label label-success">อนุมัติ</span>
-												<?php else: ?>
-													<span class="label label-danger">รอการอนุมัติ</span>
-			<?php endif; ?>
+													<?php
+												else:
+													if($child1->status >= 3 && $child2->status == 0):
+														?>
+														<span class="label label-danger">รอการชำระเงิน</span>
+														<form id="payForm3"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child2->orderGroupId); ?>">
+															<?php
+															echo CHtml::link("ชำระเงิน", "", array(
+																'class'=>'button blue btn-xs',
+																'onclick'=>"payClick(3)"));
+															$this->renderPartial("_condition", array(
+																'period'=>3));
+															?>
+														</form>
+													<?php else: ?>
+														<span class="label label-danger">รอการอนุมัติ</span>
+													<?php endif; ?>
+												<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -184,10 +205,24 @@ $this->breadcrumbs = array(
 											<td style="width: 15%;text-align: center">
 												<?php if($child3->status >= 3): ?>
 													<span class="label label-success">อนุมัติ</span>
-			<?php else: ?>
-													<span class="label label-danger">รอการอนุมัติ</span>
-
-			<?php endif; ?>
+													<?php
+												else:
+													if($child2->status >= 3 && $child3->status == 0):
+														?>
+														<span class="label label-danger">รอการชำระเงิน</span>
+														<form id="payForm4"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child3->orderGroupId); ?>">
+															<?php
+															echo CHtml::link("ชำระเงิน", "", array(
+																'class'=>'button blue btn-xs',
+																'onclick'=>"payClick(4)"));
+															$this->renderPartial("_condition", array(
+																'period'=>4));
+															?>
+														</form>
+													<?php else: ?>
+														<span class="label label-danger">รอการอนุมัติ</span>
+													<?php endif; ?>
+												<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -219,7 +254,7 @@ $this->breadcrumbs = array(
 													<?php
 													echo $payButton;
 													?>
-			<?php endif; ?>
+												<?php endif; ?>
 											</td>
 										</tr>
 										<?php
