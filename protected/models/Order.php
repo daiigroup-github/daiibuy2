@@ -877,6 +877,7 @@ class Order extends OrderMaster
 			'params'=>$params,
 		));
 		$sumTotal = 0;
+		$noOfBuy = 0;
 		foreach($models as $order)
 		{
 			foreach($order->orderItems as $item)
@@ -884,6 +885,7 @@ class Order extends OrderMaster
 				$price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
 
 				$sumTotal+=($price * $item->quantity);
+				$noOfBuy +=$item->quantity;
 			}
 		}
 		if(!isset(Yii::app()->user->id))
@@ -913,7 +915,7 @@ class Order extends OrderMaster
 					$daiibuy->loadCookie();
 					$user = " AND token= '" . $daiibuy->token . "' ";
 				}
-				$noOfBuy = 0;
+
 				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null");
 				if(isset($ogs) && count($ogs) > 0)
 				{
