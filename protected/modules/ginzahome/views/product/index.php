@@ -96,7 +96,7 @@ $this->breadcrumbs = array(
 							<label for="productOption" class="col-sm-4 control-label"><?php echo $productOptionGroup->title; ?></label>
 							<div class="col-sm-7">
 								<?php
-								echo CHtml::dropDownList('productOption', '', CHtml::listData($productOptionGroup->productOptions, 'productOptionId', 'title'), array(
+								echo CHtml::dropDownList("productOptionGroup[$productOptionGroup->productOptionGroupId]", '', CHtml::listData($productOptionGroup->productOptions, 'productOptionId', 'title'), array(
 									'class'=>'chosen-select-full-width',
 									'prompt'=>'-- Select --',
 									'name'=>'productOption'

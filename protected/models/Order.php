@@ -914,7 +914,7 @@ class Order extends OrderMaster
 					$user = " AND token= '" . $daiibuy->token . "' ";
 				}
 				$noOfBuy = 0;
-				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3");
+				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null");
 				if(isset($ogs) && count($ogs) > 0)
 				{
 					foreach($ogs as $og)
@@ -1037,7 +1037,8 @@ class Order extends OrderMaster
 		if($supplierId == 4)
 		{
 			$noOfBuy = 0;
-			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3");
+//			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3"); // Discount when confirm by finance admin
+			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null ");
 			if(isset($ogs) && count($ogs) > 0)
 			{
 				foreach($ogs as $og)

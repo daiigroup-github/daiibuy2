@@ -31,10 +31,10 @@ class CartController extends MasterCheckoutController
 				),
 			));
 		}
-
+		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
-			'orderSummary'=>Order::model()->sumOrderTotalBySupplierId($id),
+			'orderSummary'=>$orderSummary,
 			'supplierId'=>$id,
 		));
 	}

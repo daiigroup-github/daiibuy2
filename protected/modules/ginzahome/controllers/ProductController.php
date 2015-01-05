@@ -226,7 +226,6 @@ class ProductController extends MasterGinzahomeController
 		if(isset($_POST['productId']))
 		{
 //			throw new Exception(print_r(isset(Yii::app()->user->id),true));
-			$this->writeToFile('/tmp/ginzaAddCart', print_r($_POST, true));
 			$res = array();
 			$supplier = Supplier::model()->find(array(
 				'condition'=>'url=:url',
@@ -242,15 +241,19 @@ class ProductController extends MasterGinzahomeController
 			try
 			{
 
-				if(isset(Yii::app()->user->id)){
-					$isAdd = Order::model()->isAddThisModel($_POST['productId'],$this->cookie->provinceId,Yii::app()->user->id);
-				}else{
-					$isAdd = Order::model()->isAddThisModel($_POST['productId'],$this->cookie->provinceId,NULL,$this->cookie->token);
+				if(isset(Yii::app()->user->id))
+				{
+					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, Yii::app()->user->id);
 				}
-				if($isAdd){
-				//code here
+				else
+				{
+					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, NULL, $this->cookie->token);
+				}
+				if($isAdd)
+				{
+					//code here
 					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
-					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity']);
+					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity'], $_POST["productOptionGroup"]);
 				}
 				$flag = $isAdd;
 				if($flag)
