@@ -130,7 +130,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                     <p><?php echo $form->labelEx($userModel, 'email');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->textField($userModel, 'email');?>
+                    <?php echo $form->textField($userModel, 'email', array('id'=>'verifyEmail','onblur'=>'checkEmail();'));?>
+					<span id="mailMessage" class="mailMessage"></span>
 					<?php echo $form->error($userModel,'email'); ?>
                 </div>
             </div>
@@ -139,7 +140,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                     <p><?php echo $form->labelEx($userModel, 'password');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->passwordField($userModel, 'password', array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;'));?>
+                    <?php echo $form->passwordField($userModel, 'password', array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;','id'=>'pass1','onblur'=>'checkPass(); return false;'));?>
 					<?php echo $form->error($userModel,'password'); ?>
                 </div>
             </div>
@@ -148,8 +149,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                     <p><?php echo $form->labelEx($userModel, 'confirmPassword');?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php echo $form->passwordField($userModel, 'confirmPassword',array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;'));?>
-					<?php echo $form->error($userModel,'confirmPassword'); ?>
+                    <?php echo $form->passwordField($userModel, 'confirmPassword',array('style'=>'width:100%; background: #f7f7f7; font-size: 14px; border:1px solid #e6e6e6; height: 40px;','onblur'=>'checkPass(); return false;'));?>
+					<span id="confirmMessage" class="confirmMessage"></span>
                 </div>
             </div>
 
@@ -211,7 +212,9 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'address_2');?>
 					<?php echo $form->error($addressModel,'address_2'); ?>
+					<span><b>**ไม่ต้องกรอก <u>ตำบล, อำเภอ</u></b></span>
                 </div>
+
             </div>
 						<div class="row">
 				<div class="col-lg-4 col-md-4 col-sm-4">
@@ -319,3 +322,70 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 
     </div>
 </div>
+
+<script>
+	function checkPass()
+{
+    //Store the password field objects into variables ...
+    var pass1 = document.getElementById('pass1');
+    var pass2 = document.getElementById('User_confirmPassword');
+    //Store the Confimation Message Object ...
+    var message = document.getElementById('confirmMessage');
+    //Set the colors we will be using ...
+    var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+    //Compare the values in the password field
+    //and the confirmation field
+	if((pass1.value !== "" && pass2.value === "")){
+	}else{
+		if((pass1.value === "" && pass2.value === "")){
+			pass1.style.backgroundColor = badColor;
+			pass2.style.backgroundColor = badColor;
+        message.style.color = badColor;
+		message.style.fontSize = '12px';
+        message.innerHTML = "<b>กรุณาใส่รหัสผ่าน!</b>";
+		pass1.focus();
+		}else if((pass1.value === pass2.value)){
+        //The passwords match.
+        //Set the color to the good color and inform
+        //the user that they have entered the correct password
+        pass1.style.backgroundColor = goodColor;
+		pass2.style.backgroundColor = goodColor;
+        message.style.color = goodColor;
+		message.style.fontSize = '12px';
+        message.innerHTML = "<b>รหัสผ่านตรงกัน!</b>";
+		}else{
+        //The passwords do not match.
+        //Set the color to the bad color and
+        //notify the user.
+        pass2.style.backgroundColor = badColor;
+
+        message.style.color = badColor;
+		message.style.fontSize = '12px';
+        message.innerHTML = "<b>กรุณาใส่รหัสผ่านให้ตรงกัน!</b>";
+//		pass2.focus();
+		}
+	}
+	}
+function checkEmail() {
+    var email = document.getElementById('verifyEmail');
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	var message = document.getElementById('mailMessage');
+	var goodColor = "#66cc66";
+    var badColor = "#ff6666";
+
+		if (!filter.test(email.value)) {
+			email.style.backgroundColor = badColor;
+			message.style.color = badColor;
+			message.style.fontSize = '12px';
+			message.innerHTML = "<b>กรุณาใส่รูปแบบอีเมล์ให้ถูกต้อง</b> <i>(ตัวอย่าง : customer@gmail.com).</i>";
+			email.focus();
+			return false;
+		}else{
+			email.style.backgroundColor = goodColor;
+			message.style.color = goodColor;
+			message.style.fontSize = '12px';
+			message.innerHTML = "<b>คุณสามารถใช้อีเมลล์นี้ได้.</b>";
+		}
+ }
+</script>
