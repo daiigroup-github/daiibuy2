@@ -883,7 +883,13 @@ class Order extends OrderMaster
 			foreach($order->orderItems as $item)
 			{
 				$price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
-
+				if(isset($item->orderItemOptions))
+				{
+					foreach($item->orderItemOptions as $option)
+					{
+						$price += $option->total;
+					}
+				}
 				$sumTotal+=($price * $item->quantity);
 				$noOfBuy +=$item->quantity;
 			}

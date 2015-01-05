@@ -68,6 +68,13 @@
 				<?php
 				foreach($order->orderItems as $orderItem):
 					$price = ($orderItem->product->calProductPromotionPrice() != 0) ? $orderItem->product->calProductPromotionPrice() : $orderItem->product->calProductPrice();
+					if(isset($orderItem->orderItemOptions))
+					{
+						foreach($orderItem->orderItemOptions as $option)
+						{
+							$price += $option->total;
+						}
+					}
 					?>
 					<tr>
 						<td id="code<?php echo $orderItem->orderItemsId; ?>"><?php echo $orderItem->product->code; ?></td>
@@ -79,13 +86,27 @@
 								<input type="number" class="form-control" value="<?php echo $orderItem->quantity; ?>" name="quantity[<?php echo $orderItem->orderItemsId; ?>]" min="0"/>
 							<?php endif; ?>
 						</td>
-						<td class="align-right" id="price<?php echo $orderItem->orderItemsId; ?>"><?php echo number_format($price, 2); ?></td>
+						<td class="align-right" id="price<?php echo $orderItem->orderItemsId; ?>">
+							<?php echo number_format($price, 2); ?>
+							<?php
+							foreach($orderItem->orderItemOptions as $option):
+								if(isset($option->productOption)):
+									?>
+									<p>
+										<i class="fa fa-check-circle" style="color:green"></i>
+										<?php echo $option->productOption->title; ?>
+									</p>
+									<?php
+								endif;
+							endforeach;
+							?>
+						</td>
 						<td class="align-right" id="total<?php echo $orderItem->orderItemsId; ?>"><?php echo number_format($orderItem->quantity * $price, 2); ?></td>
 					</tr>
 					<?php $sum += $orderItem->quantity * $price; ?>
 				<?php endforeach; ?>
 
-				<?php //summary    ?>
+				<?php //summary      ?>
 				<tr>
 					<td class="align-right" colspan="4"><span class="price big">ยอดรวม</span></td>
 					<td class="align-right"><span class="price big" id="order<?php echo $order->orderId; ?>"><?php echo number_format($sum, 2); ?></span></td>

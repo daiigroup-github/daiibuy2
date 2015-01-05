@@ -32,6 +32,11 @@ class OrderItems extends OrderItemsMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
+				'orderItemOptions'=>array(
+					self::HAS_MANY,
+					"OrderItemOption",
+					'orderItemId',
+					'limit'=>1)
 		));
 	}
 
@@ -120,10 +125,20 @@ class OrderItems extends OrderItemsMaster
 					$orderItemOption->percent = $productOption->pricePercent;
 					$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
 				}
+				else
+				{
+					$orderItemOption->percent = 0;
+					$orderItemOption->total = 0;
+				}
 				if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
 				{
 					$orderItemOption->value = $productOption->priceValue;
 					$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+				}
+				else
+				{
+					$orderItemOption->value = 0;
+					$orderItemOption->total += 0;
 				}
 				$orderItemOption->createDateTime = new CDbExpression("NOW()");
 				$orderItemOption->updateDateTime = new CDbExpression("NOW()");
