@@ -753,30 +753,70 @@ class StepController extends MasterCheckoutController
 					if($order->save())
 					{
 						$orderId = Yii::app()->db->lastInsertID;
-						$orderItems = new OrderItems();
-						$orderItems->orderId = $orderId;
-						$orderItems->productId = $model->productId;
-						$orderItems->quantity = $quantity;
-						$total = $price * $quantity;
-						$orderItems->price = $price;
-						$orderItems->total = $total;
-						$orderItems->createDateTime = new CDbExpression("NOW()");
-						$orderItems->updateDateTime = new CDbExpression("NOW()");
-						if(!$orderItems->save(false))
+						foreach($oldOrderGroup->orders[0]->orderItems as $orderItem)
 						{
-							$flag = false;
-						}
-						else
-						{
-							$orderGroupToOrder = new OrderGroupToOrder();
-							$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-							$orderGroupToOrder->orderId = $orderId;
-							$orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
-							$orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
-							if(!$orderGroupToOrder->save())
+							$orderItems = new OrderItems();
+							$orderItems->orderId = $orderId;
+							$orderItems->productId = $model->productId;
+							$orderItems->quantity = $quantity;
+							$total = $price * $quantity;
+							$orderItems->price = $price;
+							$orderItems->total = $total;
+							$orderItems->createDateTime = new CDbExpression("NOW()");
+							$orderItems->updateDateTime = new CDbExpression("NOW()");
+							if($orderItems->save(false))
 							{
-								$flag = FALSE;
+								$orderItemId = Yii::app()->db->lastInsertID;
+								foreach($orderItem->orderItemOptions as $orderOptions)
+								{
+									$orderItemOption = new OrderItemOption();
+									$orderItemOption->orderItemId = $orderItemId;
+									$orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
+									$orderItemOption->productOptionId = $orderOptions->productOptionId;
+									$productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
+									if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
+									{
+										$orderItemOption->percent = $productOption->pricePercent;
+										$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+									}
+									else
+									{
+										$orderItemOption->percent = 0;
+										$orderItemOption->total = 0;
+									}
+									if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
+									{
+										$orderItemOption->value = $productOption->priceValue;
+										$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+									}
+									else
+									{
+										$orderItemOption->value = 0;
+										$orderItemOption->total += 0;
+									}
+									$orderItemOption->createDateTime = new CDbExpression("NOW()");
+									$orderItemOption->updateDateTime = new CDbExpression("NOW()");
+									if($orderItemOption->save())
+									{
+										$orderItems->total +=$orderItemOption->total;
+										$orderItems->save(FALSE);
+									}
+									else
+									{
+
+									}
+								}
 							}
+						}
+
+						$orderGroupToOrder = new OrderGroupToOrder();
+						$orderGroupToOrder->orderGroupId = $newOrderGroupId;
+						$orderGroupToOrder->orderId = $orderId;
+						$orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
+						$orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
+						if(!$orderGroupToOrder->save())
+						{
+							$flag = FALSE;
 						}
 					}
 				}
