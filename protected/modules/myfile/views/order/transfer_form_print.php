@@ -79,9 +79,9 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 								ชื่อลูกค้า :
 								<b><?php
 									$comName = User::model()->showUserCompany($model->userId);
-									if((($comName != "---") && ($comName != "") && isset($comName)) || isset($model->paymentCompany))
+									if((($comName != "-") && ($comName != "---") && ($comName != "") && isset($comName)) || (isset($model->paymentCompany) && $model->paymentCompany != ""))
 									{
-										echo ((($comName != "---") && ($comName != "") && isset($comName)) ? $comName : $model->paymentCompany);
+										echo ((($comName != "-") && ($comName != "---") && ($comName != "") && (isset($comName) && $model->paymentCompany != "")) ? $comName : $model->paymentCompany);
 									}
 									else
 									{
