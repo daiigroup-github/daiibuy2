@@ -148,7 +148,7 @@ $('#search-form').submit(function(){
 	?>
 	<div class="row">
 		<div class="col-sm-12" style="text-align: center">
-			<h2 id="">รวมเป็นเงินทั้งสิน : <span id="totalSummary"><?php echo number_format($totalSummary, 2); ?></span>&nbsp;บาท</h2>
+			<h2 id="">รวมเป็นเงินทั้งสิ้น : <span id="totalSummary"><?php echo number_format($totalSummary, 2); ?></span>&nbsp;บาท</h2>
 		</div>
 	</div>
 </div>
