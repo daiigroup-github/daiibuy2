@@ -46,7 +46,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 
 
         <div class="carousel-heading no-margin">
-            <h4>Your account details</h4>
+            <h4>เข้าสู่ระบบ / LOGIN</h4>
         </div>
 
         <?php
@@ -59,7 +59,8 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 
         ?>
         <div class="page-content">
-            <p>If you are already registered please login directly here</p>
+			<left>หากคุณเคยสมัครสมาชิกแล้ว กรุณาเข้าสู่ระบบที่นี่.
+				<br>If you are already registered please login directly here.</left><br>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="iconic-input">
@@ -90,7 +91,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 
     <div class="col-md-8 register-account">
         <div class="carousel-heading no-margin">
-            <h4>Register</h4>
+            <h4>สมัครสมาชิก / Register</h4>
         </div>
 
         <?php
@@ -104,7 +105,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
         <div class="page-content">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <p><strong>Account</strong></p>
+                    <p><u><strong>ข้อมูลบัญชี</strong></u></p>
                 </div>
             </div>
             <div class="row">
@@ -156,7 +157,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <p><strong>Billing Information</strong></p>
+                    <p><u><strong>ข้อมูลสำหรับออกใบกำกับภาษี</strong></u></p>
                 </div>
             </div>
 
@@ -212,7 +213,7 @@ Yii::app()->clientScript->registerScript("loadProvince", "
                 <div class="col-lg-8 col-md-8 col-sm-8">
                     <?php echo $form->textField($addressModel, 'address_2');?>
 					<?php echo $form->error($addressModel,'address_2'); ?>
-					<span><b>**ไม่ต้องกรอก <u>ตำบล, อำเภอ</u></b></span>
+					<span style="font-size: 14px;color: red"><b>**ไม่ต้องกรอก <u>ตำบล, อำเภอ, จังหวัด และรหัสไปรษณีย์</u> ลงในที่อยู่ 1 และที่อยู่ 2 </b></span>
                 </div>
 
             </div>
