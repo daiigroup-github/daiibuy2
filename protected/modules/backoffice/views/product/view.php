@@ -233,7 +233,7 @@ if($model->status == 3)
 							array(
 								'label'=>'กลุ่มราคา',
 								'type'=>'raw',
-								'value'=>$model->priceGroup->priceGroupName,
+								'value'=>isset($model->priceGroup)? $model->priceGroup->priceGroupName : '-',
 							),
 							'points',
 							//'dateAvailable',

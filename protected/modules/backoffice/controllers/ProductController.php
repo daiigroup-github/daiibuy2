@@ -26,8 +26,10 @@ class ProductController extends MasterBackofficeController
 	 */
 	public function actionView($id)
 	{
+
 		$model = $this->loadModel($id);
-		if(isset(Yii::app()->user) && Yii::app()->user->id != $model->supplierId && Yii::app()->user->userType != 4)
+//		throw new Exception(print_r(Yii::app()->user->userType != 4,true));
+		if(isset(Yii::app()->user) && Yii::app()->user->id != $model->supplierId && (Yii::app()->user->userType != 3 && Yii::app()->user->userType !=4))
 		{
 			$this->redirect(array(
 				"index"));
