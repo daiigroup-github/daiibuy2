@@ -96,6 +96,9 @@ $this->menu = array(
 //						'label'=>'<br><u>Approve</u>',
 //						'url'=>'Yii::app()->createUrl("admin/product/update", array("id"=>$data->productId))'
 //					),
+					'view'=>array(
+						'url'=>'Yii::app()->createUrl("backoffice/product/view/id/".$data->productId)'
+					),
 					'update'=>array(
 						'url'=>'Yii::app()->createUrl("backoffice/product/update?id=".$data->productId."&category2Id=".$data->category2Id)'
 					),

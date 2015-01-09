@@ -195,7 +195,7 @@ if($model->status == 3)
 		<div class="tabbable"> <!-- Only required for left/right tabs -->
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab1" data-toggle="tab">รายละเอียดสินค้า</a></li>
-				<li><a href="#tab2" data-toggle="tab">คุณสมบัติ</a></li>
+				<!--<li><a href="#tab2" data-toggle="tab">คุณสมบัติ</a></li>-->
 				<li><a href="#tab3" data-toggle="tab">Description</a></li>
 			</ul>
 			<div class="tab-content">
@@ -263,7 +263,7 @@ if($model->status == 3)
 					));
 					?>
 				</div>
-				<div class="tab-pane" id="tab2">
+				<!--<div class="tab-pane" id="tab2">-->
 					<?php
 					//product attribute
 //					if($model->productAttributeValue):
@@ -287,7 +287,7 @@ if($model->status == 3)
 //
 //					endif;
 					?>
-				</div>
+				<!--</div>-->
 				<div class="tab-pane" id="tab3">
 					<p>
 						<?php echo $model->description; ?>
