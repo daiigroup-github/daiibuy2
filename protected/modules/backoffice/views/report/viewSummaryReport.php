@@ -133,16 +133,16 @@ $('#search-form').submit(function(){
 					'style'=>'text-align:left;width:20%'),
 				'value'=>'$data->showOrderStatus($data->status)',
 			),
-//		array(
-//			'header'=>'',
-//			'class'=>'CButtonColumn',
-//			'template'=>'{view} ',
-//			'buttons'=>array(
-////				'view' => array(
-////					'url'=>'isset($data->documentType->customView) ? Yii::app()->createUrl("document/".$data->documentType->customView, array("id"=>$data->documentId)): Yii::app()->createUrl("document/$data->documentId")',
-////				),
-//			),
-//		),
+			array(
+				'header'=>'',
+				'class'=>'CButtonColumn',
+				'template'=>'{view} ',
+				'buttons'=>array(
+					'view' => array(
+					'url'=>'Yii::app()->createUrl("/backoffice/order/view/id/$data->orderGroupId")',
+					),
+				),
+			),
 		),
 	));
 	?>

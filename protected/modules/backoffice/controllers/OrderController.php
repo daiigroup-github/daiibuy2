@@ -61,12 +61,12 @@ class OrderController extends MasterBackofficeController
 	{
 //		$model = $this->loadModel($id);
 		$model = OrderGroup::model()->findByPk($id);
-		if(!isset(Yii::app()->user->id) && $model->userId != 0)
-		{
-			Yii::app()->user->setReturnUrl(Yii::app()->createUrl('order/view/' . $id));
-			$this->redirect(array(
-				"site/login"));
-		}
+//		if(!isset(Yii::app()->user->id) && $model->userId != 0)
+//		{
+//			Yii::app()->user->setReturnUrl(Yii::app()->createUrl('order/view/' . $id));
+//			$this->redirect(array(
+//				"site/login"));
+//		}
 		if(isset($_POST["action"]))
 		{
 			if(($_POST["action"]) == "editReserve")
