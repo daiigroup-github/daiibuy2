@@ -19,18 +19,26 @@ $form = $this->beginWidget('CActiveForm', array(
 		<button class="btn btn-default" type="submit">Search</button>
 	</span>
 	<div class="row">
-		<div class="col-lg-6">
+		<div class="col-lg-4">
 			<?php
 			echo $form->dropDownList($model, 'paymentYear', $model->findAllYearSalesArray(), array(
 				"class"=>"form-control",
 				"prompt"=>"--เลือกปี--",));
 			?>
 		</div>
-		<div class="col-lg-6">
+		<div class="col-lg-4">
 			<?php
 			echo $form->dropDownList($model, 'paymentMonth', $model->findAllMonthSalesArray(), array(
 				"class"=>"form-control",
 				"prompt"=>"--เลือกเดือน--",));
+			?>
+		</div>
+		<div class="col-lg-4">
+			<?php
+			echo $form->dropDownList($model, 'supplierId', Supplier::model()->findAllSupplierArray(), array(
+				"class"=>"form-control",
+				"prompt"=>"-- ทุก Supplier --")
+				);
 			?>
 		</div>
 	</div>

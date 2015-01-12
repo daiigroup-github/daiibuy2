@@ -22,6 +22,7 @@ class OrderGroup extends OrderGroupMaster
 
 	public $paymentYear;
 	public $paymentMonth;
+	public $supplierSelected;
 	public $totalSummary;
 	public $maxCode;
 	public $sumTotal;
@@ -141,9 +142,10 @@ class OrderGroup extends OrderGroupMaster
 			$this->orderNo = $this->searchText;
 			$this->type = $this->searchText;
 		}
-//		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear,true));
+//		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear.', '.$this->supplierSelected,true));
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, true, 'OR');
+		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
 		$criteria->compare('orderNo', $this->orderNo, true, 'OR');
 //		$criteria->compare('title', $this->title, true, 'OR');
 
@@ -420,6 +422,7 @@ class OrderGroup extends OrderGroupMaster
 		$criteria = new CDbCriteria;
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
+		$criteria->compare('supplierId', $this->supplierId, FALSE, "AND");
 		$criteria->compare("paymentDateTime", "<> '' ", TRUE, "AND");
 		$criteria->compare("status", ">2");
 		$criteria->compare("status", "<> 99");
@@ -458,6 +461,7 @@ class OrderGroup extends OrderGroupMaster
 		$criteria->select = "sum(summary) as totalSummary";
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
+		$criteria->compare('supplierId', $this->supplierId, FALSE, "AND");
 		$criteria->compare("paymentDateTime", "<> '' ", TRUE, "AND");
 		$criteria->compare("status", ">2");
 		$criteria->compare("status", "<> 99");
