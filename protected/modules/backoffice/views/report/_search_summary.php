@@ -23,21 +23,21 @@ $form = $this->beginWidget('CActiveForm', array(
 			<?php
 			echo $form->dropDownList($model, 'paymentYear', $model->findAllYearSalesArray(), array(
 				"class"=>"form-control",
-				"prompt"=>"--เลือกปี--",));
+				"prompt"=>"-- เลือกทุกปี --",));
 			?>
 		</div>
 		<div class="col-lg-4">
 			<?php
 			echo $form->dropDownList($model, 'paymentMonth', $model->findAllMonthSalesArray(), array(
 				"class"=>"form-control",
-				"prompt"=>"--เลือกเดือน--",));
+				"prompt"=>"-- เลือกทุกเดือน --",));
 			?>
 		</div>
 		<div class="col-lg-4">
 			<?php
 			echo $form->dropDownList($model, 'supplierId', Supplier::model()->findAllSupplierArray(), array(
 				"class"=>"form-control",
-				"prompt"=>"-- ทุก Supplier --")
+				"prompt"=>"-- เลือกทุก Supplier --")
 				);
 			?>
 		</div>
