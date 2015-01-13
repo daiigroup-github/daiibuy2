@@ -142,9 +142,9 @@ class OrderGroup extends OrderGroupMaster
 			$this->orderNo = $this->searchText;
 			$this->type = $this->searchText;
 		}
-//		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear.', '.$this->supplierSelected,true));
-		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
+		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear.', '.$this->supplierSelected,true));
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, true, 'OR');
+		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
 		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
 		$criteria->compare('orderNo', $this->orderNo, true, 'OR');
 //		$criteria->compare('title', $this->title, true, 'OR');
@@ -419,6 +419,7 @@ class OrderGroup extends OrderGroupMaster
 	{
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
+//				throw new Exception(print_r($this->paymentYear.', '.$this->paymentMonth.', '.$this->supplierId,true));
 		$criteria = new CDbCriteria;
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
