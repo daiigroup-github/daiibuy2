@@ -142,7 +142,7 @@ class OrderGroup extends OrderGroupMaster
 			$this->orderNo = $this->searchText;
 			$this->type = $this->searchText;
 		}
-		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear.', '.$this->supplierSelected,true));
+//		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear.', '.$this->supplierSelected,true));
 		$criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, true, 'OR');
 		$criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
 		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
