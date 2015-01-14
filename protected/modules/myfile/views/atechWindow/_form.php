@@ -58,6 +58,7 @@ $form = $this->beginWidget('CActiveForm', array(
 						<p class="list-group-item-text">Second step description</p>
 					</a></li>
 				<li class="<?php echo ($this->action->id == 'view' && $model->status == 0) ? 'active' : ''; ?>"><a href="#step-2-1">
+
 						<h4 class="list-group-item-heading">Step 2-1</h4>
 						<p class="list-group-item-text">Third step description</p>
 					</a></li>
@@ -245,6 +246,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				<div class="row text-center">
 					<div style="margin-top: 2%">
 						<?php $i = 0; ?>
+						<?php // throw new Exception(print_r($model->orderFiles,true)); ?>
 						<?php foreach($model->orderFiles as $orderFile): ?>
 							<div class='col-lg-6 col-md-6 col-sm-12'>
 								<div class="blog-item">
@@ -488,6 +490,7 @@ $form = $this->beginWidget('CActiveForm', array(
 						<div class="row sidebar-box-content" id="confirm_product">
 							<?php if(isset($productResult)): ?>
 								<?php
+								if($model->status != 0)
 								$this->renderPartial('/atechWindow/_confirm_product', array(
 									'productResult'=>$productResult,
 									), false, TRUE);
