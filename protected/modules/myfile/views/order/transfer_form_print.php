@@ -5,7 +5,7 @@ $bank = Bank::model()->find('supplierId = ' . $model->supplierId . ' AND status 
 $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 	":supplierId"=>$supplierId));
 ?>
-<div class="form img img-polaroid" style="border:1px solid;margin-top: <?php echo $title == 'ส่วนที่ 2 สำหรับลูกค้า' ? "0.5cm" : "0px" ?>;margin-left:15px;margin-right:15px">
+<div class="form img img-polaroid" style="border:1px solid;margin-top: <?php echo $title == 'ส่วนที่ 2 สำหรับลูกค้า' ? "2.5cm" : "-15px" ?>;margin-left:15px;margin-right:15px">
 	<div class="row">
 		<div class="col-xs-8">
 			<div class="row">

@@ -1199,4 +1199,13 @@ class Product extends ProductMaster
 		return $this->findAll($criteria);
 	}
 
+	public function findAllProductFenzer(){
+		$productModel = Product::model()->findAll('supplierId =' . 176 . ' AND Status = 2');
+		$res = array();
+		foreach($productModel as $item){
+			$res[$item->productId] = $item->title . ' (' . $item->code .')';
+		}
+		return $res;
+	}
+
 }

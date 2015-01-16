@@ -204,8 +204,6 @@ $this->breadcrumbs = array(
 								</form>
 							</div>
 						</div>
-
-
 						<div class="row">
 							<div class="col-sm-1">
 								เพิ่มสินค้า
@@ -214,10 +212,12 @@ $this->breadcrumbs = array(
 								<form id="addItem" action="#">
 
 									<?php
-									echo CHtml::dropDownList('productId', 'selectedCode', CHtml::listData(Product::model()->findAll('supplierId =' . 176 . ' AND Status = 2'), 'productId', 'code'), array(
+									echo CHtml::dropDownList('productId', 'selectedCode',
+										Product::model()->findAllProductFenzer(),
+										array(
 										'class'=>'form-control',
 										'id'=>'itemCode',
-										'prompt'=>'เลือกรหัสสินค้า',
+										'prompt'=>'------------เลือกสินค้า-------------',
 										'style'=>'text-align: center;',
 									));
 									?>
