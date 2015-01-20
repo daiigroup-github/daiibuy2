@@ -173,11 +173,11 @@ $form = $this->beginWidget('CActiveForm', array(
             <ul class="nav nav-tabs">
                 <li class="active" id="t1"><a href="#tab1" data-toggle="tab">รายละเอียด User</a></li>
 				<?php
-				if($isShowUserCer)
-				{
+//				if($isShowUserCer)
+//				{
 					?>
-					<li id="t2"><a href="#tab2" data-toggle="tab">เอกสารสัญญา Margin</a></li>
-				<?php } ?>
+					<!--<li id="t2"><a href="#tab2" data-toggle="tab">เอกสารสัญญา Margin</a></li>-->
+				<?php // } ?>
 				<li id="t3"><a href="#tab3" data-toggle="tab">เพิ่มเติม..</a></li>
             </ul>
             <div class="tab-content">
