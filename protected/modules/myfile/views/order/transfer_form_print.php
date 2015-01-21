@@ -34,11 +34,11 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 					{
 						if($i == 1)
 						{
-							$marginTop = "-13px";
+							$marginTop = "-11px";
 						}
 						else
 						{
-							$marginTop = "-9px";
+							$marginTop = "-7px";
 						}
 						?>
 						<div class="row" style="font-size:11px;">
