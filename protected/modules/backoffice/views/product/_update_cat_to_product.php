@@ -15,7 +15,7 @@
 			),
 		));
 		?>
-		<?php if(Yii::app()->user->supplierId == 3): ?>
+		<?php if(Yii::app()->user->userType == 4 || Yii::app()->user->supplierId == 3 || Yii::app()->user->supplierId == 2): ?>
 			<div class="form-group" style="margin-top: 10px">
 				<div class="control-label col-lg-2">Group Name</div>
 				<div class="col-lg-10">
@@ -26,7 +26,9 @@
 				</div>
 			</div>
 		<?php endif; ?>
-		<?php if(Yii::app()->user->supplierId == 1): ?>
+		<?php if(Yii::app()->user->userType == 4 || Yii::app()->user->supplierId == 1 || Yii::app()->user->supplierId == 2 ):
+
+			?>
 			<div class="form-group" style="margin-top: 10px">
 				<div class="control-label col-lg-2">Quantity</div>
 				<div class="col-lg-10">
@@ -36,6 +38,9 @@
 					?>
 				</div>
 			</div>
+		<?php
+		endif;
+		if(isset(Yii::app()->user->supplierId) && Yii::app()->user->supplierId == 1) {  ?>
 			<div class="form-group" style="margin-top: 10px">
 				<div class="control-label col-lg-2">Type</div>
 				<div class="col-lg-10">
@@ -48,7 +53,26 @@
 					?>
 				</div>
 			</div>
-		<?php endif; ?>
+		<?php }
+		if(Yii::app()->user->userType == 4 || (isset(Yii::app()->user->supplierId) && Yii::app()->user->supplierId == 2)) {
+			$isAtech = UserToSupplier::model()->find('userId = '.Yii::app()->user->id.' and supplierId = 2 and status = 1');
+		if(Yii::app()->user->userType==4 || (Yii::app()->user->userType==3 and isset($isAtech)) ){  ?>
+		<div class="form-group">
+		<?php
+		echo $form->labelEx($model, 'type', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->dropDownList($model,'type', array(1=>'Aluminium Anodize',2=>'Aluminium Powder Coat',3=>'UPVC'), array(
+				'class'=>'form-control'));
+			?>
+			<?php echo $form->error($model, 'type'); ?>
+		</div>
+	</div>
+	<?php } ?>
+		<?php } ?>
+
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-9">
 				<?php

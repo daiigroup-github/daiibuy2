@@ -26,6 +26,7 @@
 		'model'=>$cat,
 		'form'=>$form));
 	?>
+	
 	<hr><h3 class="alert alert-info">Sub Category Options</h3>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 	<?php
