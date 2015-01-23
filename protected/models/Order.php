@@ -878,6 +878,8 @@ class Order extends OrderMaster
 		));
 		$sumTotal = 0;
 		$noOfBuy = 0;
+		$daiibuy = new DaiiBuy();
+		$daiibuy->loadCookie();
 		foreach($models as $order)
 		{
 			foreach($order->orderItems as $item)
@@ -896,9 +898,28 @@ class Order extends OrderMaster
 		}
 		if(!isset(Yii::app()->user->id))
 		{
+			$noOfBuy = 0;
 			if($supplierId == 4)
 			{
-				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, 0);
+				$user = " AND token= '" . $daiibuy->token . "' ";
+				$criteria = new CDbCriteria();
+				$criteria->join = " LEFT JOIN order_group_to_order ogto ON ogto.orderId = t.orderId ";
+				$criteria->join .= " LEFT JOIN order_group og ON og.orderGroupId = ogto.orderGroupId ";
+				$criteria->condition = "t.supplierId = $supplierId AND og.parentId is NULL $user";
+
+				$ogs = $this->findAll($criteria);
+				//$ogs = Order::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null");
+				if(isset($ogs) && count($ogs) > 0)
+				{
+					foreach($ogs as $order)
+					{
+						foreach($order->orderItems as $item)
+						{
+							$noOfBuy+=$item->quantity;
+						}
+					}
+				}
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy);
 			}
 			else
 			{
@@ -914,12 +935,6 @@ class Order extends OrderMaster
 				if(isset(Yii::app()->user->id))
 				{
 					$user = " AND userId= " . Yii::app()->user->id . " ";
-				}
-				else
-				{
-					$daiibuy = new DaiiBuy();
-					$daiibuy->loadCookie();
-					$user = " AND token= '" . $daiibuy->token . "' ";
 				}
 
 				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null");

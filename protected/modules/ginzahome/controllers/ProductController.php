@@ -225,7 +225,6 @@ class ProductController extends MasterGinzahomeController
 	{
 		if(isset($_POST['productId']))
 		{
-//			throw new Exception(print_r(isset(Yii::app()->user->id),true));
 			$res = array();
 			$supplier = Supplier::model()->find(array(
 				'condition'=>'url=:url',
@@ -240,22 +239,28 @@ class ProductController extends MasterGinzahomeController
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
+// Cat Add 1 Model per Cart
+//				if(isset(Yii::app()->user->id))
+//				{
+//					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, Yii::app()->user->id);
+//				}
+//				else
+//				{
+//					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, NULL, $this->cookie->token);
+//				}
+//				if($isAdd)
+//				{
+//					//code here
+//					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+//					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity'], $_POST["productOptionGroup"]);
+//				}
+//				$flag = $isAdd;
+// Cat Add 1 Model per Cart
 
-				if(isset(Yii::app()->user->id))
-				{
-					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, Yii::app()->user->id);
-				}
-				else
-				{
-					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, NULL, $this->cookie->token);
-				}
-				if($isAdd)
-				{
-					//code here
-					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
-					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity'], $_POST["productOptionGroup"]);
-				}
-				$flag = $isAdd;
+				$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+
+				$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST["productId"], $_POST["quantity"], $_POST["productOptionGroup"]);
+
 				if($flag)
 				{
 					$orderModel->totalIncVAT = $orderModel->orderItemsSum;
