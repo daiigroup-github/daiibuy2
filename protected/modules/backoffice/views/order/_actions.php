@@ -52,7 +52,7 @@
 			}
 		}
 
-		if($model->status > 2 && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5))
+		if($model->status > 2 && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4))
 			echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์ใบสั่งซื้อสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/viewOrder", array(
 					"id"=>$model->orderGroupId)), array(
 				'class'=>'btn btn-info',
