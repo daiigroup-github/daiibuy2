@@ -859,7 +859,7 @@ class StepController extends MasterCheckoutController
 
 		if(isset($_POST['paymentMethod']))
 		{
-			if($orderGroup->paymentMethod == 1)
+			if($_POST['paymentMethod'] == 1)
 			{
 				$this->redirect(array(
 					"confirmCheckout",
