@@ -95,12 +95,12 @@ class SiteController extends MasterController
 			$model->attributes = $_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				if(User::model()->findByPk(Yii::app()->user->id)->isFirstLogin == 1)
-					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
-				else
-				{
+//				if(User::model()->findByPk(Yii::app()->user->id)->isFirstLogin == 1)
+//					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
+//				else
+//				{
 					$this->redirect(Yii::app()->user->returnUrl);
-				}
+//				}
 		}
 		// display the login form
 		$this->render('login', array(
