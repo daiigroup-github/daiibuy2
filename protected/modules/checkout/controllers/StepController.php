@@ -863,7 +863,7 @@ class StepController extends MasterCheckoutController
 			{
 				$this->redirect(array(
 					"confirmCheckout",
-					'id'=>$orderGroupId));
+					'id'=>$_GET["orderGroupId"]));
 			}
 			else
 			{
