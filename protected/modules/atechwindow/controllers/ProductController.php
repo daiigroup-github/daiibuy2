@@ -152,4 +152,32 @@ class ProductController extends MasterAtechwindowController
 			'result'=>true));
 	}
 
+	public function actionAddToCartFromAtech()
+	{
+//		$this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
+//		throw new Exception(print_r($_GET['productId'],true));
+		$productId = $_GET['productId'];
+		$qty = 1;
+
+		$supplier = Supplier::model()->find(array(
+			'condition'=>'url=:url',
+			'params'=>array(
+				':url'=>$this->module->id),
+		));
+
+		$this->cookie = new DaiiBuy();
+		$this->cookie->loadCookie();
+
+		$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+		$orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+		$orderModel->provinceId = 1;
+		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
+//		throw new Exception(print_r($orderModel,true));
+		if($orderModel->save()){
+			$this->redirect(Yii::app()->baseUrl.'/index.php/checkout/cart/index/id/2');
+		}else{
+			throw new Exception($orderModel->error,true);
+		}
+	}
+
 }
