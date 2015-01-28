@@ -259,7 +259,15 @@ class ProductController extends MasterGinzahomeController
 
 				$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
 
-				$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST["productId"], $_POST["quantity"], $_POST["productOptionGroup"]);
+				if(!empty(implode(",", $_POST["productOptionGroup"])))
+				{
+					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST["productId"], $_POST["quantity"], $_POST["productOptionGroup"]);
+				}
+				else
+				{
+					$flag = FALSE;
+					$res["errorMessage"] = "กรุณาเลือก สี ของสินค้า";
+				}
 
 				if($flag)
 				{

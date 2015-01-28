@@ -49,6 +49,7 @@
  * @property string $remark
  * @property string $supplierShippingDateTime
  * @property string $parentId
+ * @property string $mainId
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -84,7 +85,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 		return array(
 			array('userId, total, totalIncVAT, discountPercent, discountValue, createDateTime, updateDateTime', 'required'),
 			array('paymentMethod, usedPoint, isSentToCustomer, status', 'numerical', 'integerOnly'=>true),
-			array('userId, supplierId, invoiceNo, telephone, parentId', 'length', 'max'=>20),
+			array('userId, supplierId, invoiceNo, telephone, parentId, mainId', 'length', 'max'=>20),
 			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
 			array('firstname, lastname, email, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
 			array('total, vatValue, totalIncVAT, discountValue, totalPostDiscount, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary', 'length', 'max'=>15),
@@ -93,7 +94,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, parentId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, parentId, mainId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -168,6 +169,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'remark' => 'Remark',
 			'supplierShippingDateTime' => 'Supplier Shipping Date Time',
 			'parentId' => 'Parent',
+			'mainId' => 'Main',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -239,6 +241,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			$this->remark = $this->searchText;
 			$this->supplierShippingDateTime = $this->searchText;
 			$this->parentId = $this->searchText;
+			$this->mainId = $this->searchText;
 			$this->status = $this->searchText;
 			$this->createDateTime = $this->searchText;
 			$this->updateDateTime = $this->searchText;
@@ -289,6 +292,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 		$criteria->compare('remark',$this->remark,true, 'OR');
 		$criteria->compare('supplierShippingDateTime',$this->supplierShippingDateTime,true, 'OR');
 		$criteria->compare('parentId',$this->parentId,true, 'OR');
+		$criteria->compare('mainId',$this->mainId,true, 'OR');
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
 		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');

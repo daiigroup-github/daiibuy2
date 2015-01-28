@@ -13,12 +13,19 @@ $('#addToCartGinzaHome').live('click', function () {
 				//alert success message
 				if (data.result)
 				{
-                    updateCartHeader();
+					updateCartHeader();
 					alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
 				}
 				else
 				{
-					alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+					if (data.errorMessage != "")
+					{
+						alert(data.errorMessage);
+					}
+					else
+					{
+						alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+					}
 				}
 			}
 		});
