@@ -120,7 +120,7 @@ $this->breadcrumbs = array(
 												<span class="label label-success">อนุมัติ</span>
 												<?php
 											else:
-												if($model->status >= 3 && $child1->status == 0):
+												if($model->status >= 3 && $child1->status == 1):
 													?>
 													<span class="label label-danger">รอการชำระเงิน</span>
 													<form id="payForm2"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child1->orderGroupId); ?>">
@@ -163,7 +163,7 @@ $this->breadcrumbs = array(
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if($child1->status >= 3 && $child2->status == 0):
+													if($child1->status >= 3 && $child2->status == 1):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 														<form id="payForm3"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child2->orderGroupId); ?>">
@@ -207,7 +207,7 @@ $this->breadcrumbs = array(
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if($child2->status >= 3 && $child3->status == 0):
+													if($child2->status >= 3 && $child3->status == 1):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 														<form id="payForm4"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child3->orderGroupId); ?>">
