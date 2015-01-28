@@ -861,12 +861,16 @@ class StepController extends MasterCheckoutController
 		{
 			if($_POST['paymentMethod'] == 1)
 			{
+				$orderGroup->paymentMethod = 1;
+				$orderGroup->save(false);
 				$this->redirect(array(
 					"confirmCheckout",
 					'id'=>$_GET["orderGroupId"]));
 			}
 			else
 			{
+				$orderGroup->paymentMethod = 2;
+				$orderGroup->save(false);
 				$emailObj = new Email();
 				$sentMail = new EmailSend();
 				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
