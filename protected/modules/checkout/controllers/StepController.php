@@ -841,7 +841,6 @@ class StepController extends MasterCheckoutController
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
-
 		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
 		$res = array();
 		$res['total'] = number_format($orderGroup->total, 2);
