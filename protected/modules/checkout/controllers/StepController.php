@@ -855,7 +855,7 @@ class StepController extends MasterCheckoutController
 //		$res["extraDiscountArray"] = $extraDiscountArray;
 //		$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
 		$res['grandTotal'] = number_format($orderGroup->summary, 2);
-
+		$orderGroup->status = 1;
 		if(isset($_POST['paymentMethod']))
 		{
 			if($_POST['paymentMethod'] == 1)
