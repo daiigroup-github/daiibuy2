@@ -81,7 +81,7 @@ $supplier = Supplier::model()->find("supplierId = :supplierId", array(
 									$comName = User::model()->showUserCompany($model->userId);
 									if((($comName != "-") && ($comName != "---") && ($comName != "") && isset($comName)) || (isset($model->paymentCompany) && $model->paymentCompany != ""))
 									{
-										echo ((($comName != "-") && ($comName != "---") && ($comName != "") && (isset($comName) && $model->paymentCompany != "")) ? $comName : $model->paymentCompany);
+										echo (Yii::app()->user->userType == 1 ? $model->paymentCompany : $comName);
 									}
 									else
 									{
