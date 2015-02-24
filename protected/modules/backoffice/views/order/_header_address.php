@@ -132,7 +132,9 @@
 	<!--<div class="table-condensed table-bordered" style="height: 31px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 3px"><?php // echo $model->orderNo                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ?></p></div>-->
 			<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo $model->invoiceNo; ?></p></div>
 			<div class="table-condensed table-bordered" style="height: 40px;text-align: center; border-left: 1px; border-left-style: solid; border-left-color: #dddddd;"><p style="margin-top: 11px"><?php echo isset($model->paymentDateTime) ? $this->dateThai($model->paymentDateTime, 1) : ""; ?></p></div>
-		<?php } ?>
+		<?php
+		}
+		?>
 	</div>
 </div>
 <div class="form-group" style="margin-top: 5px">
@@ -217,9 +219,9 @@
 					?></td>
 					<!--<td>-->
 				<?php
-//						echo getOrderShippingAddress($model);
-//					echo isset($dealerAddr) ? "<p style='margin-left: 20px'>" . $dealerAddr->company . ", " . $dealerAddr->address_1 . " " . $dealerAddr->district->districtName . " " . $dealerAddr->amphur->amphurName . " " . $dealerAddr->province->provinceName . " " . $dealerAddr->postcode . "</p>" . "<p style='margin-left: 20px'> ผู้ติดต่อ : " . $dealerAddr->firstname . " " . $dealerAddr->lastname . " โทรศัพท์ : " . $dealer->telephone . "</p><p style='margin-left: 20px'> Email : " . $dealer->email . " </p>" : "-";
-				?>
+////						echo getOrderShippingAddress($model);
+////					echo isset($dealerAddr) ? "<p style='margin-left: 20px'>" . $dealerAddr->company . ", " . $dealerAddr->address_1 . " " . $dealerAddr->district->districtName . " " . $dealerAddr->amphur->amphurName . " " . $dealerAddr->province->provinceName . " " . $dealerAddr->postcode . "</p>" . "<p style='margin-left: 20px'> ผู้ติดต่อ : " . $dealerAddr->firstname . " " . $dealerAddr->lastname . " โทรศัพท์ : " . $dealer->telephone . "</p><p style='margin-left: 20px'> Email : " . $dealer->email . " </p>" : "-";
+//				?>
 				<!--</td>-->
 			</tr>
 		</tbody>

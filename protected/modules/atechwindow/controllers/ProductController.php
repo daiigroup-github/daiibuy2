@@ -167,9 +167,45 @@ class ProductController extends MasterAtechwindowController
 
 		$this->cookie = new DaiiBuy();
 		$this->cookie->loadCookie();
+		$this->cookie->provinceId = 1;
+		$this->cookie->saveCookie();
 
 		$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
 		$orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+		$orderModel->provinceId = 1;
+		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
+//		throw new Exception(print_r($orderModel,true));
+		if($orderModel->save()){
+			$this->redirect(Yii::app()->baseUrl.'/index.php/checkout/cart/index/id/2');
+		}else{
+			throw new Exception($orderModel->error,true);
+		}
+	}
+
+	public function actionAddProductArrayToCartFromAtech()
+	{
+//		$this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
+//		throw new Exception(print_r($_GET['productId'],true));
+		$productArray = $_GET['product'];
+
+
+		$supplier = Supplier::model()->find(array(
+			'condition'=>'url=:url',
+			'params'=>array(
+				':url'=>$this->module->id),
+		));
+
+		$this->cookie = new DaiiBuy();
+		$this->cookie->loadCookie();
+		$this->cookie->provinceId = 1;
+		$this->cookie->saveCookie();
+
+		$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+
+		foreach($productArray as $productId => $qty){
+//			throw new Exception(print_r($productId.', '.$qty,true));
+			$orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
+		}
 		$orderModel->provinceId = 1;
 		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
 //		throw new Exception(print_r($orderModel,true));
