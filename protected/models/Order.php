@@ -897,16 +897,9 @@ class Order extends OrderMaster
 		if(!isset(Yii::app()->user->id))
 		{
 
-			if(isset($models) && count($models) > 0)
-				{
-							foreach($models as $item)
-							{
-								$noOfBuy+=$item->quantity;
-							}
-				}
-
 			if($supplierId == 4)
 			{
+//				throw new Exception(print_r($noOfBuy,true));
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy);
 			}
 			else
