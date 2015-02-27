@@ -14,7 +14,8 @@ class MasterController extends Controller
 		'green',
 		'blue',
 		'red',
-		'orange'
+		'orange',
+		'blue',
 	);
 	public $sideBarCategories = array();
 	public $sideBarContents = array();
