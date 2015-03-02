@@ -241,21 +241,21 @@ class ProductController extends MasterGinzahomeController
 			try
 			{
 
-				if(isset(Yii::app()->user->id))
-				{
-					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, Yii::app()->user->id);
-				}
-				else
-				{
-					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, NULL, $this->cookie->token);
-				}
-				if($isAdd)
-				{
+//				if(isset(Yii::app()->user->id))
+//				{
+//					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, Yii::app()->user->id);
+//				}
+//				else
+//				{
+//					$isAdd = Order::model()->isAddThisModel($_POST['productId'], $this->cookie->provinceId, NULL, $this->cookie->token);
+//				}
+//				if($isAdd)
+//				{
 					//code here
 					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
 					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity'], $_POST["productOptionGroup"]);
-				}
-				$flag = $isAdd;
+//				}
+//				$flag = true;
 				if($flag)
 				{
 					$orderModel->totalIncVAT = $orderModel->orderItemsSum;
