@@ -17,6 +17,7 @@
 $categories = $this->sideBarCategories;
 ?>
 <!-- Categories -->
+<?php if(isset($categories['items'])){ ?>
 <div class="row sidebar-box purple">
 
 	<div class="col-lg-12 col-md-12 col-sm-12">
@@ -28,7 +29,9 @@ $categories = $this->sideBarCategories;
 
 		<div class="sidebar-box-content">
 			<ul>
-				<?php foreach($categories['items'] as $item):?>
+				<?php
+				if(isset($categories['items']))
+				foreach($categories['items'] as $item):?>
 				<li>
 					<?php echo CHtml::link($item['link'].'<i class="icons icon-right-dir"></i>', $item['url']);?>
 
@@ -96,4 +99,5 @@ $categories = $this->sideBarCategories;
 	</div>
 
 </div>
+<?php } ?>
 <!-- /Categories -->

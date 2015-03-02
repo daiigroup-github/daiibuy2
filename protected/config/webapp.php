@@ -117,6 +117,7 @@ return CMap::mergeArray(
 			'madrid',
 			'atechwindow',
 			'ginzahome',
+			'ginzatown',
 			'myfile',
 			'backoffice'
 		),
