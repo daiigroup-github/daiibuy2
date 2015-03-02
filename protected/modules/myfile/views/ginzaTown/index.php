@@ -12,7 +12,7 @@ $this->breadcrumbs = array(
 		<?php foreach($myfileArray as $myfile): ?>
 			<div class='col-lg-3 col-md-3 col-sm-12'>
 				<div class="blog-item">
-					<a class="btn <?php echo ($myfile->status == 3) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/ginzaHome/view/id/' . $myfile->orderGroupId); ?>">
+					<a class="btn <?php echo ($myfile->status == 3) ? "btn-success" : "btn-primary" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/ginzaTown/view/id/' . $myfile->orderGroupId); ?>">
 						<?php
 						echo CHtml::image(Yii::app()->baseUrl . $myfile->orders[0]->orderItems[0]->product->productImagesSort[0]->image, "", array())
 						?>
