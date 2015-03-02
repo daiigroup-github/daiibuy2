@@ -298,6 +298,11 @@ class StepController extends MasterCheckoutController
 
 	public function step4()
 	{
+
+//		throw new Exception(print_r($_POST["orderGroupId"],true));
+		if(isset($_POST["orderGroupId"])){
+			$oldOrderGroup = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+		}
 		$supplierId = Yii::app()->session['supplierId'];
 		$daiibuy = new DaiiBuy();
 		$daiibuy->loadCookie();
@@ -348,30 +353,30 @@ class StepController extends MasterCheckoutController
 				$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 
 				$userModel = User::model()->findByPk(Yii::app()->user->id);
-				$orderGroup->email = !isset($productId) ? $userModel->email : $oldOrderGroup->email;
-				$orderGroup->firstname = !isset($productId) ? $userModel->firstname : $oldOrderGroup->firstname;
-				$orderGroup->lastname = !isset($productId) ? $userModel->lastname : $oldOrderGroup->lastname;
-				$orderGroup->telephone = !isset($productId) ? $userModel->telephone : $oldOrderGroup->telephone;
-				$orderGroup->paymentCompany = !isset($productId) ? $billingAddress->company : $oldOrderGroup->paymentCompany;
-				$orderGroup->paymentTaxNo = !isset($productId) ? $billingAddress->taxNo : $oldOrderGroup->paymentTaxNo;
-				$orderGroup->paymentFirstname = !isset($productId) ? $billingAddress->firstname : $oldOrderGroup->paymentFirstname;
-				$orderGroup->paymentLastname = !isset($productId) ? $billingAddress->lastname : $oldOrderGroup->paymentLastname;
-				$orderGroup->paymentAddress1 = !isset($productId) ? $billingAddress->address_1 : $oldOrderGroup->paymentAddress1;
-				$orderGroup->paymentAddress2 = !isset($productId) ? $billingAddress->address_2 : $oldOrderGroup->paymentAddress2;
-				$orderGroup->paymentDistrictId = !isset($productId) ? $billingAddress->districtId : $oldOrderGroup->paymentDistrictId;
-				$orderGroup->paymentAmphurId = !isset($productId) ? $billingAddress->amphurId : $oldOrderGroup->paymentAmphurId;
-				$orderGroup->paymentProvinceId = !isset($productId) ? $billingAddress->provinceId : $oldOrderGroup->paymentProvinceId;
-				$orderGroup->paymentPostcode = !isset($productId) ? $billingAddress->postcode : $oldOrderGroup->paymentPostcode;
+				$orderGroup->email = isset($userModel->email) ? $userModel->email : $oldOrderGroup->email;
+				$orderGroup->firstname = isset($userModel->firstname) ? $userModel->firstname : $oldOrderGroup->firstname;
+				$orderGroup->lastname = isset($userModel->lastname) ? $userModel->lastname : $oldOrderGroup->lastname;
+				$orderGroup->telephone = isset($userModel->telephone) ? $userModel->telephone : $oldOrderGroup->telephone;
+				$orderGroup->paymentCompany = isset($billingAddress->company) ? $billingAddress->company : $oldOrderGroup->paymentCompany;
+				$orderGroup->paymentTaxNo = isset($billingAddress->taxNo) ? $billingAddress->taxNo : $oldOrderGroup->paymentTaxNo;
+				$orderGroup->paymentFirstname = isset($billingAddress->firstname) ? $billingAddress->firstname : $oldOrderGroup->paymentFirstname;
+				$orderGroup->paymentLastname = isset($billingAddress->lastname) ? $billingAddress->lastname : $oldOrderGroup->paymentLastname;
+				$orderGroup->paymentAddress1 = isset($billingAddress->address_1) ? $billingAddress->address_1 : $oldOrderGroup->paymentAddress1;
+				$orderGroup->paymentAddress2 = isset($billingAddress->address_2) ? $billingAddress->address_2 : $oldOrderGroup->paymentAddress2;
+				$orderGroup->paymentDistrictId = isset($billingAddress->districtId) ? $billingAddress->districtId : $oldOrderGroup->paymentDistrictId;
+				$orderGroup->paymentAmphurId = isset($billingAddress->amphurId) ? $billingAddress->amphurId : $oldOrderGroup->paymentAmphurId;
+				$orderGroup->paymentProvinceId = isset($billingAddress->provinceId) ? $billingAddress->provinceId : $oldOrderGroup->paymentProvinceId;
+				$orderGroup->paymentPostcode = isset($billingAddress->postcode) ? $billingAddress->postcode : $oldOrderGroup->paymentPostcode;
 
 //				$orderGroup->shippingFirstname = $shippingAddress->firstname;
 //				$orderGroup->shippingLastname = $shippingAddress->lastname;
-				$orderGroup->shippingCompany = !isset($productId) ? $shippingAddress->company : $oldOrderGroup->shippingCompany;
-				$orderGroup->shippingAddress1 = !isset($productId) ? $shippingAddress->address_1 : $oldOrderGroup->shippingAddress1;
-				$orderGroup->shippingAddress2 = !isset($productId) ? $shippingAddress->address_2 : $oldOrderGroup->shippingAddress2;
-				$orderGroup->shippingDistrictId = !isset($productId) ? $shippingAddress->districtId : $oldOrderGroup->shippingDistrictId;
-				$orderGroup->shippingAmphurId = !isset($productId) ? $shippingAddress->amphurId : $oldOrderGroup->shippingAmphurId;
-				$orderGroup->shippingProvinceId = !isset($productId) ? $shippingAddress->provinceId : $oldOrderGroup->shippingProvinceId;
-				$orderGroup->shippingPostCode = !isset($productId) ? $shippingAddress->postcode : $oldOrderGroup->shippingPostCode;
+				$orderGroup->shippingCompany = isset($shippingAddress->company) ? $shippingAddress->company : $oldOrderGroup->shippingCompany;
+				$orderGroup->shippingAddress1 = isset($shippingAddress->address_1) ? $shippingAddress->address_1 : $oldOrderGroup->shippingAddress1;
+				$orderGroup->shippingAddress2 = isset($shippingAddress->address_2) ? $shippingAddress->address_2 : $oldOrderGroup->shippingAddress2;
+				$orderGroup->shippingDistrictId = isset($shippingAddress->districtId) ? $shippingAddress->districtId : $oldOrderGroup->shippingDistrictId;
+				$orderGroup->shippingAmphurId = isset($shippingAddress->amphurId) ? $shippingAddress->amphurId : $oldOrderGroup->shippingAmphurId;
+				$orderGroup->shippingProvinceId = isset($shippingAddress->provinceId) ? $shippingAddress->provinceId : $oldOrderGroup->shippingProvinceId;
+				$orderGroup->shippingPostCode = isset($shippingAddress->postcode) ? $shippingAddress->postcode : $oldOrderGroup->shippingPostCode;
 				/**
 				 * TODO:: remove false after add address
 				 */
@@ -840,7 +845,7 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 
-		throw new Exception(print_r($_GET["orderGroupId"],true));
+
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
 		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
@@ -889,7 +894,8 @@ class StepController extends MasterCheckoutController
 		$this->render('step4', array(
 			'step'=>4,
 			'orderSummary'=>$res,
-			'bankArray'=>$bankArray,));
+			'bankArray'=>$bankArray,
+			'oldOrderGroup'=>$orderGroup));
 	}
 
 }
