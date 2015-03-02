@@ -38,7 +38,7 @@ $this->breadcrumbs = array(
 					case "ginzahome":
 						$url = "ginzaHome";
 						break;
-					case "ginzaTown":
+					case "ginzatown":
 						$url = "ginzaTown";
 						break;
 					default :
