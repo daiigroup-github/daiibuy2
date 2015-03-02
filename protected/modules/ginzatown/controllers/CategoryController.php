@@ -1,6 +1,6 @@
 <?php
 
-class CategoryController extends MasterGinzahomeController
+class CategoryController extends MasterGinzatownController
 {
 
 	public $layout = '//layouts/cl1';

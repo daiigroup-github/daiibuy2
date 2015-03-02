@@ -1,6 +1,6 @@
 <?php
 
-class ProductController extends MasterGinzahomeController
+class ProductController extends MasterGinzatownController
 {
 
 	/**
