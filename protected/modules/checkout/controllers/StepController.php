@@ -840,7 +840,7 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 
-
+		throw new Exception(print_r($_GET["orderGroupId"],true));
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
 		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
@@ -885,7 +885,7 @@ class StepController extends MasterCheckoutController
 			}
 		}
 
-		throw new Exception(print_r($res,true));
+
 		$this->render('step4', array(
 			'step'=>4,
 			'orderSummary'=>$res,
