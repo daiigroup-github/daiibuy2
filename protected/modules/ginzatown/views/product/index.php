@@ -122,7 +122,7 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="product-actions">
-					<span class="add-to-cart" id="addToCartGinzaHome">
+					<span class="add-to-cart" id="addToCartGinzaTown">
                         <span class="action-wrapper">
 							<i class="icons fa fa-shopping-cart"></i>
 							<span class="action-name" ><b>ใส่ตระกร้าสินค้า</b></span>

@@ -39,7 +39,7 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 			array('code', 'length', 'max'=>50),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
-			array('percent', 'length', 'max'=>5),
+			array('percent', 'length', 'integerOnly'=>true, 'max'=>20),
 			array('description, createDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
