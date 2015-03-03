@@ -847,17 +847,45 @@ class Order extends OrderMaster
 		return $model;
 	}
 
+	public function countGinzaHomeAndGinzaTownUnits(){
+		$res = 0;
+		$condition = '(supplierId=:supplierId1 OR supplierId=:supplierId2) AND type&' . self::ORDER_TYPE_CART . ' > 0';
+		$params = [':supplierId1'=>4 , ':supplierId2'=>5];
+//		$discountPercent = 0;
+
+		if(isset(Yii::app()->user->id))
+		{
+			$condition .= ' AND userId=:userId';
+			$params[':userId'] = Yii::app()->user->id;
+		}
+		else
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$condition .= " AND token='" . $daiibuy->token . "'";
+		}
+
+		$models = $this->findAll(array(
+			'condition'=>$condition,
+			'params'=>$params,
+		));
+		foreach($models as $order)
+		{
+			foreach($order->orderItems as $item)
+			{
+				$res +=$item->quantity;
+			}
+		}
+
+		return $res;
+
+	}
+
 	public function sumOrderTotalBySupplierId($supplierId = NULL)
 	{
 		$res = [];
-		//count ginza home and ginza town Units
-		if($supplierId == 4 || $supplierId == 5){
-			$condition = '(supplierId=:supplierId1 OR supplierId=:supplierId2) AND type&' . self::ORDER_TYPE_CART . ' > 0';
-			$params = [':supplierId1'=>4 , ':supplierId2'=>5];
-		}else{
-			$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
-			$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
-		}
+		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
+		$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
 		$discountPercent = 0;
 
 		if(isset(Yii::app()->user->id))
@@ -905,8 +933,9 @@ class Order extends OrderMaster
 
 			if($supplierId == 4 || $supplierId == 5)
 			{
+				$noOfUnits = $this->countGinzaHomeAndGinzaTownUnits();
 //				throw new Exception(print_r($noOfBuy,true));
-				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy);
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits);
 			}
 			else
 			{
@@ -946,7 +975,13 @@ class Order extends OrderMaster
 				}
 				$sumAll = $noOfBuy;
 			}
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+			if($supplierId == 4 || $supplierId == 5)
+			{
+				$noOfUnits = $this->countGinzaHomeAndGinzaTownUnits();
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits);
+			}else{
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+			}
 		}
 		$discount = $sumTotal * $discountPercent / 100;
 		$grandTotal = $sumTotal - $discount;
