@@ -850,8 +850,14 @@ class Order extends OrderMaster
 	public function sumOrderTotalBySupplierId($supplierId = NULL)
 	{
 		$res = [];
-		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
-		$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
+		//count ginza home and ginza town Units
+		if($supplierId == 4 || $supplierId == 5){
+			$condition = '(supplierId=:supplierId1 OR supplierId=:supplierId2) AND type&' . self::ORDER_TYPE_CART . ' > 0';
+			$params = [':supplierId1'=>4 , ':supplierId2'=>5];
+		}else{
+			$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
+			$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
+		}
 		$discountPercent = 0;
 
 		if(isset(Yii::app()->user->id))
@@ -897,7 +903,7 @@ class Order extends OrderMaster
 		if(!isset(Yii::app()->user->id))
 		{
 
-			if($supplierId == 4)
+			if($supplierId == 4 || $supplierId == 5)
 			{
 //				throw new Exception(print_r($noOfBuy,true));
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy);

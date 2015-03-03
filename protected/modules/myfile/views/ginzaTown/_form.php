@@ -285,7 +285,7 @@ $this->breadcrumbs = array(
 												<?php
 												echo CHtml::hiddenField("orderGroupId", $parentId);
 												echo CHtml::hiddenField("productId", $item2->productId);
-												echo CHtml::hiddenField("paymentMethod", 1);
+//												echo CHtml::hiddenField("paymentMethod", 1);
 												if($isShowPayButton)
 												{
 													?>

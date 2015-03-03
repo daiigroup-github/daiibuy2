@@ -309,6 +309,7 @@ class StepController extends MasterCheckoutController
 		$provinceId = $daiibuy['provinceId'];
 
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
+//		throw new Exception(print_r($supplierId,true));
 		if(isset($_POST['paymentMethod']))
 		{
 			$flag = false;
@@ -431,7 +432,7 @@ class StepController extends MasterCheckoutController
 					{
 						$flag = true;
 					}
-					if($supplierId == 4)
+					if($supplierId == 4 || $supplierId == 5)
 					{
 						$flag = $this->saveGinzaOrder($supplierId, $orderGroupId);
 					}
@@ -845,7 +846,7 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 
-
+//		throw new Exception(print_r('ggg',true));
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
 		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);

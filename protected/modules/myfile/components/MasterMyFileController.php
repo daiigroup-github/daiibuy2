@@ -31,16 +31,16 @@ class MasterMyFileController extends MasterController
 				'description'=>'Ginza Home'
 			),
 			array(
-				'url'=>Yii::app()->createUrl("/myfile/madrid"),
+				'url'=>Yii::app()->createUrl("/myfile/ginzaTown"),
 				'color'=>'orange',
-				'caption'=>'MADRID BATHROOM',
-				'description'=>'Madrid Bathroom'
+				'caption'=>'GINZA TOWN',
+				'description'=>'Ginza Town'
 			),
 			array(
-				'url'=>Yii::app()->createUrl("/myfile/order"),
+				'url'=>Yii::app()->createUrl("/myfile/madrid"),
 				'color'=>'blue',
-				'caption'=>'Order',
-				'description'=>'Order Management'
+				'caption'=>'MADRID BATHROOM',
+				'description'=>'Madrid Bathroom'
 			),
 		);
 

@@ -15,9 +15,9 @@
 				  </li>
 				 */
 				?>
-<!--				<li class="home-green">
-                    <a href="<?php // echo Yii::app()->request->baseUrl . "/myfile/order/"; ?>"><i class="icons fa fa-archive"></i>My Order</a>
-                </li>-->
+				<li class="home-green">
+                    <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/order/"; ?>"><i class="icons fa fa-archive"></i>My Orders</a>
+                </li>
                 <li class="red">
                     <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/"; ?>"><i class="icons fa fa-folder-open"></i>My Files</a>
                 </li>
