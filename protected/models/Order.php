@@ -848,36 +848,46 @@ class Order extends OrderMaster
 	}
 
 	public function countGinzaHomeAndGinzaTownUnits(){
-		$res = 0;
-		$condition = '(supplierId=:supplierId1 OR supplierId=:supplierId2) AND type&' . self::ORDER_TYPE_CART . ' > 0';
-		$params = [':supplierId1'=>4 , ':supplierId2'=>5];
-//		$discountPercent = 0;
-
-		if(isset(Yii::app()->user->id))
-		{
-			$condition .= ' AND userId=:userId';
-			$params[':userId'] = Yii::app()->user->id;
-		}
-		else
-		{
-			$daiibuy = new DaiiBuy();
-			$daiibuy->loadCookie();
-			$condition .= " AND token='" . $daiibuy->token . "'";
-		}
-
-		$models = $this->findAll(array(
-			'condition'=>$condition,
-			'params'=>$params,
-		));
-		foreach($models as $order)
-		{
-			foreach($order->orderItems as $item)
-			{
-				$res +=$item->quantity;
+//		$cartUnits = 0;
+//
+//		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
+//		$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
+////		$discountPercent = 0;
+//
+//		if(isset(Yii::app()->user->id))
+//		{
+//			$condition .= ' AND userId=:userId';
+//			$params[':userId'] = Yii::app()->user->id;
+//		}
+//		else
+//		{
+//			$daiibuy = new DaiiBuy();
+//			$daiibuy->loadCookie();
+//			$condition .= " AND token='" . $daiibuy->token . "'";
+//		}
+//
+//		$models = $this->findAll(array(
+//			'condition'=>$condition,
+//			'params'=>$params,
+//		));
+//		foreach($models as $order)
+//		{
+//			foreach($order->orderItems as $item)
+//			{
+//				$cartUnits +=$item->quantity;
+//			}
+//		}
+		$totalUnits = 0;
+		$buyModels = OrderGroup::model()->findAll('(supplierId = 5 OR supplierId = 6) AND status = 3 AND parentId = NULL ');
+		foreach($buyModels as $orderGroup){
+			foreach($orderGroup->orders as $order){
+				foreach($order->orderItems as $item){
+					$totalUnits+=$item->quantity;
+				}
 			}
 		}
-
-		return $res;
+//		throw new Exception(print_r($cartUnits + $totalUnits,true));
+		return $totalUnits;
 
 	}
 
@@ -935,7 +945,7 @@ class Order extends OrderMaster
 			{
 				$noOfUnits = $this->countGinzaHomeAndGinzaTownUnits();
 //				throw new Exception(print_r($noOfBuy,true));
-				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits);
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits+$noOfBuy);
 			}
 			else
 			{
@@ -959,26 +969,26 @@ class Order extends OrderMaster
 					$user = " AND token= '" . $daiibuy->token . "' ";
 				}
 
-				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null");
-				if(isset($ogs) && count($ogs) > 0)
-				{
-					foreach($ogs as $og)
-					{
-						foreach($og->orders as $orders)
-						{
-							foreach($orders->orderItems as $item)
-							{
-								$noOfBuy+=$item->quantity;
-							}
-						}
-					}
-				}
-				$sumAll = $noOfBuy;
+//				$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null");
+//				if(isset($ogs) && count($ogs) > 0)
+//				{
+//					foreach($ogs as $og)
+//					{
+//						foreach($og->orders as $orders)
+//						{
+//							foreach($orders->orderItems as $item)
+//							{
+//								$noOfBuy+=$item->quantity;
+//							}
+//						}
+//					}
+//				}
+//				$sumAll = $noOfBuy;
 			}
 			if($supplierId == 4 || $supplierId == 5)
 			{
-				$noOfUnits = $this->countGinzaHomeAndGinzaTownUnits();
-				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits);
+				$noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
 			}else{
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
 			}
