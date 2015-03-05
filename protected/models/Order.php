@@ -878,7 +878,8 @@ class Order extends OrderMaster
 //			}
 //		}
 		$totalUnits = 0;
-		$buyModels = OrderGroup::model()->findAll('(supplierId = 5 OR supplierId = 6) AND status = 3 AND parentId = NULL ');
+		$buyModels = OrderGroup::model()->findAll('(supplierId = 4 OR supplierId = 5) AND status > 2 AND parentId is NULL and userId = '.Yii::app()->user->id);
+//		throw new Exception(print_r($buyModels,true));
 		foreach($buyModels as $orderGroup){
 			foreach($orderGroup->orders as $order){
 				foreach($order->orderItems as $item){
@@ -956,7 +957,7 @@ class Order extends OrderMaster
 		{
 			$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
 			$sumAll = $sumTotal + $sumLastTwelveMonth;
-			if($supplierId == 4)
+			if($supplierId == 4 || $supplierId == 5)
 			{
 				if(isset(Yii::app()->user->id))
 				{
@@ -988,6 +989,8 @@ class Order extends OrderMaster
 			if($supplierId == 4 || $supplierId == 5)
 			{
 				$noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
+
+//				throw new Exception(print_r($noOfUnitsBuy.', '. $noOfBuy,true));
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
 			}else{
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
