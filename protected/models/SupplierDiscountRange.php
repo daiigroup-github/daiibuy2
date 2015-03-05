@@ -80,7 +80,7 @@ class SupplierDiscountRange extends SupplierDiscountRangeMaster
 		$min = $this->findMinRange($supplierId);
 
         if(isset($min) && isset($max)) {
-            if ($total > $min->min) {
+            if ($total >= $min->min) {
                 if ($total > $max->max) {
                     return $max->percentDiscount;
                 } else {
