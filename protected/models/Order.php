@@ -878,7 +878,15 @@ class Order extends OrderMaster
 //			}
 //		}
 		$totalUnits = 0;
-		$buyModels = OrderGroup::model()->findAll('(supplierId = 4 OR supplierId = 5) AND status > 2 AND parentId is NULL and userId = '.Yii::app()->user->id);
+		if(isset(Yii::app()->user->id)){
+			$buyModels = OrderGroup::model()->findAll('(supplierId = 4 OR supplierId = 5) AND status > 2 AND parentId is NULL and userId = '.Yii::app()->user->id);
+		}
+		else
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$buyModels = OrderGroup::model()->findAll('(supplierId = 4 OR supplierId = 5) AND status > 2 AND parentId is NULL and token = '.$daiibuy->token);
+		}
 //		throw new Exception(print_r($buyModels,true));
 		foreach($buyModels as $orderGroup){
 			foreach($orderGroup->orders as $order){
