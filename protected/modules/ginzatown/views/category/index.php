@@ -42,7 +42,7 @@ $this->breadcrumbs = array(
 
 					</div>
 					<hr>
-					<table class="table table-bordered text-center ginzahome-compare">
+					<table class="table table-bordered text-center ginzatown-compare">
 						<tr>
 							<td>Type</td>
 							<?php foreach($category->subCategorys as $subCategory): ?>
