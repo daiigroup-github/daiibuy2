@@ -1,21 +1,22 @@
 /**
  * Created by NPR on 8/13/14.
  */
-$('.add-to-cart').click(function () {
+$('.add-to-cart').click(function() {
 
 	var data = {};
 	var productId = $(this).data('productid');
 	var qty = $('#' + productId).val();
+	alert(productId + "," + qty);
 	var data = {productId: productId, qty: qty};
 	$.ajax({
 		url: baseUrl + '/madrid/product/addToCart',
 		type: 'POST',
 		dataType: 'JSON',
 		data: data,
-		beforeSend: function () {
+		beforeSend: function() {
 			return confirm('คุณต้องการเพิ่มสินค้าลงตะตร้าหรือไม่ ?')
 		},
-		success: function (data) {
+		success: function(data) {
 			//alert success message
 			if (data.result)
 			{
@@ -38,7 +39,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 		type: 'POST',
 		dataType: 'JSON',
 		data: {category2Id: cat2Id, orderId: orderId},
-		success: function (data) {
+		success: function(data) {
 			//alert success message
 			if (data.status)
 			{
@@ -98,7 +99,7 @@ function loadSetItem(cat2Id, baseUrl)
 		type: 'POST',
 //		dataType: 'JSON',
 		data: {category2Id: cat2Id},
-		success: function (data) {
+		success: function(data) {
 			$("#sanitary-item").removeClass("hide");
 			$("#sanitary-item").html(data);
 		}
@@ -116,7 +117,7 @@ function updatePrice()
 	}
 }
 
-$('#manualQuantityMadrid').on('click', function () {
+$('#manualQuantityMadrid').on('click', function() {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
@@ -125,7 +126,7 @@ $('#manualQuantityMadrid').on('click', function () {
 	}
 
 });
-$('#uploadPlanMadrid').on('click', function () {
+$('#uploadPlanMadrid').on('click', function() {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
@@ -144,7 +145,7 @@ function findModel(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandId': brandId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.model').children('select').html(data);
 		},
 	});
@@ -159,7 +160,7 @@ function findCat1(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandModelId': brandModelId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.cat1').children('select').html(data);
 		},
 	});
@@ -174,7 +175,7 @@ function findCat2Product(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'cat1Id': cat1Id},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.product').children('select').html(data);
 		},
 	});
@@ -190,7 +191,7 @@ function chooseProduct(sel, baseUrl)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'productId': productId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.price').children('.priceText').html(data.price);
 			obj.parent().parent().children('.unit').children('.unitText').html(data.productUnits);
 		},
@@ -223,7 +224,7 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'userId': userId, 'category2Id': category2Id, },
-		'success': function (data) {
+		'success': function(data) {
 			if (data)
 			{
 				alert("เพิ่ม Theme สู่รายการที่ชื่นชอบสำเร็จ");

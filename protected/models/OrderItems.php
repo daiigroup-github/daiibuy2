@@ -77,6 +77,7 @@ class OrderItems extends OrderItemsMaster
 		}
 		else
 		{
+
 			$orderItem = $this->find(array(
 				'condition'=>'t.orderId=:orderId AND t.productId=:productId',
 				'params'=>array(
@@ -109,49 +110,56 @@ class OrderItems extends OrderItemsMaster
 		if($orderItem->save(false))
 		{
 			$orderItemId = $orderItem->orderItemsId;
-			foreach($productOptionGroup as $k=> $v)
+			if(isset($pOptionIds) && !empty($pOptionIds))
 			{
-				$orderItemOption = OrderItemOption::model()->find("orderItemId = " . $orderItemId . " AND productOptionGroupId = " . $k . " AND productOptionId = " . $v);
-				if(!isset($orderItemOption))
+				foreach($productOptionGroup as $k=> $v)
 				{
-					$orderItemOption = new OrderItemOption();
-					$orderItemOption->orderItemId = $orderItemId;
-					$orderItemOption->productOptionGroupId = $k;
-					$orderItemOption->productOptionId = $v;
+					$orderItemOption = OrderItemOption::model()->find("orderItemId = " . $orderItemId . " AND productOptionGroupId = " . $k . " AND productOptionId = " . $v);
+					if(!isset($orderItemOption))
+					{
+						$orderItemOption = new OrderItemOption();
+						$orderItemOption->orderItemId = $orderItemId;
+						$orderItemOption->productOptionGroupId = $k;
+						$orderItemOption->productOptionId = $v;
+					}
+					$productOption = ProductOption::model()->findByPk($v);
+					if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
+					{
+						$orderItemOption->percent = $productOption->pricePercent;
+						$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+					}
+					else
+					{
+						$orderItemOption->percent = 0;
+						$orderItemOption->total = 0;
+					}
+					if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
+					{
+						$orderItemOption->value = $productOption->priceValue;
+						$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+					}
+					else
+					{
+						$orderItemOption->value = 0;
+						$orderItemOption->total += 0;
+					}
+					$orderItemOption->createDateTime = new CDbExpression("NOW()");
+					$orderItemOption->updateDateTime = new CDbExpression("NOW()");
+					if($orderItemOption->save())
+					{
+						$orderItem->total +=$orderItemOption->total;
+						$orderItem->save(FALSE);
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				}
-				$productOption = ProductOption::model()->findByPk($v);
-				if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
-				{
-					$orderItemOption->percent = $productOption->pricePercent;
-					$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
-				}
-				else
-				{
-					$orderItemOption->percent = 0;
-					$orderItemOption->total = 0;
-				}
-				if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
-				{
-					$orderItemOption->value = $productOption->priceValue;
-					$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
-				}
-				else
-				{
-					$orderItemOption->value = 0;
-					$orderItemOption->total += 0;
-				}
-				$orderItemOption->createDateTime = new CDbExpression("NOW()");
-				$orderItemOption->updateDateTime = new CDbExpression("NOW()");
-				if($orderItemOption->save())
-				{
-					$orderItem->total +=$orderItemOption->total;
-					$orderItem->save(FALSE);
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+			}
+			else
+			{
+				return true;
 			}
 		}
 	}

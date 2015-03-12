@@ -120,7 +120,7 @@
 
 
                 <div class="product-actions">
-					<span class="add-to-cart" data-productid="<?php echo $productModel->productId; ?>">
+					<span class="add-to-cart" id="<?php echo $productModel->productId; ?>">
                         <span class="action-wrapper">
 							<i class="icons icon-basket-2"></i>
 							<span class="action-name">Add to cart</span>

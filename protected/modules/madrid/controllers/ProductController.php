@@ -59,8 +59,9 @@ class ProductController extends MasterMadridController
 	public function actionAddToCart()
 	{
 		$productId = $_POST['productId'];
-		$qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
 
+		$qty = isset($_POST['qty']) ? $_POST['qty'] : 1;
+//		throw new Exception(print_r($_POST['productId'], true));
 		$supplier = Supplier::model()->find(array(
 			'condition'=>'url=:url',
 			'params'=>array(
@@ -77,7 +78,7 @@ class ProductController extends MasterMadridController
 		$orderModel->save(false);
 
 		echo CJSON::encode(array(
-			'result'=>OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId)));
+			'result'=>$orderItem));
 	}
 
 }
