@@ -6,7 +6,7 @@ $('.add-to-cart').click(function() {
 	var data = {};
 	var productId = $(this).data('productid');
 	var qty = $('#' + productId).val();
-	alert(productId + "," + qty);
+//	alert(productId + "," + qty);   
 	var data = {productId: productId, qty: qty};
 	$.ajax({
 		url: baseUrl + '/madrid/product/addToCart',
