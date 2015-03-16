@@ -242,7 +242,7 @@ class OrderController extends MasterMyFileController
 	{
 		$user = User::model()->findByPk(Yii::app()->user->id);
 //return Array to use in view.php
-		$userOrder = User::model()->findByPk($model->userId);
+		$userOrder = User::model()->findByPk(isset($model->userId) ? $model->userId : $user->userId);
 
 		switch($user->type)
 		{
