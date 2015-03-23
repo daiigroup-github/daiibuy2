@@ -55,7 +55,7 @@ if(isset($data->productImages))
     </div>
 
     <div class="product-actions">
-        <span class="add-to-cart" id="<?php echo $data['productId']; ?>">
+        <span class="add-to-cart" data-productid="<?php echo $data['productId']; ?>">
 			<span class="action-wrapper">
                 <i class="icons icon-basket-2"></i>
                 <span class="action-name">Add to cart</span>
