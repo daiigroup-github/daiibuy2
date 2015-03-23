@@ -54,7 +54,7 @@ class CategoryController extends MasterMadridController
 
 		$dataProvider = new CActiveDataProvider('Product', array(
 			'criteria'=>$criteria));
-		$dataProvider->pagination->pageSize = 9;
+		$dataProvider->pagination->pageSize = 300;
 		$template = "<div class='row'>
 			<div class='col-lg-4 col-md-4 col-sm-4'>{summary}</div>\n
 			<div class='col-lg-8 col-md-8 col-sm-8'>{pager}</div>\n

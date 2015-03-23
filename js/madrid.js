@@ -6,7 +6,7 @@ $('.add-to-cart').click(function() {
 	var data = {};
 	var productId = $(this).data('productid');
 	var qty = $('#' + productId).val();
-//	alert(productId + "," + qty);   
+//	alert(productId + "," + qty);
 	var data = {productId: productId, qty: qty};
 	$.ajax({
 		url: baseUrl + '/madrid/product/addToCart',
@@ -14,14 +14,14 @@ $('.add-to-cart').click(function() {
 		dataType: 'JSON',
 		data: data,
 		beforeSend: function() {
-			return confirm('คุณต้องการเพิ่มสินค้าลงตะตร้าหรือไม่ ?')
+			return confirm('คุณต้องการเพิ่มสินค้าลงตะกร้าหรือไม่ ?')
 		},
 		success: function(data) {
 			//alert success message
 			if (data.result)
 			{
 				updateCartHeader();
-				alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
+				alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียบร้อยแล้ว");
 			}
 			else
 			{
