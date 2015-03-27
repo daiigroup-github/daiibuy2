@@ -161,11 +161,11 @@ function getOrderPaymentAddress($model)
 {
 //	throw new Exception(print_r($model->paymentFirstname,true));
 	$res = "";
-	if(isset($model->paymentCompany))
+	if(isset($model->paymentCompany) && !empty($model->paymentCompany))
 	{
 		$res.= $model->paymentCompany . " โดย ";
 	}
-	$res .= " คุณ". $model->paymentFirstname . " " . $model->paymentLastname  . (isset($model->paymentTaxNo) ? "<br>เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "") . "<br>". $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . "<br>โทรศัพท์ :  " . $model->telephone;
+	$res .= " คุณ" . $model->paymentFirstname . " " . $model->paymentLastname . (isset($model->paymentTaxNo) ? "<br>เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "") . "<br>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . "<br>โทรศัพท์ :  " . $model->telephone;
 	return $res;
 }
 
@@ -174,7 +174,7 @@ function getOrderSupplierBillingAddress($model, $isFull = false)
 	$supplier = $model->supplier;
 	if($isFull)
 	{
-		return $supplier->companyName ."<br>". (isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>");
+		return $supplier->companyName . "<br>" . (isset($supplier->address1) ? $supplier->address1 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->tel : $supplier->address2 . " " . $supplier->district->districtName . " " . $supplier->amphur->amphurName . " " . $supplier->province->provinceName . " " . $supplier->postcode . " โทรศัพท์ :  " . $model->supplier->telephone . " ผู้ติดต่อ : " . $model->supplier->firstname . " " . $model->supplier->lastname . "</p>");
 	}
 	else
 	{
