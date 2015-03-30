@@ -1,4 +1,4 @@
-<?php // include("HOP.php");               ?>
+<?php // include("HOP.php");                   ?>
 
 <!--<h3>Sample PHP Receipt Page</h3>-->
 
@@ -60,19 +60,18 @@
 						<div class="row">
 							<div class="col-md-12">
 								<?php
-								echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl("order/print", array(
+								echo CHtml::link('<i class="icon-print icon-white"></i> พิมพ์ใบส่งสินค้า', Yii::app()->createUrl("myfile/order/print", array(
 										"id"=>$model->orderGroupId)), array(
-		'class'=>'btn btn-warning',
+									'class'=>'btn btn-warning',
 									'target'=>'_blank',));
 								?>
 								<?php
-								echo CHtml::link('<i class="icon-search icon-white"></i> ดูใบสั่งซื้อสินค้า', Yii::app()->createUrl("order/view", array(
-										"id"=>$model->orderGroupId)), array(
-		'class'=>'btn btn-primary',
+								echo CHtml::link('<i class="icon-search icon-white"></i> ดูใบสั่งซื้อสินค้า', Yii::app()->createUrl("myfile/order/view/id/" . $model->orderGroupId), array(
+									'class'=>'btn btn-primary',
 									'target'=>'_blank',));
 								?>
 								<?php
-								echo CHtml::link('<i class="icon-folder-close icon-white"></i> การจัดการสั่งซื้อสินค้า', Yii::app()->createUrl("order"), array(
+								echo CHtml::link('<i class="icon-folder-close icon-white"></i> การจัดการสั่งซื้อสินค้า', Yii::app()->createUrl("myfile/order"), array(
 									'class'=>'btn btn-success',));
 								?>
 							</div>
