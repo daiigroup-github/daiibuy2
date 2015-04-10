@@ -30,8 +30,8 @@
 
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'supplierId', array(
-			'class'=>'col-sm-2 control-label'));
+//		echo $form->labelEx($model, 'supplierId', array(
+//			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
 			<?php echo isset($supplier->name) ? $supplier->name : $supplier->email; ?>
@@ -39,7 +39,7 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'code', array(
+		echo $form->label($model, 'code', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
@@ -54,7 +54,7 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'title', array(
+		echo $form->label($model, 'title', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
@@ -69,7 +69,7 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'description', array(
+		echo $form->label($model, 'description', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
@@ -84,7 +84,7 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'percent', array(
+		echo $form->label($model, 'percent', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">
@@ -97,7 +97,7 @@
 	</div>
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'image', array(
+		echo $form->label($model, 'image', array(
 			'class'=>'col-sm-2 control-label'));
 		?>
 		<div class="col-sm-10">

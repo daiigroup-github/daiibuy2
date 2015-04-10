@@ -300,7 +300,8 @@ class StepController extends MasterCheckoutController
 	{
 
 //		throw new Exception(print_r($_POST["orderGroupId"],true));
-		if(isset($_POST["orderGroupId"])){
+		if(isset($_POST["orderGroupId"]))
+		{
 			$oldOrderGroup = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
 		}
 		$supplierId = Yii::app()->session['supplierId'];
@@ -346,6 +347,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->paymentMethod = $_POST['paymentMethod'];
 				$orderGroup->createDateTime = new CDbExpression("NOW()");
 				$orderGroup->updateDateTime = new CDbExpression("NOW()");
+
 
 				/**
 				 * Todo:: billing & shipping address
@@ -393,13 +395,17 @@ class StepController extends MasterCheckoutController
 						),
 						'order'=>'type, orderId'
 					));
-
+//					throw new Exception(print_r($orders, true));
 					$i = 0;
+
 					foreach($orders as $order)
 					{
+
 						$orderGroupToOrder = new OrderGroupToOrder();
 						$orderGroupToOrder->orderGroupId = $orderGroupId;
 						$orderGroupToOrder->orderId = $order->orderId;
+
+
 
 						if(!$orderGroupToOrder->save())
 						{
@@ -408,6 +414,7 @@ class StepController extends MasterCheckoutController
 						$sumTotal = 0;
 						foreach($order->orderItems as $item)
 						{
+
 							$price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
 							$total = ($price * $item->quantity);
 							$sumTotal+=$total;
@@ -512,13 +519,106 @@ class StepController extends MasterCheckoutController
 //			{
 			if($_REQUEST["decision"] == "ACCEPT")
 			{
-				$order = OrderGroup::model()->find("orderNo =:orderNo", array(
+				$oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
 					":orderNo"=>$_REQUEST["req_reference_number"]));
-				if(isset($order))
+				if(isset($oldOrder))
 				{
-					$order->status = 2;
-					$order->paymentDateTime = new CDbExpression('NOW()');
-					if($order->save())
+					if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
+					{
+						foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
+						{
+							for($i = 1;; $i++)
+							{
+								$transaction = Yii::app()->db->beginTransaction();
+								try
+								{
+									$newOrderGroup = new OrderGroup();
+									$newOrderGroup->attributes = $oldOrder->attributes;
+									$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+									$newOrderGroup->totalIncVAT = $item->price;
+									$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+									$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+									$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+									$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+									$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+									$newOrderGroup->orderGroupId = NULL;
+
+
+
+									$newOrderItem = new OrderItems();
+									$newOrderItem->attributes = $item->attributes;
+
+
+//						throw new Exception(print_r($newOrderItem->attributes, true));
+
+									if($newOrderGroup->save())
+									{
+										$newOrderGroupId = Yii::app()->db->getLastInsertID();
+										$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+										$newOrder = new Order();
+										$newOrder->attributes = $tempOrder->attributes;
+										$newOrder->orderId = NULL;
+										$newOrder->totalIncVAT = $item->price;
+										$newOrder->total = $newOrderGroup->total;
+										if($newOrder->save())
+										{
+											$newOrderId = Yii::app()->db->getLastInsertID();
+											$orderGroupToOrder = new OrderGroupToOrder();
+											$orderGroupToOrder->orderGroupId = $newOrderGroupId;
+											$orderGroupToOrder->orderId = $newOrderId;
+											if($orderGroupToOrder->save())
+											{
+												$newOrderItem = new OrderItems();
+												$newOrderItem->attributes = $item->attributes;
+												$newOrderItem->orderId = $newOrderId;
+												$newOrderItem->quantity = 1;
+												$newOrderItem->total = $newOrderItem->price;
+												if($newOrderItem->save())
+												{
+													$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+													$transaction->commit();
+												}
+												else
+												{
+													throw new Exception;
+												}
+											}
+											else
+											{
+												throw new Exception;
+											}
+										}
+										else
+										{
+											throw new Exception;
+										}
+									}
+									else
+									{
+										throw new Exception;
+									}
+								}
+								catch(Exception $ex)
+								{
+									throw new Exception($e->getMessage());
+									$transaction->rollback();
+								}
+
+								if($i == $item->quantity)
+								{
+									$oldOrder->status = -1;
+									$oldOrder->paymentDateTime = new CDbExpression('NOW()');
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						$oldOrder->status = 2;
+						$oldOrder->paymentDateTime = new CDbExpression('NOW()');
+					}
+					if($oldOrder->save())
 					{
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
@@ -547,27 +647,116 @@ class StepController extends MasterCheckoutController
 				{
 					$order = OrderGroup::model()->find("orderNo =:orderNo", array(
 						":orderNo"=>$_REQUEST["req_reference_number"]));
-					if(isset($order))
+					if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
 					{
-						$order->status = 2;
-//						$order->invoiceNo = Order::model()->genInvNo($order);
-//						$order->paymentDateTime = new CDbExpression('NOW()');
-						if($order->save())
+						foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
 						{
-//							$this->cutProductStock($order);
-//							unset($daiibuy->cart[$order->supplierId]);
-//							unset($daiibuy->order[$order->supplierId]);
-//							$daiibuy->usedPoint = 0;
-//							$daiibuy->saveCookie();
+							for($i = 1;; $i++)
+							{
+								$transaction = Yii::app()->db->beginTransaction();
+								try
+								{
+									$newOrderGroup = new OrderGroup();
+									$newOrderGroup->attributes = $oldOrder->attributes;
+									$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+									$newOrderGroup->totalIncVAT = $item->price;
+									$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+									$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+									$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+									$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+									$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+									$newOrderGroup->orderGroupId = NULL;
 
-							$flag = TRUE;
-							$emailObj = new Email();
-							$sentMail = new EmailSend();
-							$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile";
-//							$emailObj->Setmail($order->userId, $order->dealerId, $order->supplierId, $order->orderId, null, $documentUrl);
-//							$sentMail->mailCompleteOrderCustomer($emailObj);
-//							$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+
+
+									$newOrderItem = new OrderItems();
+									$newOrderItem->attributes = $item->attributes;
+
+
+//						throw new Exception(print_r($newOrderItem->attributes, true));
+
+									if($newOrderGroup->save())
+									{
+										$newOrderGroupId = Yii::app()->db->getLastInsertID();
+										$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+										$newOrder = new Order();
+										$newOrder->attributes = $tempOrder->attributes;
+										$newOrder->orderId = NULL;
+										$newOrder->totalIncVAT = $item->price;
+										$newOrder->total = $newOrderGroup->total;
+										if($newOrder->save())
+										{
+											$newOrderId = Yii::app()->db->getLastInsertID();
+											$orderGroupToOrder = new OrderGroupToOrder();
+											$orderGroupToOrder->orderGroupId = $newOrderGroupId;
+											$orderGroupToOrder->orderId = $newOrderId;
+											if($orderGroupToOrder->save())
+											{
+												$newOrderItem = new OrderItems();
+												$newOrderItem->attributes = $item->attributes;
+												$newOrderItem->orderId = $newOrderId;
+												$newOrderItem->quantity = 1;
+												$newOrderItem->total = $newOrderItem->price;
+												if($newOrderItem->save())
+												{
+													$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+													$transaction->commit();
+												}
+												else
+												{
+													throw new Exception;
+												}
+											}
+											else
+											{
+												throw new Exception;
+											}
+										}
+										else
+										{
+											throw new Exception;
+										}
+									}
+									else
+									{
+										throw new Exception;
+									}
+								}
+								catch(Exception $ex)
+								{
+									throw new Exception($e->getMessage());
+									$transaction->rollback();
+								}
+
+								if($i == $item->quantity)
+								{
+									$oldOrder->status = -1;
+									$oldOrder->paymentDateTime = new CDbExpression('NOW()');
+									break;
+								}
+							}
 						}
+					}
+					else
+					{
+						$oldOrder->status = 2;
+						$oldOrder->paymentDateTime = new CDbExpression('NOW()');
+					}
+					if($oldOrder->save())
+					{
+//						$this->cutProductStock($order);
+//						unset($daiibuy->cart[$order->supplierId]);
+//						unset($daiibuy->order[$order->supplierId]);
+//						$daiibuy->usedPoint = 0;
+//						$daiibuy->saveCookie();
+
+						$flag = TRUE;
+						$emailObj = new Email();
+						$sentMail = new EmailSend();
+						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+						$emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
+						$sentMail->mailCompleteOrderCustomer($emailObj);
+						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 					}
 					else
 					{
@@ -588,36 +777,165 @@ class StepController extends MasterCheckoutController
 
 	public function actionStep6($id)
 	{
-		$daiibuy = new DaiiBuy();
+//		$daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
-		$order = new OrderGroup();
 		$flag = FALSE;
 
 //		$order = OrderGroup::model()->find("orderNo =:orderNo", array(
 //			":orderNo"=>$id));
-		$order = OrderGroup::model()->findByPk($id);
-		if(isset($order))
+		$oldOrder = OrderGroup::model()->findByPk($id);
+
+		if(isset($oldOrder))
 		{
-			$order->status = 1;
-//			$order->invoiceNo = OrderGroup::model()->genInvNo($order);
-//			$order->paymentDateTime = new CDbExpression('NOW()');
-			if($order->save())
+			if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
 			{
+
+				foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
+				{
+					for($i = 1;; $i++)
+					{
+						$transaction = Yii::app()->db->beginTransaction();
+						try
+						{
+							$newOrderGroup = new OrderGroup();
+							$newOrderGroup->attributes = $oldOrder->attributes;
+							$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+							$newOrderGroup->totalIncVAT = $item->price;
+							$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+							$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+							$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+							$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+							$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+							$newOrderGroup->orderGroupId = NULL;
+
+
+
+							$newOrderItem = new OrderItems();
+							$newOrderItem->attributes = $item->attributes;
+
+
+//						throw new Exception(print_r($newOrderItem->attributes, true));
+
+							if($newOrderGroup->save())
+							{
+								$newOrderGroupId = Yii::app()->db->getLastInsertID();
+								$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+								$newOrder = new Order();
+								$newOrder->attributes = $tempOrder->attributes;
+								$newOrder->orderId = NULL;
+								$newOrder->totalIncVAT = $item->price;
+								$newOrder->total = $newOrderGroup->total;
+								if($newOrder->save())
+								{
+									$newOrderId = Yii::app()->db->getLastInsertID();
+									$orderGroupToOrder = new OrderGroupToOrder();
+									$orderGroupToOrder->orderGroupId = $newOrderGroupId;
+									$orderGroupToOrder->orderId = $newOrderId;
+									if($orderGroupToOrder->save())
+									{
+										$newOrderItem = new OrderItems();
+										$newOrderItem->attributes = $item->attributes;
+										$newOrderItem->orderId = $newOrderId;
+										$newOrderItem->quantity = 1;
+										$newOrderItem->total = $newOrderItem->price;
+										if($newOrderItem->save())
+										{
+											$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+											$transaction->commit();
+										}
+										else
+										{
+											throw new Exception;
+										}
+									}
+									else
+									{
+										throw new Exception;
+									}
+								}
+								else
+								{
+									throw new Exception;
+								}
+							}
+							else
+							{
+								throw new Exception;
+							}
+						}
+						catch(Exception $ex)
+						{
+							throw new Exception($e->getMessage());
+							$transaction->rollback();
+						}
+
+						if($i == $item->quantity)
+						{
+							$oldOrder->status = -1;
+							break;
+						}
+					}
+				}
+//					$oldOrder->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
+//					$oldOrder->discountValue = ($oldOrder->totalIncVAT * $oldOrder->discountPercent) / 100;
+//					$oldOrder->totalPostDiscount = $oldOrder->totalIncVAT - $oldOrder->discountValue;
+//					$oldOrder->total = $oldOrder->totalIncVAT / (1 + ($oldOrder->vatPercent / 100));
+//					$oldOrder->vatValue = $oldOrder->totalIncVAT - $oldOrder->total;
+//					$oldOrder->orderGroupId = NULL;
+				//						$oldOrder->orderNo = $oldOrder->order->findMaxOrderNo();
+			}
+			else
+			{
+				$oldOrder->status = 1;
+			}
+		}
+//					$oldOrder->paymentDateTime = new CDbExpression('NOW()');
+		if($oldOrder->save())
+		{
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
-
-				$flag = TRUE;
-				$emailObj = new Email();
-				$sentMail = new EmailSend();
-				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderGroupId;
-				$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
-				$sentMail->mailCompleteOrderCustomer($emailObj);
-				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+			if($oldOrder->status < 0)
+			{
+				$orderToSentMail = $oldOrder;
 			}
+			else
+			{
+				$orderToSentMail = $newOrderGroup;
+			}
+			$flag = TRUE;
+			$emailObj = new Email();
+			$sentMail = new EmailSend();
+			$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+			$emailObj->Setmail($orderToSentMail->userId, null, $orderToSentMail->supplierId, $orderToSentMail->orderGroupId, null, $documentUrl);
+			$sentMail->mailCompleteOrderCustomer($emailObj);
+			$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 		}
+
+//		if(isset($order))
+//		{
+//			$order->status = 1;
+////			$order->invoiceNo = OrderGroup::model()->genInvNo($order);
+////			$order->paymentDateTime = new CDbExpression('NOW()');
+//			if($order->save())
+//			{
+////						$this->cutProductStock($order);
+////						unset($daiibuy->cart[$order->supplierId]);
+////						unset($daiibuy->order[$order->supplierId]);
+////						$daiibuy->usedPoint = 0;
+////						$daiibuy->saveCookie();
+//
+//				$flag = TRUE;
+//				$emailObj = new Email();
+//				$sentMail = new EmailSend();
+//				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $order->orderGroupId;
+//				$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+//				$sentMail->mailCompleteOrderCustomer($emailObj);
+//				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+//			}
+//		}
 		else
 		{
 			echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
@@ -687,6 +1005,87 @@ class StepController extends MasterCheckoutController
 			'model'=>$model));
 	}
 
+	public function splitGinzaOrder($item)
+	{
+		$oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
+		$order = new OrderGroup();
+		$order->attributes = $oldOrder->attributes;
+		$order->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
+		$order->discountValue = ($order->totalIncVAT * $order->discountPercent) / 100;
+		$order->totalPostDiscount = $order->totalIncVAT - $order->discountValue;
+		$order->total = $order->totalIncVAT / (1 + ($order->vatPercent / 100));
+		$order->vatValue = $order->totalIncVAT - $order->total;
+		$order->orderGroupId = NULL;
+		$order->orderNo = $oldOrder->order->findMaxOrderNo();
+		$order->status = 1;
+//							$order->paymentDateTime = new CDbExpression('NOW()');
+		if($order->save())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function copyGinzaOrder($oldOrderGroupId, $splitNo)
+	{
+		$oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
+		$order = new OrderGroup();
+		$order->attributes = $oldOrder->attributes;
+		$order->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
+		$order->discountValue = ($order->totalIncVAT * $order->discountPercent) / 100;
+		$order->totalPostDiscount = $order->totalIncVAT - $order->discountValue;
+		$order->total = $order->totalIncVAT / (1 + ($order->vatPercent / 100));
+		$order->vatValue = $order->totalIncVAT - $order->total;
+		$order->orderGroupId = NULL;
+		$order->orderNo = $oldOrder->order->findMaxOrderNo();
+		$order->status = 1;
+//							$order->paymentDateTime = new CDbExpression('NOW()');
+		if($order->save())
+		{
+			$orderGroupId = Yii::app()->db->lastInsertID;
+
+//		$orderGroup = OrderGroup::model()->findByPk($orderGroupId);
+			$newOrder = new Order();
+			$newOrder->attributes = $order->orderGroupToOrders[0]->order->attributes;
+			$newOrder->orderId = NULL;
+			$newOrder->totalIncVAT = $newOrder->totalIncVAT / $splitNo;
+			if($newOrder->save())
+			{
+				$newOrderId = Yii::app()->db->getLastInsertID();
+				$newOrderGroupToOrder = new OrderGroupToOrder();
+				$newOrderGroupToOrder->orderGroupId = $orderGroupId;
+				$newOrderGroupToOrder->orderId = $newOrderId;
+				if($newOrderGroupToOrder->save())
+				{
+					$newOrderItem = new OrderItems();
+					$newOrderItem->attributes = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->attributes;
+					$newOrderItem->total = $newOrderItem->total / $splitNo;
+					$newOrderItem->orderItemId = NULL;
+					$newOrderItem->orderId = $newOrderId;
+					if($newOrderItem->save())
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
 	public function saveGinzaOrder($supplierId, $orderGroupId)
 	{
 		$flag = false;
@@ -694,17 +1093,17 @@ class StepController extends MasterCheckoutController
 		try
 		{
 			$oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
-//			throw new Exception(print_r($oldOrderGroup->orders, true));
-			$cat2ToProduct = Category2ToProduct::model()->find("productId=" . $oldOrderGroup->orders[0]->orderItems[0]->productId);
+//			throw new Exception(print_r($oldOrderGroup->orderGroupToOrders, true));
+			$cat2ToProduct = Category2ToProduct::model()->find("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId);
 			$models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
 				":brandId"=>$cat2ToProduct->brandId,
 				':brandModelId'=>$cat2ToProduct->brandModelId,
 				":category1Id"=>$cat2ToProduct->category1Id,
 				":category2Id"=>$cat2ToProduct->category2Id,
-				":productId"=>$oldOrderGroup->orders[0]->orderItems[0]->productId));
+				":productId"=>$oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId));
 			foreach($models as $model)
 			{
-				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($model->productId, $oldOrderGroup->orders[0]->orderItems[0]->quantity, $supplierId);
+				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($model->productId, $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $supplierId);
 				$orderGroup = new OrderGroup();
 				$orderGroup->attributes = $oldOrderGroup->attributes;
 				$orderGroup->supplierId = $supplierId;
@@ -733,7 +1132,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
 				$orderGroup->vatValue = $orderGroup->calVatValue();
 				$orderGroup->userId = Yii::app()->user->id;
-				$orderGroup->paymentMethod = $_POST['paymentMethod'];
+				$orderGroup->paymentMethod = isset($_POST['paymentMethod']) ? $_POST['paymentMethod'] : $oldOrderGroup->paymentMethod;
 				$orderGroup->createDateTime = new CDbExpression("NOW()");
 				$orderGroup->updateDateTime = new CDbExpression("NOW()");
 				if($orderGroup->save(false))
@@ -743,7 +1142,7 @@ class StepController extends MasterCheckoutController
 					$flag = TRUE;
 					$product = Product::model()->findByPk($model->productId);
 					$price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
-					$quantity = $oldOrderGroup->orders[0]->orderItems[0]->quantity;
+					$quantity = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
 					$totalIncVat = $price * $quantity;
 					$order = new Order();
 					$order->userId = Yii::app()->user->id;
@@ -752,14 +1151,14 @@ class StepController extends MasterCheckoutController
 					$order->type = 4;
 					$order->totalIncVAT = $totalIncVat;
 					$order->total = $order->totalIncVAT / 1.07;
-					$order->provinceId = $oldOrderGroup->orders[0]->provinceId;
+					$order->provinceId = $oldOrderGroup->orderGroupToOrders[0]->order->provinceId;
 					$order->createDateTime = new CDbExpression("NOW()");
 					$order->updateDateTime = new CDbExpression("NOW()");
 
 					if($order->save())
 					{
 						$orderId = Yii::app()->db->lastInsertID;
-						foreach($oldOrderGroup->orders[0]->orderItems as $orderItem)
+						foreach($oldOrderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem)
 						{
 							$orderItems = new OrderItems();
 							$orderItems->orderId = $orderId;
@@ -814,7 +1213,6 @@ class StepController extends MasterCheckoutController
 								}
 							}
 						}
-
 						$orderGroupToOrder = new OrderGroupToOrder();
 						$orderGroupToOrder->orderGroupId = $newOrderGroupId;
 						$orderGroupToOrder->orderId = $orderId;

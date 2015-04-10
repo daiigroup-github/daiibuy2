@@ -17,6 +17,7 @@
  */
 class SupplierSpacialProjectMaster extends MasterCActiveRecord
 {
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -33,17 +34,43 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('supplierId, code, title, percent, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
-			array('supplierId', 'length', 'max'=>20),
-			array('code', 'length', 'max'=>50),
-			array('title', 'length', 'max'=>200),
-			array('image', 'length', 'max'=>255),
-			array('percent', 'length', 'integerOnly'=>true, 'max'=>20),
-			array('description, createDateTime', 'safe'),
+			array(
+				'supplierId, code, title, percent, updateDateTime',
+				'required'),
+			array(
+				'status',
+				'numerical',),
+//				'integerOnly'=>true),
+			array(
+				'supplierId',
+				'length',
+				'max'=>20),
+			array(
+				'code',
+				'length',
+				'max'=>50),
+			array(
+				'title',
+				'length',
+				'max'=>200),
+			array(
+				'image',
+				'length',
+				'max'=>255),
+			array(
+				'percent',
+				'length',
+//				'integerOnly'=>true,
+				'max'=>20),
+			array(
+				'description, createDateTime',
+				'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('supplierSpacialProjectId, supplierId, code, title, description, image, percent, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array(
+				'supplierSpacialProjectId, supplierId, code, title, description, image, percent, status, createDateTime, updateDateTime, searchText',
+				'safe',
+				'on'=>'search'),
 		);
 	}
 
@@ -55,7 +82,7 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-		);
+			);
 	}
 
 	/**
@@ -64,16 +91,16 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'supplierSpacialProjectId' => 'Supplier Spacial Project',
-			'supplierId' => 'Supplier',
-			'code' => 'Code',
-			'title' => 'Title',
-			'description' => 'Description',
-			'image' => 'Image',
-			'percent' => 'Percent',
-			'status' => 'Status',
-			'createDateTime' => 'Create Date Time',
-			'updateDateTime' => 'Update Date Time',
+			'supplierSpacialProjectId'=>'Supplier Spacial Project',
+			'supplierId'=>'Supplier',
+			'code'=>'Code',
+			'title'=>'Title',
+			'description'=>'Description',
+			'image'=>'Image',
+			'percent'=>'Percent',
+			'status'=>'Status',
+			'createDateTime'=>'Create Date Time',
+			'updateDateTime'=>'Update Date Time',
 		);
 	}
 
@@ -93,7 +120,7 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
@@ -109,16 +136,16 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('supplierSpacialProjectId',$this->supplierSpacialProjectId,true, 'OR');
-		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
-		$criteria->compare('code',$this->code,true, 'OR');
-		$criteria->compare('title',$this->title,true, 'OR');
-		$criteria->compare('description',$this->description,true, 'OR');
-		$criteria->compare('image',$this->image,true, 'OR');
-		$criteria->compare('percent',$this->percent,true, 'OR');
-		$criteria->compare('status',$this->status);
-		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
-		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
+		$criteria->compare('supplierSpacialProjectId', $this->supplierSpacialProjectId, true, 'OR');
+		$criteria->compare('supplierId', $this->supplierId, true, 'OR');
+		$criteria->compare('code', $this->code, true, 'OR');
+		$criteria->compare('title', $this->title, true, 'OR');
+		$criteria->compare('description', $this->description, true, 'OR');
+		$criteria->compare('image', $this->image, true, 'OR');
+		$criteria->compare('percent', $this->percent, true, 'OR');
+		$criteria->compare('status', $this->status);
+		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
+		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -131,8 +158,9 @@ class SupplierSpacialProjectMaster extends MasterCActiveRecord
 	 * @param string $className active record class name.
 	 * @return SupplierSpacialProjectMaster the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
+
 }
