@@ -1194,7 +1194,7 @@ class Product extends ProductMaster
 		$criteria->compare("c.category2Id", $category2Id);
 		$criteria->compare("t.width", $width);
 		$criteria->compare("t.height", $height);
-//		$criteria->group = "t.height";
+		$criteria->group = "t.price";
 
 		return $this->findAll($criteria);
 	}

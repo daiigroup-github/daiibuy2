@@ -175,10 +175,13 @@ class ProductController extends MasterAtechwindowController
 		$orderModel->provinceId = 1;
 		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
 //		throw new Exception(print_r($orderModel,true));
-		if($orderModel->save()){
-			$this->redirect(Yii::app()->baseUrl.'/index.php/checkout/cart/index/id/2');
-		}else{
-			throw new Exception($orderModel->error,true);
+		if($orderModel->save())
+		{
+			$this->redirect(Yii::app()->baseUrl . '/index.php/checkout/cart/index/id/2');
+		}
+		else
+		{
+			throw new Exception($orderModel->error, true);
 		}
 	}
 
@@ -202,17 +205,21 @@ class ProductController extends MasterAtechwindowController
 
 		$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
 
-		foreach($productArray as $productId => $qty){
+		foreach($productArray as $productId=> $qty)
+		{
 //			throw new Exception(print_r($productId.', '.$qty,true));
 			$orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
 		}
 		$orderModel->provinceId = 1;
 		$orderModel->totalIncVAT = $orderModel->orderItemsSum;
 //		throw new Exception(print_r($orderModel,true));
-		if($orderModel->save()){
-			$this->redirect(Yii::app()->baseUrl.'/index.php/checkout/cart/index/id/2');
-		}else{
-			throw new Exception($orderModel->error,true);
+		if($orderModel->save())
+		{
+			$this->redirect(Yii::app()->baseUrl . '/index.php/checkout/cart/index/id/2');
+		}
+		else
+		{
+			throw new Exception($orderModel->error, true);
 		}
 	}
 
