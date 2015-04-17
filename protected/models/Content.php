@@ -216,4 +216,10 @@ class Content extends ContentMaster
 		));
 	}
 
+	public function showConfirmationContentBySupplierId($supplierId)
+	{
+		$res = Content::model()->findAll('type = 10');
+		return $res;
+	}
+
 }

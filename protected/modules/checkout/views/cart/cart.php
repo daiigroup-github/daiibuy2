@@ -7,17 +7,10 @@ $this->breadcrumbs = array(
 ?>
 
 <div class="row">
-
     <div class="col-lg-12 col-md-12 col-sm-12">
-
         <div class="carousel-heading">
             <h4>ดำเนินการชำระเงิน</h4>
-
-			<?php /*
-			  <div class="carousel-arrows">
-			  <a href="#"><i class="icons icon-reply"></i></a>
-			  </div>
-			 */
+			<?php
 			?>
         </div>
     </div>
@@ -39,6 +32,23 @@ foreach($orders as $order)
 $this->renderPartial('_order_info_summary', array(
 	'orderSummary'=>$orderSummary));
 ?>
+
+<?php
+$confirmationContent = Content::model()->showConfirmationContentBySupplierId(isset($supplierId) ? $supplierId : Yii::app()->session['supplierId']);
+//	throw new Exception(print_r($confirmationContent, true));
+?>
+<div class="row sidebar-box orange">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="sidebar-box-heading">
+            <i class="icons fa fa-file-o"></i>
+            <h4><?php echo $confirmationContent[0]->title; ?></h4>
+        </div>
+        <div class="sidebar-box-content sidebar-padding-box">
+			<?php echo $confirmationContent[0]->description; ?>
+		</div>
+	</div>
+
+</div>
 
 <p class="pull-right">
     <a class="button big orange" href="<?php echo Yii::app()->homeUrl; ?>"><i class="icons icon-reply"></i>Continue Shopping</a>

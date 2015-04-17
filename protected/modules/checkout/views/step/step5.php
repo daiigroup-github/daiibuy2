@@ -1,4 +1,4 @@
-<?php // include("HOP.php");                   ?>
+<?php // include("HOP.php");                    ?>
 
 <!--<h3>Sample PHP Receipt Page</h3>-->
 
@@ -17,14 +17,11 @@
 
 <!--</table>-->
 <div class="row sidebar-box blue">
-
 	<div class="col-lg-12 col-md-12 col-sm-12">
-
 		<div class="sidebar-box-heading">
 			<i class="icons icon-box-2"></i>
 			<h4>ผลการชำระเงิน ออนไลน์ www.daiibuy.com</h4>
 		</div>
-
 		<div class="sidebar-box-content sidebar-padding-box">
 			<div class="row">
 				<div class="col-md-12">
@@ -101,6 +98,5 @@
 			</div>
 		</div>
 	</div>
-
 </div>
 
