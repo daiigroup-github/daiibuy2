@@ -182,19 +182,34 @@ $form = $this->beginWidget('CActiveForm', array(
 							<div class="col-sm-7">
 
 								<div class="form-group">
-									รูปแปลน : <input name="OrderFile[0]" type="file" class="file" data-show-upload="false">
+									แปลนชั้น 1 : <input name="OrderFile[0]" type="file" class="file" data-show-upload="false">
 								</div>
 								<div class="form-group">
-									รูปด้าน 1 : <input name="OrderFile[1]" type="file" class="file" data-show-upload="false">
+									แปลนชั้น 2 : <input name="OrderFile[1]" type="file" class="file" data-show-upload="false">
 								</div>
 								<div class="form-group">
-									รูปด้าน 2 : <input name="OrderFile[2]" type="file" class="file" data-show-upload="false">
+									แปลนชั้น 3 : <input name="OrderFile[2]" type="file" class="file" data-show-upload="false">
 								</div>
 								<div class="form-group">
-									รูปด้าน 3 : <input name="OrderFile[3]" type="file" class="file" data-show-upload="false">
+									แบบขยายประตู-หน้าต่าง 1 : <input name="OrderFile[3]" type="file" class="file" data-show-upload="false">
 								</div>
 								<div class="form-group">
-									รูปด้าน 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+									แบบขยายประตู-หน้าต่าง 2 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									แบบขยายประตู-หน้าต่าง 3 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									แบบขยายประตู-หน้าต่าง 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									แบบขยายประตู-หน้าต่าง 5 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									แบบขยายประตู-หน้าต่าง 6 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+								</div>
+								<div class="form-group">
+									แบบขยายประตู-หน้าต่าง 7 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
 								</div>
 
 								<?php ?>
@@ -300,7 +315,7 @@ $form = $this->beginWidget('CActiveForm', array(
 				</div>
 				<div class="row text-center">
 					<form id="aa">
-						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                 ?>">
+						<table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                  ?>">
 							<thead>
 								<tr>ตารางแสดงรายละเอียดสินค้า</tr>
 								<tr>
@@ -382,10 +397,10 @@ $form = $this->beginWidget('CActiveForm', array(
 								</tr>
 					<!--			<tr>
 									<td>2</td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                 ?></td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                 ?></td>
-									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                 ?></td>
-									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                 ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                  ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                  ?></td>
+									<td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                  ?></td>
+									<td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                  ?></td>
 									<td><button id="deleteRow" class="btn btn-danger">remove</button></td>
 								</tr>-->
 
@@ -441,7 +456,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								</div>
 								<!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-															<button name="<?php // echo $item->brandModelId;                               ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                               ?></button>
+															<button name="<?php // echo $item->brandModelId;                                ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                ?></button>
 
 													</div>-->
 							</div>
@@ -491,9 +506,9 @@ $form = $this->beginWidget('CActiveForm', array(
 							<?php if(isset($productResult)): ?>
 								<?php
 								if($model->status != 0)
-								$this->renderPartial('/atechWindow/_confirm_product', array(
-									'productResult'=>$productResult,
-									), false, TRUE);
+									$this->renderPartial('/atechWindow/_confirm_product', array(
+										'productResult'=>$productResult,
+										), false, TRUE);
 								?>
 							<?php endif; ?>
 						</div>
@@ -541,7 +556,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //			'dataType': 'json',
 			'type': 'POST',
 			'data': {'cat2': cat2},
-			'success': function (data) {
+			'success': function(data) {
 				obj.parent().parent().children('.size').children('select').html(data);
 //				findProductByCat1(sel);
 			},
@@ -558,7 +573,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //			'dataType': 'json',
 			'type': 'POST',
 			'data': {'cat1Id': cat1Id},
-			'success': function (data) {
+			'success': function(data) {
 				obj.parent().parent().children('.type').children('select').html(data);
 //				findProductByCat1(sel);
 			},
