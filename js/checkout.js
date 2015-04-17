@@ -24,16 +24,28 @@ function checkAcceptAgreement()
 	}
 
 }
-$('#readTermCondition').live('click', function () {
+$('#readTermCondition').live('click', function() {
 	$('#termAndConditionModal').modal({
 		backdrop: 'static',
 		keyboard: false,
 		show: true
 	});
 });
-$('#acceptModal').live('click', function () {
+$('#acceptModal').live('click', function() {
 	$("#accept").prop('checked', true);
 });
+
+isCheck = 0;
+$('#acceptConfirm').live('click', function() {
+	if (isCheck == 0) {
+		$('#checkoutBtn').removeClass("hide");
+		isCheck++;
+	} else {
+		$('#checkoutBtn').addClass("hide");
+		isCheck = 0;
+	}
+});
+
 function ChkRadioBillAddress(value, sel)
 {
 	var check;

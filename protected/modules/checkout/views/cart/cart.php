@@ -44,8 +44,13 @@ $confirmationContent = Content::model()->showConfirmationContentBySupplierId(iss
             <h4><?php echo $confirmationContent[0]->title; ?></h4>
         </div>
         <div class="sidebar-box-content sidebar-padding-box">
-			<?php echo $confirmationContent[0]->description; ?>
+			<?php echo $confirmationContent[0]->description; ?><br>
+			<div class="text-center">
+				<input type="checkbox" name="accept" id="acceptConfirm"/>
+				<label class="checkbox-label" for="acceptConfirm"> ยอมรับ <i>"ข้อตกลงและเงื่อนไข"</i></label>
+			</div>
 		</div>
+
 	</div>
 
 </div>
@@ -59,5 +64,5 @@ $confirmationContent = Content::model()->showConfirmationContentBySupplierId(iss
 	$orderTotal = str_replace(",", "", $orderSummary['total']);
 	$checkOutClass = ($orderTotal < $minValue) ? "button big green hide" : "button big green";
 	?>
-    <a id="checkoutBtn" class="<?php echo $checkOutClass; ?>" href="<?php echo $this->createUrl('cart/checkout/id/' . $supplierId); ?>"><i class="glyphicon glyphicon-shopping-cart"></i> Check out</a>
+    <a id="checkoutBtn" class="<?php echo $checkOutClass; ?> hide" href="<?php echo $this->createUrl('cart/checkout/id/' . $supplierId); ?>"><i class="glyphicon glyphicon-shopping-cart"></i> Check out</a>
 </p>
