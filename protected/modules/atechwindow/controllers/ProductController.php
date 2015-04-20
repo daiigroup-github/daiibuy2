@@ -104,7 +104,7 @@ class ProductController extends MasterAtechwindowController
 					$res .= '<tr>' .
 						'<td>' . (isset($category2ToProduct->brand) ? $category2ToProduct->brand->title : "") . "-" . (isset($category2ToProduct->brandModel) ? $category2ToProduct->brandModel->title : "") . '</td>' .
 //						'<td>' . strtoupper($product->code) . '</td>' .
-						'<td>' . $product->name . '</td>' .
+						'<td><a class="fancybox" rel="" href="' . $product->image . '">' . $product->name . '</a></td>' .
 						'<td>' . number_format($product->width, 0) . ' x ' . number_format($product->height, 0) . '</td>' .
 //					'<td>' . $colors[rand(0, 4)] . '</td>' .
 						'<td>' . number_format($price, 0) . '</td>' .
