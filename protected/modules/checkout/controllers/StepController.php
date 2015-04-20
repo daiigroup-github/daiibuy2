@@ -903,7 +903,7 @@ class StepController extends MasterCheckoutController
 			}
 			else
 			{
-				$orderToSentMail = $newOrderGroup;
+				$orderToSentMail = isset($newOrderGroup) ? $newOrderGroup : $oldOrder;
 			}
 			$flag = TRUE;
 			$emailObj = new Email();
@@ -941,10 +941,10 @@ class StepController extends MasterCheckoutController
 			echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
 		}
 
-		$bankArray = Bank::model()->findAllBankModelBySupplier($order->supplierId);
+		$bankArray = Bank::model()->findAllBankModelBySupplier($oldOrder->supplierId);
 		$this->render("step6", array(
 			'bankArray'=>$bankArray,
-			'model'=>$order));
+			'model'=>$oldOrder));
 	}
 
 	public function actionFindAmphur()
