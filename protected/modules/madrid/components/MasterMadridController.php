@@ -31,32 +31,34 @@ class MasterMadridController extends MasterController
 		);
 		foreach($categorys as $category)
 		{
-
 			$categoryToSub = CategoryToSub::model()->findSetAndTheme($category->categoryId);
-			if(!isset($categoryToSub))
+			if(isset($categoryToSub))
 			{
-				$this->nav[$i] = array(
-					'url'=>$this->createUrl('category/index/id/' . $category->categoryId),
-					'color'=>$this->navColor[$i % 4],
-					'caption'=>$category->title,
-					'description'=>'Description'
-				);
+				if($categoryToSub->isSet == 0)
+				{
+					$this->nav[$i] = array(
+						'url'=>$this->createUrl('category/index/id/' . $category->categoryId),
+						'color'=>$this->navColor[$i % 4],
+						'caption'=>$category->title,
+						'description'=>'Description'
+					);
+				}
 
 				$i++;
 			}
 		}
 		$nav['theme'] = array(
-			'url'=>$this->createUrl('theme/index/'),
+			'url'=>$this->createUrl('type/index/'),
 			//'url' => $this->createUrl($this->module->id.'/../theme'),
-			'color'=>'orange',
-			'caption'=>"Theme",
+			'color'=>'purple',
+			'caption'=>"Type",
 //                        'description' => 'Description'
 		);
 
 		$nav['set'] = array(
 			'url'=>$this->createUrl('set/index/'),
 //                        'url' => $this->createUrl($this->module->id.'/../set'),
-			'color'=>'red',
+			'color'=>'green',
 			'caption'=>"Sanitary Set",
 //                        'description' => 'Description'
 		);

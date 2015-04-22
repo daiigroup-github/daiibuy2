@@ -104,17 +104,20 @@ class CategoryToSub extends CategoryToSubMaster
 
 	public function findSetAndTheme($categoryId = null)
 	{
-		$criteria = new CDbCriteria;
-		if(isset($categoryId))
+//		$criteria = new CDbCriteria;
+		if(!isset($categoryId))
 		{
-			$criteria->compare("t.categoryId", $categoryId);
+//			$criteria->compare("t.categoryId", $categoryId);
+//		}
+//		else
+//		{
+//			$criteria->compare("t.categoryId", $this->categoryId);
+			$categoryId = $this->categoryId;
 		}
-		else
-		{
-			$criteria->compare("t.categoryId", $this->categoryId);
-		}
-		$criteria->addCondition(" (isSet =1 OR isTheme = 1) ", "AND");
-		return $this->find($criteria);
+//		$criteria->compare("t.isType", "0");
+//
+//		$criteria->addCondition(" (isSet = 1 OR isTheme = 1) ", "AND");
+		return $this->find('categoryId = ' . $categoryId . ' and isType = 0');
 	}
 
 }

@@ -21,12 +21,19 @@
 						$i = 1;
 						foreach($cat2Product as $item):
 							?>
-							<div class="col-md-2" style="border: 1px blue solid;padding: 0px">
+							<div class="col-md-3" style="border: 1px blue solid;padding: 0px">
 								<div class="text-center" style="border: 1px blue solid ;width:100%;margin: 0px 0px 0px 0px"><?php echo $i; ?></div>
-								<div style="width: 100%"><?php
+								<div class="product-image" style="width: 100%"><?php
 									echo CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
 										'style'=>'width:100%'));
-									?></div>
+									?>
+									<a href="<?php echo $this->createUrl('product/index/id/' . $item->product->productId); ?>" class="product-hover" style="margin-top: -60px">
+										<i class="icons icon-eye-1"></i> Quick View
+									</a></div>
+								<!--								<div style="width: 100%"><?php
+								echo CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
+									'style'=>'width:100%'));
+								?></div>-->
 								<div style="font-size: x-small;background-color: blue;color: white" class="text-center"><?php echo $item->product->code; ?></div>
 							</div>
 							<?php

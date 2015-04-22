@@ -5,10 +5,12 @@
  *
  * The followings are the available columns in table 'category_to_sub':
  * @property string $id
+ * @property string $brandModelId
  * @property string $categoryId
  * @property string $subCategoryId
  * @property integer $isTheme
  * @property integer $isSet
+ * @property interger $isType
  * @property integer $sortOrder
  * @property string $description
  * @property integer $status
@@ -21,6 +23,7 @@
  */
 class CategoryToSubMaster extends MasterCActiveRecord
 {
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -37,13 +40,36 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('categoryId, subCategoryId, createDateTime, updateDateTime', 'required'),
-			array('isTheme, isSet, sortOrder, status', 'numerical', 'integerOnly'=>true),
-			array('categoryId, subCategoryId', 'length', 'max'=>20),
-			array('description', 'safe'),
+			array(
+				'categoryId, subCategoryId',
+				'required'),
+			array(
+				'isTheme, isSet, sortOrder, status, isType',
+				'numerical',
+				'integerOnly'=>true),
+			array(
+				'brandModelId, categoryId, subCategoryId',
+				'length',
+				'max'=>20),
+			array(
+				'description, createDateTime, updateDateTime',
+				'safe'),
+			array(
+				'createDateTime, updateDateTime',
+				'default',
+				'value'=>new CDbExpression('NOW()'),
+				'on'=>'insert'),
+			array(
+				'updateDateTime',
+				'default',
+				'value'=>new CDbExpression('NOW()'),
+				'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, categoryId, subCategoryId, isTheme, isSet, sortOrder, description, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array(
+				'id, brandModelId, categoryId, subCategoryId, isTheme, isSet, sortOrder, description, status, createDateTime, updateDateTime',
+				'safe',
+				'on'=>'search'),
 		);
 	}
 
@@ -55,8 +81,14 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
-			'subCategory' => array(self::BELONGS_TO, 'Category', 'subCategoryId'),
+			'category'=>array(
+				self::BELONGS_TO,
+				'Category',
+				'categoryId'),
+			'subCategory'=>array(
+				self::BELONGS_TO,
+				'Category',
+				'subCategoryId'),
 		);
 	}
 
@@ -66,16 +98,18 @@ class CategoryToSubMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'categoryId' => 'Category',
-			'subCategoryId' => 'Sub Category',
-			'isTheme' => 'Is Theme',
-			'isSet' => 'Is Set',
-			'sortOrder' => 'Sort Order',
-			'description' => 'Description',
-			'status' => 'Status',
-			'createDateTime' => 'Create Date Time',
-			'updateDateTime' => 'Update Date Time',
+			'id'=>'ID',
+			'brandModelId'=>'Brand Model',
+			'categoryId'=>'Category',
+			'subCategoryId'=>'Sub Category',
+			'isTheme'=>'Is Theme',
+			'isSet'=>'Is Set',
+			'isType'=>'Is Type',
+			'sortOrder'=>'Sort Order',
+			'description'=>'Description',
+			'status'=>'Status',
+			'createDateTime'=>'Create Date Time',
+			'updateDateTime'=>'Update Date Time',
 		);
 	}
 
@@ -95,8 +129,7 @@ class CategoryToSubMaster extends MasterCActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
-
+		$criteria = new CDbCriteria;
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
 			$this->id = $this->searchText;
@@ -111,16 +144,16 @@ class CategoryToSubMaster extends MasterCActiveRecord
 			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('id',$this->id,true, 'OR');
-		$criteria->compare('categoryId',$this->categoryId,true, 'OR');
-		$criteria->compare('subCategoryId',$this->subCategoryId,true, 'OR');
-		$criteria->compare('isTheme',$this->isTheme);
-		$criteria->compare('isSet',$this->isSet);
-		$criteria->compare('sortOrder',$this->sortOrder);
-		$criteria->compare('description',$this->description,true, 'OR');
-		$criteria->compare('status',$this->status);
-		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
-		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
+		$criteria->compare('LOWER(brandModelId)', strtolower($this->searchText), true, 'OR');
+		$criteria->compare('LOWER(categoryId)', strtolower($this->searchText), true, 'OR');
+		$criteria->compare('LOWER(subCategoryId)', strtolower($this->searchText), true, 'OR');
+		$criteria->compare('isTheme', $this->isTheme);
+		$criteria->compare('isSet', $this->isSet);
+		$criteria->compare('sortOrder', $this->sortOrder);
+		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, 'OR');
+		$criteria->compare('status', $this->status);
+		$criteria->compare('LOWER(createDateTime)', strtolower($this->searchText), true, 'OR');
+		$criteria->compare('LOWER(updateDateTime)', strtolower($this->searchText), true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -133,8 +166,9 @@ class CategoryToSubMaster extends MasterCActiveRecord
 	 * @param string $className active record class name.
 	 * @return CategoryToSubMaster the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
+
 }

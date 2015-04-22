@@ -1,26 +1,24 @@
 <?php
 
-class ThemeController extends MasterMadridController
+class TypeController extends MasterMadridController
 {
 
 	public $layout = '//layouts/cl1';
 
-	public function actionIndex($id)
+	public function actionIndex()
 	{
-//		$category = Category::model()->findByPk($id);
-//		$title = $category->title;
-		$title = "Theme";
+		$title = "Type";
 
 		$categoryToSub = CategoryToSub::model()->findAll(array(
 //			'condition'=>'categoryId=:categoryId AND isTheme=1',
-			'condition'=>' isTheme=1 and categoryId =' . $id,
+			'condition'=>' isType=1',
 //			'params'=>array(
 //				':categoryId'=>$id,
 //			),
 		));
 
 		//$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
-		$subCategorysId = implode(',', CHtml::listData($categoryToSub, 'subCategoryId', 'subCategoryId'));
+		$subCategorysId = implode(',', CHtml::listData($categoryToSub, 'categoryId', 'categoryId'));
 
 //		$category2ToProducts = Category2ToProduct::model()->findAll(array(
 ////			'condition'=>'category1Id=:category1Id AND category2Id IN (:category2Id)',
@@ -30,26 +28,26 @@ class ThemeController extends MasterMadridController
 //				':category2Id'=>$subCategorysId,
 //			),
 //		));
-
-		$category2ToProducts = Category2ToProduct::model()->findAll("category2Id in (" . $subCategorysId . ")");
-
-
-//		$products = Product::model()->findAll(array(
-//			'condition'=>'productId IN (:productsId)',
-//			'params'=>array(
-//				':productsId'=>implode(',', CHtml::listData($category2ToProducts, 'productId', 'productId')),
-//			),
-//		));
-//		$categorys = Category::model()->findAll(array(
-//			'condition'=>'categoryId IN (:categoryIds)',
-//			'params'=>array(
-//				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
-//			),
-//		));
-		$cat2Ids = implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id'));
-		$categorys = Category::model()->findAll("categoryId IN (" . $cat2Ids . ")");
-
-		$items = $this->showTheme($categorys);
+//		$category2ToProducts = Category2ToProduct::model()->findAll("category2Id in (" . $subCategorysId . ")");
+//
+//
+////		$products = Product::model()->findAll(array(
+////			'condition'=>'productId IN (:productsId)',
+////			'params'=>array(
+////				':productsId'=>implode(',', CHtml::listData($category2ToProducts, 'productId', 'productId')),
+////			),
+////		));
+////		$categorys = Category::model()->findAll(array(
+////			'condition'=>'categoryId IN (:categoryIds)',
+////			'params'=>array(
+////				':categoryIds'=>implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id')),
+////			),
+////		));
+//		$cat2Ids = implode(',', CHtml::listData($category2ToProducts, 'category2Id', 'category2Id'));
+		$categorys = Category::model()->findAll("categoryId IN (" . $subCategorysId . ")");
+//		throw new Exception(print_r($categorys, true));
+		$items = $this->showType($categorys);
+//		throw new Exception(print_r($items, true));
 		$dataProvider = new CArrayDataProvider($items, array(
 			'keyField'=>'id'));
 		$dataProvider->pagination->pageSize = 12;
@@ -77,7 +75,7 @@ class ThemeController extends MasterMadridController
 		));
 	}
 
-	public function showTheme($categorys)
+	public function showType($categorys)
 	{
 		$items = [];
 		$i = 1;
@@ -115,13 +113,13 @@ class ThemeController extends MasterMadridController
 			$items[$i] = array(
 				'id'=>$category->categoryId,
 				'image'=>Yii::app()->baseUrl . $category->image,
-				'url'=>Yii::app()->createUrl('madrid/theme/view/id/' . $category->categoryId),
+				'url'=>Yii::app()->createUrl('madrid/theme/index/id/' . $category->categoryId),
 				'category2Id'=>$category->categoryId,
 				'title'=>$category->title,
 				//'price' => rand(1000, 99999),
-				'buttons'=>[
-					'favorites'
-				],
+//				'buttons'=>[
+//					'favorites'
+//				],
 				'isQuickView'=>true
 			);
 			$i++;
@@ -156,32 +154,4 @@ class ThemeController extends MasterMadridController
 	  );
 	  }
 	 */
-
-	public function actionView($id)
-	{
-		$model = Category::model()->findByPk($id);
-		$cat2Product = Category2ToProduct::model()->findAll("category2Id=:category2Id order by groupName ASC", array(
-			":category2Id"=>$id));
-		$this->render('view', array(
-			'model'=>$model,
-			'cat2Product'=>$cat2Product));
-	}
-
-	public function actionAddFavourite()
-	{
-		$model = new UserFavourite();
-		$model->userId = $_POST["userId"];
-		$model->category2Id = $_POST["category2Id"];
-		$model->createDateTime = new CDbExpression("NOW()");
-		$model->updateDateTime = new CDbExpression("NOW()");
-		if($model->save())
-		{
-			echo 1;
-		}
-		else
-		{
-			echo 2;
-		}
-	}
-
 }
