@@ -17,8 +17,22 @@ navListItems.click(function(e)
 });
 $('ul.setup-panel li.active a').trigger('click');
 $('#nextToStep2').on('click', function(e) {
+    if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
 //		$('ul.setup-panel li:eq(1)').removeClass('disabled');
-	$('ul.setup-panel li a[href="#step-2"]').trigger('click');
+	
+//		$(this).remove();
+});
+$('#nextToStep1-2').on('click', function(e) {
+//		$('ul.setup-panel li:eq(1)').removeClass('disabled');
+	    if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+		$('ul.setup-panel li a[href="#step-1-2"]').trigger('click');
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
 //		$(this).remove();
 });
 $('#backToStep1').on('click', function(e) {

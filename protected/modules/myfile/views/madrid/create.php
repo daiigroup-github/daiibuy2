@@ -23,8 +23,11 @@ $this->menu = array(
 <div class="panel panel-default">
 	<div class="panel-heading">Create Order</div>
 	<div class="panel-body">
-<?php $this->renderPartial('_form', array(
-	'model'=>$model,
-	'orderDetailTemplateField'=>$orderDetailTemplateField,)); ?>
+		<?php
+		$this->renderPartial('_form', array(
+			'categoryItems'=>$categoryItems,
+			'model'=>$model,
+			'orderDetailTemplateField'=>$orderDetailTemplateField,));
+		?>
 	</div>
 </div>
