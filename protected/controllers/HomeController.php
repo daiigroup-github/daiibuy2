@@ -30,6 +30,10 @@ class HomeController extends MasterController
 		{
 			$partnerType = 2;
 		}
+		else
+		{
+			$partnerType = 0;
+		}
 
 		$promotions = Promotion::model()->findAll("type = $partnerType AND now() BETWEEN startDateTime AND endDateTime");
 

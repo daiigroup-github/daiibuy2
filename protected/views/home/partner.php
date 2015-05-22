@@ -49,133 +49,171 @@
 					),
 				));
 				?>
-				<div class="sidebar-box-heading">
-					<i class="icons icon-lock"></i>
-					<h4>เข้าสู่ระบบ</h4>
-				</div>
+				<?php if(Yii::app()->user->isGuest): ?>
+					<div class="sidebar-box-heading">
+						<i class="icons icon-lock"></i>
+						<h4>เข้าสู่ระบบ</h4>
+					</div>
 
-				<div class="sidebar-box-content sidebar-padding-box">
-					<div class="row">
-						<div class="col-md-12">
+					<div class="sidebar-box-content sidebar-padding-box">
+						<div class="row">
+							<div class="col-md-12">
 
-							<div class="row">
-								<div class="col-md-12">
-									<?php
-									echo $form->emailField($login, 'username', array(
-										'class'=>'form-control',
-										'placeholder'=>'Email'));
-									?>
-									<?php echo $form->error($login, 'username'); ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-
-									<?php
-									echo $form->passwordField($login, 'password', array(
-										'class'=>'form-control',
-										'placeholder'=>'Password'));
-									?>
-									<?php echo $form->error($login, 'password'); ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<label class="checkbox">
+								<div class="row">
+									<div class="col-md-12">
 										<?php
-										echo $form->checkbox($login, 'rememberMe', array(
-											'class'=>''));
-										?> Remember me
-									</label>
+										echo $form->emailField($login, 'username', array(
+											'class'=>'form-control',
+											'placeholder'=>'Email'));
+										?>
+										<?php echo $form->error($login, 'username'); ?>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+								<div class="row">
+									<div class="col-md-12">
+
+										<?php
+										echo $form->passwordField($login, 'password', array(
+											'class'=>'form-control',
+											'placeholder'=>'Password'));
+										?>
+										<?php echo $form->error($login, 'password'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<label class="checkbox">
+											<?php
+											echo $form->checkbox($login, 'rememberMe', array(
+												'class'=>''));
+											?> Remember me
+										</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<?php $this->endWidget(); ?>
-			</div>
-		</div>
-		<div class="row sidebar-box blue">
-			<div class="col-lg-12">
-				<?php
-				$form = $this->beginWidget('CActiveForm', array(
-					'id'=>'register-form',
-					'enableAjaxValidation'=>false,
-					'htmlOptions'=>array(
-						'enctype'=>'multipart/form-data',
-						'class'=>'form-horizontal'),
-				));
-				?>
-				<div class="sidebar-box-heading" style="margin-top: 30px">
-					<i class="fa fa-file"></i>
-					<h4>ลงทะเบียน</h4>
-				</div>
-
-				<div class="sidebar-box-content sidebar-padding-box">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="row">
-								<div class="col-md-12">
-									<?php echo $form->errorSummary($user); ?>
+				<?php else: ?>
+					<div class="sidebar-box-heading">
+						<i class="icons icon-lock"></i>
+						<h4>ท่านเป็นสมาชิกในระบบแล้ว</h4>
+					</div>
+					<div class="sidebar-box-content sidebar-padding-box">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
+										<strong>ขอต้อนรับ คุณ : <?php echo Yii::app()->user->name; ?></strong>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<?php
-									echo $form->textField($user, 'firstname', array(
-										'class'=>'form-control',
-										'placeholder'=>'Firstname'));
-									?>
-									<?php echo $form->error($user, 'firstname'); ?>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
+										<?php
+										echo CHtml::link("<i class='fa fa-shopping-cart'></i> สั่งซื้อสินค้า", Yii::app()->createUrl("/home"), array(
+											'class'=>'btn btn-success  btn-block',
+											'style'=>'margin-top:20px'))
+										?>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<?php
-									echo $form->textField($user, 'lastname', array(
-										'class'=>'form-control',
-										'placeholder'=>'Lastname'));
-									?>
-									<?php echo $form->error($user, 'lastname'); ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<?php
-									echo $form->emailField($user, 'email', array(
-										'class'=>'form-control',
-										'placeholder'=>'Email'));
-									?>
-									<?php echo $form->error($user, 'email'); ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-
-									<?php
-									echo $form->passwordField($user, 'password', array(
-										'class'=>'form-control',
-										'placeholder'=>'Password'));
-									?>
-									<?php echo $form->error($user, 'password'); ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<button class="btn btn-lg btn-warning btn-block" type="submit">Sign in</button>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
+										ต้องการออกจากระบบ กด Logout ด้านบน
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				<?php endif; ?>
 				<?php $this->endWidget(); ?>
 			</div>
 		</div>
+		<?php if(Yii::app()->user->isGuest): ?>
+			<div class="row sidebar-box blue">
+				<div class="col-lg-12">
+					<?php
+					$form = $this->beginWidget('CActiveForm', array(
+						'id'=>'register-form',
+						'enableAjaxValidation'=>false,
+						'htmlOptions'=>array(
+							'enctype'=>'multipart/form-data',
+							'class'=>'form-horizontal'),
+					));
+					?>
+					<div class="sidebar-box-heading" style="margin-top: 30px">
+						<i class="fa fa-file"></i>
+						<h4>ลงทะเบียน</h4>
+					</div>
+
+					<div class="sidebar-box-content sidebar-padding-box">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
+										<?php echo $form->errorSummary($user); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<?php
+										echo $form->textField($user, 'firstname', array(
+											'class'=>'form-control',
+											'placeholder'=>'Firstname'));
+										?>
+										<?php echo $form->error($user, 'firstname'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<?php
+										echo $form->textField($user, 'lastname', array(
+											'class'=>'form-control',
+											'placeholder'=>'Lastname'));
+										?>
+										<?php echo $form->error($user, 'lastname'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<?php
+										echo $form->emailField($user, 'email', array(
+											'class'=>'form-control',
+											'placeholder'=>'Email'));
+										?>
+										<?php echo $form->error($user, 'email'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+
+										<?php
+										echo $form->passwordField($user, 'password', array(
+											'class'=>'form-control',
+											'placeholder'=>'Password'));
+										?>
+										<?php echo $form->error($user, 'password'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<button class="btn btn-lg btn-warning btn-block" type="submit">Sign in</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php $this->endWidget(); ?>
+				</div>
+			</div>
+		<?php endif; ?>
 	</div>
 </div>
 
