@@ -47,6 +47,18 @@ class User extends UserMaster
 					array(
 						'userId'=>'userId'),
 					'condition'=>'shippingAddress.type=2'),
+				'orders'=>array(
+					self::HAS_MANY,
+					'Order',
+					'supplierId'),
+				'orderDetailTemplates'=>array(
+					self::HAS_MANY,
+					'OrderDetailTemplate',
+					'supplierId'),
+				'products'=>array(
+					self::HAS_MANY,
+					'Product',
+					'supplierId'),
 		));
 	}
 
@@ -58,6 +70,33 @@ class User extends UserMaster
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 				//code here
 				'confirmPassword'=>'Confirm Password *',
+				'userId'=>'ผู้ใช้งาน',
+				'firstname'=>'ชื่อ(ไม่ต้องใส่คำนำหน้า)',
+				'lastname'=>'นามสกุล',
+				'email'=>'Email',
+				'telephone'=>'เบอร์โทรศัพท์',
+				'fax'=>'แฟกซ์',
+				'password'=>'Password',
+				'cart'=>'ตะกร้าสินค้า',
+				'wishlist'=>'Wishlist',
+				'newsletter'=>'Newsletter',
+				'ip'=>'ไอพีแอดเดรส',
+				'approved'=>'การยืนยัน',
+				'token'=>'Token',
+				'type'=>'ประเภท',
+				'isFirstLogin'=>'Is First Login',
+				'description'=>'รายละเอียด',
+				'logo'=>'Logo',
+				'map'=>'แผนที่',
+				'minimumOrder'=>'ยอดขั้นต่ำ',
+				'referenceId'=>'Reference',
+				'collectedPoint'=>'คะแนนสะสม',
+				'collectedOrder'=>'ยอดสั่งซื้อสะสม',
+				'redirectURL'=>'Redirect Url',
+				'taxNumber'=>'รหัสประจำตัวผู้เสียภาษี',
+				'parentId'=>'Parent',
+				'status'=>'สถานะ',
+				'createDateTime'=>'วันที่สร้าง',
 		));
 	}
 

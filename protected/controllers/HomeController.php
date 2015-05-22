@@ -15,6 +15,47 @@ class HomeController extends MasterController
 			'suppliers'=>$suppliers));
 	}
 
+	public function actionPartner()
+	{
+		$login = new LoginForm();
+		$user = new User();
+		$code = $_GET["code"];
+		$codeArray = explode("-", $code);
+		$partnerType = NULL;
+		if(strtolower($codeArray[0]) == "org")
+		{
+			$partnerType = 1;
+		}
+		else if(strtolower($codeArray[0]) == "wow")
+		{
+			$partnerType = 2;
+		}
+
+		$promotions = Promotion::model()->findAll("type = $partnerType AND now() BETWEEN startDateTime AND endDateTime");
+
+		if(isset($_POST["User"]))
+		{
+			$user->attributes = $_POST["User"];
+			$user->password = $user->hashPassword($user->email, $user->password);
+			$user->approved = 1;
+			$user->type = 1;
+			$user->status = 1;
+			$user->partnerCode = $code;
+			if($user->save())
+			{
+				$this->redirect(array(
+					"site/login",
+					'message'=>'ลงทะเบียนเสร็จสมบูรณ์ กรุณา เข้าสู่ระบบ เพื่อสั่งซื้อสินค้า'));
+			}
+		}
+		$this->render('partner', array(
+			'code'=>$code,
+			'partnerType'=>$partnerType,
+			'promotions'=>$promotions,
+			'login'=>$login,
+			'user'=>$user));
+	}
+
 	// Uncomment the following methods and override them if needed
 	/*
 	  public function filters()

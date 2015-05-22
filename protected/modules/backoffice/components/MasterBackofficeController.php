@@ -155,6 +155,11 @@ class MasterBackofficeController extends MasterController
 						'url'=>array(
 							'/backoffice/content',
 						)),
+					array(
+						'label'=>'Promotion',
+						'url'=>array(
+							'/backoffice/promotion',
+						)),
 				),
 				'itemOptions'=>array(
 					'class'=>'dropdown'),

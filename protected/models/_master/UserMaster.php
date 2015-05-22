@@ -15,6 +15,7 @@
  * @property string $wishlist
  * @property integer $newsletter
  * @property string $ip
+ * @property integer $status
  * @property integer $approved
  * @property string $token
  * @property integer $type
@@ -29,14 +30,11 @@
  * @property string $redirectURL
  * @property string $taxNumber
  * @property string $parentId
- * @property integer $status
+ * @property string $partnerCode
  * @property string $createDateTime
  *
  * The followings are the available model relations:
  * @property Address[] $addresses
- * @property Order[] $orders
- * @property OrderDetailTemplate[] $orderDetailTemplates
- * @property Product[] $products
  * @property UserToSupplier[] $userToSuppliers
  */
 class UserMaster extends MasterCActiveRecord
@@ -57,8 +55,8 @@ class UserMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('firstname, lastname,password, email, telephone,approved, type, status', 'required'),
-			array('newsletter, approved, type, isFirstLogin, collectedPoint, collectedOrder, status', 'numerical', 'integerOnly'=>true),
+			array('status, approved, type', 'required'),
+			array('newsletter, status, approved, type, isFirstLogin, collectedPoint, collectedOrder', 'numerical', 'integerOnly'=>true),
 			array('firstname, lastname, telephone, fax', 'length', 'max'=>32),
 			array('email', 'length', 'max'=>96),
 			array('password', 'length', 'max'=>40),
@@ -68,10 +66,12 @@ class UserMaster extends MasterCActiveRecord
 			array('referenceId, parentId', 'length', 'max'=>20),
 			array('redirectURL', 'length', 'max'=>200),
 			array('taxNumber', 'length', 'max'=>45),
+			array('partnerCode', 'length', 'max'=>100),
 			array('cart, wishlist, description, logo, map, createDateTime', 'safe'),
+			array('createDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('userId, fax, cart, wishlist, newsletter, ip, approved, token, type, isFirstLogin, description, logo, map, minimumOrder, referenceId, collectedPoint, collectedOrder, redirectURL, taxNumber, parentId, status, createDateTime, searchText', 'safe', 'on'=>'search'),
+			array('userId, firstname, lastname, email, telephone, fax, password, cart, wishlist, newsletter, ip, status, approved, token, type, isFirstLogin, description, logo, map, minimumOrder, referenceId, collectedPoint, collectedOrder, redirectURL, taxNumber, parentId, partnerCode, createDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -84,9 +84,6 @@ class UserMaster extends MasterCActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'addresses' => array(self::HAS_MANY, 'Address', 'userId'),
-			'orders' => array(self::HAS_MANY, 'Order', 'supplierId'),
-			'orderDetailTemplates' => array(self::HAS_MANY, 'OrderDetailTemplate', 'supplierId'),
-			'products' => array(self::HAS_MANY, 'Product', 'supplierId'),
 			'userToSuppliers' => array(self::HAS_MANY, 'UserToSupplier', 'userId'),
 		);
 	}
@@ -97,33 +94,34 @@ class UserMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'userId' => 'ผู้ใช้งาน',
-			'firstname' => 'ชื่อ(ไม่ต้องใส่คำนำหน้า)',
-			'lastname' => 'นามสกุล',
+			'userId' => 'User',
+			'firstname' => 'Firstname',
+			'lastname' => 'Lastname',
 			'email' => 'Email',
-			'telephone' => 'เบอร์โทรศัพท์',
-			'fax' => 'แฟกซ์',
+			'telephone' => 'Telephone',
+			'fax' => 'Fax',
 			'password' => 'Password',
-			'cart' => 'ตะกร้าสินค้า',
+			'cart' => 'Cart',
 			'wishlist' => 'Wishlist',
 			'newsletter' => 'Newsletter',
-			'ip' => 'ไอพีแอดเดรส',
-			'approved' => 'การยืนยัน',
+			'ip' => 'Ip',
+			'status' => 'Status',
+			'approved' => 'Approved',
 			'token' => 'Token',
-			'type' => 'ประเภท',
+			'type' => 'Type',
 			'isFirstLogin' => 'Is First Login',
-			'description' => 'รายละเอียด',
+			'description' => 'Description',
 			'logo' => 'Logo',
-			'map' => 'แผนที่',
-			'minimumOrder' => 'ยอดขั้นต่ำ',
+			'map' => 'Map',
+			'minimumOrder' => 'Minimum Order',
 			'referenceId' => 'Reference',
-			'collectedPoint' => 'คะแนนสะสม',
-			'collectedOrder' => 'ยอดสั่งซื้อสะสม',
+			'collectedPoint' => 'Collected Point',
+			'collectedOrder' => 'Collected Order',
 			'redirectURL' => 'Redirect Url',
-			'taxNumber' => 'รหัสประจำตัวผู้เสียภาษี',
+			'taxNumber' => 'Tax Number',
 			'parentId' => 'Parent',
-			'status' => 'สถานะ',
-			'createDateTime' => 'วันที่สร้าง',
+			'partnerCode' => 'Partner Code',
+			'createDateTime' => 'Create Date Time',
 		);
 	}
 
@@ -144,71 +142,38 @@ class UserMaster extends MasterCActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		if(isset($this->searchText) && !empty($this->searchText))
-		{
-			$this->userId = $this->searchText;
-			$this->firstname = $this->searchText;
-			$this->lastname = $this->searchText;
-			$this->email = $this->searchText;
-			$this->telephone = $this->searchText;
-			$this->fax = $this->searchText;
-			$this->password = $this->searchText;
-			$this->cart = $this->searchText;
-			$this->wishlist = $this->searchText;
-			$this->newsletter = $this->searchText;
-			$this->ip = $this->searchText;
-			$this->approved = $this->searchText;
-			$this->token = $this->searchText;
-			$this->type = $this->searchText;
-			$this->isFirstLogin = $this->searchText;
-			$this->description = $this->searchText;
-			$this->logo = $this->searchText;
-			$this->map = $this->searchText;
-			$this->minimumOrder = $this->searchText;
-			$this->referenceId = $this->searchText;
-			$this->collectedPoint = $this->searchText;
-			$this->collectedOrder = $this->searchText;
-			$this->redirectURL = $this->searchText;
-			$this->taxNumber = $this->searchText;
-			$this->parentId = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-		}
-
-		$criteria->compare('userId',$this->userId,true, 'OR');
-		$criteria->compare('firstname',$this->firstname,true, 'OR');
-		$criteria->compare('lastname',$this->lastname,true, 'OR');
-		$criteria->compare('email',$this->email,true, 'OR');
-		$criteria->compare('telephone',$this->telephone,true, 'OR');
-		$criteria->compare('fax',$this->fax,true, 'OR');
-		$criteria->compare('password',$this->password,true, 'OR');
-		$criteria->compare('cart',$this->cart,true, 'OR');
-		$criteria->compare('wishlist',$this->wishlist,true, 'OR');
+		$criteria->compare('LOWER(firstname)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(lastname)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(email)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(telephone)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(fax)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(password)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(cart)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(wishlist)',strtolower($this->searchText),true, 'OR');
 		$criteria->compare('newsletter',$this->newsletter);
-		$criteria->compare('ip',$this->ip,true, 'OR');
+		$criteria->compare('LOWER(ip)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('status',$this->status);
 		$criteria->compare('approved',$this->approved);
-		$criteria->compare('token',$this->token,true, 'OR');
+		$criteria->compare('LOWER(token)',strtolower($this->searchText),true, 'OR');
 		$criteria->compare('type',$this->type);
 		$criteria->compare('isFirstLogin',$this->isFirstLogin);
-		$criteria->compare('description',$this->description,true, 'OR');
-		$criteria->compare('logo',$this->logo,true, 'OR');
-		$criteria->compare('map',$this->map,true, 'OR');
-		$criteria->compare('minimumOrder',$this->minimumOrder,true, 'OR');
-		$criteria->compare('referenceId',$this->referenceId,true, 'OR');
+		$criteria->compare('LOWER(description)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(logo)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(map)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(minimumOrder)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(referenceId)',strtolower($this->searchText),true, 'OR');
 		$criteria->compare('collectedPoint',$this->collectedPoint);
 		$criteria->compare('collectedOrder',$this->collectedOrder);
-		$criteria->compare('redirectURL',$this->redirectURL,true, 'OR');
-		$criteria->compare('taxNumber',$this->taxNumber,true, 'OR');
-		$criteria->compare('parentId',$this->parentId,true, 'OR');
-		$criteria->compare('status',$this->status);
-		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
+		$criteria->compare('LOWER(redirectURL)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(taxNumber)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('parentId',$this->parentId);
+		$criteria->compare('LOWER(partnerCode)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('LOWER(createDateTime)',strtolower($this->searchText),true, 'OR');
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

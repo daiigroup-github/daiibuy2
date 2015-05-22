@@ -61,6 +61,11 @@ $form = $this->beginWidget('CActiveForm', array(
 				<div class="col-md-6">
 
 					<div class="row">
+						<div class="col-md-12 text-danger">
+							<?php echo isset($message) ? $message : ""; ?>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-md-12">
 							<?php
 							echo $form->emailField($model, 'username', array(

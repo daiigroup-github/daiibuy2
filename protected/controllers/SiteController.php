@@ -88,7 +88,6 @@ class SiteController extends MasterController
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
@@ -99,12 +98,13 @@ class SiteController extends MasterController
 //					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
 //				else
 //				{
-					$this->redirect(Yii::app()->user->returnUrl);
+				$this->redirect(Yii::app()->user->returnUrl);
 //				}
 		}
 		// display the login form
 		$this->render('login', array(
-			'model'=>$model));
+			'model'=>$model,
+			'message'=>isset($_GET["message"]) ? $_GET["message"] : NULL));
 	}
 
 	/**
