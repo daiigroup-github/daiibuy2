@@ -293,6 +293,7 @@ class User extends UserMaster
 
 	public function showUserAddress($id)
 	{
+
 //		$user = User::model()->findByPk($id);
 		$userAddress = Address::model()->find('userId = ' . $id . ' and type=1');
 		$result = $userAddress->address_1 . " " . $userAddress->district->districtName . " " . $userAddress->amphur->amphurName . " " . $userAddress->province->provinceName . " " . $userAddress->postcode;

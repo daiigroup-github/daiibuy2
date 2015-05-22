@@ -10,7 +10,6 @@ class MasterBackofficeController extends MasterController
 		parent::init();
 
 		$this->layout = '//layouts/column1';
-
 		$this->nav = array(
 			array(
 				'label'=>'Product<i class="fa fa-arrow-circle-o-down"></i>',
@@ -47,26 +46,26 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
 			),
 			array(
 				'label'=>'Order',
 				'url'=>array(
 					'/backoffice/order',
 				),
-				'visible'=>!Yii::app()->user->isGuest),
+				'visible'=>!Yii::app()->user->isGuest && Yii::app()->user->userType <> 7),
 			array(
 				'label'=>'Order History',
 				'url'=>array(
 					'/backoffice/order/orderHistory',
 				),
-				'visible'=>!Yii::app()->user->isGuest && Yii::app()->user->userType == 5),
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 5 || Yii::app()->user->userType == 7)),
 			array(
 				'label'=>'Myfile',
 				'url'=>array(
 					'/backoffice/myfile',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
 			),
 			array(
 				'label'=>'Spacial Project<i class="fa fa-arrow-circle-o-down"></i>',
@@ -98,7 +97,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
 			),
 			array(
 				'label'=>'User<i class="fa fa-arrow-circle-o-down"></i>',
@@ -111,13 +110,13 @@ class MasterBackofficeController extends MasterController
 						'url'=>array(
 							'/backoffice/user/index',
 						),
-						'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)),
+						'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7),
 					array(
 						'label'=>'User File',
 						'url'=>array(
 							'/backoffice/userFile/index',
 						),
-						'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)),
+						'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7),
 					array(
 						'label'=>'Supplier',
 						'url'=>array(
@@ -132,7 +131,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4)
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
 			),
 			array(
 				'label'=>'ข้อมูลหลัก<i class="fa fa-arrow-circle-o-down"></i>',
@@ -201,14 +200,14 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
 			),
 			array(
 				'label'=>'Configuration',
 				'url'=>array(
 					'/backoffice/configuration',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4)
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
 			),
 //            array(
 //                'label' => 'Home',
