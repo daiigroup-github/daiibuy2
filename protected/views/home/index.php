@@ -2,79 +2,87 @@
 /* @var $this HomeController */
 
 $this->breadcrumbs = array(
-	'Home',
+    'Home',
 );
 ?>
 
 <?php $this->renderPartial('//layouts/_ios_slider'); ?>
 
 <div class="row">
-	<div class="col-md-12">
+    <div class="col-md-12">
 
-		<div class="row sidebar-box blue">
+        <div class="row sidebar-box blue">
 
-			<div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-sm-12">
 
-				<div class="carousel-heading no-margin">
-					<h4>ผู้ผลิต</h4>
-				</div>
+                <div class="carousel-heading no-margin">
+                    <h4>ผู้ผลิต</h4>
+                </div>
 
-				<div class="page-content">
+                <div class="page-content">
 
-					<div class="row">
+                    <div class="row">
 
-						<?php $i = 0; ?>
-						<?php foreach($suppliers as $supplier): ?>
-							<?php
-							$class = 'col-lg-3 col-md-3 col-sm-12';
-							//$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
-							//$class = 'col-lg-6 col-md-6 col-sm-12';
-							?>
-							<div class="<?php echo $class; ?>">
-								<div class="blog-item">
+                        <?php
+                        $i = 0;
+                        ?>
+                        <?php foreach ($suppliers as $supplier): ?>
+                            <?php
+                            $brand = Brand::model()->find('supplierId = ' . $supplier->supplierId);
+//                            throw new Exception(print_r($brand, true));
+                            if ($brand->status == 1) {
+                                $class = 'col-lg-3 col-md-3 col-sm-12';
+                                //$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
+                                //$class = 'col-lg-6 col-md-6 col-sm-12';
+                                ?>
+                                <div class="<?php echo $class; ?>">
+                                    <div class="blog-item">
 
-									<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . $supplier->logo); ?></a>
+                                        <a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . $supplier->logo); ?></a>
 
-									<div class="blog-info">
-										<h3>
-											<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo $supplier->name; ?></a>
-										</h3>
-										<?php
-										/*
-										  <div class="blog-meta">
-										  <span class="date"><i class="icons icon-clock"></i> 21 December 2012</span>
-										  <span class="cat"><i class="icons icon-tag"></i> <a href="#">lorem</a>, <a href="#">tablet</a></span>
-										  <span class="views"><i class="icons icon-eye-1"></i> 11 times</span>
-										  </div>
-										 */
-										?>
-										<p><?php echo $supplier->description; ?></p>
-									</div>
-									<?php
-									/*
-									  <div class="product-actions blog-actions">
-									  <span class="product-action dark-blue current">
-									  <span class="action-wrapper">
-									  <i class="icons icon-doc-text"></i>
-									  <span class="action-name">Read more</span>
-									  </span>
-									  </span>
-									  </div>
-									 */
-									?>
-								</div>
+                                        <div class="blog-info">
+                                            <h3>
+                                                <a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo $supplier->name; ?></a>
+                                            </h3>
+                                            <?php
+                                            /*
+                                              <div class="blog-meta">
+                                              <span class="date"><i class="icons icon-clock"></i> 21 December 2012</span>
+                                              <span class="cat"><i class="icons icon-tag"></i> <a href="#">lorem</a>, <a href="#">tablet</a></span>
+                                              <span class="views"><i class="icons icon-eye-1"></i> 11 times</span>
+                                              </div>
+                                             */
+                                            ?>
+                                            <p><?php echo $supplier->description; ?></p>
+                                        </div>
+                                        <?php
+                                        /*
+                                          <div class="product-actions blog-actions">
+                                          <span class="product-action dark-blue current">
+                                          <span class="action-wrapper">
+                                          <i class="icons icon-doc-text"></i>
+                                          <span class="action-name">Read more</span>
+                                          </span>
+                                          </span>
+                                          </div>
+                                         */
+                                        ?>
+                                    </div>
 
-							</div>
-							<?php $i++; ?>
-						<?php endforeach; ?>
+                                </div>
+                                <?php
+                                $i++;
+                            }
+                            ?>
+                        <?php endforeach; ?>
 
-					</div>
+                    </div>
 
-				</div>
+                </div>
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

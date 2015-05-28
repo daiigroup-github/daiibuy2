@@ -83,6 +83,7 @@ class MadridController extends MasterMyFileController {
                 }
             }
         }
+//        throw new Exception(print_r($orderDetailTemplateField, true));
         $this->render('view', array(
             'model' => $model,
             'orderDetailTemplateField' => $orderDetailTemplateField,
@@ -108,9 +109,10 @@ class MadridController extends MasterMyFileController {
           Yii::app()->end();
           }
          */
-//		throw new Exception(print_r($_FILES['OrderFile'],true));
+//        throw new Exception(print_r($_POST, true));
         if (isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2) {
 //			$planFile = $_FILES['OrderFile'];
+            throw new Exception(print_r($_POST['Order'], true));
             try {
                 if (isset($_POST['Order'])) {
                     $flag = false;
@@ -191,6 +193,7 @@ class MadridController extends MasterMyFileController {
                 $transaction->rollback();
             }
         } else {
+//            throw new Exception(print_r($_POST["OrderDetailValue"][6]["value"], true));
             if (isset($_POST["Order"])) {
                 $transaction = Yii::app()->db->beginTransaction();
                 $flag = true;
@@ -205,8 +208,11 @@ class MadridController extends MasterMyFileController {
                 }
                 $model->userId = Yii::app()->user->id;
                 $model->createDateTime = new CDbExpression("NOW()");
+//                throw new Exception(print_r($model, true));
                 if ($model->save(false)) {
                     $orderId = Yii::app()->db->lastInsertID;
+//                    throw new Exception(print_r($orderId, true));
+
                     foreach ($_POST["OrderItems"] as $k => $v) {
                         if (!empty($v["productId"])) {
                             $orderItems = new OrderItems();
@@ -230,7 +236,20 @@ class MadridController extends MasterMyFileController {
                 } else {
                     $flag = FALSE;
                 }
+//                throw new Exception(print_r($flag, true));
                 if ($flag) {
+                    foreach ($_POST["OrderDetailValue"] as $k => $v) {
+                        $orderFieldValue = new OrderDetailValue();
+                        $orderFieldValue->orderDetailTemplateFieldId = $k;
+                        $orderFieldValue->value = $v["value"];
+                        $orderFieldValue->orderDetailId = $this->orderDetailId;
+                        $orderFieldValue->createDateTime = new CDbExpression("NOW()");
+                        $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
+                        if (!$orderFieldValue->save()) {
+                            $flag = FALSE;
+                            break;
+                        }
+                    }
                     $transaction->commit();
                     $this->redirect(array(
                         'view',

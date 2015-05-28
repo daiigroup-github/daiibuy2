@@ -111,44 +111,49 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="row">
                     <?php $i = 0; ?>
                     <?php
-                    foreach ($categoryItems as $item):
+                    if ($model->status < 1) {
+                        foreach ($categoryItems as $item):
 //						$key = $value->name;
-                        ?>
-                        <?php
+                            ?>
+                            <?php
 //                        throw new Exception(print_r($item, true));
-                        $class = 'col-lg-3 col-md-3 col-sm-12';
-                        //$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
-                        //$class = 'col-lg-6 col-md-6 col-sm-12';
-                        ?>
-                        <div class="<?php echo $class; ?>">
-                            <div class="blog-item" >
-                                <a  id="chooseStyle" name="<?php echo $item['category2Id']; ?>"><?php
-                                    echo CHtml::image($item['image'], $item['title'], array(
-                                        "style" => "height:130px"));
+                            $class = 'col-lg-3 col-md-3 col-sm-12';
+                            //$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
+                            //$class = 'col-lg-6 col-md-6 col-sm-12';
+                            ?>
+                            <div class="<?php echo $class; ?>">
+                                <div class="blog-item" >
+                                    <a  id="chooseStyle" name="<?php echo $item['category2Id']; ?>"><?php
+                                        echo CHtml::image($item['image'], $item['title'], array(
+                                            "style" => "height:130px"));
+                                        ?>
+                                        <div class="button darkgrey" style="text-align: center;background-clip: border-box;color:black"><?php echo $item['title']; ?></div>
+                                    </a>
+                                    <?php
+                                    /*
+                                      <div class="product-actions blog-actions">
+                                      <span class="product-action dark-blue current">
+                                      <span class="action-wrapper">
+                                      <i class="icons icon-doc-text"></i>
+                                      <span class="action-name">Read more</span>
+                                      </span>
+                                      </span>
+                                      </div>
+                                     */
                                     ?>
-                                    <div class="button darkgrey" style="text-align: center;background-clip: border-box;color:black"><?php echo $item['title']; ?></div>
-                                </a>
-                                <?php
-                                /*
-                                  <div class="product-actions blog-actions">
-                                  <span class="product-action dark-blue current">
-                                  <span class="action-wrapper">
-                                  <i class="icons icon-doc-text"></i>
-                                  <span class="action-name">Read more</span>
-                                  </span>
-                                  </span>
-                                  </div>
-                                 */
-                                ?>
-                            </div>
+                                </div>
 
-                        </div>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
+                            </div>
+                            <?php $i++; ?>
+                            <?php
+                        endforeach;
+                    }
+                    $field = OrderDetailTemplateField::model()->find('description = "cate2Id"');
+                    ?>
 
                 </div>
                 <div class="row wizard-control">
-                    <?php echo $form->hiddenField($model, "category2Id"); ?>
+                    <?php echo CHtml::hiddenField("OrderDetailValue[" . $field->orderDetailTemplateFieldId . "][value]"); ?>
                 </div>
 
                 <div class="row wizard-control">
@@ -209,7 +214,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row">
                     <div class="col-md-12" id="upload_plan">
-                        <?php // $this->renderPartial('_upload_plan', array('model'=>$model));      ?>
+                        <?php // $this->renderPartial('_upload_plan', array('model'=>$model));        ?>
 
                         <div class="row">
                             <div class="col-sm-7">
@@ -246,20 +251,24 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </div>
                             </div>
                         </div>
-                        <?php foreach ($orderDetailTemplateField as $field): ?>
-                            <div class="row">
-                                <div class="col-lg-1 control-label">
-                                    <?php echo $field->description; ?>
-                                </div>
-                                <div class="col-lg-9l">
-                                    <?php
-                                    echo CHtml::textArea("OrderDetailValue[$field->orderDetailTemplateFieldId][value]", "", array(
-                                        'class' => 'form-control',
-                                        'rows' => 5))
-                                    ?>
-                                </div>
+                        <?php
+//                        throw new Exception(print_r($orderDetailTemplateField, true));
+//                        foreach ($orderDetailTemplateField as $field):
+                        $field = OrderDetailTemplateField::model()->find('title = "comment"');
+                        ?>
+                        <div class="row">
+                            <div class="col-lg-1 control-label">
+                                <?php echo $field->description; ?>
                             </div>
-                        <?php endforeach; ?>
+                            <div class="col-lg-9l">
+                                <?php
+                                echo CHtml::textArea("OrderDetailValue[" . $field->orderDetailTemplateFieldId . "][value]", "", array(
+                                    'class' => 'form-control',
+                                    'rows' => 5))
+                                ?>
+                            </div>
+                        </div>
+                        <?php // endforeach; ?>
                         <div class="row wizard-control">
 
                             <?php
@@ -352,7 +361,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;   ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"   ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0   ?>)"><?php // echo $theme->category2->title;   ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                              ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                              ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                              ?>)"><?php // echo $theme->category2->title;                              ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -369,9 +378,9 @@ $form = $this->beginWidget('CActiveForm', array(
                     </div>
                     <div class="sidebar-box-content" id="setResult">
                         <!--                        <ul>
-                        <?php // foreach ($sets as $set): ?>
-                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;  ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"  ?>)"><?php // echo $set->category2->title;  ?></li></a>
-                        <?php // endforeach; ?>
+                        <?php // foreach ($sets as $set):  ?>
+                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                              ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                              ?>)"><?php // echo $set->category2->title;                              ?></li></a>
+                        <?php // endforeach;   ?>
                                                 </ul>-->
                     </div>
                 </div>
@@ -394,7 +403,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <?php if (!$model->isNewRecord && $this->action->id == "view"): ?>
                         <a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
                     <?php endif; ?>
-                    <button id="" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
+                    <button id="nextToStep5" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
                 </div>
             </div>
         </div>
@@ -545,38 +554,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                                            ?>
+<?php // echo $form->errorSummary($model);                                              ?>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');          ?>
-<?php // echo $form->textField($model, 'supplierId');           ?>
-<?php // echo $form->error($model, 'supplierId');                                         ?>
+<?php // echo $form->textField($model, 'supplierId');            ?>
+<?php // echo $form->error($model, 'supplierId');                                           ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'type');           ?>
-<?php // echo $form->textField($model, 'type');           ?>
-<?php // echo $form->error($model, 'type');                                         ?>
+<?php // echo $form->textField($model, 'type');            ?>
+<?php // echo $form->error($model, 'type');                                           ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'status');           ?>
-<?php // echo $form->textField($model, 'status');          ?>
-<?php // echo $form->error($model, 'status');                                         ?>
+<?php // echo $form->textField($model, 'status');           ?>
+<?php // echo $form->error($model, 'status');                                           ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'title');           ?>
-<?php // echo $form->textField($model, 'title');         ?>
-<?php // echo $form->error($model, 'title');                                          ?>
+<?php // echo $form->textField($model, 'title');          ?>
+<?php // echo $form->error($model, 'title');                                            ?>
         </div>
 
 
         <div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                              ?>
+<?php // echo CHtml::submitButton('Submit');                                                ?>
         </div>
 
-<?php // $this->endWidget();                                              ?>
+<?php // $this->endWidget();                                                ?>
 
 </div>-->
 <!-- form -->

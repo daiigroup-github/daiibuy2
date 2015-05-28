@@ -145,7 +145,7 @@ $('#chooseStyle').on('click', function() {
 //                 alert($('#Order_category2Id'));
                     cate2Id = $('#chooseStyle').attr("name");
                     alert(cate2Id);
-                  $('#Order_category2Id').val(cate2Id);
+                  $('#OrderDetailValue_6_value').val(cate2Id);
                   $.ajax({
 		url: baseUrl + '/myfile/madrid/prepareThemeAndSet',
 		type: 'POST',
