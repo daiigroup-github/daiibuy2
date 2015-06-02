@@ -11,17 +11,22 @@
 				<?php endif; ?>
 				<?php
 				$contentMenu = Content::model()->find("type = 3 AND parentId = 0");
-				foreach($contentMenu->childs as $content):
-					?>
-					<li><a href="<?php echo Yii::app()->createUrl("/content/view/id/" . $content->contentId) ?>"><?php echo $content->title; ?></a></li>
-					<!--<li><a href="contact.html">Contact</a></li>-->
-				<?php endforeach; ?>
+				if(isset($contentMenu))
+				{
+					foreach($contentMenu->childs as $content):
+						?>
+						<li><a href="<?php echo Yii::app()->createUrl("/content/view/id/" . $content->contentId) ?>"><?php echo $content->title; ?></a></li>
+						<!--<li><a href="contact.html">Contact</a></li>-->
+					<?php
+					endforeach;
+				}
+				?>
 			</ul>
 		</nav>
 
 		<nav class="col-lg-5 col-md-5 col-sm-5">
 			<ul class="pull-right">
-				<?php if(!isset(Yii::app()->user->id)): ?>
+<?php if(!isset(Yii::app()->user->id)): ?>
 					<li class="purple"><a href="<?php echo Yii::app()->createUrl("site/login") ?>"><i class="icons icon-user-3"></i> Login</a></li>
 			<!--					<li class="purple"><a href="#"><i class="icons icon-user-3"></i> Login</a>
 									<ul id="login-dropdown" class="box-dropdown">
@@ -74,10 +79,10 @@
 								<!--<li><a href="#"><i class="icons icon-lock"></i> Create an Account</a></li>-->
 				<?php else: ?>
 					<li><a href="<?php echo Yii::app()->createUrl("site/logout") ?>"><i class="icons icon-user"></i> <?php echo Yii::app()->user->name . "(Logout)"; ?></a></li>
-					<?php if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 3 || Yii::app()->user->userType == 5): ?>
+						<?php if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 3 || Yii::app()->user->userType == 5): ?>
 						<li><a href="<?php echo Yii::app()->createUrl("backend.php/backoffice/default") ?>"><i class="icons icon-lock"></i> Backoffice</a></li>
 						<?php endif; ?>
-					<?php endif; ?>
+<?php endif; ?>
 
 			</ul>
 		</nav>
