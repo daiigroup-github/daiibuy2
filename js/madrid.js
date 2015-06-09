@@ -140,11 +140,11 @@ $('#uploadPlanMadrid').on('click', function() {
 	}
 });
 
-$('#chooseStyle').on('click', function() {
+$('.chooseStyle').click(function() {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
                     cate2Id = $('#chooseStyle').attr("name");
-                    alert(cate2Id);
+//                    alert(cate2Id);
                   $('#OrderDetailValue_6_value').val(cate2Id);
                   $.ajax({
 		url: baseUrl + '/myfile/madrid/prepareThemeAndSet',

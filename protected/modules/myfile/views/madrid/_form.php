@@ -123,7 +123,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             ?>
                             <div class="<?php echo $class; ?>">
                                 <div class="blog-item" >
-                                    <a  id="chooseStyle" name="<?php echo $item['category2Id']; ?>"><?php
+                                    <a class="chooseStyle" name="<?php echo $item['category2Id']; ?>"><?php
                                         echo CHtml::image($item['image'], $item['title'], array(
                                             "style" => "height:130px"));
                                         ?>
@@ -361,7 +361,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                              ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                              ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                              ?>)"><?php // echo $theme->category2->title;                              ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                ?>)"><?php // echo $theme->category2->title;                                ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -379,7 +379,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="sidebar-box-content" id="setResult">
                         <!--                        <ul>
                         <?php // foreach ($sets as $set):  ?>
-                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                              ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                              ?>)"><?php // echo $set->category2->title;                              ?></li></a>
+                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                ?>)"><?php // echo $set->category2->title;                                ?></li></a>
                         <?php // endforeach;   ?>
                                                 </ul>-->
                     </div>
