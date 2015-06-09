@@ -75,7 +75,7 @@ $this->breadcrumbs = array(
 								$i++;
 							}
 							?>
-<?php endforeach; ?>
+						<?php endforeach; ?>
 
                     </div>
 
