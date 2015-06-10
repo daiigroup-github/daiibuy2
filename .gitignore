@@ -6,7 +6,6 @@ images/fenzer
 images/madrid
 images/upload
 images/barcode
-.idea/php.xml
 protected/config/params.php
 images/userFile/*
 images/bank
@@ -14,3 +13,4 @@ images/categoryImage
 images/orderFile
 images/brandImage
 protected/config/main.php
+/images
