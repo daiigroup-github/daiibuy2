@@ -110,6 +110,51 @@ function loadSetItem(cat2Id, baseUrl)
 		}
 	});
 }
+function loadProductsFavItem(productId, baseUrl, orderId)
+{
+
+//    cate2Id = $('#Order_category2Id').attr("value");
+////      alert(cate2Id);
+//        if(cate2Id == cat2Id){
+	$("#sanitary-item").html("");
+//	renderThemeItem(baseUrl, orderId);
+	$.ajax({
+		url: baseUrl + '/myfile/madrid/loadProductFavItem',
+		type: 'POST',
+		dataType: 'JSON',
+		data: {productId: productId, orderId: orderId},
+		success: function (data) {
+			//alert success message
+			if (data.status)
+			{
+				$("#action-button").removeClass('hide');
+				$("#product-fav-table").removeClass("hide");
+				$("#product-fav-table").html(data.view);
+				$("#productCode").html(data["code"]);
+				$("#code").html(data["code"]);
+				$("#productName").html(data["name"]);
+				$("#name").html(data["name"]);
+				$("#productUnits").html(data["productUnits"]);
+				$("#description").html(data["description"]);
+				$("#productArea").html(data["productArea"]);
+				var estimateQuantity = data["productArea"] * $("#supplierArea").val();
+				$("#estimateAreaQuantity").html(estimateQuantity);
+//					$("#quantityText_" + groupName).removeClass("hide");
+				$("#quantityText").val(estimateQuantity);
+				$("#price").html(data["price"] * estimateQuantity);
+				$("#pprice").html(data["price"] * estimateQuantity);
+				$("#priceHidden").val(data["price"]);
+				$("#productId").val(data["productId"]);
+				$("#image").attr("src", data["image"]);
+			}
+			else
+			{
+				alert(data.errorMessage);
+			}
+		},
+	});
+//    }
+}
 
 function updatePrice()
 {
@@ -126,6 +171,23 @@ $('#manualQuantityMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
+
+});
+$('#manualQuantityTile').on('click', function () {
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+		$('ul.setup-panel li a[href="#step-4-1"]').trigger('click');
+		$('#Order_createMyfileType').val(1);
+		$.ajax({
+			url: baseUrl + '/myfile/madrid/prepareProductsFav',
+			type: 'POST',
+			dataType: 'JSON',
+//			data: {productId: productId},
+			success: function (data) {
+				$("#productsFavResult").html(data.products);
+			}});
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
@@ -329,6 +391,32 @@ function checkComment()
 	{
 		return true;
 	}
+}
+
+function addFavouriteProduct(userId, productId, baseUrl)
+{
+	var url = "";
+	url = baseUrl + '/madrid/category/addFavouriteProduct'
+	$.ajax({
+		'url': url,
+		'dataType': 'json',
+		'type': 'POST',
+		'data': {'userId': userId, 'productId': productId, },
+		'success': function (data) {
+			if (data == 1)
+			{
+				alert("เพิ่ม สินค้า สู่รายการที่ชื่นชอบสำเร็จ");
+			}
+			else if (data == 2)
+			{
+				alert("ไม่สามารถเพิ่ม สินค้า สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
+			}
+			else
+			{
+				alert("คุณเพิ่มรายการนี้ เข้าสู่รายการที่ชื่นชอบไปแล้ว");
+			}
+		},
+	});
 }
 
 

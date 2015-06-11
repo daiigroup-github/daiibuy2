@@ -61,6 +61,16 @@ if(isset($data->productImages))
                 <span class="action-name">Add to cart</span>
 			</span>
 		</span>
+		<?php if(!Yii::app()->user->isGuest): ?>
+			<div class="product-actions" id="<?php echo $data['productId']; ?>" onclick="addFavouriteProduct(<?php echo Yii::app()->user->id ?>,<?php echo $data['productId'] ?>, '<?php echo Yii::app()->baseUrl; ?>', true)">
+				<span class="add-to-favorites">
+					<span class="action-wrapper">
+						<i class="icons fa fa-heart-o"></i>
+						<span class="action-name">Add to wishlist</span>
+					</span>
+				</span>
+			</div>
+		<?php endif; ?>
     </div>
 
 </div>

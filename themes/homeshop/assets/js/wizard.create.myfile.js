@@ -3,7 +3,7 @@
 var navListItems = $('ul.setup-panel li a'),
 		allWells = $('.setup-content');
 allWells.hide();
-navListItems.click(function(e)
+navListItems.click(function (e)
 {
 	e.preventDefault();
 	var $target = $($(this).attr('href')),
@@ -16,29 +16,39 @@ navListItems.click(function(e)
 	}
 });
 $('ul.setup-panel li.active a').trigger('click');
-$('#nextToStep2').on('click', function(e) {
-    if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+$('#nextToStep2').on('click', function (e) {
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
 //		$('ul.setup-panel li:eq(1)').removeClass('disabled');
-	
+
 //		$(this).remove();
 });
-$('#nextToStep1-2').on('click', function(e) {
+$('#nextToStep2-1').on('click', function (e) {
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+		$('ul.setup-panel li a[href="#step-2-1"]').trigger('click');
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
 //		$('ul.setup-panel li:eq(1)').removeClass('disabled');
-	    if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+
+//		$(this).remove();
+});
+$('#nextToStep1-2').on('click', function (e) {
+//		$('ul.setup-panel li:eq(1)').removeClass('disabled');
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-1-2"]').trigger('click');
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
 //		$(this).remove();
 });
-$('#backToStep1').on('click', function(e) {
+$('#backToStep1').on('click', function (e) {
 	$('ul.setup-panel li a[href="#step-1"]').trigger('click');
 });
-$('#nextToStep3').on('click', function(e) {
+$('#nextToStep3').on('click', function (e) {
 	var base_url = baseUrl;
 	$.ajax({
 		url: base_url + '/myfile/fenzer/showProductOrder',
@@ -47,22 +57,22 @@ $('#nextToStep3').on('click', function(e) {
 //				'length': $('#length_input').attr('value'),
 //				'height': $('#selectHeight').attr('value'),
 //			},
-		success: function(data) {
+		success: function (data) {
 			$("#order_list").html(data);
 		}
 	});
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
-$('#backToStep2').on('click', function(e) {
+$('#backToStep2').on('click', function (e) {
 	$('ul.setup-panel li a[href="#step-2"]').trigger('click');
 });
-$('#backToStep2-2').on('click', function(e) {
+$('#backToStep2-2').on('click', function (e) {
 	$('ul.setup-panel li a[href="#step-2-2"]').trigger('click');
 });
-$('#backToStep3').on('click', function(e) {
+$('#backToStep3').on('click', function (e) {
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
-$('#addToCart').on('click', function(e) {
+$('#addToCart').on('click', function (e) {
 	var base_url = baseUrl;
 	var orderId = $("#order").attr("name");
 	if (orderId === null)
@@ -74,17 +84,17 @@ $('#addToCart').on('click', function(e) {
 		url: base_url + '/myfile/fenzer/addToCart',
 		type: 'POST',
 		data: {'orderId': orderId},
-		success: function(data) {
+		success: function (data) {
 		}
 	});
 	window.location.assign(base_url + '/myfile/fenzer/');
 });
-$('#finish').on('click', function(e) {
+$('#finish').on('click', function (e) {
 	var base_url = baseUrl;
 	window.location.assign(base_url + '/myfile/fenzer/');
 });
 var fenzerSave = true;
-$('#nextToStep4').live('click', function(e) {
+$('#nextToStep4').live('click', function (e) {
 
 //save order
 	if (fenzerSave == true) {
@@ -99,7 +109,7 @@ $('#nextToStep4').live('click', function(e) {
 			url: base_url + '/myfile/fenzer/saveOrderMyFile',
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&cat1Id=' + cat1Id + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
-			success: function(data) {
+			success: function (data) {
 				$("#confirm_content").html(data);
 				$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 				var orderId = $("#order").attr("name");
@@ -123,7 +133,7 @@ $('#nextToStep4').live('click', function(e) {
 	 */
 });
 //view Myfile Fenzer
-$('#nextToStep4Edit').on('click', function(e) {
+$('#nextToStep4Edit').on('click', function (e) {
 
 //save order
 	var base_url = baseUrl;
@@ -137,7 +147,7 @@ $('#nextToStep4Edit').on('click', function(e) {
 		url: base_url + '/myfile/fenzer/saveOrderMyFile',
 		type: 'POST',
 		data: $("#editTableForm").serialize() + '&length=' + length + '&cat1Id=' + cat1Id + '&categoryId=' + categoryId + '&orderId=' + orderId + "&" + $("#ggg").serialize(),
-		success: function(data) {
+		success: function (data) {
 			$("#confirm_content").html(data);
 		}
 	});
@@ -145,7 +155,7 @@ $('#nextToStep4Edit').on('click', function(e) {
 });
 //clickable Row
 var clickable = true;
-$(".clickableRow").click(function() {
+$(".clickableRow").click(function () {
 	if (clickable == true) {
 		var base_url = baseUrl;
 		var categoryId = $(this).attr("id");
@@ -157,7 +167,7 @@ $(".clickableRow").click(function() {
 			url: base_url + '/myfile/fenzer/showProductSelected',
 			type: 'POST',
 			data: {'categoryId': categoryId},
-			success: function(data) {
+			success: function (data) {
 				$("#select_content").html(data);
 			}
 		});
@@ -176,7 +186,7 @@ $(".clickableRow").click(function() {
 //		}
 //	});
 //var isDelete = true;
-$("#deleteRow").live('click', function() {
+$("#deleteRow").live('click', function () {
 //	if (isDelete == true) {
 	if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
 		$(this).parent().parent().remove();
@@ -190,7 +200,7 @@ $("#deleteRow").live('click', function() {
 //	$("#nextToStep2").show();
 //});
 
-$('#calculatePrice').on('click', function() {
+$('#calculatePrice').on('click', function () {
 	var update = 1;
 	if (update == 1) {
 		var length = $("#length_input").attr("value");
@@ -201,7 +211,7 @@ $('#calculatePrice').on('click', function() {
 			url: baseUrl + '/myfile/fenzer/updatePrice',
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&length=' + length + '&cat1Id=' + cat1Id + '&categoryId=' + categoryId + "&" + $("#ggg").serialize(),
-			success: function(data) {
+			success: function (data) {
 				$("#result_content").html(data);
 				update = update + 1;
 			}
@@ -211,7 +221,7 @@ $('#calculatePrice').on('click', function() {
 //	$('#nextToStep3')
 
 //Upload Plan Atech
-$('#uploadPlanAtech').on('click', function() {
+$('#uploadPlanAtech').on('click', function () {
 //check title and province
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-2"]').trigger('click');
@@ -219,7 +229,7 @@ $('#uploadPlanAtech').on('click', function() {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
 });
-$('#manualQuantityAtech').on('click', function() {
+$('#manualQuantityAtech').on('click', function () {
 	//check title and province
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-2-2"]').trigger('click');
@@ -242,7 +252,7 @@ $('#manualQuantityAtech').on('click', function() {
 //		});
 
 });
-$('#nextToStep3Atech').on('click', function() {
+$('#nextToStep3Atech').on('click', function () {
 
 	var base_url = baseUrl;
 	var title = $("#Order_title").attr("value");
@@ -254,14 +264,14 @@ $('#nextToStep3Atech').on('click', function() {
 		url: base_url + '/myfile/atechWindow/calculatePriceMyFile',
 		type: 'POST',
 		data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId,
-		success: function(data) {
+		success: function (data) {
 //				alert("ya");
 			$("#atech_result").html(data);
 		}
 	});
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 });
-$(".atechNav").click(function() {
+$(".atechNav").click(function () {
 	var base_url = baseUrl;
 	var brandModelId = $(this).attr("name");
 	var title = $("#Order_title").attr("value");
@@ -273,7 +283,7 @@ $(".atechNav").click(function() {
 		url: base_url + '/myfile/atechWindow/updatePriceMyFile',
 		type: 'POST',
 		data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + "&" + $("#editTableForm").serialize(),
-		success: function(data) {
+		success: function (data) {
 			$("#atech_result").html(data);
 			navClick = false;
 		}
@@ -281,7 +291,7 @@ $(".atechNav").click(function() {
 //		this.setAttribute("class", "atechNav active");
 
 });
-$(".atechUpdate").click(function() {
+$(".atechUpdate").click(function () {
 	var base_url = baseUrl;
 	var brandModelId = $(this).attr("name");
 	var title = $("#Order_title").attr("value");
@@ -292,7 +302,7 @@ $(".atechUpdate").click(function() {
 		url: base_url + '/myfile/atechWindow/updatePriceMyFile',
 		type: 'POST',
 		data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId,
-		success: function(data) {
+		success: function (data) {
 			$("#atech_result").html(data);
 		}
 	});
@@ -300,7 +310,7 @@ $(".atechUpdate").click(function() {
 });
 //save order
 var atechSave = true;
-$('#nextToStep4Atech').live('click', function(e) {
+$('#nextToStep4Atech').live('click', function (e) {
 
 	if (atechSave == true)
 	{
@@ -313,7 +323,7 @@ $('#nextToStep4Atech').live('click', function(e) {
 			url: base_url + '/myfile/atechWindow/saveMyFileAtech',
 			type: 'POST',
 			data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&orderId=' + orderId + '&brandModelId=' + brandModelId,
-			success: function(data) {
+			success: function (data) {
 				$("#confirm_product").html(data);
 				$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 
@@ -324,7 +334,7 @@ $('#nextToStep4Atech').live('click', function(e) {
 });
 
 //var addData = true;
-$('#addNewItemFenzer').on('click', function(e) {
+$('#addNewItemFenzer').on('click', function (e) {
 //	if (addData == true)
 //	{
 	$.ajax({
@@ -332,14 +342,14 @@ $('#addNewItemFenzer').on('click', function(e) {
 		type: 'POST',
 		dataType: 'html',
 		data: $("#addItem").serialize() + "&" + $("#ggg").serialize(),
-		success: function(data) {
+		success: function (data) {
 			$("#editTable").append(data);
 //			addData = false;
 		}
 	});
 //	}
 });
-$('#addToCartAtech').on('click', function(e) {
+$('#addToCartAtech').on('click', function (e) {
 	var base_url = baseUrl;
 	var orderId = $("#order").attr("name");
 	if (orderId === null)
@@ -351,7 +361,7 @@ $('#addToCartAtech').on('click', function(e) {
 		url: base_url + '/myfile/atechWindow/addToCart',
 		type: 'POST',
 		data: {'orderId': orderId},
-		success: function(data) {
+		success: function (data) {
 		}
 	});
 	window.location.assign(base_url + '/myfile/fenzer/');
