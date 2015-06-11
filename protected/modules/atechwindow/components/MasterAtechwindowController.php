@@ -36,12 +36,13 @@ class MasterAtechwindowController extends MasterController {
             ),
         ));
 
-        $categorys = Category::model()->findAll(array(
-            'condition' => 'supplierId=:supplierId AND isRoot=1',
+        $brands = Brand::model()->findAll(array(
+            'condition' => 'supplierId=:supplierId',
             'params' => array(
                 ':supplierId' => $supplier->supplierId,
             ),
-            'order' => 'title ASC'
+            'order' => 'title ASC',
+//            'group by' => 'category2Id',
         ));
         $this->nav[0] = array(
             'url' => $this->createUrl('/atechwindow'),
@@ -51,11 +52,11 @@ class MasterAtechwindowController extends MasterController {
             'class' => ' nav-search'
         );
         $i = 1;
-        foreach ($categorys as $category) {
+        foreach ($brands as $brand) {
             $this->nav[$i] = array(
-                'url' => $this->createUrl('category/index?category1Id=' . $category->categoryId),
-                'caption' => strtoupper($category->title),
-                'description' => $category->description,
+                'url' => $this->createUrl('atechwindow/index?brandId=' . $brand->brandId),
+                'caption' => strtoupper($brand->title),
+                'description' => $brand->description,
                 'color' => $this->navColor[$i % 4],
             );
 
