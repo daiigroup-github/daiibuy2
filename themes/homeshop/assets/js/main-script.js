@@ -1,12 +1,14 @@
-
+var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin;
 //----Include-Function----
 function include(url) {
 	"use strict";
 	//document.write('<script src="'+ url + '" type="text/javascript"></script>');
-	if (window.location.host === 'dev')
-		document.write('<script src="http://dev/daiibuy2/' + url + '" type="text/javascript"></script>');
-	else
-		document.write('<script src="' + window.location.origin + '/' + url + '" type="text/javascript"></script>');
+	//if (window.location.host === 'dev')
+	//	document.write('<script src="http://dev/daiibuy2/' + url + '" type="text/javascript"></script>');
+	//else
+	//	document.write('<script src="' + window.location.origin + '/' + url + '" type="text/javascript"></script>');
+
+    document.write('<script src="'+ baseUrl+url + '" type="text/javascript"></script>');
 }
 
 include('themes/homeshop/assets/twitter/jquery.tweet.js'); // Twitter widget */

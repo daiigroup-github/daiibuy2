@@ -10,7 +10,7 @@ $this->breadcrumbs = array(
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         <div class="carousel-heading">
-            <h4><?php echo $brandModel->title; ?></h4>
+            <h4><?php echo $category->brandModel->title; ?></h4>
         </div>
 
     </div>
@@ -21,7 +21,7 @@ $this->breadcrumbs = array(
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
 
-			<?php foreach($brandModel->categorys as $category): ?>
+			<?php //foreach($brandModel->categorys as $category): ?>
 
 				<?php
 				$category2ToProduct = Category2ToProduct::model()->find("category1Id =" . $category->categoryId);
@@ -96,7 +96,7 @@ $this->breadcrumbs = array(
 					<hr>
 					<?php
 				endif;
-			endforeach;
+			//endforeach;
 			?>
 
 

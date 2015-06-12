@@ -18,8 +18,18 @@ class CategoryController extends MasterGinzahomeController
 //            }
 //        }
 
+        $categoryToSubModel = CategoryToSub::model()->findByPk($id);
+        //style = relation::category
+        $style = $categoryToSubModel->category;
+        //category = relation::subCategory
+        $category = $categoryToSubModel->subCategory;
+        $brandModel = BrandModel::model()->findByPk($categoryToSubModel->brandModelId);
+
 		$this->render('index', array(
-			'brandModel'=>$brandModel));
+			'brandModel'=>$brandModel,
+            'style'=>$style,
+            'category'=>$category
+        ));
 	}
 
 	// Uncomment the following methods and override them if needed
