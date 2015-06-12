@@ -4,10 +4,13 @@
  */
 
 $('.addToCart').live('click', function () {
-
 	var productId = $(this).data('productid');
-	var qty = $('#' + productId).val();
-	var data = {productId: productId, qty: qty};
+//        alert($("#c1400").val());
+
+	var qty = $("#"+productId).val();
+        var color = $("#c"+productId).val();
+	var data = {productId: productId, qty: qty, color: color};
+        alert(color);
 
 //	alert($(this).data('productid'));
 

@@ -87,6 +87,7 @@ class DefaultController extends MasterAtechwindowController {
             'category2ToProducts' => $category2ToProducts,
             'images' => $images,
             'category2Id' => $defaultCategory2->categoryId,
+            'colors' => $colors,
 //            'colors' => $colors,
 //            'widthArray' => $widthArray,
 //            'heightArray' => $heightArray

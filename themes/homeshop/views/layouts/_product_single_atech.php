@@ -35,8 +35,8 @@
 //                            foreach ($product['attributes'] as $k => $v):
             ?>
                                 <tr>
-                                    <td><?php // echo $k;                                                     ?></td>
-                                    <td><?php // echo $v;                                                     ?></td>
+                                    <td><?php // echo $k;                                                                                                      ?></td>
+                                    <td><?php // echo $v;                                                                                                      ?></td>
                                 </tr>
             <?php
 //                            endforeach;
@@ -53,7 +53,7 @@
                 <span class="price">
             <?php // if (isset($product['price'])): ?>
             <?php // if ($product['pricePromotion']): ?>
-                            <del><?php // echo $product['price'];                                                     ?></del> <?php // echo $product['pricePromotion'];                                                    ?>
+                            <del><?php // echo $product['price'];                                                                                                      ?></del> <?php // echo $product['pricePromotion'];                                                                                                     ?>
             <?php // else: ?>
             <?php // echo $product['price']; ?>
             <?php // endif; ?>
@@ -135,18 +135,72 @@
     </div>
     <?php
 //    throw new Exception(print_r($subCate->categoryId, true));
-    $categoryToProduct = Category2ToProduct::model()->findAll('category1Id = ' . $subCate->categoryId);
+    $categoryToProducts = Category2ToProduct::model()->findAll('category1Id = ' . $subCate->categoryId);
 
 //    throw new Exception(print_r($categoryToProduct, true));
     ?>
     <div class="row sidebar-box-heading orange">
         <i class="icons <?php echo 'fa fa-file-o'; ?>"></i>
-        <h4><?php echo "Brand :: ATECH " . $categoryToProduct[0]->brandModel->title; ?></h4>
+        <h4><?php echo "Brand :: ATECH " . $categoryToProducts[0]->brandModel->title; ?></h4>
     </div>
 
     <!-- /Product -->
+    <div class="row sidebar-box-content">
+        <table class="table-hover">
+            <thead>
+                <tr>
+                    <th>ประเภท</th>
+                    <th>สี</th>
+                    <th>ยี่ห้อ</th>
+                    <th>ขนาด กว้าง x สูง (ซ.ม.)</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($categoryToProducts as $categoryToProduct):
+                    $category2 = Category::model()->findByPk($categoryToProduct->category2Id);
+                    $price = ($categoryToProduct->product->calProductPromotionPrice() != 0) ? $categoryToProduct->product->calProductPromotionPrice() : $categoryToProduct->product->calProductPrice();
+                    ?>
+                    <tr>
+                        <td>
+                            <?php echo $category2->title; ?>
+                        </td>
+                        <td>
+                            <?php
+//                            throw new Exception(print_r($categoryToProduct->product->productOptionGroups[0], true));
+                            echo isset($categoryToProduct->product->productOptionGroups[0]) ? CHtml::dropDownList(get_class($categoryToProduct->product->productOptionGroups[0]) . '[' . $categoryToProduct->product->productOptionGroups[0]->productOptionGroupId . ']', '', CHtml::listData($categoryToProduct->product->productOptionGroups[0]->productOptions, 'productOptionId', 'title'), array(
+                                        'class' => 'chosen-select-full-width', 'id' => 'c' . $categoryToProduct->product->productId)) : "none";
+                            ?>
+                        </td>
+                        <td>
+                            <?php echo $categoryToProduct->brand->title; ?>
+                        </td>
+                        <td>
+                            <?php
+                            echo (isset($categoryToProduct->product->width) && isset($categoryToProduct->product->height)) ? $categoryToProduct->product->width . " x " . $categoryToProduct->product->height : 'NONE';
+                            ?>
+                        </td>
+                        <td><?php echo number_format($price, 0); ?></td>
+                        <td>
+                            <div class="numeric-input full-width">
+                                <input type="text" value="1" id="<?php echo $categoryToProduct->product->productId ?>" name="qty[<?php echo $categoryToProduct->product->productId ?>]"/>
+                                <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
+                                <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
+                            </div>
+                        </td>
+                        <td><a class="btn btn-primary btn-md addToCart" data-productid="<?php echo $categoryToProduct->product->productId; ?>"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>
+    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                     ?>">ดูรายการอื่นๆ</a>-->
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Product tabs -->
-    <?php // $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs']));   ?>
+    <?php // $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs']));        ?>
 
 </div>
