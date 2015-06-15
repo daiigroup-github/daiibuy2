@@ -93,6 +93,10 @@ class CategoryController extends MasterBackofficeController
 					if(isset($sup))
 					{
 						$model->supplierId = $sup->supplierId;
+						if($sup->supplierId == 4)
+						{
+							$model->isRoot = 1;
+						}
 					}
 				}
 				$model->createDateTime = new CDbExpression("NOW()");

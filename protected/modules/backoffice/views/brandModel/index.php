@@ -87,7 +87,7 @@ return false;
 				'buttons'=>array(
 					'cat'=>array(
 						'label'=>'<br><u>Category</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/category?brandModelId=".$data->brandModelId)'
+						'url'=>'(isset(Yii::app()->user->supplierId) && Yii::app()->user->supplierId == 4)?Yii::app()->createUrl("/backoffice/category?brandModelId=".$data->brandModelId."&isTheme=1"):Yii::app()->createUrl("/backoffice/category?brandModelId=".$data->brandModelId)'
 					),
 					'image'=>array(
 						'label'=>'<br><u>Image</u>',

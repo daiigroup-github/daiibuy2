@@ -143,6 +143,10 @@ class CategoryToSubController extends MasterBackofficeController
 					$model->subCategoryId = $subCatId;
 					$model->createDateTime = new CDbExpression("NOW()");
 					$model->updateDateTime = new CDbExpression("NOW()");
+					if(isset($_GET["isTheme"]))
+					{
+						$model->isTheme = 1;
+					}
 					if($model->save())
 					{
 						$flag = true;
@@ -385,6 +389,10 @@ class CategoryToSubController extends MasterBackofficeController
 		}
 		else
 		{
+			if(isset($_POST["isTheme"]))
+			{
+				$model->isTheme = 1;
+			}
 			$model->categoryId = $_POST["categoryId"];
 			$model->subCategoryId = $_POST["subCategoryId"];
 			$model->brandModelId = $_POST["brandModelId"];
