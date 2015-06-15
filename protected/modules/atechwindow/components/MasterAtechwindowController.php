@@ -54,7 +54,7 @@ class MasterAtechwindowController extends MasterController {
         $i = 1;
         foreach ($brands as $brand) {
             $this->nav[$i] = array(
-                'url' => $this->createUrl('atechwindow/index?brandId=' . $brand->brandId),
+                'url' => $this->createUrl('default/index?brandId=' . $brand->brandId),
                 'caption' => strtoupper($brand->title),
                 'description' => $brand->description,
                 'color' => $this->navColor[$i % 4],

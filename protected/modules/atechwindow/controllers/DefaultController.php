@@ -4,7 +4,7 @@ class DefaultController extends MasterAtechwindowController {
 
 //    public $layout = '//layouts/cl1';
 
-    public function actionIndex($brandId = null) {
+    public function actionIndex() {
         $colors = array(
             'ALL',
             'White',
@@ -55,13 +55,18 @@ class DefaultController extends MasterAtechwindowController {
 //            'group by' => 'category2Id',
         ));
 //        throw new Exception(print_r($brands, true));
-        if (!isset($brandId)) {
+        if (isset($_GET["brandId"]))
+            $brandId = $_GET["brandId"];
+        if (!isset($brandId))
             $brandId = $brands[0]->brandId;
-        }
+
+
+
 
         $category2ToProducts = Category2ToProduct::model()->findAll('brandId = ' . $brandId . ' AND status = 1 group by category1Id');
 //        throw new Exception(print_r($category2ToProducts[0]->category2Id, true));
-        $defaultCategory2 = Category::model()->findByPk($category2ToProducts[0]->category2Id);
+        if (isset($category2ToProducts[0]))
+            $defaultCategory2 = Category::model()->findByPk($category2ToProducts[0]->category2Id);
 //        throw new Exception(print_r(count($category2ToProducts), true));
 //        if (isset($_GET[""])) {
 //            $category2Id = $_GET["category2Id"];
@@ -71,12 +76,14 @@ class DefaultController extends MasterAtechwindowController {
 //            $category2Id = $defaultCategory2->categoryId;
 //        }
         $images = [];
-        if (count($defaultCategory2->images) > 0):
-            foreach ($defaultCategory2->images as $image) {
-                $images[] = Yii::app()->baseUrl . $image->image;
-            }
-        else:
-            $images[] = Yii::app()->baseUrl . $defaultCategory2->image;
+        if (isset($defaultCategory2->images)):
+            if (count($defaultCategory2->images) > 0):
+                foreach ($defaultCategory2->images as $image) {
+                    $images[] = Yii::app()->baseUrl . $image->image;
+                }
+            else:
+                $images[] = Yii::app()->baseUrl . $defaultCategory2->image;
+            endif;
         endif;
 
         //Create By Tong
@@ -86,7 +93,7 @@ class DefaultController extends MasterAtechwindowController {
         $this->render('index', array(
             'category2ToProducts' => $category2ToProducts,
             'images' => $images,
-            'category2Id' => $defaultCategory2->categoryId,
+            'category2Id' => isset($defaultCategory2->categoryId) ? $defaultCategory2->categoryId : null,
             'colors' => $colors,
 //            'colors' => $colors,
 //            'widthArray' => $widthArray,

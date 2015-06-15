@@ -2,8 +2,8 @@
     <ul class="slides">
         <li>
             <?php if (isset($images)): ?>
-                <img class="cloud-zoom" src="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : $image[0]; ?>" data-large="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : $image[0]; ?>" alt="" />
-                <a class="fullscreen-button" href="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : $image[0]; ?>">
+                <img class="cloud-zoom" src="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : $images[0]; ?>" data-large="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : $images[0]; ?>" alt="" />
+                <a class="fullscreen-button" href="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : $images[0]; ?>">
                     <div class="product-fullscreen">
                         <i class="icons icon-resize-full-1"></i>
                     </div>
@@ -21,8 +21,8 @@
 //            throw new Exception(print_r($image->image, true));
 ?>
             <li>
-                <a class="fancybox" rel="product-images" href="<?php // echo isset($image->image) ? Yii::app()->createUrl($images[0]->image) : $image;  ?>"></a>
-                <img src="<?php // echo isset($image->image) ? Yii::app()->createUrl($images[0]->image) : $image;  ?>" data-large="<?php // echo isset($image->image) ? Yii::app()->createUrl($images[0]->image) : $image;  ?>" alt=""/>
+                <a class="fancybox" rel="product-images" href="<?php // echo isset($image->image) ? Yii::app()->createUrl($images[0]->image) : $image;   ?>"></a>
+                <img src="<?php // echo isset($image->image) ? Yii::app()->createUrl($images[0]->image) : $image;   ?>" data-large="<?php // echo isset($image->image) ? Yii::app()->createUrl($images[0]->image) : $image;   ?>" alt=""/>
             </li>
 <?php // endforeach; ?>
     </ul>

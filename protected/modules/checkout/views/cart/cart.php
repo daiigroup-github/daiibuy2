@@ -2,7 +2,7 @@
 /* @var $this DefaultController */
 
 $this->breadcrumbs = array(
-	$this->module->id,
+    $this->module->id,
 );
 ?>
 
@@ -10,27 +10,26 @@ $this->breadcrumbs = array(
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="carousel-heading">
             <h4>ดำเนินการชำระเงิน</h4>
-			<?php
-			?>
+            <?php
+            ?>
         </div>
     </div>
 </div>
 
 <?php
 $i = 1;
-foreach($orders as $order)
-{
-	$this->renderPartial('_order_info', array(
-		'order'=>$order,
-		'supplierId'=>isset($supplierId) ? $supplierId : Yii::app()->session['supplierId'],
-		'i'=>$i));
-	$i++;
+foreach ($orders as $order) {
+    $this->renderPartial('_order_info', array(
+        'order' => $order,
+        'supplierId' => isset($supplierId) ? $supplierId : Yii::app()->session['supplierId'],
+        'i' => $i));
+    $i++;
 }
 ?>
 
 <?php
 $this->renderPartial('_order_info_summary', array(
-	'orderSummary'=>$orderSummary));
+    'orderSummary' => $orderSummary));
 ?>
 
 <?php
@@ -41,28 +40,28 @@ $confirmationContent = Content::model()->showConfirmationContentBySupplierId(iss
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="sidebar-box-heading">
             <i class="icons fa fa-file-o"></i>
-            <h4><?php echo $confirmationContent[0]->title; ?></h4>
+            <h4><?php echo isset($confirmationContent->title) ? $confirmationContent->title : "เงื่อนไขและข้อตกลง"; ?></h4>
         </div>
         <div class="sidebar-box-content sidebar-padding-box">
-			<?php echo $confirmationContent[0]->description; ?><br>
-			<div class="text-center">
-				<input type="checkbox" name="accept" id="acceptConfirm"/>
-				<label class="checkbox-label" for="acceptConfirm"> ยอมรับ <i>"ข้อตกลงและเงื่อนไข"</i></label>
-			</div>
-		</div>
+            <?php echo isset($confirmationContent->description) ? $confirmationContent->description : $confirmationContent; ?><br>
+            <div class="text-center">
+                <input type="checkbox" name="accept" id="acceptConfirm"/>
+                <label class="checkbox-label" for="acceptConfirm"> ยอมรับ <i>"ข้อตกลงและเงื่อนไข"</i></label>
+            </div>
+        </div>
 
-	</div>
+    </div>
 
 </div>
 
 <p class="pull-right">
     <a class="button big orange" href="<?php echo Yii::app()->homeUrl; ?>"><i class="icons icon-reply"></i>Continue Shopping</a>
     <!--<a class="button big blue" href="#"><i class="glyphicon glyphicon-refresh"></i> Update</a>-->
-	<?php
-	$supplier = Supplier::model()->findByPk($supplierId);
-	$minValue = (isset($supplier) && $supplier->minimumOrder > 0) ? $supplier->minimumOrder : Configuration::model()->find('name = "minValueToBuy"')->value;
-	$orderTotal = str_replace(",", "", $orderSummary['total']);
-	$checkOutClass = ($orderTotal < $minValue) ? "button big green hide" : "button big green";
-	?>
+    <?php
+    $supplier = Supplier::model()->findByPk($supplierId);
+    $minValue = (isset($supplier) && $supplier->minimumOrder > 0) ? $supplier->minimumOrder : Configuration::model()->find('name = "minValueToBuy"')->value;
+    $orderTotal = str_replace(",", "", $orderSummary['total']);
+    $checkOutClass = ($orderTotal < $minValue) ? "button big green hide" : "button big green";
+    ?>
     <a id="checkoutBtn" class="<?php echo $checkOutClass; ?> hide" href="<?php echo $this->createUrl('cart/checkout/id/' . $supplierId); ?>"><i class="glyphicon glyphicon-shopping-cart"></i> Check out</a>
 </p>
