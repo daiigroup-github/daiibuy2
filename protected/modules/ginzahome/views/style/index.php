@@ -59,7 +59,7 @@ $this->breadcrumbs = array(
 							<?php foreach($catToSubModels as $catToSubModel): ?>
 								<div class="col-md-4">
 									<a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId); ?>">
-										<img src="<?php echo $catToSubModel->subCategory->image; ?>" alt=""/>
+										<img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
 										<p><?php echo $catToSubModel->subCategory->title; ?></p>
 										<p><?php echo $catToSubModel->subCategory->description; ?></p>
 									</a>
