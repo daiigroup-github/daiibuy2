@@ -134,6 +134,9 @@ class ProductController extends MasterGinzahomeController
 		$price = 0;
 		$product = array();
 		$productSortOrder1 = '';
+
+        $allPrice = array();
+
 		foreach($category2ToProducts as $category2ToProduct)
 		{
 			if($i == 0)
@@ -152,6 +155,9 @@ class ProductController extends MasterGinzahomeController
 				$description = $category2ToProduct->product->description;
 				$productSortOrder1 = $category2ToProduct->product;
 			}
+
+            $allPrice[$i] = $price;
+
 			$i++;
 		}
 
@@ -190,7 +196,8 @@ class ProductController extends MasterGinzahomeController
 			'description'=>$description,
 			'images'=>$images,
 			'tabs'=>$tabs,
-			'productSortOrder1'=>$productSortOrder1
+			'productSortOrder1'=>$productSortOrder1,
+            'allPrice'=>$allPrice
 		));
 	}
 

@@ -33,7 +33,16 @@ $tabContent = '';
 					$tabId = isset($tab['id']) ? $tab['id'] : 'tab' . $i;
 					?>
 					<div id="<?php echo $tabId ?>">
-						<?php echo $tab['detail']; ?>
+						<?php
+                        if(strpos($tab['detail'], '{{pay1}}') !== false) {
+                            for($i=0;$i<4;$i++) {
+                                $j = $i+1;
+                                $tab['detail'] = str_replace("{{pay$j}}", number_format($allPrice[$i], 2), $tab['detail']);
+                            }
+                        }
+
+                        echo $tab['detail'];
+                        ?>
 
 						<?php
 						$detailChilds = ProductSpecGroup::model()->findAll("parentId = " . $tab["id"]);

@@ -145,7 +145,8 @@ $this->breadcrumbs = array(
 	<?php
 	if($tabs !== array())
 		$this->renderPartial('_product_tab', array(
-			'tabs'=>$tabs));
+			'tabs'=>$tabs,
+            'allPrice'=>$allPrice));
 	?>
 
 </div>
