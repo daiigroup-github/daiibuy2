@@ -353,4 +353,19 @@ class CategoryController extends MasterBackofficeController
 		}
 	}
 
+	public function actionStake()
+	{
+		$model = new CategoryStakeProvince();
+		$provinces = Province::model()->findAllProvinceArray();
+
+		if(isset($_GET["categoryId"]))
+		{
+			$model->categoryId = $_GET["categoryId"];
+		}
+
+		$this->render("_stake", array(
+			'model'=>$model,
+			'provinces'=>$provinces));
+	}
+
 }

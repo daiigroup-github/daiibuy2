@@ -1,6 +1,6 @@
 <?php
 
-class CategoryPaymentCondition extends CategoryPaymentConditionMaster
+class CategoryStakeProvince extends CategoryStakeProvinceMaster
 {
 	/**
 	 * Returns the static model of the specified AR class.
