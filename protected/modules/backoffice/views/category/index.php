@@ -103,7 +103,7 @@ return false;
 //					),
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
-						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])'
+						'url'=>'(isset(Yii::app()->user->supplierId) && Yii::app()->user->supplierId == 4)?Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"]."&isTheme=1"):Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])'
 					),
 					'image'=>array(
 						'label'=>'<br><u>image</u>',

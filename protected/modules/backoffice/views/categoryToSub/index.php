@@ -79,8 +79,13 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {product} {image} {description}',
+				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description}',
 				'buttons'=>array(
+					'subCat'=>array(
+						'label'=>'<br><u>Sub Category</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub?categoryId=".$data->subCategoryId."&brandModelId=".$_GET["brandModelId"])',
+						'visible'=>'isset(Yii::app()->user->supplierId) && Yii::app()->user->supplierId == 4'
+					),
 					'product'=>array(
 						'label'=>'<br><u>Product</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/product/indexCat2?category2Id=".$data->subCategoryId."&category1Id=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])'
@@ -127,8 +132,16 @@ return false;
 						<div class="col-lg-6">
 							<h3>New Category</h3>
 							<?php
-							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?categoryId=' . $_GET["categoryId"] . "&brandModelId=" . $_GET["brandModelId"]), array(
-								'class'=>'btn btn-xs btn-primary'));
+							if(isset($_GET["isTheme"]))
+							{
+								echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?categoryId=' . $_GET["categoryId"] . "&brandModelId=" . $_GET["brandModelId"] . "&isTheme=1"), array(
+									'class'=>'btn btn-xs btn-primary'));
+							}
+							else
+							{
+								echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?categoryId=' . $_GET["categoryId"] . "&brandModelId=" . $_GET["brandModelId"]), array(
+									'class'=>'btn btn-xs btn-primary'));
+							}
 							?>
 						</div>
 					</div>
@@ -148,7 +161,7 @@ return false;
 								return false;
 							}
 						},
-						data: {subCategoryId: $("#subCategoryId").val(), categoryId: <?php echo $_GET["categoryId"] ?>, brandModelId:<?php echo $_GET["brandModelId"] ?>},
+						data: {subCategoryId: $("#subCategoryId").val(), categoryId: <?php echo $_GET["categoryId"] ?>, brandModelId:<?php echo $_GET["brandModelId"] ?>, isTheme:<?php echo isset($_GET["isTheme"]) ? 1 : 0; ?>},
 						success: function (data) {
 							if (data.status)
 							{
