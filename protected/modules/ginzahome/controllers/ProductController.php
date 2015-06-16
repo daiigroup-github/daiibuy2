@@ -161,7 +161,19 @@ class ProductController extends MasterGinzahomeController
 			$i++;
 		}
 
-		$tabs = array();
+        $productOptionGroupModel = ProductOptionGroup::model()->find(array(
+            'condition'=>'productId=:productId',
+            'params'=>array(
+                ':productId'=>$productSortOrder1->productId
+            )
+        ));
+
+        foreach ($productOptionGroupModel->productOptions as $productOptionModel) {
+            $images[$productOptionModel->productOptionId] = Yii::app()->baseUrl . $productOptionModel->image;
+        }
+
+
+        $tabs = array();
 		$j = 0;
 		foreach($productSortOrder1->productSpecGroupsTypeDetails as $detail)
 		{
