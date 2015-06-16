@@ -40,10 +40,20 @@ class CartController extends MasterCheckoutController
                 $category2 = $order->orderItems[0]->product->category2ToProducts[0]->category2;
                 $cat2Desc = $category2->description;
 
+                $categoryStakeProvinceModel = CategoryStakeProvince::model()->find(array(
+                    'condition'=>'categoryId=:categoryId AND provinceId=:provinceId',
+                    'params'=>array(
+                        ':categoryId'=>$category2->categoryId,
+                        ':provinceId'=>$daiibuy->provinceId
+                    )
+                ));
+
+                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
+
                 $i++;
             }
 
-
+//        print_r($desc);
         }
 
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
