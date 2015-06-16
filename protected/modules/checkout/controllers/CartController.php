@@ -31,6 +31,21 @@ class CartController extends MasterCheckoutController
 				),
 			));
 		}
+
+        $desc = array();
+        if($id == 4) {
+            $i=0;
+            foreach ($orders as $order) {
+                $category = $order->orderItems[0]->product->category2ToProducts[0]->category;
+                $category2 = $order->orderItems[0]->product->category2ToProducts[0]->category2;
+                $cat2Desc = $category2->description;
+
+                $i++;
+            }
+
+
+        }
+
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
