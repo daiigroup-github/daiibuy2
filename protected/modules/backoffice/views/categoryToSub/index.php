@@ -98,6 +98,11 @@ return false;
 						'label'=>'<br><u>Description</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub/updateDescription/id/".$data->id)'
 					),
+					'payCondition'=>array(
+						'label'=>'<br><u>Pay Condition</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub/updatePayCondition/id/".$data->id)',
+						'visible'=>'(isset($_GET["categoryId"]) && Yii::app()->user->supplierId == 4)?1:0'
+					),
 					'stake'=>array(
 						'label'=>'<br><u>เข็ม</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/category/stake?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])',
