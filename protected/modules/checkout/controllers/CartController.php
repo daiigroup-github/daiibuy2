@@ -48,12 +48,13 @@ class CartController extends MasterCheckoutController
                     )
                 ));
 
-                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
+//                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
+                $desc[$i]['id'] = uniqid();
+                $desc[$i]['title'] = $category->title.' : '.$category2->title;
+                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
 
                 $i++;
             }
-
-//        print_r($desc);
         }
 
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
@@ -61,6 +62,7 @@ class CartController extends MasterCheckoutController
 			'orders'=>$orders,
 			'orderSummary'=>$orderSummary,
 			'supplierId'=>$id,
+            'desc'=>$desc
 		));
 	}
 
