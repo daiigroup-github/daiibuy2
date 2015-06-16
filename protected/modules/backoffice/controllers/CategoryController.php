@@ -355,17 +355,59 @@ class CategoryController extends MasterBackofficeController
 
 	public function actionStake()
 	{
+		$flag = true;
 		$model = new CategoryStakeProvince();
-		$provinces = Province::model()->findAllProvinceArray();
+		$provinces = Province::model()->findAll();
 
 		if(isset($_GET["categoryId"]))
 		{
 			$model->categoryId = $_GET["categoryId"];
 		}
 
+		if(isset($_POST["CategoryStakeProvince"]))
+		{
+			foreach($_POST["CategoryStakeProvince"] as $provinceId=> $data)
+			{
+				if(isset($data["stake"]) && !empty($data["stake"])):
+					$stake = CategoryStakeProvince::model()->find("categoryId = " . $_GET["categoryId"] . " AND provinceId = $provinceId");
+					if(isset($stake))
+					{
+						$model = $stake;
+					}
+					else
+					{
+						$model = new CategoryStakeProvince();
+					}
+					$model->categoryId = $_GET["categoryId"];
+					$model->provinceId = $provinceId;
+					$model->stake = $data["stake"];
+					$model->createDateTime = new CDbExpression("NOW()");
+					$model->updateDateTime = new CDbExpression("NOW()");
+
+					if(!$model->save())
+					{
+						$flag = FALSE;
+					}
+				endif;
+			}
+			if($flag)
+			{
+				if(isset($_POST["saveAndBack"]))
+				{
+					$this->redirect(array(
+						'/backoffice/categoryToSub',
+						'categoryId'=>$_GET["categoryId"],
+						'brandModelId'=>$_GET["brandModelId"],
+						'isTheme'=>1));
+				}
+			}
+		}
+
 		$this->render("_stake", array(
 			'model'=>$model,
-			'provinces'=>$provinces));
+			'provinces'=>$provinces,
+			'categoryId'=>isset($_GET["categoryId"]) ? $_GET["categoryId"] : NULL)
+		);
 	}
 
 }

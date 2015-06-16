@@ -108,7 +108,7 @@ return false;
 					'image'=>array(
 						'label'=>'<br><u>image</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryImage?categoryId=".$data->categoryId)'
-					)
+					),
 				)
 			),
 		),

@@ -79,7 +79,7 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description}',
+				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description} {stake}',
 				'buttons'=>array(
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
@@ -97,6 +97,11 @@ return false;
 					'description'=>array(
 						'label'=>'<br><u>Description</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/categoryToSub/updateDescription/id/".$data->id)'
+					),
+					'stake'=>array(
+						'label'=>'<br><u>เข็ม</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/category/stake?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])',
+						'visible'=>'(isset($_GET["categoryId"]) && isset($_GET["isTheme"]))?1:0'
 					)
 				)
 			),
