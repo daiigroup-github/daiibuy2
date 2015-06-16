@@ -6,8 +6,12 @@
 					<p class="list-group-item-text">เปรียบเทียบประเมินราคา</p>
 				</a></li>
 
-			<li class="<?php echo ($this->action->id == 'view' && ($model->status >= 3 )) ? 'active' : ''; ?>"><a href="#step-3-1">
+			<li class=""><a href="#step-3-1">
 					<h4 class="list-group-item-heading">Step 3-1</h4>
+					<p class="list-group-item-text">ชำระสัญญา</p>
+				</a></li>
+			<li class=""><a href="#step-3-2">
+					<h4 class="list-group-item-heading">Step 3-2</h4>
 					<p class="list-group-item-text">แบ่งชำระ</p>
 				</a></li>
 
