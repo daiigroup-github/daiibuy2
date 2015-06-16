@@ -101,7 +101,7 @@ return false;
 					'stake'=>array(
 						'label'=>'<br><u>เข็ม</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/category/stake?categoryId=".$data->categoryId."&brandModelId=".$_GET["brandModelId"])',
-						'visible'=>'(isset($_GET["categoryId"]))?1:0'
+						'visible'=>'(isset($_GET["categoryId"]) && Yii::app()->user->supplierId == 4)?1:0'
 					)
 				)
 			),
