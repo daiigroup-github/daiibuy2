@@ -354,14 +354,20 @@ function updateSetPrice(no)
 function addFavourite(userId, category2Id, baseUrl, isTheme)
 {
 	var url = "";
-	if (isTheme)
+        var word = "";
+	if (isTheme == 1)
 	{
 		url = baseUrl + '/madrid/theme/addFavourite'
+                word = "Theme";
 	}
-	else
+	else if(isTheme == 0)
 	{
 		url = baseUrl + '/madrid/set/addFavourite'
-	}
+                word = "Set";
+	}else{
+            url = baseUrl + '/madrid/product/addFavourite'
+            word = "Floor Tile";
+        }
 	$.ajax({
 		'url': url,
 		'dataType': 'json',
@@ -370,11 +376,11 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 		'success': function (data) {
 			if (data)
 			{
-				alert("เพิ่ม Theme สู่รายการที่ชื่นชอบสำเร็จ");
+				alert("เพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จ");
 			}
 			else
 			{
-				alert("ไม่สามารถเพิ่ม Theme สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
+				alert("ไม่สามารถเพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
 			}
 		},
 	});
