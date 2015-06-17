@@ -124,4 +124,16 @@ class CategoryToSub extends CategoryToSubMaster
 		return $this->find('categoryId = ' . $categoryId . ' and isType = 0');
 	}
 
+	public function findSubCatArrayByBrandModelIdAndCategoryId($brandModelId, $categoryId)
+	{
+		$result = array();
+		$models = $this->findAll("brandModelId =" . $brandModelId . " AND categoryId =" . $categoryId);
+		foreach($models as $item)
+		{
+			$result["subCategoryId"] = $item->subCategory->title;
+		}
+
+		return $result;
+	}
+
 }

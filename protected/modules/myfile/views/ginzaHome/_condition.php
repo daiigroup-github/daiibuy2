@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                        ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                            ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -104,7 +104,7 @@
 							<tr>
 								<td>รูปแบบ</td>
 								<td><?php
-									echo CHtml::dropDownList("styleId", "", ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
+									echo CHtml::dropDownList("categoryId", "", ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
 										'prompt'=>'-- เลือกแบบบ้าน --',
 										'id'=>'styleId'
 										,
@@ -128,7 +128,7 @@
 							<tr>
 								<td>แบบบ้าน</td>
 								<td><?php
-									echo CHtml::dropDownList("categoryId", "", array(), array(
+									echo CHtml::dropDownList("category2Id", "", CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
 										'prompt'=>'-- เลือกแบบบ้าน --'));
 									?></td>
 							</tr>
