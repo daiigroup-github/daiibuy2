@@ -13,6 +13,8 @@
  * @property string $total
  * @property string $groupName
  * @property string $area
+ * @property string $productOptionId
+ * @property string $styleId
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -41,13 +43,13 @@ class OrderItemsMaster extends MasterCActiveRecord
 		return array(
 			array('orderId, title, price, quantity, total, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
-			array('orderId, productId', 'length', 'max'=>20),
+			array('orderId, productId, productOptionId, styleId', 'length', 'max'=>20),
 			array('title, groupName', 'length', 'max'=>45),
 			array('price, total, area', 'length', 'max'=>15),
 			array('quantity', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderItemsId, orderId, productId, title, price, quantity, total, groupName, area, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderItemsId, orderId, productId, title, price, quantity, total, groupName, area, productOptionId, styleId, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,6 +81,8 @@ class OrderItemsMaster extends MasterCActiveRecord
 			'total' => 'Total',
 			'groupName' => 'Group Name',
 			'area' => 'Area',
+			'productOptionId' => 'Product Option',
+			'styleId' => 'Style',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -103,34 +107,20 @@ class OrderItemsMaster extends MasterCActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		if(isset($this->searchText) && !empty($this->searchText))
-		{
-			$this->orderItemsId = $this->searchText;
-			$this->orderId = $this->searchText;
-			$this->productId = $this->searchText;
-			$this->title = $this->searchText;
-			$this->price = $this->searchText;
-			$this->quantity = $this->searchText;
-			$this->total = $this->searchText;
-			$this->groupName = $this->searchText;
-			$this->area = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
-		}
-
-		$criteria->compare('orderItemsId',$this->orderItemsId,true, 'OR');
-		$criteria->compare('orderId',$this->orderId,true, 'OR');
-		$criteria->compare('productId',$this->productId,true, 'OR');
-		$criteria->compare('title',$this->title,true, 'OR');
-		$criteria->compare('price',$this->price,true, 'OR');
-		$criteria->compare('quantity',$this->quantity,true, 'OR');
-		$criteria->compare('total',$this->total,true, 'OR');
-		$criteria->compare('groupName',$this->groupName,true, 'OR');
-		$criteria->compare('area',$this->area,true, 'OR');
+		$criteria->compare('orderItemsId',$this->orderItemsId,true);
+		$criteria->compare('orderId',$this->orderId,true);
+		$criteria->compare('productId',$this->productId,true);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('price',$this->price,true);
+		$criteria->compare('quantity',$this->quantity,true);
+		$criteria->compare('total',$this->total,true);
+		$criteria->compare('groupName',$this->groupName,true);
+		$criteria->compare('area',$this->area,true);
+		$criteria->compare('productOptionId',$this->productOptionId,true);
+		$criteria->compare('styleId',$this->styleId,true);
 		$criteria->compare('status',$this->status);
-		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
-		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
+		$criteria->compare('createDateTime',$this->createDateTime,true);
+		$criteria->compare('updateDateTime',$this->updateDateTime,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

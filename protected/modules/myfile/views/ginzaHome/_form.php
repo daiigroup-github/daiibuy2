@@ -132,8 +132,8 @@ $this->breadcrumbs = array(
 														echo CHtml::link("ชำระเงิน", "", array(
 															'class'=>'button blue btn-xs',
 															'onclick'=>"payClick(2)"));
-														$this->renderPartial("_condition", array(
-															'period'=>2));
+//														$this->renderPartial("_condition", array(
+//															'period'=>2));
 														?>
 													</form>
 												<?php else: ?>
@@ -175,8 +175,8 @@ $this->breadcrumbs = array(
 															echo CHtml::link("ชำระเงิน", "", array(
 																'class'=>'button blue btn-xs',
 																'onclick'=>"payClick(3)"));
-															$this->renderPartial("_condition", array(
-																'period'=>3));
+//															$this->renderPartial("_condition", array(
+//																'period'=>3));
 															?>
 														</form>
 													<?php else: ?>
@@ -219,8 +219,8 @@ $this->breadcrumbs = array(
 															echo CHtml::link("ชำระเงิน", "", array(
 																'class'=>'button blue btn-xs',
 																'onclick'=>"payClick(4)"));
-															$this->renderPartial("_condition", array(
-																'period'=>4));
+//															$this->renderPartial("_condition", array(
+//																'period'=>4));
 															?>
 														</form>
 													<?php else: ?>
@@ -298,8 +298,8 @@ $this->breadcrumbs = array(
 													echo CHtml::link("ชำระเงิน", "", array(
 														'class'=>'button blue btn-xs',
 														'onclick'=>"payClick($i)"));
-													$this->renderPartial("_condition", array(
-														'period'=>$i));
+//													$this->renderPartial("_condition", array(
+//														'period'=>$i));
 												}
 												else
 												{
@@ -338,8 +338,11 @@ $this->breadcrumbs = array(
 		<div class="row sidebar-box blue " style="background-color: white">
 			<div class="row">
 				<div class="col-lg-12">
-					<?php $this->renderPartial("_condition", array(
-						'period'=>2));
+					<?php
+					$this->renderPartial("_condition", array(
+						'model'=>$model,
+						'period'=>2,
+						'brandModels'=>$brandModels));
 					?>
 				</div>
 			</div>
@@ -349,7 +352,7 @@ $this->breadcrumbs = array(
 
 		<?php if(isset($order)): ?>
 
-<?php endif; ?>
+		<?php endif; ?>
 		<div class="row sidebar-box blue " style="background-color: white">
 			<div class="col-md-12" style="text-align: right">
 				<a onclick="backToStep3()" class="btn btn-success">Back</a>
@@ -419,7 +422,7 @@ $this->breadcrumbs = array(
 									?>
 								</td>
 								<td style="font-size:24px">
-	<?php echo number_format($item->orderItems[0]->product->price); ?>
+									<?php echo number_format($item->orderItems[0]->product->price); ?>
 								</td>
 								<td>
 									<?php
@@ -434,11 +437,11 @@ $this->breadcrumbs = array(
 									?>
 								</td>
 							</tr>
-<?php endforeach; ?>
+						<?php endforeach; ?>
 					</tbody>
 				</table>
 				<div class="row hide alert" id="period4">
-<?php foreach($child3->orders as $item): ?>
+					<?php foreach($child3->orders as $item): ?>
 						<div class="col-lg-3">งวดที่ 4</div>
 						<div class="col-lg-3">
 							<?php
@@ -446,10 +449,10 @@ $this->breadcrumbs = array(
 							?>
 						</div>
 						<div class="col-lg-3">
-	<?php echo number_format($item->orderItems[0]->product->price); ?>
+							<?php echo number_format($item->orderItems[0]->product->price); ?>
 						</div>
 						<div class="col-lg-3"></div>
-<?php endforeach; ?>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>

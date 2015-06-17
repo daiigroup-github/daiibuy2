@@ -25,7 +25,10 @@ $form = $this->beginWidget('CActiveForm', array(
 			$stake = CategoryStakeProvince::model()->find("categoryId = $categoryId AND provinceId = $province->provinceId");
 			?>
 			<tr>
-				<td><?php echo isset($province->provinceName) ? $province->provinceName : "" ?></td>
+				<td><?php
+					echo isset($province->provinceName) ? $province->provinceName : "";
+					?>
+				</td>
 				<td><?php
 					echo CHtml::textField("CategoryStakeProvince[$province->provinceId][stake]", isset($stake) ? $stake->stake : "", array(
 						'class'=>'col-lg-12'))
