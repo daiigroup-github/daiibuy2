@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                       ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                        ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -128,8 +128,8 @@
 							<tr>
 								<td>แบบบ้าน</td>
 								<td><?php
-									echo CHtml::dropDownList("categoryId", "", CategoryToSub::model()->findAll("brandModelId = ".$category2ToProduct->brandModelId)), array(
-									'prompt'=>'-- เลือกแบบบ้าน --'));
+									echo CHtml::dropDownList("categoryId", "", array(), array(
+										'prompt'=>'-- เลือกแบบบ้าน --'));
 									?></td>
 							</tr>
 							<tr>
