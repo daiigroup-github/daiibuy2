@@ -77,7 +77,12 @@ return false;
 				)
 			),
 			'title',
-			'description',
+//			'description',
+            array(
+                'name'=>'description',
+                'type'=>'html',
+                'value'=>'$data->description'
+            ),
 			'parentId',
 			/*
 			  'type',

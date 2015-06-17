@@ -40,7 +40,10 @@ class CategoryToSub extends CategoryToSubMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
-            'brandModel'=>array(self::BELONGS_TO, 'BrandModel', 'brandModelId'),
+				'brandModel'=>array(
+					self::BELONGS_TO,
+					'BrandModel',
+					'brandModelId'),
 		));
 	}
 

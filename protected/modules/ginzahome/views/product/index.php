@@ -97,11 +97,22 @@ $this->breadcrumbs = array(
 							<div class="col-sm-7">
 								<?php
 								echo CHtml::dropDownList("productOptionGroup[$productOptionGroup->productOptionGroupId]", '', CHtml::listData($productOptionGroup->productOptions, 'productOptionId', 'title'), array(
-									'class'=>'chosen-select-full-width',
+									'class'=>'form-control',
 									'prompt'=>'-- Select --',
 									'name'=>'productOption'
 									)
 								);
+
+                                if($productOptionGroup->title == 'COLOR') {
+                                    $domId = 'productOptionGroup_'.$productOptionGroup->productOptionGroupId;
+                                    Yii::app()->clientScript->registerScript('changeColor', "
+                                        var dom = $('#$domId');
+                                        dom.on('change', function(){
+                                            $('#imageThumbnail'+$(this).val()).trigger('click');
+                                        });
+                                    ");
+                                }
+
 								?>
 							</div>
 						</div>
@@ -145,7 +156,8 @@ $this->breadcrumbs = array(
 	<?php
 	if($tabs !== array())
 		$this->renderPartial('_product_tab', array(
-			'tabs'=>$tabs));
+			'tabs'=>$tabs,
+            'allPrice'=>$allPrice));
 	?>
 
 </div>

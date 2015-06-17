@@ -83,6 +83,10 @@ $this->breadcrumbs = array(
 						<tbody>
 							<?php
 							$i = 1;
+							$child1 = null;
+							$child2 = null;
+							$child3 = null;
+							$child4 = null;
 							$parentId = $model->orderGroupId;
 							$isShowPayButton = true;
 							foreach($model->orders as $item):
@@ -128,8 +132,8 @@ $this->breadcrumbs = array(
 														echo CHtml::link("ชำระเงิน", "", array(
 															'class'=>'button blue btn-xs',
 															'onclick'=>"payClick(2)"));
-														$this->renderPartial("_condition", array(
-															'period'=>2));
+//														$this->renderPartial("_condition", array(
+//															'period'=>2));
 														?>
 													</form>
 												<?php else: ?>
@@ -171,8 +175,8 @@ $this->breadcrumbs = array(
 															echo CHtml::link("ชำระเงิน", "", array(
 																'class'=>'button blue btn-xs',
 																'onclick'=>"payClick(3)"));
-															$this->renderPartial("_condition", array(
-																'period'=>3));
+//															$this->renderPartial("_condition", array(
+//																'period'=>3));
 															?>
 														</form>
 													<?php else: ?>
@@ -215,8 +219,8 @@ $this->breadcrumbs = array(
 															echo CHtml::link("ชำระเงิน", "", array(
 																'class'=>'button blue btn-xs',
 																'onclick'=>"payClick(4)"));
-															$this->renderPartial("_condition", array(
-																'period'=>4));
+//															$this->renderPartial("_condition", array(
+//																'period'=>4));
 															?>
 														</form>
 													<?php else: ?>
@@ -294,8 +298,8 @@ $this->breadcrumbs = array(
 													echo CHtml::link("ชำระเงิน", "", array(
 														'class'=>'button blue btn-xs',
 														'onclick'=>"payClick($i)"));
-													$this->renderPartial("_condition", array(
-														'period'=>$i));
+//													$this->renderPartial("_condition", array(
+//														'period'=>$i));
 												}
 												else
 												{
@@ -326,6 +330,129 @@ $this->breadcrumbs = array(
 				<div class="col-md-12 wizard-control">
 					<!--<a class="btn btn-warning btn-lg col-lg-offset-3" onclick="updatePrice()"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>-->
 					<!--<button id="nextToStep4" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row setup-content" id="step-3-1">
+		<div class="row sidebar-box blue " style="background-color: white">
+			<div class="row">
+				<div class="col-lg-12">
+					<?php
+					$this->renderPartial("_condition", array(
+						'model'=>$model,
+						'period'=>2,
+						'brandModels'=>$brandModels));
+					?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row setup-content" id="step-3-2">
+
+		<?php if(isset($order)): ?>
+
+		<?php endif; ?>
+		<div class="row sidebar-box blue " style="background-color: white">
+			<div class="col-md-12" style="text-align: right">
+				<a onclick="backToStep3()" class="btn btn-success">Back</a>
+			</div>
+			<div class="col-md-12" style="border:1px black solid" id="item-table">
+				<div class="control-label col-md-2">
+					เลขที่ใบสั่งซื้อสินค้า
+				</div>
+				<div class="col-md-10">
+					<h4><?php echo $model->orderNo; ?></h4>
+				</div>
+			</div>
+			<div class="col-md-12 text-center">
+				<?php
+				echo CHtml::image(Yii::app()->baseUrl . $model->orders[0]->orderItems[0]->product->productImagesSort[0]->image, "", array(
+					'style'=>'width:500px'))
+				?>
+			</div>
+			<div class="col-md-12" style="border:1px black solid" id="item-table">
+				<h2>GINZA HOME</h2>
+				<h4>ตารางแสดงรายละเอียดสินค้า</h4>
+				<br>
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<table class="table table-bordered">
+							<tr>
+								<td>House</td>
+								<td><?php echo $cat2ToProduct->category->title; ?></td>
+							</tr>
+							<tr>
+								<td>Price</td>
+								<td><?php echo number_format($price, 0) ?></td>
+							</tr>
+							<tr>
+								<td>Spec</td>
+								<td><?php echo $cat2ToProduct->category2->title; ?></td>
+							</tr>
+							<tr>
+								<td>Colour</td>
+								<td>Silver</td>
+							</tr>
+	<!--								<tr>
+								<td>Function</td>
+								<td></td>
+							</tr>-->
+						</table>
+					</div>
+				</div>
+				<table class="row hide table table-bordered" id="period3" >
+					<thead>
+						<tr style="background-color: blue">
+							<th>งวด</th>
+							<th>รายการ</th>
+							<th>ราคา</th>
+							<th>ยอดชำระ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						foreach($child2->orders as $item):
+							?>
+							<tr style="color:black">
+								<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 3</span></td>
+								<td>
+									<?php
+									echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
+									?>
+								</td>
+								<td style="font-size:24px">
+									<?php echo number_format($item->orderItems[0]->product->price); ?>
+								</td>
+								<td>
+									<?php
+									echo CHtml::textField("payValue", $item->orderItems[0]->product->price, array(
+										'class'=>'input-large text-right',
+										'style'=>'border:2px solid black;color:blue;font-size:24px'))
+									?>
+									<?php
+									echo CHtml::link("ชำระเงิน", "", array(
+										'class'=>'btn btn-primary',
+										'onclick'=>"pay(3)"));
+									?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+				<div class="row hide alert" id="period4">
+					<?php foreach($child3->orders as $item): ?>
+						<div class="col-lg-3">งวดที่ 4</div>
+						<div class="col-lg-3">
+							<?php
+							echo $item->orderItems[0]->product->name . " <br>" . $this->getOrderPeriodText(4);
+							?>
+						</div>
+						<div class="col-lg-3">
+							<?php echo number_format($item->orderItems[0]->product->price); ?>
+						</div>
+						<div class="col-lg-3"></div>
+					<?php endforeach; ?>
 				</div>
 			</div>
 		</div>

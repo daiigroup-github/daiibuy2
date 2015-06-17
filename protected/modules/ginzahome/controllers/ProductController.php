@@ -134,6 +134,9 @@ class ProductController extends MasterGinzahomeController
 		$price = 0;
 		$product = array();
 		$productSortOrder1 = '';
+
+        $allPrice = array();
+
 		foreach($category2ToProducts as $category2ToProduct)
 		{
 			if($i == 0)
@@ -152,10 +155,25 @@ class ProductController extends MasterGinzahomeController
 				$description = $category2ToProduct->product->description;
 				$productSortOrder1 = $category2ToProduct->product;
 			}
+
+            $allPrice[$i] = $price;
+
 			$i++;
 		}
 
-		$tabs = array();
+        $productOptionGroupModel = ProductOptionGroup::model()->find(array(
+            'condition'=>'productId=:productId',
+            'params'=>array(
+                ':productId'=>$productSortOrder1->productId
+            )
+        ));
+
+        foreach ($productOptionGroupModel->productOptions as $productOptionModel) {
+            $images[$productOptionModel->productOptionId] = Yii::app()->baseUrl . $productOptionModel->image;
+        }
+
+
+        $tabs = array();
 		$j = 0;
 		foreach($productSortOrder1->productSpecGroupsTypeDetails as $detail)
 		{
@@ -190,7 +208,8 @@ class ProductController extends MasterGinzahomeController
 			'description'=>$description,
 			'images'=>$images,
 			'tabs'=>$tabs,
-			'productSortOrder1'=>$productSortOrder1
+			'productSortOrder1'=>$productSortOrder1,
+            'allPrice'=>$allPrice
 		));
 	}
 

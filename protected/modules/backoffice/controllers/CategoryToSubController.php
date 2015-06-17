@@ -292,6 +292,25 @@ class CategoryToSubController extends MasterBackofficeController
 		));
 	}
 
+	public function actionUpdatePayCondition($id)
+	{
+		$model = $this->loadModel($id);
+		if(isset($_POST["CategoryToSub"]))
+		{
+			$model->attributes = $_POST["CategoryToSub"];
+			if($model->save())
+			{
+				$this->redirect(array(
+					'index',
+					'categoryId'=>$model->categoryId,
+					'brandModelId'=>$model->brandModelId));
+			}
+		}
+		$this->render('update_pay_condition', array(
+			'model'=>$model,
+		));
+	}
+
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

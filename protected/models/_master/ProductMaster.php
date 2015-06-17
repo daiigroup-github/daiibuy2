@@ -44,6 +44,7 @@
  * @property string $viewed
  * @property string $marginId
  * @property string $description
+ * @property string $payCondition
  *
  * The followings are the available model relations:
  * @property Category2ToProduct[] $category2ToProducts
@@ -56,20 +57,13 @@
 class ProductMaster extends MasterCActiveRecord {
 
     /**
-     * @return string the associated database table name
-     */
-    public function tableName() {
-        return 'product';
-    }
-
-    /**
      * @return array validation rules for model attributes.
      */
     public function rules() {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('supplierId, code, quantity, productUnits, price, priceGroupId, dateAvailable, length, width, height, dimensionUnits, metricUnits', 'required'),
+            array('supplierId, code, quantity, productUnits, price, priceGroupId, dateAvailable, length, width, height, dimensionUnits, metricUnits, updateDateTime', 'required'),
             array('quantity, stockStatusId, shipping, noPerBox, subtract, sortOrder, status', 'numerical', 'integerOnly' => true),
             array('supplierId, brandId, brandModelId, categoryId, categoryId2, code, isbn, taxClassId, marginId', 'length', 'max' => 20),
             array('name', 'length', 'max' => 80),
@@ -83,12 +77,10 @@ class ProductMaster extends MasterCActiveRecord {
             array('points', 'length', 'max' => 8),
             array('minimum', 'length', 'max' => 11),
             array('viewed', 'length', 'max' => 5),
-            array('createDateTime, updateDateTime, area, description', 'safe'),
-            array('createDateTime, updateDateTime', 'default', 'value' => new CDbExpression('NOW()'), 'on' => 'insert'),
-            array('updateDateTime', 'default', 'value' => new CDbExpression('NOW()'), 'on' => 'update'),
+            array('createDateTime, description, payCondition', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('productId, supplierId, brandId, brandModelId, categoryId, categoryId2, code, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, otherPrice, noPerBox, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, area, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description', 'safe', 'on' => 'search'),
+            array('productId, supplierId, brandId, brandModelId, categoryId, categoryId2, code, name, isbn, sku, upc, location, quantity, productUnits, stockStatusId, image, shipping, price, otherPrice, noPerBox, priceGroupId, points, taxClassId, dateAvailable, weight, length, width, height, area, dimensionUnits, metricUnits, subtract, minimum, sortOrder, status, createDateTime, updateDateTime, viewed, marginId, description, payCondition', 'safe', 'on' => 'search'),
         );
     }
 
@@ -100,7 +92,6 @@ class ProductMaster extends MasterCActiveRecord {
         // class name for the relations automatically generated below.
         return array(
             'category2ToProducts' => array(self::HAS_MANY, 'Category2ToProduct', 'productId'),
-            'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
             'orderItems' => array(self::HAS_MANY, 'OrderItems', 'productId'),
             'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
             'productImages' => array(self::HAS_MANY, 'ProductImage', 'productId'),
@@ -108,6 +99,10 @@ class ProductMaster extends MasterCActiveRecord {
             'productSpecGroups' => array(self::HAS_MANY, 'ProductSpecGroup', 'productId'),
         );
     }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
 
     /**
      * @return array customized attribute labels (name=>label)
@@ -171,7 +166,6 @@ class ProductMaster extends MasterCActiveRecord {
      */
     public function search() {
         // @todo Please modify the following code to remove attributes that should not be searched.
-
         $criteria = new CDbCriteria;
 
         if (isset($this->searchText) && !empty($this->searchText)) {

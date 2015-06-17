@@ -16,10 +16,10 @@
 </div>
 <div id="product-carousel">
     <ul class="slides">
-        <?php foreach ($images as $image): ?>
+        <?php foreach ($images as $id=>$image): ?>
             <li>
                 <a class="fancybox" rel="product-images" href="<?php echo $image; ?>"></a>
-                <img src="<?php echo $image; ?>" data-large="<?php echo $image; ?>" alt=""/>
+                <img src="<?php echo $image; ?>" data-large="<?php echo $image; ?>" alt="" id="imageThumbnail<?php echo $id;?>" />
             </li>
         <?php endforeach; ?>
     </ul>

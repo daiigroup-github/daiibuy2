@@ -31,11 +31,38 @@ class CartController extends MasterCheckoutController
 				),
 			));
 		}
+
+        $desc = array();
+        if($id == 4) {
+            $i=0;
+            foreach ($orders as $order) {
+                $category = $order->orderItems[0]->product->category2ToProducts[0]->category;
+                $category2 = $order->orderItems[0]->product->category2ToProducts[0]->category2;
+                $cat2Desc = $category2->description;
+
+                $categoryStakeProvinceModel = CategoryStakeProvince::model()->find(array(
+                    'condition'=>'categoryId=:categoryId AND provinceId=:provinceId',
+                    'params'=>array(
+                        ':categoryId'=>$category2->categoryId,
+                        ':provinceId'=>$daiibuy->provinceId
+                    )
+                ));
+
+//                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
+                $desc[$i]['id'] = uniqid();
+                $desc[$i]['title'] = $category->title.' : '.$category2->title;
+                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
+
+                $i++;
+            }
+        }
+
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
 			'orderSummary'=>$orderSummary,
 			'supplierId'=>$id,
+            'desc'=>$desc
 		));
 	}
 

@@ -1,36 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "order_items".
+ * This is the model class for table "category_stake_province".
  *
- * The followings are the available columns in table 'order_items':
- * @property string $orderItemsId
- * @property string $orderId
- * @property string $productId
- * @property string $title
- * @property string $price
- * @property string $quantity
- * @property string $total
- * @property string $groupName
- * @property string $area
- * @property string $productOptionId
- * @property string $styleId
+ * The followings are the available columns in table 'category_stake_province':
+ * @property string $id
+ * @property string $categoryId
+ * @property string $stake
+ * @property string $provinceId
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
- *
- * The followings are the available model relations:
- * @property Order $order
- * @property Product $product
  */
-class OrderItemsMaster extends MasterCActiveRecord
+class CategoryStakeProvinceMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'order_items';
+		return 'category_stake_province';
 	}
 
 	/**
@@ -41,15 +30,12 @@ class OrderItemsMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('orderId, title, price, quantity, total, createDateTime, updateDateTime', 'required'),
+			array('categoryId, stake, provinceId, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
-			array('orderId, productId, productOptionId, styleId', 'length', 'max'=>20),
-			array('title, groupName', 'length', 'max'=>45),
-			array('price, total, area', 'length', 'max'=>15),
-			array('quantity', 'length', 'max'=>10),
+			array('categoryId, provinceId', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderItemsId, orderId, productId, title, price, quantity, total, groupName, area, productOptionId, styleId, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
+			array('id, categoryId, stake, provinceId, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,8 +47,6 @@ class OrderItemsMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'order' => array(self::BELONGS_TO, 'Order', 'orderId'),
-			'product' => array(self::BELONGS_TO, 'Product', 'productId'),
 		);
 	}
 
@@ -72,17 +56,10 @@ class OrderItemsMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'orderItemsId' => 'Order Items',
-			'orderId' => 'Order',
-			'productId' => 'Product',
-			'title' => 'Title',
-			'price' => 'Price',
-			'quantity' => 'Quantity',
-			'total' => 'Total',
-			'groupName' => 'Group Name',
-			'area' => 'Area',
-			'productOptionId' => 'Product Option',
-			'styleId' => 'Style',
+			'id' => 'ID',
+			'categoryId' => 'Category',
+			'stake' => 'Stake',
+			'provinceId' => 'Province',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -107,17 +84,10 @@ class OrderItemsMaster extends MasterCActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('orderItemsId',$this->orderItemsId,true);
-		$criteria->compare('orderId',$this->orderId,true);
-		$criteria->compare('productId',$this->productId,true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('price',$this->price,true);
-		$criteria->compare('quantity',$this->quantity,true);
-		$criteria->compare('total',$this->total,true);
-		$criteria->compare('groupName',$this->groupName,true);
-		$criteria->compare('area',$this->area,true);
-		$criteria->compare('productOptionId',$this->productOptionId,true);
-		$criteria->compare('styleId',$this->styleId,true);
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('categoryId',$this->categoryId,true);
+		$criteria->compare('stake',$this->stake,true);
+		$criteria->compare('provinceId',$this->provinceId,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true);
 		$criteria->compare('updateDateTime',$this->updateDateTime,true);
@@ -131,7 +101,7 @@ class OrderItemsMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return OrderItemsMaster the static model class
+	 * @return CategoryStakeProvinceMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

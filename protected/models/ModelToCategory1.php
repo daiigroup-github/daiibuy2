@@ -93,4 +93,16 @@ class ModelToCategory1 extends ModelToCategory1Master
 		));
 	}
 
+	public function findAllCatArrayFromBrandModelId($brandModelId)
+	{
+		$result = array();
+		$models = $this->findAll("brandModelId =" . $brandModelId);
+
+		foreach($models as $item)
+		{
+			$result[$item->categoryId] = $item->category->title;
+		}
+		return $result;
+	}
+
 }

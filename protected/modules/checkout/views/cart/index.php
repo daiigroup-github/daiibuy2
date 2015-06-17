@@ -4,7 +4,6 @@ $this->breadcrumbs = array(
 	$this->module->id,
 );
 ?>
-
 <div class="row">
 
     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -35,6 +34,7 @@ foreach($carts as $cart)
 $this->renderPartial('_order_info_summary', array(
 	'cart'=>$cart));
 ?>
+
 
 <p class="pull-right">
     <a class="button big orange" href="#"><i class="icons icon-reply"></i>Continue Shopping</a>

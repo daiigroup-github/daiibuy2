@@ -25,6 +25,7 @@ class GinzaHomeController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 		Yii::app()->session['supplierId'] = 4;
+		$brandModels = BrandModel::model()->findAll("supplierId = 4 AND status = 1");
 		$model = OrderGroup::model()->findByPk($id);
 		$productId = $model->orders[0]->orderItems[0]->productId;
 		if(isset($model->child))
@@ -71,7 +72,8 @@ class GinzaHomeController extends MasterMyFileController
 			'model'=>$model,
 			'productWithOutPay'=>$productWithOutPay,
 			'cat2ToProduct'=>$cat2ToProduct,
-			'price'=>$price
+			'price'=>$price,
+			'brandModels'=>$brandModels
 		));
 	}
 
@@ -94,6 +96,52 @@ class GinzaHomeController extends MasterMyFileController
 	public function getOrderPeriodText($period)
 	{
 		return $this->findAllOrderPeriodArray[$period];
+	}
+
+	public function actionFindStyle()
+	{
+		if(isset($_POST['brandModelId']))
+		{
+			$res = '';
+			$styles = ModelToCategory1::model()->findAll(array(
+				'condition'=>'brandModelId=:brandModelId',
+				'params'=>array(
+					':brandModelId'=>$_POST['brandModelId'],
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก Style --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->category->categoryId . '">' . $style->category->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindHouseModel()
+	{
+
+		if(isset($_POST['categoryId']))
+		{
+			$res = '';
+			$styles = CategoryToSub::model()->findAll(array(
+				'condition'=>'categoryId=:categoryId AND brandModelId = :brandModelId',
+				'params'=>array(
+					':categoryId'=>$_POST['categoryId'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก House Model --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->subCategory->categoryId . '">' . $style->subCategory->title . '</option>';
+			}
+
+			echo $res;
+		}
 	}
 
 }

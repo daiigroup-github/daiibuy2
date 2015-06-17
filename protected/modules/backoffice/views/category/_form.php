@@ -46,7 +46,7 @@
 			<?php echo $form->error($model, 'title'); ?>
 		</div>
 	</div>
-	
+
 
 	<div class="form-group">
 		<?php

@@ -33,6 +33,13 @@ $this->renderPartial('_order_info_summary', array(
 ?>
 
 <?php
+//description tab
+if($desc !== array()) {
+    $this->renderPartial('_desc_tab', array('tabs'=>$desc));
+}
+?>
+
+<?php
 $confirmationContent = Content::model()->showConfirmationContentBySupplierId(isset($supplierId) ? $supplierId : Yii::app()->session['supplierId']);
 //	throw new Exception(print_r($confirmationContent, true));
 ?>
