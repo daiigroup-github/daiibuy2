@@ -38,7 +38,13 @@ class CartController extends MasterCheckoutController
             foreach ($orders as $order) {
                 $category = $order->orderItems[0]->product->category2ToProducts[0]->category;
                 $category2 = $order->orderItems[0]->product->category2ToProducts[0]->category2;
-                $cat2Desc = $category2->description;
+                $categoryToSub = CategoryToSub::model()->find(array(
+                    'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
+                    'params'=>array(
+                        ':categoryId'=>$category->categoryId,
+                        ':subCategoryId'=>$category2->categoryId
+                    )
+                ));
 
                 $categoryStakeProvinceModel = CategoryStakeProvince::model()->find(array(
                     'condition'=>'categoryId=:categoryId AND provinceId=:provinceId',
@@ -51,7 +57,7 @@ class CartController extends MasterCheckoutController
 //                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
                 $desc[$i]['id'] = uniqid();
                 $desc[$i]['title'] = $category->title.' : '.$category2->title;
-                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
+                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $categoryToSub->description);
 
                 $i++;
             }
