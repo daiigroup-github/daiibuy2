@@ -20,7 +20,7 @@
 		),
 	));
 	?>
-	<hr><h3 class="alert alert-info">Sub Category Description</h3>
+	<hr><h3 class="alert alert-info">Update Pay Condition</h3>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 	<?php
 	echo $form->errorSummary($model, '', '', array(

@@ -79,7 +79,7 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description} {stake}',
+				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description} {payCondition} {stake}',
 				'buttons'=>array(
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',

@@ -10,9 +10,10 @@
  * @property string $subCategoryId
  * @property integer $isTheme
  * @property integer $isSet
- * @property interger $isType
+ * @property integer $isType
  * @property integer $sortOrder
  * @property string $description
+ * @property string $payCondition
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -23,7 +24,6 @@
  */
 class CategoryToSubMaster extends MasterCActiveRecord
 {
-
 	/**
 	 * @return string the associated database table name
 	 */
@@ -40,36 +40,13 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array(
-				'categoryId, subCategoryId',
-				'required'),
-			array(
-				'isTheme, isSet, sortOrder, status, isType',
-				'numerical',
-				'integerOnly'=>true),
-			array(
-				'brandModelId, categoryId, subCategoryId',
-				'length',
-				'max'=>20),
-			array(
-				'description, createDateTime, updateDateTime',
-				'safe'),
-			array(
-				'createDateTime, updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'insert'),
-			array(
-				'updateDateTime',
-				'default',
-				'value'=>new CDbExpression('NOW()'),
-				'on'=>'update'),
+			array('categoryId, subCategoryId, createDateTime, updateDateTime', 'required'),
+			array('isTheme, isSet, isType, sortOrder, status', 'numerical', 'integerOnly'=>true),
+			array('brandModelId, categoryId, subCategoryId', 'length', 'max'=>20),
+			array('description, payCondition', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array(
-				'id, brandModelId, categoryId, subCategoryId, isTheme, isSet, sortOrder, description, status, createDateTime, updateDateTime',
-				'safe',
-				'on'=>'search'),
+			array('id, brandModelId, categoryId, subCategoryId, isTheme, isSet, isType, sortOrder, description, payCondition, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -81,14 +58,8 @@ class CategoryToSubMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category'=>array(
-				self::BELONGS_TO,
-				'Category',
-				'categoryId'),
-			'subCategory'=>array(
-				self::BELONGS_TO,
-				'Category',
-				'subCategoryId'),
+			'category' => array(self::BELONGS_TO, 'Category', 'categoryId'),
+			'subCategory' => array(self::BELONGS_TO, 'Category', 'subCategoryId'),
 		);
 	}
 
@@ -98,18 +69,19 @@ class CategoryToSubMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id'=>'ID',
-			'brandModelId'=>'Brand Model',
-			'categoryId'=>'Category',
-			'subCategoryId'=>'Sub Category',
-			'isTheme'=>'Is Theme',
-			'isSet'=>'Is Set',
-			'isType'=>'Is Type',
-			'sortOrder'=>'Sort Order',
-			'description'=>'Description',
-			'status'=>'Status',
-			'createDateTime'=>'Create Date Time',
-			'updateDateTime'=>'Update Date Time',
+			'id' => 'ID',
+			'brandModelId' => 'Brand Model',
+			'categoryId' => 'Category',
+			'subCategoryId' => 'Sub Category',
+			'isTheme' => 'Is Theme',
+			'isSet' => 'Is Set',
+			'isType' => 'Is Type',
+			'sortOrder' => 'Sort Order',
+			'description' => 'Description',
+			'payCondition' => 'Pay Condition',
+			'status' => 'Status',
+			'createDateTime' => 'Create Date Time',
+			'updateDateTime' => 'Update Date Time',
 		);
 	}
 
@@ -129,31 +101,21 @@ class CategoryToSubMaster extends MasterCActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria = new CDbCriteria;
-		if(isset($this->searchText) && !empty($this->searchText))
-		{
-			$this->id = $this->searchText;
-			$this->categoryId = $this->searchText;
-			$this->subCategoryId = $this->searchText;
-			$this->isTheme = $this->searchText;
-			$this->isSet = $this->searchText;
-			$this->sortOrder = $this->searchText;
-			$this->description = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
-		}
+		$criteria=new CDbCriteria;
 
-		$criteria->compare('LOWER(brandModelId)', strtolower($this->searchText), true, 'OR');
-		$criteria->compare('LOWER(categoryId)', strtolower($this->searchText), true, 'OR');
-		$criteria->compare('LOWER(subCategoryId)', strtolower($this->searchText), true, 'OR');
-		$criteria->compare('isTheme', $this->isTheme);
-		$criteria->compare('isSet', $this->isSet);
-		$criteria->compare('sortOrder', $this->sortOrder);
-		$criteria->compare('LOWER(description)', strtolower($this->searchText), true, 'OR');
-		$criteria->compare('status', $this->status);
-		$criteria->compare('LOWER(createDateTime)', strtolower($this->searchText), true, 'OR');
-		$criteria->compare('LOWER(updateDateTime)', strtolower($this->searchText), true, 'OR');
+		$criteria->compare('id',$this->id,true);
+		$criteria->compare('brandModelId',$this->brandModelId,true);
+		$criteria->compare('categoryId',$this->categoryId,true);
+		$criteria->compare('subCategoryId',$this->subCategoryId,true);
+		$criteria->compare('isTheme',$this->isTheme);
+		$criteria->compare('isSet',$this->isSet);
+		$criteria->compare('isType',$this->isType);
+		$criteria->compare('sortOrder',$this->sortOrder);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('payCondition',$this->payCondition,true);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('createDateTime',$this->createDateTime,true);
+		$criteria->compare('updateDateTime',$this->updateDateTime,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -166,9 +128,8 @@ class CategoryToSubMaster extends MasterCActiveRecord
 	 * @param string $className active record class name.
 	 * @return CategoryToSubMaster the static model class
 	 */
-	public static function model($className = __CLASS__)
+	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
 }
