@@ -57,7 +57,7 @@ class CartController extends MasterCheckoutController
 //                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
                 $desc[$i]['id'] = uniqid();
                 $desc[$i]['title'] = $category->title.' : '.$category2->title;
-                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $categoryToSub->description);
+                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $categoryToSub->payCondition);
 
                 $i++;
             }
