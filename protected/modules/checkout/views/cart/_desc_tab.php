@@ -10,7 +10,7 @@
                     $tabId = isset($tab['id']) ? $tab['id'] : 'tab' . $i;
 
                     echo CHtml::link($tab['title'] . ' ', '#' . $tabId, array(
-                        'class'=>'button big'));
+                        'class'=>'button big', 'style'=>'font-size:12px'));
                     $i++;
                 }
                 ?>

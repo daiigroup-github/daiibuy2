@@ -35,9 +35,10 @@ class CartController extends MasterCheckoutController
         $desc = array();
         if($id == 4) {
             $i=0;
-            foreach ($orders as $order) {
-                $category = $order->orderItems[0]->product->category2ToProducts[0]->category;
-                $category2 = $order->orderItems[0]->product->category2ToProducts[0]->category2;
+            $order = $orders[0];
+            foreach ($order->orderItems as $orderItem) {
+                $category = $orderItem->product->category2ToProducts[0]->category;
+                $category2 = $orderItem->product->category2ToProducts[0]->category2;
                 $categoryToSub = CategoryToSub::model()->find(array(
                     'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
                     'params'=>array(
