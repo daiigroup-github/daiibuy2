@@ -85,6 +85,7 @@ $this->breadcrumbs = array(
 				?>
 
 				<?php
+				echo CHtml::hiddenField("styleId", $_GET["s"]);
 				/**
 				 * options
 				 */
@@ -103,16 +104,16 @@ $this->breadcrumbs = array(
 									)
 								);
 
-                                if($productOptionGroup->title == 'COLOR') {
-                                    $domId = 'productOptionGroup_'.$productOptionGroup->productOptionGroupId;
-                                    Yii::app()->clientScript->registerScript('changeColor', "
+								if($productOptionGroup->title == 'COLOR')
+								{
+									$domId = 'productOptionGroup_' . $productOptionGroup->productOptionGroupId;
+									Yii::app()->clientScript->registerScript('changeColor', "
                                         var dom = $('#$domId');
                                         dom.on('change', function(){
                                             $('#imageThumbnail'+$(this).val()).trigger('click');
                                         });
                                     ");
-                                }
-
+								}
 								?>
 							</div>
 						</div>
@@ -157,7 +158,7 @@ $this->breadcrumbs = array(
 	if($tabs !== array())
 		$this->renderPartial('_product_tab', array(
 			'tabs'=>$tabs,
-            'allPrice'=>$allPrice));
+			'allPrice'=>$allPrice));
 	?>
 
 </div>

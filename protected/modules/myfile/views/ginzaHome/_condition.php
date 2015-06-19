@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                            ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                    ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -104,7 +104,7 @@
 							<tr>
 								<td>รูปแบบ</td>
 								<td><?php
-									echo CHtml::dropDownList("categoryId", "", ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
+									echo CHtml::dropDownList("categoryId", $model->orders[0]->orderItems[0]->styleId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
 										'prompt'=>'-- เลือกแบบบ้าน --',
 										'id'=>'styleId'
 										,
@@ -128,8 +128,24 @@
 							<tr>
 								<td>แบบบ้าน</td>
 								<td><?php
-									echo CHtml::dropDownList("category2Id", "", CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
+									echo CHtml::dropDownList("category2Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $model->orders[0]->orderItems[0]->styleId), array(
 										'prompt'=>'-- เลือกแบบบ้าน --'));
+									?></td>
+							</tr>
+							<tr>
+								<td>ซีรีส์</td>
+								<td>
+									<?php
+									echo CHtml::dropDownList("category2Id", $category2ToProduct->category2Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
+										'prompt'=>'-- เลือกแบบบ้าน --'));
+									?>
+								</td>
+							</tr>
+							<tr>
+								<td>สี</td>
+								<td><?php
+									echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->orderItemOptions[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
+										'prompt'=>'-- เลือกสี --'));
 									?></td>
 							</tr>
 							<tr>
@@ -137,66 +153,6 @@
 								<td><?php
 									echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
 										'prompt'=>'-- เลือกจังหวัด --'));
-									?></td>
-							</tr>
-							<tr>
-								<td>ซีรีส์</td>
-								<td>
-									<table class="table table-bordered">
-										<thead>
-											<tr class="text-center">
-												<th></th>
-												<th class="text-center">Light</th>
-												<th class="text-center">C</th>
-												<th class="text-center">E</th>
-												<th class="text-center">SL</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="text-center">ราคา</td>
-												<td class="text-center">3,650,000<br>
-													<?php
-													echo CHtml::radioButton("chooseSeriesL", FALSE, array(
-														'value'=>1,
-														'id'=>'chooseSeries'));
-													?><br>
-													<label class="radio-label" for="chooseSeriesL"></label>
-												</td>
-												<td class="text-center">3,850,000<br>
-													<?php
-													echo CHtml::radioButton("chooseSeriesC", FALSE, array(
-														'value'=>2,
-														'id'=>'chooseSeries'));
-													?><br>
-													<!--<label class="radio-label" for="chooseSeriesC"></label>-->
-												</td>
-												<td class="text-center">4,500,000<br>
-													<?php
-													echo CHtml::radioButton("chooseSeries", FALSE, array(
-														'value'=>3,
-														'id'=>'chooseSeries'));
-													?><br>
-													<!--<label class="radio-label" for="chooseSeries"></label>-->
-												</td>
-												<td class="text-center">6,650,000<br>
-													<?php
-													echo CHtml::radioButton("chooseSeries", FALSE, array(
-														'value'=>4,
-														'id'=>'chooseSeries'));
-													?><br>
-													<!--<label class="radio-label" for="chooseSeries"></label>-->
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td>สี</td>
-								<td><?php
-									echo CHtml::dropDownList("productOptionId", "", CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
-										'prompt'=>'-- เลือกสี --'));
 									?></td>
 							</tr>
 						</tbody>

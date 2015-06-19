@@ -57,7 +57,7 @@ class OrderItems extends OrderItemsMaster
 	  {
 	  }
 	 */
-	public function saveByOrderIdAndProductId($orderId, $productId, $qty = 1, $productOptionGroup = array())
+	public function saveByOrderIdAndProductId($orderId, $productId, $qty = 1, $productOptionGroup = array(), $styleId = NULL)
 	{
 		$product = Product::model()->findByPk($productId);
 		$daiibuy = new DaiiBuy();
@@ -106,6 +106,7 @@ class OrderItems extends OrderItemsMaster
 		$orderItem->price = (Product::model()->calProductPromotionPrice($productId, $daiibuy->provinceId) == 0) ? Product::model()->calProductPrice($productId, $daiibuy->provinceId) : Product::model()->calProductPromotionPrice($productId, $daiibuy->provinceId);
 		$orderItem->total = $orderItem->quantity * $orderItem->price;
 		$orderItem->updateDateTime = new CDbExpression('NOW()');
+		$orderItem->styleId = $styleId;
 
 		if($orderItem->save(false))
 		{

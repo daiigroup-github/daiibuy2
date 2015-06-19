@@ -61,7 +61,7 @@ $this->breadcrumbs = array(
 									?>
 								</span><br />
 								<?php if($price > 0): ?>
-									<a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/c/' . $category->categoryId . '/c2/' . $subCategory->categoryId); ?>">เลือก</a>
+									<a class="btn btn-primary form-control" href="<?php echo $this->createUrl('product/index/c/' . $category->categoryId . '/c2/' . $subCategory->categoryId . "/s/" . $_GET["s"]); ?>">เลือก</a>
 								<?php endif; ?>
 							</td>
 						<?php endforeach; ?>

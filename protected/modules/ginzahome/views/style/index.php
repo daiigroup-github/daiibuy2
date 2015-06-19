@@ -58,7 +58,7 @@ $this->breadcrumbs = array(
 						<div class="row">
 							<?php foreach($catToSubModels as $catToSubModel): ?>
 								<div class="col-md-4">
-									<a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId); ?>">
+									<a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->category->categoryId); ?>">
 										<img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
 										<p><?php echo $catToSubModel->subCategory->title; ?></p>
 										<p><?php echo $catToSubModel->subCategory->description; ?></p>

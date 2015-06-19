@@ -135,7 +135,7 @@ class ProductController extends MasterGinzahomeController
 		$product = array();
 		$productSortOrder1 = '';
 
-        $allPrice = array();
+		$allPrice = array();
 
 		foreach($category2ToProducts as $category2ToProduct)
 		{
@@ -156,24 +156,25 @@ class ProductController extends MasterGinzahomeController
 				$productSortOrder1 = $category2ToProduct->product;
 			}
 
-            $allPrice[$i] = $price;
+			$allPrice[$i] = $price;
 
 			$i++;
 		}
 
-        $productOptionGroupModel = ProductOptionGroup::model()->find(array(
-            'condition'=>'productId=:productId',
-            'params'=>array(
-                ':productId'=>$productSortOrder1->productId
-            )
-        ));
+		$productOptionGroupModel = ProductOptionGroup::model()->find(array(
+			'condition'=>'productId=:productId',
+			'params'=>array(
+				':productId'=>$productSortOrder1->productId
+			)
+		));
 
-        foreach ($productOptionGroupModel->productOptions as $productOptionModel) {
-            $images[$productOptionModel->productOptionId] = Yii::app()->baseUrl . $productOptionModel->image;
-        }
+		foreach($productOptionGroupModel->productOptions as $productOptionModel)
+		{
+			$images[$productOptionModel->productOptionId] = Yii::app()->baseUrl . $productOptionModel->image;
+		}
 
 
-        $tabs = array();
+		$tabs = array();
 		$j = 0;
 		foreach($productSortOrder1->productSpecGroupsTypeDetails as $detail)
 		{
@@ -209,7 +210,7 @@ class ProductController extends MasterGinzahomeController
 			'images'=>$images,
 			'tabs'=>$tabs,
 			'productSortOrder1'=>$productSortOrder1,
-            'allPrice'=>$allPrice
+			'allPrice'=>$allPrice
 		));
 	}
 
@@ -270,9 +271,9 @@ class ProductController extends MasterGinzahomeController
 //				}
 //				if($isAdd)
 //				{
-					//code here
-					$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
-					$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity'], $_POST["productOptionGroup"]);
+				//code here
+				$orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
+				$flag = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $_POST['productId'], $_POST['quantity'], $_POST["productOptionGroup"], $_POST["styleId"]);
 //				}
 //				$flag = true;
 				if($flag)

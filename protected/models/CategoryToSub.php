@@ -130,7 +130,7 @@ class CategoryToSub extends CategoryToSubMaster
 		$models = $this->findAll("brandModelId =" . $brandModelId . " AND categoryId =" . $categoryId);
 		foreach($models as $item)
 		{
-			$result["subCategoryId"] = $item->subCategory->title;
+			$result[$item->subCategoryId] = $item->subCategory->title;
 		}
 
 		return $result;
