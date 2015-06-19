@@ -202,6 +202,15 @@ $('#uploadPlanMadrid').on('click', function () {
 	}
 });
 
+$('#uploadPlanTile').on('click', function () {
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
+		$('#Order_createMyfileType').val(2);
+	} else {
+		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
+	}
+});
+
 $('.chooseStyle').click(function () {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
