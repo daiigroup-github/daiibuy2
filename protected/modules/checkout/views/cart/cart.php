@@ -34,23 +34,24 @@ $this->renderPartial('_order_info_summary', array(
 
 <?php
 //description tab
-if($desc !== array()) {
-    $this->renderPartial('_desc_tab', array('tabs'=>$desc));
+if ($desc !== array()) {
+    $this->renderPartial('_desc_tab', array('tabs' => $desc));
 }
 ?>
 
 <?php
-$confirmationContent = Content::model()->showConfirmationContentBySupplierId(isset($supplierId) ? $supplierId : Yii::app()->session['supplierId']);
-//	throw new Exception(print_r($confirmationContent, true));
+$supplierContentGroup = SupplierContentGroup::model()->find('supplierId = ' . (isset($supplierId) ? $supplierId : Yii::app()->session['supplierId']) . ' AND status = 2');
+if (!isset($supplierContentGroup->supplierContents[0]))
+    $confirmationContent = "<b>เงื่อนไขและข้อตกลงในการซื้อสินค้า บริษัท ไดอิ กรุ๊ป จำกัด(มหาชน) </b><br>1.ราคาสินค้ารวมภาษีมูลค่าเพิ่มแล้ว<br> 2.ราคาสินค้ารวมอุปกรณ์<br>  3.กรรมสิทธิ์สินค้ายังคงเป็นของบริษัทฯ จนกว่าจะได้รับการชำระเงินเป็นที่เรียบร้อยแล้ว<br>  4.ระยะเวลาการส่งของ ภายใน 1-3 วันหลังจากยืนยันการชำระเงิน(โดยประมาณ)<br>"; //	throw new Exception(print_r($confirmationContent, true));
 ?>
 <div class="row sidebar-box orange">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="sidebar-box-heading">
             <i class="icons fa fa-file-o"></i>
-            <h4><?php echo isset($confirmationContent->title) ? $confirmationContent->title : "เงื่อนไขและข้อตกลง"; ?></h4>
+            <h4><?php echo isset($supplierContentGroup->supplierContents[0]->title) ? $supplierContentGroup->supplierContents[0]->title : "เงื่อนไขและข้อตกลง"; ?></h4>
         </div>
         <div class="sidebar-box-content sidebar-padding-box">
-            <?php echo isset($confirmationContent->description) ? $confirmationContent->description : $confirmationContent; ?><br>
+            <?php echo isset($supplierContentGroup->supplierContents[0]->description) ? $supplierContentGroup->supplierContents[0]->description : $confirmationContent; ?><br>
             <div class="text-center">
                 <input type="checkbox" name="accept" id="acceptConfirm"/>
                 <label class="checkbox-label" for="acceptConfirm"> ยอมรับ <i>"ข้อตกลงและเงื่อนไข"</i></label>
