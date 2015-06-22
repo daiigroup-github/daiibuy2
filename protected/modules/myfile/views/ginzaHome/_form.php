@@ -127,15 +127,13 @@ $this->breadcrumbs = array(
 												if($model->status >= 3 && $child1->status == 0):
 													?>
 													<span class="label label-danger">รอการชำระเงิน</span>
-													<form id="payForm2"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child1->orderGroupId); ?>">
-														<?php
-														echo CHtml::link("ชำระเงิน", "", array(
-															'class'=>'button blue btn-xs',
-															'onclick'=>"payClick(2)"));
+													<?php
+													echo CHtml::link("ชำระเงิน", "", array(
+														'class'=>'button blue btn-xs',
+														'onclick'=>"payClick(2)"));
 //														$this->renderPartial("_condition", array(
 //															'period'=>2));
-														?>
-													</form>
+													?>
 												<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
 												<?php endif; ?>
@@ -170,15 +168,13 @@ $this->breadcrumbs = array(
 													if($child1->status >= 3 && $child2->status == 0):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
-														<form id="payForm3"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child2->orderGroupId); ?>">
-															<?php
-															echo CHtml::link("ชำระเงิน", "", array(
-																'class'=>'button blue btn-xs',
-																'onclick'=>"payClick(3)"));
+														<?php
+														echo CHtml::link("ชำระเงิน", "", array(
+															'class'=>'button blue btn-xs',
+															'onclick'=>"payClick(3)"));
 //															$this->renderPartial("_condition", array(
 //																'period'=>3));
-															?>
-														</form>
+														?>
 													<?php else: ?>
 														<span class="label label-danger">รอการอนุมัติ</span>
 													<?php endif; ?>
@@ -214,15 +210,14 @@ $this->breadcrumbs = array(
 													if($child2->status >= 3 && $child3->status == 0):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
-														<form id="payForm4"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child3->orderGroupId); ?>">
-															<?php
-															echo CHtml::link("ชำระเงิน", "", array(
-																'class'=>'button blue btn-xs',
-																'onclick'=>"payClick(4)"));
+
+														<?php
+														echo CHtml::link("ชำระเงิน", "", array(
+															'class'=>'button blue btn-xs',
+															'onclick'=>"payClick(4)"));
 //															$this->renderPartial("_condition", array(
 //																'period'=>4));
-															?>
-														</form>
+														?>
 													<?php else: ?>
 														<span class="label label-danger">รอการอนุมัติ</span>
 													<?php endif; ?>
@@ -278,7 +273,8 @@ $this->breadcrumbs = array(
 									<td style="width: 20%;text-align: center">
 
 										<?php
-										if($flag):
+//										if($flag):
+										if(1 == 0):
 											?>
 
 											<?php
@@ -342,7 +338,8 @@ $this->breadcrumbs = array(
 					$this->renderPartial("_condition", array(
 						'model'=>$model,
 						'period'=>2,
-						'brandModels'=>$brandModels));
+						'brandModels'=>$brandModels,
+						'child1'=>$child1));
 					?>
 				</div>
 			</div>
@@ -355,7 +352,7 @@ $this->breadcrumbs = array(
 		<?php endif; ?>
 		<div class="row sidebar-box blue " style="background-color: white">
 			<div class="col-md-12" style="text-align: right">
-				<a onclick="backToStep3()" class="btn btn-success">Back</a>
+
 			</div>
 			<div class="col-md-12" style="border:1px black solid" id="item-table">
 				<div class="control-label col-md-2">
@@ -401,59 +398,92 @@ $this->breadcrumbs = array(
 						</table>
 					</div>
 				</div>
-				<table class="row hide table table-bordered" id="period3" >
-					<thead>
-						<tr style="background-color: blue">
-							<th>งวด</th>
-							<th>รายการ</th>
-							<th>ราคา</th>
-							<th>ยอดชำระ</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						foreach($child2->orders as $item):
-							?>
-							<tr style="color:black">
-								<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 3</span></td>
-								<td>
-									<?php
-									echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
-									?>
-								</td>
-								<td style="font-size:24px">
-									<?php echo number_format($item->orderItems[0]->product->price); ?>
-								</td>
-								<td>
-									<?php
-									echo CHtml::textField("payValue", $item->orderItems[0]->product->price, array(
-										'class'=>'input-large text-right',
-										'style'=>'border:2px solid black;color:blue;font-size:24px'))
-									?>
-									<?php
-									echo CHtml::link("ชำระเงิน", "", array(
-										'class'=>'btn btn-primary',
-										'onclick'=>"pay(3)"));
-									?>
-								</td>
+				<form id="payForm3"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child2->orderGroupId); ?>">
+					<table class="row hide table table-bordered" id="period3" >
+						<thead>
+							<tr style="background-color: blue">
+								<th>งวด</th>
+								<th>รายการ</th>
+								<th>ราคา</th>
+								<th>ยอดชำระ</th>
 							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-				<div class="row hide alert" id="period4">
-					<?php foreach($child3->orders as $item): ?>
-						<div class="col-lg-3">งวดที่ 4</div>
-						<div class="col-lg-3">
+						</thead>
+						<tbody>
 							<?php
-							echo $item->orderItems[0]->product->name . " <br>" . $this->getOrderPeriodText(4);
-							?>
-						</div>
-						<div class="col-lg-3">
-							<?php echo number_format($item->orderItems[0]->product->price); ?>
-						</div>
-						<div class="col-lg-3"></div>
-					<?php endforeach; ?>
-				</div>
+							echo CHtml::hiddenField("period", 3);
+							foreach($child2->orders as $item):
+								?>
+								<tr style="color:black">
+									<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 3</span></td>
+									<td>
+										<?php
+										echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
+										?>
+									</td>
+									<td style="font-size:24px">
+										<?php echo number_format($item->orderItems[0]->product->price); ?>
+									</td>
+									<td>
+										<?php
+										echo CHtml::textField("payValue", $item->orderItems[0]->product->price, array(
+											'class'=>'input-large text-right',
+											'style'=>'border:2px solid black;color:blue;font-size:24px'))
+										?>
+										<a onclick="backToStep3()" class="btn btn-success">Back</a>
+										<?php
+										echo CHtml::link("ชำระเงิน", "", array(
+											'class'=>'btn btn-primary',
+											'onclick'=>"pay(3)"));
+										?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</form>
+				<form id="payForm4"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child3->orderGroupId); ?>">
+					<table class="row hide table table-bordered" id="period4" >
+						<thead>
+							<tr style="background-color: blue">
+								<th>งวด</th>
+								<th>รายการ</th>
+								<th>ราคา</th>
+								<th>ยอดชำระ</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							echo CHtml::hiddenField("period", 4);
+							foreach($child3->orders as $item):
+								?>
+								<tr style="color:black">
+									<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 4</span></td>
+									<td>
+										<?php
+										echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
+										?>
+									</td>
+									<td style="font-size:24px">
+										<?php echo number_format($item->orderItems[0]->product->price); ?>
+									</td>
+									<td>
+										<?php
+										echo CHtml::textField("payValue", $item->orderItems[0]->product->price, array(
+											'class'=>'input-large text-right',
+											'style'=>'border:2px solid black;color:blue;font-size:24px'))
+										?>
+										<a onclick="backToStep3()" class="btn btn-success">Back</a>
+										<?php
+										echo CHtml::link("ชำระเงิน", "", array(
+											'class'=>'btn btn-primary',
+											'onclick'=>"pay(4)"));
+										?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</form>
 			</div>
 		</div>
 	</div>

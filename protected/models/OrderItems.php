@@ -107,6 +107,7 @@ class OrderItems extends OrderItemsMaster
 		$orderItem->total = $orderItem->quantity * $orderItem->price;
 		$orderItem->updateDateTime = new CDbExpression('NOW()');
 		$orderItem->styleId = $styleId;
+		$orderItem->productOptionId = $pOptionIds;
 
 		if($orderItem->save(false))
 		{
