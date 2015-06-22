@@ -1,11 +1,7 @@
 <div class="products-row row">
-
-    <!--Carousel Heading -->
     <div class="col-lg-12 col-md-12 col-sm-12">
-
         <div class="carousel-heading">
             <h4><?php echo $title; ?></h4>
-
             <div class="carousel-arrows">
                 <?php if (isset($moreUrl)): ?>
                     <a href="<?php echo $moreUrl; ?>"><i class="icons icon-th-3"></i></a>
@@ -14,15 +10,11 @@
                 <i class="icons icon-right-dir"></i>
             </div>
         </div>
-
     </div>
     <!--/Carousel Heading -->
-
     <!--Carousel -->
     <div class="carousel owl-carousel-wrap col-lg-12 col-md-12 col-sm-12">
-
         <div class="owl-carousel" data-max-items="<?php echo $maxItems; ?>">
-
             <?php
             foreach ($items as $item):
                 ?>
@@ -30,7 +22,6 @@
                 <div>
                     <!--Carousel Item -->
                     <div class="product">
-
                         <div class="product-image">
                             <?php if ($item['promotionPrice'] > 0): ?>
                                 <span class="product-tag">Sale</span>
@@ -40,7 +31,6 @@
                                 <i class="icons icon-eye-1"></i> Quick View
                             </a>
                         </div>
-
                         <div class="product-info">
                             <h5><a href="<?php echo $item['url']; ?>"><?php echo $item['name']; ?></a></h5>
                             <span class="price">ราคา <?php echo $item['price']; ?> บาท</span>
@@ -59,15 +49,17 @@
                             <?php
                             $cate2ToProduct = Category2ToProduct::model()->find('brandId = 4 AND productId = ' . $item['productId']);
                             if (isset($cate2ToProduct->category2Id)):
-                                ?>
-                                <span class="add-to-favorites" id="<?php echo $item['productId']; ?>" onclick="addFavourite(<?php echo Yii::app()->user->id ?>,<?php echo $cate2ToProduct->category2Id; ?>, '<?php echo Yii::app()->baseUrl; ?>', 2)">
-                                    <span class="action-wrapper">
-                                        <i class="icons fa fa-heart-o"></i>
-                                        <span class="action-name">Add to My File</span>
+                                if ($cate2ToProduct->type == 1):
+                                    ?>
+                                    <span class="add-to-favorites" id="<?php echo $item['productId']; ?>" onclick='<?php echo $cate2ToProduct->type == 1 ? "addFavouriteProduct(" . Yii::app()->user->id . ", " . $item['productId'] . ', "' . Yii::app()->baseUrl . '");' : "addFavourite(" . Yii::app()->user->id . ", " . $cate2ToProduct->category2Id . ", '" . Yii::app()->baseUrl . "', 2);"; ?>'>
+                                        <span class="action-wrapper">
+                                            <i class="icons fa fa-heart-o"></i>
+                                            <span class="action-name">Add to My File</span>
+                                        </span>
                                     </span>
-                                </span>
 
-                                <?php
+                                    <?php
+                                endif;
                             endif;
                             /*
                               <span class = "add-to-favorites">
@@ -94,7 +86,7 @@
 //                            $icon = 'fa fa-heart-o';
 //                            $name = 'Add to wishlist';
                         ?>
-                                                        <span class="add-to-wishlist" id="<?php // echo $item['productId'];     ?>" onclick="addFavourite(<?php // echo Yii::app()->user->id     ?>,<?php // echo $cate2ToProduct->category2Id;     ?>, '<?php echo Yii::app()->baseUrl; ?>', true)">
+                                                        <span class="add-to-wishlist" id="<?php // echo $item['productId'];                   ?>" onclick="addFavourite(<?php // echo Yii::app()->user->id                   ?>,<?php // echo $cate2ToProduct->category2Id;                   ?>, '<?php echo Yii::app()->baseUrl; ?>', true)">
                                                             <span class="action-wrapper">
                                                                 <i class="icons fa fa-heart-o"></i>
                                                                 <span class="action-name">Add to wishlist</span>

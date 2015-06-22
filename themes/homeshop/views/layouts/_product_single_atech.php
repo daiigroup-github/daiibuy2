@@ -4,16 +4,12 @@
 
 
     <div class="row">
-
         <!-- Product Images Carousel -->
         <div class="col-lg-5 col-md-5 col-sm-5 product-single-image">
             <?php $this->renderPartial('//layouts/_product_slider', array('images' => $subCate)); ?>
         </div>
         <!-- /Product Images Carousel -->
-
-
         <div class="col-lg-7 col-md-7 col-sm-7 product-single-info">
-
             <h2><?php echo $subCate->title; ?></h2>
             <?php echo $subCate->description; ?>
             <?php
@@ -35,8 +31,8 @@
 //                            foreach ($product['attributes'] as $k => $v):
             ?>
                                 <tr>
-                                    <td><?php // echo $k;                                                                                                      ?></td>
-                                    <td><?php // echo $v;                                                                                                      ?></td>
+                                    <td><?php // echo $k;                                                                                                          ?></td>
+                                    <td><?php // echo $v;                                                                                                          ?></td>
                                 </tr>
             <?php
 //                            endforeach;
@@ -53,7 +49,7 @@
                 <span class="price">
             <?php // if (isset($product['price'])): ?>
             <?php // if ($product['pricePromotion']): ?>
-                            <del><?php // echo $product['price'];                                                                                                      ?></del> <?php // echo $product['pricePromotion'];                                                                                                     ?>
+                            <del><?php // echo $product['price'];                                                                                                          ?></del> <?php // echo $product['pricePromotion'];                                                                                                         ?>
             <?php // else: ?>
             <?php // echo $product['price']; ?>
             <?php // endif; ?>
@@ -131,7 +127,6 @@
             <?php // endif; ?>
             <!--<br/>-->
         </div>
-
     </div>
     <?php
 //    throw new Exception(print_r($subCate->categoryId, true));
@@ -192,7 +187,7 @@
                             </div>
                         </td>
                         <td><a class="btn btn-primary btn-md addToCart" data-productid="<?php echo $categoryToProduct->product->productId; ?>"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>
-    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                     ?>">ดูรายการอื่นๆ</a>-->
+    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                         ?>">ดูรายการอื่นๆ</a>-->
                         </td>
                     </tr>
                 <?php endforeach; ?>

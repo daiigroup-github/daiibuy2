@@ -104,6 +104,8 @@ class CategoryController extends MasterMadridController {
 
     public function actionAddFavouriteProduct() {
         $existing = UserFavourite::model()->find("userId = " . $_POST["userId"] . " AND productId = " . $_POST["productId"]);
+
+//        throw new Exception(print_r($_POST["userId"] . ', ' . $_POST["productId"], true));
         if (isset($existing)) {
             echo 3;
         } else {
