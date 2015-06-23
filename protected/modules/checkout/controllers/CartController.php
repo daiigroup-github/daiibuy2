@@ -32,44 +32,49 @@ class CartController extends MasterCheckoutController
 			));
 		}
 
-        $desc = array();
-        if($id == 4) {
-            $i=0;
-            $order = $orders[0];
-            foreach ($order->orderItems as $orderItem) {
-                $category = $orderItem->product->category2ToProducts[0]->category;
-                $category2 = $orderItem->product->category2ToProducts[0]->category2;
-                $categoryToSub = CategoryToSub::model()->find(array(
-                    'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
-                    'params'=>array(
-                        ':categoryId'=>$category->categoryId,
-                        ':subCategoryId'=>$category2->categoryId
-                    )
-                ));
+		$desc = array();
+		if($id == 4)
+		{
+			if(isset($orders[0]))
+			{
+				$i = 0;
+				$order = $orders[0];
+				foreach($order->orderItems as $orderItem)
+				{
+					$category = $orderItem->product->category2ToProducts[0]->category;
+					$category2 = $orderItem->product->category2ToProducts[0]->category2;
+					$categoryToSub = CategoryToSub::model()->find(array(
+						'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
+						'params'=>array(
+							':categoryId'=>$category->categoryId,
+							':subCategoryId'=>$category2->categoryId
+						)
+					));
 
-                $categoryStakeProvinceModel = CategoryStakeProvince::model()->find(array(
-                    'condition'=>'categoryId=:categoryId AND provinceId=:provinceId',
-                    'params'=>array(
-                        ':categoryId'=>$category2->categoryId,
-                        ':provinceId'=>$daiibuy->provinceId
-                    )
-                ));
+					$categoryStakeProvinceModel = CategoryStakeProvince::model()->find(array(
+						'condition'=>'categoryId=:categoryId AND provinceId=:provinceId',
+						'params'=>array(
+							':categoryId'=>$category2->categoryId,
+							':provinceId'=>$daiibuy->provinceId
+						)
+					));
 
 //                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
-                $desc[$i]['id'] = uniqid();
-                $desc[$i]['title'] = $category->title.' : '.$category2->title;
-                $desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $categoryToSub->payCondition);
+					$desc[$i]['id'] = uniqid();
+					$desc[$i]['title'] = $category->title . ' : ' . $category2->title;
+					$desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $categoryToSub->payCondition);
 
-                $i++;
-            }
-        }
+					$i++;
+				}
+			}
+		}
 
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
 			'orderSummary'=>$orderSummary,
 			'supplierId'=>$id,
-            'desc'=>$desc
+			'desc'=>$desc
 		));
 	}
 

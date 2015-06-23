@@ -18,7 +18,7 @@ $('#addToCartGinzaHome').live('click', function () {
 				}
 				else
 				{
-					alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+					alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้" + data.message);
 				}
 			}
 		});
@@ -51,15 +51,17 @@ $('#addToCartGinzaTown').live('click', function () {
 
 function payClick(period)
 {
-	period = 2;
+	$('ul.setup-panel li a[href="#step-3-1"]').trigger('click');
 	if (period == 2)
 	{
-		$('ul.setup-panel li a[href="#step-3-1"]').trigger('click');
+		$("#changHouseDetail").removeClass('hide');
+		$("#changHouseDetail2").removeClass('hide');
+		$("#submit2").removeClass('hide');
 	}
 	else
 	{
-		$('ul.setup-panel li a[href="#step-3-2"]').trigger('click');
-		$("#period" + period).removeClass("hide");
+		$("#submit" + period).removeClass('hide');
+//		goToStepSplit();
 	}
 }
 
@@ -67,8 +69,26 @@ function backToStep3()
 {
 	$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 }
+function goToStepSplit(period)
+{
+	if (period == 2)
+	{
+		$("#payForm2").submit();
+	}
+	else
+	{
+		$('ul.setup-panel li a[href="#step-3-2"]').trigger('click');
+		$("#period" + period).removeClass("hide");
+	}
+}
 function pay(period)
 {
-	alert(period);
-	$("#condition" + period + "Modal").modal("show");
+	$("#payForm" + period).submit();
+//	alert(period);
+//	$("#condition" + period + "Modal").modal("show");
+}
+
+function formSubmit()
+{
+
 }
