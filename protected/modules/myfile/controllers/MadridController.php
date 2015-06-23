@@ -528,7 +528,7 @@ class MadridController extends MasterMyFileController {
         $category2Id = $_POST["category2Id"];
         $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
         $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
-        $products = UserFavourite::model()->findAll("userId =" . Yii::app()->user->id . " AND productId =" . $_POST["productId"]);
+//        $products = UserFavourite::model()->findAll("userId =" . Yii::app()->user->id . " AND productId =" . $_POST["productId"]);
 //        throw new Exception(print_r($themes, true));
         $resultTheme = "";
         $resultTheme .= "<ul>";

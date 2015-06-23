@@ -1013,7 +1013,7 @@ class StepController extends MasterCheckoutController {
                                     $orderItemOption->createDateTime = new CDbExpression("NOW()");
                                     $orderItemOption->updateDateTime = new CDbExpression("NOW()");
                                     if ($orderItemOption->save()) {
-                                        $orderItems->total +=$orderItemOption->total;
+                                        $orderItems->total += $orderItemOption->total;
                                         $orderItems->save(FALSE);
                                     } else {
                                         

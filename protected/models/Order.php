@@ -27,6 +27,7 @@ class Order extends OrderMaster {
     public $sumMarginDealer;
     public $sumTotal;
     public $category2Id;
+    public $brandId;
 
     const ORDER_TYPE_MYFILE = 1;
     const ORDER_TYPE_CART = 2;
