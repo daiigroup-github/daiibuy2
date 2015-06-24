@@ -154,31 +154,31 @@ if (isset($model->status)) {
 
         <div class="form-group">
             <?php
-            echo $form->labelEx($model, 'quantity', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
-            <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'quantity', array(
-                    'min' => 0));
-                ?>
-                <?php echo $form->error($model, 'quantity'); ?>
-            </div>
-        </div>
-        <?php // if(Yii::app()->supplier->supplierId){ ?>
-        <div class="form-group">
-            <?php
             echo $form->labelEx($model, 'noPerBox', array(
                 'class' => 'col-sm-3 control-label'));
             ?>
             <div class="col-sm-9">
                 <?php
                 echo $form->numberField($model, 'noPerBox', array(
+                    'min' => 0));
+                ?> แผ่น/กล่อง
+                <?php echo $form->error($model, 'noPerBox'); ?>
+            </div>
+        </div>
+        <?php // if(Yii::app()->supplier->supplierId){ ?>
+        <div class="form-group">
+            <?php
+            echo $form->labelEx($model, 'price', array(
+                'class' => 'col-sm-3 control-label'));
+            ?>
+            <div class="col-sm-9">
+                <?php
+                echo $form->numberField($model, 'price', array(
                     'class' => 'col-sm-8',
                     'min' => 0,
                     'step' => 'any'));
                 ?>
-                <span class = "col-sm-1">แผ่นต่อกล่อง
+                <span class = "col-sm-1"> บาท/กล่อง
                 </span>
             </div>
             <p style="color: red;">***ราคาขายต้องรวม VAT 7% แล้วเท่านั้น***</p>
