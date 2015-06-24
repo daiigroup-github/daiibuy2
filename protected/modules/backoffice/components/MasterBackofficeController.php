@@ -200,7 +200,7 @@ class MasterBackofficeController extends MasterController
 					'class'=>'dropdown-toggle',
 					'data-toggle'=>'dropdown',
 				),
-				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4) && Yii::app()->user->userType <> 7
+				'visible'=>!Yii::app()->user->isGuest && (Yii::app()->user->userType == 4 || Yii::app()->user->userType == 3) && Yii::app()->user->userType <> 7
 			),
 			array(
 				'label'=>'Configuration',
@@ -231,7 +231,8 @@ class MasterBackofficeController extends MasterController
 				'visible'=>Yii::app()->user->isGuest
 			),
 			array(
-				'label'=>'Logout (' . Yii::app()->user->name . ')',
+//				'label'=>'Logout (' . Yii::app()->user->name . ')',
+                'label'=>'Logout',
 				'url'=>array(
 					'login/logout'
 				),

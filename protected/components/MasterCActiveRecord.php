@@ -3,6 +3,8 @@
 class MasterCActiveRecord extends CActiveRecord {
 
 	public $searchText;
+    public $startDate;
+    public $endDate;
 
 	const STATUS_ACTIVE = 0x1;
 	const STATUS_INACTIVE = 0x2;

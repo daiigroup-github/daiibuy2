@@ -370,6 +370,10 @@ class ReportController extends MasterBackofficeController
 			$summary = 0;
 		}
 
+        if(Yii::app()->user->userType==3){
+            $model->supplierId = Yii::app()->user->supplierId;
+        }
+
 		$this->render("viewSummaryReport", array(
 			"model"=>$model,
 			'totalSummary'=>$summary));
@@ -382,7 +386,6 @@ class ReportController extends MasterBackofficeController
 		$model = new OrderGroup("search");
 		if(isset($_GET['OrderGroup']))
 		{
-
 			$model->attributes = $_GET['OrderGroup'];
 		}
 		$totalSummary = $model->findTotalSummaryReport();

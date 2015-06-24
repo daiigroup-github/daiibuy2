@@ -1,12 +1,12 @@
 <h2>สรุปยอดขาย</h2>
 <script>
-	function calTotalSummary()
+	function calTotalSummary(formName)
 	{
 		$.ajax({
 			url: '<?php echo Yii::app()->createUrl("backoffice/report/calTotalSummary"); ?>',
 			type: "GET",
 			dataType: "json",
-			data: $("#search-form").serialize(),
+			data: $("#"+formName).serialize(),
 			success: function (res) {
 				if (res.status)
 				{
@@ -24,15 +24,20 @@
 </script>
 <?php
 Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
+
 $('#search-form').submit(function(){
 	$('#order-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
-	calTotalSummary();
+	calTotalSummary('search-form');
+	return false;
+});
+
+$('#search-form2').submit(function(){
+	$('#order-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	calTotalSummary('search-form2');
 	return false;
 });
 ");
