@@ -1420,6 +1420,7 @@ class StepController extends MasterCheckoutController
 				));
 			}
 		}
+	}
 
 //    public function actionMyfileGinzaStep() {
 //
@@ -1591,39 +1592,39 @@ class StepController extends MasterCheckoutController
 //            'oldOrderGroup' => $orderGroup));
 //    }
 
-		public function actionUpdateCart()
+	public function actionUpdateCart()
+	{
+		if(isset($_POST['quantity']))
 		{
-			if(isset($_POST['quantity']))
+			$res = [];
+
+			foreach($_POST['quantity'] as $orderItemsId=> $quantity)
 			{
-				$res = [];
+				$orderItem = OrderItems::model()->findByPk($orderItemsId);
 
-				foreach($_POST['quantity'] as $orderItemsId=> $quantity)
+				if($orderItem->quantity == $quantity)
 				{
-					$orderItem = OrderItems::model()->findByPk($orderItemsId);
-
-					if($orderItem->quantity == $quantity)
-					{
-						continue;
-					}
-					else
-					{
-						$orderItem->quantity = $quantity;
-						$orderItem->total = $orderItem->quantity * $orderItem->price;
-						$orderItem->save(FALSE);
-
-						$res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
-					}
+					continue;
 				}
+				else
+				{
+					$orderItem->quantity = $quantity;
+					$orderItem->total = $orderItem->quantity * $orderItem->price;
+					$orderItem->save(FALSE);
 
-				$order = Order::model()->findByPk($_POST['orderId']);
-				$order->totalIncVAT = $order->orderItemsSum;
-				$order->save(false);
-				$res['orderTotal'] = number_format($order->totalIncVAT, 2);
-				$res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
-
-				$this->writeToFile('/tmp/updatecart', print_r($res, true));
-				echo CJSON::encode($res);
+					$res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
+				}
 			}
-		}
 
+			$order = Order::model()->findByPk($_POST['orderId']);
+			$order->totalIncVAT = $order->orderItemsSum;
+			$order->save(false);
+			$res['orderTotal'] = number_format($order->totalIncVAT, 2);
+			$res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
+
+			$this->writeToFile('/tmp/updatecart', print_r($res, true));
+			echo CJSON::encode($res);
+		}
 	}
+
+}
