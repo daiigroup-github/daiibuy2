@@ -144,4 +144,53 @@ class GinzaHomeController extends MasterMyFileController
 		}
 	}
 
+	public function actionFindHouseSeries()
+	{
+
+		if(isset($_POST['category1Id']))
+		{
+			$res = '';
+			$styles = Category2ToProduct::model()->findAll(array(
+				'condition'=>'category1Id=:category1Id AND brandModelId = :brandModelId GROUP BY category2Id',
+				'params'=>array(
+					':category1Id'=>$_POST['category1Id'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก House Series --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->category2->categoryId . '">' . $style->category2->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindHouseColor()
+	{
+
+		if(isset($_POST['category2Id']))
+		{
+			$res = '';
+			$styles = Category2ToProduct::model()->findAll(array(
+				'condition'=>'category1Id=:category1Id AND brandModelId = :brandModelId AND category2Id = :category2Id',
+				'params'=>array(
+					':category1Id'=>$_POST['category1Id'],
+					':category2Id'=>$_POST['category2Id'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก House Color --</option>';
+			foreach($styles[0]->product->productOptionGroups[0]->productOptions as $style)
+			{
+				$res .= '<option value="' . $style->productOptionId . '">' . $style->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
 }

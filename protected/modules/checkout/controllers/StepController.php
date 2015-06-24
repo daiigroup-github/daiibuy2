@@ -1167,7 +1167,7 @@ class StepController extends MasterCheckoutController
 							$total = $price * $quantity;
 							$orderItems->price = $price;
 							$orderItems->total = $total;
-							$orderItems->styleId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId;
+							$orderItems->styleId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->styleId;
 							$orderItems->productOptionId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productOptionId;
 							$orderItems->createDateTime = new CDbExpression("NOW()");
 							$orderItems->updateDateTime = new CDbExpression("NOW()");
@@ -1247,7 +1247,7 @@ class StepController extends MasterCheckoutController
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
-		if($_POST["period"] == 2)
+		if(isset($_POST["period"]) && $_POST["period"] == 2)
 		{
 			$cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
 			if($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])
@@ -1283,91 +1283,80 @@ class StepController extends MasterCheckoutController
 					$orderGroup->updateDateTime = new CDbExpression("NOW()");
 					if($orderGroup->save(false))
 					{
-						$newOrderGroupId = Yii::app()->db->getLastInsertID();
-
 						$flag = TRUE;
-						$product = Product::model()->findByPk($model->productId);
-						$price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
-						$quantity = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
-						$totalIncVat = $price * $quantity;
-						$order = new Order();
-						$order->userId = Yii::app()->user->id;
-						$order->supplierId = $supplierId;
-						$order->title = $product->name;
-						$order->type = 4;
-						$order->totalIncVAT = $totalIncVat;
-						$order->total = $order->totalIncVAT / 1.07;
-						$order->provinceId = $oldOrderGroup->orderGroupToOrders[0]->order->provinceId;
-						$order->createDateTime = new CDbExpression("NOW()");
-						$order->updateDateTime = new CDbExpression("NOW()");
 
-						if($order->save())
+						$i = 1;
+						foreach($orderGroup->orders as $order)
 						{
-							$orderId = Yii::app()->db->lastInsertID;
-							foreach($oldOrderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem)
+							if($i > 1)
 							{
-								$orderItems = new OrderItems();
-								$orderItems->orderId = $orderId;
-								$orderItems->productId = $model->productId;
-								$orderItems->quantity = $quantity;
-								$total = $price * $quantity;
-								$orderItems->price = $price;
-								$orderItems->total = $total;
-								$orderItems->createDateTime = new CDbExpression("NOW()");
-								$orderItems->updateDateTime = new CDbExpression("NOW()");
-								if($orderItems->save(false))
-								{
-									$orderItemId = Yii::app()->db->lastInsertID;
-									foreach($orderItem->orderItemOptions as $orderOptions)
-									{
-										$orderItemOption = new OrderItemOption();
-										$orderItemOption->orderItemId = $orderItemId;
-										$orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
-										$orderItemOption->productOptionId = $orderOptions->productOptionId;
-										$productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
-										if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
-										{
-											$orderItemOption->percent = $productOption->pricePercent;
-											$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
-										}
-										else
-										{
-											$orderItemOption->percent = 0;
-											$orderItemOption->total = 0;
-										}
-										if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
-										{
-											$orderItemOption->value = $productOption->priceValue;
-											$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
-										}
-										else
-										{
-											$orderItemOption->value = 0;
-											$orderItemOption->total += 0;
-										}
-										$orderItemOption->createDateTime = new CDbExpression("NOW()");
-										$orderItemOption->updateDateTime = new CDbExpression("NOW()");
-										if($orderItemOption->save())
-										{
-											$orderItems->total +=$orderItemOption->total;
-											$orderItems->save(FALSE);
-										}
-										else
-										{
+								$product = Product::model()->findByPk($cat2ToProduct[$i - 1]->productId);
+								$price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
+								$quantity = $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
+								$totalIncVat = $price * $quantity;
+								$order->userId = Yii::app()->user->id;
+								$order->supplierId = 4;
+								$order->title = $product->name;
+								$order->type = 4;
+								$order->totalIncVAT = $totalIncVat;
+								$order->total = $order->totalIncVAT / 1.07;
+								$order->provinceId = $_POST["provinceId"];
+								$order->updateDateTime = new CDbExpression("NOW()");
 
+								if($order->save())
+								{
+									foreach($order->orderItems as $orderItem)
+									{
+										$orderItems->productId = $product->productId;
+										$orderItems->quantity = $quantity;
+										$total = $price * $quantity;
+										$orderItems->price = $price;
+										$orderItems->total = $total;
+										$orderItems->updateDateTime = new CDbExpression("NOW()");
+										if($orderItems->save(false))
+										{
+											foreach($orderItem->orderItemOptions as $orderOptions)
+											{
+												$productOption = ProductOption::model()->findByPk($_POST["productOptionId"]);
+												$orderItemOption->productOptionGroupId = $productOption->productOptionGroupId;
+												$orderItemOption->productOptionId = $productOption->productOptionId;
+
+												if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
+												{
+													$orderItemOption->percent = $productOption->pricePercent;
+													$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+												}
+												else
+												{
+													$orderItemOption->percent = 0;
+													$orderItemOption->total = 0;
+												}
+												if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
+												{
+													$orderItemOption->value = $productOption->priceValue;
+													$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+												}
+												else
+												{
+													$orderItemOption->value = 0;
+													$orderItemOption->total += 0;
+												}
+												$orderItemOption->updateDateTime = new CDbExpression("NOW()");
+												if($orderItemOption->save())
+												{
+													$orderItems->total +=$orderItemOption->total;
+													$orderItems->save(FALSE);
+												}
+												else
+												{
+
+												}
+											}
 										}
 									}
 								}
 							}
-							$orderGroupToOrder = new OrderGroupToOrder();
-							$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-							$orderGroupToOrder->orderId = $orderId;
-							$orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
-							$orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
-							if(!$orderGroupToOrder->save())
-							{
-								$flag = FALSE;
-							}
+							$i++;
 						}
 					}
 				}

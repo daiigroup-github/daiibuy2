@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                           ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                        ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -119,7 +119,7 @@
 												'success'=>'js:function(data){
 
 										//$("#sameAddress").prop("disabled", true);
-										$("#categoryId").html(data);
+										$("#category1Id").html(data);
 										//$("#billingAmphur").prop("disabled", false);
 										//$("#billingDistrict").html("");
 										//$("#billingDistrict").prop("disabled", true);
@@ -131,7 +131,21 @@
 									<td>แบบบ้าน</td>
 									<td><?php
 										echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $model->orders[0]->orderItems[0]->styleId), array(
-											'prompt'=>'-- เลือกแบบบ้าน --'));
+											'prompt'=>'-- เลือกแบบบ้าน --',
+											'ajax'=>array(
+												'type'=>'POST',
+												'data'=>array(
+													'category1Id'=>'js:this.value',
+													'brandModelId'=>'js:$("#brandModelId").val()'),
+												'url'=>$this->createUrl('/myfile/ginzaHome/findHouseSeries'),
+												'success'=>'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category2Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')));
 										?></td>
 								</tr>
 								<tr>
@@ -139,14 +153,29 @@
 									<td>
 										<?php
 										echo CHtml::dropDownList("category2Id", $category2ToProduct->category2Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
-											'prompt'=>'-- เลือกแบบบ้าน --'));
+											'prompt'=>'-- เลือกแบบบ้าน --',
+											'ajax'=>array(
+												'type'=>'POST',
+												'data'=>array(
+													'category2Id'=>'js:this.value',
+													'category1Id'=>'js:$("#category1Id").val()',
+													'brandModelId'=>'js:$("#brandModelId").val()'),
+												'url'=>$this->createUrl('/myfile/ginzaHome/findHouseColor'),
+												'success'=>'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#productOptionId").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')));
 										?>
 									</td>
 								</tr>
 								<tr>
 									<td>สี</td>
 									<td><?php
-										echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->orderItemOptions[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
+										echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
 											'prompt'=>'-- เลือกสี --'));
 										?></td>
 								</tr>
