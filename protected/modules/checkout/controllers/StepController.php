@@ -1248,7 +1248,7 @@ class StepController extends MasterCheckoutController
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
-		if($_POST["period"] == 2)
+		if(isset($_POST["period"]) && $_POST["period"] == 2)
 		{
 			$cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
 			if($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])
