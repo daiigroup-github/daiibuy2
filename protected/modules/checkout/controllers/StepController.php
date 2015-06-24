@@ -1286,8 +1286,6 @@ class StepController extends MasterCheckoutController
 						$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
 						$orderGroup->vatValue = $orderGroup->calVatValue();
 						$orderGroup->userId = Yii::app()->user->id;
-						$orderGroup->paymentMethod = isset($_POST['paymentMethod']) ? $_POST['paymentMethod'] : $oldOrderGroup->paymentMethod;
-						$orderGroup->createDateTime = new CDbExpression("NOW()");
 						$orderGroup->updateDateTime = new CDbExpression("NOW()");
 						if($orderGroup->save(false))
 						{
@@ -1395,7 +1393,33 @@ class StepController extends MasterCheckoutController
 				}
 			}
 		}
-	}
+
+		if(isset($_POST['paymentMethod']))
+		{
+			if($_POST['paymentMethod'] == 1)
+			{
+				$orderGroup->paymentMethod = 1;
+				$orderGroup->save(false);
+				$this->redirect(array(
+					"confirmCheckout",
+					'id'=>$_GET["orderGroupId"]));
+			}
+			else
+			{
+				$orderGroup->paymentMethod = 2;
+				$orderGroup->save(false);
+				$emailObj = new Email();
+				$sentMail = new EmailSend();
+				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+				$emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
+				$sentMail->mailCompleteOrderCustomer($emailObj);
+				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+				$this->redirect(array(
+					'step6',
+					"id"=>$orderGroup->orderGroupId,
+				));
+			}
+		}
 
 //    public function actionMyfileGinzaStep() {
 //
@@ -1567,39 +1591,39 @@ class StepController extends MasterCheckoutController
 //            'oldOrderGroup' => $orderGroup));
 //    }
 
-	public function actionUpdateCart()
-	{
-		if(isset($_POST['quantity']))
+		public function actionUpdateCart()
 		{
-			$res = [];
-
-			foreach($_POST['quantity'] as $orderItemsId=> $quantity)
+			if(isset($_POST['quantity']))
 			{
-				$orderItem = OrderItems::model()->findByPk($orderItemsId);
+				$res = [];
 
-				if($orderItem->quantity == $quantity)
+				foreach($_POST['quantity'] as $orderItemsId=> $quantity)
 				{
-					continue;
-				}
-				else
-				{
-					$orderItem->quantity = $quantity;
-					$orderItem->total = $orderItem->quantity * $orderItem->price;
-					$orderItem->save(FALSE);
+					$orderItem = OrderItems::model()->findByPk($orderItemsId);
 
-					$res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
+					if($orderItem->quantity == $quantity)
+					{
+						continue;
+					}
+					else
+					{
+						$orderItem->quantity = $quantity;
+						$orderItem->total = $orderItem->quantity * $orderItem->price;
+						$orderItem->save(FALSE);
+
+						$res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
+					}
 				}
+
+				$order = Order::model()->findByPk($_POST['orderId']);
+				$order->totalIncVAT = $order->orderItemsSum;
+				$order->save(false);
+				$res['orderTotal'] = number_format($order->totalIncVAT, 2);
+				$res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
+
+				$this->writeToFile('/tmp/updatecart', print_r($res, true));
+				echo CJSON::encode($res);
 			}
-
-			$order = Order::model()->findByPk($_POST['orderId']);
-			$order->totalIncVAT = $order->orderItemsSum;
-			$order->save(false);
-			$res['orderTotal'] = number_format($order->totalIncVAT, 2);
-			$res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
-
-			$this->writeToFile('/tmp/updatecart', print_r($res, true));
-			echo CJSON::encode($res);
 		}
-	}
 
-}
+	}
