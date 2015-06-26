@@ -123,7 +123,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             ?>
                             <div class="<?php echo $class; ?>">
                                 <div class="blog-item" >
-                                    <a id="chooseStyle" class="chooseStyle" name="<?php echo $item['category2Id']; ?>"><?php
+                                    <a class="chooseStyle" name="<?php echo $item['category2Id']; ?>"><?php
                                         echo CHtml::image($item['image'], $item['title'], array(
                                             "style" => "height:130px"));
                                         ?>
@@ -195,6 +195,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         </a>
                     </div>
                 </div>
+                <?php echo CHtml::hiddenField("Order[isTheme]", 1); ?>
                 <div class="row wizard-control">
                     <div class="pull-right">
                         <button id="nextToStep2" class="btn btn-primary btn-lg hidden"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
@@ -234,6 +235,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         </a>
                     </div>
                 </div>
+                <?php echo CHtml::hiddenField("Order[isTheme]", 0); ?>
                 <div class="row wizard-control">
                     <div class="pull-right">
                         <button id="nextToStep2" class="btn btn-primary btn-lg hidden"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
@@ -326,7 +328,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 ?>
                             </div>
                         </div>
-                        <?php // endforeach;   ?>
+                        <?php echo CHtml::hiddenField("Order[createMyfileType]", 2); ?>
                         <div class="row wizard-control">
 
                             <?php
@@ -335,6 +337,8 @@ $form = $this->beginWidget('CActiveForm', array(
                                 'onclick' => 'return checkComment()'));
                             ?>
                         </div>
+                        <?php ?>
+
                     </div>
                 </div>
                 <!--				<div class="row wizard-control">-->
@@ -419,7 +423,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                           ?>)"><?php // echo $theme->category2->title;                                                           ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                           ?>)"><?php // echo $theme->category2->title;                                                                           ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -437,7 +441,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="sidebar-box-content" id="setResult">
                         <!--                        <ul>
                         <?php // foreach ($sets as $set):   ?>
-                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                             ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                             ?>)"><?php // echo $set->category2->title;                                                             ?></li></a>
+                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                             ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                             ?>)"><?php // echo $set->category2->title;                                                                             ?></li></a>
                         <?php // endforeach;    ?>
                                                 </ul>-->
                     </div>
@@ -486,7 +490,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                           ?>)"><?php // echo $theme->category2->title;                                                           ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                           ?>)"><?php // echo $theme->category2->title;                                                                           ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -509,12 +513,12 @@ $form = $this->beginWidget('CActiveForm', array(
 
                 </div>
             </div>
-            <div class="row <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="action-button">
+            <div class="row <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="action-button-tiles">
                 <div class="col-md-12 wizard-control">
                     <?php if (!$model->isNewRecord && $this->action->id == "view"): ?>
                         <a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
                     <?php endif; ?>
-                    <button id="nextToStep5" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
+                    <button id="nextToStep5tile" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
                 </div>
             </div>
         </div>

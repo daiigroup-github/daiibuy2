@@ -665,19 +665,20 @@ class ProductController extends MasterBackofficeController {
                 $cat1 = CategoryToSub::model()->find("subCategoryId =" . $model->category2Id);
                 if (isset($cat1)) {
                     $model->category1Id = $cat1->categoryId;
+                    if ($cat1->isTheme == 1) {
+                        $model->type = 3;
+                    } else if ($cat1->isSet == 1) {
+                        $model->type = 2;
+                    } else {
+                        $model->type = 1;
+                    }
                 }
             }
 //			$modelToCat = ModelToCategory1::model()->find("categoryId =" . $model->category1Id);
             if (isset($brandModelId)) {
                 $model->brandModelId = $brandModelId;
             }
-            if ($cat1->isTheme == 1) {
-                $model->type = 3;
-            } else if ($cat1->isSet == 1) {
-                $model->type = 2;
-            } else {
-                $model->type = 1;
-            }
+
             $brandModel = BrandModel::model()->findByPk($model->brandModelId);
             $model->brandId = $brandModel->brandId;
             $model->productId = $productId;

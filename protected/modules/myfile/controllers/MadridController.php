@@ -112,7 +112,7 @@ class MadridController extends MasterMyFileController {
 //        throw new Exception(print_r($_POST, true));
         if (isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2) {
 //			$planFile = $_FILES['OrderFile'];
-            throw new Exception(print_r($_POST['Order'], true));
+//            throw new Exception(print_r($_POST['Order'], true));
             try {
                 if (isset($_POST['Order'])) {
                     $flag = false;
@@ -121,7 +121,7 @@ class MadridController extends MasterMyFileController {
                     $model->type = 1;
                     $model->status = 0;
                     $model->supplierId = 3;
-                    $model->isTheme = 1;
+                    $model->isTheme = $_POST["Order"]["isTheme"] == 1 ? 1 : 3;
                     $model->userId = Yii::app()->user->id;
                     $model->createDateTime = new CDbExpression("NOW()");
 
@@ -528,7 +528,7 @@ class MadridController extends MasterMyFileController {
         $category2Id = $_POST["category2Id"];
         $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
         $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
-        $products = UserFavourite::model()->findAll("userId =" . Yii::app()->user->id . " AND productId =" . $_POST["productId"]);
+//        $products = UserFavourite::model()->findAll("userId =" . Yii::app()->user->id . " AND productId =" . $_POST["productId"]);
 //        throw new Exception(print_r($themes, true));
         $resultTheme = "";
         $resultTheme .= "<ul>";
@@ -581,8 +581,9 @@ class MadridController extends MasterMyFileController {
                 $result["description"] = $product->description;
                 $result["width"] = $product->width;
                 $result["height"] = $product->height;
-                $result["productArea"] = ($product->width * $product->width) / 10000;
+                $result["productArea"] = isset($product->area) ? $product->area : "";
                 $result["price"] = $product->price;
+                $result["noPerBox"] = isset($product->noPerBox) ? $product->noPerBox : 12;
                 $result["productUnits"] = $product->productUnits;
             } else {
                 $result["status"] = FALSE;

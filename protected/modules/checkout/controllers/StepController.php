@@ -1,918 +1,769 @@
 <?php
 
-class StepController extends MasterCheckoutController
-{
+class StepController extends MasterCheckoutController {
 
-	public function actionIndex($id)
-	{
-		if($id > 1)
-		{
-			if(!isset(Yii::app()->user->id))
-			{
-				$this->redirect($this->createUrl(1));
-			}
-		}
+    public function actionIndex($id) {
+        if ($id > 1) {
+            if (!isset(Yii::app()->user->id)) {
+                $this->redirect($this->createUrl(1));
+            }
+        }
 
-		switch($id)
-		{
-			case 1:
-				$this->step1();
-				break;
-			case 2:
-				$this->step2();
-				break;
-			case 3:
-				$this->step3();
-				break;
-			case 4:
-				$this->step4();
-				break;
-			case 5:
-				$this->step5();
-				break;
-		}
+        switch ($id) {
+            case 1:
+                $this->step1();
+                break;
+            case 2:
+                $this->step2();
+                break;
+            case 3:
+                $this->step3();
+                break;
+            case 4:
+                $this->step4();
+                break;
+            case 5:
+                $this->step5();
+                break;
+        }
 
 //$this->render('index', array('step' => $id, 'userModel' => $userModel, 'addressModel' => $addressModel));
-	}
+    }
 
-	public function step1()
-	{
-		if(Yii::app()->user->id)
-		{
-			$this->redirect($this->createUrl(2));
-		}
-		$loginModel = new LoginForm();
-		$userModel = new User();
-		$addressModel = new Address();
-		$daiibuy = new DaiiBuy();
-		$daiibuy->loadCookie();
+    public function step1() {
+        if (Yii::app()->user->id) {
+            $this->redirect($this->createUrl(2));
+        }
+        $loginModel = new LoginForm();
+        $userModel = new User();
+        $addressModel = new Address();
+        $daiibuy = new DaiiBuy();
+        $daiibuy->loadCookie();
 
 //Login
-		if(isset($_POST['Login']))
-		{
-			$loginModel->username = $_POST['User']['email'];
-			$loginModel->password = $_POST['User']['password'];
+        if (isset($_POST['Login'])) {
+            $loginModel->username = $_POST['User']['email'];
+            $loginModel->password = $_POST['User']['password'];
 // validate user input and redirect to the previous page if valid
-			if($loginModel->validate() && $loginModel->login())
-			{
-				/**
-				 * update order set userId = Yii::app()->user->id
-				 */
-				$orders = Order::model()->findAll(array(
-					'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
-					'params'=>array(
-						':token'=>$daiibuy->token,
-						':supplierId'=>Yii::app()->session['supplierId'],
-					),
-				));
+            if ($loginModel->validate() && $loginModel->login()) {
+                /**
+                 * update order set userId = Yii::app()->user->id
+                 */
+                $orders = Order::model()->findAll(array(
+                    'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+                    'params' => array(
+                        ':token' => $daiibuy->token,
+                        ':supplierId' => Yii::app()->session['supplierId'],
+                    ),
+                ));
 
-				foreach($orders as $order)
-				{
-					$order->userId = Yii::app()->user->id;
-					$order->save(false);
-				}
-				$this->redirect($this->createUrl(2));
-			}
-			else
-			{
-				$loginModel->addError('username', 'Log in failed.');
-			}
-		}
+                foreach ($orders as $order) {
+                    $order->userId = Yii::app()->user->id;
+                    $order->save(false);
+                }
+                $this->redirect($this->createUrl(2));
+            } else {
+                $loginModel->addError('username', 'Log in failed.');
+            }
+        }
 
 //Register new user
-		if(isset($_POST['Register']))
-		{
-			$userModel->attributes = $_POST['User'];
-			$addressModel->attributes = $_POST['Address'];
+        if (isset($_POST['Register'])) {
+            $userModel->attributes = $_POST['User'];
+            $addressModel->attributes = $_POST['Address'];
 //			throw new Exception(print_r($_POST['Address'],true));
 
-			$flag = false;
-			$transaction = Yii::app()->db->beginTransaction();
-			try
-			{
-				$userModel->type = 1;
-				$userModel->status = 1;
-				$userModel->approved = 1;
-				$userModel->password = $userModel->hashPassword($userModel->email, $userModel->password);
-				$userModel->createDateTime = new CDbExpression('NOW()');
-				if($userModel->save())
-				{
-					$addressModel->userId = Yii::app()->db->getlastInsertID();
-					$addressModel->type = $addressModel::ADDRESS_TYPE_BILLING;
-					if($addressModel->save())
-					{
-						/**
-						 * update order set userId = Yii::app()->user->id
-						 */
-						$orders = Order::model()->findAll(array(
-							'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
-							'params'=>array(
-								':token'=>$daiibuy->token,
-								':supplierId'=>Yii::app()->session['supplierId'],
-							),
-						));
+            $flag = false;
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                $userModel->type = 1;
+                $userModel->status = 1;
+                $userModel->approved = 1;
+                $userModel->password = $userModel->hashPassword($userModel->email, $userModel->password);
+                $userModel->createDateTime = new CDbExpression('NOW()');
+                if ($userModel->save()) {
+                    $addressModel->userId = Yii::app()->db->getlastInsertID();
+                    $addressModel->type = $addressModel::ADDRESS_TYPE_BILLING;
+                    if ($addressModel->save()) {
+                        /**
+                         * update order set userId = Yii::app()->user->id
+                         */
+                        $orders = Order::model()->findAll(array(
+                            'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+                            'params' => array(
+                                ':token' => $daiibuy->token,
+                                ':supplierId' => Yii::app()->session['supplierId'],
+                            ),
+                        ));
 
-						foreach($orders as $order)
-						{
-							$order->userId = $addressModel->userId;
-							$order->save(false);
-						}
-						$flag = true;
-					}
-					else
-					{
-						throw new Exception(print_r($addressModel->errors, true));
-					}
-				}
-				else
-				{
-					throw new Exception(print_r($userModel->errors, true));
-				}
-				if($flag)
-				{
-					$transaction->commit();
+                        foreach ($orders as $order) {
+                            $order->userId = $addressModel->userId;
+                            $order->save(false);
+                        }
+                        $flag = true;
+                    } else {
+                        throw new Exception(print_r($addressModel->errors, true));
+                    }
+                } else {
+                    throw new Exception(print_r($userModel->errors, true));
+                }
+                if ($flag) {
+                    $transaction->commit();
 //redirect to step 2
 //					$identity = new UserIdentity($userModel->email, $userModel->password);
 //					$identity->authenticate();
 //					Yii::app()->user->login($identity);
 
-					$loginModel->username = $_POST['User']['email'];
-					$loginModel->password = $_POST['User']['password'];
+                    $loginModel->username = $_POST['User']['email'];
+                    $loginModel->password = $_POST['User']['password'];
 // validate user input and redirect to the previous page if valid
-					if($loginModel->validate() && $loginModel->login())
-					{
-						$orders = Order::model()->findAll(array(
-							'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
-							'params'=>array(
-								':token'=>$daiibuy->token,
-								':supplierId'=>Yii::app()->session['supplierId'],
-							),
-						));
+                    if ($loginModel->validate() && $loginModel->login()) {
+                        $orders = Order::model()->findAll(array(
+                            'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+                            'params' => array(
+                                ':token' => $daiibuy->token,
+                                ':supplierId' => Yii::app()->session['supplierId'],
+                            ),
+                        ));
 
-						foreach($orders as $order)
-						{
-							$order->userId = Yii::app()->user->id;
-							$order->save(false);
-						}
-						$this->redirect($this->createUrl(2));
-					}
-				}
-			}
-			catch(Exception $e)
-			{
-				throw new Exception($e->getMessage());
-				$transaction->rollback();
-			}
-		}
-		$this->render('step1', array(
-			'loginModel'=>$loginModel,
-			'userModel'=>$userModel,
-			'addressModel'=>$addressModel,
-			'step'=>1,
-		));
-	}
+                        foreach ($orders as $order) {
+                            $order->userId = Yii::app()->user->id;
+                            $order->save(false);
+                        }
+                        $this->redirect($this->createUrl(2));
+                    }
+                }
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
+                $transaction->rollback();
+            }
+        }
+        $this->render('step1', array(
+            'loginModel' => $loginModel,
+            'userModel' => $userModel,
+            'addressModel' => $addressModel,
+            'step' => 1,
+        ));
+    }
 
-	public function step2()
-	{
-		/*
-		  $billingAddressModel = Address::model()->find(array(
-		  'condition' => 'type=:type AND userId=:userId',
-		  'params' => array(
-		  ':type' => Address::ADDRESS_TYPE_BILLING,
-		  ':userId' => Yii::app()->user->id,
-		  ),
-		  ));
-		 */
-		$billingAddressModel = new Address();
-		$billingAddressModel->type = Address::ADDRESS_TYPE_BILLING;
-		$shippingAddressModel = new Address();
-		$shippingAddressModel->type = Address::ADDRESS_TYPE_SHIPPING;
+    public function step2() {
+        /*
+          $billingAddressModel = Address::model()->find(array(
+          'condition' => 'type=:type AND userId=:userId',
+          'params' => array(
+          ':type' => Address::ADDRESS_TYPE_BILLING,
+          ':userId' => Yii::app()->user->id,
+          ),
+          ));
+         */
+        $billingAddressModel = new Address();
+        $billingAddressModel->type = Address::ADDRESS_TYPE_BILLING;
+        $shippingAddressModel = new Address();
+        $shippingAddressModel->type = Address::ADDRESS_TYPE_SHIPPING;
 
-		if(isset($_POST['Next']))
-		{
-			$this->writeToFile('/tmp/step2', print_r($_POST, true));
+        if (isset($_POST['Next'])) {
+            $this->writeToFile('/tmp/step2', print_r($_POST, true));
 //billing
-			if($_POST['billingRadio'] == 1)
-			{
-				Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
-			}
-			else
-			{
+            if ($_POST['billingRadio'] == 1) {
+                Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
+            } else {
 //add new billing address
-				$billingAddressModel->attributes = $_POST['billing'];
-				$billingAddressModel->userId = Yii::app()->user->id;
-				if(!$billingAddressModel->save())
-				{
-					throw new Exception(print_r($billingAddressModel->errors, true));
-				}
-				else
-				{
-					Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
-				}
-			}
+                $billingAddressModel->attributes = $_POST['billing'];
+                $billingAddressModel->userId = Yii::app()->user->id;
+                if (!$billingAddressModel->save()) {
+                    throw new Exception(print_r($billingAddressModel->errors, true));
+                } else {
+                    Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
+                }
+            }
 
-			if($_POST['shippingRadio'] == 1)
-			{
-				Yii::app()->session['shippingAddressId'] = $_POST['existingShippingAddress'];
-			}
-			else
-			{
+            if ($_POST['shippingRadio'] == 1) {
+                Yii::app()->session['shippingAddressId'] = $_POST['existingShippingAddress'];
+            } else {
 //add new shipping address
-				$shippingAddressModel->attributes = $_POST['shipping'];
-				$shippingAddressModel->provinceId = $this->cookie->provinceId;
-				$shippingAddressModel->userId = Yii::app()->user->id;
-				Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
-				if(!$shippingAddressModel->save())
-				{
+                $shippingAddressModel->attributes = $_POST['shipping'];
+                $shippingAddressModel->provinceId = $this->cookie->provinceId;
+                $shippingAddressModel->userId = Yii::app()->user->id;
+                Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
+                if (!$shippingAddressModel->save()) {
 
-					throw new Exception(print_r($shippingAddressModel->errors, true));
-				}
-				else
-				{
-					Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
-				}
-			}
+                    throw new Exception(print_r($shippingAddressModel->errors, true));
+                } else {
+                    Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
+                }
+            }
 
-			$this->redirect($this->createUrl(3));
-		}
+            $this->redirect($this->createUrl(3));
+        }
 
-		$this->render('step2', array(
-			'billingAddressModel'=>$billingAddressModel,
-			'shippingAddressModel'=>$shippingAddressModel,
-			'step'=>2
-		));
+        $this->render('step2', array(
+            'billingAddressModel' => $billingAddressModel,
+            'shippingAddressModel' => $shippingAddressModel,
+            'step' => 2
+        ));
 //$this->redirect($this->createUrl(3));
-	}
+    }
 
-	public function step3()
-	{
-		$supplierId = Yii::app()->session['supplierId'];
-		$userId = Yii::app()->user->id;
-		$daiibuy = new DaiiBuy();
-		$daiibuy->loadCookie();
-		$token = $daiibuy->token;
-		$orders = array();
+    public function step3() {
+        $supplierId = Yii::app()->session['supplierId'];
+        $userId = Yii::app()->user->id;
+        $daiibuy = new DaiiBuy();
+        $daiibuy->loadCookie();
+        $token = $daiibuy->token;
+        $orders = array();
 
-		if(isset($userId))
-		{
-			$orders = Order::model()->findAll(array(
-				'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
-				'params'=>array(
-					':userId'=>$userId,
-					':supplierId'=>$supplierId,
-				),
-				'order'=>'type, orderId'
-			));
-		}
-		else
-		{
-			$orders = Order::model()->findAll(array(
-				'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
-				'params'=>array(
-					':token'=>$token,
-					':supplierId'=>$supplierId,
-				),
-			));
-		}
-		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
-		$supplierModel = Supplier::model()->findByPk($supplierId);
-		$userModel = User::model()->findByPk(Yii::app()->user->id);
-		$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
-		$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
+        if (isset($userId)) {
+            $orders = Order::model()->findAll(array(
+                'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
+                'params' => array(
+                    ':userId' => $userId,
+                    ':supplierId' => $supplierId,
+                ),
+                'order' => 'type, orderId'
+            ));
+        } else {
+            $orders = Order::model()->findAll(array(
+                'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
+                'params' => array(
+                    ':token' => $token,
+                    ':supplierId' => $supplierId,
+                ),
+            ));
+        }
+        $orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
+        $supplierModel = Supplier::model()->findByPk($supplierId);
+        $userModel = User::model()->findByPk(Yii::app()->user->id);
+        $billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
+        $shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 
 
 //                                        throw new Exception(print_r(Yii::app()->session['shippingAddressId'].", ".Yii::app()->session['billingAddressId'],true));
 //                throw new Exception(print_r($billingAddress,true));
-		$this->render('step3', array(
-			'step'=>3,
-			'orderSummary'=>$orderSummary,
-			'orders'=>$orders,
-			'supplierName'=>$supplierModel->name,
-			'billingAddress'=>$billingAddress,
-			'shippingAddress'=>$shippingAddress,
-			'supplierId'=>$supplierId,
-			'userModel'=>$userModel,
-		));
+        $this->render('step3', array(
+            'step' => 3,
+            'orderSummary' => $orderSummary,
+            'orders' => $orders,
+            'supplierName' => $supplierModel->name,
+            'billingAddress' => $billingAddress,
+            'shippingAddress' => $shippingAddress,
+            'supplierId' => $supplierId,
+            'userModel' => $userModel,
+        ));
 //$this->redirect($this->createUrl(4));
-	}
+    }
 
-	public function step4()
-	{
+    public function step4() {
 
 //		throw new Exception(print_r($_POST["orderGroupId"],true));
-		if(isset($_POST["orderGroupId"]))
-		{
-			$oldOrderGroup = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
-		}
-		$supplierId = Yii::app()->session['supplierId'];
-		$daiibuy = new DaiiBuy();
-		$daiibuy->loadCookie();
-		$provinceId = $daiibuy['provinceId'];
+        if (isset($_POST["orderGroupId"])) {
+            $oldOrderGroup = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+        }
+        $supplierId = Yii::app()->session['supplierId'];
+        $daiibuy = new DaiiBuy();
+        $daiibuy->loadCookie();
+        $provinceId = $daiibuy['provinceId'];
 
-		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
+        $orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
 //		throw new Exception(print_r($supplierId,true));
-		if(isset($_POST['paymentMethod']))
-		{
-			$flag = false;
-			$transaction = Yii::app()->db->beginTransaction();
-			try
-			{
+        if (isset($_POST['paymentMethod'])) {
+            $flag = false;
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
 //code here
 //new order group
-				$orderGroup = new OrderGroup();
-				$orderGroup->supplierId = $supplierId;
-				$orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
-				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
-				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
-				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
-				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
-				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+                $orderGroup = new OrderGroup();
+                $orderGroup->supplierId = $supplierId;
+                $orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
+                $orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+                $orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+                $orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+                $orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+                $orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+                $orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
 //Distributor Discount & Spacial Project Discount
-				if(isset($orderSummary['distributorDiscountPercent']))
-				{
-					$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
-					$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+                if (isset($orderSummary['distributorDiscountPercent'])) {
+                    $orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+                    $orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
 
-					$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
-				}
-				if(isset($orderSummary['extraDiscount']))
-				{
-					$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
-				}
+                    $orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+                }
+                if (isset($orderSummary['extraDiscount'])) {
+                    $orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+                }
 //Distributor Discount & Spacial Project Discount
-				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
-				$orderGroup->vatValue = $orderGroup->calVatValue();
-				$orderGroup->userId = Yii::app()->user->id;
-				$orderGroup->paymentMethod = $_POST['paymentMethod'];
-				$orderGroup->createDateTime = new CDbExpression("NOW()");
-				$orderGroup->updateDateTime = new CDbExpression("NOW()");
+                $orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+                $orderGroup->vatValue = $orderGroup->calVatValue();
+                $orderGroup->userId = Yii::app()->user->id;
+                $orderGroup->paymentMethod = $_POST['paymentMethod'];
+                $orderGroup->createDateTime = new CDbExpression("NOW()");
+                $orderGroup->updateDateTime = new CDbExpression("NOW()");
 
 
-				/**
-				 * Todo:: billing & shipping address
-				 */
-				$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
-				$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
+                /**
+                 * Todo:: billing & shipping address
+                 */
+                $billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
+                $shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 
-				$userModel = User::model()->findByPk(Yii::app()->user->id);
-				$orderGroup->email = isset($userModel->email) ? $userModel->email : $oldOrderGroup->email;
-				$orderGroup->firstname = isset($userModel->firstname) ? $userModel->firstname : $oldOrderGroup->firstname;
-				$orderGroup->lastname = isset($userModel->lastname) ? $userModel->lastname : $oldOrderGroup->lastname;
-				$orderGroup->telephone = isset($userModel->telephone) ? $userModel->telephone : $oldOrderGroup->telephone;
-				$orderGroup->paymentCompany = isset($billingAddress->company) ? $billingAddress->company : $oldOrderGroup->paymentCompany;
-				$orderGroup->paymentTaxNo = isset($billingAddress->taxNo) ? $billingAddress->taxNo : $oldOrderGroup->paymentTaxNo;
-				$orderGroup->paymentFirstname = isset($billingAddress->firstname) ? $billingAddress->firstname : $oldOrderGroup->paymentFirstname;
-				$orderGroup->paymentLastname = isset($billingAddress->lastname) ? $billingAddress->lastname : $oldOrderGroup->paymentLastname;
-				$orderGroup->paymentAddress1 = isset($billingAddress->address_1) ? $billingAddress->address_1 : $oldOrderGroup->paymentAddress1;
-				$orderGroup->paymentAddress2 = isset($billingAddress->address_2) ? $billingAddress->address_2 : $oldOrderGroup->paymentAddress2;
-				$orderGroup->paymentDistrictId = isset($billingAddress->districtId) ? $billingAddress->districtId : $oldOrderGroup->paymentDistrictId;
-				$orderGroup->paymentAmphurId = isset($billingAddress->amphurId) ? $billingAddress->amphurId : $oldOrderGroup->paymentAmphurId;
-				$orderGroup->paymentProvinceId = isset($billingAddress->provinceId) ? $billingAddress->provinceId : $oldOrderGroup->paymentProvinceId;
-				$orderGroup->paymentPostcode = isset($billingAddress->postcode) ? $billingAddress->postcode : $oldOrderGroup->paymentPostcode;
+                $userModel = User::model()->findByPk(Yii::app()->user->id);
+                $orderGroup->email = isset($userModel->email) ? $userModel->email : $oldOrderGroup->email;
+                $orderGroup->firstname = isset($userModel->firstname) ? $userModel->firstname : $oldOrderGroup->firstname;
+                $orderGroup->lastname = isset($userModel->lastname) ? $userModel->lastname : $oldOrderGroup->lastname;
+                $orderGroup->telephone = isset($userModel->telephone) ? $userModel->telephone : $oldOrderGroup->telephone;
+                $orderGroup->paymentCompany = isset($billingAddress->company) ? $billingAddress->company : $oldOrderGroup->paymentCompany;
+                $orderGroup->paymentTaxNo = isset($billingAddress->taxNo) ? $billingAddress->taxNo : $oldOrderGroup->paymentTaxNo;
+                $orderGroup->paymentFirstname = isset($billingAddress->firstname) ? $billingAddress->firstname : $oldOrderGroup->paymentFirstname;
+                $orderGroup->paymentLastname = isset($billingAddress->lastname) ? $billingAddress->lastname : $oldOrderGroup->paymentLastname;
+                $orderGroup->paymentAddress1 = isset($billingAddress->address_1) ? $billingAddress->address_1 : $oldOrderGroup->paymentAddress1;
+                $orderGroup->paymentAddress2 = isset($billingAddress->address_2) ? $billingAddress->address_2 : $oldOrderGroup->paymentAddress2;
+                $orderGroup->paymentDistrictId = isset($billingAddress->districtId) ? $billingAddress->districtId : $oldOrderGroup->paymentDistrictId;
+                $orderGroup->paymentAmphurId = isset($billingAddress->amphurId) ? $billingAddress->amphurId : $oldOrderGroup->paymentAmphurId;
+                $orderGroup->paymentProvinceId = isset($billingAddress->provinceId) ? $billingAddress->provinceId : $oldOrderGroup->paymentProvinceId;
+                $orderGroup->paymentPostcode = isset($billingAddress->postcode) ? $billingAddress->postcode : $oldOrderGroup->paymentPostcode;
 
 //				$orderGroup->shippingFirstname = $shippingAddress->firstname;
 //				$orderGroup->shippingLastname = $shippingAddress->lastname;
-				$orderGroup->shippingCompany = isset($shippingAddress->company) ? $shippingAddress->company : $oldOrderGroup->shippingCompany;
-				$orderGroup->shippingAddress1 = isset($shippingAddress->address_1) ? $shippingAddress->address_1 : $oldOrderGroup->shippingAddress1;
-				$orderGroup->shippingAddress2 = isset($shippingAddress->address_2) ? $shippingAddress->address_2 : $oldOrderGroup->shippingAddress2;
-				$orderGroup->shippingDistrictId = isset($shippingAddress->districtId) ? $shippingAddress->districtId : $oldOrderGroup->shippingDistrictId;
-				$orderGroup->shippingAmphurId = isset($shippingAddress->amphurId) ? $shippingAddress->amphurId : $oldOrderGroup->shippingAmphurId;
-				$orderGroup->shippingProvinceId = isset($shippingAddress->provinceId) ? $shippingAddress->provinceId : $oldOrderGroup->shippingProvinceId;
-				$orderGroup->shippingPostCode = isset($shippingAddress->postcode) ? $shippingAddress->postcode : $oldOrderGroup->shippingPostCode;
-				/**
-				 * TODO:: remove false after add address
-				 */
-				if($orderGroup->save(false))
-				{
-					$orderGroupId = Yii::app()->db->getLastInsertID();
+                $orderGroup->shippingCompany = isset($shippingAddress->company) ? $shippingAddress->company : $oldOrderGroup->shippingCompany;
+                $orderGroup->shippingAddress1 = isset($shippingAddress->address_1) ? $shippingAddress->address_1 : $oldOrderGroup->shippingAddress1;
+                $orderGroup->shippingAddress2 = isset($shippingAddress->address_2) ? $shippingAddress->address_2 : $oldOrderGroup->shippingAddress2;
+                $orderGroup->shippingDistrictId = isset($shippingAddress->districtId) ? $shippingAddress->districtId : $oldOrderGroup->shippingDistrictId;
+                $orderGroup->shippingAmphurId = isset($shippingAddress->amphurId) ? $shippingAddress->amphurId : $oldOrderGroup->shippingAmphurId;
+                $orderGroup->shippingProvinceId = isset($shippingAddress->provinceId) ? $shippingAddress->provinceId : $oldOrderGroup->shippingProvinceId;
+                $orderGroup->shippingPostCode = isset($shippingAddress->postcode) ? $shippingAddress->postcode : $oldOrderGroup->shippingPostCode;
+                /**
+                 * TODO:: remove false after add address
+                 */
+                if ($orderGroup->save(false)) {
+                    $orderGroupId = Yii::app()->db->getLastInsertID();
 
-					$orders = Order::model()->findAll(array(
-						'condition'=>'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
-						'params'=>array(
-							':userId'=>Yii::app()->user->id,
-							':supplierId'=>$supplierId,
-						),
-						'order'=>'type, orderId'
-					));
+                    $orders = Order::model()->findAll(array(
+                        'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND userId=:userId AND supplierId=:supplierId',
+                        'params' => array(
+                            ':userId' => Yii::app()->user->id,
+                            ':supplierId' => $supplierId,
+                        ),
+                        'order' => 'type, orderId'
+                    ));
 //					throw new Exception(print_r($orders, true));
-					$i = 0;
+                    $i = 0;
 
-					foreach($orders as $order)
-					{
+                    foreach ($orders as $order) {
 
-						$orderGroupToOrder = new OrderGroupToOrder();
-						$orderGroupToOrder->orderGroupId = $orderGroupId;
-						$orderGroupToOrder->orderId = $order->orderId;
-
+                        $orderGroupToOrder = new OrderGroupToOrder();
+                        $orderGroupToOrder->orderGroupId = $orderGroupId;
+                        $orderGroupToOrder->orderId = $order->orderId;
 
 
-						if(!$orderGroupToOrder->save())
-						{
-							break;
-						}
-						$sumTotal = 0;
-						foreach($order->orderItems as $item)
-						{
 
-							$price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
-							$total = ($price * $item->quantity);
-							$sumTotal+=$total;
-							$item->price = $price;
-							$item->total = $total;
-							$item->save(FALSE);
-						}
-						$order->totalIncVAT = $sumTotal;
-						$order->total = $sumTotal / 1.07;
-						if(isset($orderSummary["extraDiscountArray"][$order->orderId]))
-						{
-							$order->spacialProjectDiscount = $orderSummary["extraDiscountArray"][$order->orderId]["extraDiscount"];
-						}
+                        if (!$orderGroupToOrder->save()) {
+                            break;
+                        }
+                        $sumTotal = 0;
+                        foreach ($order->orderItems as $item) {
 
-						$order->provinceId = $provinceId;
-						$order->type = 4;
+                            $price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
+                            $total = ($price * $item->quantity);
+                            $sumTotal+=$total;
+                            $item->price = $price;
+                            $item->total = $total;
+                            $item->save(FALSE);
+                        }
+                        $order->totalIncVAT = $sumTotal;
+                        $order->total = $sumTotal / 1.07;
+                        if (isset($orderSummary["extraDiscountArray"][$order->orderId])) {
+                            $order->spacialProjectDiscount = $orderSummary["extraDiscountArray"][$order->orderId]["extraDiscount"];
+                        }
+
+                        $order->provinceId = $provinceId;
+                        $order->type = 4;
 //							throw new Exception(print_r($order->type,true));
-						$order->save();
-						$i++;
-					}
-					if($i == sizeof($orders))
-					{
-						$flag = true;
-					}
-					if($supplierId == 4 || $supplierId == 5)
-					{
-						$flag = $this->saveGinzaOrder($supplierId, $orderGroupId);
-					}
-				}
+                        $order->save();
+                        $i++;
+                    }
+                    if ($i == sizeof($orders)) {
+                        $flag = true;
+                    }
+                    if ($supplierId == 4 || $supplierId == 5) {
+                        $flag = $this->saveGinzaOrder($supplierId, $orderGroupId);
+                    }
+                }
 //				throw new Exception($flag);
-				if($flag)
-				{
-					$transaction->commit();
+                if ($flag) {
+                    $transaction->commit();
 
-					/**
-					 * 1 = card, 2 = transfer
-					 * orderNo = $orderGroup->orderNo
-					 */
-					if($orderGroup->paymentMethod == 1)
-					{
-						$this->redirect(array(
-							"confirmCheckout",
-							'id'=>$orderGroupId));
-					}
-					else
-					{
-						$emailObj = new Email();
-						$sentMail = new EmailSend();
-						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-						$emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
-						$sentMail->mailCompleteOrderCustomer($emailObj);
-						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
-						$this->redirect(array(
-							'step6',
-							"id"=>$orderGroupId,
-						));
-					}
-				}
-				else
-				{
-					$transaction->rollback();
-				}
-			}
-			catch(Exception $e)
-			{
-				throw new Exception($e->getMessage());
-				$transaction->rollback();
-			}
-		}
+                    /**
+                     * 1 = card, 2 = transfer
+                     * orderNo = $orderGroup->orderNo
+                     */
+                    if ($orderGroup->paymentMethod == 1) {
+                        $this->redirect(array(
+                            "confirmCheckout",
+                            'id' => $orderGroupId));
+                    } else {
+                        $emailObj = new Email();
+                        $sentMail = new EmailSend();
+                        $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+                        $emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
+                        $sentMail->mailCompleteOrderCustomer($emailObj);
+                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+                        $this->redirect(array(
+                            'step6',
+                            "id" => $orderGroupId,
+                        ));
+                    }
+                } else {
+                    $transaction->rollback();
+                }
+            } catch (Exception $e) {
+                throw new Exception($e->getMessage());
+                $transaction->rollback();
+            }
+        }
 
-		$bankArray = Bank::model()->findAllBankModelBySupplier($supplierId);
+        $bankArray = Bank::model()->findAllBankModelBySupplier($supplierId);
 
-		$this->render('step4', array(
-			'step'=>4,
-			'orderSummary'=>$orderSummary,
-			'bankArray'=>$bankArray,
-		));
+        $this->render('step4', array(
+            'step' => 4,
+            'orderSummary' => $orderSummary,
+            'bankArray' => $bankArray,
+        ));
 //        $this->redirect($this->createUrl(5));
-	}
+    }
 
-	public function step5()
-	{
-		$daiibuy = new DaiiBuy();
+    public function step5() {
+        $daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
-		$order = new OrderGroup();
-		$decisionArray = array(
-			"ACCEPT",
+        $order = new OrderGroup();
+        $decisionArray = array(
+            "ACCEPT",
 //			"REVIEW"
-		);
-		$resonCode = array(
-			100,
+        );
+        $resonCode = array(
+            100,
 //			110,
 //			200,
 //			201,
 //			230,
 //			520
-		);
-		$flag = FALSE;
-		if(isset($_REQUEST) && $_REQUEST != array())
-		{
+        );
+        $flag = FALSE;
+        if (isset($_REQUEST) && $_REQUEST != array()) {
 //			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
 //			{
-			if($_REQUEST["decision"] == "ACCEPT")
-			{
-				$oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
-					":orderNo"=>$_REQUEST["req_reference_number"]));
-				if(isset($oldOrder))
-				{
-					if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
-					{
-						foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
-						{
-							for($i = 1;; $i++)
-							{
-								$transaction = Yii::app()->db->beginTransaction();
-								try
-								{
-									$newOrderGroup = new OrderGroup();
-									$newOrderGroup->attributes = $oldOrder->attributes;
-									$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
-									$newOrderGroup->totalIncVAT = $item->price;
-									$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
-									$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
-									$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
-									$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
-									$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
-									$newOrderGroup->orderGroupId = NULL;
+            if ($_REQUEST["decision"] == "ACCEPT") {
+                $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
+                    ":orderNo" => $_REQUEST["req_reference_number"]));
+                if (isset($oldOrder)) {
+                    if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
+                        foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
+                            for ($i = 1;; $i++) {
+                                $transaction = Yii::app()->db->beginTransaction();
+                                try {
+                                    $newOrderGroup = new OrderGroup();
+                                    $newOrderGroup->attributes = $oldOrder->attributes;
+                                    $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+                                    $newOrderGroup->totalIncVAT = $item->price;
+                                    $newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+                                    $newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+                                    $newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+                                    $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+                                    $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+                                    $newOrderGroup->orderGroupId = NULL;
 
 
 
-									$newOrderItem = new OrderItems();
-									$newOrderItem->attributes = $item->attributes;
+                                    $newOrderItem = new OrderItems();
+                                    $newOrderItem->attributes = $item->attributes;
 
 
 //						throw new Exception(print_r($newOrderItem->attributes, true));
 
-									if($newOrderGroup->save())
-									{
-										$newOrderGroupId = Yii::app()->db->getLastInsertID();
-										$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
-										$newOrder = new Order();
-										$newOrder->attributes = $tempOrder->attributes;
-										$newOrder->orderId = NULL;
-										$newOrder->totalIncVAT = $item->price;
-										$newOrder->total = $newOrderGroup->total;
-										if($newOrder->save())
-										{
-											$newOrderId = Yii::app()->db->getLastInsertID();
-											$orderGroupToOrder = new OrderGroupToOrder();
-											$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-											$orderGroupToOrder->orderId = $newOrderId;
-											if($orderGroupToOrder->save())
-											{
-												$newOrderItem = new OrderItems();
-												$newOrderItem->attributes = $item->attributes;
-												$newOrderItem->orderId = $newOrderId;
-												$newOrderItem->quantity = 1;
-												$newOrderItem->total = $newOrderItem->price;
-												if($newOrderItem->save())
-												{
-													$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-													$transaction->commit();
-												}
-												else
-												{
-													throw new Exception;
-												}
-											}
-											else
-											{
-												throw new Exception;
-											}
-										}
-										else
-										{
-											throw new Exception;
-										}
-									}
-									else
-									{
-										throw new Exception;
-									}
-								}
-								catch(Exception $ex)
-								{
-									throw new Exception($e->getMessage());
-									$transaction->rollback();
-								}
+                                    if ($newOrderGroup->save()) {
+                                        $newOrderGroupId = Yii::app()->db->getLastInsertID();
+                                        $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+                                        $newOrder = new Order();
+                                        $newOrder->attributes = $tempOrder->attributes;
+                                        $newOrder->orderId = NULL;
+                                        $newOrder->totalIncVAT = $item->price;
+                                        $newOrder->total = $newOrderGroup->total;
+                                        if ($newOrder->save()) {
+                                            $newOrderId = Yii::app()->db->getLastInsertID();
+                                            $orderGroupToOrder = new OrderGroupToOrder();
+                                            $orderGroupToOrder->orderGroupId = $newOrderGroupId;
+                                            $orderGroupToOrder->orderId = $newOrderId;
+                                            if ($orderGroupToOrder->save()) {
+                                                $newOrderItem = new OrderItems();
+                                                $newOrderItem->attributes = $item->attributes;
+                                                $newOrderItem->orderId = $newOrderId;
+                                                $newOrderItem->quantity = 1;
+                                                $newOrderItem->total = $newOrderItem->price;
+                                                if ($newOrderItem->save()) {
+                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                    $transaction->commit();
+                                                } else {
+                                                    throw new Exception;
+                                                }
+                                            } else {
+                                                throw new Exception;
+                                            }
+                                        } else {
+                                            throw new Exception;
+                                        }
+                                    } else {
+                                        throw new Exception;
+                                    }
+                                } catch (Exception $ex) {
+                                    throw new Exception($e->getMessage());
+                                    $transaction->rollback();
+                                }
 
-								if($i == $item->quantity)
-								{
-									$oldOrder->status = -1;
-									$oldOrder->paymentDateTime = new CDbExpression('NOW()');
-									break;
-								}
-							}
-						}
-					}
-					else
-					{
-						$oldOrder->status = 2;
-						$oldOrder->paymentDateTime = new CDbExpression('NOW()');
-					}
-					if($oldOrder->save())
-					{
+                                if ($i == $item->quantity) {
+                                    $oldOrder->status = -1;
+                                    $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        $oldOrder->status = 2;
+                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                    }
+                    if ($oldOrder->save()) {
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
 
-						$flag = TRUE;
-						$emailObj = new Email();
-						$sentMail = new EmailSend();
-						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-						$emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
-						$sentMail->mailCompleteOrderCustomer($emailObj);
-						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
-					}
-				}
-				else
-				{
-					echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
-				}
-			}
-			else
-			{
+                        $flag = TRUE;
+                        $emailObj = new Email();
+                        $sentMail = new EmailSend();
+                        $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+                        $emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+                        $sentMail->mailCompleteOrderCustomer($emailObj);
+                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+                    }
+                } else {
+                    echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+                }
+            } else {
 // Email จ่ายไม่ผ่าน
-				if($_REQUEST["decision"] == "REVIEW")
-				{
-					$order = OrderGroup::model()->find("orderNo =:orderNo", array(
-						":orderNo"=>$_REQUEST["req_reference_number"]));
-					if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
-					{
-						foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
-						{
-							for($i = 1;; $i++)
-							{
-								$transaction = Yii::app()->db->beginTransaction();
-								try
-								{
-									$newOrderGroup = new OrderGroup();
-									$newOrderGroup->attributes = $oldOrder->attributes;
-									$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
-									$newOrderGroup->totalIncVAT = $item->price;
-									$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
-									$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
-									$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
-									$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
-									$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
-									$newOrderGroup->orderGroupId = NULL;
+                if ($_REQUEST["decision"] == "REVIEW") {
+                    $order = OrderGroup::model()->find("orderNo =:orderNo", array(
+                        ":orderNo" => $_REQUEST["req_reference_number"]));
+                    if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
+                        foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
+                            for ($i = 1;; $i++) {
+                                $transaction = Yii::app()->db->beginTransaction();
+                                try {
+                                    $newOrderGroup = new OrderGroup();
+                                    $newOrderGroup->attributes = $oldOrder->attributes;
+                                    $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+                                    $newOrderGroup->totalIncVAT = $item->price;
+                                    $newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+                                    $newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+                                    $newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+                                    $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+                                    $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+                                    $newOrderGroup->orderGroupId = NULL;
 
 
 
-									$newOrderItem = new OrderItems();
-									$newOrderItem->attributes = $item->attributes;
+                                    $newOrderItem = new OrderItems();
+                                    $newOrderItem->attributes = $item->attributes;
 
 
 //						throw new Exception(print_r($newOrderItem->attributes, true));
 
-									if($newOrderGroup->save())
-									{
-										$newOrderGroupId = Yii::app()->db->getLastInsertID();
-										$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
-										$newOrder = new Order();
-										$newOrder->attributes = $tempOrder->attributes;
-										$newOrder->orderId = NULL;
-										$newOrder->totalIncVAT = $item->price;
-										$newOrder->total = $newOrderGroup->total;
-										if($newOrder->save())
-										{
-											$newOrderId = Yii::app()->db->getLastInsertID();
-											$orderGroupToOrder = new OrderGroupToOrder();
-											$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-											$orderGroupToOrder->orderId = $newOrderId;
-											if($orderGroupToOrder->save())
-											{
-												$newOrderItem = new OrderItems();
-												$newOrderItem->attributes = $item->attributes;
-												$newOrderItem->orderId = $newOrderId;
-												$newOrderItem->quantity = 1;
-												$newOrderItem->total = $newOrderItem->price;
-												if($newOrderItem->save())
-												{
-													$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-													$transaction->commit();
-												}
-												else
-												{
-													throw new Exception;
-												}
-											}
-											else
-											{
-												throw new Exception;
-											}
-										}
-										else
-										{
-											throw new Exception;
-										}
-									}
-									else
-									{
-										throw new Exception;
-									}
-								}
-								catch(Exception $ex)
-								{
-									throw new Exception($e->getMessage());
-									$transaction->rollback();
-								}
+                                    if ($newOrderGroup->save()) {
+                                        $newOrderGroupId = Yii::app()->db->getLastInsertID();
+                                        $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+                                        $newOrder = new Order();
+                                        $newOrder->attributes = $tempOrder->attributes;
+                                        $newOrder->orderId = NULL;
+                                        $newOrder->totalIncVAT = $item->price;
+                                        $newOrder->total = $newOrderGroup->total;
+                                        if ($newOrder->save()) {
+                                            $newOrderId = Yii::app()->db->getLastInsertID();
+                                            $orderGroupToOrder = new OrderGroupToOrder();
+                                            $orderGroupToOrder->orderGroupId = $newOrderGroupId;
+                                            $orderGroupToOrder->orderId = $newOrderId;
+                                            if ($orderGroupToOrder->save()) {
+                                                $newOrderItem = new OrderItems();
+                                                $newOrderItem->attributes = $item->attributes;
+                                                $newOrderItem->orderId = $newOrderId;
+                                                $newOrderItem->quantity = 1;
+                                                $newOrderItem->total = $newOrderItem->price;
+                                                if ($newOrderItem->save()) {
+                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                    $transaction->commit();
+                                                } else {
+                                                    throw new Exception;
+                                                }
+                                            } else {
+                                                throw new Exception;
+                                            }
+                                        } else {
+                                            throw new Exception;
+                                        }
+                                    } else {
+                                        throw new Exception;
+                                    }
+                                } catch (Exception $ex) {
+                                    throw new Exception($e->getMessage());
+                                    $transaction->rollback();
+                                }
 
-								if($i == $item->quantity)
-								{
-									$oldOrder->status = -1;
-									$oldOrder->paymentDateTime = new CDbExpression('NOW()');
-									break;
-								}
-							}
-						}
-					}
-					else
-					{
-						$oldOrder->status = 2;
-						$oldOrder->paymentDateTime = new CDbExpression('NOW()');
-					}
-					if($oldOrder->save())
-					{
+                                if ($i == $item->quantity) {
+                                    $oldOrder->status = -1;
+                                    $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        $oldOrder->status = 2;
+                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                    }
+                    if ($oldOrder->save()) {
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
 
-						$flag = TRUE;
-						$emailObj = new Email();
-						$sentMail = new EmailSend();
-						$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-						$emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
-						$sentMail->mailCompleteOrderCustomer($emailObj);
-						$sentMail->mailConfirmOrderSupplierDealer($emailObj);
-					}
-					else
-					{
-						echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
-					}
-				}
-			}
-		}
-		else
-		{
+                        $flag = TRUE;
+                        $emailObj = new Email();
+                        $sentMail = new EmailSend();
+                        $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+                        $emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
+                        $sentMail->mailCompleteOrderCustomer($emailObj);
+                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+                    } else {
+                        echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+                    }
+                }
+            }
+        } else {
 //$flag = TRUE;
-		}
-		$this->render("step5", array(
-			'result'=>$_REQUEST,
-			'flag'=>$flag,
-			'model'=>$order));
-	}
+        }
+        $this->render("step5", array(
+            'result' => $_REQUEST,
+            'flag' => $flag,
+            'model' => $order));
+    }
 
-	public function actionStep6($id)
-	{
+    public function actionStep6($id) {
 //		$daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
-		$flag = FALSE;
+        $flag = FALSE;
 
 //		$order = OrderGroup::model()->find("orderNo =:orderNo", array(
 //			":orderNo"=>$id));
-		$oldOrder = OrderGroup::model()->findByPk($id);
+        $oldOrder = OrderGroup::model()->findByPk($id);
 
-		if(isset($oldOrder))
-		{
-			if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
-			{
+        if (isset($oldOrder)) {
+            if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
 
-				foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
-				{
-					for($i = 1;; $i++)
-					{
-						$transaction = Yii::app()->db->beginTransaction();
-						try
-						{
-							$newOrderGroup = new OrderGroup();
-							$newOrderGroup->attributes = $oldOrder->attributes;
-							$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
-							$newOrderGroup->totalIncVAT = $item->price;
-							$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
-							$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
-							$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
-							$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
-							$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
-							$newOrderGroup->orderGroupId = NULL;
+                foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
+                    for ($i = 1;; $i++) {
+                        $transaction = Yii::app()->db->beginTransaction();
+                        try {
+                            $newOrderGroup = new OrderGroup();
+                            $newOrderGroup->attributes = $oldOrder->attributes;
+                            $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+                            $newOrderGroup->totalIncVAT = $item->price;
+                            $newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+                            $newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+                            $newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+                            $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+                            $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+                            $newOrderGroup->orderGroupId = NULL;
 
 
 
-							$newOrderItem = new OrderItems();
-							$newOrderItem->attributes = $item->attributes;
+                            $newOrderItem = new OrderItems();
+                            $newOrderItem->attributes = $item->attributes;
 
 
 //						throw new Exception(print_r($newOrderItem->attributes, true));
 
-							if($newOrderGroup->save())
-							{
-								$newOrderGroupId = Yii::app()->db->getLastInsertID();
-								$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
-								$newOrder = new Order();
-								$newOrder->attributes = $tempOrder->attributes;
-								$newOrder->orderId = NULL;
-								$newOrder->totalIncVAT = $item->price;
-								$newOrder->total = $newOrderGroup->total;
-								if($newOrder->save())
-								{
-									$newOrderId = Yii::app()->db->getLastInsertID();
-									$orderGroupToOrder = new OrderGroupToOrder();
-									$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-									$orderGroupToOrder->orderId = $newOrderId;
-									if($orderGroupToOrder->save())
-									{
-										$newOrderItem = new OrderItems();
-										$newOrderItem->attributes = $item->attributes;
-										$newOrderItem->orderId = $newOrderId;
-										$newOrderItem->quantity = 1;
-										$newOrderItem->total = $newOrderItem->price;
-										if($newOrderItem->save())
-										{
-											$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-											$transaction->commit();
-										}
-										else
-										{
-											throw new Exception;
-										}
-									}
-									else
-									{
-										throw new Exception;
-									}
-								}
-								else
-								{
-									throw new Exception;
-								}
-							}
-							else
-							{
-								throw new Exception;
-							}
-						}
-						catch(Exception $ex)
-						{
-							throw new Exception($e->getMessage());
-							$transaction->rollback();
-						}
+                            if ($newOrderGroup->save()) {
+                                $newOrderGroupId = Yii::app()->db->getLastInsertID();
+                                $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+                                $newOrder = new Order();
+                                $newOrder->attributes = $tempOrder->attributes;
+                                $newOrder->orderId = NULL;
+                                $newOrder->totalIncVAT = $item->price;
+                                $newOrder->total = $newOrderGroup->total;
+                                if ($newOrder->save()) {
+                                    $newOrderId = Yii::app()->db->getLastInsertID();
+                                    $orderGroupToOrder = new OrderGroupToOrder();
+                                    $orderGroupToOrder->orderGroupId = $newOrderGroupId;
+                                    $orderGroupToOrder->orderId = $newOrderId;
+                                    if ($orderGroupToOrder->save()) {
+                                        $newOrderItem = new OrderItems();
+                                        $newOrderItem->attributes = $item->attributes;
+                                        $newOrderItem->orderId = $newOrderId;
+                                        $newOrderItem->quantity = 1;
+                                        $newOrderItem->total = $newOrderItem->price;
+                                        if ($newOrderItem->save()) {
+                                            $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                            $transaction->commit();
+                                        } else {
+                                            throw new Exception;
+                                        }
+                                    } else {
+                                        throw new Exception;
+                                    }
+                                } else {
+                                    throw new Exception;
+                                }
+                            } else {
+                                throw new Exception;
+                            }
+                        } catch (Exception $ex) {
+                            throw new Exception($e->getMessage());
+                            $transaction->rollback();
+                        }
 
-						if($i == $item->quantity)
-						{
-							$oldOrder->status = -1;
-							break;
-						}
-					}
-				}
+                        if ($i == $item->quantity) {
+                            $oldOrder->status = -1;
+                            break;
+                        }
+                    }
+                }
 //					$oldOrder->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
 //					$oldOrder->discountValue = ($oldOrder->totalIncVAT * $oldOrder->discountPercent) / 100;
 //					$oldOrder->totalPostDiscount = $oldOrder->totalIncVAT - $oldOrder->discountValue;
 //					$oldOrder->total = $oldOrder->totalIncVAT / (1 + ($oldOrder->vatPercent / 100));
 //					$oldOrder->vatValue = $oldOrder->totalIncVAT - $oldOrder->total;
 //					$oldOrder->orderGroupId = NULL;
-				//						$oldOrder->orderNo = $oldOrder->order->findMaxOrderNo();
-			}
-			else
-			{
-				$oldOrder->status = 1;
-			}
-		}
+                //						$oldOrder->orderNo = $oldOrder->order->findMaxOrderNo();
+            } else {
+                $oldOrder->status = 1;
+            }
+        }
 //					$oldOrder->paymentDateTime = new CDbExpression('NOW()');
-		if($oldOrder->save())
-		{
+        if ($oldOrder->save()) {
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
-			if($oldOrder->status < 0)
-			{
-				$orderToSentMail = $oldOrder;
-			}
-			else
-			{
-				$orderToSentMail = isset($newOrderGroup) ? $newOrderGroup : $oldOrder;
-			}
-			$flag = TRUE;
-			$emailObj = new Email();
-			$sentMail = new EmailSend();
-			$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-			$emailObj->Setmail($orderToSentMail->userId, null, $orderToSentMail->supplierId, $orderToSentMail->orderGroupId, null, $documentUrl);
-			$sentMail->mailCompleteOrderCustomer($emailObj);
-			$sentMail->mailConfirmOrderSupplierDealer($emailObj);
-		}
+            if ($oldOrder->status < 0) {
+                $orderToSentMail = $oldOrder;
+            } else {
+                $orderToSentMail = isset($newOrderGroup) ? $newOrderGroup : $oldOrder;
+            }
+            $flag = TRUE;
+            $emailObj = new Email();
+            $sentMail = new EmailSend();
+            $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+            $emailObj->Setmail($orderToSentMail->userId, null, $orderToSentMail->supplierId, $orderToSentMail->orderGroupId, null, $documentUrl);
+            $sentMail->mailCompleteOrderCustomer($emailObj);
+            $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+        }
 
 //		if(isset($order))
 //		{
@@ -936,491 +787,411 @@ class StepController extends MasterCheckoutController
 //				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 //			}
 //		}
-		else
-		{
-			echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
-		}
+        else {
+            echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+        }
 
-		$bankArray = Bank::model()->findAllBankModelBySupplier($oldOrder->supplierId);
-		$this->render("step6", array(
-			'bankArray'=>$bankArray,
-			'model'=>$oldOrder));
-	}
+        $bankArray = Bank::model()->findAllBankModelBySupplier($oldOrder->supplierId);
+        $this->render("step6", array(
+            'bankArray' => $bankArray,
+            'model' => $oldOrder));
+    }
 
-	public function actionFindAmphur()
-	{
-		if(isset($_POST['provinceId']))
-		{
-			$res = '';
-			$amphurs = Amphur::model()->findAll(array(
-				'condition'=>'provinceId=:provinceId',
-				'params'=>array(
-					':provinceId'=>$_POST['provinceId'],
-				),
-				'order'=>'amphurName'
-			));
+    public function actionFindAmphur() {
+        if (isset($_POST['provinceId'])) {
+            $res = '';
+            $amphurs = Amphur::model()->findAll(array(
+                'condition' => 'provinceId=:provinceId',
+                'params' => array(
+                    ':provinceId' => $_POST['provinceId'],
+                ),
+                'order' => 'amphurName'
+            ));
 //			$res .= '<option value="">เลือกอำเภอ</option>';
-			foreach($amphurs as $amphur)
-			{
-				$res .= '<option value="' . $amphur->amphurId . '">' . $amphur->amphurName . '</option>';
-			}
+            foreach ($amphurs as $amphur) {
+                $res .= '<option value="' . $amphur->amphurId . '">' . $amphur->amphurName . '</option>';
+            }
 
-			echo $res;
-		}
-	}
+            echo $res;
+        }
+    }
 
-	public function actionFindDistrict()
-	{
-		if(isset($_POST['amphurId']))
-		{
-			$res = '';
-			$districts = District::model()->findAll(array(
-				'condition'=>'amphurId=:amphurId',
-				'params'=>array(
-					':amphurId'=>$_POST['amphurId'],
-				),
-				'order'=>'districtName'
-			));
+    public function actionFindDistrict() {
+        if (isset($_POST['amphurId'])) {
+            $res = '';
+            $districts = District::model()->findAll(array(
+                'condition' => 'amphurId=:amphurId',
+                'params' => array(
+                    ':amphurId' => $_POST['amphurId'],
+                ),
+                'order' => 'districtName'
+            ));
 
-			foreach($districts as $district)
-			{
-				$res .= '<option value="' . $district->districtId . '">' . $district->districtName . '</option>';
-			}
-			echo $res;
-		}
-	}
+            foreach ($districts as $district) {
+                $res .= '<option value="' . $district->districtId . '">' . $district->districtName . '</option>';
+            }
+            echo $res;
+        }
+    }
 
-	public function actionConfirmation($id)
-	{
-		$model = OrderGroup::model()->findByPk($id);
-		$this->render("e_payment/payment_confirmation", array(
-			'model'=>$model));
-	}
+    public function actionConfirmation($id) {
+        $model = OrderGroup::model()->findByPk($id);
+        $this->render("e_payment/payment_confirmation", array(
+            'model' => $model));
+    }
 
-	public function actionConfirmCheckout($id)
-	{
-		$model = OrderGroup::model()->findByPk($id);
+    public function actionConfirmCheckout($id) {
+        $model = OrderGroup::model()->findByPk($id);
 
-		$this->render("confirm_checkout", array(
-			'model'=>$model));
-	}
+        $this->render("confirm_checkout", array(
+            'model' => $model));
+    }
 
-	public function splitGinzaOrder($item)
-	{
-		$oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
-		$order = new OrderGroup();
-		$order->attributes = $oldOrder->attributes;
-		$order->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
-		$order->discountValue = ($order->totalIncVAT * $order->discountPercent) / 100;
-		$order->totalPostDiscount = $order->totalIncVAT - $order->discountValue;
-		$order->total = $order->totalIncVAT / (1 + ($order->vatPercent / 100));
-		$order->vatValue = $order->totalIncVAT - $order->total;
-		$order->orderGroupId = NULL;
-		$order->orderNo = $oldOrder->order->findMaxOrderNo();
-		$order->status = 1;
+    public function splitGinzaOrder($item) {
+        $oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
+        $order = new OrderGroup();
+        $order->attributes = $oldOrder->attributes;
+        $order->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
+        $order->discountValue = ($order->totalIncVAT * $order->discountPercent) / 100;
+        $order->totalPostDiscount = $order->totalIncVAT - $order->discountValue;
+        $order->total = $order->totalIncVAT / (1 + ($order->vatPercent / 100));
+        $order->vatValue = $order->totalIncVAT - $order->total;
+        $order->orderGroupId = NULL;
+        $order->orderNo = $oldOrder->order->findMaxOrderNo();
+        $order->status = 1;
 //							$order->paymentDateTime = new CDbExpression('NOW()');
-		if($order->save())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+        if ($order->save()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public function copyGinzaOrder($oldOrderGroupId, $splitNo)
-	{
-		$oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
-		$order = new OrderGroup();
-		$order->attributes = $oldOrder->attributes;
-		$order->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
-		$order->discountValue = ($order->totalIncVAT * $order->discountPercent) / 100;
-		$order->totalPostDiscount = $order->totalIncVAT - $order->discountValue;
-		$order->total = $order->totalIncVAT / (1 + ($order->vatPercent / 100));
-		$order->vatValue = $order->totalIncVAT - $order->total;
-		$order->orderGroupId = NULL;
-		$order->orderNo = $oldOrder->order->findMaxOrderNo();
-		$order->status = 1;
+    public function copyGinzaOrder($oldOrderGroupId, $splitNo) {
+        $oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
+        $order = new OrderGroup();
+        $order->attributes = $oldOrder->attributes;
+        $order->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
+        $order->discountValue = ($order->totalIncVAT * $order->discountPercent) / 100;
+        $order->totalPostDiscount = $order->totalIncVAT - $order->discountValue;
+        $order->total = $order->totalIncVAT / (1 + ($order->vatPercent / 100));
+        $order->vatValue = $order->totalIncVAT - $order->total;
+        $order->orderGroupId = NULL;
+        $order->orderNo = $oldOrder->order->findMaxOrderNo();
+        $order->status = 1;
 //							$order->paymentDateTime = new CDbExpression('NOW()');
-		if($order->save())
-		{
-			$orderGroupId = Yii::app()->db->lastInsertID;
+        if ($order->save()) {
+            $orderGroupId = Yii::app()->db->lastInsertID;
 
 //		$orderGroup = OrderGroup::model()->findByPk($orderGroupId);
-			$newOrder = new Order();
-			$newOrder->attributes = $order->orderGroupToOrders[0]->order->attributes;
-			$newOrder->orderId = NULL;
-			$newOrder->totalIncVAT = $newOrder->totalIncVAT / $splitNo;
-			if($newOrder->save())
-			{
-				$newOrderId = Yii::app()->db->getLastInsertID();
-				$newOrderGroupToOrder = new OrderGroupToOrder();
-				$newOrderGroupToOrder->orderGroupId = $orderGroupId;
-				$newOrderGroupToOrder->orderId = $newOrderId;
-				if($newOrderGroupToOrder->save())
-				{
-					$newOrderItem = new OrderItems();
-					$newOrderItem->attributes = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->attributes;
-					$newOrderItem->total = $newOrderItem->total / $splitNo;
-					$newOrderItem->orderItemId = NULL;
-					$newOrderItem->orderId = $newOrderId;
-					if($newOrderItem->save())
-					{
-						return true;
-					}
-					else
-					{
-						return false;
-					}
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		}
-	}
+            $newOrder = new Order();
+            $newOrder->attributes = $order->orderGroupToOrders[0]->order->attributes;
+            $newOrder->orderId = NULL;
+            $newOrder->totalIncVAT = $newOrder->totalIncVAT / $splitNo;
+            if ($newOrder->save()) {
+                $newOrderId = Yii::app()->db->getLastInsertID();
+                $newOrderGroupToOrder = new OrderGroupToOrder();
+                $modelwOrderGroupToOrder->orderGroupId = $orderGroupId;
+                $newOrderGroupToOrder->orderId = $newOrderId;
+                if ($newOrderGroupToOrder->save()) {
+                    $newOrderItem = new OrderItems();
+                    $newOrderItem->attributes = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->attributes;
+                    $newOrderItem->total = $newOrderItem->total / $splitNo;
+                    $newOrderItem->orderItemId = NULL;
+                    $newOrderItem->orderId = $newOrderId;
+                    if ($newOrderItem->save()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
 
-	public function saveGinzaOrder($supplierId, $orderGroupId)
-	{
-		$flag = false;
-		$newOrderGroupId = null;
-		try
-		{
-			$oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
+    public function saveGinzaOrder($supplierId, $orderGroupId) {
+        $flag = false;
+        $newOrderGroupId = null;
+        try {
+            $oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
 //			throw new Exception(print_r($oldOrderGroup->orderGroupToOrders, true));
-			$cat2ToProduct = Category2ToProduct::model()->find("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId);
-			$models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
-				":brandId"=>$cat2ToProduct->brandId,
-				':brandModelId'=>$cat2ToProduct->brandModelId,
-				":category1Id"=>$cat2ToProduct->category1Id,
-				":category2Id"=>$cat2ToProduct->category2Id,
-				":productId"=>$oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId));
-			foreach($models as $model)
-			{
-				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($model->productId, $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $supplierId);
-				$orderGroup = new OrderGroup();
-				$orderGroup->attributes = $oldOrderGroup->attributes;
-				$orderGroup->supplierId = $supplierId;
-				$orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
-				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
-				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
-				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
-				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
-				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
-				$orderGroup->parentId = isset($newOrderGroupId) ? $newOrderGroupId : $orderGroupId;
-				$orderGroup->status = 0;
+            $cat2ToProduct = Category2ToProduct::model()->find("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId);
+            $models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
+                ":brandId" => $cat2ToProduct->brandId,
+                ':brandModelId' => $cat2ToProduct->brandModelId,
+                ":category1Id" => $cat2ToProduct->category1Id,
+                ":category2Id" => $cat2ToProduct->category2Id,
+                ":productId" => $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId));
+            foreach ($models as $model) {
+                $orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($model->productId, $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $supplierId);
+                $orderGroup = new OrderGroup();
+                $orderGroup->attributes = $oldOrderGroup->attributes;
+                $orderGroup->supplierId = $supplierId;
+                $orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
+                $orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+                $orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+                $orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+                $orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+                $orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+                $orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+                $orderGroup->parentId = isset($newOrderGroupId) ? $newOrderGroupId : $orderGroupId;
+                $orderGroup->status = 0;
 //Distributor Discount & Spacial Project Discount
-				if(isset($orderSummary['distributorDiscountPercent']))
-				{
-					$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
-					$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+                if (isset($orderSummary['distributorDiscountPercent'])) {
+                    $orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+                    $orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
 
-					$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
-				}
-				if(isset($orderSummary['extraDiscount']))
-				{
-					$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
-				}
+                    $orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+                }
+                if (isset($orderSummary['extraDiscount'])) {
+                    $orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+                }
 //Distributor Discount & Spacial Project Discount
 
-				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
-				$orderGroup->vatValue = $orderGroup->calVatValue();
-				$orderGroup->userId = Yii::app()->user->id;
-				$orderGroup->paymentMethod = isset($_POST['paymentMethod']) ? $_POST['paymentMethod'] : $oldOrderGroup->paymentMethod;
-				$orderGroup->createDateTime = new CDbExpression("NOW()");
-				$orderGroup->updateDateTime = new CDbExpression("NOW()");
-				if($orderGroup->save(false))
-				{
-					$newOrderGroupId = Yii::app()->db->getLastInsertID();
+                $orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+                $orderGroup->vatValue = $orderGroup->calVatValue();
+                $orderGroup->userId = Yii::app()->user->id;
+                $orderGroup->paymentMethod = isset($_POST['paymentMethod']) ? $_POST['paymentMethod'] : $oldOrderGroup->paymentMethod;
+                $orderGroup->createDateTime = new CDbExpression("NOW()");
+                $orderGroup->updateDateTime = new CDbExpression("NOW()");
+                if ($orderGroup->save(false)) {
+                    $newOrderGroupId = Yii::app()->db->getLastInsertID();
 
-					$flag = TRUE;
-					$product = Product::model()->findByPk($model->productId);
-					$price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
-					$quantity = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
-					$totalIncVat = $price * $quantity;
-					$order = new Order();
-					$order->userId = Yii::app()->user->id;
-					$order->supplierId = $supplierId;
-					$order->title = $product->name;
-					$order->type = 4;
-					$order->totalIncVAT = $totalIncVat;
-					$order->total = $order->totalIncVAT / 1.07;
-					$order->provinceId = $oldOrderGroup->orderGroupToOrders[0]->order->provinceId;
-					$order->createDateTime = new CDbExpression("NOW()");
-					$order->updateDateTime = new CDbExpression("NOW()");
+                    $flag = TRUE;
+                    $product = Product::model()->findByPk($model->productId);
+                    $price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
+                    $quantity = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
+                    $totalIncVat = $price * $quantity;
+                    $order = new Order();
+                    $order->userId = Yii::app()->user->id;
+                    $order->supplierId = $supplierId;
+                    $order->title = $product->name;
+                    $order->type = 4;
+                    $order->totalIncVAT = $totalIncVat;
+                    $order->total = $order->totalIncVAT / 1.07;
+                    $order->provinceId = $oldOrderGroup->orderGroupToOrders[0]->order->provinceId;
+                    $order->createDateTime = new CDbExpression("NOW()");
+                    $order->updateDateTime = new CDbExpression("NOW()");
 
-					if($order->save())
-					{
-						$orderId = Yii::app()->db->lastInsertID;
-						foreach($oldOrderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem)
-						{
-							$orderItems = new OrderItems();
-							$orderItems->orderId = $orderId;
-							$orderItems->productId = $model->productId;
-							$orderItems->quantity = $quantity;
-							$total = $price * $quantity;
-							$orderItems->price = $price;
-							$orderItems->total = $total;
-							$orderItems->styleId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId;
-							$orderItems->productOptionId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productOptionId;
-							$orderItems->createDateTime = new CDbExpression("NOW()");
-							$orderItems->updateDateTime = new CDbExpression("NOW()");
-							if($orderItems->save(false))
-							{
-								$orderItemId = Yii::app()->db->lastInsertID;
-								foreach($orderItem->orderItemOptions as $orderOptions)
-								{
-									$orderItemOption = new OrderItemOption();
-									$orderItemOption->orderItemId = $orderItemId;
-									$orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
-									$orderItemOption->productOptionId = $orderOptions->productOptionId;
-									$productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
-									if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
-									{
-										$orderItemOption->percent = $productOption->pricePercent;
-										$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
-									}
-									else
-									{
-										$orderItemOption->percent = 0;
-										$orderItemOption->total = 0;
-									}
-									if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
-									{
-										$orderItemOption->value = $productOption->priceValue;
-										$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
-									}
-									else
-									{
-										$orderItemOption->value = 0;
-										$orderItemOption->total += 0;
-									}
-									$orderItemOption->createDateTime = new CDbExpression("NOW()");
-									$orderItemOption->updateDateTime = new CDbExpression("NOW()");
-									if($orderItemOption->save())
-									{
-										$orderItems->total +=$orderItemOption->total;
-										$orderItems->save(FALSE);
-									}
-									else
-									{
+                    if ($order->save()) {
+                        $orderId = Yii::app()->db->lastInsertID;
+                        foreach ($oldOrderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem) {
+                            $orderItems = new OrderItems();
+                            $orderItems->orderId = $orderId;
+                            $orderItems->productId = $model->productId;
+                            $orderItems->quantity = $quantity;
+                            $total = $price * $quantity;
+                            $orderItems->price = $price;
+                            $orderItems->total = $total;
+                            $orderItems->styleId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId;
+                            $orderItems->productOptionId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productOptionId;
+                            $orderItems->createDateTime = new CDbExpression("NOW()");
+                            $orderItems->updateDateTime = new CDbExpression("NOW()");
+                            if ($orderItems->save(false)) {
+                                $orderItemId = Yii::app()->db->lastInsertID;
+                                foreach ($orderItem->orderItemOptions as $orderOptions) {
+                                    $orderItemOption = new OrderItemOption();
+                                    $orderItemOption->orderItemId = $orderItemId;
+                                    $orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
+                                    $orderItemOption->productOptionId = $orderOptions->productOptionId;
+                                    $productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
+                                    if (isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0) {
+                                        $orderItemOption->percent = $productOption->pricePercent;
+                                        $orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+                                    } else {
+                                        $orderItemOption->percent = 0;
+                                        $orderItemOption->total = 0;
+                                    }
+                                    if (isset($productOption->priceValue) && intval($productOption->priceValue) > 0) {
+                                        $orderItemOption->value = $productOption->priceValue;
+                                        $orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+                                    } else {
+                                        $orderItemOption->value = 0;
+                                        $orderItemOption->total += 0;
+                                    }
+                                    $orderItemOption->createDateTime = new CDbExpression("NOW()");
+                                    $orderItemOption->updateDateTime = new CDbExpression("NOW()");
+                                    if ($orderItemOption->save()) {
+                                        $orderItems->total +=$orderItemOption->total;
+                                        $orderItems->save(FALSE);
+                                    } else {
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        $orderGroupToOrder = new OrderGroupToOrder();
+                        $orderGroupToOrder->orderGroupId = $newOrderGroupId;
+                        $orderGroupToOrder->orderId = $orderId;
+                        $orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
+                        $orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
+                        if (!$orderGroupToOrder->save()) {
+                            $flag = FALSE;
+                        }
+                    }
+                }
+            }
+            if ($flag) {
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+            $transaction->rollback();
+        }
+    }
 
-									}
-								}
-							}
-						}
-						$orderGroupToOrder = new OrderGroupToOrder();
-						$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-						$orderGroupToOrder->orderId = $orderId;
-						$orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
-						$orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
-						if(!$orderGroupToOrder->save())
-						{
-							$flag = FALSE;
-						}
-					}
-				}
-			}
-			if($flag)
-			{
-				return TRUE;
-			}
-			else
-			{
-				return FALSE;
-			}
-		}
-		catch(Exception $e)
-		{
-			throw new Exception($e->getMessage());
-			$transaction->rollback();
-		}
-	}
+    public function actionMyfileGinzaStep() {
+        $orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 
-	public function actionMyfileGinzaStep()
-	{
-		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
+        if (isset($_POST["period"]) && $_POST["period"] == 2) {
+            $cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
+            if ($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"]) {
 
-		if(isset($_POST["period"]) && $_POST["period"] == 2)
-		{
-			$cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
-			if($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])
-			{
-
-				try
-				{
-					$cat2ToProduct = Category2ToProduct::model()->findAll("brandModelId = " . $_POST["brandModelId"] . " AND category1Id = " . $_POST["category1Id"] . " AND category2Id =" . $_POST["category2Id"]);
-					if(isset($cat2ToProduct))
-					{
-						$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($cat2ToProduct[1]->productId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4);
-						$orderGroup->attributes = $orderGroup->attributes;
-						$orderGroup->orderNo = $orderGroup->genOrderNo(4);
-						$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
-						$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-						$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
-						$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
-						$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
-						$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
-						$orderGroup->status = 0;
+                try {
+                    $cat2ToProduct = Category2ToProduct::model()->findAll("brandModelId = " . $_POST["brandModelId"] . " AND category1Id = " . $_POST["category1Id"] . " AND category2Id =" . $_POST["category2Id"]);
+                    if (isset($cat2ToProduct)) {
+                        $orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($cat2ToProduct[1]->productId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4);
+                        $orderGroup->attributes = $orderGroup->attributes;
+                        $orderGroup->orderNo = $orderGroup->genOrderNo(4);
+                        $orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+                        $orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+                        $orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+                        $orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+                        $orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+                        $orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+                        $orderGroup->status = 0;
 //Distributor Discount & Spacial Project Discount
-						if(isset($orderSummary['distributorDiscountPercent']))
-						{
-							$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
-							$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+                        if (isset($orderSummary['distributorDiscountPercent'])) {
+                            $orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+                            $orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
 
-							$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
-						}
-						if(isset($orderSummary['extraDiscount']))
-						{
-							$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
-						}
+                            $orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+                        }
+                        if (isset($orderSummary['extraDiscount'])) {
+                            $orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+                        }
 //Distributor Discount & Spacial Project Discount
 
-						$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
-						$orderGroup->vatValue = $orderGroup->calVatValue();
-						$orderGroup->userId = Yii::app()->user->id;
-						$orderGroup->updateDateTime = new CDbExpression("NOW()");
-						if($orderGroup->save(false))
-						{
-							$newOrderGroupId = Yii::app()->db->getLastInsertID();
+                        $orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+                        $orderGroup->vatValue = $orderGroup->calVatValue();
+                        $orderGroup->userId = Yii::app()->user->id;
+                        $orderGroup->updateDateTime = new CDbExpression("NOW()");
+                        if ($orderGroup->save(false)) {
+                            $newOrderGroupId = Yii::app()->db->getLastInsertID();
 
-							$flag = TRUE;
-							$product = Product::model()->findByPk($model->productId);
-							$price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
-							$quantity = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
-							$totalIncVat = $price * $quantity;
-							$order = new Order();
-							$order->userId = Yii::app()->user->id;
-							$order->supplierId = $supplierId;
-							$order->title = $product->name;
-							$order->type = 4;
-							$order->totalIncVAT = $totalIncVat;
-							$order->total = $order->totalIncVAT / 1.07;
-							$order->provinceId = $oldOrderGroup->orderGroupToOrders[0]->order->provinceId;
-							$order->createDateTime = new CDbExpression("NOW()");
-							$order->updateDateTime = new CDbExpression("NOW()");
+                            $flag = TRUE;
+                            $product = Product::model()->findByPk($cat2ToProduct->productId);
+                            $price = ($product->calProductPromotionPrice() != 0) ? $product > calProductPromotionPrice() : $product->calProductPrice();
+                            $quantity = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity;
+                            $totalIncVat = $price * $quantity;
+                            $order = new Order();
+                            $order->userId = Yii::app()->user->id;
+                            $order->supplierId = $supplierId;
+                            $order->title = $product->name;
+                            $order->type = 4;
+                            $order->totalIncVAT = $totalIncVat;
+                            $order->total = $order->totalIncVAT / 1.07;
+                            $order->provinceId = $oldOrderGroup->orderGroupToOrders[0]->order->provinceId;
+                            $order->createDateTime = new CDbExpression("NOW()");
+                            $order->updateDateTime = new CDbExpression("NOW()");
 
-							if($order->save())
-							{
-								$orderId = Yii::app()->db->lastInsertID;
-								foreach($oldOrderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem)
-								{
-									$orderItems = new OrderItems();
-									$orderItems->orderId = $orderId;
-									$orderItems->productId = $model->productId;
-									$orderItems->quantity = $quantity;
-									$total = $price * $quantity;
-									$orderItems->price = $price;
-									$orderItems->total = $total;
-									$orderItems->createDateTime = new CDbExpression("NOW()");
-									$orderItems->updateDateTime = new CDbExpression("NOW()");
-									if($orderItems->save(false))
-									{
-										$orderItemId = Yii::app()->db->lastInsertID;
-										foreach($orderItem->orderItemOptions as $orderOptions)
-										{
-											$orderItemOption = new OrderItemOption();
-											$orderItemOption->orderItemId = $orderItemId;
-											$orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
-											$orderItemOption->productOptionId = $orderOptions->productOptionId;
-											$productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
-											if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
-											{
-												$orderItemOption->percent = $productOption->pricePercent;
-												$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
-											}
-											else
-											{
-												$orderItemOption->percent = 0;
-												$orderItemOption->total = 0;
-											}
-											if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
-											{
-												$orderItemOption->value = $productOption->priceValue;
-												$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
-											}
-											else
-											{
-												$orderItemOption->value = 0;
-												$orderItemOption->total += 0;
-											}
-											$orderItemOption->createDateTime = new CDbExpression("NOW()");
-											$orderItemOption->updateDateTime = new CDbExpression("NOW()");
-											if($orderItemOption->save())
-											{
-												$orderItems->total += $orderItemOption->total;
-												$orderItems->save(FALSE);
-											}
-											else
-											{
+                            if ($order->save()) {
+                                $orderId = Yii::app()->db->lastInsertID;
+                                foreach ($oldOrderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem) {
+                                    $orderItems = new OrderItems();
+                                    $orderItems->orderId = $orderId;
+                                    $orderItems->productId = $cat2ToProduct->productId;
+                                    $orderItems->quantity = $quantity;
+                                    $total = $price * $quantity;
+                                    $orderItems->price = $price;
+                                    $orderItems->total = $total;
+                                    $orderItems->createDateTime = new CDbExpression("NOW()");
+                                    $orderItems->updateDateTime = new CDbExpression("NOW()");
+                                    if ($orderItems->save(false)) {
+                                        $orderItemId = Yii::app()->db->lastInsertID;
+                                        foreach ($orderItem->orderItemOptions as $orderOptions) {
+                                            $orderItemOption = new OrderItemOption();
+                                            $orderItemOption->orderItemId = $orderItemId;
+                                            $orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
+                                            $orderItemOption->productOptionId = $orderOptions->productOptionId;
+                                            $productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
+                                            if (isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0) {
+                                                $orderItemOption->percent = $productOption->pricePercent;
+                                                $orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+                                            } else {
+                                                $orderItemOption->percent = 0;
+                                                $orderItemOption->total = 0;
+                                            }
+                                            if (isset($productOption->priceValue) && intval($productOption->priceValue) > 0) {
+                                                $orderItemOption->value = $productOption->priceValue;
+                                                $orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+                                            } else {
+                                                $orderItemOption->value = 0;
+                                                $orderItemOption->total += 0;
+                                            }
+                                            $orderItemOption->createDateTime = new CDbExpression("NOW()");
+                                            $orderItemOption->updateDateTime = new CDbExpression("NOW()");
+                                            if ($orderItemOption->save()) {
+                                                $orderItems->total += $orderItemOption->total;
+                                                $orderItems->save(FALSE);
+                                            } else {
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                                $orderGroupToOrder = new OrderGroupToOrder();
+                                $orderGroupToOrder->orderGroupId = $newOrderGroupId;
+                                $orderGroupToOrder->orderId = $orderId;
+                                $orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
+                                $orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
+                                if (!$orderGroupToOrder->save()) {
+                                    $flag = FALSE;
+                                }
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        return TRUE;
+                    } else {
+                        return FALSE;
+                    }
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                    $transaction->rollback();
+                }
+            }
+        }
 
-											}
-										}
-									}
-								}
-								$orderGroupToOrder = new OrderGroupToOrder();
-								$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-								$orderGroupToOrder->orderId = $orderId;
-								$orderGroupToOrder->createDateTime = new CDbExpression("NOW()");
-								$orderGroupToOrder->updateDateTime = new CDbExpression("NOW()");
-								if(!$orderGroupToOrder->save())
-								{
-									$flag = FALSE;
-								}
-							}
-						}
-					}
-					if($flag)
-					{
-						return TRUE;
-					}
-					else
-					{
-						return FALSE;
-					}
-				}
-				catch(Exception $e)
-				{
-					throw new Exception($e->getMessage());
-					$transaction->rollback();
-				}
-			}
-		}
-
-		if(isset($_POST['paymentMethod']))
-		{
-			if($_POST['paymentMethod'] == 1)
-			{
-				$orderGroup->paymentMethod = 1;
-				$orderGroup->save(false);
-				$this->redirect(array(
-					"confirmCheckout",
-					'id'=>$_GET["orderGroupId"]));
-			}
-			else
-			{
-				$orderGroup->paymentMethod = 2;
-				$orderGroup->save(false);
-				$emailObj = new Email();
-				$sentMail = new EmailSend();
-				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-				$emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
-				$sentMail->mailCompleteOrderCustomer($emailObj);
-				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
-				$this->redirect(array(
-					'step6',
-					"id"=>$orderGroup->orderGroupId,
-				));
-			}
-		}
-	}
+        if (isset($_POST['paymentMethod'])) {
+            if ($_POST['paymentMethod'] == 1) {
+                $orderGroup->paymentMethod = 1;
+                $orderGroup->save(false);
+                $this->redirect(array(
+                    "confirmCheckout",
+                    'id' => $_GET["orderGroupId"]));
+            } else {
+                $orderGroup->paymentMethod = 2;
+                $orderGroup->save(false);
+                $emailObj = new Email();
+                $sentMail = new EmailSend();
+                $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+                $emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
+                $sentMail->mailCompleteOrderCustomer($emailObj);
+                $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+                $this->redirect(array(
+                    'step6',
+                    "id" => $orderGroup->orderGroupId,
+                ));
+            }
+        }
+    }
 
 //    public function actionMyfileGinzaStep() {
 //
@@ -1592,39 +1363,33 @@ class StepController extends MasterCheckoutController
 //            'oldOrderGroup' => $orderGroup));
 //    }
 
-	public function actionUpdateCart()
-	{
-		if(isset($_POST['quantity']))
-		{
-			$res = [];
+    public function actionUpdateCart() {
+        if (isset($_POST['quantity'])) {
+            $res = [];
 
-			foreach($_POST['quantity'] as $orderItemsId=> $quantity)
-			{
-				$orderItem = OrderItems::model()->findByPk($orderItemsId);
+            foreach ($_POST['quantity'] as $orderItemsId => $quantity) {
+                $orderItem = OrderItems::model()->findByPk($orderItemsId);
 
-				if($orderItem->quantity == $quantity)
-				{
-					continue;
-				}
-				else
-				{
-					$orderItem->quantity = $quantity;
-					$orderItem->total = $orderItem->quantity * $orderItem->price;
-					$orderItem->save(FALSE);
+                if ($orderItem->quantity == $quantity) {
+                    continue;
+                } else {
+                    $orderItem->quantity = $quantity;
+                    $orderItem->total = $orderItem->quantity * $orderItem->price;
+                    $orderItem->save(FALSE);
 
-					$res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
-				}
-			}
+                    $res['orderItem'][$orderItem->orderItemsId]['total'] = number_format($orderItem->quantity * $orderItem->price, 2);
+                }
+            }
 
-			$order = Order::model()->findByPk($_POST['orderId']);
-			$order->totalIncVAT = $order->orderItemsSum;
-			$order->save(false);
-			$res['orderTotal'] = number_format($order->totalIncVAT, 2);
-			$res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
+            $order = Order::model()->findByPk($_POST['orderId']);
+            $order->totalIncVAT = $order->orderItemsSum;
+            $order->save(false);
+            $res['orderTotal'] = number_format($order->totalIncVAT, 2);
+            $res['summary'] = $order->sumOrderTotalBySupplierId($order->supplierId);
 
-			$this->writeToFile('/tmp/updatecart', print_r($res, true));
-			echo CJSON::encode($res);
-		}
-	}
+            $this->writeToFile('/tmp/updatecart', print_r($res, true));
+            echo CJSON::encode($res);
+        }
+    }
 
 }

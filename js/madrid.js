@@ -48,6 +48,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 			if (data.status)
 			{
 				$("#action-button").removeClass('hide');
+                                
 				$("#item-table").removeClass("hide");
 				$("#item-table").html(data.view);
 
@@ -127,7 +128,7 @@ function loadProductsFavItem(productId, baseUrl, orderId)
 			//alert success message
 			if (data.status)
 			{
-				$("#action-button").removeClass('hide');
+                            $("#action-button-tiles").removeClass('hide');
 				$("#product-fav-table").removeClass("hide");
 				$("#product-fav-table").html(data.view);
 				$("#productCode").html(data["code"]);
@@ -137,11 +138,14 @@ function loadProductsFavItem(productId, baseUrl, orderId)
 				$("#productUnits").html(data["productUnits"]);
 				$("#description").html(data["description"]);
 				$("#productArea").html(data["productArea"]);
+                                $("#noPerBox").html(data["noPerBox"]);
+//                                var supplierArea = 0.00;
+//                                    supplierArea = $("#supplierArea").val();
 				var estimateQuantity = data["productArea"] * $("#supplierArea").val();
 				$("#estimateAreaQuantity").html(estimateQuantity);
 //					$("#quantityText_" + groupName).removeClass("hide");
 				$("#quantityText").val(estimateQuantity);
-				$("#price").html(data["price"] * estimateQuantity);
+				$("#price").html(data["price"]);
 				$("#pprice").html(data["price"] * estimateQuantity);
 				$("#priceHidden").val(data["price"]);
 				$("#productId").val(data["productId"]);
@@ -166,6 +170,8 @@ function updatePrice()
 		$("#price" + groupName).html(price * quantity);
 	}
 }
+
+
 
 $('#manualQuantityMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
@@ -218,7 +224,7 @@ $('#uploadPlanTile').on('click', function () {
 $('.chooseStyle').click(function () {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
-	cate2Id = $('#chooseStyle').attr("name");
+	cate2Id = $(this).attr("name");
 //                    alert(cate2Id);
 	$('#OrderDetailValue_6_value').val(cate2Id);
 	$.ajax({
@@ -228,7 +234,7 @@ $('.chooseStyle').click(function () {
 		data: {category2Id: cate2Id},
 		success: function (data) {
 			//alert success message
-			alert(data.themes);
+//			alert(data.themes);
 			if (data.status)
 			{
 				$("#themeResult").html(data.themes);
@@ -408,6 +414,7 @@ function checkComment()
 	}
 	else
 	{
+            $('#Order_createMyfileType').val(2);
 		return true;
 	}
 }
