@@ -157,15 +157,23 @@ $this->breadcrumbs = array(
 										<tr>
 											<td><?php echo $i; ?></td>
 											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-											<td><?php echo number_format($item->totalIncVAT); ?></td>
-											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child2->status); ?>
+											<td><?php
+												echo number_format($item->totalIncVAT) . "<br>";
+												$sumSup = 0;
+												foreach($child2->sup as $sup)
+												{
+													$sumSup +=$sup->totalIncVAT;
+													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+												}
+												?></td>
+											<td style="color:green;text-align: center"><?php echo ($sumSup == $child2->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child2->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
-												<?php if($child2->status >= 3): ?>
+												<?php if($child2->status >= 3 || $sumSup == $child2->totalIncVAT): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if($child1->status >= 3 && $child2->status == 0):
+													if(($child1->status >= 3 && $child2->status == 0) || $sumSup < $child2->totalIncVAT):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 														<?php
@@ -199,15 +207,28 @@ $this->breadcrumbs = array(
 										<tr>
 											<td><?php echo $i; ?></td>
 											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-											<td><?php echo number_format($item->totalIncVAT); ?></td>
-											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child3->status); ?>
+											<td><?php
+												echo number_format($item->totalIncVAT);
+												$sumSup3 = 0;
+												foreach($child2->sup as $sup2)
+												{
+													$sumSup3 +=$sup2->totalIncVAT;
+												}
+												$sumSup = 0;
+												foreach($child3->sup as $sup)
+												{
+													$sumSup +=$sup->totalIncVAT;
+													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+												}
+												?></td>
+											<td style="color:green;text-align: center"><?php echo ($sumSup == $child3->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child3->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
-												<?php if($child3->status >= 3): ?>
+												<?php if($child3->status >= 3 || $sumSup == $child3->totalIncVAT): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if($child2->status >= 3 && $child3->status == 0):
+													if(($sumSup3 == $child2->totalIncVAT && $child3->status == 0) || $sumSup < $child3->totalIncVAT):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 
@@ -421,11 +442,20 @@ $this->breadcrumbs = array(
 										?>
 									</td>
 									<td style="font-size:24px">
-										<?php echo number_format($item->orderItems[0]->product->price); ?>
+										<p style="color:red;text-decoration:line-through"><?php echo number_format($item->orderItems[0]->product->price); ?></p>
+										<?php
+										echo number_format($child2->totalIncVAT);
+										$sumSup = 0;
+										foreach($child2->sup as $sup)
+										{
+											$sumSup +=$sup->totalIncVAT;
+											echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+										}
+										?>
 									</td>
 									<td>
 										<?php
-										echo CHtml::textField("payValue", $item->orderItems[0]->product->price, array(
+										echo CHtml::textField("payValue", $child2->totalIncVAT - $sumSup, array(
 											'class'=>'input-large text-right',
 											'style'=>'border:2px solid black;color:blue;font-size:24px'))
 										?>
@@ -464,11 +494,19 @@ $this->breadcrumbs = array(
 										?>
 									</td>
 									<td style="font-size:24px">
-										<?php echo number_format($item->orderItems[0]->product->price); ?>
+										<?php
+										echo number_format($child3->totalIncVAT);
+										$sumSup = 0;
+										foreach($child3->sup as $sup)
+										{
+											$sumSup +=$sup->totalIncVAT;
+											echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+										}
+										?>
 									</td>
 									<td>
 										<?php
-										echo CHtml::textField("payValue", $item->orderItems[0]->product->price, array(
+										echo CHtml::textField("payValue", $child3->totalIncVAT - $sumSup, array(
 											'class'=>'input-large text-right',
 											'style'=>'border:2px solid black;color:blue;font-size:24px'))
 										?>
