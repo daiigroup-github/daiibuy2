@@ -193,4 +193,15 @@ class GinzaHomeController extends MasterMyFileController
 		}
 	}
 
+	public function actionFurniture($id)
+	{
+		$this->layout = '//layouts/cl1';
+		$model = OrderGroup::model()->findByPk($id);
+		$this->render(
+			'_furniture', array(
+			'model'=>$model
+			)
+		);
+	}
+
 }
