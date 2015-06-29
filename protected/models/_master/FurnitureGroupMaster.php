@@ -9,6 +9,7 @@
  * @property string $category2Id
  * @property string $title
  * @property string $description
+ * @property string $price
  * @property string $image
  * @property integer $status
  * @property string $createDateTime
@@ -35,15 +36,16 @@ class FurnitureGroupMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('categoryId, category2Id, title, createDateTime, updateDateTime', 'required'),
+			array('categoryId, category2Id, title, price, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('categoryId, category2Id', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
+			array('price', 'length', 'max'=>15),
 			array('image', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('furnitureGroupId, categoryId, category2Id, title, description, image, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
+			array('furnitureGroupId, categoryId, category2Id, title, description, price, image, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +72,7 @@ class FurnitureGroupMaster extends MasterCActiveRecord
 			'category2Id' => 'Category2',
 			'title' => 'Title',
 			'description' => 'Description',
+			'price' => 'Price',
 			'image' => 'Image',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
@@ -100,6 +103,7 @@ class FurnitureGroupMaster extends MasterCActiveRecord
 		$criteria->compare('category2Id',$this->category2Id,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('description',$this->description,true);
+		$criteria->compare('price',$this->price,true);
 		$criteria->compare('image',$this->image,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true);

@@ -99,6 +99,19 @@
 	</div>
 	<div class="form-group">
 		<?php
+		echo $form->labelEx($model, 'price', array(
+			'class'=>'col-sm-2 control-label'));
+		?>
+		<div class="col-sm-10">
+			<?php
+			echo $form->textField($model, 'price', array(
+				'class'=>'form-control'));
+			?>
+			<?php echo $form->error($model, 'price'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+		<?php
 		echo $form->labelEx($model, 'status', array(
 			'class'=>'col-sm-2 control-label'));
 		?>

@@ -1,6 +1,6 @@
 <?php
-/* @var $this FurnitureController */
-/* @var $model Furniture */
+/* @var $this FurnitureItemSubController */
+/* @var $model FurnitureItemSub */
 /* @var $form CActiveForm */
 ?>
 
@@ -8,7 +8,7 @@
 
 	<?php
 	$form = $this->beginWidget('CActiveForm', array(
-		'id'=>'furniture-form',
+		'id'=>'furniture-item-sub-form',
 		// Please note: When you enable ajax validation, make sure the corresponding
 		// controller action is handling ajax validation correctly.
 		// There is a call to performAjaxValidation() commented in generated controller code.
@@ -27,21 +27,22 @@
 			'class'=>'alert alert-danger')); ?>
 
 	<div class="form-group">
-<?php echo $form->labelEx($model, 'furnitureGroupId', array(
-	'class'=>'col-sm-2 control-label')); ?>
+			<?php echo $form->labelEx($model, 'furnitureItemId', array(
+				'class'=>'col-sm-2 control-label')); ?>
 		<div class="col-sm-10">
-		<?php echo $model->furnitureGroup->title; ?>
+		<?php echo $model->furnitureItem->title; ?>
+		<?php echo $form->error($model, 'furnitureItemId'); ?>
 		</div>
 	</div>
 	<div class="form-group">
-<?php echo $form->labelEx($model, 'title', array(
+<?php echo $form->labelEx($model, 'code', array(
 	'class'=>'col-sm-2 control-label')); ?>
 		<div class="col-sm-10">
-		<?php echo $form->textField($model, 'title', array(
+		<?php echo $form->textField($model, 'code', array(
 			'size'=>60,
 			'maxlength'=>200,
 			'class'=>'form-control')); ?>
-			<?php echo $form->error($model, 'title'); ?>
+			<?php echo $form->error($model, 'code'); ?>
 		</div>
 	</div>
 	<div class="form-group">
@@ -64,9 +65,29 @@
 		<div class="col-sm-10">
 			<?php if($this->action->id == 'update') echo CHtml::image(Yii::app()->baseUrl . $model->image, '', array(
 					'style'=>'width:150px;')); ?>
-<?php echo $form->fileField($model, 'image', array(
+			<?php echo $form->fileField($model, 'image', array(
+				'class'=>'form-control')); ?>
+<?php echo $form->error($model, 'image'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+			<?php echo $form->labelEx($model, 'quantity', array(
+				'class'=>'col-sm-2 control-label')); ?>
+		<div class="col-sm-10">
+<?php echo $form->textField($model, 'quantity', array(
 	'class'=>'form-control')); ?>
-	<?php echo $form->error($model, 'image'); ?>
+<?php echo $form->error($model, 'quantity'); ?>
+		</div>
+	</div>
+	<div class="form-group">
+<?php echo $form->labelEx($model, 'unit', array(
+	'class'=>'col-sm-2 control-label')); ?>
+		<div class="col-sm-10">
+<?php echo $form->textField($model, 'unit', array(
+	'size'=>45,
+	'maxlength'=>45,
+	'class'=>'form-control')); ?>
+<?php echo $form->error($model, 'unit'); ?>
 		</div>
 	</div>
 	<div class="form-group">

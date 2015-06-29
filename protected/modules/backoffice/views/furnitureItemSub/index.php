@@ -1,27 +1,27 @@
 <?php
-/* @var $this FurnitureController */
-/* @var $model Furniture */
+/* @var $this FurnitureItemSubController */
+/* @var $model FurnitureItemSub */
 
 $this->breadcrumbs = array(
-	'Furnitures'=>array(
+	'Furniture Item Subs'=>array(
 		'index'),
 	'Manage',
 );
 
 $this->menu = array(
 	array(
-		'label'=>'List Furniture',
+		'label'=>'List FurnitureItemSub',
 		'url'=>array(
 			'index')),
 	array(
-		'label'=>'Create Furniture',
+		'label'=>'Create FurnitureItemSub',
 		'url'=>array(
 			'create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('#search-form').submit(function(){
-$('#furniture-grid').yiiGridView('update', {
+$('#furniture-item-sub-grid').yiiGridView('update', {
 data: $(this).serialize()
 });
 return false;
@@ -31,30 +31,28 @@ return false;
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Manage Furnitures
+		Manage Furniture Item Subs
 		<div class="pull-right">
-			<?php
-			echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?furnitureGroupId=' . $_GET["furnitureGroupId"]), array(
-				'class'=>'btn btn-xs btn-primary'));
-			?>
+				<?php echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl('create?furnitureItemId=' . $_GET["furnitureItemId"]), array(
+					'class'=>'btn btn-xs btn-primary')); ?>
 		</div>
 	</div>
 
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-lg-12">
-				<?php
-				$this->renderPartial('_search', array(
-					'model'=>$model,
-				));
-				?>
+	<?php
+	$this->renderPartial('_search', array(
+		'model'=>$model,
+	));
+	?>
 			</div>
 		</div>
 	</div>
 
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
-		'id'=>'furniture-grid',
+		'id'=>'furniture-item-sub-grid',
 		'dataProvider'=>$model->search(),
 		//'filter'=>$model,
 		'itemsCssClass'=>'table table-striped table-bordered table-hover',
@@ -64,33 +62,30 @@ return false;
 			array(
 				'class'=>'SortColumn'),
 			/*
-			  'furnitureId',
+			  'furnitureItemSubId',
 			 */
-			'furnitureGroupId',
-			'title',
+			'furnitureItemId',
+			'code',
 			'description:html',
 			array(
 				'name'=>'image',
 				'type'=>'html',
 				'value'=>'CHtml::image(Yii::app()->baseUrl.$data->image,"", array("style"=>"width:50px"))',
 			),
-			array(
-				'name'=>'status',
-				'value'=>'$data->statusArray[$data->status]',
-			),
-			'createDateTime',
+			'quantity',
+			'unit',
 			/*
+
+			  array(
+			  'name'=>'status',
+			  'value'=>'$data->statusArray[$data->status]',
+			  ),
+			  'createDateTime',
 			  'updateDateTime',
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {furnitureItem}',
-				'buttons'=>array(
-					'furnitureItem'=>array(
-						'label'=>'<u>Furniture Item</u>',
-						'url'=>'Yii::app()->createUrl("backoffice/furnitureItem/index?furnitureId=".$data->furnitureId)'
-					)
-				)
+				'template'=>'{view} {update} {delete}'
 			),
 		),
 	));

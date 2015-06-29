@@ -70,7 +70,10 @@ class FurnitureController extends MasterBackofficeController
 	public function actionCreate()
 	{
 		$model = new Furniture;
-
+		if(isset($_GET["furnitureGroupId"]))
+		{
+			$model->furnitureGroupId = $_GET["furnitureGroupId"];
+		}
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
 
@@ -287,6 +290,11 @@ class FurnitureController extends MasterBackofficeController
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Furniture']))
 			$model->attributes = $_GET['Furniture'];
+
+		if(isset($_GET["furnitureGroupId"]))
+		{
+			$model->furnitureGroupId = $_GET["furnitureGroupId"];
+		}
 
 		$this->render('index', array(
 			'model'=>$model,

@@ -1,31 +1,31 @@
 <?php
 
 /**
- * This is the model class for table "furniture_item".
+ * This is the model class for table "furniture_item_sub".
  *
- * The followings are the available columns in table 'furniture_item':
+ * The followings are the available columns in table 'furniture_item_sub':
+ * @property string $furnitureItemSubId
  * @property string $furnitureItemId
- * @property string $furnitureId
- * @property string $title
+ * @property string $code
  * @property string $description
  * @property string $image
- * @property string $plan
+ * @property integer $quantity
+ * @property string $unit
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
  *
  * The followings are the available model relations:
- * @property Furniture $furniture
- * @property FurnitureItemSub[] $furnitureItemSubs
+ * @property FurnitureItem $furnitureItem
  */
-class FurnitureItemMaster extends MasterCActiveRecord
+class FurnitureItemSubMaster extends MasterCActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'furniture_item';
+		return 'furniture_item_sub';
 	}
 
 	/**
@@ -36,15 +36,16 @@ class FurnitureItemMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('furnitureId, title, createDateTime, updateDateTime', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
-			array('furnitureId', 'length', 'max'=>20),
-			array('title', 'length', 'max'=>200),
-			array('image, plan', 'length', 'max'=>255),
+			array('furnitureItemId, code, quantity, unit, createDateTime, updateDateTime', 'required'),
+			array('quantity, status', 'numerical', 'integerOnly'=>true),
+			array('furnitureItemId', 'length', 'max'=>20),
+			array('code', 'length', 'max'=>200),
+			array('image', 'length', 'max'=>255),
+			array('unit', 'length', 'max'=>45),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('furnitureItemId, furnitureId, title, description, image, plan, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
+			array('furnitureItemSubId, furnitureItemId, code, description, image, quantity, unit, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,8 +57,7 @@ class FurnitureItemMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'furniture' => array(self::BELONGS_TO, 'Furniture', 'furnitureId'),
-			'furnitureItemSubs' => array(self::HAS_MANY, 'FurnitureItemSub', 'furnitureItemId'),
+			'furnitureItem' => array(self::BELONGS_TO, 'FurnitureItem', 'furnitureItemId'),
 		);
 	}
 
@@ -67,12 +67,13 @@ class FurnitureItemMaster extends MasterCActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'furnitureItemSubId' => 'Furniture Item Sub',
 			'furnitureItemId' => 'Furniture Item',
-			'furnitureId' => 'Furniture',
-			'title' => 'Title',
+			'code' => 'Code',
 			'description' => 'Description',
 			'image' => 'Image',
-			'plan' => 'Plan',
+			'quantity' => 'Quantity',
+			'unit' => 'Unit',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -97,12 +98,13 @@ class FurnitureItemMaster extends MasterCActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('furnitureItemSubId',$this->furnitureItemSubId,true);
 		$criteria->compare('furnitureItemId',$this->furnitureItemId,true);
-		$criteria->compare('furnitureId',$this->furnitureId,true);
-		$criteria->compare('title',$this->title,true);
+		$criteria->compare('code',$this->code,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('image',$this->image,true);
-		$criteria->compare('plan',$this->plan,true);
+		$criteria->compare('quantity',$this->quantity);
+		$criteria->compare('unit',$this->unit,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('createDateTime',$this->createDateTime,true);
 		$criteria->compare('updateDateTime',$this->updateDateTime,true);
@@ -116,7 +118,7 @@ class FurnitureItemMaster extends MasterCActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return FurnitureItemMaster the static model class
+	 * @return FurnitureItemSubMaster the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

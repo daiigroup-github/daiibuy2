@@ -1,6 +1,6 @@
 <?php
 
-class FurnitureItemController extends MasterBackofficeController
+class FurnitureItemSubController extends MasterBackofficeController
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -69,21 +69,21 @@ class FurnitureItemController extends MasterBackofficeController
 	 */
 	public function actionCreate()
 	{
-		$model = new FurnitureItem;
-		if(isset($_GET["furnitureId"]))
+		$model = new FurnitureItemSub;
+		if(isset($_GET["furnitureItemId"]))
 		{
-			$model->furnitureId = $_GET["furnitureId"];
+			$model->furnitureItemId = $_GET["furnitureItemId"];
 		}
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
 
-		if(isset($_POST['FurnitureItem']))
+		if(isset($_POST['FurnitureItemSub']))
 		{
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['FurnitureItem'];
+				$model->attributes = $_POST['FurnitureItemSub'];
 
 				$folderimage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
@@ -98,20 +98,6 @@ class FurnitureItemController extends MasterBackofficeController
 				else
 				{
 					$model->image = null;
-				}
-
-				$plan = CUploadedFile::getInstance($model, 'plan');
-				if(isset($plan) && !empty($plan))
-				{
-					$imgPlanType = explode('.', $plan->name);
-					$imgPlanType = $imgPlanType[count($imgPlanType) - 1];
-					$imagePlanUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgPlanType;
-					$imagePlanPathimage = '/../' . $imagePlanUrl;
-					$model->plan = $imagePlanUrl;
-				}
-				else
-				{
-					$model->plan = null;
 				}
 
 				$model->createDateTime = new CDbExpression("NOW()");
@@ -136,23 +122,6 @@ class FurnitureItemController extends MasterBackofficeController
 					}
 					else
 						$flag = true;
-
-					if(isset($plan) && !empty($plan))
-					{
-						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
-						{
-							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
-						}
-
-						if($image->saveAs(Yii::app()->getBasePath() . $imagePlanPathimage))
-						{
-							$flag = true;
-						}
-						else
-						{
-							$flag = false;
-						}
-					}
 				}
 
 //				$emailController = new EmailSend();
@@ -174,7 +143,7 @@ class FurnitureItemController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'view',
-						'id'=>$model->furnitureItemId));
+						'id'=>$model->furnitureItemSubId));
 				}
 				else
 				{
@@ -205,14 +174,14 @@ class FurnitureItemController extends MasterBackofficeController
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
 
-		if(isset($_POST['FurnitureItem']))
+		if(isset($_POST['FurnitureItemSub']))
 		{
 			$oldimage = $model->image;
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
 			{
-				$model->attributes = $_POST['FurnitureItem'];
+				$model->attributes = $_POST['FurnitureItemSub'];
 				$model->updateDateTime = new CDbExpression("NOW()");
 				$folderimage = 'folderName';
 				$image = CUploadedFile::getInstance($model, 'image');
@@ -267,7 +236,7 @@ class FurnitureItemController extends MasterBackofficeController
 					$transaction->commit();
 					$this->redirect(array(
 						'view',
-						'id'=>$model->furnitureItemId));
+						'id'=>$model->furnitureItemSubId));
 				}
 				else
 				{
@@ -306,7 +275,7 @@ class FurnitureItemController extends MasterBackofficeController
 	 */
 	public function actionAdmin()
 	{
-		$dataProvider = new CActiveDataProvider('FurnitureItem');
+		$dataProvider = new CActiveDataProvider('FurnitureItemSub');
 		$this->render('admin', array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -317,14 +286,14 @@ class FurnitureItemController extends MasterBackofficeController
 	 */
 	public function actionIndex()
 	{
-		$model = new FurnitureItem('search');
+		$model = new FurnitureItemSub('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['FurnitureItem']))
-			$model->attributes = $_GET['FurnitureItem'];
+		if(isset($_GET['FurnitureItemSub']))
+			$model->attributes = $_GET['FurnitureItemSub'];
 
-		if(isset($_GET["furnitureId"]))
+		if(isset($_GET["furnitureItemId"]))
 		{
-			$model->furnitureId = $_GET["furnitureId"];
+			$model->furnitureItemId = $_GET["furnitureItemId"];
 		}
 
 		$this->render('index', array(
@@ -336,12 +305,12 @@ class FurnitureItemController extends MasterBackofficeController
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return FurnitureItem the loaded model
+	 * @return FurnitureItemSub the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model = FurnitureItem::model()->findByPk($id);
+		$model = FurnitureItemSub::model()->findByPk($id);
 		if($model === null)
 			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
@@ -349,11 +318,11 @@ class FurnitureItemController extends MasterBackofficeController
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param FurnitureItem $model the model to be validated
+	 * @param FurnitureItemSub $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax'] === 'furniture-item-form')
+		if(isset($_POST['ajax']) && $_POST['ajax'] === 'furniture-item-sub-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
