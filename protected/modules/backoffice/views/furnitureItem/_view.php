@@ -3,7 +3,7 @@
 /* @var $data FurnitureItem */
 ?>
 
-<div class="view">
+<div class="alert alert-info">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('furnitureItemId')); ?>:</b>
 	<?php echo CHtml::link(CHtml::encode($data->furnitureItemId), array('view', 'id'=>$data->furnitureItemId)); ?>

@@ -79,7 +79,7 @@ return false;
 			 */
 			array(
 				'class'=>'CButtonColumn',
-				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description} {payCondition} {stake}',
+				'template'=>'{view} {update} {delete} {subCat} {product} {image} {description} {payCondition} {stake} {furniture}',
 				'buttons'=>array(
 					'subCat'=>array(
 						'label'=>'<br><u>Sub Category</u>',
@@ -106,6 +106,11 @@ return false;
 					'stake'=>array(
 						'label'=>'<br><u>เข็ม</u>',
 						'url'=>'Yii::app()->createUrl("/backoffice/category/stake?categoryId=".$data->subCategoryId."&brandModelId=".$_GET["brandModelId"])',
+						'visible'=>'(isset($_GET["categoryId"]) && Yii::app()->user->supplierId == 4)?1:0'
+					),
+					'furniture'=>array(
+						'label'=>'<br><u>Furniture</u>',
+						'url'=>'Yii::app()->createUrl("/backoffice/furnitureGroup/index?category2Id=".$data->subCategoryId."&categoryId=".$data->categoryId)',
 						'visible'=>'(isset($_GET["categoryId"]) && Yii::app()->user->supplierId == 4)?1:0'
 					)
 				)

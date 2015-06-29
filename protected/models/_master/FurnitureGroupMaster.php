@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'furniture_group':
  * @property string $furnitureGroupId
  * @property string $categoryId
+ * @property string $category2Id
  * @property string $title
  * @property string $description
  * @property string $image
@@ -34,15 +35,15 @@ class FurnitureGroupMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('categoryId, title, createDateTime, updateDateTime', 'required'),
+			array('categoryId, category2Id, title, createDateTime, updateDateTime', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
-			array('categoryId', 'length', 'max'=>20),
+			array('categoryId, category2Id', 'length', 'max'=>20),
 			array('title', 'length', 'max'=>200),
 			array('image', 'length', 'max'=>255),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('furnitureGroupId, categoryId, title, description, image, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
+			array('furnitureGroupId, categoryId, category2Id, title, description, image, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,6 +67,7 @@ class FurnitureGroupMaster extends MasterCActiveRecord
 		return array(
 			'furnitureGroupId' => 'Furniture Group',
 			'categoryId' => 'Category',
+			'category2Id' => 'Category2',
 			'title' => 'Title',
 			'description' => 'Description',
 			'image' => 'Image',
@@ -95,6 +97,7 @@ class FurnitureGroupMaster extends MasterCActiveRecord
 
 		$criteria->compare('furnitureGroupId',$this->furnitureGroupId,true);
 		$criteria->compare('categoryId',$this->categoryId,true);
+		$criteria->compare('category2Id',$this->category2Id,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('image',$this->image,true);

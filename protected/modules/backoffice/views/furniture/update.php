@@ -16,6 +16,10 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Furniture <?php echo $model->furnitureId; ?></h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Update Furniture <?php echo $model->furnitureId; ?>	</div>
+	<div class="panel-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+	</div>
+</div>
