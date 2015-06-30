@@ -208,6 +208,7 @@ class FurnitureItemController extends MasterBackofficeController
 		if(isset($_POST['FurnitureItem']))
 		{
 			$oldimage = $model->image;
+			$oldplan = $model->plan;
 			$flag = false;
 			$transaction = Yii::app()->db->beginTransaction();
 			try
@@ -229,6 +230,20 @@ class FurnitureItemController extends MasterBackofficeController
 					$model->image = $oldimage;
 				}
 
+				$plan = CUploadedFile::getInstance($model, 'plan');
+				if(isset($plan) && !empty($plan))
+				{
+					$imgPlanType = explode('.', $plan->name);
+					$imgPlanType = $imgPlanType[count($imgPlanType) - 1];
+					$imagePlanUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgPlanType;
+					$imagePathPlanimage = '/../' . $imagePlanUrl;
+					$model->plan = $imagePlanUrl;
+				}
+				else
+				{
+					$model->plan = $oldplan;
+				}
+
 				if($model->save())
 				{
 					$flag = true;
@@ -246,6 +261,19 @@ class FurnitureItemController extends MasterBackofficeController
 						}
 						else
 							$flag = false;
+					}
+					if(isset($plan) && !empty($plan))
+					{
+						if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+						{
+							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+						}
+
+						if($image->saveAs(Yii::app()->getBasePath() . $imagePathPlanimage))
+						{
+							if(isset($oldimage) && !empty($oldimage))
+								unlink(Yii::app()->getBasePath() . '/..' . $oldplan);
+						}
 					}
 				}
 //				$emailController = new EmailSend();
