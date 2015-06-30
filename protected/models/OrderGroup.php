@@ -91,6 +91,11 @@ class OrderGroup extends OrderGroupMaster
 					'OrderGroup',
 					array(
 						'mainId')),
+				'fur'=>array(
+					self::HAS_MANY,
+					'OrderGroup',
+					array(
+						'mainFurnitureId')),
 		));
 	}
 

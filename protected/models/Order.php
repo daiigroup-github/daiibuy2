@@ -1090,7 +1090,7 @@ class Order extends OrderMaster
 		}
 	}
 
-	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL)
+	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE)
 	{
 		$res = [];
 		if(isset(Yii::app()->user->id))
@@ -1136,7 +1136,14 @@ class Order extends OrderMaster
 			}
 			$sumAll = $noOfBuy;
 		}
-		$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+		if($useDiscount)
+		{
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+		}
+		else
+		{
+			$discountPercent = 0;
+		}
 		$discount = $sumTotal * $discountPercent / 100;
 		$grandTotal = $sumTotal - $discount;
 		$distributorDiscountPercent = 0;

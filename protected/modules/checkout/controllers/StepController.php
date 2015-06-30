@@ -1275,6 +1275,7 @@ class StepController extends MasterCheckoutController
 						$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($cat2ToProduct[1]->productId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4);
 						$orderGroup->attributes = $orderGroup->attributes;
 						$orderGroup->orderNo = $orderGroup->genOrderNo(4);
+						$orderGroup->invoiceNo = null;
 						$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 						$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
 						$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
@@ -1532,53 +1533,58 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileFurnitureStep()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
+		if(isset($_POST["furnitureGroupId"]))
+		{
+			$furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
 
-		$furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
-		$furniture = Furniture::model()->findByPk($_POST["furnitureId"]);
+			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $furnitureGroup->price, false);
+			$oldOrderGroup = $orderGroup;
 
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $furnitureGroup->price);
-		$oldOrderGroup = $orderGroup;
-
-		$orderGroup = new OrderGroup();
-		$orderGroup->attributes = $oldOrderGroup->attributes;
-		$orderGroup->orderNo = $orderGroup->genOrderNo(4);
-		$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
-		$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-		$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
-		$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
-		$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
-		$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
-		$orderGroup->status = 0;
+			$orderGroup = new OrderGroup();
+			$orderGroup->attributes = $oldOrderGroup->attributes;
+			$orderGroup->invoiceNo = null;
+			$orderGroup->mainFurnitureId = $_GET["orderGroupId"];
+			$orderGroup->furnitureGroupId = $_POST["furnitureGroupId"];
+			$orderGroup->furnitureId = $_POST["furnitureId"];
+			$orderGroup->orderNo = $orderGroup->genOrderNo(4);
+			$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+			$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+			$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+			$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+			$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+			$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+			$orderGroup->status = 0;
 //Distributor Discount & Spacial Project Discount
-		if(isset($orderSummary['distributorDiscountPercent']))
-		{
-			$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
-			$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+			if(isset($orderSummary['distributorDiscountPercent']))
+			{
+				$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+				$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
 
-			$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
-		}
-		if(isset($orderSummary['extraDiscount']))
-		{
-			$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
-		}
+				$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+			}
+			if(isset($orderSummary['extraDiscount']))
+			{
+				$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+			}
 //Distributor Discount & Spacial Project Discount
 
-		$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
-		$orderGroup->vatValue = $orderGroup->calVatValue();
-		$orderGroup->userId = Yii::app()->user->id;
-		$orderGroup->mainId = $oldOrderGroup->orderGroupId;
-		$orderGroup->createDateTime = new CDbExpression("NOW()");
-		$orderGroup->updateDateTime = new CDbExpression("NOW()");
-		if($orderGroup->save(false))
-		{
-			$oldOrderGroup->status = -1;
-			$oldOrderGroup->save(FALSE);
-			$bankArray = Bank::model()->findAllBankModelBySupplier(4);
-			$this->render('step4', array(
-				'step'=>4,
-				'orderSummary'=>$orderSummary,
-				'bankArray'=>$bankArray,
-			));
+			$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+			$orderGroup->vatValue = $orderGroup->calVatValue();
+			$orderGroup->userId = Yii::app()->user->id;
+			$orderGroup->mainId = $oldOrderGroup->orderGroupId;
+			$orderGroup->createDateTime = new CDbExpression("NOW()");
+			$orderGroup->updateDateTime = new CDbExpression("NOW()");
+			if($orderGroup->save(false))
+			{
+				$oldOrderGroup->status = -1;
+				$oldOrderGroup->save(FALSE);
+				$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+				$this->render('step4', array(
+					'step'=>4,
+					'orderSummary'=>$orderSummary,
+					'bankArray'=>$bankArray,
+				));
+			}
 		}
 		if(isset($_POST['paymentMethod']))
 		{
@@ -1588,7 +1594,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->save(false);
 				$this->redirect(array(
 					"confirmCheckout",
-					'id'=>$orderGroup->supNotPay->orderGroupId));
+					'id'=>$orderGroup->fur[0]->orderGroupId));
 			}
 			else
 			{
@@ -1602,7 +1608,7 @@ class StepController extends MasterCheckoutController
 				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 				$this->redirect(array(
 					'step6',
-					"id"=>$orderGroup->supNotPay->orderGroupId,
+					"id"=>$orderGroup->fur[0]->orderGroupId,
 				));
 			}
 		}
