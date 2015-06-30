@@ -1332,6 +1332,7 @@ class StepController extends MasterCheckoutController
 									{
 										foreach($orderItem->orderItemOptions as $orderOptions)
 										{
+											$orderItemOption = new OrderItemOption();
 											$orderItemOption->productOptionGroupId = $orderOptions->productOptionGroupId;
 											$orderItemOption->productOptionId = $orderOptions->productOptionId;
 											$productOption = ProductOption::model()->findByPk($orderOptions->productOptionId);
