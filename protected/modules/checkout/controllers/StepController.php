@@ -1576,8 +1576,6 @@ class StepController extends MasterCheckoutController
 			$orderGroup->updateDateTime = new CDbExpression("NOW()");
 			if($orderGroup->save(false))
 			{
-				$oldOrderGroup->status = -1;
-				$oldOrderGroup->save(FALSE);
 				$bankArray = Bank::model()->findAllBankModelBySupplier(4);
 				$this->render('step4', array(
 					'step'=>4,
