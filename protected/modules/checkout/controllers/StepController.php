@@ -1477,7 +1477,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->save(false);
 				$this->redirect(array(
 					"confirmCheckout",
-					'id'=>$orderGroup->supNotPay->orderGroupId));
+					'id'=>isset($orderGroup->supNotPay) ? $orderGroup->supNotPay->orderGroupId : $orderGroup->orderGroupId));
 			}
 			else
 			{
@@ -1491,7 +1491,7 @@ class StepController extends MasterCheckoutController
 				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
 				$this->redirect(array(
 					'step6',
-					"id"=>$orderGroup->supNotPay->orderGroupId,
+					"id"=>isset($orderGroup->supNotPay) ? $orderGroup->supNotPay->orderGroupId : $orderGroup->orderGroupId,
 				));
 			}
 		}
