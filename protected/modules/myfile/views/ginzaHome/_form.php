@@ -283,61 +283,63 @@ $this->breadcrumbs = array(
 								endif;
 							endif;
 							$flag = true;
-							foreach($productWithOutPay as $item2):
-								?>
-								<tr>
-									<td><?php echo $i; ?></td>
-									<td><?php echo $item2->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-									<td><?php echo number_format($item2->product->price); ?></td>
-									<td style="color:red;text-align: center">ยังไม่ชำระ
-									</td>
-									<td style="width: 20%;text-align: center">
-
-										<?php
-//										if($flag):
-										if(1 == 0):
-											?>
+							if(1 == 0):
+								foreach($productWithOutPay as $item2):
+									?>
+									<tr>
+										<td><?php echo $i; ?></td>
+										<td><?php echo $item2->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
+										<td><?php echo number_format($item2->product->price); ?></td>
+										<td style="color:red;text-align: center">ยังไม่ชำระ
+										</td>
+										<td style="width: 20%;text-align: center">
 
 											<?php
-											$flag = FALSE;
-											?>
-											<form id="payForm<?php echo $i; ?>"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/4"); ?>">
+//										if($flag):
+											if(1 == 0):
+												?>
 
 												<?php
-												echo CHtml::hiddenField("orderGroupId", $parentId);
-												echo CHtml::hiddenField("productId", $item2->productId);
-												echo CHtml::hiddenField("paymentMethod", 1);
-												if($isShowPayButton)
-												{
-													?>
-													<span class="label label-danger">รอการชำระเงิน</span>
+												$flag = FALSE;
+												?>
+												<form id="payForm<?php echo $i; ?>"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/4"); ?>">
+
 													<?php
-													echo CHtml::link("ชำระเงิน", "", array(
-														'class'=>'button blue btn-xs',
-														'onclick'=>"payClick($i)"));
+													echo CHtml::hiddenField("orderGroupId", $parentId);
+													echo CHtml::hiddenField("productId", $item2->productId);
+													echo CHtml::hiddenField("paymentMethod", 1);
+													if($isShowPayButton)
+													{
+														?>
+														<span class="label label-danger">รอการชำระเงิน</span>
+														<?php
+														echo CHtml::link("ชำระเงิน", "", array(
+															'class'=>'button blue btn-xs',
+															'onclick'=>"payClick($i)"));
 //													$this->renderPartial("_condition", array(
 //														'period'=>$i));
-												}
-												else
-												{
+													}
+													else
+													{
+														?>
+														<span class="label label-default">รอการอนุมัติ</span>
+														<?php
+													}
 													?>
-													<span class="label label-default">รอการอนุมัติ</span>
-													<?php
-												}
+												</form>
+												<?php
+											else:
 												?>
-											</form>
+												<span class="label label-default">รอการอนุมัติ</span>
 											<?php
-										else:
+											endif;
 											?>
-											<span class="label label-default">รอการอนุมัติ</span>
-										<?php
-										endif;
-										?>
-									</td>
-								</tr>
-								<?php
-								$i++;
-							endforeach;
+										</td>
+									</tr>
+									<?php
+									$i++;
+								endforeach;
+							endif;
 							?>
 						</tbody>
 					</table>
