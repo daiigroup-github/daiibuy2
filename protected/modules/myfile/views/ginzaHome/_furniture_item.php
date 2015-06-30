@@ -16,7 +16,7 @@
 <div class="row">
 	<div class="col-lg-4 col-lg-offset-4" id='planImage'>
 
-		<img src="<?php echo Yii::app()->baseUrl . $furniture->plan; ?>" style="width: 100%" />
+		<img src="<?php echo Yii::app()->baseUrl . $furniture->furnitureItems[0]->plan; ?>" style="width: 100%" />
 	</div>
 </div>
 <hr>
@@ -51,7 +51,7 @@
 </div>
 <div class="row wizard-control">
 	<div class="pull-right">
-		<!--<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderGroupId")                   ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>-->
+		<!--<a id="backToStep3" class="btn btn-primary btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderGroupId")                    ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>-->
 		<a id="furniture3Back" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> กลับ</a>
 		<a id="furniture3Next" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
 	</div>
