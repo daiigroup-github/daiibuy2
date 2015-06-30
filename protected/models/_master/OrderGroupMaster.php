@@ -24,6 +24,9 @@
  * @property string $distributorDiscount
  * @property string $totalPostDistributorDiscount
  * @property string $extraDiscount
+ * @property string $partnerDiscountCode
+ * @property string $partnerDiscountPercent
+ * @property string $partnerDiscountValue
  * @property string $summary
  * @property string $paymentDateTime
  * @property string $paymentCompany
@@ -48,7 +51,13 @@
  * @property integer $isSentToCustomer
  * @property string $remark
  * @property string $supplierShippingDateTime
+ * @property string $partnerId
+ * @property integer $partnerType
  * @property string $parentId
+ * @property string $mainId
+ * @property string $mainFurnitureId
+ * @property string $furnitureGroupId
+ * @property string $furnitureId
  * @property integer $status
  * @property string $createDateTime
  * @property string $updateDateTime
@@ -83,17 +92,17 @@ class OrderGroupMaster extends MasterCActiveRecord
 		// will receive user inputs.
 		return array(
 			array('userId, total, totalIncVAT, discountPercent, discountValue, createDateTime, updateDateTime', 'required'),
-			array('paymentMethod, usedPoint, isSentToCustomer, status', 'numerical', 'integerOnly'=>true),
-			array('userId, supplierId, invoiceNo, telephone, parentId', 'length', 'max'=>20),
+			array('paymentMethod, usedPoint, isSentToCustomer, partnerType, status', 'numerical', 'integerOnly'=>true),
+			array('userId, supplierId, invoiceNo, telephone, partnerId, parentId, mainId, mainFurnitureId, furnitureGroupId, furnitureId', 'length', 'max'=>20),
 			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
-			array('firstname, lastname, email, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
-			array('total, vatValue, totalIncVAT, discountValue, totalPostDiscount, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary', 'length', 'max'=>15),
-			array('vatPercent, discountPercent, distributorDiscountPercent', 'length', 'max'=>5),
+			array('firstname, lastname, email, partnerDiscountCode, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
+			array('total, vatValue, totalIncVAT, discountValue, totalPostDiscount, distributorDiscount, totalPostDistributorDiscount, extraDiscount, partnerDiscountValue, summary', 'length', 'max'=>15),
+			array('vatPercent, discountPercent, distributorDiscountPercent, partnerDiscountPercent', 'length', 'max'=>5),
 			array('paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode', 'length', 'max'=>10),
 			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, parentId, status, createDateTime, updateDateTime, searchText', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, partnerDiscountCode, partnerDiscountPercent, partnerDiscountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, partnerId, partnerType, parentId, mainId, mainFurnitureId, furnitureGroupId, furnitureId, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -143,6 +152,9 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'distributorDiscount' => 'Distributor Discount',
 			'totalPostDistributorDiscount' => 'Total Post Distributor Discount',
 			'extraDiscount' => 'Extra Discount',
+			'partnerDiscountCode' => 'Partner Discount Code',
+			'partnerDiscountPercent' => 'Partner Discount Percent',
+			'partnerDiscountValue' => 'Partner Discount Value',
 			'summary' => 'Summary',
 			'paymentDateTime' => 'Payment Date Time',
 			'paymentCompany' => 'Payment Company',
@@ -167,7 +179,13 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'isSentToCustomer' => 'Is Sent To Customer',
 			'remark' => 'Remark',
 			'supplierShippingDateTime' => 'Supplier Shipping Date Time',
+			'partnerId' => 'Partner',
+			'partnerType' => 'Partner Type',
 			'parentId' => 'Parent',
+			'mainId' => 'Main',
+			'mainFurnitureId' => 'Main Furniture',
+			'furnitureGroupId' => 'Furniture Group',
+			'furnitureId' => 'Furniture',
 			'status' => 'Status',
 			'createDateTime' => 'Create Date Time',
 			'updateDateTime' => 'Update Date Time',
@@ -192,106 +210,63 @@ class OrderGroupMaster extends MasterCActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		if(isset($this->searchText) && !empty($this->searchText))
-		{
-			$this->orderGroupId = $this->searchText;
-			$this->userId = $this->searchText;
-			$this->supplierId = $this->searchText;
-			$this->orderNo = $this->searchText;
-			$this->invoiceNo = $this->searchText;
-			$this->firstname = $this->searchText;
-			$this->lastname = $this->searchText;
-			$this->email = $this->searchText;
-			$this->telephone = $this->searchText;
-			$this->total = $this->searchText;
-			$this->vatPercent = $this->searchText;
-			$this->vatValue = $this->searchText;
-			$this->totalIncVAT = $this->searchText;
-			$this->discountPercent = $this->searchText;
-			$this->discountValue = $this->searchText;
-			$this->totalPostDiscount = $this->searchText;
-			$this->distributorDiscountPercent = $this->searchText;
-			$this->distributorDiscount = $this->searchText;
-			$this->totalPostDistributorDiscount = $this->searchText;
-			$this->extraDiscount = $this->searchText;
-			$this->summary = $this->searchText;
-			$this->paymentDateTime = $this->searchText;
-			$this->paymentCompany = $this->searchText;
-			$this->paymentFirstname = $this->searchText;
-			$this->paymentLastname = $this->searchText;
-			$this->paymentAddress1 = $this->searchText;
-			$this->paymentAddress2 = $this->searchText;
-			$this->paymentDistrictId = $this->searchText;
-			$this->paymentAmphurId = $this->searchText;
-			$this->paymentProvinceId = $this->searchText;
-			$this->paymentPostcode = $this->searchText;
-			$this->paymentMethod = $this->searchText;
-			$this->paymentTaxNo = $this->searchText;
-			$this->shippingCompany = $this->searchText;
-			$this->shippingAddress1 = $this->searchText;
-			$this->shippingAddress2 = $this->searchText;
-			$this->shippingDistrictId = $this->searchText;
-			$this->shippingAmphurId = $this->searchText;
-			$this->shippingProvinceId = $this->searchText;
-			$this->shippingPostCode = $this->searchText;
-			$this->usedPoint = $this->searchText;
-			$this->isSentToCustomer = $this->searchText;
-			$this->remark = $this->searchText;
-			$this->supplierShippingDateTime = $this->searchText;
-			$this->parentId = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
-		}
-
-		$criteria->compare('orderGroupId',$this->orderGroupId,true, 'OR');
-		$criteria->compare('userId',$this->userId,true, 'OR');
-		$criteria->compare('supplierId',$this->supplierId,true, 'OR');
-		$criteria->compare('orderNo',$this->orderNo,true, 'OR');
-		$criteria->compare('invoiceNo',$this->invoiceNo,true, 'OR');
-		$criteria->compare('firstname',$this->firstname,true, 'OR');
-		$criteria->compare('lastname',$this->lastname,true, 'OR');
-		$criteria->compare('email',$this->email,true, 'OR');
-		$criteria->compare('telephone',$this->telephone,true, 'OR');
-		$criteria->compare('total',$this->total,true, 'OR');
-		$criteria->compare('vatPercent',$this->vatPercent,true, 'OR');
-		$criteria->compare('vatValue',$this->vatValue,true, 'OR');
-		$criteria->compare('totalIncVAT',$this->totalIncVAT,true, 'OR');
-		$criteria->compare('discountPercent',$this->discountPercent,true, 'OR');
-		$criteria->compare('discountValue',$this->discountValue,true, 'OR');
-		$criteria->compare('totalPostDiscount',$this->totalPostDiscount,true, 'OR');
-		$criteria->compare('distributorDiscountPercent',$this->distributorDiscountPercent,true, 'OR');
-		$criteria->compare('distributorDiscount',$this->distributorDiscount,true, 'OR');
-		$criteria->compare('totalPostDistributorDiscount',$this->totalPostDistributorDiscount,true, 'OR');
-		$criteria->compare('extraDiscount',$this->extraDiscount,true, 'OR');
-		$criteria->compare('summary',$this->summary,true, 'OR');
-		$criteria->compare('paymentDateTime',$this->paymentDateTime,true, 'OR');
-		$criteria->compare('paymentCompany',$this->paymentCompany,true, 'OR');
-		$criteria->compare('paymentFirstname',$this->paymentFirstname,true, 'OR');
-		$criteria->compare('paymentLastname',$this->paymentLastname,true, 'OR');
-		$criteria->compare('paymentAddress1',$this->paymentAddress1,true, 'OR');
-		$criteria->compare('paymentAddress2',$this->paymentAddress2,true, 'OR');
-		$criteria->compare('paymentDistrictId',$this->paymentDistrictId,true, 'OR');
-		$criteria->compare('paymentAmphurId',$this->paymentAmphurId,true, 'OR');
-		$criteria->compare('paymentProvinceId',$this->paymentProvinceId,true, 'OR');
-		$criteria->compare('paymentPostcode',$this->paymentPostcode,true, 'OR');
+		$criteria->compare('orderGroupId',$this->orderGroupId,true);
+		$criteria->compare('userId',$this->userId,true);
+		$criteria->compare('supplierId',$this->supplierId,true);
+		$criteria->compare('orderNo',$this->orderNo,true);
+		$criteria->compare('invoiceNo',$this->invoiceNo,true);
+		$criteria->compare('firstname',$this->firstname,true);
+		$criteria->compare('lastname',$this->lastname,true);
+		$criteria->compare('email',$this->email,true);
+		$criteria->compare('telephone',$this->telephone,true);
+		$criteria->compare('total',$this->total,true);
+		$criteria->compare('vatPercent',$this->vatPercent,true);
+		$criteria->compare('vatValue',$this->vatValue,true);
+		$criteria->compare('totalIncVAT',$this->totalIncVAT,true);
+		$criteria->compare('discountPercent',$this->discountPercent,true);
+		$criteria->compare('discountValue',$this->discountValue,true);
+		$criteria->compare('totalPostDiscount',$this->totalPostDiscount,true);
+		$criteria->compare('distributorDiscountPercent',$this->distributorDiscountPercent,true);
+		$criteria->compare('distributorDiscount',$this->distributorDiscount,true);
+		$criteria->compare('totalPostDistributorDiscount',$this->totalPostDistributorDiscount,true);
+		$criteria->compare('extraDiscount',$this->extraDiscount,true);
+		$criteria->compare('partnerDiscountCode',$this->partnerDiscountCode,true);
+		$criteria->compare('partnerDiscountPercent',$this->partnerDiscountPercent,true);
+		$criteria->compare('partnerDiscountValue',$this->partnerDiscountValue,true);
+		$criteria->compare('summary',$this->summary,true);
+		$criteria->compare('paymentDateTime',$this->paymentDateTime,true);
+		$criteria->compare('paymentCompany',$this->paymentCompany,true);
+		$criteria->compare('paymentFirstname',$this->paymentFirstname,true);
+		$criteria->compare('paymentLastname',$this->paymentLastname,true);
+		$criteria->compare('paymentAddress1',$this->paymentAddress1,true);
+		$criteria->compare('paymentAddress2',$this->paymentAddress2,true);
+		$criteria->compare('paymentDistrictId',$this->paymentDistrictId,true);
+		$criteria->compare('paymentAmphurId',$this->paymentAmphurId,true);
+		$criteria->compare('paymentProvinceId',$this->paymentProvinceId,true);
+		$criteria->compare('paymentPostcode',$this->paymentPostcode,true);
 		$criteria->compare('paymentMethod',$this->paymentMethod);
-		$criteria->compare('paymentTaxNo',$this->paymentTaxNo,true, 'OR');
-		$criteria->compare('shippingCompany',$this->shippingCompany,true, 'OR');
-		$criteria->compare('shippingAddress1',$this->shippingAddress1,true, 'OR');
-		$criteria->compare('shippingAddress2',$this->shippingAddress2,true, 'OR');
-		$criteria->compare('shippingDistrictId',$this->shippingDistrictId,true, 'OR');
-		$criteria->compare('shippingAmphurId',$this->shippingAmphurId,true, 'OR');
-		$criteria->compare('shippingProvinceId',$this->shippingProvinceId,true, 'OR');
-		$criteria->compare('shippingPostCode',$this->shippingPostCode,true, 'OR');
+		$criteria->compare('paymentTaxNo',$this->paymentTaxNo,true);
+		$criteria->compare('shippingCompany',$this->shippingCompany,true);
+		$criteria->compare('shippingAddress1',$this->shippingAddress1,true);
+		$criteria->compare('shippingAddress2',$this->shippingAddress2,true);
+		$criteria->compare('shippingDistrictId',$this->shippingDistrictId,true);
+		$criteria->compare('shippingAmphurId',$this->shippingAmphurId,true);
+		$criteria->compare('shippingProvinceId',$this->shippingProvinceId,true);
+		$criteria->compare('shippingPostCode',$this->shippingPostCode,true);
 		$criteria->compare('usedPoint',$this->usedPoint);
 		$criteria->compare('isSentToCustomer',$this->isSentToCustomer);
-		$criteria->compare('remark',$this->remark,true, 'OR');
-		$criteria->compare('supplierShippingDateTime',$this->supplierShippingDateTime,true, 'OR');
-		$criteria->compare('parentId',$this->parentId,true, 'OR');
+		$criteria->compare('remark',$this->remark,true);
+		$criteria->compare('supplierShippingDateTime',$this->supplierShippingDateTime,true);
+		$criteria->compare('partnerId',$this->partnerId,true);
+		$criteria->compare('partnerType',$this->partnerType);
+		$criteria->compare('parentId',$this->parentId,true);
+		$criteria->compare('mainId',$this->mainId,true);
+		$criteria->compare('mainFurnitureId',$this->mainFurnitureId,true);
+		$criteria->compare('furnitureGroupId',$this->furnitureGroupId,true);
+		$criteria->compare('furnitureId',$this->furnitureId,true);
 		$criteria->compare('status',$this->status);
-		$criteria->compare('createDateTime',$this->createDateTime,true, 'OR');
-		$criteria->compare('updateDateTime',$this->updateDateTime,true, 'OR');
+		$criteria->compare('createDateTime',$this->createDateTime,true);
+		$criteria->compare('updateDateTime',$this->updateDateTime,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

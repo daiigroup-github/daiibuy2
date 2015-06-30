@@ -144,7 +144,7 @@ class FurnitureItemController extends MasterBackofficeController
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 
-						if($image->saveAs(Yii::app()->getBasePath() . $imagePlanPathimage))
+						if($plan->saveAs(Yii::app()->getBasePath() . $imagePlanPathimage))
 						{
 							$flag = true;
 						}
@@ -269,9 +269,9 @@ class FurnitureItemController extends MasterBackofficeController
 							mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
 						}
 
-						if($image->saveAs(Yii::app()->getBasePath() . $imagePathPlanimage))
+						if($plan->saveAs(Yii::app()->getBasePath() . $imagePathPlanimage))
 						{
-							if(isset($oldimage) && !empty($oldimage))
+							if(isset($oldplan) && !empty($oldplan))
 								unlink(Yii::app()->getBasePath() . '/..' . $oldplan);
 						}
 					}
