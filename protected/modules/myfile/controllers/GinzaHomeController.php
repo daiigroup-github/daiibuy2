@@ -207,4 +207,41 @@ class GinzaHomeController extends MasterMyFileController
 		);
 	}
 
+	public function actionFurnitureColor()
+	{
+		$furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
+
+		echo $this->renderPartial("_furniture_color", array(
+			'furnitures'=>$furnitureGroup->furnitures), true);
+	}
+
+	public function actionFurnitureItem()
+	{
+		$furniture = Furniture::model()->findByPk($_POST["furnitureId"]);
+
+		echo $this->renderPartial("_furniture_item", array(
+			'furniture'=>$furniture), true);
+	}
+
+	public function actionFurnitureItemSub()
+	{
+		$result = array();
+		$furnitureItem = FurnitureItem::model()->findByPk($_POST["furnitureItemId"]);
+		if(isset($furnitureItem))
+		{
+			$result["status"] = TRUE;
+			$result["furnitureItemSub"] = $this->renderPartial("_furniture_item_sub", array(
+				'furnitureItem'=>$furnitureItem), true);
+			$result['planName'] = $furnitureItem->title;
+			$result['planImage'] = CHtml::image(Yii::app()->baseUrl . $furnitureItem->plan, '', array(
+					'style'=>'width:100%'));
+		}
+		else
+		{
+			$result["status"] = FALSE;
+		}
+
+		echo CJSON::encode($result);
+	}
+
 }

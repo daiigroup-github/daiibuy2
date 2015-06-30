@@ -95,13 +95,108 @@ function formSubmit()
 
 $('#furniture1Next').live('click', function () {
 	var funitureGroupId = $("input:radio[name=furnitureGroupId]:checked").val();
-	if (funitureGroupId != "undenfined")
+	if (typeof (funitureGroupId) == "undefined")
 	{
-		alert("กรุณาเลือกเฟอร์นิเจอร์");
+		alert("กรุณาเลือกชุดเฟอร์นิเจอร์");
 	}
 	else
 	{
+		$.ajax({
+			type: 'POST',
+			url: baseUrl + 'index.php/myfile/ginzaHome/furnitureColor',
+//			dataType: 'json',
+			data: {'furnitureGroupId': funitureGroupId},
+			success: function (data) {
+				//alert success message
+				if (data)
+				{
+					$("#step2").html(data);
+				}
+				else
+				{
+					alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+				}
+			}
+		});
 		$('ul.setup-panel li a[href="#step2"]').trigger('click');
 	}
 
 });
+$('#furniture2Back').live('click', function () {
+	$('ul.setup-panel li a[href="#step1"]').trigger('click');
+});
+$('#furniture2Next').live('click', function () {
+	var funitureId = $("input:radio[name=furnitureId]:checked").val();
+	if (typeof (funitureId) == "undefined")
+	{
+		alert("กรุณาเลือกสีเฟอร์นิเจอร์");
+	}
+	else
+	{
+		$.ajax({
+			type: 'POST',
+			url: baseUrl + 'index.php/myfile/ginzaHome/furnitureItem',
+//			dataType: 'json',
+			data: {'furnitureId': funitureId},
+			success: function (data) {
+				//alert success message
+				if (data)
+				{
+					$("#step3").html(data);
+				}
+				else
+				{
+					alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+				}
+			}
+		});
+		$('ul.setup-panel li a[href="#step3"]').trigger('click');
+	}
+
+});
+
+function showFurnitureItemSub(furnitureItemId)
+{
+	$.ajax({
+		type: 'POST',
+		url: baseUrl + 'index.php/myfile/ginzaHome/furnitureItemSub',
+		dataType: 'json',
+		data: {'furnitureItemId': furnitureItemId},
+		success: function (data) {
+			//alert success message
+			if (data.status)
+			{
+				$("#furnitureItemSub").html(data.furnitureItemSub);
+				$("#planName").html(data.planName);
+				$("#planImage").html(data.planImage);
+			}
+			else
+			{
+				alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+			}
+		}
+	});
+}
+$('#furniture3Back').live('click', function () {
+	$('ul.setup-panel li a[href="#step2"]').trigger('click');
+});
+$('#furniture3Next').live('click', function () {
+	$('ul.setup-panel li a[href="#step4"]').trigger('click');
+});
+$('#furniture4Back').live('click', function () {
+	$('ul.setup-panel li a[href="#step3"]').trigger('click');
+});
+$('#furniture4Next').live('click', function () {
+
+	var accept = $("input:radio[name=accept]:checked").val();
+	if (typeof (accept) == "undefined")
+	{
+		alert("กรุณาเลือกยอมรับเงื่อนไข");
+	}
+	else
+	{
+		// Submit Form
+		$("#furniture-form").submit();
+	}
+});
+
