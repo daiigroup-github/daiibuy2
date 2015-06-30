@@ -277,22 +277,22 @@ $form = $this->beginWidget('CActiveForm', array(
                                     รูปด้าน 4 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
                                 </div>
                                 <div class="form-group">
-                                    รูปด้าน 5 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+                                    รูปด้าน 5 : <input name="OrderFile[5]" type="file" class="file" data-show-upload="false">
                                 </div>
                                 <div class="form-group">
-                                    รูปด้าน 6 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+                                    รูปด้าน 6 : <input name="OrderFile[6]" type="file" class="file" data-show-upload="false">
                                 </div>
                                 <div class="form-group">
-                                    รูปด้าน 7 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+                                    รูปด้าน 7 : <input name="OrderFile[7]" type="file" class="file" data-show-upload="false">
                                 </div>
                                 <div class="form-group">
-                                    รูปด้าน 8 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+                                    รูปด้าน 8 : <input name="OrderFile[8]" type="file" class="file" data-show-upload="false">
                                 </div>
                                 <div class="form-group">
-                                    รูปด้าน 9 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+                                    รูปด้าน 9 : <input name="OrderFile[9]" type="file" class="file" data-show-upload="false">
                                 </div>
                                 <div class="form-group">
-                                    รูปด้าน 10 : <input name="OrderFile[4]" type="file" class="file" data-show-upload="false">
+                                    รูปด้าน 10 : <input name="OrderFile[10]" type="file" class="file" data-show-upload="false">
                                 </div>
 
                                 <?php ?>
@@ -423,7 +423,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                           ?>)"><?php // echo $theme->category2->title;                                                                           ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                            ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                            ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                            ?>)"><?php // echo $theme->category2->title;                                                                            ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -441,7 +441,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="sidebar-box-content" id="setResult">
                         <!--                        <ul>
                         <?php // foreach ($sets as $set):   ?>
-                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                             ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                             ?>)"><?php // echo $set->category2->title;                                                                             ?></li></a>
+                                                        <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                              ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                              ?>)"><?php // echo $set->category2->title;                                                                              ?></li></a>
                         <?php // endforeach;    ?>
                                                 </ul>-->
                     </div>
@@ -490,7 +490,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                           ?>)"><?php // echo $theme->category2->title;                                                                           ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                            ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                            ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                            ?>)"><?php // echo $theme->category2->title;                                                                            ?></li></a>
                         <?php
 //                                }
 //                            endforeach;

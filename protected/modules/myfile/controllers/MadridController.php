@@ -450,8 +450,8 @@ class MadridController extends MasterMyFileController {
             $result["status"] = FALSE;
             $result["errorMessage"] = "Cant' find POST Parameter";
         }
-        throw new Exception(print_r(count($cat2ToProduct), true));
-        throw new Exception(print_r($result, true));
+//        throw new Exception(print_r(count($cat2ToProduct), true));
+//        throw new Exception(print_r($result, true));
         echo CJSON::encode($result);
     }
 
@@ -570,7 +570,7 @@ class MadridController extends MasterMyFileController {
         if (!isset($model)) {
             $model = new Order();
         }
-        $model->isTheme = 1;
+        $model->isTheme = 0;
         $result['view'] = $this->renderPartial("_product_fav", array(
             'model' => $model), true);
 

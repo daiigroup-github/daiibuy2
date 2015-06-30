@@ -36,3 +36,17 @@ $('.addToCart').live('click', function () {
 		}
 	});
 });
+
+function checkComment()
+{
+	if ($("#OrderDetailValue_4_value").val() == "")
+	{
+		alert("กรุณากรอกคำร้อง");
+		return false;
+	}
+	else
+	{
+            $('#Order_createMyfileType').val(2);
+		return true;
+	}
+}

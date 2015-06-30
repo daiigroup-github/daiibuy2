@@ -23,6 +23,7 @@ class Content extends ContentMaster {
     const CONTENT_TYPE_FOOTER = 3;
     const CONTENT_TYPE_FOOTER_SOCIAL = 4;
     const CONTENT_TYPE_FOOTER_COMPANY = 5;
+    const CONTENT_TYPE_LOGO = 6;
 
     /**
      * Returns the static model of the specified AR class.
@@ -154,6 +155,7 @@ class Content extends ContentMaster {
             self::CONTENT_TYPE_FOOTER => 'ลิ้งค์ที่ Content เกี่ยวกับ Daiibuy',
             self::CONTENT_TYPE_FOOTER_SOCIAL => 'Social ที่ Footer',
             self::CONTENT_TYPE_FOOTER_COMPANY => 'Company ที่ Footer',
+            self::CONTENT_TYPE_LOGO => 'LOGO DAII GROUP',
         );
     }
 
