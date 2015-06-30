@@ -1569,7 +1569,7 @@ class StepController extends MasterCheckoutController
 			{
 				foreach($orderGroup->orderGroupToOrders[0]->order->orderItems as $orderItem)
 				{
-					$orderItem->productId = $cat2ToProduct[1]->productId;
+					$orderItem->productId = $cat2ToProduct[$period - 1]->productId;
 					$orderItem->quantity = $quantity;
 					$total = $price * $quantity;
 					$orderItem->price = $price;
