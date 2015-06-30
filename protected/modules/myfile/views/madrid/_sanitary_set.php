@@ -23,7 +23,7 @@
                     <?php echo CHtml::hiddenField("OrderItems[$item->productId][price]", $item->product->price) ?>
                 </td>
                 <td style="width: 20%">
-                    <div class="row"><div class="col-md-12"><?php echo CHtml::numberField("OrderItems[$item->productId][quantity]") ?></div></div>
+                    <div class="row"><div class="col-md-12"><?php echo CHtml::numberField("OrderItems[" . $item->productId . "][quantity]", 1); ?></div></div>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -57,9 +57,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 //			), 'You can remove this line'),
     ),
     'jsAfterNewId' => "
-		if(typeof this.attr('name') !== 'undefined'){ this.attr('name', this.attr('name').replace('[0]', '['+counter+']'));}
+                            if (typeof this.attr ('name') !== 'undefined'){ this.attr ('name', this.attr ('name').replace ('[0]', '['+counter+']'));
+                            }
 
-		",
+                            ",
 ));
 ?>
 <div class="row">
@@ -83,7 +84,8 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
                         echo CHtml::dropDownList("OrderItems[0][brandId]", "", Brand::model()->getAllBrandBySupplierId(3), array(
                             'prompt' => 'Select Brand',
                             'class' => 'form-control',
-                            'onchange' => "findModel(this,'" . Yii::app()->baseUrl . "');",
+                            'onchange' => "findModel (this, '" . Yii::app()->baseUrl . "');
+                            ",
                             'id' => 'brandId',
                         ));
                         ?></td>
@@ -92,7 +94,8 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
                                 ), array(
                             'prompt' => 'Select Model',
                             'class' => 'form-control',
-                            'onchange' => "findCat1(this,'" . Yii::app()->baseUrl . "');",
+                            'onchange' => "findCat1 (this, '" . Yii::app()->baseUrl . "');
+                            ",
                             'id' => 'brandModelId',
                         ));
                         ?></td>
@@ -101,7 +104,8 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
                                 ), array(
                             'prompt' => 'Select Cat1',
                             'class' => 'form-control',
-                            'onchange' => "findCat2Product(this,'" . Yii::app()->baseUrl . "');",
+                            'onchange' => "findCat2Product (this, '" . Yii::app()->baseUrl . "');
+                            ",
                             'id' => 'category1Id',
                         ));
                         ?></td>
@@ -111,7 +115,8 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
                             'prompt' => 'Select Product',
                             'class' => 'form-control',
                             'id' => 'productId',
-                            'onchange' => "chooseProduct(this,'" . Yii::app()->baseUrl . "');",
+                            'onchange' => "chooseProduct (this, '" . Yii::app()->baseUrl . "');
+                            ",
                         ));
                         ?></td>
                     <td><?php
@@ -130,4 +135,4 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
             </tfoot>
         </table>
     </div>
-</div>
+</div>                                    

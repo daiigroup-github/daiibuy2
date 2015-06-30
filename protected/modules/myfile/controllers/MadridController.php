@@ -428,10 +428,12 @@ class MadridController extends MasterMyFileController {
 
         if (isset($_POST["category2Id"])) {
             $cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
+//            throw new Exception(print_r($cat2ToProduct, true));
             if (count($cat2ToProduct) > 0) {
                 $result["status"] = TRUE;
                 foreach ($cat2ToProduct as $item) {
                     $result[strtolower($item->groupName)]["productId"] = $item->productId;
+//                    throw new Exception(print_r($result, true));
                     $result[strtolower($item->groupName)]["code"] = $item->product->code;
                     $result[strtolower($item->groupName)]["name"] = $item->product->name;
                     $result[strtolower($item->groupName)]["width"] = $item->product->width;
@@ -448,6 +450,8 @@ class MadridController extends MasterMyFileController {
             $result["status"] = FALSE;
             $result["errorMessage"] = "Cant' find POST Parameter";
         }
+        throw new Exception(print_r(count($cat2ToProduct), true));
+        throw new Exception(print_r($result, true));
         echo CJSON::encode($result);
     }
 
