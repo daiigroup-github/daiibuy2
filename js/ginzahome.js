@@ -92,3 +92,16 @@ function formSubmit()
 {
 
 }
+
+$('#furniture1Next').live('click', function () {
+	var funitureGroupId = $("input:radio[name=furnitureGroupId]:checked").val();
+	if (funitureGroupId != "undenfined")
+	{
+		alert("กรุณาเลือกเฟอร์นิเจอร์");
+	}
+	else
+	{
+		$('ul.setup-panel li a[href="#step2"]').trigger('click');
+	}
+
+});
