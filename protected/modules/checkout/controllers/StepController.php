@@ -793,68 +793,62 @@ class StepController extends MasterCheckoutController
 				{
 					foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
 					{
-						if($item->quantity > 1):
-							for($i = 1; $i <= $item->quantity; $i++)
+						for($i = 1; $i <= $item->quantity; $i++)
+						{
+							$transaction = Yii::app()->db->beginTransaction();
+							try
 							{
-								$transaction = Yii::app()->db->beginTransaction();
-								try
-								{
-									$newOrderGroup = new OrderGroup();
-									$newOrderGroup->attributes = $oldOrder->attributes;
-									$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
-									$newOrderGroup->totalIncVAT = $item->price;
-									$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
-									$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
-									$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
-									$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
-									$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
-									$newOrderGroup->orderGroupId = NULL;
+								$newOrderGroup = new OrderGroup();
+								$newOrderGroup->attributes = $oldOrder->attributes;
+								$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+								$newOrderGroup->totalIncVAT = $item->price / $item->quantity;
+								$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+								$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+								$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+								$newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+								$newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+								$newOrderGroup->orderGroupId = NULL;
 
 
 
-									$newOrderItem = new OrderItems();
-									$newOrderItem->attributes = $item->attributes;
+								$newOrderItem = new OrderItems();
+								$newOrderItem->attributes = $item->attributes;
 
 
 //						throw new Exception(print_r($newOrderItem->attributes, true));
 
-									if($newOrderGroup->save())
+								if($newOrderGroup->save())
+								{
+									$newOrderGroupId = Yii::app()->db->getLastInsertID();
+									$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+									$newOrder = new Order();
+									$newOrder->attributes = $tempOrder->attributes;
+									$newOrder->orderId = NULL;
+									$newOrder->totalIncVAT = $item->price / $item->quantity;
+									$newOrder->total = $newOrderGroup->total;
+									if($newOrder->save())
 									{
-										$newOrderGroupId = Yii::app()->db->getLastInsertID();
-										$tempOrder = $oldOrder->orderGroupToOrders[0]->order;
-										$newOrder = new Order();
-										$newOrder->attributes = $tempOrder->attributes;
-										$newOrder->orderId = NULL;
-										$newOrder->totalIncVAT = $item->price;
-										$newOrder->total = $newOrderGroup->total;
-										if($newOrder->save())
+										$newOrderId = Yii::app()->db->getLastInsertID();
+										$orderGroupToOrder = new OrderGroupToOrder();
+										$orderGroupToOrder->orderGroupId = $newOrderGroupId;
+										$orderGroupToOrder->orderId = $newOrderId;
+										if($orderGroupToOrder->save())
 										{
-											$newOrderId = Yii::app()->db->getLastInsertID();
-											$orderGroupToOrder = new OrderGroupToOrder();
-											$orderGroupToOrder->orderGroupId = $newOrderGroupId;
-											$orderGroupToOrder->orderId = $newOrderId;
-											if($orderGroupToOrder->save())
-											{
-												$newOrderItem = new OrderItems();
+											$newOrderItem = new OrderItems();
 
-												$newOrderItem->attributes = $item->attributes;
-												$newOrderItem->title = $item->product->name;
-												$newOrderItem->orderId = $newOrderId;
-												$newOrderItem->quantity = 1;
-												$newOrderItem->total = $newOrderItem->price;
-												if($newOrderItem->save())
-												{
-													$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-													$transaction->commit();
-												}
-												else
-												{
-													throw new Exception(print_r($newOrderItem->errors, true));
-												}
+											$newOrderItem->attributes = $item->attributes;
+											$newOrderItem->title = $item->product->name;
+											$newOrderItem->orderId = $newOrderId;
+											$newOrderItem->quantity = 1;
+											$newOrderItem->total = $newOrderItem->price;
+											if($newOrderItem->save())
+											{
+//												$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+												$transaction->commit();
 											}
 											else
 											{
-												throw new Exception;
+												throw new Exception(print_r($newOrderItem->errors, true));
 											}
 										}
 										else
@@ -867,21 +861,23 @@ class StepController extends MasterCheckoutController
 										throw new Exception;
 									}
 								}
-								catch(Exception $ex)
+								else
 								{
-									throw new Exception($ex->getMessage());
-									$transaction->rollback();
-								}
-
-								if($i == $item->quantity)
-								{
-									$oldOrder->status = -1;
-									break;
+									throw new Exception;
 								}
 							}
-						else:
-							$oldOrder->status = 1;
-						endif;
+							catch(Exception $ex)
+							{
+								throw new Exception($ex->getMessage());
+								$transaction->rollback();
+							}
+
+							if($i == $item->quantity)
+							{
+								$oldOrder->status = -1;
+								break;
+							}
+						}
 					}
 				}
 				else
@@ -1105,7 +1101,6 @@ class StepController extends MasterCheckoutController
 		try
 		{
 			$oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
-//			throw new Exception(print_r($oldOrderGroup->orderGroupToOrders, true));
 			$cat2ToProduct = Category2ToProduct::model()->find("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId);
 			$models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
 				":brandId"=>$cat2ToProduct->brandId,
