@@ -14,7 +14,7 @@ class GinzaHomeController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null ", array(
+		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null AND mainFurnitureId is null ", array(
 			":userId"=>isset(Yii::app()->user->id) ? Yii::app()->user->id : 0,
 			":supplierId"=>4
 		));
