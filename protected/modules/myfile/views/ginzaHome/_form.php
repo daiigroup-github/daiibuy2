@@ -89,7 +89,9 @@ $this->breadcrumbs = array(
 											<td>
 												<?php echo number_format($furnitureGroup->price); ?>
 												<br>
-												<a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzaHome/furniture/id/" . $_GET["id"]; ?>" class="btn btn-primary">แก้ไข</a>
+												<?php if($model->fur[0]->status < 3) : ?>
+													<a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzaHome/furniture/id/" . $_GET["id"]; ?>" class="btn btn-primary">แก้ไข</a>
+												<?php endif; ?>
 											</td>
 										</tr>
 									</tbody>
