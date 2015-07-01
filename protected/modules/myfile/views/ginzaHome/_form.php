@@ -65,7 +65,7 @@ $this->breadcrumbs = array(
 								</tr>-->
 							</table>
 							<?php
-							if(isset($model->fur)):
+							if(isset($model->fur[0])):
 								$furnitureGroup = FurnitureGroup::model()->findByPk($model->fur[0]->furnitureGroupId);
 								$furniture = Furniture::model()->findByPk($model->fur[0]->furnitureId);
 								?>
