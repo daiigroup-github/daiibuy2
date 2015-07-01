@@ -843,7 +843,7 @@ class StepController extends MasterCheckoutController
 											$newOrderItem->total = $newOrderItem->price;
 											if($newOrderItem->save())
 											{
-//												$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+												$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
 												$transaction->commit();
 											}
 											else
