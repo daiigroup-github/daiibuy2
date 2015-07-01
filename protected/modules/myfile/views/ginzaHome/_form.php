@@ -64,6 +64,35 @@ $this->breadcrumbs = array(
 									<td></td>
 								</tr>-->
 							</table>
+							<?php
+							if(isset($model->fur)):
+								$furnitureGroup = FurnitureGroup::model()->findByPk($model->fur[0]->furnitureGroupId);
+								$furniture = Furniture::model()->findByPk($model->fur[0]->furnitureId);
+								?>
+								<h2 style="color:red">คุณทำการสั่งซื้อ Furniture Set</h2>
+								<table class="table table-bordered table-hover" style="width:100%">
+									<thead>
+										<tr>
+											<th>Furniture Set</th>
+											<th>Price</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="text-center">
+												<?php
+												echo CHtml::image(Yii::app()->baseUrl . $furnitureGroup->image, "", array(
+													'style'=>'width:50%'));
+												?><br>
+												<?php echo "Set : " . $furnitureGroup->title . " Color :" . $furniture->title; ?>
+											</td>
+											<td>
+												<?php echo number_format($furnitureGroup->price); ?>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>
@@ -343,6 +372,8 @@ $this->breadcrumbs = array(
 							?>
 						</tbody>
 					</table>
+
+
 				</div>
 			</div>
 			<div class="row <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="action-button">
