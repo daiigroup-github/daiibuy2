@@ -801,7 +801,7 @@ class StepController extends MasterCheckoutController
 								$newOrderGroup = new OrderGroup();
 								$newOrderGroup->attributes = $oldOrder->attributes;
 								$newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
-								$newOrderGroup->totalIncVAT = $item->price / $item->quantity;
+								$newOrderGroup->totalIncVAT = $item->price;
 								$newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
 								$newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
 								$newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
@@ -824,7 +824,7 @@ class StepController extends MasterCheckoutController
 									$newOrder = new Order();
 									$newOrder->attributes = $tempOrder->attributes;
 									$newOrder->orderId = NULL;
-									$newOrder->totalIncVAT = $item->price / $item->quantity;
+									$newOrder->totalIncVAT = $item->price;
 									$newOrder->total = $newOrderGroup->total;
 									if($newOrder->save())
 									{
