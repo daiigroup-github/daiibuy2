@@ -779,7 +779,7 @@ class StepController extends MasterCheckoutController
 	{
 //		$daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
-		$flag = FALSE;
+		$flag = TRUE;
 
 //		$order = OrderGroup::model()->find("orderNo =:orderNo", array(
 //			":orderNo"=>$id));
@@ -791,11 +791,12 @@ class StepController extends MasterCheckoutController
 			{
 				if(isset($oldOrder->orderGroupToOrders[0]))
 				{
+					$transaction = Yii::app()->db->beginTransaction();
 					foreach($oldOrder->orderGroupToOrders[0]->order->orderItems as $item)
 					{
 						for($i = 1; $i <= $item->quantity; $i++)
 						{
-							$transaction = Yii::app()->db->beginTransaction();
+
 							try
 							{
 								$newOrderGroup = new OrderGroup();
@@ -844,26 +845,25 @@ class StepController extends MasterCheckoutController
 											if($newOrderItem->save())
 											{
 												$this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-												$transaction->commit();
 											}
 											else
 											{
-												throw new Exception(print_r($newOrderItem->errors, true));
+												$flag = FALSE;
 											}
 										}
 										else
 										{
-											throw new Exception;
+											$flag = FALSE;
 										}
 									}
 									else
 									{
-										throw new Exception;
+										$flag = FALSE;
 									}
 								}
 								else
 								{
-									throw new Exception;
+									$flag = FALSE;
 								}
 							}
 							catch(Exception $ex)
@@ -872,17 +872,22 @@ class StepController extends MasterCheckoutController
 								$transaction->rollback();
 							}
 
-							if($i == $item->quantity)
-							{
-								$oldOrder->status = -1;
-								break;
-							}
+//							if($i == $item->quantity)
+//							{
+//								$oldOrder->status = -1;
+//								break;
+//							}
 						}
+					}
+					if($flag)
+					{
+						$oldOrder->status = -1;
+						$transaction->commit();
 					}
 				}
 				else
 				{
-					$oldOrder->status = 1;
+//					$oldOrder->status = 1;
 				}
 //					$oldOrder->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
 //					$oldOrder->discountValue = ($oldOrder->totalIncVAT * $oldOrder->discountPercent) / 100;
@@ -913,7 +918,6 @@ class StepController extends MasterCheckoutController
 			{
 				$orderToSentMail = isset($newOrderGroup) ? $newOrderGroup : $oldOrder;
 			}
-			$flag = TRUE;
 			$emailObj = new Email();
 			$sentMail = new EmailSend();
 			$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
