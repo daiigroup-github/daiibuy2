@@ -1441,7 +1441,14 @@ class StepController extends MasterCheckoutController
 			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $furnitureGroup->price, false);
 			$oldOrderGroup = $orderGroup;
 
-			$orderGroup = new OrderGroup();
+			if(!isset($orderGroup->fur[0]))
+			{
+				$orderGroup = new OrderGroup();
+			}
+			else
+			{
+				$orderGroup = OrderGroup::model()->findByPk($orderGroup->fur[0]->orderGroupId);
+			}
 			$orderGroup->attributes = $oldOrderGroup->attributes;
 			$orderGroup->invoiceNo = null;
 			$orderGroup->mainFurnitureId = $_GET["orderGroupId"];

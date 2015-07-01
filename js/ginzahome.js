@@ -105,7 +105,7 @@ $('#furniture1Next').live('click', function () {
 			type: 'POST',
 			url: baseUrl + 'index.php/myfile/ginzaHome/furnitureColor',
 //			dataType: 'json',
-			data: {'furnitureGroupId': funitureGroupId},
+			data: {'furnitureGroupId': funitureGroupId, 'orderGroupId': $("#orderGroupId").val()},
 			success: function (data) {
 				//alert success message
 				if (data)

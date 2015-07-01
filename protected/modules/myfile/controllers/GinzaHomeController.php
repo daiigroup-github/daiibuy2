@@ -212,9 +212,14 @@ class GinzaHomeController extends MasterMyFileController
 	public function actionFurnitureColor()
 	{
 		$furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
+		if(isset($_POST["orderGroupId"]) && !empty($_POST["orderGroupId"]))
+		{
+			$model = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+		}
 
 		echo $this->renderPartial("_furniture_color", array(
-			'furnitures'=>$furnitureGroup->furnitures), true);
+			'furnitures'=>$furnitureGroup->furnitures,
+			'model'=>$model), true);
 	}
 
 	public function actionFurnitureItem()
