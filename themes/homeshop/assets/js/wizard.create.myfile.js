@@ -257,13 +257,14 @@ $('#nextToStep3Atech').on('click', function () {
 	var base_url = baseUrl;
 	var title = $("#Order_title").attr("value");
 	var provinceId = $("#selectProvince").attr("value");
+        var brandModelId = $("#selectBrandModel").attr("value");
 //		alert($("#aa").serialize());
 //		alert(categoryId);
 //		alert(title + ", " + provinceId);
 	$.ajax({
 		url: base_url + '/myfile/atechWindow/calculatePriceMyFile',
 		type: 'POST',
-		data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId,
+		data: $("#aa").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId='+ brandModelId,
 		success: function (data) {
 //				alert("ya");
 			$("#atech_result").html(data);
@@ -273,7 +274,7 @@ $('#nextToStep3Atech').on('click', function () {
 });
 $(".atechNav").click(function () {
 	var base_url = baseUrl;
-	var brandModelId = $(this).attr("name");
+	var brandModelId = $("#selectBrandModel").attr("value");
 	var title = $("#Order_title").attr("value");
 	var provinceId = $("#selectProvince").attr("value");
 //		alert($("#aa").serialize());
@@ -293,7 +294,7 @@ $(".atechNav").click(function () {
 });
 $(".atechUpdate").click(function () {
 	var base_url = baseUrl;
-	var brandModelId = $(this).attr("name");
+	var brandModelId = $("#selectBrandModel").attr("value");
 	var title = $("#Order_title").attr("value");
 	var provinceId = $("#selectProvince").attr("value");
 //		alert($("#editTableForm").serialize());
@@ -318,7 +319,7 @@ $('#nextToStep4Atech').live('click', function (e) {
 		var orderId = $(this).attr("name");
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
-		var brandModelId = $("#updateButton").attr("name");
+		var brandModelId = $("#selectBrandModel").attr("value");
 		$.ajax({
 			url: base_url + '/myfile/atechWindow/saveMyFileAtech',
 			type: 'POST',

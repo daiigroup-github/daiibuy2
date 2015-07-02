@@ -1,6 +1,8 @@
 <?php
+
 $this->renderPartial('_form', array(
-	'model'=>$model,
-	'modelArray'=>$modelArray,
-	'productResult'=>$productResult));
+    'model' => $model,
+    'modelArray' => $modelArray,
+    'productResult' => $productResult,
+    'orderDetailTemplateField' => $orderDetailTemplateField,));
 ?>

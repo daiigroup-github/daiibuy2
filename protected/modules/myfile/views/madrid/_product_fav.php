@@ -107,7 +107,7 @@
                         <td><?php echo $i; ?></td>
                         <td><?php echo $product->name; ?></td>
                         <?php if ($this->action->id == "view" || $model->status == 1): ?>
-                            <td style="text-align: center"><?php // echo $model->area;                                                                                                                                                                                                                  ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $model->area);                                                                                                                                                                                                                  ?></td>
+                            <td style="text-align: center"><?php // echo $model->area;                                                                                                                                                                                                                        ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $model->area);                                                                                                                                                                                                                        ?></td>
                             <td>ตร.เมตร</td>
                         <?php endif; ?>
 
@@ -122,8 +122,8 @@
                         echo CHtml::hiddenField("OrderItems[" . $product->productId . "][productId]", $product->productId);
                         ?>
                         <?php
-//												$productArea = ($model->product->width * $model->product->height) / 10000;
-//												$estimateQuantity = $productArea * $model->area;
+                        $productArea = ($product->width * $product->height) / 10000;
+                        $estimateQuantity = $productArea * $product->area;
                         ?>
 
                         <td  style="text-align: center">
@@ -140,83 +140,13 @@
                                 //													'class'=>'hide',
                                 'id' => 'quantityText'));
                             ?></td>
-                        <td id="price"><?php // echo number_format($model->quantity * $model->product->price)                                                                                                                                                                                                              ?></td>
+                        <td id="price"><?php echo number_format($product->price) ?></td>
                     </tr>
                     <?php
                 }
                 ?>
             </tbody>
         </table>
-        <!--        <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Brand</th>
-                                    <th>Model</th>
-                                    <th>Cat1</th>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Unit</th>
-                                    <th>Price/Unit</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="copyRow" id="copyRow">
-                                    <td><?php
-//                                echo CHtml::dropDownList("OrderItems[0][brandId]", "", Brand::model()->getAllBrandBySupplierId(3), array(
-//                                    'prompt' => 'Select Brand',
-//                                    'class' => 'form-control',
-//                                    'onchange' => "findModelTile(this,'" . Yii::app()->baseUrl . "');",
-//                                    'id' => 'brandId',
-//                                ));
-        ?></td>
-                                    <td class="model"><?php
-//                                echo CHtml::dropDownList('OrderItems[0][brandModelId]', '', array(
-//                                        ), array(
-//                                    'prompt' => 'Select Model',
-//                                    'class' => 'form-control',
-//                                    'onchange' => "findCat1(this,'" . Yii::app()->baseUrl . "');",
-//                                    'id' => 'brandModelId',
-//                                ));
-        ?></td>
-                                    <td class="cat1"><?php
-//                                echo CHtml::dropDownList('OrderItems[0][category1Id]', '', array(
-//                                        ), array(
-//                                    'prompt' => 'Select Cat1',
-//                                    'class' => 'form-control',
-//                                    'onchange' => "findCat2Product(this,'" . Yii::app()->baseUrl . "');",
-//                                    'id' => 'category1Id',
-//                                ));
-        ?></td>
-                                    <td class="product"><?php
-//                                echo CHtml::dropDownList('OrderItems[0][productId]', '', array(
-//                                        ), array(
-//                                    'prompt' => 'Select Product',
-//                                    'class' => 'form-control',
-//                                    'id' => 'productId',
-//                                    'onchange' => "chooseProduct(this,'" . Yii::app()->baseUrl . "');",
-//                                ));
-        ?></td>
-                                    <td><?php
-//                                echo CHtml::numberField('OrderItems[0][quantity]  ', "", array(
-//                                    'class' => 'form-control'))
-        ?></td>
-                                    <td class="unit"><span class="unitText skipCopy"></span></td>
-                                    <td class="price"><span class="priceText skipCopy"></span></td>
-                                    <td class="total"><span class="toalText skipCopy"></span></td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="6"><a id="copyItem" href="#" rel=".copyRow" class="button green"><i class="fa fa-plus"></i>เพิ่ม</a></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>-->
-
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered table-hover">
@@ -238,8 +168,7 @@
                                 echo CHtml::dropDownList("OrderItems[0][brandId]", "", Brand::model()->getAllBrandBySupplierId(3), array(
                                     'prompt' => 'Select Brand',
                                     'class' => 'form-control',
-                                    'onchange' => "findModel (this, '" . Yii::app()->baseUrl . "');
-                            ",
+                                    'onchange' => "findModelTile(this,'" . Yii::app()->baseUrl . "');",
                                     'id' => 'brandId',
                                 ));
                                 ?></td>
@@ -248,8 +177,7 @@
                                         ), array(
                                     'prompt' => 'Select Model',
                                     'class' => 'form-control',
-                                    'onchange' => "findCat1 (this, '" . Yii::app()->baseUrl . "');
-                            ",
+                                    'onchange' => "findCat1(this,'" . Yii::app()->baseUrl . "');",
                                     'id' => 'brandModelId',
                                 ));
                                 ?></td>
@@ -258,8 +186,7 @@
                                         ), array(
                                     'prompt' => 'Select Cat1',
                                     'class' => 'form-control',
-                                    'onchange' => "findCat2Product (this, '" . Yii::app()->baseUrl . "');
-                            ",
+                                    'onchange' => "findCat2Product(this,'" . Yii::app()->baseUrl . "');",
                                     'id' => 'category1Id',
                                 ));
                                 ?></td>
@@ -269,8 +196,7 @@
                                     'prompt' => 'Select Product',
                                     'class' => 'form-control',
                                     'id' => 'productId',
-                                    'onchange' => "chooseProduct (this, '" . Yii::app()->baseUrl . "');
-                            ",
+                                    'onchange' => "chooseProduct(this,'" . Yii::app()->baseUrl . "');",
                                 ));
                                 ?></td>
                             <td><?php
@@ -289,21 +215,7 @@
                     </tfoot>
                 </table>
             </div>
-        </div>                
-        <?php
-        $result["status"] = TRUE;
-        $result["productId"] = $product->productId;
-        $result["code"] = $product->code;
-        $result["image"] = isset($product->productImagesSort[0]) ? Yii::app()->baseUrl . $product->productImagesSort[0]->image : "";
-        $result["name"] = $product->name;
-        $result["description"] = $product->description;
-        $result["width"] = $product->width;
-        $result["height"] = $product->height;
-        $result["productArea"] = isset($product->area) ? $product->area : "";
-        $result["price"] = $product->price;
-        $result["noPerBox"] = isset($product->noPerBox) ? $product->noPerBox : 12;
-        $result["productUnits"] = $product->productUnits;
-        ?>
+        </div>
 
         <div class="row">
             <div class="col-md-4">

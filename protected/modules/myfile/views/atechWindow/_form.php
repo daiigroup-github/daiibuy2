@@ -88,12 +88,12 @@ $form = $this->beginWidget('CActiveForm', array(
         <div class="col-xs-12">
             <div class="col-md-12 well">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <div class="page-header select-province">
                             <h1>สร้าง My File</h1><small> กรุณากรอกข้อมูลตามด้านล่าง.</small>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-10">
+                            <div class="col-sm-4">
                                 <?php
                                 echo $form->textField($model, 'title', array(
                                     'size' => 20,
@@ -113,15 +113,28 @@ $form = $this->beginWidget('CActiveForm', array(
 //							));
                         ?>
                                                                         </div>-->
-                        <div style="margin-top: 15px">
-                            <?php
-                            echo CHtml::dropDownList('Order[provinceId]', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
-                                'class' => 'form-control',
-                                'id' => 'selectProvince',
-                                'prompt' => '--กรุณาเลือกจังหวัด--',
-                            ));
-                            ?>
+                        <div style="margin-top: 15px" class="form-group">
+                            <div class="col-xs-4">
+                                <?php
+                                echo CHtml::dropDownList('Order[provinceId]', $model->provinceId, CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
+                                    'class' => 'form-control',
+                                    'id' => 'selectProvince',
+                                    'prompt' => '-- กรุณาเลือกจังหวัด --',
+                                ));
+                                ?>
+                            </div>
+                            <div class="col-xs-4">
+                                <?php
+                                echo CHtml::dropDownList('Order[brandModelId]', $model->brandModelId, CHtml::listData(brandModel::model()->findAll('supplierId = 2'), 'brandModelId', 'title'), array(
+                                    'class' => 'form-control',
+                                    'id' => 'selectBrandModel',
+                                    'prompt' => '-- เลือก Brand สินค้า --',
+                                    'onchange' => 'findCat(this)',
+                                ));
+                                ?>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="row">
@@ -176,7 +189,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row">
                     <div class="col-md-12" id="upload_plan">
-                        <?php // $this->renderPartial('_upload_plan', array('model'=>$model));   ?>
+                        <?php // $this->renderPartial('_upload_plan', array('model'=>$model));    ?>
 
                         <div class="row">
                             <div class="col-sm-7">
@@ -303,6 +316,29 @@ $form = $this->beginWidget('CActiveForm', array(
                         <?php endforeach; ?>
                     </div>
                 </div>
+                <div class="row">
+
+                    <?php foreach ($orderDetailTemplateField as $field): ?>
+                        <div class="col-lg-1 control-label"><?php echo $field->description; ?></div>
+                        <div class="col-lg-11">
+                            <?php
+//                            throw new Exception(print_r($orderDetailTemplateField, true));
+                            if (isset($model->orderId)):
+                                $orderDetail = OrderDetail::model()->find("orderId = :orderId", array(
+                                    ":orderId" => $model->orderId));
+
+                                if (isset($orderDetail)) {
+                                    $fieldValue = OrderDetailValue::model()->find("orderDetailId = " . $orderDetail->orderDetailId . " AND orderDetailTemplateFieldId = " . $field->orderDetailTemplateFieldId);
+//                                    throw new Exception(print_r($fieldValue, true));
+                                    if (isset($fieldValue->value) && $fieldValue == "")
+                                        echo $fieldValue->value;
+                                }
+                            endif;
+                            ?>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
 
             </div>
         </div>
@@ -342,7 +378,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row text-center">
                     <form id="aa">
-                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                     ?>">
+                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                                        ?>">
                             <thead>
                                 <tr>ตารางแสดงรายละเอียดสินค้า</tr>
                                 <tr>
@@ -363,7 +399,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 <tr>
                                     <td>1</td>
                                     <td class="cat"><?php
-                                        echo CHtml::dropDownList('Criteria[0][category]', "category", $categoryDropDownArray, array(
+                                        echo CHtml::dropDownList('Criteria[0][category]', "category", array(), array(
                                             'class' => 'form-control',
                                             'prompt' => 'เลือกประเภท',
                                             'onchange' => 'findType(this)'));
@@ -394,7 +430,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 <tr>
                                     <td>2</td>
                                     <td class="cat"><?php
-                                        echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray, array(
+                                        echo CHtml::dropDownList('Criteria[1][category]', "category", array(), array(
                                             'class' => 'form-control',
                                             'prompt' => 'เลือกประเภท',
                                             'onchange' => 'findType(this)'));
@@ -424,10 +460,10 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
         <!--			<tr>
                                         <td>2</td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                     ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                     ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                     ?></td>
-                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                     ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                                        ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                                        ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                                        ?></td>
+                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                                        ?></td>
                                         <td><button id="deleteRow" class="btn btn-danger">remove</button></td>
                                 </tr>-->
 
@@ -461,33 +497,33 @@ $form = $this->beginWidget('CActiveForm', array(
                         </div>
 
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="row sidebar-box blue" style="margin-top: 55px;">
-                                    <div class="col-sm-12">
-                                        <div class="sidebar-box-heading">
-                                            <i class="fa fa-apple"></i>
-                                            <h4>Brand</h4>
-                                        </div>
-                                        <div class="sidebar-box-content">
-                                            <ul>
-                                                <?php foreach ($modelArray as $item): ?>
-                                                    <li>
-                                                        <a class="<?php echo $this->action->id == 'view' ? 'atechUpdate' : ($this->action->id == 'create' ? 'atechNav' : 'atechUpdate'); ?>" href="#" name="<?php echo $item->brandModelId; ?>" >
-                                                            <?php echo $item->title; ?>
-                                                        </a>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--						<div class="btn-group-vertical" style="margin-top: 50px">
-
-                                                                                        <button name="<?php // echo $item->brandModelId;                                   ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                   ?></button>
-
-                                                                        </div>-->
-                            </div>
-                            <div class="col-md-9">
+                            <!--                            <div class="col-md-3">
+                                                            <div class="row sidebar-box blue" style="margin-top: 55px;">
+                                                                <div class="col-sm-12">
+                                                                    <div class="sidebar-box-heading">
+                                                                        <i class="fa fa-apple"></i>
+                                                                        <h4>Brand</h4>
+                                                                    </div>
+                                                                    <div class="sidebar-box-content">
+                                                                        <ul>
+                            <?php // foreach ($modelArray as $item): ?>
+                                                                                <li>
+                                                                                    <a class="<?php // echo $this->action->id == 'view' ? 'atechUpdate' : ($this->action->id == 'create' ? 'atechNav' : 'atechUpdate');   ?>" href="#" name="<?php // echo $item->brandModelId;  ?>" >
+                            <?php // echo $item->title; ?>
+                                                                                    </a>
+                                                                                </li>
+                            <?php // endforeach; ?>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                                                                            <div class="btn-group-vertical" style="margin-top: 50px">
+                            
+                                                                                                                    <button name="<?php // echo $item->brandModelId;                                                                      ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                                      ?></button>
+                            
+                                                                                                    </div>
+                                                        </div>-->
+                            <div class="col-md-12">
                                 <div class="row" id="atech_result" >
                                     <?php
                                     if (isset($productResult)) {
@@ -578,12 +614,12 @@ $form = $this->beginWidget('CActiveForm', array(
 
         $.ajax({
             'url': '<?php echo CController::createUrl('atechWindow/findAllSizeByCate2Id'); ?>',
-//			'dataType': 'json',
+            //			'dataType': 'json',
             'type': 'POST',
             'data': {'cat2': cat2},
             'success': function (data) {
                 obj.parent().parent().children('.size').children('select').html(data);
-//				findProductByCat1(sel);
+                //				findProductByCat1(sel);
             },
         });
     }
@@ -595,12 +631,33 @@ $form = $this->beginWidget('CActiveForm', array(
 
         $.ajax({
             'url': '<?php echo CController::createUrl('atechWindow/findAllCat2ByCat1Id'); ?>',
-//			'dataType': 'json',
+            //			'dataType': 'json',
             'type': 'POST',
             'data': {'cat1Id': cat1Id},
             'success': function (data) {
                 obj.parent().parent().children('.type').children('select').html(data);
-//				findProductByCat1(sel);
+                //				findProductByCat1(sel);
+            },
+        });
+    }
+
+    function findCat(sel)
+    {
+        var attrName = sel.attributes['name'].value;
+        var obj = $('select[name=\"' + attrName + '\"]');
+        var brandModelId = obj.val();
+
+//        alert(brandModelId);
+
+        $.ajax({
+            'url': '<?php echo CController::createUrl('atechWindow/findAllCatByBrandModelId'); ?>',
+            //			'dataType': 'json',
+            'type': 'POST',
+            'data': {'brandModelId': brandModelId},
+            'success': function (data) {
+//                alert(data);
+                $(".cat").children('select').html(data);
+                //				findProductByCat1(sel);
             },
         });
     }
@@ -621,38 +678,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);          ?>
+<?php // echo $form->errorSummary($model);           ?>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');       ?>
 <?php // echo $form->textField($model, 'supplierId');       ?>
-<?php // echo $form->error($model, 'supplierId');         ?>
+<?php // echo $form->error($model, 'supplierId');          ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'type');       ?>
 <?php // echo $form->textField($model, 'type');       ?>
-<?php // echo $form->error($model, 'type');         ?>
+<?php // echo $form->error($model, 'type');          ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'status');        ?>
 <?php // echo $form->textField($model, 'status');       ?>
-<?php // echo $form->error($model, 'status');          ?>
+<?php // echo $form->error($model, 'status');           ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'title');       ?>
 <?php // echo $form->textField($model, 'title');        ?>
-<?php // echo $form->error($model, 'title');           ?>
+<?php // echo $form->error($model, 'title');            ?>
         </div>
 
 
         <div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');              ?>
+<?php // echo CHtml::submitButton('Submit');               ?>
         </div>
 
-<?php // $this->endWidget();             ?>
+<?php // $this->endWidget();              ?>
 
 </div>-->
 <!-- form -->

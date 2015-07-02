@@ -129,19 +129,19 @@ class AtechWindowController extends MasterMyFileController {
 
 
                         if ($flag) {
-
                             foreach ($_POST["OrderDetailValue"] as $k => $v) {
+                                if ($v["value"] <> "") {
+                                    $orderFieldValue = new OrderDetailValue();
+                                    $orderFieldValue->orderDetailTemplateFieldId = $k;
+                                    $orderFieldValue->value = $v["value"];
+                                    $orderFieldValue->orderDetailId = $this->orderDetailId;
+                                    $orderFieldValue->createDateTime = new CDbExpression("NOW()");
+                                    $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
+                                    if (!$orderFieldValue->save()) {
 
-                                $orderFieldValue = new OrderDetailValue();
-                                $orderFieldValue->orderDetailTemplateFieldId = $k;
-                                $orderFieldValue->value = $v["value"];
-                                $orderFieldValue->orderDetailId = $this->orderDetailId;
-//                               
-                                $orderFieldValue->createDateTime = new CDbExpression("NOW()");
-                                $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
-                                if (!$orderFieldValue->save()) {
-                                    $flag = FALSE;
-                                    break;
+                                        $flag = FALSE;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -164,6 +164,7 @@ class AtechWindowController extends MasterMyFileController {
             $this->render('create', array(
                 'model' => $model,
                 'modelArray' => $modelArray,
+                'orderDetailTemplateField' => $orderDetailTemplateField,
 //				'orderDetailModel'=>$orderDetailModel,
 //				'orderDetailTemplateFieldArray'=>$orderDetailTemplateField,
             ));
@@ -173,6 +174,9 @@ class AtechWindowController extends MasterMyFileController {
     public function actionView($id) {
         $modelArray = BrandModel::model()->findAll('supplierId = 2 AND status = 1');
         $model = $this->loadModel($id);
+        $orderDetailModel = new OrderDetail;
+        $orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(2);
+        $orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
         $res = array();
         if (count($model->orderItems) > 0) {
             $total = 0.00;
@@ -209,6 +213,7 @@ class AtechWindowController extends MasterMyFileController {
             'model' => $model,
             'productResult' => $res,
             'modelArray' => $modelArray,
+            'orderDetailTemplateField' => $orderDetailTemplateField,
         ));
     }
 
@@ -240,11 +245,12 @@ class AtechWindowController extends MasterMyFileController {
             $productItems = $_POST['productItems'];
             $productArray = array();
             $a = 0;
+//            throw new Exception(print_r($productItems, true));
             foreach ($productItems as $z) {
                 foreach ($z as $productId => $item) {
                     $productModel = Product::model()->findByPk($productId);
-                    $productArray[$a] = $productModel;
-                    $productArray[$a]['quantity'] = $item["quantity"];
+                    $productArray[$productId] = $productModel;
+                    $productArray[$productId]['quantity'] = $item["quantity"];
                 }
                 $a++;
             }
@@ -258,7 +264,7 @@ class AtechWindowController extends MasterMyFileController {
         $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 
 
-//	throw new Exception(print_r($res,true));
+//        throw new Exception(print_r($res, true));
         if (!$isNew) {
             $model = Order::model()->findByPk($orderId);
         } else {
@@ -279,11 +285,11 @@ class AtechWindowController extends MasterMyFileController {
                 $res['orderId'] = $newOrderId;
             }
 
-
+//            throw new Exception(print_r($res, true));
             foreach ($res['items'] as $productId => $item) {
 
                 if ($isNew) {
-//throw new Exception(print_r($res,true));
+//                    throw new Exception(print_r($res['items'], true));
                     $orderItemModel = new OrderItems();
                     $orderItemModel->orderId = $newOrderId;
                     $orderItemModel->productId = $productId;
@@ -298,6 +304,7 @@ class AtechWindowController extends MasterMyFileController {
                 $orderItemModel->total = $res['items'][$productId]['price'] * $res['items'][$productId]['quantity'];
                 $orderItemModel->updateDateTime = new CDbExpression("NOW()");
 
+//                throw new Exception(print_r($orderItemModel, true));
                 if (!($orderItemModel->save())) {
                     throw new Exception(print_r($orderItemModel->errors, True));
                 }
@@ -393,6 +400,10 @@ class AtechWindowController extends MasterMyFileController {
         if (isset($_POST['provinceId'])) {
             $provinceId = $_POST['provinceId'];
         }
+
+        if (isset($_POST['brandModelId'])) {
+            $brandModelId = $_POST['brandModelId'];
+        }
         if (isset($_POST['title'])) {
             $title = $_POST['title'];
         }
@@ -404,11 +415,9 @@ class AtechWindowController extends MasterMyFileController {
 //			$height = $size[1];
 //		}
 
-        $brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
-        $firstBrand = reset($brandModelArray);
-        $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand->brandModelId, $provinceId);
+        $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
 
-//		throw new Exception(print_r($itemSetArray,true));
+//        throw new Exception(print_r($itemSetArray, true));
         echo $this->renderPartial('/atechWindow/_edit_product_result', array(
             'productResult' => $itemSetArray,
                 ), TRUE, TRUE);
@@ -498,6 +507,20 @@ class AtechWindowController extends MasterMyFileController {
             }
         }
         echo 'fail';
+    }
+
+    public function actionFindAllCatByBrandModelId() {
+
+        $data = ModelToCategory1::model()->findAll('brandModelId = ' . (int) $_POST['brandModelId'] . ' AND status = 1');
+
+//        throw new Exception(print_r(count($data) > 1, true));
+        echo CHtml::tag('option', array(
+            'value' => ''), CHtml::encode(count($data) > 0 ? "-- เลือกประเภท --" : "-- ไม่พบประเภทสินค้า --"), true);
+        foreach ($data as $item) {
+//			$result[$item->brandModelId] = $item->title;
+            echo CHtml::tag('option', array(
+                'value' => $item->category->categoryId), CHtml::encode(isset($item->category->title) ? $item->category->title : ""), true);
+        }
     }
 
     public function actionFindAllCat2ByCat1Id() {

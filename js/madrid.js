@@ -188,6 +188,7 @@ $('#manualQuantityMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
+                $('#Order_isTheme').val(1);
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
@@ -201,6 +202,7 @@ $('#manualQuantityTile').on('click', function () {
             
 		$('ul.setup-panel li a[href="#step-4-1"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
+                $('#Order_isTheme').val(3);
 		$.ajax({
 			url: baseUrl + '/myfile/madrid/prepareProductsFav',
 			type: 'POST',
@@ -218,6 +220,7 @@ $('#uploadPlanMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
+                $('#Order_isTheme').val(1);
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
@@ -227,6 +230,7 @@ $('#uploadPlanTile').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
+                $('#Order_isTheme').val(3);
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}

@@ -83,10 +83,17 @@ class MadridController extends MasterMyFileController {
                 }
             }
         }
+        $categoryToSub = CategoryToSub::model()->findAll(array(
+            'condition' => ' isType=1',
+        ));
+        $subCategorysId = implode(',', CHtml::listData($categoryToSub, 'categoryId', 'categoryId'));
+        $categorys = Category::model()->findAll("categoryId IN (" . $subCategorysId . ")");
+        $items = $this->showType($categorys);
 //        throw new Exception(print_r($orderDetailTemplateField, true));
         $this->render('view', array(
             'model' => $model,
             'orderDetailTemplateField' => $orderDetailTemplateField,
+            'categoryItems' => $items,
         ));
     }
 
@@ -109,10 +116,10 @@ class MadridController extends MasterMyFileController {
           Yii::app()->end();
           }
          */
-//        throw new Exception(print_r($_POST, true));
+//        throw new Exception(print_r($_POST["Order"]["createMyfileType"], true));
         if (isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2) {
 //			$planFile = $_FILES['OrderFile'];
-//            throw new Exception(print_r($_POST['Order'], true));
+//            throw new Exception(print_r($_FILES['OrderFile'], true));
             try {
                 if (isset($_POST['Order'])) {
                     $flag = false;
@@ -121,11 +128,12 @@ class MadridController extends MasterMyFileController {
                     $model->type = 1;
                     $model->status = 0;
                     $model->supplierId = 3;
-                    $model->isTheme = $_POST["Order"]["isTheme"] == 1 ? 1 : 3;
+                    $model->isTheme = $_POST["Order"]["isTheme"];
                     $model->userId = Yii::app()->user->id;
                     $model->createDateTime = new CDbExpression("NOW()");
-
+//                    throw new Exception(print_r($model, true));
                     if ($model->save()) {
+
                         $flag = TRUE;
                         $orderId = Yii::app()->db->lastInsertID;
                         $this->saveOrderDetail($orderId, $orderDetailModel->orderDetailTemplateId);
@@ -163,23 +171,31 @@ class MadridController extends MasterMyFileController {
                             }
                         }
 
+
+
                         if ($flag) {
                             foreach ($_POST["OrderDetailValue"] as $k => $v) {
-                                $orderFieldValue = new OrderDetailValue();
-                                $orderFieldValue->orderDetailTemplateFieldId = $k;
-                                $orderFieldValue->value = $v["value"];
-                                $orderFieldValue->orderDetailId = $this->orderDetailId;
-                                $orderFieldValue->createDateTime = new CDbExpression("NOW()");
-                                $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
-                                if (!$orderFieldValue->save()) {
-                                    $flag = FALSE;
-                                    break;
+                                if ($v["value"] <> "") {
+                                    $orderFieldValue = new OrderDetailValue();
+                                    $orderFieldValue->orderDetailTemplateFieldId = $k;
+                                    $orderFieldValue->value = $v["value"];
+                                    $orderFieldValue->orderDetailId = $this->orderDetailId;
+                                    $orderFieldValue->createDateTime = new CDbExpression("NOW()");
+                                    $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
+                                    if (!$orderFieldValue->save()) {
+
+                                        $flag = FALSE;
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
 
+
+
                     if ($flag) {
+
                         $transaction->commit();
                         $this->redirect(array(
                             'view',
