@@ -12,7 +12,8 @@ class CategoryController extends MasterMadridController {
                 ':categoryId' => $id
             ),
         ));
-        if (isset($hasTheme)) {
+//        throw new Exception(print_r($hasTheme, true));
+        if (isset($hasTheme) && isset($id2)) {
             $this->showTheme($id, $id2);
         }
 

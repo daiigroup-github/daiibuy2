@@ -47,7 +47,7 @@ class DefaultController extends MasterMadridController {
                     $items[$j]['productUnits'] = $cat2ToProduct->product->productUnits;
                     $items[$j]['stockStatusId'] = $cat2ToProduct->product->stockStatusId;
                     $items[$j]['price'] = Product::model()->calProductPrice($cat2ToProduct->product->productId);
-                    $items[$j]['promotionPrice'] = Product::model()->calProductPromotionPrice($cat2ToProduct->product->price);
+                    $items[$j]['promotionPrice'] = isset($cat2ToProduct->product->productPromotion->price) ? $cat2ToProduct->product->productPromotion->price : 0.00; //Product::model()->calProductPromotionPrice($cat2ToProduct->product->price);
                     $items[$j]['weight'] = $cat2ToProduct->product->weight;
                     $items[$j]['width'] = $cat2ToProduct->product->width;
                     $items[$j]['length'] = $cat2ToProduct->product->length;
