@@ -1469,7 +1469,7 @@ class StepController extends MasterCheckoutController
 			$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
 			$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
 			$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
-			$orderGroup->status = 0;
+			$orderGroup->status = 1;
 //Distributor Discount & Spacial Project Discount
 			if(isset($orderSummary['distributorDiscountPercent']))
 			{
