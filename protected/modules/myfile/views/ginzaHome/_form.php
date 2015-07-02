@@ -202,7 +202,7 @@ $this->breadcrumbs = array(
 											<td style="color:green;text-align: center"><?php echo ($sumSup == $child2->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child2->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
-												<?php if($child1->status >= 3 || $sumSup == $child2->totalIncVAT): ?>
+												<?php if($child1->status >= 3 && $sumSup == $child2->totalIncVAT): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
@@ -257,7 +257,7 @@ $this->breadcrumbs = array(
 											<td style="color:green;text-align: center"><?php echo ($sumSup == $child3->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child3->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
-												<?php if($child3->status >= 3 || $sumSup == $child3->totalIncVAT): ?>
+												<?php if($child3->status >= 3 && $sumSup == $child3->totalIncVAT): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
