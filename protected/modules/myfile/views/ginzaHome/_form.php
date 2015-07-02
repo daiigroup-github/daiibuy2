@@ -9,7 +9,8 @@ $this->breadcrumbs = array(
 
 
 <?php $this->renderPartial("_navbar", array(
-	'model'=>$model)); ?>
+	'model'=>$model));
+?>
 <!-- WIZARD -->
 <div class="myfile-main">
 	<?php
