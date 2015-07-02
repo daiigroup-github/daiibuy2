@@ -16,11 +16,11 @@
 <div class="row" >
 	<ul class="nav nav-tabs" role="tablist" >
 		<li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzaHome/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
-		<?php if($this->action->id == "view" && $model->fur[0]->status < 3): ?>
+		<?php if($this->action->id == "view" && (!isset($model->fur[0]) || $model->fur[0]->status < 3)): ?>
 			<li class="active green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzaHome/furniture/id/" . $_GET["id"]; ?>"><h5 >สั่งซื้อ Furniture</h5></a></li>
 			<?php endif; ?>
 			<?php if($this->action->id != "create"): ?>
-								<!--<li class="green"><a href="<?php // echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzahome/create";               ?>"><h5 >+ สร้างใหม่</h5></a></li>-->
+								<!--<li class="green"><a href="<?php // echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzahome/create";                  ?>"><h5 >+ สร้างใหม่</h5></a></li>-->
 		<?php endif; ?>
 	</ul>
 </div>

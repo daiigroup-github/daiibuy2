@@ -17,8 +17,8 @@
 						if($user->type == 1)
 						{
 							?>
-																						<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขที่ใบสั่งซื้อสินค้า</b></td>
-																											<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
+																							<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขที่ใบสั่งซื้อสินค้า</b></td>
+																												<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
 							<?php
 						}
 						else
@@ -126,15 +126,15 @@
 					{
 						?>
 						<td style="width:7%;text-align: center;font-size:11px">ลำดับ</td>
-							<td style="width:16%;text-align: center;font-size:11px">รหัสสินค้า</td>
-							<td style="width:50%;text-align: center;font-size:11px">รายการ</td>
-							<td style="text-align: center;font-size:11px">จำนวน</td>
-							<td style="text-align: center;font-size:11px">หน่วย</td>
-							<td style="text-align: center;font-size:11px">ราคา/หน่วย(บาท)</td>
-							<td style="text-align: center;font-size:11px">มูลค่าสินค้ารวมภาษี(บาท)</td>
+						<td style="width:16%;text-align: center;font-size:11px">รหัสสินค้า</td>
+						<td style="width:50%;text-align: center;font-size:11px">รายการ</td>
+						<td style="text-align: center;font-size:11px">จำนวน</td>
+						<td style="text-align: center;font-size:11px">หน่วย</td>
+						<td style="text-align: center;font-size:11px">ราคา/หน่วย(บาท)</td>
+						<td style="text-align: center;font-size:11px">มูลค่าสินค้ารวมภาษี(บาท)</td>
 						<?php // if ($user->type <> 2) {                               ?>
 		<!--										<td style="text-align: center">ราคา/หน่วย(บาท)</td>
-							<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>-->
+						<td style="text-align: center">มูลค่าสินค้ารวมภาษี(บาท)</td>-->
 						<?php
 //									}
 					}
@@ -188,8 +188,8 @@
 							?>
 							<tr>
 								<td style="text-align: center;font-size:11px"><?php echo $i; ?></td>
-								<td style="text-align: center;font-size:10px"><?php echo isset($item->product->code) ? $item->product->code : ""; ?></td>
-								<td style="font-size:10px"><?php echo $item->product->name; ?></td>
+								<td style="text-align: center;font-size:10px"><?php echo isset($item->product) ? $item->product->code : ""; ?></td>
+								<td style="font-size:10px"><?php echo isset($item->product) ? $item->product->name : $item->title; ?></td>
 								<?php
 								$priceTotal = number_format($priceTotalTemp, 2, ".", ",");
 //                                                                        $priceTotalDouble = floor($priceTotalDouble);
@@ -222,13 +222,15 @@
 										<td style="text-align: center;font-size:11px"><?php echo number_format($item->quantity, 0, ".", ","); ?></td>
 										<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
 										<?php
-									}else{
+									}
+									else
+									{
 										?>
-											<td style="text-align: center;font-size:11px"><?php echo $item->quantity; ?></td>
-											<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
-											<td style="text-align: right;font-size:11px"><?php echo number_format($item->price, 2, ".", ","); ?></td>
-											<td style="text-align: right;font-size:11px"><?php echo number_format($item->total, 2, ".", ","); ?></td>
-											<?php
+										<td style="text-align: center;font-size:11px"><?php echo $item->quantity; ?></td>
+										<td style="text-align: center;font-size:11px"><?php echo isset($item->product->productUnits) ? $item->product->productUnits : ""; ?></td>
+										<td style="text-align: right;font-size:11px"><?php echo number_format($item->price, 2, ".", ","); ?></td>
+										<td style="text-align: right;font-size:11px"><?php echo number_format($item->total, 2, ".", ","); ?></td>
+										<?php
 									}
 								}
 								else
@@ -261,12 +263,11 @@
 
 					<!--</tr>-->
 					<tr>
-							<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
-							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
+						<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
+						<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
 
-				<?php
-
+					<?php
 					if($model->discountValue > 0)
 					{
 						?>
@@ -275,7 +276,8 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
-					<?php }
+					<?php
+					}
 					if($model->distributorDiscount > 0)
 					{
 						?>
@@ -283,7 +285,8 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->distributorDiscount, 2, ".", ","); ?></td>
 						</tr>
-					<?php }
+					<?php
+					}
 					if($model->extraDiscount > 0)
 					{
 						?>
@@ -291,20 +294,20 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
 						</tr>
-					<?php }
-						?>
-						<tr>
-							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
-							<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107)*0.07, 2, ".", ","); ?></td>
-						</tr>
-						<tr>
-							<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
-							<td style="text-align: right"><?php echo number_format(($model->summary * 100) / 107, 2, ".", ","); ?></td>
-						</tr>
-						<tr>
-							<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
-							<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
-						</tr>
+		<?php }
+		?>
+					<tr>
+						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
+						<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107) * 0.07, 2, ".", ","); ?></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
+						<td style="text-align: right"><?php echo number_format(($model->summary * 100) / 107, 2, ".", ","); ?></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
+						<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
+					</tr>
 					<?php
 //									}
 				}
@@ -313,12 +316,11 @@
 					?>
 
 					<tr>
-							<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
-							<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
+						<td colspan="6" style="text-align: right;font-weight: bold;">ราคาสินค้ารวมภาษีมูลค่าเพิ่ม/Sub Total Included VAT</td>
+						<td style="text-align: right;;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 					</tr>
 
 					<?php
-
 					if($model->discountValue > 0)
 					{
 						?>
@@ -327,7 +329,8 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
-					<?php }
+					<?php
+					}
 					if($model->distributorDiscount > 0)
 					{
 						?>
@@ -335,7 +338,8 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->distributorDiscount, 2, ".", ","); ?></td>
 						</tr>
-					<?php }
+					<?php
+					}
 					if($model->extraDiscount > 0)
 					{
 						?>
@@ -343,21 +347,21 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
 						</tr>
-					<?php }
-						?>
+		<?php }
+		?>
 
-						<tr>
-							<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
-							<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107)*0.07, 2, ".", ","); ?></td>
-						</tr>
-						<tr>
-							<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
-							<td style="text-align: right"><?php echo number_format(($model->summary * 100) / 107, 2, ".", ","); ?></td>
-						</tr>
-						<tr>
-							<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
-							<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
-						</tr>
+					<tr>
+						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
+						<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107) * 0.07, 2, ".", ","); ?></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right">ราคาสินค้าไม่รวมภาษี/Sub Total excluded VAT</td>
+						<td style="text-align: right"><?php echo number_format(($model->summary * 100) / 107, 2, ".", ","); ?></td>
+					</tr>
+					<tr>
+						<td colspan="6" style="text-align: right;color:red;font-weight: bold;">ราคาสินค้าที่ต้องชำระรวมภาษีมูลค่าเพิ่ม/Total Included VAT</td>
+						<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->summary, 2, ".", ","); ?></td>
+					</tr>
 					<?php
 				}
 			}
@@ -379,97 +383,96 @@
 					<td style="text-align: right;color: red;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->totalIncVAT, 2, ".", ","); ?></td>
 				</tr>
 				<?php
-				}
-				if(!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
+			}
+			if(!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
+			{
+				if(isset(Yii::app()->user->id))
 				{
-					if(isset(Yii::app()->user->id))
+					if($user->type == 2 || $user->type == 3)
 					{
-						if($user->type == 2 || $user->type == 3)
-						{
-							?>
-							<tr><td colspan = '6'>&nbsp;
-								</td></tr>
-							<tr>
-								<td colspan = '8'>
-									<table width = '100%'>
-										<tr>
-											<td style = 'text-align: center'>__________________________</td>
-											<td style = 'text-align: center'>__________________________</td>
-											<td style = 'text-align: center'>__________________________</td>
-										</tr>
-										<tr>
-											<td style = 'text-align: center'>(__________________________)</td>
-											<td style = 'text-align: center'>(__________________________)</td>
-											<td style = 'text-align: center'>(__________________________)</td>
-										</tr>
-										<tr>
-											<td style = 'text-align: center'>วันที่ ____/____/____</td>
-											<td style = 'text-align: center'>วันที่ ____/____/____</td>
-											<td style = 'text-align: center'>วันที่ ____/____/____</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td style = 'text-align: center'>ผู้ผลิตสินค้า</td>
-											<td style = 'text-align: center'>ตัวแทนกระจายสินค้า</td>
-											<td style = 'text-align: center'>ผู้สั่งซื้อ / ผู้รับสินค้า</td>
-										</tr>
-										<tr>
-											<td style = 'text-align: center'>
-												<?php
-												if(isset($supplierAddr))
-												{
-													echo $supplierAddr->company;
-												}
-												?>
-											</td>
-											<td  style='text-align: center'>
-												<?php
-												if(isset($dealerAddr))
-												{
-													echo $dealerAddr->company;
-												}
-												?>
-											</td>
-											<td  style='text-align: center'>
-												<?php
-												$userAddr = Address::model()->find("userId = :userId", array(
-													":userId"=>$model->userId));
-												if(isset($userAddr))
-												{
-													echo $userAddr->company != "---" ? $userAddr->company : $model->paymentCompany;
-												}
-												?>
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<?php
-						}
+						?>
+						<tr><td colspan = '6'>&nbsp;
+							</td></tr>
+						<tr>
+							<td colspan = '8'>
+								<table width = '100%'>
+									<tr>
+										<td style = 'text-align: center'>__________________________</td>
+										<td style = 'text-align: center'>__________________________</td>
+										<td style = 'text-align: center'>__________________________</td>
+									</tr>
+									<tr>
+										<td style = 'text-align: center'>(__________________________)</td>
+										<td style = 'text-align: center'>(__________________________)</td>
+										<td style = 'text-align: center'>(__________________________)</td>
+									</tr>
+									<tr>
+										<td style = 'text-align: center'>วันที่ ____/____/____</td>
+										<td style = 'text-align: center'>วันที่ ____/____/____</td>
+										<td style = 'text-align: center'>วันที่ ____/____/____</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td style = 'text-align: center'>ผู้ผลิตสินค้า</td>
+										<td style = 'text-align: center'>ตัวแทนกระจายสินค้า</td>
+										<td style = 'text-align: center'>ผู้สั่งซื้อ / ผู้รับสินค้า</td>
+									</tr>
+									<tr>
+										<td style = 'text-align: center'>
+											<?php
+											if(isset($supplierAddr))
+											{
+												echo $supplierAddr->company;
+											}
+											?>
+										</td>
+										<td  style='text-align: center'>
+											<?php
+											if(isset($dealerAddr))
+											{
+												echo $dealerAddr->company;
+											}
+											?>
+										</td>
+										<td  style='text-align: center'>
+											<?php
+											$userAddr = Address::model()->find("userId = :userId", array(
+												":userId"=>$model->userId));
+											if(isset($userAddr))
+											{
+												echo $userAddr->company != "---" ? $userAddr->company : $model->paymentCompany;
+											}
+											?>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<?php
 					}
 				}
-				if(isset($user))
+			}
+			if(isset($user))
+			{
+				if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99))
 				{
-					if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99))
-					{
-						echo "
+					echo "
 									<tr>
 							<td colspan = '7' style = 'text-align: right'>
 					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com ณ วันที่ " . $this->dateThai($model->paymentDateTime, 1) . " เรียบร้อยแล้ว
 					</td>
 					</tr>";
-					}
 				}
-				else if($model->status > 2 && $model->status < 99)
-				{
-					echo "<tr><td colspan = '6'>&nbsp;</td></tr>
+			}
+			else if($model->status > 2 && $model->status < 99)
+			{
+				echo "<tr><td colspan = '6'>&nbsp;</td></tr>
 						<tr>
 							<td colspan = '6' style = 'text-align: right'>
 					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com ณ วันที่ " . $this->dateThai($model->paymentDateTime, 1) . " เรียบร้อยแล้ว
 					</td>
 					</tr>";
-				}
-
+			}
 			?>
 		</tfoot>
 	</table>
@@ -520,8 +523,8 @@
 				</tfoot>
 			</table>
 		</div>
-		<?php
-	}
-	?>
+	<?php
+}
+?>
 
 </div>
