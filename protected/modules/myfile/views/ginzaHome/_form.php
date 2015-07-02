@@ -8,7 +8,8 @@ $this->breadcrumbs = array(
 ?>
 
 
-<?php $this->renderPartial("_navbar"); ?>
+<?php $this->renderPartial("_navbar", array(
+	'model'=>$model)); ?>
 <!-- WIZARD -->
 <div class="myfile-main">
 	<?php
@@ -84,19 +85,19 @@ $this->breadcrumbs = array(
 												echo CHtml::image(Yii::app()->baseUrl . $furnitureGroup->image, "", array(
 													'style'=>'width:50%'));
 												?><br>
-												<?php echo "Set : " . $furnitureGroup->title . " Color :" . $furniture->title; ?>
+	<?php echo "Set : " . $furnitureGroup->title . " Color :" . $furniture->title; ?>
 											</td>
 											<td>
 												<?php echo number_format($furnitureGroup->price); ?>
 												<br>
 												<?php if($model->fur[0]->status < 3) : ?>
 													<a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/ginzaHome/furniture/id/" . $_GET["id"]; ?>" class="btn btn-primary">แก้ไข</a>
-												<?php endif; ?>
+	<?php endif; ?>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-							<?php endif; ?>
+<?php endif; ?>
 						</div>
 					</div>
 				</div>
@@ -170,7 +171,7 @@ $this->breadcrumbs = array(
 												<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
 												<?php endif; ?>
-											<?php endif; ?>
+		<?php endif; ?>
 										</td>
 									</tr>
 									<?php
@@ -220,7 +221,7 @@ $this->breadcrumbs = array(
 														?>
 														<span class="label label-danger">รอการอนุมัติ</span>
 													<?php endif; ?>
-												<?php endif; ?>
+			<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -277,7 +278,7 @@ $this->breadcrumbs = array(
 													<?php else: ?>
 														<span class="label label-danger">รอการอนุมัติ</span>
 													<?php endif; ?>
-												<?php endif; ?>
+			<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -309,7 +310,7 @@ $this->breadcrumbs = array(
 													<?php
 													echo $payButton;
 													?>
-												<?php endif; ?>
+			<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -409,7 +410,7 @@ $this->breadcrumbs = array(
 
 		<?php if(isset($order)): ?>
 
-		<?php endif; ?>
+<?php endif; ?>
 		<div class="row sidebar-box blue " style="background-color: white">
 			<div class="col-md-12" style="text-align: right">
 
@@ -507,7 +508,7 @@ $this->breadcrumbs = array(
 										?>
 									</td>
 								</tr>
-							<?php endforeach; ?>
+<?php endforeach; ?>
 						</tbody>
 					</table>
 				</form>
@@ -559,7 +560,7 @@ $this->breadcrumbs = array(
 										?>
 									</td>
 								</tr>
-							<?php endforeach; ?>
+<?php endforeach; ?>
 						</tbody>
 					</table>
 				</form>
