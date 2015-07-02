@@ -40,7 +40,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 //    cate2Id = $('#Order_category2Id').attr("value");
 ////      alert(cate2Id);
 //        if(cate2Id == cat2Id){
-	$("#sanitary-item").html("");
+//	$("#sanitary-item").html("");
 //	renderThemeItem(baseUrl, orderId);
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadThemeItem',
@@ -68,7 +68,12 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 						var estimateQuantity = data[groupName]["productArea"] * $("#supplierArea" + groupName).val();
 						$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
 //					$("#quantityText_" + groupName).removeClass("hide");
-						$("#quantityText_" + groupName).val(estimateQuantity);
+//                                                alert(estimateQuantity);
+                                                if(estimateQuantity){
+                                                    $("#quantityText_" + groupName).val(estimateQuantity);
+                                                }else{
+                                                    $("#quantityText_" + groupName).val(1);
+                                                }
 						$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
 						$("#priceHidden" + groupName).val(data[groupName]["price"]);
 						$("#productId" + groupName).val(data[groupName]["productId"]);
@@ -102,8 +107,9 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 }
 function loadSetItem(cat2Id, baseUrl)
 {
-	$("#item-table").html('');
+//	$("#item-table").html('');
 	$("#action-button").removeClass('hide');
+        
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadSetItem',
 		type: 'POST',
@@ -121,45 +127,45 @@ function loadProductsFavItem(productId, baseUrl, orderId)
 //    cate2Id = $('#Order_category2Id').attr("value");
 ////      alert(cate2Id);
 //        if(cate2Id == cat2Id){
-	$("#sanitary-item").html("");
+//	$("#sanitary-item").html("");
 //	renderThemeItem(baseUrl, orderId);
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadProductFavItem',
 		type: 'POST',
-		dataType: 'JSON',
+//		dataType: 'JSON',
 		data: {productId: productId, orderId: orderId},
 		success: function (data) {
 			//alert success message
-			if (data.status)
-			{
+//			if (data.status)
+//			{
                             $("#action-button-tiles").removeClass('hide');
-				$("#product-fav-table").removeClass("hide");
-				$("#product-fav-table").html(data.view);
-				$("#productCode").html(data["code"]);
-				$("#code").html(data["code"]);
-				$("#productName").html(data["name"]);
-				$("#name").html(data["name"]);
-				$("#productUnits").html(data["productUnits"]);
-				$("#description").html(data["description"]);
-				$("#productArea").html(data["productArea"]);
-                                $("#noPerBox").html(data["noPerBox"]);
+				$("#product-fav-item").removeClass("hide");
+				$("#product-fav-item").html(data);
+//				$("#productCode").html(data["code"]);
+//				$("#code").html(data["code"]);
+//				$("#productName").html(data["name"]);
+//				$("#name").html(data["name"]);
+//				$("#productUnits").html(data["productUnits"]);
+//				$("#description").html(data["description"]);
+//				$("#productArea").html(data["productArea"]);
+//                                $("#noPerBox").html(data["noPerBox"]);
 //                                var supplierArea = 0.00;
 //                                    supplierArea = $("#supplierArea").val();
-				var estimateQuantity = data["productArea"] * $("#supplierArea").val();
-				$("#estimateAreaQuantity").html(estimateQuantity);
-//					$("#quantityText_" + groupName).removeClass("hide");
-				$("#quantityText").val(estimateQuantity);
-				$("#price").html(data["price"]);
-				$("#pprice").html(data["price"] * estimateQuantity);
-				$("#priceHidden").val(data["price"]);
-				$("#productId").val(data["productId"]);
-				$("#image").attr("src", data["image"]);
-                                $("#quantity").val("1");
-			}
-			else
-			{
-				alert(data.errorMessage);
-			}
+//				var estimateQuantity = data["productArea"] * $("#supplierArea").val();
+//				$("#estimateAreaQuantity").html(estimateQuantity);
+////					$("#quantityText_" + groupName).removeClass("hide");
+//				$("#quantityText").val(estimateQuantity);
+//				$("#price").html(data["price"]);
+//				$("#pprice").html(data["price"] * estimateQuantity);
+//				$("#priceHidden").val(data["price"]);
+//				$("#OrderItems_productId").val(data["productId"]);
+//				$("#image").attr("src", data["image"]);
+//                                $("#quantity").val("1");
+//			}
+//			else
+//			{
+//				alert(data.errorMessage);
+//			}
 		},
 	});
 //    }

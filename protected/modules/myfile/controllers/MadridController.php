@@ -193,8 +193,9 @@ class MadridController extends MasterMyFileController {
                 $transaction->rollback();
             }
         } else {
-//            throw new Exception(print_r($_POST["OrderDetailValue"][6]["value"], true));
+
             if (isset($_POST["Order"])) {
+
                 $transaction = Yii::app()->db->beginTransaction();
                 $flag = true;
                 $model->attributes = $_POST['Order'];
@@ -214,6 +215,7 @@ class MadridController extends MasterMyFileController {
 //                    throw new Exception(print_r($orderId, true));
 
                     foreach ($_POST["OrderItems"] as $k => $v) {
+
                         if (!empty($v["productId"])) {
                             $orderItems = new OrderItems();
                             $orderItems->orderId = $orderId;
@@ -251,6 +253,7 @@ class MadridController extends MasterMyFileController {
                         }
                     }
                     $transaction->commit();
+//                    throw new Exception(print_r($model->orderItems, true));
                     $this->redirect(array(
                         'view',
                         'id' => $model->orderId));
@@ -571,33 +574,37 @@ class MadridController extends MasterMyFileController {
             $model = new Order();
         }
         $model->isTheme = 0;
-        $result['view'] = $this->renderPartial("_product_fav", array(
-            'model' => $model), true);
-
+//        $result['view'] = 
         if (isset($_POST["productId"])) {
             $product = Product::model()->findByPk($_POST["productId"]);
-            if (isset($product)) {
-                $result["status"] = TRUE;
-                $result["productId"] = $product->productId;
-                $result["code"] = $product->code;
-                $result["image"] = isset($product->productImagesSort[0]) ? Yii::app()->baseUrl . $product->productImagesSort[0]->image : "";
-                $result["name"] = $product->name;
-                $result["description"] = $product->description;
-                $result["width"] = $product->width;
-                $result["height"] = $product->height;
-                $result["productArea"] = isset($product->area) ? $product->area : "";
-                $result["price"] = $product->price;
-                $result["noPerBox"] = isset($product->noPerBox) ? $product->noPerBox : 12;
-                $result["productUnits"] = $product->productUnits;
-            } else {
-                $result["status"] = FALSE;
-                $result["errorMessage"] = "Cant' find Product Array";
-            }
-        } else {
-            $result["status"] = FALSE;
-            $result["errorMessage"] = "Cant' find POST Parameter";
+//            throw new Exception(print_r($product, true));
+            $this->renderPartial("_product_fav", array(
+                'model' => $model,
+                'product' => $product), FALSE, TRUE);
         }
-        echo CJSON::encode($result);
+//        
+//        if (isset($product)) {
+//            $result["status"] = TRUE;
+//            $result["productId"] = $product->productId;
+//            $result["code"] = $product->code;
+//            $result["image"] = isset($product->productImagesSort[0]) ? Yii::app()->baseUrl . $product->productImagesSort[0]->image : "";
+//            $result["name"] = $product->name;
+//            $result["description"] = $product->description;
+//            $result["width"] = $product->width;
+//            $result["height"] = $product->height;
+//            $result["productArea"] = isset($product->area) ? $product->area : "";
+//            $result["price"] = $product->price;
+//            $result["noPerBox"] = isset($product->noPerBox) ? $product->noPerBox : 12;
+//            $result["productUnits"] = $product->productUnits;
+//        } else {
+//            $result["status"] = FALSE;
+//            $result["errorMessage"] = "Cant' find Product Array";
+//        }
+//        } else {
+//            $result["status"] = FALSE;
+//            $result["errorMessage"] = "Cant' find POST Parameter";
+//        }
+//        echo CJSON::encode($result);
     }
 
 }

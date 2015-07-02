@@ -55,7 +55,7 @@
                             <?php
                             $cate2ToProduct = Category2ToProduct::model()->find('brandId = 4 AND productId = ' . $item['productId']);
                             if (isset($cate2ToProduct->category2Id)):
-                                if ($cate2ToProduct->type == 1):
+                                if ($cate2ToProduct->type == 1 && $cate2ToProduct->category2Id <> 87):
                                     ?>
                                     <span class="add-to-favorites" id="<?php echo $item['productId']; ?>" onclick='<?php echo $cate2ToProduct->type == 1 ? "addFavouriteProduct(" . Yii::app()->user->id . ", " . $item['productId'] . ', "' . Yii::app()->baseUrl . '");' : "addFavourite(" . Yii::app()->user->id . ", " . $cate2ToProduct->category2Id . ", '" . Yii::app()->baseUrl . "', 2);"; ?>'>
                                         <span class="action-wrapper">
@@ -92,7 +92,7 @@
 //                            $icon = 'fa fa-heart-o';
 //                            $name = 'Add to wishlist';
                         ?>
-                                                        <span class="add-to-wishlist" id="<?php // echo $item['productId'];                             ?>" onclick="addFavourite(<?php // echo Yii::app()->user->id                             ?>,<?php // echo $cate2ToProduct->category2Id;                             ?>, '<?php echo Yii::app()->baseUrl; ?>', true)">
+                                                        <span class="add-to-wishlist" id="<?php // echo $item['productId'];                              ?>" onclick="addFavourite(<?php // echo Yii::app()->user->id                              ?>,<?php // echo $cate2ToProduct->category2Id;                              ?>, '<?php echo Yii::app()->baseUrl; ?>', true)">
                                                             <span class="action-wrapper">
                                                                 <i class="icons fa fa-heart-o"></i>
                                                                 <span class="action-name">Add to wishlist</span>

@@ -30,38 +30,38 @@
     </tbody>
 </table>
 <?php
-$this->widget('ext.jqrelcopy.JQRelcopy', array(
-    //the id of the 'Copy' link in the view, see below.
-    'id' => 'copyItem',
-    //add a icon image tag instead of the text
-    //leave empty to disable removing
-    'removeText' => '<i class="fa fa-remove"></i>',
-    //htmlOptions of the remove link
-    'removeHtmlOptions' => array(
-//		'style'=>'color:red',
-        'class' => 'btn btn-danger'
-    ),
-    //options of the plugin, see http://www.andresvidal.com/labs/relcopy.html
-    'options' => array(
-        //A class to attach to each copy
-        'copyClass' => 'newCopy',
-        // The number of allowed copies. Default: 0 is unlimited
-        'limit' => 0,
-        //Option to clear each copies text input fields or textarea
-        'clearInputs' => true,
-        //A jQuery selector used to exclude an element and its children
-        'excludeSelector' => '.skipcopy',
-    //Additional HTML to attach at the end of each copy.
-//		'append'=>CHtml::tag('span', array(
-//			'class'=>'hint'
-//			), 'You can remove this line'),
-    ),
-    'jsAfterNewId' => "
-                            if (typeof this.attr ('name') !== 'undefined'){ this.attr ('name', this.attr ('name').replace ('[0]', '['+counter+']'));
-                            }
-
-                            ",
-));
+//$this->widget('ext.jqrelcopy.JQRelcopy', array(
+//    //the id of the 'Copy' link in the view, see below.
+//    'id' => 'copyItem',
+//    //add a icon image tag instead of the text
+//    //leave empty to disable removing
+//    'removeText' => '<i class="fa fa-remove"></i>',
+//    //htmlOptions of the remove link
+//    'removeHtmlOptions' => array(
+////		'style'=>'color:red',
+//        'class' => 'btn btn-danger'
+//    ),
+//    //options of the plugin, see http://www.andresvidal.com/labs/relcopy.html
+//    'options' => array(
+//        //A class to attach to each copy
+//        'copyClass' => 'newCopy',
+//        // The number of allowed copies. Default: 0 is unlimited
+//        'limit' => 0,
+//        //Option to clear each copies text input fields or textarea
+//        'clearInputs' => true,
+//        //A jQuery selector used to exclude an element and its children
+//        'excludeSelector' => '.skipcopy',
+//    //Additional HTML to attach at the end of each copy.
+////		'append'=>CHtml::tag('span', array(
+////			'class'=>'hint'
+////			), 'You can remove this line'),
+//    ),
+//    'jsAfterNewId' => "
+//                            if (typeof this.attr ('name') !== 'undefined'){ this.attr ('name', this.attr ('name').replace ('[0]', '['+counter+']'));
+//                            }
+//
+//                            ",
+//));
 ?> 
 <div class="row">
     <div class="col-md-12">
