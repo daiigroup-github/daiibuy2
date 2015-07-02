@@ -56,9 +56,10 @@
                                     </td>
                                     <td><?php echo $item->groupName; ?></td>
                                     <td><?php echo $item->product->name; ?></td>
-                                    <td class="price"><?php echo isset($item->product->otherPrice) ? number_format($item->product->otherPrice * (1.00 / $item->product->area), 0) . " บาท/ตรม." : "##NONE##"; ?> </td>
-                                    <td class="price"><?php echo number_format($item->product->price, 0) . " บาท/แผ่น"; ?> </td>
-                                    <td class="price"><?php echo $item->product->area > 0 ? number_format($item->product->price * (1.00 / $item->product->area), 0) . " บาท/ตรม." : "##NONE##"; ?> </td>
+                                    <?php $price = isset($item->product->productPromotion->price) ? $item->product->productPromotion->price : $item->product->price; ?>
+                                    <td class="price"><?php echo isset($item->product->otherPrice) ? number_format($item->product->otherPrice * (1.00 / $item->product->area), 2) : "##NONE##"; ?> </td>
+                                    <td class="price"><?php echo number_format($price, 2); ?> </td>
+                                    <td class="price"><?php echo $item->product->area > 0 ? number_format($price * (1.00 / $item->product->area), 2) : "##NONE##"; ?> </td>
                                     <td><?php echo $item->product->code; ?></td>
                                 </tr>
                             <?php endforeach; ?>

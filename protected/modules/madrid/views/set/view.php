@@ -38,7 +38,7 @@
                                 <div style="font-size: x-small;background-color: blue;color: white" class="text-center"><?php echo $item->product->code; ?></div>
                             </div>
                             <?php
-                            $setPrice += $item->product->price;
+                            $setPrice += isset($item->product->productPromotion->price) ? $item->product->productPromotion->price : $item->product->price;
                             $i++;
                         endforeach;
                         for ($i; $i <= 12; $i++) {
