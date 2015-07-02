@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                  ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -20,7 +20,7 @@
 							foreach($sendWorks as $sendWork):
 								?>
 								<tr>
-									<td style="width:50%"><?php echo $sendWork->title; ?> </td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									<td style="width:50%"><?php echo $sendWork->title; ?> </td><td><a href="<?php echo Yii::app()->baseUrl . $sendWork->image; ?>" class="fancybox"><span class="label label-primary">View Attech File</span></a></td>
 								</tr>
 							<?php endforeach; ?>
 	<!--						<tr>

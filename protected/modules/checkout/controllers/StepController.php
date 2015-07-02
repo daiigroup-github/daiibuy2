@@ -1032,6 +1032,7 @@ class StepController extends MasterCheckoutController
 		$order->orderGroupId = NULL;
 		$order->orderNo = $oldOrder->order->findMaxOrderNo();
 		$order->status = 1;
+		$order->updateDateTime = new CDbExpression("NOW()");
 //							$order->paymentDateTime = new CDbExpression('NOW()');
 		if($order->save())
 		{
