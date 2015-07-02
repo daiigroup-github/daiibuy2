@@ -251,4 +251,30 @@ class GinzaHomeController extends MasterMyFileController
 		echo CJSON::encode($result);
 	}
 
+	public function actionRenderCondition()
+	{
+		$model = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+		$child1 = $model->child;
+		$conditionOrder = null;
+		switch($_POST["period"])
+		{
+			case 2:
+				$conditionOrder = $model;
+				break;
+			case 3:
+				$conditionOrder = $child1;
+				break;
+			case 4:
+				$conditionOrder = $child1->child;
+				break;
+		}
+		$brandModels = BrandModel::model()->findAll("supplierId = 4 AND status = 1");
+		echo $this->renderPartial("_condition", array(
+			'model'=>$model,
+			'period'=>$_POST["period"],
+			'brandModels'=>$brandModels,
+			'child1'=>$child1,
+			'conditionOrder'=>$conditionOrder), true);
+	}
+
 }

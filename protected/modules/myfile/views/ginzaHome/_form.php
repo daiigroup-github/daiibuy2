@@ -202,11 +202,11 @@ $this->breadcrumbs = array(
 											<td style="color:green;text-align: center"><?php echo ($sumSup == $child2->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child2->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
-												<?php if($child2->status >= 3 || $sumSup == $child2->totalIncVAT): ?>
+												<?php if($child1->status >= 3 || $sumSup == $child2->totalIncVAT): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if(($child1->status >= 3 && $child2->status == 0) || $sumSup < $child2->totalIncVAT):
+													if(($child1->status >= 3 && $child2->status == 0) || ($child2->status != 0 && $sumSup < $child2->totalIncVAT)):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 														<?php
@@ -261,7 +261,8 @@ $this->breadcrumbs = array(
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if(($sumSup3 == $child2->totalIncVAT && $child3->status == 0) || $sumSup < $child3->totalIncVAT):
+//													if(($sumSup3 == $child2->totalIncVAT && $child3->status == 0) || $sumSup < $child3->totalIncVAT):
+													if(($child2->status >= 3 && $child3->status == 0) || ($child3->status != 0 && $sumSup < $child3->totalIncVAT)):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 
@@ -391,7 +392,7 @@ $this->breadcrumbs = array(
 	<div class="row setup-content" id="step-3-1">
 		<div class="row sidebar-box blue " style="background-color: white">
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-12" id="conditionDiv">
 					<?php
 					$this->renderPartial("_condition", array(
 						'model'=>$model,
@@ -468,6 +469,7 @@ $this->breadcrumbs = array(
 						</thead>
 						<tbody>
 							<?php
+							echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 							echo CHtml::hiddenField("period", 3);
 							foreach($child2->orders as $item):
 								?>
@@ -520,6 +522,7 @@ $this->breadcrumbs = array(
 						</thead>
 						<tbody>
 							<?php
+							echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 							echo CHtml::hiddenField("period", 4);
 							foreach($child3->orders as $item):
 								?>

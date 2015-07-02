@@ -52,17 +52,27 @@ $('#addToCartGinzaTown').live('click', function () {
 function payClick(period)
 {
 	$('ul.setup-panel li a[href="#step-3-1"]').trigger('click');
-	if (period == 2)
-	{
-		$("#changHouseDetail").removeClass('hide');
-		$("#changHouseDetail2").removeClass('hide');
-		$("#submit2").removeClass('hide');
-	}
-	else
-	{
-		$("#submit" + period).removeClass('hide');
+	$.ajax({
+		type: 'POST',
+		url: baseUrl + 'index.php/myfile/ginzaHome/renderCondition',
+//		dataType: 'json',
+		data: $("#payForm" + period).serialize(),
+		success: function (data) {
+			$("#conditionDiv").html(data);
+			if (period == 2)
+			{
+				$("#changHouseDetail").removeClass('hide');
+				$("#changHouseDetail2").removeClass('hide');
+				$("#submit2").removeClass('hide');
+			}
+			else
+			{
+				$("#submit" + period).removeClass('hide');
 //		goToStepSplit();
-	}
+			}
+		}
+	});
+
 }
 
 function backToStep3()

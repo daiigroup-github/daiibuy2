@@ -1,69 +1,83 @@
-<h2 class="blue text-center" id="myModalLabel">ข้อตกลงและเงื่อนไข ตรวจรับงานงวดที่ 1</h2>
+<h2 class="blue text-center" id="myModalLabel">ข้อตกลงและเงื่อนไข ตรวจรับงานงวดที่ <?php echo $period ?></h2>
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                        ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
-			<div class="row">
-				<div class="col-md-11">
-					1. เนื่องจากบางบริษัทได้เข้าดำเนินการสำรวจผังตามใบสั่งซื้อของลูกค้าไปแล้วนั้น ทางบริษัทเห็นว่า สามารถเข้าดำเนินการก่อสร้างขั้นตอไปได้<br>
-					ผู้สั่งซื้อกรุณาตรวจสอบรายละเอียดตามรายการด้านล่าง
-					<table class="table table-bordered table-condensed ">
-						<tr>
-							<td style="width:50%">Layout Approve </td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr>
-						<tr>
-							<td>ผลสำรวจ</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr>
-						<tr>
-							<td>ใบรับงานสำรวจ</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr>
-					</table>
+			<?php
+			if(isset($conditionOrder)):
+				?>
+				<div class="row">
+					<div class="col-md-11">
+						เนื่องจากบางบริษัทได้เข้าดำเนินการสำรวจผังตามใบสั่งซื้อของลูกค้าไปแล้วนั้น ทางบริษัทเห็นว่า สามารถเข้าดำเนินการก่อสร้างขั้นตอไปได้<br>
+						ผู้สั่งซื้อกรุณาตรวจสอบรายละเอียด และแบบและสัญญาให้ครบถ้วน ตามรายการด้านล่าง
+
+						<table class="table table-bordered table-condensed ">
+							<?php
+							$sendWorks = OrderGroupSendWork::model()->findAll("orderGroupId = $conditionOrder->orderGroupId ORDER BY seq ASC");
+							foreach($sendWorks as $sendWork):
+								?>
+								<tr>
+									<td style="width:50%"><?php echo $sendWork->title; ?> </td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+								</tr>
+							<?php endforeach; ?>
+	<!--						<tr>
+	<td style="width:50%">Layout Approve </td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+	</tr>
+	<tr>
+	<td>ผลสำรวจ</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+	</tr>
+	<tr>
+	<td>ใบรับงานสำรวจ</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+	</tr>-->
+						</table>
+
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-11">
-					2. ก่อนสังซื้องวดต่อไป ผู้สั่งซื้อต้องอ่านแล้วทำความเข้าใจ รายละเอียดแบบและสัญญาให้ครบถ้วนตามรายการด้านล่างดังนี้
-					<table class="table table-bordered table-condensed ">
-						<tr>
-							<td style="width:50%">แบบผังพื้น</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr>
-						<tr>
-							<td>แบบรูปด้าน</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr>
-						<tr>
-							<td>แบบรูปตัด</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr><tr>
-							<td>แบบงานระบบไฟฟ้า</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr><tr>
-							<td>แบบงานระบบสุขาภิบาล</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr><tr>
-							<td>สัญญาซื้อขาย</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
-						</tr>
-					</table>
-				</div>
-			</div>
+			<?php endif; ?>
+			<!--			<div class="row">
+							<div class="col-md-11">
+								2. ก่อนสังซื้องวดต่อไป ผู้สั่งซื้อต้องอ่านแล้วทำความเข้าใจ รายละเอียดแบบและสัญญาให้ครบถ้วนตามรายการด้านล่างดังนี้
+								<table class="table table-bordered table-condensed ">
+									<tr>
+										<td style="width:50%">แบบผังพื้น</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									</tr>
+									<tr>
+										<td>แบบรูปด้าน</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									</tr>
+									<tr>
+										<td>แบบรูปตัด</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									</tr><tr>
+										<td>แบบงานระบบไฟฟ้า</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									</tr><tr>
+										<td>แบบงานระบบสุขาภิบาล</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									</tr><tr>
+										<td>สัญญาซื้อขาย</td><td><a href="" class=""><span class="label label-primary">View Attech File</span></a></td>
+									</tr>
+								</table>
+							</div>
+						</div>-->
 			<div class="row hide"  id="changHouseDetail">
 				<div class="col-md-12" >
 					<div class="row">
 						<div class="col-md-12">
-							3. ก่อนสั่งซื้องวดต่อไป ลูกค้าสามารถปรับเปลี่ยนรายละเอียดบ้านได้โดย
+							ก่อนสั่งซื้องวดต่อไป ลูกค้าสามารถปรับเปลี่ยนรายละเอียดบ้านได้โดย
 						</div>
 					</div>
 					<table class="table table-bordered">
 						<tbody>
 							<tr>
-								<td>3.1</td>
+								<td> </td>
 								<td>สามารถปรับเปลี่ยน Series ของบ้านจาก Light / C / E / SL ได้ โดยคิดมูลค่าตามจริงของบ้านหลังนั้นๆ</td>
 							</tr>
 							<tr>
-								<td>3.2</td>
+								<td></td>
 								<td>สามารถปรับเปลี่ยนสีของบ้าน Silver / Oak Brown / Earth Tone ได้โดยไม่เสียค่าใช้จ่ายเพิ่ม</td>
 							</tr>
 							<tr>
-								<td>3.3</td>
+								<td></td>
 								<td>สามารถปรับเปลี่ยน Size ของบ้านได้ โดยคิดมูลค่าตามจริงของบ้านหลังนั้นๆ</td>
 							</tr>
 							<tr>
@@ -82,6 +96,7 @@
 								<tr>
 									<td>ชนิดบ้าน</td>
 									<td><?php
+										echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
 										$category2ToProduct = Category2ToProduct::model()->find("productId = " . $model->orders[0]->orderItems[0]->productId);
 										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
