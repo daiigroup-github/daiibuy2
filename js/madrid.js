@@ -6,6 +6,10 @@ $('.add-to-cart').click(function () {
 	var data = {};
 	var productId = $(this).data('productid');
 	var qty = $('#' + productId).val();
+        if(qty == 0){
+            qty = 1;
+        }
+//        alert(qty);
 //	alert(productId + "," + qty);
 	var data = {productId: productId, qty: qty};
 	$.ajax({

@@ -52,7 +52,7 @@ if (isset($data->productImages)) {
             <span>ราคา <?php echo number_format($data->price * (1 / $data->area), 2); ?> บาท / ตร.ม.</span><br>
         <?php endif; ?>
         <?php if ($data->noPerBox <> 0): ?>
-            <span>ราคา <?php echo number_format($data->noPerBox, 2); ?> แผ่น / <?php echo $data->productUnits; ?></span><br>
+            <span>จำนวน <?php echo number_format($data->noPerBox, 2); ?> แผ่น / <?php echo $data->productUnits; ?></span><br>
         <?php endif; ?>
         <?php if (isset($data->quantity)): ?>
             <span>Stock <?php echo $data->quantity; ?> <?php echo $data->productUnits; ?></span><br>

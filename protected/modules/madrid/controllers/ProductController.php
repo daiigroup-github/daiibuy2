@@ -65,7 +65,7 @@ class ProductController extends MasterMadridController {
 
         $this->cookie = new DaiiBuy();
         $this->cookie->loadCookie();
-
+//        throw new Exception(print_r($qty, true));
         $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
         $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty);
 
