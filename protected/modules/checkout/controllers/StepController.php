@@ -787,7 +787,7 @@ class StepController extends MasterCheckoutController
 
 		if(isset($oldOrder))
 		{
-			if($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5)
+			if(($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) && ($oldOrder->parentId == null))
 			{
 				if(isset($oldOrder->orderGroupToOrders[0]))
 				{
@@ -815,7 +815,7 @@ class StepController extends MasterCheckoutController
 								$newOrderItem = new OrderItems();
 								$newOrderItem->attributes = $item->attributes;
 
-
+								$newOrderItem->updateDateTime = new CDbExpression("NOW()");
 //						throw new Exception(print_r($newOrderItem->attributes, true));
 
 								if($newOrderGroup->save())
@@ -882,6 +882,7 @@ class StepController extends MasterCheckoutController
 					if($flag)
 					{
 						$oldOrder->status = -1;
+						$oldOrder->updateDateTime = new CDbExpression("NOW()");
 						$transaction->commit();
 					}
 				}
@@ -900,6 +901,7 @@ class StepController extends MasterCheckoutController
 			else
 			{
 				$oldOrder->status = 1;
+				$oldOrder->updateDateTime = new CDbExpression("NOW()");
 			}
 		}
 //					$oldOrder->paymentDateTime = new CDbExpression('NOW()');
@@ -1258,7 +1260,8 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
-		$orderSummary = null;
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, 4);
+
 
 		if(isset($_POST["period"]) && $_POST["period"] == 2)
 		{
