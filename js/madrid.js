@@ -150,6 +150,7 @@ function loadProductsFavItem(productId, baseUrl, orderId)
 				$("#priceHidden").val(data["price"]);
 				$("#productId").val(data["productId"]);
 				$("#image").attr("src", data["image"]);
+                                $("#quantity").val("1");
 			}
 			else
 			{
@@ -296,6 +297,22 @@ $('.chooseStyle').click(function () {
 //	}
 
 });
+
+function findModelTile(sel, baseUrl)
+{
+	var attrName = sel.attributes['name'].value;
+	var obj = $('select[name=\"' + attrName + '\"]');
+	var brandId = obj.val();
+	$.ajax({
+		'url': baseUrl + '/backoffice/order/findTileModelByBrandIdAjax',
+//			'dataType': 'json',
+		'type': 'POST',
+		'data': {'brandId': brandId},
+		'success': function (data) {
+			obj.parent().parent().children('.model').children('select').html(data);
+		},
+	});
+}
 
 function findModel(sel, baseUrl)
 {

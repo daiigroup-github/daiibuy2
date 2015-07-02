@@ -102,13 +102,13 @@
                         <td><?php echo $i; ?></td>
                         <td id="productName"></td>
                         <?php if ($this->action->id == "view" || $model->status == 1): ?>
-                            <td style="text-align: center"><?php // echo $model->area;                                                                                                                                                                        ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $model->area);                                                                                                                                                                        ?></td>
+                            <td style="text-align: center"><?php // echo $model->area;                                                                                                                                                                                ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $model->area);                                                                                                                                                                                ?></td>
                             <td>ตร.เมตร</td>
                         <?php endif; ?>
 
-                        <td id="productCode" class="text-info" ><?php // echo $model->product->code;                                                                                                                                                                            ?></td>
-                        <td id="productUnits"><?php // echo $model->product->name;                                                                                                                                                                         ?></td>
-                        <td id="noPerBox"><?php // echo $model->product->productUnits;                                                                                                                                                                       ?></td>
+                        <td id="productCode" class="text-info" ><?php // echo $model->product->code;                                                                                                                                                                                    ?></td>
+                        <td id="productUnits"><?php // echo $model->product->name;                                                                                                                                                                                 ?></td>
+                        <td id="noPerBox"><?php // echo $model->product->productUnits;                                                                                                                                                                               ?></td>
                         <?php
                         echo CHtml::hiddenField("OrderItems[price]", "", array(
                             'id' => "priceHidden"));
@@ -129,16 +129,16 @@
                         </td>
                         <td>ตร.เมตร</td>
                         <?php if ($this->action->id == "view" || $model->status == 1): ?>
-                            <td style="text-align: center" id="estimateAreaQuantity"><?php // echo $estimateQuantity                                                                                                                                                                  ?></td>
+                            <td style="text-align: center" id="estimateAreaQuantity"><?php // echo $estimateQuantity                                                                                                                                                                          ?></td>
                         <?php endif; ?>
     <!--<td></td>-->
                         <td id="quantity"><?php
-                            echo CHtml::numberField("OrderItems[quantity]", "3", array(
+                            echo CHtml::numberField("OrderItems[quantity]", "1", array(
                                 'min' => 1,
                                 //													'class'=>'hide',
                                 'id' => 'quantityText'));
                             ?></td>
-                        <td id="price"><?php // echo number_format($model->quantity * $model->product->price)                                                                                                                                                                     ?></td>
+                        <td id="price"><?php // echo number_format($model->quantity * $model->product->price)                                                                                                                                                                             ?></td>
                     </tr>
                     <?php
                 }
@@ -149,7 +149,7 @@
         <?php
         $this->widget('ext.jqrelcopy.JQRelcopy', array(
             //the id of the 'Copy' link in the view, see below.
-            'id' => 'copyItemTiles',
+            'id' => 'copyItem',
             //add a icon image tag instead of the text
             //leave empty to disable removing
             'removeText' => '<i class="fa fa-remove"></i>',
@@ -174,11 +174,13 @@
 //			), 'You can remove this line'),
             ),
             'jsAfterNewId' => "
-		if(typeof this.attr('name') !== 'undefined'){ this.attr('name', this.attr('name').replace('[0]', '['+counter+']'));}
+                            if (typeof this.attr ('name') !== 'undefined'){ this.attr ('name', this.attr ('name').replace ('[0]', '['+counter+']'));
+                            }
 
-		",
+                            ",
         ));
         ?>
+
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered table-hover">
@@ -195,12 +197,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="copyRow" id="copyRowTile">
+                        <tr class="copyRow" id="copyRow">
                             <td><?php
                                 echo CHtml::dropDownList("OrderItems[0][brandId]", "", Brand::model()->getAllBrandBySupplierId(3), array(
                                     'prompt' => 'Select Brand',
                                     'class' => 'form-control',
-                                    'onchange' => "findModel(this,'" . Yii::app()->baseUrl . "');",
+                                    'onchange' => "findModelTile(this,'" . Yii::app()->baseUrl . "');",
                                     'id' => 'brandId',
                                 ));
                                 ?></td>
@@ -242,7 +244,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6"><a id="copyItemTiles" href="#" rel=".copyRowTile" class="button green"><i class="fa fa-plus"></i>เพิ่ม</a></td>
+                            <td colspan="6"><a id="copyItem" href="#" rel=".copyRow" class="button green"><i class="fa fa-plus"></i>เพิ่ม</a></td>
                         </tr>
                     </tfoot>
                 </table>

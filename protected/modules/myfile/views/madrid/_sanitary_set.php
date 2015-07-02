@@ -62,7 +62,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy', array(
 
                             ",
 ));
-?>
+?> 
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-hover">

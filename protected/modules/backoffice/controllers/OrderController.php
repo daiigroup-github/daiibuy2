@@ -806,6 +806,22 @@ class OrderController extends MasterBackofficeController {
         }
     }
 
+    public function actionFindTileModelByBrandIdAjax() {
+        $data = BrandModel::model()->findAll('brandId=:brandId AND title = "MADRID TILE"', array(
+            ':brandId' => (int) $_POST['brandId']));
+
+//		$result = array(
+//			);
+        echo CHtml::tag('option', array(
+            'value' => ''), CHtml::encode("-- Select Model --"), true);
+        foreach ($data as $item) {
+//			$result[$item->brandModelId] = $item->title;
+            echo CHtml::tag('option', array(
+                'value' => $item->brandModelId), CHtml::encode($item->title), true);
+        }
+//		echo CJSON::encode($result);
+    }
+
     public function actionFindAllModelByBrandIdAjax() {
         $data = BrandModel::model()->findAll('brandId=:brandId', array(
             ':brandId' => (int) $_POST['brandId']));
