@@ -96,6 +96,11 @@ class OrderGroup extends OrderGroupMaster
 					'OrderGroup',
 					array(
 						'mainFurnitureId')),
+				'sendWorks'=>array(
+					self::HAS_MANY,
+					'OrderGroupSendWork',
+					array(
+						'orderGroupId')),
 		));
 	}
 
@@ -602,6 +607,29 @@ class OrderGroup extends OrderGroupMaster
 		{
 			return FALSE;
 		}
+	}
+
+	public function findAllPayGinzaMyfile()
+	{
+		$criteria = new CDbCriteria();
+		if(Yii::app()->user->userType != 4)
+		{
+			$criteria->select = " (t.totalIncVAT + child1.totalIncVAT + child2.totalIncVAT + child3.totalIncVAT) as total ,t.orderGroupId , t.userId , t.orderNo , t.invoiceNo , t.status , t.createDateTime , t.updateDateTime ";
+			$criteria->condition = " t.parentId is null AND t.status = 3 AND t.status >=0  AND t.mainFurnitureId is null AND t.supplierId =" . Yii::app()->user->supplierId;
+			$criteria->join = "LEFT JOIN order_group child1 ON child1.parentId = t.orderGroupId ";
+			$criteria->join .= "LEFT JOIN order_group child2 ON child2.parentId = child1.orderGroupId ";
+			$criteria->join .= "LEFT JOIN order_group child3 ON child3.parentId = child2.orderGroupId ";
+		}
+//		$criteria->compare("type", 1);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>' t.updateDateTime DESC ,t.createDateTime DESC',
+			),
+			'pagination'=>array(
+				'pageSize'=>30
+			),
+		));
 	}
 
 }

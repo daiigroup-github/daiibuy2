@@ -135,8 +135,8 @@ class MyfileController extends MasterBackofficeController
 	{
 		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+// Uncomment the following line if AJAX validation is needed
+// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Order']))
 		{
@@ -184,7 +184,7 @@ class MyfileController extends MasterBackofficeController
 	{
 		$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
 					'admin'));
@@ -203,7 +203,15 @@ class MyfileController extends MasterBackofficeController
 
 		if(Yii::app()->user->id != 0)
 		{
-			$serchFn = $model->findAllSupplierMyfile();
+			if(Yii::app()->user->supplierId != 4)
+			{
+				$serchFn = $model->findAllSupplierMyfile();
+			}
+			else
+			{
+				$this->redirect(array(
+					"/backoffice/myfile/indexGinza"));
+			}
 		}
 		else
 		{
@@ -212,6 +220,29 @@ class MyfileController extends MasterBackofficeController
 		}
 
 		$this->render('index', array(
+			'model'=>$model,
+			'searchFn'=>$serchFn));
+	}
+
+	public function actionIndexGinza()
+	{
+		$this->checkSupplierAndAdminAccessMenu();
+		$model = new OrderGroup('search');
+		$model->unsetAttributes(); // clear any default values
+		if(isset($_GET['Order']))
+			$model->attributes = $_GET['Order'];
+
+		if(Yii::app()->user->id != 0)
+		{
+			$serchFn = $model->findAllPayGinzaMyfile();
+		}
+		else
+		{
+			$this->redirect(array(
+				"/backoffice/login"));
+		}
+
+		$this->render('index_ginza', array(
 			'model'=>$model,
 			'searchFn'=>$serchFn));
 	}
@@ -657,6 +688,114 @@ class MyfileController extends MasterBackofficeController
 			'pageText'=>$this->selectPageTitle($model),
 			'daiibuy'=>$daiibuy
 		));
+	}
+
+	public function actionSendWork($id)
+	{
+		$model = OrderGroup::model()->findByPk($id);
+		$flag = TRUE;
+		if(isset($_POST["OrderGroupSendWork"]))
+		{
+			try
+			{
+				$transaction = Yii::app()->db->beginTransaction();
+
+				$i = 1;
+				foreach($_POST["OrderGroupSendWork"] as $orderGroupId=> $seq)
+				{
+
+
+					foreach($seq as $index=> $obj)
+					{
+						if(isset($obj["title"]) && !empty($obj["title"]))
+						{
+							$oldImage = null;
+							$sendWork = OrderGroupSendWork::model()->find("orderGroupId = $orderGroupId AND seq = $index");
+							if(!isset($sendWork))
+							{
+								$sendWork = new OrderGroupSendWork();
+							}
+							else
+							{
+								$oldImage = $sendWork->image;
+							}
+							$sendWork->seq = $index;
+							$sendWork->attributes = $obj;
+							$folderimage = 'orderGroupSendWork';
+							$image = CUploadedFile::getInstanceByName("OrderGroupSendWork[$orderGroupId][$index][image]");
+							if(isset($image) && !empty($image))
+							{
+								$imgType = explode('.', $image->name);
+								$imgType = $imgType[count($imgType) - 1];
+								$imageUrl = '/images/' . $folderimage . '/' . time() . '-' . rand(0, 999999) . '.' . $imgType;
+								$imagePathimage = '/../' . $imageUrl;
+								$sendWork->image = $imageUrl;
+							}
+							else
+							{
+								if(!isset($oldImage))
+								{
+									$sendWork->image = null;
+								}
+								else
+								{
+									$sendWork->image = $oldImage;
+								}
+							}
+							$sendWork->orderGroupId = $orderGroupId;
+							$sendWork->createDateTime = new CDbExpression("now()");
+							$sendWork->updateDateTime = new CDbExpression("now()");
+							if(!$sendWork->save())
+							{
+								$flag = FALSE;
+								throw new Exception(print_r($sendWork->errors, true));
+							}
+							else
+							{
+								if(isset($image) && !empty($image))
+								{
+									if(!file_exists(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage))
+									{
+										mkdir(Yii::app()->getBasePath() . '/../' . 'images/' . $folderimage, 0777);
+									}
+
+									if($image->saveAs(Yii::app()->getBasePath() . $imagePathimage))
+									{
+										$flag = true;
+									}
+									else
+									{
+										$flag = false;
+									}
+								}
+								else
+									$flag = true;
+							}
+							if(!$flag)
+							{
+								$transaction->rollback();
+								break;
+							}
+						}
+						else
+						{
+							continue;
+						}
+					}
+				}
+				if($flag)
+				{
+					$transaction->commit();
+				}
+			}
+			catch(Exception $exc)
+			{
+				$transaction->rollback();
+				echo $exc->getMessage();
+			}
+		}
+		$this->render('send_work', array(
+			'model'=>$model));
 	}
 
 }

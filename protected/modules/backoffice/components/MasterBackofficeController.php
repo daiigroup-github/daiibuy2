@@ -232,7 +232,7 @@ class MasterBackofficeController extends MasterController
 			),
 			array(
 //				'label'=>'Logout (' . Yii::app()->user->name . ')',
-                'label'=>'Logout',
+				'label'=>'Logout',
 				'url'=>array(
 					'login/logout'
 				),
