@@ -63,7 +63,14 @@ $form = $this->beginWidget('CActiveForm', array(
 				</td>
 			</tr>
 		<?php endif; ?>
-		<?php if($model->child->status == 3 && $model->child->child->status < 3): ?>
+		<?php
+		$sumSup = 0;
+		foreach($model->child->child->sup as $sup)
+		{
+			$sumSup+=$sup->totalIncVAT;
+		}
+		if($model->child->status == 3 && ($model->child->child->status < 3 && $sumSup != $model->child->child->totalIncVAT)):
+			?>
 			<tr>
 				<td>งวดที่ 2</td>
 				<td>
@@ -103,7 +110,9 @@ $form = $this->beginWidget('CActiveForm', array(
 				</td>
 			</tr>
 		<?php endif; ?>
-		<?php if($model->child->child->status == 3 && $model->child->child->child->status < 3): ?>
+		<?php
+		if(($model->child->child->status == 3 || $model->child->child->totalIncVAT == $sumSup) && $model->child->child->child->status < 3):
+			?>
 			<tr>
 				<td>งวดที่ 3</td>
 				<td>
