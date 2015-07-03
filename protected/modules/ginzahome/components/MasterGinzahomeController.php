@@ -33,7 +33,7 @@ class MasterGinzahomeController extends MasterController
 			{
 
 				$this->nav[$i] = array(
-					'url'=>$this->createUrl('category/index/id/' . $brandModel->brandModelId),
+					'url'=>$this->createUrl('style/index/id/' . $brandModel->brandModelId),
 					'caption'=>$brandModel->title,
 //                        'description' => 'Company Profile',
 					'color'=>$this->navColor[$i]
@@ -42,7 +42,7 @@ class MasterGinzahomeController extends MasterController
 
 				$this->sideBarCategories["items"][$i] = array(
 					'link'=>$brandModel->title,
-					'url'=>$this->createUrl('category/index/id/' . $brandModel->brandModelId),
+					'url'=>$this->createUrl('style/index/id/' . $brandModel->brandModelId),
 				);
 				$i++;
 			}
