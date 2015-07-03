@@ -181,6 +181,7 @@ class AtechWindowController extends MasterMyFileController {
         if (count($model->orderItems) > 0) {
             $total = 0.00;
             foreach ($model->orderItems as $item) {
+//                throw new Exception(print_r($model->orderItems, true));
                 $productModel = Product::model()->findByPk($item->productId);
                 $productPromotion = ProductPromotion::model()->find("productId=:productId AND ('" . date("Y-m-d") . "' BETWEEN dateStart AND dateEnd)", array(
                     ":productId" => $productModel->productId));

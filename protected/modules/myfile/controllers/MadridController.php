@@ -64,9 +64,46 @@ class MadridController extends MasterMyFileController {
     public function actionView($id) {
         $this->layout = '//layouts/cl1';
         $model = $this->loadModel($id);
-        $orderDetailModel = new OrderDetail;
+        $orderDetailModel = OrderDetail::model()->find('orderId = ' . $id);
+        $orderDetailId = $orderDetailModel->orderDetailId;
         $orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
         $orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
+
+        $orderDetailValueCat2 = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailId . ' AND orderDetailTemplateFieldId = 6');
+//        throw new Exception(print_r($orderDetailTemplateFieldCat2, true));
+        $category2Id = isset($orderDetailValueCat2->value) ? $orderDetailValueCat2->value : null;
+
+        $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
+        $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
+        if (isset($category2Id)) {
+            $resultTheme = "";
+            $resultTheme .= "<ul>";
+
+            foreach ($themes as $theme):
+                $url = '"' . Yii::app()->baseUrl . '"';
+                $resultTheme .= "<li><a href='#'  onclick='loadThemeItem(" . $theme->category2Id . "," . $url . "," . 0 . ")' > " . $theme->category2->title . "</li></a>";
+            endforeach;
+
+            $resultTheme .= "</ul>";
+
+            $resultSets = "";
+            $resultSets .= "<ul>";
+
+            foreach ($sets as $set):
+                $resultSets .= "<li><a href='#' onclick='loadSetItem(" . $set->category2Id . ", " . $url . ")'>" . $set->category2->title . "</li></a>";
+            endforeach;
+
+            $resultSets .= "</ul>";
+
+            $results = array();
+            $results["themes"] = $resultTheme;
+            $results["sets"] = $resultSets;
+            $results["status"] = true;
+        }else {
+            $results["status"] = false;
+        }
+
+
         if (isset($_POST["OrderItems"])) {
 
             foreach ($_POST["OrderItems"] as $k => $v) {
@@ -86,6 +123,9 @@ class MadridController extends MasterMyFileController {
         $categoryToSub = CategoryToSub::model()->findAll(array(
             'condition' => ' isType=1',
         ));
+
+
+
         $subCategorysId = implode(',', CHtml::listData($categoryToSub, 'categoryId', 'categoryId'));
         $categorys = Category::model()->findAll("categoryId IN (" . $subCategorysId . ")");
         $items = $this->showType($categorys);
@@ -94,6 +134,7 @@ class MadridController extends MasterMyFileController {
             'model' => $model,
             'orderDetailTemplateField' => $orderDetailTemplateField,
             'categoryItems' => $items,
+            'results' => $results,
         ));
     }
 
