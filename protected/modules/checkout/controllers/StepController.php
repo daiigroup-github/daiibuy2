@@ -486,11 +486,13 @@ class StepController extends MasterCheckoutController
 		}
 
 		$bankArray = Bank::model()->findAllBankModelBySupplier($supplierId);
+        $supplierModel = Supplier::model()->findByPk($supplierId);
 
 		$this->render('step4', array(
 			'step'=>4,
 			'orderSummary'=>$orderSummary,
 			'bankArray'=>$bankArray,
+            'supplierModel'=>$supplierModel,
 		));
 //        $this->redirect($this->createUrl(5));
 	}

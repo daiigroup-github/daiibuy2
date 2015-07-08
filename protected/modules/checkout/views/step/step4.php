@@ -109,7 +109,18 @@ $form = $this->beginWidget('CActiveForm', array(
 		<div class="carousel-heading">
             <h4>กรุณาอ่านและยอมรับ ข้อตกลงและเงื่อนไขการชำระเงิน</h4>
 		</div>
+
 		<div class="page-content">
+
+            <?php if(doubleval($supplierModel->minimumOrder) > doubleval($orderSummary['grandTotal'])):?>
+                <br />
+                <p class="alert alert-danger text-center">
+                    เนื่องจากยอดซื้อของลูกค้า <?php echo number_format($orderSummary['grandTotal'], 2);?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format($supplierModel->minimumOrder, 2);?> บาท
+                    ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
+                </p>
+                <br />
+            <?php endif;?>
+
 			<input type="checkbox" name="accept" id="accept" />
 			<label class="checkbox-label" for="accept"> ฉันได้อ่านและยอมรับ <a id="readTermCondition" style="text-decoration: underline;color: red" href="#" >ข้อตกลงและเงื่อนไข</a> การสั่งซื้อสินค้า ของ www.daiibuy.com</label>
 		</div>

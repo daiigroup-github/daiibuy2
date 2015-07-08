@@ -70,10 +70,12 @@ class CartController extends MasterCheckoutController
 		}
 
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
+        $supplierModel = Supplier::model()->findByPk($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
 			'orderSummary'=>$orderSummary,
 			'supplierId'=>$id,
+            'supplierModel'=>$supplierModel,
 			'desc'=>$desc
 		));
 	}
