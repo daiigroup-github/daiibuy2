@@ -63,6 +63,7 @@ function payClick(period)
 			{
 				$("#changHouseDetail").removeClass('hide');
 				$("#changHouseDetail2").removeClass('hide');
+				$("#period" + period).removeClass("hide");
 				$("#submit2").removeClass('hide');
 			}
 			else
@@ -81,15 +82,15 @@ function backToStep3()
 }
 function goToStepSplit(period)
 {
-//	if (period == 2)
-//	{
-//		$("#payForm2").submit();
-//	}
-//	else
-//	{
-	$('ul.setup-panel li a[href="#step-3-2"]').trigger('click');
-	$("#period" + period).removeClass("hide");
-//	}
+	if (period == 2)
+	{
+		$("#payForm2").submit();
+	}
+	else
+	{
+		$('ul.setup-panel li a[href="#step-3-2"]').trigger('click');
+		$("#period" + period).removeClass("hide");
+	}
 }
 function pay(period)
 {

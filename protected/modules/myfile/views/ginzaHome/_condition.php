@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                  ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                      ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -203,6 +203,57 @@
 								</tr>
 							</tbody>
 						</table>
+						<table class="row hide table table-bordered" id="period2" >
+							<thead>
+								<tr style="background-color: blue">
+									<th>งวด</th>
+									<th>รายการ</th>
+									<th>ราคา</th>
+									<th>ยอดชำระ</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+								echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
+								echo CHtml::hiddenField("period", 2);
+								foreach($child1->orders as $item):
+									?>
+									<tr style="color:black">
+										<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 2</span></td>
+										<td>
+											<?php
+											echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
+											?>
+										</td>
+										<td style="font-size:24px">
+											<p style="color:red;text-decoration:line-through"><?php echo number_format($item->orderItems[0]->product->price); ?></p>
+											<?php
+											echo number_format($child1->totalIncVAT);
+											$sumSup = 0;
+											foreach($child1->sup as $sup)
+											{
+												$sumSup +=$sup->totalIncVAT;
+												echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+											}
+											?>
+										</td>
+										<td>
+											<?php
+											echo CHtml::textField("payValue", $child1->totalIncVAT - $sumSup, array(
+												'class'=>'input-large text-right',
+												'style'=>'border:2px solid black;color:blue;font-size:24px'))
+											?>
+											<!--<a onclick="backToStep2()" class="btn btn-success">Back</a>-->
+											<?php
+//											echo CHtml::link("ชำระเงิน", "", array(
+//												'class'=>'btn btn-primary',
+//												'onclick'=>"pay(2)"));
+											?>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
 					</form>
 				</div>
 			</div>
@@ -229,7 +280,7 @@
 	<div class="col-lg-12 text-center">
 		<a onclick="backToStep3()" class="btn btn-success">Back</a>
 		<?php
-		echo CHtml::link('Accept', "", array(
+		echo CHtml::link('ยอมรับ และ ชำระเงิน', "", array(
 			'class'=>'btn btn-primary',
 			'onClick'=>'goToStepSplit(2)'));
 		?>
