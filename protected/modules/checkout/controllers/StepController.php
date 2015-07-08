@@ -1287,12 +1287,12 @@ class StepController extends MasterCheckoutController
 						if($flag)
 						{
 
-							$bankArray = Bank::model()->findAllBankModelBySupplier(4);
-							$this->render('step4', array(
-								'step'=>4,
-								'orderSummary'=>$orderSummary,
-								'bankArray'=>$bankArray,
-							));
+//							$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+//							$this->render('step4', array(
+//								'step'=>4,
+//								'orderSummary'=>$orderSummary,
+//								'bankArray'=>$bankArray,
+//							));
 						}
 						else
 						{
@@ -1307,12 +1307,12 @@ class StepController extends MasterCheckoutController
 				}
 				else
 				{
-					$bankArray = Bank::model()->findAllBankModelBySupplier(4);
-					$this->render('step4', array(
-						'step'=>4,
-						'orderSummary'=>$orderSummary,
-						'bankArray'=>$bankArray,
-					));
+//					$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+//					$this->render('step4', array(
+//						'step'=>4,
+//						'orderSummary'=>$orderSummary,
+//						'bankArray'=>$bankArray,
+//					));
 				}
 			}
 //		}
