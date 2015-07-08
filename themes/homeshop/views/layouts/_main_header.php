@@ -16,10 +16,10 @@
 				 */
 				?>
 				<li class="home-green">
-                    <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/order/"; ?>"><i class="icons fa fa-archive"></i>My Orders</a>
+                    <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/order/"; ?>"><i class="icons fa fa-archive"></i>ประวัติการสั่งซื้อ</a>
                 </li>
                 <li class="red">
-                    <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/"; ?>"><i class="icons fa fa-folder-open"></i>My Files</a>
+                    <a href="<?php echo Yii::app()->request->baseUrl . "/myfile/"; ?>"><i class="icons fa fa-folder-open"></i>แฟ้มของฉัน</a>
                 </li>
                 <li class="blue">
                     <a href="#"><i class="icons fa fa-shopping-cart"></i><span id="cartHeader"></span></a>
@@ -31,7 +31,7 @@
                 </li>
                 <li class="green">
                     <a href="#" id="changeProvince">
-                        <i class="icons fa fa-location-arrow"></i><span id="province" style="font-size: 8pt;"><?php echo isset($this->province) ? $this->province : ''; ?></span>
+                        <i class="icons fa fa-location-arrow"></i><span id="province"><?php echo isset($this->province) ? $this->province : ''; ?></span>
                     </a>
                 </li>
 				<?php

@@ -1,5 +1,5 @@
 <div class="box-wrapper parent-border">
-    <p>Recently added item(s)</p>
+    <p>รายการ</p>
 
     <table class="cart-table" id="cartHeaderTable">
         <?php

@@ -58,7 +58,8 @@ class CartController extends MasterController
 		}
 
 		$res['cartHeaderTable'] = $cartHeaderTable;
-		$res['cartHeader'] = $i . ' Suppliers';
+//		$res['cartHeader'] = $i . ' Suppliers';
+        $res['cartHeader'] = $i . ' ผู้ขาย';
 
 		echo CJSON::encode($res);
 	}
