@@ -50,9 +50,9 @@ $this->breadcrumbs = array(
 				?>
 
                 <div class="form-group product-actions-single">
-                    <label for="h" class="col-sm-2 control-label">Height</label>
+                    <label for="h" class="col-sm-3 control-label">ความสูงรั้ว</label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
 						<?php
 						echo CHtml::dropDownList('categoryH', '', CHtml::listData($categoryModel->fenzerSubCategorys, 'categoryId', 'title'), array(
 							'class'=>'chosen-select-full-width',
@@ -62,9 +62,9 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="form-group">
-                    <label for="h" class="col-sm-2 control-label">Length</label>
+                    <label for="h" class="col-sm-3 control-label">ความยาว</label>
 
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
                         <div class="numeric-input full-width">
                             <input type="text" value="100" class="form-control" name="l"/>
                             <span class="arrow-up"><i class="icons icon-up-dir"></i></span>
@@ -74,9 +74,9 @@ $this->breadcrumbs = array(
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-3 col-sm-8">
 						<?php
-						echo CHtml::ajaxLink('<i class="fa fa-calculator"></i> Calculate', $this->createAbsoluteUrl('product/calculateProductItems'), array(
+						echo CHtml::ajaxLink('<i class="fa fa-calculator"></i> คำนวณ', $this->createAbsoluteUrl('product/calculateProductItems'), array(
 							'dataType'=>'html',
 							'method'=>'POST',
 							'data'=>'js:$("#fenzerForm").serialize()',
@@ -136,7 +136,7 @@ $this->breadcrumbs = array(
 						<span class="add-to-cart">
 							<span class="action-wrapper">
 								<i class="icons icon-basket-2"></i>
-								<span class="action-name">Add to cart</span>
+								<span class="action-name">ใส่ตะกร้า</span>
 							</span>
 						</span>
 						<span class="add-to-favorites">
@@ -192,12 +192,12 @@ $this->breadcrumbs = array(
 			?>
             <table class="table table-bordered fenzer-items">
                 <tr>
-                    <th>Code</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Qty</th>
-                    <th>Amount</th>
-                    <th>Actions</th>
+                    <th>รหัสสินค้า</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>ราคาต่อหน่วย</th>
+                    <th>ปริมาณ</th>
+                    <th>ราคารวม</th>
+                    <th></th>
                 </tr>
                 <tbody id="productItems"></tbody>
             </table>
@@ -355,7 +355,7 @@ $this->breadcrumbs = array(
 				<span class="add-to-cart" id="addToCartFenzer">
                     <span class="action-wrapper">
 						<i class="fa fa-shopping-cart"></i>
-						<span class="action-name">Add To Cart</span>
+						<span class="action-name">หยิบใส่ตะกร้า</span>
 					</span>
 				</span>
             </div>
