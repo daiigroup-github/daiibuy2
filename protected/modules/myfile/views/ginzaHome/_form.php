@@ -152,7 +152,15 @@ $this->renderPartial("_navbar", array(
 									<tr>
 										<td><?php echo $i; ?></td>
 										<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-										<td><?php echo number_format($item->totalIncVAT); ?></td>
+										<td><?php
+											echo number_format($item->totalIncVAT);
+											$sumSup = 0;
+											foreach($child1->sup as $sup)
+											{
+												$sumSup +=$sup->totalIncVAT;
+												echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+											}
+											?></td>
 										<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child1->status); ?>
 										</td>
 										<td style="width: 15%;text-align: center">
