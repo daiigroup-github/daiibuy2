@@ -5,10 +5,10 @@
 
 $('.addToCart').live('click', function () {
 	var productId = $(this).data('productid');
-//        alert($("#c1400").val());
+//        alert($("#c2322").val());
 
 	var qty = $("#"+productId).val();
-        var color = $("#c"+productId).val();
+        var color = $("#c"+productId).data('productoptionid');
 	var data = {productId: productId, qty: qty, color: color};
         alert(color);
 
@@ -27,6 +27,7 @@ $('.addToCart').live('click', function () {
 			if (data.result)
 			{
 				updateCartHeader();
+                                changeColorButton(productId);
 				alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
 			}
 			else
@@ -36,6 +37,10 @@ $('.addToCart').live('click', function () {
 		}
 	});
 });
+
+function changeColorButton(productId){
+    $('#'+productId).style.backgroundColor = "RED";
+}
 
 function checkComment()
 {

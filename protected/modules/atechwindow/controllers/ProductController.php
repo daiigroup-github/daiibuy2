@@ -147,6 +147,8 @@ class ProductController extends MasterAtechwindowController {
         $orderModel->totalIncVAT = $orderModel->orderItemsSum;
         $orderModel->save(false);
 
+//        throw new Exception(print_r($this->cookie, true));
+
         echo CJSON::encode(array(
             'result' => true));
     }

@@ -56,6 +56,7 @@ class OrderItems extends OrderItemsMaster {
         $product = Product::model()->findByPk($productId);
         $daiibuy = new DaiiBuy();
         $daiibuy->loadCookie();
+//        throw new Exception(print_r($productOptionGroup, true));
         $pOptionIds = implode(",", $productOptionGroup);
         if (isset($pOptionIds) && !empty($pOptionIds)) {
             $orderItem = $this->find(array(
