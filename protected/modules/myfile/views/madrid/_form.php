@@ -429,7 +429,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                             ?>
-                                                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                      ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                      ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                      ?>)"><?php // echo $theme->category2->title;                                                                                                      ?></li></a>
+                                                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                        ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                        ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                        ?>)"><?php // echo $theme->category2->title;                                                                                                        ?></li></a>
                             <?php
 //                                }
 //                            endforeach;
@@ -447,7 +447,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="sidebar-box-content" id="setResult">
                             <!--                        <ul>
                             <?php echo $results["sets"] // foreach ($sets as $set):      ?>
-                                                            <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                        ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                        ?>)"><?php // echo $set->category2->title;                                                                                                        ?></li></a>
+                                                            <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                          ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                          ?>)"><?php // echo $set->category2->title;                                                                                                          ?></li></a>
                             <?php // endforeach;       ?>
                                                     </ul>-->
                         </div>
@@ -497,7 +497,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                      ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                      ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                      ?>)"><?php // echo $theme->category2->title;                                                                                                      ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                        ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                        ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                        ?>)"><?php // echo $theme->category2->title;                                                                                                        ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -543,7 +543,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                         <table class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <?php if ($model->isTheme == 1): ?>
+                                                    <?php if ($model->isTheme): ?>
                                                         <th>ลำดับ</th>
                                                         <th>รายละเอียดรายการที่ชอบ</th>
                                                         <th style="width: 10%;text-align: center">พื้นที่จาก การประเมิณ</th>
@@ -570,7 +570,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                                 $i = 1;
                                                 foreach ($model->orderItems as $item):
                                                     ?>
-                                                    <?php if ($model->isTheme == 1): ?>
+                                                    <?php if ($model->isTheme): ?>
                                                         <tr id="orderItem<?php echo strtolower($item->groupName); ?>">
                                                             <td><?php echo $i; ?></td>
                                                             <td style="text-align:center"><?php echo $item->groupName ?></td>
