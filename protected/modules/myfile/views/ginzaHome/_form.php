@@ -168,7 +168,7 @@ $this->renderPartial("_navbar", array(
 												<span class="label label-success">อนุมัติ</span>
 												<?php
 											else:
-												if($model->status >= 3 && $child1->status == 0):
+												if(($model->status >= 3 && $child1->status == 0) || ($child1->status != 0 && $sumSup < $child1->totalIncVAT)):
 													?>
 													<span class="label label-danger">รอการชำระเงิน</span>
 													<?php
