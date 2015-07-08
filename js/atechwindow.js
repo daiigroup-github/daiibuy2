@@ -10,7 +10,7 @@ $('.addToCart').live('click', function () {
 	var qty = $("#"+productId).val();
         var color = $("#c"+productId).data('productoptionid');
 	var data = {productId: productId, qty: qty, color: color};
-        alert(color);
+//        alert(color);
 
 //	alert($(this).data('productid'));
 
@@ -39,7 +39,7 @@ $('.addToCart').live('click', function () {
 });
 
 function changeColorButton(productId){
-    $('#'+productId).style.backgroundColor = "RED";
+    $('#b'+productId).removeClass("btn-primary").addClass("btn-danger");
 }
 
 function checkComment()

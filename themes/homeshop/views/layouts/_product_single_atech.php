@@ -31,8 +31,8 @@
 //                            foreach ($product['attributes'] as $k => $v):
             ?>
                                 <tr>
-                                    <td><?php // echo $k;                                                                                                                                           ?></td>
-                                    <td><?php // echo $v;                                                                                                                                           ?></td>
+                                    <td><?php // echo $k;                                                                                                                                                ?></td>
+                                    <td><?php // echo $v;                                                                                                                                                ?></td>
                                 </tr>
             <?php
 //                            endforeach;
@@ -49,7 +49,7 @@
                 <span class="price">
             <?php // if (isset($product['price'])): ?>
             <?php // if ($product['pricePromotion']): ?>
-                            <del><?php // echo $product['price'];                                                                                                                                           ?></del> <?php // echo $product['pricePromotion'];                                                                                                                                          ?>
+                            <del><?php // echo $product['price'];                                                                                                                                                ?></del> <?php // echo $product['pricePromotion'];                                                                                                                                               ?>
             <?php // else: ?>
             <?php // echo $product['price']; ?>
             <?php // endif; ?>
@@ -165,7 +165,7 @@
                         </td>-->
                         <td>
                             <?php
-//                            throw new Exception(print_r($categoryToProduct->product->productOptionGroups[0]->productOptions[0]->title, true));
+                            //                            throw new Exception(print_r($categoryToProduct->product->productOptionGroups[0]->productOptions[0]->title, true));
 //                            echo isset($categoryToProduct->product->productOptionGroups[0]) ? CHtml::dropDownList(get_class($categoryToProduct->product->productOptionGroups[0]) . '[' . $categoryToProduct->product->productOptionGroups[0]->productOptionGroupId . ']', '', CHtml::listData($categoryToProduct->product->productOptionGroups[0]->productOptions, 'productOptionId', 'title'), array(
 //                                        'class' => 'chosen-select-full-width', 'id' => 'c' . $categoryToProduct->product->productId)) : "none";
                             echo Chtml::textField('color', isset($categoryToProduct->product->productOptionGroups[0]->productOptions[0]) ? $categoryToProduct->product->productOptionGroups[0]->productOptions[0]->title : "WHITE", array('id' => 'c' . $categoryToProduct->product->productId, 'disabled' => true,
@@ -188,8 +188,8 @@
                                 <span class="arrow-down"><i class="icons icon-down-dir"></i></span>
                             </div>
                         </td>
-                        <td><a class="btn btn-primary btn-md addToCart" id="<?php echo $categoryToProduct->productId; ?>" data-productid="<?php echo $categoryToProduct->product->productId; ?>"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>
-    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                                                          ?>">ดูรายการอื่นๆ</a>-->
+                        <td><a class="btn btn-primary btn-md addToCart" id="b<?php echo $categoryToProduct->productId; ?>" data-productid="<?php echo $categoryToProduct->product->productId; ?>"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>
+    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                                                               ?>">ดูรายการอื่นๆ</a>-->
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -198,6 +198,6 @@
     </div>
 
     <!-- Product tabs -->
-    <?php // $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs']));         ?>
+    <?php // $this->renderPartial('//layouts/_product_tab', array('tabs' => $product['tabs']));          ?>
 
 </div>
