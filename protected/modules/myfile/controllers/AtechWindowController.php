@@ -358,6 +358,7 @@ class AtechWindowController extends MasterMyFileController {
     public function actionCalculatePriceMyFile() {
         $orderModel = new Order();
         $orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(2);
+//        throw new Exception(print_r($_POST['Criteria'], true));
         if (isset($_POST['Criteria'])) {
             $criteria = $_POST['Criteria'];
         }
@@ -395,6 +396,7 @@ class AtechWindowController extends MasterMyFileController {
         if (isset($_POST['title'])) {
             $title = $_POST['title'];
         }
+//        throw new Exception(print_r($_POST['brandModelId'], true));
         if (isset($_POST['brandModelId'])) {
             $brandModelId = $_POST['brandModelId'];
         }
@@ -487,7 +489,7 @@ class AtechWindowController extends MasterMyFileController {
     }
 
     public function actionFindAllSizeByCate2Id() {
-        $data = Category2ToProduct::model()->findAll('category2Id=:category2Id', array(
+        $data = Category2ToProduct::model()->findAll('category1Id=:category2Id', array(
             ':category2Id' => (int) $_POST['cat2']));
 //		$result = array(
 //			);

@@ -898,7 +898,7 @@ class Product extends ProductMaster {
 //			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId, $item['category'], $item['type']);
 //			if(count($categoryArray) > 0)
 //			{
-            $category1Id = $item['category'];
+//            $category1Id = $item['category'];
             $category2Id = $item['type'];
 //			throw new Exception(print_r($category1Id.', '.$category2Id,true));
             $value = $item['size'];
@@ -908,7 +908,7 @@ class Product extends ProductMaster {
                 $height = $size[1];
 
 //			throw new Exception(print_r("brandModelId = ".$brandModelId. ", category1Id = ".$category1Id.", category2Id = ".$category2Id,true));
-                $cate2ToProduct = Category2ToProduct::model()->findAll('category2Id = ' . $category2Id . ' AND category1Id = ' . $category1Id . ' AND brandModelId = ' . $brandModelId);
+                $cate2ToProduct = Category2ToProduct::model()->findAll('category1Id = ' . $category2Id . ' AND brandModelId = ' . $brandModelId);
                 if (isset($cate2ToProduct)) {
 //				throw new Exception(print_r($cate2ToProduct,true));
                     foreach ($cate2ToProduct as $cate2) {
@@ -927,7 +927,7 @@ class Product extends ProductMaster {
                     $res["items"][$i]['code'] = $productModel->code;
                     $res["items"][$i]['width'] = $productModel->width;
                     $res["items"][$i]['height'] = $productModel->height;
-                    $res["items"][$i]['category'] = $item['category'];
+//                    $res["items"][$i]['category'] = $item['category'];    
                     $res["items"][$i]['type'] = $item['type'];
                     $res["items"][$i]['description'] = $productModel->name;
                     $res["items"][$i]['quantity'] = $item['quantity'];

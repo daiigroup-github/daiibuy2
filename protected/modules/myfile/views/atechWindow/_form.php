@@ -322,13 +322,13 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row text-center">
                     <form id="aa">
-                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                      ?>">
+                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                         ?>">
                             <thead>
                                 <tr>ตารางแสดงรายละเอียดสินค้า</tr>
                                 <tr>
                                     <th>ลำดับ</th>
                                     <th>ประเภท</th>
-                                    <th>รูปแบบ</th>
+                                    <!--<th>รูปแบบ</th>-->
                                     <th>ขนาด</th>
                                     <th class="edit-table-qty" >จำนวน</th>
                                     <th>Action</th>
@@ -342,15 +342,15 @@ $form = $this->beginWidget('CActiveForm', array(
                                 ?>
                                 <tr>
                                     <td>1</td>
-                                    <td class="cat"><?php
-                                        echo CHtml::dropDownList('Criteria[0][category]', "category", $categoryDropDownArray, array(
-                                            'class' => 'form-control',
-                                            'prompt' => 'เลือกประเภท',
-                                            'onchange' => 'findType(this)'));
-                                        ?></td>
+<!--                                    <td class="cat"><?php
+//                                        echo CHtml::dropDownList('Criteria[0][category]', "category", $categoryDropDownArray, array(
+//                                            'class' => 'form-control',
+//                                            'prompt' => 'เลือกประเภท',
+//                                            'onchange' => 'findType(this)'));
+                                    ?></td>-->
                                     <td class="type"><?php
                                         // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
-                                        echo CHtml::dropDownList('Criteria[0][type]', "type", array(), array(
+                                        echo CHtml::dropDownList('Criteria[0][type]', "type", $categoryDropDownArray, array(
                                             'prompt' => 'เลือกรูปแบบ',
                                             'class' => 'form-control',
                                             'onchange' => 'findSize(this);',
@@ -373,15 +373,15 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td class="cat"><?php
-                                        echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray, array(
-                                            'class' => 'form-control',
-                                            'prompt' => 'เลือกประเภท',
-                                            'onchange' => 'findType(this)'));
-                                        ?></td>
+<!--                                    <td class="cat"><?php
+//                                        echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray, array(
+//                                            'class' => 'form-control',
+//                                            'prompt' => 'เลือกประเภท',
+//                                            'onchange' => 'findType(this)'));
+                                    ?></td>-->
                                     <td class="type"><?php
                                         // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
-                                        echo CHtml::dropDownList('Criteria[1][type]', "type", array(), array(
+                                        echo CHtml::dropDownList('Criteria[1][type]', "type", $categoryDropDownArray, array(
                                             'prompt' => 'เลือกรูปแบบ',
                                             'class' => 'form-control',
                                             'onchange' => 'findSize(this);',
@@ -406,15 +406,15 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td class="cat"><?php
-                                        echo CHtml::dropDownList('Criteria[2][category]', "category", $categoryDropDownArray, array(
-                                            'class' => 'form-control',
-                                            'prompt' => 'เลือกประเภท',
-                                            'onchange' => 'findType(this)'));
-                                        ?></td>
+<!--                                    <td class="cat"><?php
+//                                        echo CHtml::dropDownList('Criteria[2][category]', "category", $categoryDropDownArray, array(
+//                                            'class' => 'form-control',
+//                                            'prompt' => 'เลือกประเภท',
+//                                            'onchange' => 'findType(this)'));
+                                    ?></td>-->
                                     <td class="type"><?php
                                         // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
-                                        echo CHtml::dropDownList('Criteria[2][type]', "type", array(), array(
+                                        echo CHtml::dropDownList('Criteria[2][type]', "type", $categoryDropDownArray, array(
                                             'prompt' => 'เลือกรูปแบบ',
                                             'class' => 'form-control',
                                             'onchange' => 'findSize(this);',
@@ -439,15 +439,15 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td class="cat"><?php
-                                        echo CHtml::dropDownList('Criteria[3][category]', "category", $categoryDropDownArray, array(
-                                            'class' => 'form-control',
-                                            'prompt' => 'เลือกประเภท',
-                                            'onchange' => 'findType(this)'));
-                                        ?></td>
+<!--                                    <td class="cat"><?php
+//                                        echo CHtml::dropDownList('Criteria[3][category]', "category", $categoryDropDownArray, array(
+//                                            'class' => 'form-control',
+//                                            'prompt' => 'เลือกประเภท',
+//                                            'onchange' => 'findType(this)'));
+                                    ?></td>-->
                                     <td class="type"><?php
                                         // echo CHtml::dropDownList('Criteria[0][type]', "type", $typeDropDownArray);
-                                        echo CHtml::dropDownList('Criteria[3][type]', "type", array(), array(
+                                        echo CHtml::dropDownList('Criteria[3][type]', "type", $categoryDropDownArray, array(
                                             'prompt' => 'เลือกรูปแบบ',
                                             'class' => 'form-control',
                                             'onchange' => 'findSize(this);',
@@ -472,10 +472,10 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
         <!--			<tr>
                                         <td>2</td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                      ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                      ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                      ?></td>
-                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                      ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                         ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                         ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                         ?></td>
+                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                         ?></td>
                                         <td><button id="deleteRow" class="btn btn-danger">remove</button></td>
                                 </tr>-->
 
@@ -552,7 +552,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </div>
                                 <!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-                                                                                        <button name="<?php // echo $item->brandModelId;                                                    ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                    ?></button>
+                                                                                        <button name="<?php // echo $item->brandModelId;                                                       ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                       ?></button>
 
                                                                         </div>-->
                             </div>

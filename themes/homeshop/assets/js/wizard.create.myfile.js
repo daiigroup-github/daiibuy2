@@ -274,7 +274,7 @@ $('#nextToStep3Atech').on('click', function () {
 });
 $(".atechNav").click(function () {
 	var base_url = baseUrl;
-	var brandModelId = $("#selectBrandModel").attr("value");
+	var brandModelId = $(this).attr("name");
 	var title = $("#Order_title").attr("value");
 	var provinceId = $("#selectProvince").attr("value");
 //		alert($("#aa").serialize());
