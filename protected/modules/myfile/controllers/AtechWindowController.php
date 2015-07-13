@@ -489,8 +489,12 @@ class AtechWindowController extends MasterMyFileController {
     }
 
     public function actionFindAllSizeByCate2Id() {
-        $data = Category2ToProduct::model()->findAll('category1Id=:category2Id', array(
-            ':category2Id' => (int) $_POST['cat2']));
+
+        $brands = Brand::model()->findAll('supplierId = 2 and status = 1');
+        $firstBrandId = $brands[0]->brandId;
+        $data = Category2ToProduct::model()->findAll('category1Id=:category2Id and brandId=:brandId', array(
+            ':category2Id' => (int) $_POST['cat2'],
+            ':brandId' => $firstBrandId));
 //		$result = array(
 //			);
         echo CHtml::tag('option', array(
