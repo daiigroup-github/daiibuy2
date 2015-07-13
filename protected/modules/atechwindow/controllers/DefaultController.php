@@ -62,8 +62,7 @@ class DefaultController extends MasterAtechwindowController {
 
 
 
-
-        $category2ToProducts = Category2ToProduct::model()->findAll('brandId = ' . $brandId . ' AND status = 1');
+        $category2ToProducts = Category2ToProduct::model()->findAll('brandId = ' . $brandId . ' AND status = 1 group by category1Id');
 //        throw new Exception(print_r($category2ToProducts[0]->category2Id, true));
         if (isset($category2ToProducts[0]))
             $defaultCategory2 = Category::model()->findByPk($category2ToProducts[0]->category2Id);
