@@ -63,7 +63,7 @@ class DefaultController extends MasterAtechwindowController {
 
 
 
-        $category2ToProducts = Category2ToProduct::model()->findAll('brandId = ' . $brandId . ' AND status = 1 group by category1Id');
+        $category2ToProducts = Category2ToProduct::model()->findAll('brandId = ' . $brandId . ' AND status = 1');
 //        throw new Exception(print_r($category2ToProducts[0]->category2Id, true));
         if (isset($category2ToProducts[0]))
             $defaultCategory2 = Category::model()->findByPk($category2ToProducts[0]->category2Id);
@@ -86,6 +86,7 @@ class DefaultController extends MasterAtechwindowController {
             endif;
         endif;
 
+//        throw new Exception(print_r($brandId, true));
         //Create By Tong
 //        $widthArray = Product::model()->findAtechWidthGroup($id);
 //        $heightArray = Product::model()->findAtechHeightGroup($id);

@@ -6,7 +6,7 @@ $this->breadcrumbs = array(
 
 <div class="row">
     <div style="">
-        <?php if (isset($category2Id)) { ?>
+        <?php if (count($category2ToProducts) > 0) { ?>
             <div class="tabs">
 
                 <div class="tab-heading">
@@ -38,29 +38,29 @@ $this->breadcrumbs = array(
                         if (isset($cate1c)):
                             ?>
                             <div id="<?php echo $cate1c->categoryId; ?>" class="row-fluid">
-                                <?php // $i = 0;    ?>
+                                <?php // $i = 0;     ?>
                                 <?php // foreach($myfileArray as $myfile):   ?>
                                 <!--<div class='col-lg-3 col-md-3 col-sm-12'>-->
                                 <?php $this->renderPartial('//layouts/_product_single_atech', array('subCate' => $cate1c, 'colors' => $colors)); ?>
                                 <!--</div>-->
                                 <!--<div class='col-lg-12'>-->
-                                <?php // echo $subCate->title;    ?>
+                                <?php // echo $subCate->title;     ?>
                                 <!--                        <div class="blog-item">
-                                                            <a class="btn <?php // echo ($myfile->status == 1) ? "btn-success" : "btn-primary"                                                                                                               ?> col-md-12"  href="<?php // echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId);                                                                                                               ?>">
-                                                                <h3><?php // echo $myfile->title;                                                                                                             ?><?php // if($myfile->status == 1):                                                                                                             ?><i class="fa fa-comments pull-left"></i><?php // endif;                                                                                                             ?>
-                                <?php // if (isset($myfile->userSpacialProject[0]) && $myfile->userSpacialProject[0]->status == 1):     ?>
+                                                            <a class="btn <?php // echo ($myfile->status == 1) ? "btn-success" : "btn-primary"                                                                                                                 ?> col-md-12"  href="<?php // echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId);                                                                                                                 ?>">
+                                                                <h3><?php // echo $myfile->title;                                                                                                               ?><?php // if($myfile->status == 1):                                                                                                               ?><i class="fa fa-comments pull-left"></i><?php // endif;                                                                                                               ?>
+                                <?php // if (isset($myfile->userSpacialProject[0]) && $myfile->userSpacialProject[0]->status == 1):      ?>
                                                                         <span class="label label-danger">R</span>
-                                <?php // elseif (isset($myfile->userSpacialProject[0]) && $myfile->userSpacialProject[0]->status == 2):     ?>
+                                <?php // elseif (isset($myfile->userSpacialProject[0]) && $myfile->userSpacialProject[0]->status == 2):      ?>
                                                                         <span class="label label-danger">S</span>
-                                <?php // endif;     ?>
+                                <?php // endif;      ?>
                                                                 </h3>
-                                                                <p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                                                                               ?></p>
-                                                                <p>วันที่แก้ไข :<?php // echo $this->dateThai($myfile->updateDateTime, 2, TRUE)                                                                                                               ?></p>
-                                                                <p>จังหวัดที่ส่ง : <?php // echo Province::model()->findByPk($myfile->provinceId)->provinceName;                                                                                                               ?></p>
+                                                                <p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                                                                                 ?></p>
+                                                                <p>วันที่แก้ไข :<?php // echo $this->dateThai($myfile->updateDateTime, 2, TRUE)                                                                                                                 ?></p>
+                                                                <p>จังหวัดที่ส่ง : <?php // echo Province::model()->findByPk($myfile->provinceId)->provinceName;                                                                                                                 ?></p>
                                                             </a>
                                                         </div>-->
                                 <!--</div>-->
-                                <?php // $i++;  ?>
+                                <?php // $i++;   ?>
                                 <?php // endforeach;  ?>
                             </div>
                             <?php
@@ -68,19 +68,19 @@ $this->breadcrumbs = array(
                     }
                     ?>
                     <!--<div id="2">-->
-                    <?php // $i = 0;    ?>
+                    <?php // $i = 0;     ?>
                     <?php // foreach($myfileHistoryArray as $myfile):   ?>
                     <!--<div class='col-lg-3 col-md-3 col-sm-12'>-->
                     <!--<div class="blog-item">-->
-                            <!--<a class="btn <?php // echo ($myfile->status == 1) ? "btn-success" : "btn-primary"                                                                                                               ?> col-md-12"  href="<?php // echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId);                                                                                                               ?>">-->
-                                    <!--<h3><?php // echo $myfile->title;                                                                                                               ?><?php // if($myfile->status == 1):                                                                                                               ?><i class="fa fa-comments pull-left"></i><?php // endif;                                                                                                               ?></h3>-->
-                                    <!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                                                                               ?></p>-->
-                                    <!--<p>วันที่แก้ไข :<?php // echo $this->dateThai($myfile->updateDateTime, 2, TRUE)                                                                                                               ?></p>-->
-                                    <!--<p>จังหวัดที่ส่ง : <?php // echo Province::model()->findByPk($myfile->provinceId)->provinceName;                                                                                                               ?></p>-->
+                            <!--<a class="btn <?php // echo ($myfile->status == 1) ? "btn-success" : "btn-primary"                                                                                                                 ?> col-md-12"  href="<?php // echo Yii::app()->createUrl('/index.php/myfile/madrid/view/id/' . $myfile->orderId);                                                                                                                 ?>">-->
+                                    <!--<h3><?php // echo $myfile->title;                                                                                                                 ?><?php // if($myfile->status == 1):                                                                                                                 ?><i class="fa fa-comments pull-left"></i><?php // endif;                                                                                                                 ?></h3>-->
+                                    <!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                                                                                 ?></p>-->
+                                    <!--<p>วันที่แก้ไข :<?php // echo $this->dateThai($myfile->updateDateTime, 2, TRUE)                                                                                                                 ?></p>-->
+                                    <!--<p>จังหวัดที่ส่ง : <?php // echo Province::model()->findByPk($myfile->provinceId)->provinceName;                                                                                                                 ?></p>-->
                     <!--</a>-->
                     <!--</div>-->
                     <!--</div>-->
-                    <?php // $i++;    ?>
+                    <?php // $i++;     ?>
                     <?php // endforeach;   ?>
                     <!--</div>-->
                 </div>
