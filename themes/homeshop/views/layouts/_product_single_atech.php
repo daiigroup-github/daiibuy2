@@ -31,8 +31,8 @@
 //                            foreach ($product['attributes'] as $k => $v):
             ?>
                                 <tr>
-                                    <td><?php // echo $k;                                                                                                                                                 ?></td>
-                                    <td><?php // echo $v;                                                                                                                                                 ?></td>
+                                    <td><?php // echo $k;                                                                                                                                                     ?></td>
+                                    <td><?php // echo $v;                                                                                                                                                     ?></td>
                                 </tr>
             <?php
 //                            endforeach;
@@ -49,7 +49,7 @@
                 <span class="price">
             <?php // if (isset($product['price'])): ?>
             <?php // if ($product['pricePromotion']): ?>
-                            <del><?php // echo $product['price'];                                                                                                                                                 ?></del> <?php // echo $product['pricePromotion'];                                                                                                                                                ?>
+                            <del><?php // echo $product['price'];                                                                                                                                                     ?></del> <?php // echo $product['pricePromotion'];                                                                                                                                                    ?>
             <?php // else: ?>
             <?php // echo $product['price']; ?>
             <?php // endif; ?>
@@ -130,7 +130,7 @@
     </div>
     <?php
 //    throw new Exception(print_r($subCate->categoryId, true));
-    $categoryToProducts = Category2ToProduct::model()->findAll('category1Id = ' . $subCate->categoryId);
+    $categoryToProducts = Category2ToProduct::model()->findAll('category1Id = ' . $subCate->categoryId . ' and brandId = ' . $brandId);
 
 //    throw new Exception(print_r($categoryToProduct, true));
     ?>
@@ -189,7 +189,7 @@
                             </div>
                         </td>
                         <td><a class="btn btn-primary btn-md addToCart" id="b<?php echo $categoryToProduct->productId; ?>" data-productid="<?php echo $categoryToProduct->product->productId; ?>"><i class="fa fa-shopping-cart"></i>เพิ่มลงตระกร้า</a>
-    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                                                                ?>">ดูรายการอื่นๆ</a>-->
+    <!--                            <a class="btn btn-success btn-xs" href="<?php // echo Yii::app()->createUrl("/atechwindow/category/viewOtherProduct?id=" . $category2ToProduct->id);                                                                    ?>">ดูรายการอื่นๆ</a>-->
                         </td>
                     </tr>
                 <?php endforeach; ?>
