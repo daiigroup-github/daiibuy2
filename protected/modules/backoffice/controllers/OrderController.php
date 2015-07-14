@@ -884,8 +884,9 @@ class OrderController extends MasterBackofficeController {
     }
 
     public function actionFindAllProductByCat1IdAjax() {
-        $data = Category2ToProduct::model()->findAll('category1Id=:category1Id', array(
-            ':category1Id' => (int) $_POST['cat1Id']));
+        $data = Category2ToProduct::model()->findAll('category1Id=:category1Id and status = 1 and brandId=:brandId', array(
+            ':category1Id' => (int) $_POST['cat1Id'],
+            ':brandId' => (int) $_POST['brandId']));
 //		$result = array(
 //			);
         echo CHtml::tag('option', array(
