@@ -1328,9 +1328,9 @@ class StepController extends MasterCheckoutController
 			{
 				$sumSupPay +=$sup->totalIncVAT;
 			}
-			if($orderGroup->totalIncVAT != ($_POST["payValue"] + $sumSupPay))
+			if($orderGroup->totalIncVAT != $_POST["payValue"])
 			{
-				if($orderGroup->totalIncVAT > ($_POST["payValue"] + $sumSupPay))
+				if($orderGroup->totalIncVAT >= ($_POST["payValue"] + $sumSupPay))
 				{
 					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"]);
 					$oldOrderGroup = $orderGroup;
@@ -1382,7 +1382,10 @@ class StepController extends MasterCheckoutController
 				}
 				else
 				{
-
+					$this->redirect(array(
+						"/myfile/ginzaHome/view",
+						'id'=>$orderGroup->parent->orderGroupId,
+						'errorMessage'=>'ไม่สามารถชำระยอดเงินเกินที่กำหนดได้ !!!'));
 				}
 			}
 			else

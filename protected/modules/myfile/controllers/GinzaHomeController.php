@@ -74,7 +74,8 @@ class GinzaHomeController extends MasterMyFileController
 			'productWithOutPay'=>$productWithOutPay,
 			'cat2ToProduct'=>$cat2ToProduct,
 			'price'=>$price,
-			'brandModels'=>$brandModels
+			'brandModels'=>$brandModels,
+			'errorMessage'=>isset($_GET["errorMessage"]) ? $_GET["errorMessage"] : NULL
 		));
 	}
 

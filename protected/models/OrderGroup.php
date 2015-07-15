@@ -116,6 +116,11 @@ class OrderGroup extends OrderGroupMaster
 					'OrderGroupSendWork',
 					array(
 						'orderGroupId')),
+				'parent'=>array(
+					self::BELONGS_TO,
+					'OrderGroup',
+					array(
+						'parentId'=>'orderGroupId')),
 		));
 	}
 

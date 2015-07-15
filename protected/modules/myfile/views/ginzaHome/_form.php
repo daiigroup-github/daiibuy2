@@ -7,7 +7,6 @@ $this->breadcrumbs = array(
 );
 ?>
 
-
 <?php
 $this->renderPartial("_navbar", array(
 	'model'=>$model));
@@ -22,6 +21,14 @@ $this->renderPartial("_navbar", array(
 		<div class="col-xs-12">
 			<div class="row sidebar-box blue " style="background-color: white">
 				<div class="col-md-12" style="border:1px black solid" id="item-table">
+					<?php if(isset($errorMessage)): ?>
+						<h1 class="text-center alert alert-danger" style="font-weight: bold">
+							<?php
+							echo $errorMessage;
+							?>
+						</h1>
+					<?php endif;
+					?>
 					<div class="form-group">
 						<div class="control-label col-md-2">
 							เลขที่ใบสั่งซื้อสินค้า
