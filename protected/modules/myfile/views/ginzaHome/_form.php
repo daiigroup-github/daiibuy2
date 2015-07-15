@@ -363,7 +363,7 @@ $this->renderPartial("_navbar", array(
 													<?php
 												else:
 //													if(($sumSup3 == $child2->totalIncVAT && $child3->status == 0) || $sumSup < $child3->totalIncVAT):
-													if((($child2->status >= 3 || $sumSup3 == $child2->totalIncVAT) && $child3->status == 0) || ($child3->status != 0 && $sumSup3 < $child3->totalIncVAT)):
+													if((($child2->status >= 3 || $sumSup3 == $child2->totalIncVAT)) || ($child3->status != 0 && $sumSup3 < $child3->totalIncVAT)):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 
