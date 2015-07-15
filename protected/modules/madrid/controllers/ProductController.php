@@ -77,15 +77,20 @@ class ProductController extends MasterMadridController {
     }
 
     public function actionAddFavourite() {
-        $model = new UserFavourite();
-        $model->userId = $_POST["userId"];
-        $model->category2Id = $_POST["category2Id"];
-        $model->createDateTime = new CDbExpression("NOW()");
-        $model->updateDateTime = new CDbExpression("NOW()");
-        if ($model->save()) {
-            echo 1;
+        $oldFav = UserFavourite::model()->findAll('userId = ' . $_POST["userId"] . ' and category2Id = ' . $_POST["category2Id"]);
+        if (count($oldFav) == 0) {
+            $model = new UserFavourite();
+            $model->userId = $_POST["userId"];
+            $model->category2Id = $_POST["category2Id"];
+            $model->createDateTime = new CDbExpression("NOW()");
+            $model->updateDateTime = new CDbExpression("NOW()");
+            if ($model->save()) {
+                echo 1;
+            } else {
+                echo 2;
+            }
         } else {
-            echo 2;
+            echo 3;
         }
     }
 

@@ -424,14 +424,18 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 		'type': 'POST',
 		'data': {'userId': userId, 'category2Id': category2Id, },
 		'success': function (data) {
-			if (data)
+			if (data == 1)
 			{
-				alert("เพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จ");
+                            alert("เพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จ");
 			}
-			else
+			else if(data == 2)
 			{
-				alert("ไม่สามารถเพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
+                            alert("ไม่สามารถเพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
 			}
+                        else
+                        {
+                            alert(word + " นี้ได้ถูกเพิ่มในรายการที่ชื่นชอบอยู่แล้ว");
+                        }
 		},
 	});
 }
