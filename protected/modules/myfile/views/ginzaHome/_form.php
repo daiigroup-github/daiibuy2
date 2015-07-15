@@ -358,7 +358,7 @@ $this->renderPartial("_navbar", array(
 											<td style="color:green;text-align: center"><?php echo ($sumSup4 == $child3->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child3->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
-												<?php if(($child2->totalIncVAT == $sumSup2 || $child3->status >= 3) && ($sumSup3 == $child3->totalIncVAT || $child3->status >= 3)): ?>
+												<?php if(($child2->totalIncVAT == $sumSup3 || $child3->status >= 3) && ($sumSup4 == $child3->totalIncVAT || $child3->status >= 3)): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
