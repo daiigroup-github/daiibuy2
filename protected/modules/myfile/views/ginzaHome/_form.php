@@ -162,15 +162,15 @@ $this->renderPartial("_navbar", array(
 										<td>
 											<?php
 											echo "ยอดชำระ " . number_format($item->totalIncVAT);
-											$sumSup = 0;
-											$sumSupNotPay = 0;
+											$sumSup2 = 0;
+											$sumSupNotPay2 = 0;
 											if(count($child1->supPay) > 0):
 												?>
 												<p style='color:green'>ชำระแล้ว</p>
 												<?php
 												foreach($child1->supPay as $sup)
 												{
-													$sumSup +=$sup->totalIncVAT;
+													$sumSup2 +=$sup->totalIncVAT;
 													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
 												}
 											endif;
@@ -180,7 +180,7 @@ $this->renderPartial("_navbar", array(
 												<?php
 												foreach($child1->supNotPays as $subNotPay)
 												{
-													$sumSupNotPay +=$subNotPay->totalIncVAT;
+													$sumSupNotPay2 +=$subNotPay->totalIncVAT;
 													echo "<p style='color:red'>" . number_format($subNotPay->totalIncVAT, 2) . " ";
 													if($subNotPay->status != 2)
 													{
@@ -197,18 +197,18 @@ $this->renderPartial("_navbar", array(
 											endif;
 											?>
 										</td>
-										<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child1->status); ?>
+										<td style="color:green;text-align: center"> <?php echo ($sumSup2 == $child1->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child1->status); ?>
 										</td>
 										<td style="width: 15%;text-align: center">
-											<?php if($child1->status >= 3): ?>
+											<?php if($child1->totalIncVAT == $sumSup2): ?>
 												<span class="label label-success">อนุมัติ</span>
 												<?php
 											else:
-												if(($model->status >= 3 && $child1->status == 0) || ($child1->status != 0 && $sumSup < $child1->totalIncVAT)):
+												if(($model->status >= 3 && $child1->status == 0) || ($child1->status != 0 && $sumSup2 < $child1->totalIncVAT)):
 													?>
 													<span class="label label-danger">รอการชำระเงิน</span>
 													<?php
-													if($sumSupNotPay == 0):
+													if($sumSupNotPay2 == 0):
 														echo CHtml::link("ชำระเงิน", "", array(
 															'class'=>'button blue btn-xs',
 															'onclick'=>"payClick(2)"));
@@ -240,22 +240,49 @@ $this->renderPartial("_navbar", array(
 											<td><?php echo $i; ?></td>
 											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
 											<td><?php
-												echo number_format($item->totalIncVAT) . "<br>";
-												$sumSup = 0;
-												foreach($child2->sup as $sup)
-												{
-													$sumSup +=$sup->totalIncVAT;
-													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
-												}
+												echo "ยอดชำระ " . number_format($item->totalIncVAT);
+												$sumSup3 = 0;
+												$sumSupNotPay3 = 0;
+												if(count($child1->supPay) > 0):
+													?>
+													<p style='color:green'>ชำระแล้ว</p>
+													<?php
+													foreach($child2->supPay as $sup)
+													{
+														$sumSup3 +=$sup->totalIncVAT;
+														echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+													}
+												endif;
+												if(count($child2->supNotPays) > 0):
+													?>
+													<p style='color:red'>รอยืนยันชำระ</p>
+													<?php
+													foreach($child2->supNotPays as $subNotPay)
+													{
+														$sumSupNotPay3 +=$subNotPay->totalIncVAT;
+														echo "<p style='color:red'>" . number_format($subNotPay->totalIncVAT, 2) . " ";
+														if($subNotPay->status != 2)
+														{
+															echo CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $subNotPay->orderGroupId), array(
+																'class'=>'btn btn-success',
+																'target'=>'_blank'));
+														}
+														else
+														{
+															echo " <span class='badge badge-warning'>รอตรวจสอบการชำระเงิน</span>";
+														}
+														echo "</p>";
+													}
+												endif;
 												?></td>
-											<td style="color:green;text-align: center"><?php echo ($sumSup == $child2->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child2->status); ?>
+											<td style="color:green;text-align: center"><?php echo ($sumSup3 == $child2->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child2->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
 												<?php if($child1->status >= 3 && ($sumSup == $child2->totalIncVAT || $child2->status >= 3)): ?>
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if(($child1->status >= 3 && $child2->status == 0) || ($child2->status != 0 && $sumSup < $child2->totalIncVAT)):
+													if(($child1->totalIncVAT == $sumSup2 && $child2->status == 0) || ($child2->status != 0 && $sumSup < $child2->totalIncVAT)):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 														<?php
@@ -291,20 +318,42 @@ $this->renderPartial("_navbar", array(
 											<td><?php echo $i; ?></td>
 											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
 											<td><?php
-												echo number_format($item->totalIncVAT);
-												$sumSup3 = 0;
-												foreach($child2->sup as $sup2)
-												{
-													$sumSup3 +=$sup2->totalIncVAT;
-												}
-												$sumSup = 0;
-												foreach($child3->sup as $sup)
-												{
-													$sumSup +=$sup->totalIncVAT;
-													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
-												}
+												echo "ยอดชำระ " . number_format($item->totalIncVAT);
+												$sumSup4 = 0;
+												$sumSupNotPay4 = 0;
+												if(count($child3->supPay) > 0):
+													?>
+													<p style='color:green'>ชำระแล้ว</p>
+													<?php
+													foreach($child3->supPay as $sup)
+													{
+														$sumSup4 +=$sup->totalIncVAT;
+														echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+													}
+												endif;
+												if(count($child3->supNotPays) > 0):
+													?>
+													<p style='color:red'>รอยืนยันชำระ</p>
+													<?php
+													foreach($child3->supNotPays as $subNotPay)
+													{
+														$sumSupNotPay4 +=$subNotPay->totalIncVAT;
+														echo "<p style='color:red'>" . number_format($subNotPay->totalIncVAT, 2) . " ";
+														if($subNotPay->status != 2)
+														{
+															echo CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $subNotPay->orderGroupId), array(
+																'class'=>'btn btn-success',
+																'target'=>'_blank'));
+														}
+														else
+														{
+															echo " <span class='badge badge-warning'>รอตรวจสอบการชำระเงิน</span>";
+														}
+														echo "</p>";
+													}
+												endif;
 												?></td>
-											<td style="color:green;text-align: center"><?php echo ($sumSup == $child3->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child3->status); ?>
+											<td style="color:green;text-align: center"><?php echo ($sumSup4 == $child3->totalIncVAT) ? "การสั่งซื้อสินค้าสมบูรณ์(รอการจัดส่ง)" : OrderGroup::model()->showOrderStatus($child3->status); ?>
 											</td>
 											<td style="width: 15%;text-align: center">
 												<?php if($child2->status >= 3 && ($sumSup == $child3->totalIncVAT || $child3->status >= 3)): ?>
