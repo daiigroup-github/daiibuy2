@@ -2,13 +2,32 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
-		<div class="col-md-12">
-			<?php
-			if(isset($conditionOrder)):
-				?>
+		<?php
+		if(isset($conditionOrder)):
+			?>
+			<div class="col-md-12" >
+				<div class="form-group">
+					<div class="control-label col-md-2">
+						เลขที่ใบสั่งซื้อสินค้า
+					</div>
+					<div class="col-md-10">
+						<h4><?php echo $conditionOrder->orderNo; ?></h4>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12 text-center">
+						<?php
+						echo CHtml::image(Yii::app()->baseUrl . $conditionOrder->orders[0]->orderItems[0]->product->productImagesSort[0]->image, "", array(
+							'style'=>'width:500px'))
+						?>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="col-md-12">
 				<div class="row">
 					<div class="col-md-11">
 						เนื่องจากบางบริษัทได้เข้าดำเนินการสำรวจผังตามใบสั่งซื้อของลูกค้าไปแล้วนั้น ทางบริษัทเห็นว่า สามารถเข้าดำเนินการก่อสร้างขั้นตอไปได้<br>
@@ -269,7 +288,7 @@
 											?>
 										</td>
 									</tr>
-<?php endforeach; ?>
+								<?php endforeach; ?>
 							</tbody>
 						</table>
 					</form>
@@ -285,7 +304,7 @@
 					<div class="row">
 						<div class="col-md-12 text-center" style="font-weight: bold;color: black">
 							ข้าพเจ้าได้อ่านและทำความเข้าใจรายละเอียดตามข้อตกลงและเงื่อนไขข้างต้นดีแล้ว<br>
-<?php echo CHtml::radioButton("accept", TRUE) ?>
+							<?php echo CHtml::radioButton("accept", TRUE) ?>
 							<label class="radio-label" for="accept">ยอมรับ</label>
 						</div>
 					</div>
