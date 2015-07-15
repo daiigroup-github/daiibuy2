@@ -1330,7 +1330,7 @@ class StepController extends MasterCheckoutController
 			}
 			if($orderGroup->totalIncVAT != $_POST["payValue"])
 			{
-				if($orderGroup->totalIncVAT >= ($_POST["payValue"] + $sumSupPay) || $_POST["payValue"] < 1000)
+				if($orderGroup->totalIncVAT >= ($_POST["payValue"] + $sumSupPay) && $_POST["payValue"] > 1000)
 				{
 					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"]);
 					$oldOrderGroup = $orderGroup;
