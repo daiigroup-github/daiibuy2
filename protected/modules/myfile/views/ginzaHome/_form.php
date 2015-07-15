@@ -282,7 +282,7 @@ $this->renderPartial("_navbar", array(
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if(($child2->status == 0 || ($child2->status != 0 && $sumSup3 < $child2->totalIncVAT)) && $child2->status < 1):
+													if((($child1->status >= 3 || $child1->totalIncVAT == $sumSup2) && ($child2->status == 0 || ($child2->status != 0 && $sumSup3 < $child2->totalIncVAT)) && $child2->status < 1)):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 														<?php
@@ -362,7 +362,7 @@ $this->renderPartial("_navbar", array(
 													<span class="label label-success">อนุมัติ</span>
 													<?php
 												else:
-													if(($child3->status == 0 || ($child3->status != 0 && $sumSup4 < $child3->totalIncVAT)) && $child3->status < 1):
+													if(($child2->status >= 3 || $child2->totalIncVAT == $sumSup3) && (($child3->status == 0 || ($child3->status != 0 && $sumSup4 < $child3->totalIncVAT)) && $child3->status < 1)):
 														?>
 														<span class="label label-danger">รอการชำระเงิน</span>
 
