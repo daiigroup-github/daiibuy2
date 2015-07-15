@@ -115,7 +115,7 @@ $form = $this->beginWidget('CActiveForm', array(
             <?php if(doubleval($supplierModel->minimumOrder) > doubleval($orderSummary['grandTotal'])):?>
                 <br />
                 <p class="alert alert-danger text-center">
-                    เนื่องจากยอดซื้อของลูกค้า <?php echo number_format($orderSummary['grandTotal'], 2);?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format($supplierModel->minimumOrder, 2);?> บาท
+                    เนื่องจากยอดซื้อของลูกค้า <?php echo number_format(doubleval($orderSummary['grandTotal']), 2);?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format(doubleval($supplierModel->minimumOrder), 2);?> บาท
                     ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
                 </p>
                 <br />
