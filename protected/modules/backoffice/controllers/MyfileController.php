@@ -257,6 +257,16 @@ class MyfileController extends MasterBackofficeController {
                     }
                 endif;
 
+                $category1Id = $_POST["OrderItems"]["category1Id"][$k];
+                $orderDetailModel = OrderDetail::model()->find('orderId = ' . $id);
+                $orderDetailValueModel = new OrderDetailValue();
+                $orderDetailValueModel->orderDetailId = $orderDetailModel->orderDetailId;
+                $orderDetailValueModel->orderDetailTemplateFieldId = 9;
+                $orderDetailValueModel->value = $category1Id;
+                $orderDetailValueModel->createDateTime = new CDbExpression("NOW()");
+                $orderDetailValueModel->updateDateTime = new CDbExpression("NOW()");
+                $orderDetailValueModel->save();
+
 //                throw new Exception(print_r($flag, true));
                 if ($flag) {
                     $model->status = 1;

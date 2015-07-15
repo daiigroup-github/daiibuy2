@@ -295,14 +295,20 @@ $(".atechNav").click(function () {
 $(".atechUpdate").click(function () {
 	var base_url = baseUrl;
 	var brandModelId = $("#selectBrandModel").attr("value");
+        if (typeof brandModelId == 'undefined') {
+            brandModelId = $(this).attr("name");
+        }
+        if(typeof $(this).attr("value") != 'undefined'){
+            var orderId = $(this).attr("value");
+        }
 	var title = $("#Order_title").attr("value");
 	var provinceId = $("#selectProvince").attr("value");
-//		alert($("#editTableForm").serialize());
+//		alert(brandModelId);
 //		alert(title + ", " + provinceId + ", " + brandModelId);
 	$.ajax({
 		url: base_url + '/myfile/atechWindow/updatePriceMyFile',
 		type: 'POST',
-		data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId,
+		data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + '&orderId=' + orderId,
 		success: function (data) {
 			$("#atech_result").html(data);
 		}

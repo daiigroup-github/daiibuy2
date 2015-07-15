@@ -322,7 +322,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row text-center">
                     <form id="aa">
-                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                          ?>">
+                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                                       ?>">
                             <thead>
                                 <tr>ตารางแสดงรายละเอียดสินค้า</tr>
                                 <tr>
@@ -472,10 +472,10 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
         <!--			<tr>
                                         <td>2</td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                          ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                          ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                          ?></td>
-                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                          ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                                       ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                                       ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                                       ?></td>
+                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                                       ?></td>
                                         <td><button id="deleteRow" class="btn btn-danger">remove</button></td>
                                 </tr>-->
 
@@ -539,20 +539,32 @@ $form = $this->beginWidget('CActiveForm', array(
                                         </div>
                                         <div class="sidebar-box-content">
                                             <ul>
-                                                <?php foreach ($modelArray as $item): ?>
+                                                <?php
+//                                                if (isset($productResult)) {
+//                                                    throw new Exception(print_r($productResult, true));
+//                                                    $cat2ToProductModel = Category2ToProduct::model()->find('productId = ' . $productResult[0]->productId);
+//                                                    $brandModelId = $cat2ToProductModel->brandModelId;
+//                                                }
+                                                foreach ($modelArray as $item):
+//                                                    if ($item->brandModelId == $brandModelId) {
+                                                    ?>
                                                     <li>
-                                                        <a class="<?php echo $this->action->id == 'view' ? 'atechUpdate' : ($this->action->id == 'create' ? 'atechNav' : 'atechUpdate'); ?>" href="#" name="<?php echo $item->brandModelId; ?>" >
+                                                        <a value="<?php echo isset($model->orderId) ? $model->orderId : ""; ?>" class="<?php echo $this->action->id == 'view' ? 'atechUpdate' : ($this->action->id == 'create' ? 'atechNav' : 'atechUpdate'); ?>" href="#" name="<?php echo $item->brandModelId; ?>" >
                                                             <?php echo $item->title; ?>
                                                         </a>
                                                     </li>
-                                                <?php endforeach; ?>
+                                                    <?php
+//                                                    }
+                                                endforeach;
+                                                ?>
+
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-                                                                                        <button name="<?php // echo $item->brandModelId;                                                        ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                        ?></button>
+                                                                                        <button name="<?php // echo $item->brandModelId;                                                                     ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                                     ?></button>
 
                                                                         </div>-->
                             </div>
@@ -690,38 +702,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);          ?>
+<?php // echo $form->errorSummary($model);            ?>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'supplierId');       ?>
 <?php // echo $form->textField($model, 'supplierId');       ?>
-<?php // echo $form->error($model, 'supplierId');         ?>
+<?php // echo $form->error($model, 'supplierId');           ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'type');       ?>
 <?php // echo $form->textField($model, 'type');       ?>
-<?php // echo $form->error($model, 'type');         ?>
+<?php // echo $form->error($model, 'type');           ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'status');        ?>
 <?php // echo $form->textField($model, 'status');       ?>
-<?php // echo $form->error($model, 'status');          ?>
+<?php // echo $form->error($model, 'status');            ?>
         </div>
 
         <div class="row">
 <?php // echo $form->labelEx($model, 'title');       ?>
 <?php // echo $form->textField($model, 'title');        ?>
-<?php // echo $form->error($model, 'title');           ?>
+<?php // echo $form->error($model, 'title');             ?>
         </div>
 
 
         <div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');              ?>
+<?php // echo CHtml::submitButton('Submit');                ?>
         </div>
 
-<?php // $this->endWidget();             ?>
+<?php // $this->endWidget();               ?>
 
 </div>-->
 <!-- form -->

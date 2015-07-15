@@ -100,6 +100,7 @@ class AtechWindowController extends MasterMyFileController {
                         }
 
                         if ($flag) {
+//                            throw new Exception(print_r($_POST["OrderDetailValue"], true));
                             foreach ($_POST["OrderDetailValue"] as $k => $v) {
                                 if ($v["value"] <> "") {
                                     $orderFieldValue = new OrderDetailValue();
@@ -387,6 +388,10 @@ class AtechWindowController extends MasterMyFileController {
     }
 
     public function actionUpdatePriceMyFile() {
+//        throw new Exception(print_r($_GET['id'], true));
+        if (isset($_POST['orderId'])) {
+            $orderId = $_POST['orderId'];
+        }
         if (isset($_POST['Criteria'])) {
             $criteria = $_POST['Criteria'];
         }
@@ -396,7 +401,6 @@ class AtechWindowController extends MasterMyFileController {
         if (isset($_POST['title'])) {
             $title = $_POST['title'];
         }
-//        throw new Exception(print_r($_POST['brandModelId'], true));
         if (isset($_POST['brandModelId'])) {
             $brandModelId = $_POST['brandModelId'];
         }
@@ -432,11 +436,11 @@ class AtechWindowController extends MasterMyFileController {
 //			$height = $size[1];
 //		}
         if (isset($criteria) && isset($brandModelId) && isset($provinceId)) {
-//			throw new Exception(print_r("criteria",true));
+//            throw new Exception(print_r("criteria", true));
             $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
         } else {
-//			throw new Exception(print_r("update",true));
-            $itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
+//            throw new Exception(print_r($productArray, true));
+            $itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
         }
 //		throw new Exception(print_r($itemSetArray,true));
         echo $this->renderPartial('/atechWindow/_edit_product_result', array(
