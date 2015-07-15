@@ -7,13 +7,14 @@ class GinzaTownController extends MasterMyFileController
 	const ORDER_PERIOD_2 = 2;
 	const ORDER_PERIOD_3 = 3;
 	const ORDER_PERIOD_4 = 4;
+
 //	const ORDER_PERIOD_5 = 5;
 
 	public function actionIndex()
 	{
 		$this->layout = '//layouts/cl1';
 
-		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null ", array(
+		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null AND mainFurnitureId is null ", array(
 			":userId"=>isset(Yii::app()->user->id) ? Yii::app()->user->id : 0,
 			":supplierId"=>5
 		));
@@ -25,6 +26,7 @@ class GinzaTownController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 		Yii::app()->session['supplierId'] = 5;
+		$brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(5);
 		$model = OrderGroup::model()->findByPk($id);
 		$productId = $model->orders[0]->orderItems[0]->productId;
 		if(isset($model->child))
@@ -71,7 +73,9 @@ class GinzaTownController extends MasterMyFileController
 			'model'=>$model,
 			'productWithOutPay'=>$productWithOutPay,
 			'cat2ToProduct'=>$cat2ToProduct,
-			'price'=>$price
+			'price'=>$price,
+			'brandModelArray'=>$brandModelArray,
+			'errorMessage'=>isset($_GET["errorMessage"]) ? $_GET["errorMessage"] : NULL
 		));
 	}
 
@@ -93,6 +97,160 @@ class GinzaTownController extends MasterMyFileController
 	public function getOrderPeriodText($period)
 	{
 		return $this->findAllOrderPeriodArray[$period];
+	}
+
+	public function actionFindHouseModel()
+	{
+
+		if(isset($_POST['brandModelId']))
+		{
+			$res = '';
+			$styles = CategoryToSub::model()->findAll(array(
+				'condition'=>'brandModelId = :brandModelId',
+				'params'=>array(
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก House Model --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->categoryId . '">' . $style->category->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindHouseSeries()
+	{
+
+		if(isset($_POST['category1Id']))
+		{
+			$res = '';
+			$styles = Category2ToProduct::model()->findAll(array(
+				'condition'=>'category1Id=:category1Id AND brandModelId = :brandModelId GROUP BY category2Id',
+				'params'=>array(
+					':category1Id'=>$_POST['category1Id'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก House Series --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->category2->categoryId . '">' . $style->category2->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindHouseColor()
+	{
+
+		if(isset($_POST['category2Id']))
+		{
+			$res = '';
+			$styles = Category2ToProduct::model()->findAll(array(
+				'condition'=>'category1Id=:category1Id AND brandModelId = :brandModelId AND category2Id = :category2Id',
+				'params'=>array(
+					':category1Id'=>$_POST['category1Id'],
+					':category2Id'=>$_POST['category2Id'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก House Color --</option>';
+			foreach($styles[0]->product->productOptionGroups[0]->productOptions as $style)
+			{
+				$res .= '<option value="' . $style->productOptionId . '">' . $style->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFurniture($id)
+	{
+		$this->layout = '//layouts/cl1';
+		$model = OrderGroup::model()->findByPk($id);
+		$cat2ToProduct = $model->orders[0]->orderItems[0]->product->category2ToProducts[0];
+		$furnitureGroups = FurnitureGroup::model()->findAll("categoryId = $cat2ToProduct->category1Id AND category2Id = $cat2ToProduct->category2Id");
+		$this->render(
+			'_furniture', array(
+			'model'=>$model,
+			'furnitureGroups'=>$furnitureGroups
+			)
+		);
+	}
+
+	public function actionFurnitureColor()
+	{
+		$furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
+		if(isset($_POST["orderGroupId"]) && !empty($_POST["orderGroupId"]))
+		{
+			$model = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+		}
+
+		echo $this->renderPartial("_furniture_color", array(
+			'furnitures'=>$furnitureGroup->furnitures,
+			'model'=>$model), true);
+	}
+
+	public function actionFurnitureItem()
+	{
+		$furniture = Furniture::model()->findByPk($_POST["furnitureId"]);
+
+		echo $this->renderPartial("_furniture_item", array(
+			'furniture'=>$furniture), true);
+	}
+
+	public function actionFurnitureItemSub()
+	{
+		$result = array();
+		$furnitureItem = FurnitureItem::model()->findByPk($_POST["furnitureItemId"]);
+		if(isset($furnitureItem))
+		{
+			$result["status"] = TRUE;
+			$result["furnitureItemSub"] = $this->renderPartial("_furniture_item_sub", array(
+				'furnitureItem'=>$furnitureItem), true);
+			$result['planName'] = $furnitureItem->title;
+			$result['planImage'] = CHtml::image(Yii::app()->baseUrl . $furnitureItem->plan, '', array(
+					'style'=>'width:100%'));
+		}
+		else
+		{
+			$result["status"] = FALSE;
+		}
+
+		echo CJSON::encode($result);
+	}
+
+	public function actionRenderCondition()
+	{
+		$model = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+		$child1 = $model->child;
+		$conditionOrder = null;
+		switch($_POST["period"])
+		{
+			case 2:
+				$conditionOrder = $model;
+				break;
+			case 3:
+				$conditionOrder = $child1;
+				break;
+			case 4:
+				$conditionOrder = $child1->child;
+				break;
+		}
+		$brandModels = BrandModel::model()->findAllBrandModelArrayBySupplierId(5);
+		echo $this->renderPartial("_condition", array(
+			'model'=>$model,
+			'period'=>$_POST["period"],
+			'brandModels'=>$brandModels,
+			'child1'=>$child1,
+			'conditionOrder'=>$conditionOrder), true);
 	}
 
 }

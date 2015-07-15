@@ -136,4 +136,16 @@ class CategoryToSub extends CategoryToSubMaster
 		return $result;
 	}
 
+	public function findCatArrayByBrandModelId($brandModelId)
+	{
+		$result = array();
+		$models = $this->findAll("brandModelId =" . $brandModelId);
+		foreach($models as $item)
+		{
+			$result[$item->categoryId] = $item->category->title;
+		}
+
+		return $result;
+	}
+
 }

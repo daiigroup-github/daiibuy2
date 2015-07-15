@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<?php
@@ -118,18 +118,18 @@
 										echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
 										$category2ToProduct = Category2ToProduct::model()->find("productId = " . $model->orders[0]->orderItems[0]->productId);
-										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
+										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, $brandModels, array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'id'=>'brandModelId',
 											'ajax'=>array(
 												'type'=>'POST',
 												'data'=>array(
 													'brandModelId'=>'js:this.value'),
-												'url'=>$this->createUrl('/myfile/ginzaHome/findStyle'),
+												'url'=>$this->createUrl('/myfile/ginzaTown/findHouseModel'),
 												'success'=>'js:function(data){
 
 										//$("#sameAddress").prop("disabled", true);
-										$("#styleId").html(data);
+										$("#category1Id").html(data);
 										//$("#billingAmphur").prop("disabled", false);
 										//$("#billingDistrict").html("");
 										//$("#billingDistrict").prop("disabled", true);
@@ -138,33 +138,9 @@
 										?></td>
 								</tr>
 								<tr>
-									<td>รูปแบบ</td>
-									<td><?php
-										echo CHtml::dropDownList("styleId", $model->orders[0]->orderItems[0]->styleId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
-											'prompt'=>'-- เลือกแบบบ้าน --',
-											'id'=>'styleId'
-											,
-											'ajax'=>array(
-												'type'=>'POST',
-												'data'=>array(
-													'categoryId'=>'js:this.value',
-													'brandModelId'=>'js:$("#brandModelId").val()'),
-												'url'=>$this->createUrl('/myfile/ginzaHome/findHouseModel'),
-												'success'=>'js:function(data){
-
-										//$("#sameAddress").prop("disabled", true);
-										$("#category1Id").html(data);
-										//$("#billingAmphur").prop("disabled", false);
-										//$("#billingDistrict").html("");
-										//$("#billingDistrict").prop("disabled", true);
-										 }')
-										));
-										?></td>
-								</tr>
-								<tr>
 									<td>แบบบ้าน</td>
 									<td><?php
-										echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $model->orders[0]->orderItems[0]->styleId), array(
+										echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findCatArrayByBrandModelId($category2ToProduct->brandModelId), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
 												'type'=>'POST',

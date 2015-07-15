@@ -1272,7 +1272,7 @@ class StepController extends MasterCheckoutController
 				$cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
 //				throw new Exception(print_r($_POST, true));
 //				throw new Exception(print_r($cat2p->attributes, true));
-				if($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])
+				if($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || (isset($orderGroup->orders[0]->orderItems[0]->styleId) && $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"]))
 				{
 
 					try

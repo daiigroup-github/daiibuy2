@@ -4,6 +4,6 @@ $this->renderPartial('_form', array(
 	'productWithOutPay'=>$productWithOutPay,
 	'cat2ToProduct'=>$cat2ToProduct,
 	'price'=>$price,
-	'brandModels'=>$brandModels,
+	'brandModelArray'=>$brandModelArray,
 	'errorMessage'=>isset($_GET["errorMessage"]) ? $_GET["errorMessage"] : NULL));
 ?>

@@ -47,7 +47,7 @@ $this->renderPartial("_navbar", array(
 					</div>
 				</div>
 				<div class="col-md-12" style="border:1px black solid" id="item-table">
-					<h2>GINZA HOME</h2>
+					<h2>GINZA Town</h2>
 					<h4>ตารางแสดงรายละเอียดสินค้า</h4>
 					<br>
 					<div class="row">
@@ -67,7 +67,7 @@ $this->renderPartial("_navbar", array(
 								</tr>
 								<tr>
 									<td>Colour</td>
-									<td>Silver</td>
+									<td>-</td>
 								</tr>
 <!--								<tr>
 									<td>Function</td>
@@ -441,7 +441,7 @@ $this->renderPartial("_navbar", array(
 					$this->renderPartial("_condition", array(
 						'model'=>$model,
 						'period'=>2,
-						'brandModels'=>$brandModels,
+						'brandModels'=>$brandModelArray,
 						'child1'=>$child1));
 					?>
 				</div>
@@ -472,7 +472,7 @@ $this->renderPartial("_navbar", array(
 				?>
 			</div>
 			<div class="col-md-12" style="border:1px black solid" id="item-table">
-				<h2>GINZA HOME</h2>
+				<h2>GINZA Town</h2>
 				<h4>ตารางแสดงรายละเอียดสินค้า</h4>
 				<br>
 				<div class="row">
@@ -554,58 +554,60 @@ $this->renderPartial("_navbar", array(
 						</tbody>
 					</table>
 				</form>
-				<form id="payForm4"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child3->orderGroupId); ?>">
-					<table class="row hide table table-bordered" id="period4" >
-						<thead>
-							<tr style="background-color: blue">
-								<th>งวด</th>
-								<th>รายการ</th>
-								<th>ราคา</th>
-								<th>ยอดชำระ</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-							echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
-							echo CHtml::hiddenField("period", 4);
-							foreach($child3->orders as $item):
-								?>
-								<tr style="color:black">
-									<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 4</span></td>
-									<td>
-										<?php
-										echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
-										?>
-									</td>
-									<td style="font-size:24px">
-										<?php
-										echo number_format($child3->totalIncVAT);
-										$sumSup = 0;
-										foreach($child3->sup as $sup)
-										{
-											$sumSup +=$sup->totalIncVAT;
-											echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
-										}
-										?>
-									</td>
-									<td>
-										<?php
-										echo CHtml::textField("payValue", $child3->totalIncVAT - $sumSup, array(
-											'class'=>'input-large text-right',
-											'style'=>'border:2px solid black;color:blue;font-size:24px'))
-										?>
-										<a onclick="backToStep3()" class="btn btn-success">Back</a>
-										<?php
-										echo CHtml::link("ชำระเงิน", "", array(
-											'class'=>'btn btn-primary',
-											'onclick'=>"pay(4)"));
-										?>
-									</td>
+				<?php if(isset($child3)): ?>
+					<form id="payForm4"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child3->orderGroupId); ?>">
+						<table class="row hide table table-bordered" id="period4" >
+							<thead>
+								<tr style="background-color: blue">
+									<th>งวด</th>
+									<th>รายการ</th>
+									<th>ราคา</th>
+									<th>ยอดชำระ</th>
 								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</form>
+							</thead>
+							<tbody>
+								<?php
+								echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
+								echo CHtml::hiddenField("period", 4);
+								foreach($child3->orders as $item):
+									?>
+									<tr style="color:black">
+										<td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 4</span></td>
+										<td>
+											<?php
+											echo "<span style='font-size:24px'> " . $item->orderItems[0]->product->name . "</span> <br>" . $this->getOrderPeriodText(3);
+											?>
+										</td>
+										<td style="font-size:24px">
+											<?php
+											echo number_format($child3->totalIncVAT);
+											$sumSup = 0;
+											foreach($child3->sup as $sup)
+											{
+												$sumSup +=$sup->totalIncVAT;
+												echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+											}
+											?>
+										</td>
+										<td>
+											<?php
+											echo CHtml::textField("payValue", $child3->totalIncVAT - $sumSup, array(
+												'class'=>'input-large text-right',
+												'style'=>'border:2px solid black;color:blue;font-size:24px'))
+											?>
+											<a onclick="backToStep3()" class="btn btn-success">Back</a>
+											<?php
+											echo CHtml::link("ชำระเงิน", "", array(
+												'class'=>'btn btn-primary',
+												'onclick'=>"pay(4)"));
+											?>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</form>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
