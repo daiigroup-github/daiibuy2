@@ -112,14 +112,17 @@ $form = $this->beginWidget('CActiveForm', array(
 
 		<div class="page-content">
 
-            <?php if(doubleval($supplierModel->minimumOrder) > doubleval($orderSummary['grandTotal'])):?>
-                <br />
-                <p class="alert alert-danger text-center">
-                    เนื่องจากยอดซื้อของลูกค้า <?php echo number_format(doubleval($orderSummary['grandTotal']), 2);?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format(doubleval($supplierModel->minimumOrder), 2);?> บาท
-                    ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
-                </p>
-                <br />
-            <?php endif;?>
+			<?php
+			$orderSummary['grandTotal'] = str_replace(",", "", $orderSummary['grandTotal']);
+			if(doubleval($supplierModel->minimumOrder) > doubleval($orderSummary['grandTotal'])):
+				?>
+				<br />
+				<p class="alert alert-danger text-center">
+					เนื่องจากยอดซื้อของลูกค้า <?php echo number_format(doubleval($orderSummary['grandTotal']), 2); ?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format(doubleval($supplierModel->minimumOrder), 2); ?> บาท
+					ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
+				</p>
+				<br />
+<?php endif; ?>
 
 			<input type="checkbox" name="accept" id="accept" />
 			<label class="checkbox-label" for="accept"> ฉันได้อ่านและยอมรับ <a id="readTermCondition" style="text-decoration: underline;color: red" href="#" >ข้อตกลงและเงื่อนไข</a> การสั่งซื้อสินค้า ของ www.daiibuy.com</label>
@@ -129,20 +132,20 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="modal fade " id="termAndConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	 aria-hidden="true">
 	<div class="modal-dialog" style="width:900px">
-		<?php $content = Content::model()->findByPk(16); ?>
+<?php $content = Content::model()->findByPk(16); ?>
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="carousel-heading">
-					<?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>?>
+<?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> ?>
 					<h4 class="modal-title" id="myModalLabel"><?php echo $content->title; ?></h4>
 				</div>
 			</div>
 			<div class="modal-body">
-				<?php echo $content->description; ?>
+<?php echo $content->description; ?>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" data-dismiss="modal" id="acceptModal">Accept</button>
-				<?php //<button type="button" class="btn btn-primary">Save changes</button>?>
+<?php //<button type="button" class="btn btn-primary">Save changes</button> ?>
 			</div>
 		</div>
 	</div>
