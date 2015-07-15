@@ -72,6 +72,7 @@ class MadridController extends MasterMyFileController {
         $orderDetailValueCat2 = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailId . ' AND orderDetailTemplateFieldId = 6');
 //        throw new Exception(print_r($orderDetailTemplateFieldCat2, true));
         $category2Id = isset($orderDetailValueCat2->value) ? $orderDetailValueCat2->value : null;
+//        throw new Exception(print_r($category2Id, true));
 
         $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
         $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
@@ -98,9 +99,10 @@ class MadridController extends MasterMyFileController {
             $results = array();
             $results["themes"] = $resultTheme;
             $results["sets"] = $resultSets;
-            $results["status"] = true;
+            $results["status"] = 1;
         }else {
-            $results["status"] = false;
+            $results["status"] = 0;
+//            throw new Exception(print_r($results["status"], true));
         }
 
 
@@ -129,7 +131,7 @@ class MadridController extends MasterMyFileController {
         $subCategorysId = implode(',', CHtml::listData($categoryToSub, 'categoryId', 'categoryId'));
         $categorys = Category::model()->findAll("categoryId IN (" . $subCategorysId . ")");
         $items = $this->showType($categorys);
-//        throw new Exception(print_r($orderDetailTemplateField, true));
+//        throw new Exception(print_r($results, true));
         $this->render('view', array(
             'model' => $model,
             'orderDetailTemplateField' => $orderDetailTemplateField,
@@ -231,6 +233,9 @@ class MadridController extends MasterMyFileController {
                                 }
                             }
                         }
+                    } else {
+//                        throw new Exception(print_r($model, true));
+                        $flag = FALSE;
                     }
 
 
@@ -269,13 +274,22 @@ class MadridController extends MasterMyFileController {
 //                throw new Exception(print_r($model, true));
                 if ($model->save(false)) {
                     $orderId = Yii::app()->db->lastInsertID;
-//                    throw new Exception(print_r($orderId, true));
+                    $orderDetailModel->orderId = $orderId;
+                    if ($orderDetailModel->save()) {
+                        $orderDetailModel->orderDetailId = Yii::app()->db->lastInsertID;
+                        $flag = true;
+                    } else {
+                        $flag = false;
+                    }
+//                    throw new Exception(print_r($orderDetailModel, true));
 
                     foreach ($_POST["OrderItems"] as $k => $v) {
 
                         if (!empty($v["productId"])) {
+                            $product = Product::model()->findByPk($v["productId"]);
                             $orderItems = new OrderItems();
                             $orderItems->orderId = $orderId;
+                            $orderItems->title = $product->name;
                             $orderItems->attributes = $_POST["OrderItems"][$k];
                             $orderItems->createDateTime = new CDbExpression("NOW()");
                             if (isset($_POST["OrderItems"][$k]["price"])) {
@@ -298,22 +312,35 @@ class MadridController extends MasterMyFileController {
 //                throw new Exception(print_r($flag, true));
                 if ($flag) {
                     foreach ($_POST["OrderDetailValue"] as $k => $v) {
-                        $orderFieldValue = new OrderDetailValue();
-                        $orderFieldValue->orderDetailTemplateFieldId = $k;
-                        $orderFieldValue->value = $v["value"];
-                        $orderFieldValue->orderDetailId = $this->orderDetailId;
-                        $orderFieldValue->createDateTime = new CDbExpression("NOW()");
-                        $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
-                        if (!$orderFieldValue->save()) {
-                            $flag = FALSE;
-                            break;
+                        if (isset($v["value"])) {
+                            $orderFieldValue = new OrderDetailValue();
+                            $orderFieldValue->orderDetailTemplateFieldId = $k;
+                            $orderFieldValue->value = $v["value"];
+                            $orderFieldValue->orderDetailId = $orderDetailModel->orderDetailId;
+                            $orderFieldValue->createDateTime = new CDbExpression("NOW()");
+                            $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
+//                            throw new Exception(print_r($orderFieldValue, true));
+                            if ($orderFieldValue->save()) {
+                                $flag = TRUE;
+                            } else {
+                                $flag = FALSE;
+                                break;
+                            }
+                        } else {
+                            $flag = TRUE;
                         }
                     }
-                    $transaction->commit();
-//                    throw new Exception(print_r($model->orderItems, true));
-                    $this->redirect(array(
-                        'view',
-                        'id' => $model->orderId));
+//                    throw new Exception(print_r($v["value"], true));
+                    $flag = TRUE;
+                    if ($flag) {
+                        $transaction->commit();
+//                        throw new Exception(print_r($model->orderItems, true));
+                        $this->redirect(array(
+                            'view',
+                            'id' => $model->orderId));
+                    } else {
+                        
+                    }
                 }
             }
         }

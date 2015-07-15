@@ -408,13 +408,11 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 
     <div class="row setup-content" id="step-4">
-        <div class="col-xs-3">
+        <?php $classTop = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12"; ?>
+        <div class="<?php echo $classTop; ?>">
             <?php
-//            throw new Exception(print_r($results["themes"], true));
-//            throw new Exception(print_r($model->category2Id, true));
-//            $themes = UserFavourite::model()->findAllThemeByUserId(Yii::app()->user->id);
-//            $sets = UserFavourite::model()->findAllThemeByUserId(Yii::app()->user->id, FALSE);
-            if ($this->action->id == 'view' && $results["status"] = 1):
+//           
+            if ($this->action->id == 'view' && $results["status"] == 1):
                 ?>
                 <div class="row sidebar-box red ">
                     <div class="col-sm-12">
@@ -429,7 +427,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                             ?>
-                                                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                         ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                         ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                         ?>)"><?php // echo $theme->category2->title;                                                                                                         ?></li></a>
+                                                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                  ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                  ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                  ?>)"><?php // echo $theme->category2->title;                                                                                                                                  ?></li></a>
                             <?php
 //                                }
 //                            endforeach;
@@ -447,15 +445,69 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="sidebar-box-content" id="setResult">
                             <!--                        <ul>
                             <?php echo $results["sets"] // foreach ($sets as $set):      ?>
-                                                            <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                           ?>)"><?php // echo $set->category2->title;                                                                                                           ?></li></a>
+                                                            <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                                                    ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                    ?>)"><?php // echo $set->category2->title;                                                                                                                                    ?></li></a>
                             <?php // endforeach;       ?>
                                                     </ul>-->
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php endif; ?>
-        <div class="col-xs-9">
+
+                <?php
+            elseif ($this->action->id == 'create'):
+//             throw new Exception(print_r($results["themes"], true));
+//            throw new Exception(print_r($model->category2Id, true));
+                $themes = UserFavourite::model()->findAllThemeByUserId(Yii::app()->user->id);
+                $sets = UserFavourite::model()->findAllThemeByUserId(Yii::app()->user->id, FALSE);
+                ?>
+                <div class="row sidebar-box red ">
+                    <div class="col-sm-12">
+                        <div class="sidebar-box-heading">
+                            <i class="fa fa-heart"></i>
+                            <h4>Theme</h4>
+                        </div>
+                        <div class="sidebar-box-content" id="themeResult">
+                            <ul>
+                                <?php
+//                        echo $results["themes"];
+                                foreach ($themes as $theme):
+//                                if($theme->category2Id == ) {
+                                    ?>
+                                    <li><a href="#"  onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                 ?>)"><?php // echo $theme->category2->title;                                                                                                                                 ?></li></a>
+                                    <?php
+//                                }
+                                endforeach;
+                                ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sidebar-box orange ">
+                    <div class="col-sm-12">
+                        <div class="sidebar-box-heading">
+                            <i class="fa fa-heart"></i>
+                            <h4>Sanitary Set</h4>
+                        </div>
+                        <div class="sidebar-box-content" id="setResult">
+                            <ul>
+                                <?php
+                                // echo $results["sets"] 
+                                foreach ($sets as $set):
+                                    ?>
+                                    <li><a href="#" onclick="loadSetItem(<?php echo $set->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>)"><?php echo $set->category2->title; ?></li></a>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <?php
+            endif;
+
+            $class = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-9" : "col-xs-12";
+            ?>
+        </div>
+        <div class="<?php echo $class ?>">
             <div class="row sidebar-box blue ">
                 <div class="col-md-12 <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="item-table">
                     <?php
@@ -478,6 +530,8 @@ $form = $this->beginWidget('CActiveForm', array(
         </div>
     </div>
 
+
+
     <div class="row setup-content" id="step-4-1">
         <div class="col-xs-3">
             <?php
@@ -497,7 +551,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                         ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                         ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                         ?>)"><?php // echo $theme->category2->title;                                                                                                         ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                           ?>)"><?php // echo $theme->category2->title;                                                                                                                           ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -509,7 +563,7 @@ $form = $this->beginWidget('CActiveForm', array(
         </div>
         <div class="col-xs-9">
             <div class="row sidebar-box blue ">
-<!--                <div class="col-md-12 <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="product-fav-table">
+    <!--                <div class="col-md-12 <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="product-fav-table">
                 <?php ?>
                 </div>-->
                 <div id="product-fav-item" class="hide">
@@ -672,38 +726,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                                                    ?>
+<?php // echo $form->errorSummary($model);                                                           ?>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'supplierId');              ?>
+<?php // echo $form->labelEx($model, 'supplierId');                ?>
 <?php // echo $form->textField($model, 'supplierId');              ?>
-<?php // echo $form->error($model, 'supplierId');                                             ?>
+<?php // echo $form->error($model, 'supplierId');                                                  ?>
         </div>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'type');               ?>
+<?php // echo $form->labelEx($model, 'type');                 ?>
 <?php // echo $form->textField($model, 'type');              ?>
-<?php // echo $form->error($model, 'type');                                             ?>
+<?php // echo $form->error($model, 'type');                                                  ?>
         </div>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'status');               ?>
+<?php // echo $form->labelEx($model, 'status');                 ?>
 <?php // echo $form->textField($model, 'status');             ?>
-<?php // echo $form->error($model, 'status');                                             ?>
+<?php // echo $form->error($model, 'status');                                                  ?>
         </div>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'title');               ?>
+<?php // echo $form->labelEx($model, 'title');                 ?>
 <?php // echo $form->textField($model, 'title');            ?>
-<?php // echo $form->error($model, 'title');                                              ?>
+<?php // echo $form->error($model, 'title');                                                   ?>
         </div>
 
 
         <div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                                      ?>
+<?php // echo CHtml::submitButton('Submit');                                                             ?>
         </div>
 
-<?php // $this->endWidget();                                                      ?>
+<?php // $this->endWidget();                                                             ?>
 
 </div>-->
 <!-- form -->

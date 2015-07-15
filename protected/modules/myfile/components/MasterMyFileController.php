@@ -219,6 +219,7 @@ class MasterMyFileController extends MasterController {
         if ($orderDetail->save()) {
             $this->orderDetailId = Yii::app()->db->lastInsertID;
         }
+//        throw new Exception(print_r($this->orderDetailId, true));
     }
 
     public function dateThai($date, $format, $showTime = false) {
