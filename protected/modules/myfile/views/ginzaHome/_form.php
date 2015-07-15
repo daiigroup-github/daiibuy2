@@ -174,9 +174,18 @@ $this->renderPartial("_navbar", array(
 												foreach($child1->supNotPays as $subNotPay)
 												{
 													$sumSupNotPay +=$subNotPay->totalIncVAT;
-													echo "<p style='color:red'>" . number_format($subNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $subNotPay->orderGroupId), array(
-														'class'=>'btn btn-success',
-														'target'=>'_blank')) . "</p>";
+													echo "<p style='color:red'>" . number_format($subNotPay->totalIncVAT, 2) . " ";
+													if($subNotPay->status != 2)
+													{
+														echo CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $subNotPay->orderGroupId), array(
+															'class'=>'btn btn-success',
+															'target'=>'_blank'));
+													}
+													else
+													{
+														echo " <span class='badge badge-warning'>รอตรวจสอบการชำระเงิน</span>";
+													}
+													echo "</p>";
 												}
 											endif;
 											?>
@@ -192,16 +201,18 @@ $this->renderPartial("_navbar", array(
 													?>
 													<span class="label label-danger">รอการชำระเงิน</span>
 													<?php
-													echo CHtml::link("ชำระเงิน", "", array(
-														'class'=>'button blue btn-xs',
-														'onclick'=>"payClick(2)"));
+													if($sumSupNotPay == 0):
+														echo CHtml::link("ชำระเงิน", "", array(
+															'class'=>'button blue btn-xs',
+															'onclick'=>"payClick(2)"));
 //														$this->renderPartial("_condition", array(
 //															'period'=>2));
+													endif;
 													?>
 												<?php else: ?>
 													<span class="label label-danger">รอการอนุมัติ</span>
 												<?php endif; ?>
-		<?php endif; ?>
+											<?php endif; ?>
 										</td>
 									</tr>
 									<?php
@@ -251,7 +262,7 @@ $this->renderPartial("_navbar", array(
 														?>
 														<span class="label label-danger">รอการอนุมัติ</span>
 													<?php endif; ?>
-			<?php endif; ?>
+												<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -308,7 +319,7 @@ $this->renderPartial("_navbar", array(
 													<?php else: ?>
 														<span class="label label-danger">รอการอนุมัติ</span>
 													<?php endif; ?>
-			<?php endif; ?>
+												<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -340,7 +351,7 @@ $this->renderPartial("_navbar", array(
 													<?php
 													echo $payButton;
 													?>
-			<?php endif; ?>
+												<?php endif; ?>
 											</td>
 										</tr>
 										<?php
@@ -440,7 +451,7 @@ $this->renderPartial("_navbar", array(
 
 		<?php if(isset($order)): ?>
 
-<?php endif; ?>
+		<?php endif; ?>
 		<div class="row sidebar-box blue " style="background-color: white">
 			<div class="col-md-12" style="text-align: right">
 
@@ -538,7 +549,7 @@ $this->renderPartial("_navbar", array(
 										?>
 									</td>
 								</tr>
-<?php endforeach; ?>
+							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</form>
@@ -590,7 +601,7 @@ $this->renderPartial("_navbar", array(
 										?>
 									</td>
 								</tr>
-<?php endforeach; ?>
+							<?php endforeach; ?>
 						</tbody>
 					</table>
 				</form>

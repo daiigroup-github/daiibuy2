@@ -92,7 +92,7 @@ class OrderGroup extends OrderGroupMaster
 					array(
 						'mainId',
 					),
-					'on'=>'status=1'),
+					'on'=>'status<3'),
 				'sup'=>array(
 					self::HAS_MANY,
 					'OrderGroup',

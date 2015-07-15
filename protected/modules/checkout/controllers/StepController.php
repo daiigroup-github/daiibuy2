@@ -486,13 +486,13 @@ class StepController extends MasterCheckoutController
 		}
 
 		$bankArray = Bank::model()->findAllBankModelBySupplier($supplierId);
-        $supplierModel = Supplier::model()->findByPk($supplierId);
+		$supplierModel = Supplier::model()->findByPk($supplierId);
 
 		$this->render('step4', array(
 			'step'=>4,
 			'orderSummary'=>$orderSummary,
 			'bankArray'=>$bankArray,
-            'supplierModel'=>$supplierModel,
+			'supplierModel'=>$supplierModel,
 		));
 //        $this->redirect($this->createUrl(5));
 	}
@@ -1263,7 +1263,7 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, 4);
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, $orderGroup->supplierId);
 
 		if(isset($_POST["period"]))
 		{
@@ -1332,12 +1332,12 @@ class StepController extends MasterCheckoutController
 			{
 				if($orderGroup->totalIncVAT > ($_POST["payValue"] + $sumSupPay))
 				{
-					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $_POST["payValue"]);
+					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"]);
 					$oldOrderGroup = $orderGroup;
 					$titleBlankOrderAndOrderItem = "รายการแบ่งชำระเงิน ของ" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
 					$orderGroup = new OrderGroup();
 					$orderGroup->attributes = $oldOrderGroup->attributes;
-					$orderGroup->orderNo = $orderGroup->genOrderNo(4);
+					$orderGroup->orderNo = $orderGroup->genOrderNo($orderGroup->supplierId);
 					$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 					$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
 					$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
@@ -1367,14 +1367,16 @@ class StepController extends MasterCheckoutController
 					$orderGroup->updateDateTime = new CDbExpression("NOW()");
 					if($orderGroup->save(false))
 					{
-						$this->saveBlankOrderAndOrderItem($oldOrderGroup->orderGroupId, $orderGroup->orderGroupId, 4, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
+						$this->saveBlankOrderAndOrderItem($oldOrderGroup->orderGroupId, $orderGroup->orderGroupId, $orderGroup->supplierId, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
 						$oldOrderGroup->status = -1;
 						$oldOrderGroup->save(FALSE);
-						$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+						$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+						$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
 						$this->render('step4', array(
 							'step'=>4,
 							'orderSummary'=>$orderSummary,
 							'bankArray'=>$bankArray,
+							'supplierModel'=>$supplierModel
 						));
 					}
 				}
