@@ -41,10 +41,14 @@ $this->breadcrumbs = array(
 					?>
 					<a class="btn <?php echo ($myfile->status > 2) ? (($isComplete) ? "btn-success" : "btn-primary") : "btn-warning" ?> col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/ginzaHome/view/id/' . $myfile->orderGroupId); ?>">
 						<?php
-						echo CHtml::image(isset($myfile->orders[0]->orderItems[0]->product) ? Yii::app()->baseUrl . $myfile->orders[0]->orderItems[0]->product->productImagesSort[0]->image : "", "", array())
+						if(isset($myfile->orders[0]->orderItems[0]->product->productImagesSort[0])):
+							echo CHtml::image(Yii::app()->baseUrl . $myfile->orders[0]->orderItems[0]->product->productImagesSort[0]->image, "", array());
+						else:
+							echo CHtml::image(Yii::app()->baseUrl . "/images/no-image.jpg", "", array());
+						endif;
 						?>
 						<h3><?php echo $myfile->orderNo; ?><?php if(1 == 0): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
-						<!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);          ?></p>-->
+						<!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);               ?></p>-->
 						<p>วันที่แก้ไขล่าสุด :<?php echo $this->dateThai($myfile->updateDateTime, 3, TRUE) ?></p>
 						<p style="font-size: 17px">
 							<?php if($isComplete): ?>
