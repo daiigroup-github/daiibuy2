@@ -43,6 +43,7 @@
 					"id"=>$model->orderGroupId)), array(
 				'class'=>'btn btn-warning',
 				'target'=>'_blank',));
+
 			if(Yii::app()->user->userType == 1 && $model->status >= 2)
 			{
 				echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์รายการสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printProductList", array(

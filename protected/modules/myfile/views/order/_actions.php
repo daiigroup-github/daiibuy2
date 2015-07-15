@@ -39,10 +39,15 @@
 		}
 		else
 		{
-			echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
+			echo CHtml::link('<i class="fa fa-print"></i> พิมพ์', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/print", array(
 					"id"=>$model->orderGroupId)), array(
 				'class'=>'btn btn-warning',
 				'target'=>'_blank',));
+			if($model->status == 0)
+			{
+				echo CHtml::link('<i class="fa fa-bitcoin"></i> ชำระค่าสินค้า', Yii::app()->createUrl("/checkout/step/payWrongOrder?orderGroupId=" . $model->orderGroupId), array(
+					'class'=>'btn btn-primary',));
+			}
 			if(Yii::app()->user->userType == 1 && $model->status >= 2)
 			{
 				echo CHtml::link('<i class="fa fa-print icon-white"></i> พิมพ์รายการสินค้า', Yii::app()->createUrl((isset($this->action->controller->module->id) ? $this->action->controller->module->id . "/" : "") . "order/printProductList", array(

@@ -1387,11 +1387,13 @@ class StepController extends MasterCheckoutController
 			}
 			else
 			{
-				$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+				$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+				$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
 				$this->render('step4', array(
 					'step'=>4,
 					'orderSummary'=>$orderSummary,
 					'bankArray'=>$bankArray,
+					'supplierModel'=>$supplierModel
 				));
 			}
 //			}
@@ -1466,7 +1468,7 @@ class StepController extends MasterCheckoutController
 		{
 			$furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
 
-			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $furnitureGroup->price, false);
+			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $furnitureGroup->price, false);
 			$oldOrderGroup = $orderGroup;
 			$titleBlankOrderAndOrderItem = "Furniture Set " . $furnitureGroup->title . " " . $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
 			if(!isset($orderGroup->fur[0]))
@@ -1482,7 +1484,7 @@ class StepController extends MasterCheckoutController
 			$orderGroup->mainFurnitureId = $_GET["orderGroupId"];
 			$orderGroup->furnitureGroupId = $_POST["furnitureGroupId"];
 			$orderGroup->furnitureId = $_POST["furnitureId"];
-			$orderGroup->orderNo = $orderGroup->genOrderNo(4);
+			$orderGroup->orderNo = $orderGroup->genOrderNo($orderGroup->supplierId);
 			$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 			$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
 			$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
@@ -1512,12 +1514,14 @@ class StepController extends MasterCheckoutController
 			$orderGroup->updateDateTime = new CDbExpression("NOW()");
 			if($orderGroup->save(false))
 			{
-				$this->saveBlankOrderAndOrderItem($_GET["orderGroupId"], $orderGroup->orderGroupId, 4, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
-				$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+				$this->saveBlankOrderAndOrderItem($_GET["orderGroupId"], $orderGroup->orderGroupId, $orderGroup->supplierId, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
+				$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+				$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
 				$this->render('step4', array(
 					'step'=>4,
 					'orderSummary'=>$orderSummary,
 					'bankArray'=>$bankArray,
+					'supplierModel'=>$supplierModel
 				));
 			}
 		}
@@ -1551,9 +1555,9 @@ class StepController extends MasterCheckoutController
 
 	public function updateChangeSpecGinzaOrderGroup($orderGroup, $cat2ToProduct, $period)
 	{
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($cat2ToProduct[$period - 1]->productId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4);
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($cat2ToProduct[$period - 1]->productId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId);
 		$orderGroup->attributes = $orderGroup->attributes;
-		$orderGroup->orderNo = $orderGroup->genOrderNo(4);
+		$orderGroup->orderNo = $orderGroup->genOrderNo($orderGroup->supplierId);
 		$orderGroup->invoiceNo = null;
 		$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 		$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
@@ -1761,6 +1765,49 @@ class StepController extends MasterCheckoutController
 		}
 
 		return $flag;
+	}
+
+	// Use This Function for Pay OrderGroup Status 0
+	public function actionPayWrongOrder()
+	{
+		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->orderGroupId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->price, false);
+		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+		$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
+
+
+		if(isset($_POST['paymentMethod']))
+		{
+			if($_POST['paymentMethod'] == 1)
+			{
+				$orderGroup->paymentMethod = 1;
+				$orderGroup->save(false);
+				$this->redirect(array(
+					"confirmCheckout",
+					'id'=>isset($orderGroup->supNotPay) ? $orderGroup->supNotPay->orderGroupId : $orderGroup->orderGroupId));
+			}
+			else
+			{
+				$orderGroup->paymentMethod = 2;
+				$orderGroup->save(false);
+				$emailObj = new Email();
+				$sentMail = new EmailSend();
+				$documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+				$emailObj->Setmail($orderGroup->userId, null, $orderGroup->supplierId, $orderGroup->orderGroupId, null, $documentUrl);
+				$sentMail->mailCompleteOrderCustomer($emailObj);
+				$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+				$this->redirect(array(
+					'step6',
+					"id"=>isset($orderGroup->supNotPay) ? $orderGroup->supNotPay->orderGroupId : $orderGroup->orderGroupId,
+				));
+			}
+		}
+		$this->render('step4', array(
+			'step'=>4,
+			'orderSummary'=>$orderSummary,
+			'bankArray'=>$bankArray,
+			'supplierModel'=>$supplierModel
+		));
 	}
 
 }

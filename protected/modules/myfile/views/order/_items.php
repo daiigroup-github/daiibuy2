@@ -17,8 +17,8 @@
 						if($user->type == 1)
 						{
 							?>
-																							<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขที่ใบสั่งซื้อสินค้า</b></td>
-																												<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
+																								<!--							<td style="width:30%;text-align: center"><b style="font-size:small">เลขที่ใบสั่งซื้อสินค้า</b></td>
+																													<td style="width:70%;text-align: center"><b style="font-size:small">ตัวแทนกระจายสินค้า</b></td>-->
 							<?php
 						}
 						else
@@ -276,7 +276,7 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
-					<?php
+						<?php
 					}
 					if($model->distributorDiscount > 0)
 					{
@@ -285,7 +285,7 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->distributorDiscount, 2, ".", ","); ?></td>
 						</tr>
-					<?php
+						<?php
 					}
 					if($model->extraDiscount > 0)
 					{
@@ -294,8 +294,8 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
 						</tr>
-		<?php }
-		?>
+					<?php }
+					?>
 					<tr>
 						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
 						<td style="text-align: right"><?php echo number_format((($model->summary * 100) / 107) * 0.07, 2, ".", ","); ?></td>
@@ -329,7 +329,7 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลด/Discount(<?php echo $model->discountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->discountValue, 2, ".", ","); ?></td>
 						</tr>
-					<?php
+						<?php
 					}
 					if($model->distributorDiscount > 0)
 					{
@@ -338,7 +338,7 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->distributorDiscount, 2, ".", ","); ?></td>
 						</tr>
-					<?php
+						<?php
 					}
 					if($model->extraDiscount > 0)
 					{
@@ -347,8 +347,8 @@
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
 							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
 						</tr>
-		<?php }
-		?>
+					<?php }
+					?>
 
 					<tr>
 						<td colspan="6" style="text-align: right">ภาษีมูลค่าเพิ่ม/VAT 7%</td>
@@ -454,7 +454,7 @@
 			}
 			if(isset($user))
 			{
-				if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99))
+				if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99 || $model->status == 0))
 				{
 					echo "
 									<tr>
@@ -523,8 +523,8 @@
 				</tfoot>
 			</table>
 		</div>
-	<?php
-}
-?>
+		<?php
+	}
+	?>
 
 </div>
