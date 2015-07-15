@@ -243,7 +243,7 @@ $this->renderPartial("_navbar", array(
 												echo "ยอดชำระ " . number_format($item->totalIncVAT);
 												$sumSup3 = 0;
 												$sumSupNotPay3 = 0;
-												if(count($child1->supPay) > 0):
+												if(count($child2->supPay) > 0):
 													?>
 													<p style='color:green'>ชำระแล้ว</p>
 													<?php
