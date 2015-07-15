@@ -86,11 +86,26 @@ class OrderGroup extends OrderGroupMaster
 						'orderGroupId'=>'mainId',
 					),
 					'on'=>'status=0'),
+				'supNotPays'=>array(
+					self::HAS_MANY,
+					'OrderGroup',
+					array(
+						'mainId',
+					),
+					'on'=>'status=1'),
 				'sup'=>array(
 					self::HAS_MANY,
 					'OrderGroup',
 					array(
-						'mainId')),
+						'mainId')
+				),
+				'supPay'=>array(
+					self::HAS_MANY,
+					'OrderGroup',
+					array(
+						'mainId'),
+					'on'=>'status > 2'
+				),
 				'fur'=>array(
 					self::HAS_MANY,
 					'OrderGroup',

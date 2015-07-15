@@ -1184,7 +1184,7 @@ class StepController extends MasterCheckoutController
 							$total = $price * $quantity;
 							$orderItems->price = $price;
 							$orderItems->total = $total;
-							$orderItems->styleId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId;
+							$orderItems->styleId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->styleId;
 							$orderItems->productOptionId = $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productOptionId;
 							$orderItems->createDateTime = new CDbExpression("NOW()");
 							$orderItems->updateDateTime = new CDbExpression("NOW()");
@@ -1265,12 +1265,13 @@ class StepController extends MasterCheckoutController
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, 4);
 
-
 		if(isset($_POST["period"]))
 		{
 			if($_POST["period"] == 2)
 			{
 				$cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
+//				throw new Exception(print_r($_POST, true));
+//				throw new Exception(print_r($cat2p->attributes, true));
 				if($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])
 				{
 
@@ -1322,53 +1323,64 @@ class StepController extends MasterCheckoutController
 //		{
 //			if(isset($_POST["period"]))
 //			{
-
-			if($orderGroup->totalIncVAT != $_POST["payValue"])
+			$sumSupPay = 0;
+			foreach($orderGroup->sup as $sup)
 			{
-				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $_POST["payValue"]);
-				$oldOrderGroup = $orderGroup;
-				$titleBlankOrderAndOrderItem = "รายการแบ่งชำระเงิน ของ" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
-				$orderGroup = new OrderGroup();
-				$orderGroup->attributes = $oldOrderGroup->attributes;
-				$orderGroup->orderNo = $orderGroup->genOrderNo(4);
-				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
-				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
-				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
-				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
-				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
-				$orderGroup->status = 0;
+				$sumSupPay +=$sup->totalIncVAT;
+			}
+			if($orderGroup->totalIncVAT != ($_POST["payValue"] + $sumSupPay))
+			{
+				if($orderGroup->totalIncVAT > ($_POST["payValue"] + $sumSupPay))
+				{
+					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, 4, $_POST["payValue"]);
+					$oldOrderGroup = $orderGroup;
+					$titleBlankOrderAndOrderItem = "รายการแบ่งชำระเงิน ของ" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
+					$orderGroup = new OrderGroup();
+					$orderGroup->attributes = $oldOrderGroup->attributes;
+					$orderGroup->orderNo = $orderGroup->genOrderNo(4);
+					$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+					$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+					$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+					$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+					$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+					$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+					$orderGroup->status = 0;
 //Distributor Discount & Spacial Project Discount
-				if(isset($orderSummary['distributorDiscountPercent']))
-				{
-					$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
-					$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+					if(isset($orderSummary['distributorDiscountPercent']))
+					{
+						$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+						$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
 
-					$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
-				}
-				if(isset($orderSummary['extraDiscount']))
-				{
-					$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
-				}
+						$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+					}
+					if(isset($orderSummary['extraDiscount']))
+					{
+						$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+					}
 //Distributor Discount & Spacial Project Discount
 
-				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
-				$orderGroup->vatValue = $orderGroup->calVatValue();
-				$orderGroup->userId = Yii::app()->user->id;
-				$orderGroup->mainId = $oldOrderGroup->orderGroupId;
-				$orderGroup->createDateTime = new CDbExpression("NOW()");
-				$orderGroup->updateDateTime = new CDbExpression("NOW()");
-				if($orderGroup->save(false))
+					$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+					$orderGroup->vatValue = $orderGroup->calVatValue();
+					$orderGroup->userId = Yii::app()->user->id;
+					$orderGroup->mainId = $oldOrderGroup->orderGroupId;
+					$orderGroup->createDateTime = new CDbExpression("NOW()");
+					$orderGroup->updateDateTime = new CDbExpression("NOW()");
+					if($orderGroup->save(false))
+					{
+						$this->saveBlankOrderAndOrderItem($oldOrderGroup->orderGroupId, $orderGroup->orderGroupId, 4, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
+						$oldOrderGroup->status = -1;
+						$oldOrderGroup->save(FALSE);
+						$bankArray = Bank::model()->findAllBankModelBySupplier(4);
+						$this->render('step4', array(
+							'step'=>4,
+							'orderSummary'=>$orderSummary,
+							'bankArray'=>$bankArray,
+						));
+					}
+				}
+				else
 				{
-					$this->saveBlankOrderAndOrderItem($oldOrderGroup->orderGroupId, $orderGroup->orderGroupId, 4, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
-					$oldOrderGroup->status = -1;
-					$oldOrderGroup->save(FALSE);
-					$bankArray = Bank::model()->findAllBankModelBySupplier(4);
-					$this->render('step4', array(
-						'step'=>4,
-						'orderSummary'=>$orderSummary,
-						'bankArray'=>$bankArray,
-					));
+
 				}
 			}
 			else

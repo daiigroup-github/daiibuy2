@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                      ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<div class="col-md-12">
@@ -226,22 +226,40 @@
 											?>
 										</td>
 										<td style="font-size:24px">
-											<p style="color:red;text-decoration:line-through"><?php echo number_format($item->orderItems[0]->product->price); ?></p>
 											<?php
-											echo number_format($child1->totalIncVAT);
+											echo "ยอดชำระ " . number_format($child1->totalIncVAT);
 											$sumSup = 0;
-											foreach($child1->sup as $sup)
-											{
-												$sumSup +=$sup->totalIncVAT;
-												echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
-											}
+											if(count($child1->supPay) > 0):
+												?>
+												<p style='color:green'>ชำระแล้ว</p>
+												<?php
+												foreach($child1->supPay as $sup)
+												{
+													$sumSup +=$sup->totalIncVAT;
+													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
+												}
+											endif;
+											$sumSupNotPay = 0;
+											if(count($child1->supNotPays) > 0):
+												?>
+												<p style='color:red'>รอยืนยันชำระ</p>
+												<?php
+												foreach($child1->supNotPays as $supNotPay)
+												{
+													$sumSupNotPay +=$supNotPay->totalIncVAT;
+													echo "<p style='color:red'>" . number_format($supNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $supNotPay->orderGroupId), array(
+														'class'=>'btn btn-success',
+														'target'=>'_blank')) . "</p>";
+												}
+											endif;
 											?>
 										</td>
 										<td>
 											<?php
-											echo CHtml::textField("payValue", $child1->totalIncVAT - $sumSup, array(
-												'class'=>'input-large text-right',
-												'style'=>'border:2px solid black;color:blue;font-size:24px'))
+											echo CHtml::numberField("payValue", $child1->totalIncVAT - $sumSup - $sumSupNotPay, array(
+												'class'=>'input-form text-right',
+												'style'=>'border:2px solid black;color:blue;font-size:24px;width:250px',
+												'max'=>$child1->totalIncVAT - $sumSup - $sumSupNotPay))
 											?>
 											<!--<a onclick="backToStep2()" class="btn btn-success">Back</a>-->
 											<?php
@@ -251,7 +269,7 @@
 											?>
 										</td>
 									</tr>
-								<?php endforeach; ?>
+<?php endforeach; ?>
 							</tbody>
 						</table>
 					</form>
@@ -267,7 +285,7 @@
 					<div class="row">
 						<div class="col-md-12 text-center" style="font-weight: bold;color: black">
 							ข้าพเจ้าได้อ่านและทำความเข้าใจรายละเอียดตามข้อตกลงและเงื่อนไขข้างต้นดีแล้ว<br>
-							<?php echo CHtml::radioButton("accept", TRUE) ?>
+<?php echo CHtml::radioButton("accept", TRUE) ?>
 							<label class="radio-label" for="accept">ยอมรับ</label>
 						</div>
 					</div>
