@@ -91,11 +91,12 @@ $form = $this->beginWidget('CActiveForm', array(
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['discount']; ?></span></td>
                         </tr>
 						<?php
-//						throw new Exception(print_r($orderSummary, TRUE));
+//						throw new Exception(print_r($orderSummary, true));
 						if(isset($orderSummary['extraDiscount'])):
+							$orderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
 							?>
 							<tr>
-								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['extraDiscountArray']['extraDiscountPercent']; ?></span>%)</span></td>
+								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['extraDiscountArray'][$orderGroup->orderGroupId]['extraDiscountPercent']; ?></span>%)</span></td>
 								<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['extraDiscount']; ?></span></td>
 							</tr>
 						<?php endif; ?>

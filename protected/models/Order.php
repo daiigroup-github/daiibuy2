@@ -1090,7 +1090,7 @@ class Order extends OrderMaster
 		}
 	}
 
-	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE)
+	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE, $orderGroupId = NULL)
 	{
 		$res = [];
 		if(isset(Yii::app()->user->id))
@@ -1174,7 +1174,7 @@ class Order extends OrderMaster
 		}
 		else
 		{
-			$extraDiscountArray = OrderGroup::model()->sumExtraDiscount($supplierId, $discountPercent, $grandTotal);
+			$extraDiscountArray = OrderGroup::model()->sumExtraDiscount($supplierId, $discountPercent, $grandTotal, $orderGroupId);
 		}
 		if(isset($extraDiscountArray))
 		{

@@ -1263,7 +1263,8 @@ class StepController extends MasterCheckoutController
 	public function actionMyfileGinzaStep()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, $orderGroup->supplierId);
+		$rootOrderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, $orderGroup->supplierId, FALSE, $_GET["orderGroupId"]);
 
 		if(isset($_POST["period"]))
 		{
@@ -1332,10 +1333,14 @@ class StepController extends MasterCheckoutController
 			{
 				if($orderGroup->totalIncVAT >= ($_POST["payValue"] + $sumSupPay) && $_POST["payValue"] >= 1000)
 				{
-					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"]);
+					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"], FALSE, $_GET["orderGroupId"]);
 					$oldOrderGroup = $orderGroup;
 					$titleBlankOrderAndOrderItem = "รายการแบ่งชำระเงิน ของ" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
-					$orderGroup = new OrderGroup();
+					$orderGroup = OrderGroup::model()->find("mainId = " . $oldOrderGroup->orderGroupId . " AND status =0");
+					if(!isset($orderGroup))
+					{
+						$orderGroup = new OrderGroup();
+					}
 					$orderGroup->attributes = $oldOrderGroup->attributes;
 					$orderGroup->orderNo = $orderGroup->genOrderNo($orderGroup->supplierId);
 					$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
@@ -1353,9 +1358,9 @@ class StepController extends MasterCheckoutController
 
 						$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
 					}
-					if(isset($orderSummary['extraDiscount']))
+					if(isset($orderSummary["extraDiscountArray"][$rootOrderGroup->orderGroupId]['extraDiscount']))
 					{
-						$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+						$orderGroup->extraDiscount = $orderSummary["extraDiscountArray"][$rootOrderGroup->orderGroupId]['extraDiscount'];
 					}
 //Distributor Discount & Spacial Project Discount
 					$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
@@ -1389,6 +1394,7 @@ class StepController extends MasterCheckoutController
 			}
 			else
 			{
+				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"], FALSE, $_GET["orderGroupId"]);
 				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
 				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
@@ -1404,9 +1410,9 @@ class StepController extends MasterCheckoutController
 
 					$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
 				}
-				if(isset($orderSummary['extraDiscount']))
+				if(isset($orderSummary["extraDiscountArray"][$rootOrderGroup->orderGroupId]['extraDiscount']))
 				{
-					$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+					$orderGroup->extraDiscount = $orderSummary["extraDiscountArray"][$rootOrderGroup->orderGroupId]['extraDiscount'];
 				}
 //Distributor Discount & Spacial Project Discount
 				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
@@ -1801,7 +1807,7 @@ class StepController extends MasterCheckoutController
 	public function actionPayWrongOrder()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->price, false);
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->price, false, $_GET["orderGroupId"]);
 		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
 		$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
 

@@ -658,23 +658,40 @@ class OrderGroup extends OrderGroupMaster
 		));
 	}
 
-	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent, $summary)
+	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent, $summary, $orderGroupId)
 	{
 
+		$orderGroup = $this->findRootOrderGroup($orderGroupId);
 		$result = array();
 		$criteria = new CDbCriteria();
 		$criteria->select = "t.orderGroupId as orderGroupId , usp.spacialPercent as spacialPercent , t.summary as summary ";
 		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderGroupId = t.orderGroupId ";
 		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId ";
 		$criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
+		if(isset($orderGroup))
+		{
+			$criteria->condition.= " AND usp.orderGroupId = " . $orderGroup->orderGroupId;
+		}
+		else
+		{
+			if(isset($orderGroupId))
+			{
+				$criteria->condition.= " AND orderGroupId = " . $orderGroupId;
+			}
+		}
 
 		$item = $this->find($criteria);
 //				throw new Exception(print_r($models,true));
 		$extraDiscount = 0;
-		$spacialValue = ($summary * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
-		$result["extraDiscountPercent"] = $item->spacialPercent;
-		$result["extraDiscount"] = $spacialValue;
-		$extraDiscount += $spacialValue;
+		if(isset($item)):
+//		foreach($models as $item)
+//		{
+			$spacialValue = ($summary * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
+			$result[$item->orderGroupId]["extraDiscountPercent"] = $item->spacialPercent;
+			$result[$item->orderGroupId]["extraDiscount"] = $spacialValue;
+			$extraDiscount += $spacialValue;
+//		}
+		endif;
 
 		$result["totalExtraDiscount"] = $extraDiscount;
 		if(isset($item) > 0)
@@ -685,6 +702,46 @@ class OrderGroup extends OrderGroupMaster
 		{
 			return null;
 		}
+	}
+
+	public function findRootOrderGroup($orderGroupId)
+	{
+		$orderGroup = OrderGroup::model()->findByPk($orderGroupId);
+		if(isset($orderGroup))
+		{
+			if(isset($orderGroup->mainId))
+			{
+				$ogId = $orderGroup->mainId;
+			}
+			else
+			{
+				if(isset($orderGroup->parentId))
+				{
+					$ogId = $orderGroup->parentId;
+				}
+				else
+				{
+					$ogId = $orderGroup->orderGroupId;
+				}
+			}
+
+			$orderGroup = OrderGroup::model()->findByPk($ogId);
+
+			if(isset($orderGroup->parent))
+			{
+				$orderGroup = OrderGroup::model()->findByPk($orderGroup->parentId);
+				if(isset($orderGroup->parent))
+				{
+					$orderGroup = OrderGroup::model()->findByPk($orderGroup->parentId);
+				}
+			}
+		}
+		else
+		{
+			$orderGroup = NULL;
+		}
+
+		return $orderGroup;
 	}
 
 }
