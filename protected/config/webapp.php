@@ -53,8 +53,6 @@ return CMap::mergeArray(
 							'select2/select2-bootstrap.css',
 							'font-awesome/css/font-awesome.min.css',
 							'css/custom.css',
-
-
 						),
 						'js'=>array(
 							'js/fileinput.js',
@@ -74,7 +72,6 @@ return CMap::mergeArray(
 							'js/main-script.js',
 							'select2/select2.js',
 							'jquery/jquery.cookie.js',
-
 //							'js/vendor/jquery.ui.widget.js',
 //							'js/jquery.iframe-transport.js',
 //							'js/jquery.fileupload.js',
@@ -86,7 +83,6 @@ return CMap::mergeArray(
 //							'js/canvas-to-blob.min.js',
 //							'js/load-image.all.min.js',
 //							'js/tmpl.min.js',
-
 //							'js/html5shiv.min.js',
 //							'js/respond.min.js',
 						),
@@ -106,8 +102,8 @@ return CMap::mergeArray(
 			'urlManager'=>array(
 				'showScriptName'=>false,
 				'rules'=>array(
-                    '<controller:\w+>/<action:\w+>/<c:\d+>/<c2:d+>'=>'<controller>/<action>',
-                ),
+					'<controller:\w+>/<action:\w+>/<c:\d+>/<c2:d+>'=>'<controller>/<action>',
+				),
 			),
 		),
 		'modules'=>array(

@@ -1358,7 +1358,6 @@ class StepController extends MasterCheckoutController
 						$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
 					}
 //Distributor Discount & Spacial Project Discount
-
 					$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
 					$orderGroup->vatValue = $orderGroup->calVatValue();
 					$orderGroup->userId = Yii::app()->user->id;
@@ -1390,14 +1389,42 @@ class StepController extends MasterCheckoutController
 			}
 			else
 			{
-				$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
-				$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
-				$this->render('step4', array(
-					'step'=>4,
-					'orderSummary'=>$orderSummary,
-					'bankArray'=>$bankArray,
-					'supplierModel'=>$supplierModel
-				));
+				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
+				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
+				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
+				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
+				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+				$orderGroup->status = 0;
+//Distributor Discount & Spacial Project Discount
+				if(isset($orderSummary['distributorDiscountPercent']))
+				{
+					$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+					$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+
+					$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+				}
+				if(isset($orderSummary['extraDiscount']))
+				{
+					$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+				}
+//Distributor Discount & Spacial Project Discount
+				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
+				$orderGroup->vatValue = $orderGroup->calVatValue();
+				$orderGroup->userId = Yii::app()->user->id;
+				$orderGroup->createDateTime = new CDbExpression("NOW()");
+				$orderGroup->updateDateTime = new CDbExpression("NOW()");
+				if($orderGroup->save())
+				{
+					$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+					$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
+					$this->render('step4', array(
+						'step'=>4,
+						'orderSummary'=>$orderSummary,
+						'bankArray'=>$bankArray,
+						'supplierModel'=>$supplierModel
+					));
+				}
 			}
 //			}
 		}
@@ -1774,7 +1801,7 @@ class StepController extends MasterCheckoutController
 	public function actionPayWrongOrder()
 	{
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->orderGroupId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->price, false);
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->price, false);
 		$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
 		$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
 

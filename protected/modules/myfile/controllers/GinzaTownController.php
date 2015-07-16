@@ -9,6 +9,11 @@ class GinzaTownController extends MasterMyFileController
 	const ORDER_PERIOD_4 = 4;
 
 //	const ORDER_PERIOD_5 = 5;
+	public function init()
+	{
+		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/ginzatown.js');
+		parent::init();
+	}
 
 	public function actionIndex()
 	{
@@ -251,6 +256,34 @@ class GinzaTownController extends MasterMyFileController
 			'brandModels'=>$brandModels,
 			'child1'=>$child1,
 			'conditionOrder'=>$conditionOrder), true);
+	}
+
+	public function actionRequestGinzatownSpacialProject($id)
+	{
+		$model = OrderGroup::model()->findByPk($id);
+		$model->isRequestSpacialProject = 1;
+		if($model->save())
+		{
+			$userSpacialProject = UserSpacialProject::model()->find("orderId = " . $id);
+			if(!isset($userSpacialProject))
+			{
+				$userSpacialProject = new UserSpacialProject();
+				$userSpacialProject->userId = Yii::app()->user->id;
+				$userSpacialProject->supplierId = $model->supplierId;
+				$userSpacialProject->orderGroupId = $id;
+				$userSpacialProject->createDateTime = new CDbExpression("NOW()");
+			}
+			else
+			{
+				$userSpacialProject->reQuestNo = $userSpacialProject->reQuestNo + 1;
+			}
+			$userSpacialProject->status = 1;
+			$userSpacialProject->updateDateTime = new CDbExpression("NOW()");
+			$userSpacialProject->save(false);
+		}
+		$this->redirect(array(
+			'view',
+			'id'=>$id));
 	}
 
 }

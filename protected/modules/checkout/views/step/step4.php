@@ -90,7 +90,15 @@ $form = $this->beginWidget('CActiveForm', array(
                             <td class="align-right"><span class="price big">Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['discountPercent']; ?></span>%)</span></td>
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['discount']; ?></span></td>
                         </tr>
-
+						<?php
+//						throw new Exception(print_r($orderSummary, TRUE));
+						if(isset($orderSummary['extraDiscount'])):
+							?>
+							<tr>
+								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['extraDiscountArray']['extraDiscountPercent']; ?></span>%)</span></td>
+								<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['extraDiscount']; ?></span></td>
+							</tr>
+						<?php endif; ?>
                         <tr>
                             <td class="align-right"><span class="price big">Grand Total</span></td>
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryGrandTotal"><?php echo $orderSummary['grandTotal']; ?></span></td>
@@ -122,7 +130,7 @@ $form = $this->beginWidget('CActiveForm', array(
 					ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
 				</p>
 				<br />
-<?php endif; ?>
+			<?php endif; ?>
 
 			<input type="checkbox" name="accept" id="accept" />
 			<label class="checkbox-label" for="accept"> ฉันได้อ่านและยอมรับ <a id="readTermCondition" style="text-decoration: underline;color: red" href="#" >ข้อตกลงและเงื่อนไข</a> การสั่งซื้อสินค้า ของ www.daiibuy.com</label>
@@ -132,20 +140,20 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="modal fade " id="termAndConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	 aria-hidden="true">
 	<div class="modal-dialog" style="width:900px">
-<?php $content = Content::model()->findByPk(16); ?>
+		<?php $content = Content::model()->findByPk(16); ?>
 		<div class="modal-content">
 			<div class="modal-header">
 				<div class="carousel-heading">
-<?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> ?>
+					<?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>   ?>
 					<h4 class="modal-title" id="myModalLabel"><?php echo $content->title; ?></h4>
 				</div>
 			</div>
 			<div class="modal-body">
-<?php echo $content->description; ?>
+				<?php echo $content->description; ?>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-success" data-dismiss="modal" id="acceptModal">Accept</button>
-<?php //<button type="button" class="btn btn-primary">Save changes</button> ?>
+				<?php //<button type="button" class="btn btn-primary">Save changes</button>   ?>
 			</div>
 		</div>
 	</div>

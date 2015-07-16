@@ -2,7 +2,7 @@
 <div class="col-md-12">
 	<!--						<div class="sidebar-box-heading">
 								<i class="fa fa-tdst"></i>
-								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ?></h4>
+								<h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?></h4>
 							</div>-->
 	<div class="row sidebox-content ">
 		<?php
@@ -113,12 +113,12 @@
 						<table class="table table-bordered">
 							<tbody>
 								<tr>
-									<td>ชนิดบ้าน</td>
+									<td>ชนิดบ้าน </td>
 									<td><?php
 										echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
 										$category2ToProduct = Category2ToProduct::model()->find("productId = " . $model->orders[0]->orderItems[0]->productId);
-										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
+										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, $brandModels, array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'id'=>'brandModelId',
 											'ajax'=>array(

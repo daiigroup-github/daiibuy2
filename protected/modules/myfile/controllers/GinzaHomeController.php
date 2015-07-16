@@ -10,6 +10,12 @@ class GinzaHomeController extends MasterMyFileController
 	const ORDER_PERIOD_5 = 5;
 	const ORDER_PERIOD_6 = 6;
 
+	public function init()
+	{
+		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/ginzahome.js');
+		parent::init();
+	}
+
 	public function actionIndex()
 	{
 		$this->layout = '//layouts/cl1';
@@ -26,7 +32,7 @@ class GinzaHomeController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 		Yii::app()->session['supplierId'] = 4;
-		$brandModels = BrandModel::model()->findAll("supplierId = 4 AND status = 1");
+		$brandModels = BrandModel::model()->findAllBrandModelArrayBySupplierId(4);
 		$model = OrderGroup::model()->findByPk($id);
 		$productId = $model->orders[0]->orderItems[0]->productId;
 		if(isset($model->child))
@@ -269,7 +275,7 @@ class GinzaHomeController extends MasterMyFileController
 				$conditionOrder = $child1->child;
 				break;
 		}
-		$brandModels = BrandModel::model()->findAll("supplierId = 4 AND status = 1");
+		$brandModels = BrandModel::model()->findAllBrandModelArrayBySupplierId(4);
 		echo $this->renderPartial("_condition", array(
 			'model'=>$model,
 			'period'=>$_POST["period"],

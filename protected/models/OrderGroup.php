@@ -26,6 +26,7 @@ class OrderGroup extends OrderGroupMaster
 	public $totalSummary;
 	public $maxCode;
 	public $sumTotal;
+	public $spacialPercent;
 
 	const STATUS_ORDER = 1;
 	const STATUS_COMFIRM_TRANSFER = 2;
@@ -121,6 +122,11 @@ class OrderGroup extends OrderGroupMaster
 					'OrderGroup',
 					array(
 						'parentId'=>'orderGroupId')),
+				'sp'=>array(
+					self::HAS_MANY,
+					'UserSpacialProject',
+					array(
+						'orderGroupId')),
 		));
 	}
 
@@ -650,6 +656,35 @@ class OrderGroup extends OrderGroupMaster
 				'pageSize'=>30
 			),
 		));
+	}
+
+	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent, $summary)
+	{
+
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->select = "t.orderGroupId as orderGroupId , usp.spacialPercent as spacialPercent , t.summary as summary ";
+		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderGroupId = t.orderGroupId ";
+		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId ";
+		$criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
+
+		$item = $this->find($criteria);
+//				throw new Exception(print_r($models,true));
+		$extraDiscount = 0;
+		$spacialValue = ($summary * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
+		$result["extraDiscountPercent"] = $item->spacialPercent;
+		$result["extraDiscount"] = $spacialValue;
+		$extraDiscount += $spacialValue;
+
+		$result["totalExtraDiscount"] = $extraDiscount;
+		if(isset($item) > 0)
+		{
+			return $result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 }

@@ -34,7 +34,11 @@ $this->renderPartial("_navbar", array(
 							เลขที่ใบสั่งซื้อสินค้า
 						</div>
 						<div class="col-md-10">
-							<h4><?php echo $model->orderNo; ?></h4>
+							<h4><?php echo $model->orderNo; ?>
+								<?php if($model->isRequestSpacialProject): ?>
+									<span style="color:red">Spacial Project</span>
+								<?php endif; ?>
+							</h4>
 						</div>
 					</div>
 					<div class="form-group">
@@ -426,9 +430,12 @@ $this->renderPartial("_navbar", array(
 				</div>
 			</div>
 			<div class="row <?php echo ($this->action->id == "create") ? " hide" : "" ?>" id="action-button">
-				<div class="col-md-12 wizard-control">
+				<div class="col-md-12 wizard-control text-right">
 					<!--<a class="btn btn-warning btn-lg col-lg-offset-3" onclick="updatePrice()"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>-->
 					<!--<button id="nextToStep4" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>-->
+					<?php if(!$model->isRequestSpacialProject): ?>
+						<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/ginzatown/requestGinzatownSpacialProject/id/$model->orderGroupId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
