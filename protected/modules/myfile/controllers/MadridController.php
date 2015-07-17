@@ -217,6 +217,8 @@ class MadridController extends MasterMyFileController {
 
 
                         if ($flag) {
+
+//                            throw new Exception(print_r($_POST["OrderDetailValue"], true));
                             foreach ($_POST["OrderDetailValue"] as $k => $v) {
                                 if ($v["value"] <> "") {
                                     $orderFieldValue = new OrderDetailValue();
