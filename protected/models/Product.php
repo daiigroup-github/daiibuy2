@@ -959,26 +959,34 @@ class Product extends ProductMaster {
         return $res;
     }
 
-    public function calculatePriceFromEstimateAtech($brandModelId, $provinceId = 1, $productArray, $orderId) {
+    public function calculatePriceFromEstimateAtech($brandModelId, $provinceId = 1, $productArray, $orderId = null) {
         $res = array();
         $total = 0.00;
         $i = 0;
-        $orderDetailModel = OrderDetail::model()->find('orderId = ' . $orderId);
-        $orderDetailTemplateValueModel = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailModel->orderDetailId . ' and orderDetailTemplateFieldId = 9');
-        $category2Id = $orderDetailTemplateValueModel->value;
-//		throw new Exception(print_r($criteria,true));
+        if (isset($orderId) && ($orderId != 'undefined')) {
+//            throw new Exception(print_r($orderId, true));
+            $orderDetailModel = OrderDetail::model()->find('orderId = ' . $orderId);
+//        throw new Exception(print_r($orderDetailModel, true));
+            if (count($orderDetailModel) > 0) {
+                $orderDetailTemplateValueModel = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailModel->orderDetailId . ' and orderDetailTemplateFieldId = 9');
+                $category2Id = $orderDetailTemplateValueModel->value;
+            }
+        }
+
         foreach ($productArray as $item) {
             if (isset($orderId)) {
                 $productModel = Product::model()->findByPk($item->productId);
                 $width = $productModel->width;
                 $height = $productModel->height;
-                $cate2ToProduct = Category2ToProduct::model()->findAll('category1Id = ' . $category2Id . ' AND brandModelId = ' . $brandModelId);
-                if (isset($cate2ToProduct)) {
+                if (isset($category2Id)) {
+                    $cate2ToProduct = Category2ToProduct::model()->findAll('category1Id = ' . $category2Id . ' AND brandModelId = ' . $brandModelId);
+                    if (isset($cate2ToProduct)) {
 //				throw new Exception(print_r($cate2ToProduct,true));
-                    foreach ($cate2ToProduct as $cate2) {
-                        $product = Product::model()->findByPk($cate2->productId);
-                        if ($product->width == $width && $product->height == $height) {
-                            $item = $product;
+                        foreach ($cate2ToProduct as $cate2) {
+                            $product = Product::model()->findByPk($cate2->productId);
+                            if ($product->width == $width && $product->height == $height) {
+                                $item = $product;
+                            }
                         }
                     }
                 }

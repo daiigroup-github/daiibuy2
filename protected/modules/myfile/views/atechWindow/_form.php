@@ -322,7 +322,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row text-center">
                     <form id="aa">
-                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                                       ?>">
+                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                                        ?>">
                             <thead>
                                 <tr>ตารางแสดงรายละเอียดสินค้า</tr>
                                 <tr>
@@ -472,10 +472,10 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
         <!--			<tr>
                                         <td>2</td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                                       ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                                       ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                                       ?></td>
-                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                                       ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                                        ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                                        ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                                        ?></td>
+                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                                        ?></td>
                                         <td><button id="deleteRow" class="btn btn-danger">remove</button></td>
                                 </tr>-->
 
@@ -564,7 +564,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </div>
                                 <!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-                                                                                        <button name="<?php // echo $item->brandModelId;                                                                     ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                                     ?></button>
+                                                                                        <button name="<?php // echo $item->brandModelId;                                                                      ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                                      ?></button>
 
                                                                         </div>-->
                             </div>

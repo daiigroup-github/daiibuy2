@@ -202,6 +202,8 @@ class AtechWindowController extends MasterMyFileController {
         if (isset($_POST['orderId']) && !($_POST['orderId'] == "")) {
             $orderId = $_POST['orderId'];
             $isNew = false;
+        } else {
+            $orderId = null;
         }
 
         if (isset($_POST['brandModelId'])) {
@@ -227,7 +229,9 @@ class AtechWindowController extends MasterMyFileController {
 //				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 //			}
         }
-        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
+
+        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
+
 
 
 //	throw new Exception(print_r($res,true));
@@ -331,14 +335,11 @@ class AtechWindowController extends MasterMyFileController {
             $index = $rowCount - 1;
 //			throw new Exception(print_r($rowCount+1,true));
         }
+        $categoryDropDownArray = Category::model()->findAllParentCategoryArray(2);
+
         echo '<tr>'
         . '<td>' . $rowCount . '</td>'
-        . '<td class="cat">' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2), array(
-            'class' => 'form-control',
-            'prompt' => 'เลือกประเภท',
-            'onchange' => 'findType(this)')) . '</td>'
-        . '<td class="type">' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
-                ), array(
+        . '<td class="type">' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", $categoryDropDownArray, array(
             'prompt' => 'เลือกรูปแบบ',
             'class' => 'form-control',
             'onchange' => 'findSize(this);',
@@ -352,7 +353,7 @@ class AtechWindowController extends MasterMyFileController {
         )) . '</td>'
         . '<td>' . CHtml::textField('Criteria[' . $index . '][quantity]', 1, array(
             'class' => 'edit-table-qty-input number')) . '</td>'
-        . '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
+        . '<td><button id="deleteRow" class="deleteRow btn btn-danger">ลบรายการ</button></td>'
         . '</tr>';
     }
 
