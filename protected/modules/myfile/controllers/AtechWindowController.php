@@ -174,7 +174,9 @@ class AtechWindowController extends MasterMyFileController {
             }
             $res["total"] = $total;
             $res["brandModelId"] = $productModel->brandModelId;
+            $model->brandModelId = $productModel->brandModelId;
         }
+
 
         $this->layout = '//layouts/cl1';
         $this->render('view', array(
@@ -255,7 +257,7 @@ class AtechWindowController extends MasterMyFileController {
                 $res['orderId'] = $newOrderId;
             }
 
-
+            $i = 0;
             foreach ($res['items'] as $productId => $item) {
 
                 if ($isNew) {
@@ -268,6 +270,11 @@ class AtechWindowController extends MasterMyFileController {
                 } else {
                     $orderItemModel = OrderItems::model()->find('orderId = ' . $orderId . ' AND productId = ' . $productId);
                 }
+                if (count($orderItemModel) < 1) {
+                    $orderItemModel = $model->orderItems[$i];
+                    $orderItemModel->productId = $productId;
+                }
+//                throw new Exception(print_r(substr($res['items'][$productId]['name'], 0, 44), true));
                 $orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
                 $orderItemModel->price = $res['items'][$productId]['price'];
                 $orderItemModel->quantity = $res['items'][$productId]['quantity'];
@@ -277,6 +284,7 @@ class AtechWindowController extends MasterMyFileController {
                 if (!($orderItemModel->save())) {
                     throw new Exception(print_r($orderItemModel->errors, True));
                 }
+                $i++;
             }
         } else {
             throw new Exception(print_r($model->errors, true));
@@ -378,8 +386,9 @@ class AtechWindowController extends MasterMyFileController {
 //			$height = $size[1];
 //		}
 
-        $brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
-        $firstBrand = reset($brandModelArray);
+        $brandModelArray = BrandModel::model()->findAll('supplierId = ' . 2);
+        $firstBrand = $brandModelArray[0];
+
         $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand->brandModelId, $provinceId);
 
 //		throw new Exception(print_r($itemSetArray,true));
@@ -443,7 +452,7 @@ class AtechWindowController extends MasterMyFileController {
 //            throw new Exception(print_r($productArray, true));
             $itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
         }
-//		throw new Exception(print_r($itemSetArray,true));
+//        throw new Exception(print_r($itemSetArray, true));
         echo $this->renderPartial('/atechWindow/_edit_product_result', array(
             'productResult' => $itemSetArray,
                 ), TRUE, TRUE);

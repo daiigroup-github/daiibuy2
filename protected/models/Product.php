@@ -974,6 +974,7 @@ class Product extends ProductMaster {
         }
 
         foreach ($productArray as $item) {
+            $quantity = $item->quantity;
             if (isset($orderId)) {
                 $productModel = Product::model()->findByPk($item->productId);
                 $width = $productModel->width;
@@ -985,6 +986,7 @@ class Product extends ProductMaster {
                         foreach ($cate2ToProduct as $cate2) {
                             $product = Product::model()->findByPk($cate2->productId);
                             if ($product->width == $width && $product->height == $height) {
+
                                 $item = $product;
                             }
                         }
@@ -1001,7 +1003,7 @@ class Product extends ProductMaster {
 //			$res["items"][$item->productId]['category'] = $item['category'];
 //			$res["items"][$item->productId]['type'] = $item['type'];
             $res["items"][$item->productId]['description'] = $item->name;
-            $res["items"][$item->productId]['quantity'] = $item->quantity;
+            $res["items"][$item->productId]['quantity'] = $quantity;
             $res["items"][$item->productId]['name'] = $item->name;
             if (isset($productPromotion)) {
 //promotion price
