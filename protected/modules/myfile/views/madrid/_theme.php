@@ -27,6 +27,18 @@
                         <?php endif; ?>
                         <th>ราคารวม</th>
                         <?php
+                    elseif (!isset($model->orderItems[0]->product)):
+                        ?>
+                        <th>ลำดำ</th>
+                        <th>สินค้า</th>
+                        <th>รูปภาพสินค้า</th>
+                        <th>รหัสสินค้า</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>พื้นที่จากการ<br>ประเมิณ(ตร.ม.)</th>
+                        <th>ราคา/กล่อง</th>
+                        <th>จำนวน(กล่อง)</th>
+                        <th>ราคารวม</th>
+                        <?php
                     else:
                         ?>
                         <th>Product Image</th>
@@ -84,6 +96,46 @@
                                 <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price) : 0 ?></td>
                             </tr>
                             <?php
+                        elseif (!isset($model->orderItems[0]->product)):
+                            $orderDetailModel = OrderDetail::model()->find('orderId = ' . $model->orderId);
+                            $orderDetailValueModel = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailModel->orderDetailId . ' and orderDetailTemplateFieldId = 9');
+                            $productArray = Product::model()->findAllTileArray($orderDetailValueModel->value);
+                            ?>
+                            <tr>
+                                <td id="<?php echo $item->orderItemsId; ?>" name="<?php echo $item->orderItemsId; ?>"><?php echo $i; ?> </td>
+                                <td><?php
+                                    echo CHtml::dropDownList('OrderItems[' . $item->orderItemsId . '][productId]', "productId", $productArray, array(
+                                        'prompt' => '---เลือกกระเบื้อง---',
+                                        'onchange' => 'select(this);',
+//										'id'=>'type',
+                                    ));
+//                                    throw new Exception(print_r($model->orderItems, true));
+//                                    echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
+//                                                'style' => 'width:200px')) : "";
+                                    ?></td>
+                                <td id="productPic<?php echo $item->orderItemsId; ?>"><?php echo "####"; ?></td>
+                                <td id="productCode<?php echo $item->orderItemsId; ?>"><?php echo "####"; ?></td>
+                                <td id="productName<?php echo $item->orderItemsId; ?>"><?php echo "####"; ?></td>
+                                <td id="productArea<?php echo $item->orderItemsId; ?>"><?php echo $item->area; ?></td>
+                                <td id="productPrice<?php echo $item->orderItemsId; ?>" style="color:red; width: 5%">0.00<?php // echo number_format($item->product->price, 2);                                                                                                                                        ?>
+                                    <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
+                                    <?php // echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", "") ?>
+                                    <?php
+                                    echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", "", array(
+                                        'id' => 'priceHidden_' . $i))
+                                    ?>
+                                </td>
+                                <td style="width: 1%">
+                                    <div class="row"><div class="col-md-12"><?php
+                                            echo CHtml::numberField("OrderItems[" . $item->orderItemsId . "][quantity]", isset($item->quantity) ? $item->quantity : 1, array(
+                                                "id" => "quantityText_" . $item->orderItemsId))
+                                            ?></div></div>
+                                </td>
+                                <?php if ($this->action->id == "view"): ?>
+                                    <td style="color:red; width: 5%" id="total<?php echo $item->orderItemsId; ?>">0.00<?php // echo number_format($item->product->price * $item->quantity, 0)                                                                                                                                         ?></td>
+                                <?php endif; ?>
+                            </tr>
+                            <?php
                         else:
 //                            throw new Exception(print_r($model->orderItems, true));
                             ?>
@@ -93,9 +145,9 @@
 //                                    echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
 //                                                'style' => 'width:200px')) : "";
                                     ?></td>
-                                <td><?php // echo $item->product->code;   ?></td>
-                                <td><?php // echo $item->product->name;   ?></td>
-                                <td style="color:red"><?php // echo number_format($item->product->price, 2);  ?>
+                                <td><?php // echo $item->product->code;                                                                                                                                           ?></td>
+                                <td><?php // echo $item->product->name;                                                                                                                                           ?></td>
+                                <td style="color:red"><?php // echo number_format($item->product->price, 2);                                                                                                                                         ?>
                                     <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
                                     <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", "") ?>
                                     <?php
@@ -110,7 +162,7 @@
                                             ?></div></div>
                                 </td>
                                 <?php if ($this->action->id == "view"): ?>
-                                    <td id="total<?php echo $i; ?>"><?php // echo number_format($item->product->price * $item->quantity, 0)  ?></td>
+                                    <td id="total<?php echo $i; ?>"><?php // echo number_format($item->product->price * $item->quantity, 0)                                                                                                                                         ?></td>
                                 <?php endif; ?>
                             </tr>
                         <?php endif; ?>
@@ -133,13 +185,13 @@
                             <td><?php echo $i; ?></td>
                             <td style="text-align:center"><?php echo $k ?></td>
                             <?php if ($this->action->id == "view" || $model->status == 1): ?>
-                                <td style="text-align: center"><?php // echo $item->area;                                                                                                                       ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                                                                                                                       ?></td>
+                                <td style="text-align: center"><?php // echo $item->area;                                                                                                                                                                                                                                                               ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $item->area);                                                                                                                                                                                                                                                               ?></td>
                                 <td>ตร.เมตร</td>
                             <?php endif; ?>
 
-                            <td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                                                                                                                        ?></td>
-                            <td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                                                                                                                      ?></td>
-                            <td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                                                                                                                  ?></td>
+                            <td id="productCode<?php echo strtolower($k) ?>" class="text-info" id="productCode"><?php // echo $item->product->code;                                                                                                                                                                                                                                                                ?></td>
+                            <td id="productName<?php echo strtolower($k) ?>"><?php // echo $item->product->name;                                                                                                                                                                                                                                                              ?></td>
+                            <td id="productUnits<?php echo strtolower($k) ?>"><?php // echo $item->product->productUnits;                                                                                                                                                                                                                                                         ?></td>
                             <?php
                             echo CHtml::hiddenField("OrderItems[" . $k . "][price]" . strtolower($k), "", array(
                                 'id' => "priceHidden" . strtolower($k)));
@@ -156,10 +208,10 @@
                             ?>
 
                             <td  style="text-align: center" id="productArea<?php echo strtolower($k) ?>">
-                                <?php // echo $productArea;              ?>
+                                <?php // echo $productArea;               ?>
                             </td>
                             <?php if ($this->action->id == "view" || $model->status == 1): ?>
-                                <td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                                                                                                               ?></td>
+                                <td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($k) ?>"><?php // echo $estimateQuantity                                                                                                                                                                                                                                                      ?></td>
                             <?php endif; ?>
                             <td id="quantity<?php echo strtolower($k) ?>"><?php
                                 echo CHtml::numberField("OrderItems[" . $k . "][quantity]", "", array(
@@ -167,7 +219,7 @@
                                     //													'class'=>'hide',
                                     'id' => 'quantityText_' . strtolower($k)));
                                 ?></td>
-                            <td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                                                                                                                   ?></td>
+                            <td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                                                                                                                                                                                                                                                           ?></td>
                         </tr>
                         <?php
                         $i++;
@@ -178,3 +230,57 @@
         </table>
     </div>
 </div>
+<script>
+
+    function moneyFormat(num) {
+        var p = num.toFixed(2).split(".");
+        return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
+            return  num + (i && !(i % 3) ? "," : "") + acc;
+        }, "") + "." + p[1];
+    }
+    function select(sel)
+    {
+
+        var attrName = sel.attributes['name'].value;
+        var orderItemId = attrName.substr(11, 4);
+        var obj = $('select[name=\"' + attrName + '\"]');
+        var productId = obj.val();
+        var id = '#' + orderItemId;
+//        alert(orderItemId);
+        var category1Id = $(id).attr('name');
+        $.ajax({
+            'url': '<?php echo CController::createUrl('madrid/findTileByProductId'); ?>',
+//            'dataType': 'json',
+            'dataType': 'JSON',
+            'type': 'POST',
+            'data': {'productId': productId, 'category1Id': category1Id},
+            'success': function (data) {
+//                alert(data);
+//                obj.parent().parent().children('.size').children('select').html(data);
+//				findProductByCat1(sel);
+                $("#productCode" + orderItemId).html(data[productId]["productCode"]);
+                $("#productName" + orderItemId).html(data[productId]["name"]);
+                $("#productUnits" + orderItemId).html(data[productId]["productUnits"]);
+//                data[productId]["productArea"] = $("#productArea" + category1Id).val();
+//                var estimateQuantity = data[productId]["productArea"] * $("#supplierArea" + category1Id).val();
+//                $("#estimateAreaQuantity" + category1Id).html(estimateQuantity);
+//					$("#quantityText_" + groupName).removeClass("hide");
+//                                                alert(estimateQuantity);
+//                if (estimateQuantity) {
+//                    $("#quantityText_" + category1Id).val(estimateQuantity);
+//                } else {
+//                    $("#quantityText_" + category1Id).val(1);
+//                }
+                var areaId = "#productArea" + orderItemId;
+                var estimateArea = $(areaId).html();
+                var quantity = parseFloat(estimateArea) / parseFloat(data[productId]["productArea"]);
+//                alert(quantity);
+                $("#quantityText_" + orderItemId).val(quantity);
+                $("#productPrice" + orderItemId).html(data[productId]["price"]);
+                $("#total" + orderItemId).html(moneyFormat(data[productId]["price"] * quantity));
+                $("#priceHidden" + orderItemId).val(data[productId]["price"] * quantity);
+                $("#productId" + orderItemId).val(data[productId]["productId"]);
+            },
+        });
+    }
+</script>

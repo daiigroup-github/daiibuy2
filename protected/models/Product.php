@@ -1093,4 +1093,14 @@ class Product extends ProductMaster {
         return $res;
     }
 
+    public function findAllTileArray($category1Id) {
+        $res = array();
+        $cat = Category2ToProduct::model()->findAll('brandModelId = 19 AND status = 1 and category1Id = ' . $category1Id);
+
+        foreach ($cat as $item) {
+            $res[$item->productId] = $item->product->name;
+        }
+        return $res;
+    }
+
 }

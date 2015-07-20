@@ -693,4 +693,23 @@ class MadridController extends MasterMyFileController {
 //        echo CJSON::encode($result);
     }
 
+    public function actionFindTileByProductId() {
+
+        $productId = $_POST["productId"];
+        $category1Id = $_POST["category1Id"];
+        $productModel = Product::model()->findByPk($productId);
+        $category2ToProduct = Category2ToProduct::model()->find('productId = ' . $productId . ' and category1Id = ' . $category1Id);
+//        throw new Exception(print_r($productModel, true));
+        $result[$productModel->productId]["productId"] = $productModel->productId;
+        $result[$productModel->productId]["productCode"] = $productModel->code;
+        $result[$productModel->productId]["name"] = $productModel->name;
+        $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
+        $result[$productModel->productId]["productArea"] = $productModel->area;
+        $result[$productModel->productId]["price"] = $productModel->price;
+        $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
+//        throw new Exception(print_r(count($cat2ToProduct), true));
+//        throw new Exception(print_r($result, true));
+        echo CJSON::encode($result);
+    }
+
 }
