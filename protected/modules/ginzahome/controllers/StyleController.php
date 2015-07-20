@@ -1,6 +1,6 @@
 <?php
 
-class StyleController extends MasterController
+class StyleController extends MasterGinzahomeController
 {
 
 	public function actionIndex($id)
