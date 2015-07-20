@@ -43,7 +43,7 @@ class MasterController extends Controller
 		parent::init();
 		$this->cookie = new DaiiBuy();
 		$this->cookie->loadCookie();
-		$this->province = isset($this->cookie['provinceId']) && !empty($this->cookie['provinceId']) ? Province::model()->findByPk($this->cookie['provinceId'])->provinceName : '';
+		$this->province = isset($this->cookie['provinceId']) && !empty($this->cookie['provinceId']) ? Province::model()->findByPk($this->cookie['provinceId'])->provinceName : 'กรุณาเลือกจังหวัด';
 	}
 
 	public function writeToFile($filePath, $string, $mode = 'w+')
