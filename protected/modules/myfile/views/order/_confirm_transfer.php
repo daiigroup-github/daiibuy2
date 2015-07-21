@@ -1,3 +1,11 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="carousel-heading">
+			<h4>ยืนยันโอนเงิน</h4>
+		</div>
+	</div>
+</div>
+
 <div class="form">
 
 	<?php
@@ -12,9 +20,7 @@
 			'class'=>'form-horizontal well'),
 	));
 	?>
-	<h2>ยืนยันโอนเงิน</h2>
 	<h4>กรุณาอัพโหลดเอกสารยืนยันการโอนเงิน...</h4>
-	<div class="row">
 		<div class="form-group">
 			<label class="control-label col-sm-3"><?php echo $form->labelEx($orderFileModel, "fileName"); ?></label>
 			<div class="col-sm-9">
@@ -35,7 +41,6 @@
 			</div>
 		</div>
 
-	</div>
 	<?php $this->endWidget(); ?>
 
 </div><!-- form -->

@@ -36,7 +36,7 @@ $this->breadcrumbs = array(
 								//$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
 								//$class = 'col-lg-6 col-md-6 col-sm-12';
 								?>
-								<div class="<?php echo $class; ?>">
+								<div class="<?php echo $class; ?>" style="max-height: 300px;">
 									<div class="blog-item">
 
 										<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . "/" . $supplier->logo); ?></a>
@@ -54,7 +54,7 @@ $this->breadcrumbs = array(
 											  </div>
 											 */
 											?>
-											<p><?php echo $supplier->description; ?></p>
+											<p style="overflow: auto;max-height: 65px;"><?php echo $supplier->description; ?></p>
 										</div>
 										<?php
 										/*

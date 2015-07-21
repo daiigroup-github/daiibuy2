@@ -11,10 +11,12 @@ $this->breadcrumbs = array(
 
 		<div class="carousel-heading">
 			<h4 class="pull-left">My Files Fenzer</h4>
+			<?php /*
 			<div class="pull-right">
 				<a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-left button" onclick="javascript:history.back();"></a>
 				<a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-right button" onclick="javascript:history.forward();"></a>
 			</div>
+ */?>
 		</div>
 	</div>
 	<!-- /Heading -->
