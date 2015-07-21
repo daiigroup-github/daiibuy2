@@ -723,7 +723,8 @@ class MadridController extends MasterMyFileController {
         $result[$productModel->productId]["name"] = $productModel->name;
         $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
         $result[$productModel->productId]["productArea"] = $productModel->area;
-        $result[$productModel->productId]["price"] = $productModel->price;
+//        throw new Exception(print_r($productModel->calProductPromotionPrice(null, null), true));
+        $result[$productModel->productId]["price"] = $productModel->calProductPromotionPrice(null, null);
         $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
         $result[$productModel->productId]["productImage"] = CHtml::image(Yii::app()->baseUrl . $productModel->productImages[0]->image);
 //        throw new Exception(print_r(count($cat2ToProduct), true));

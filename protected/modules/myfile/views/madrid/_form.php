@@ -689,8 +689,8 @@ $form = $this->beginWidget('CActiveForm', array(
                                                             <td id="quantity<?php echo strtolower($item->groupName) ?>"><?php
                                                                 echo $item->quantity;
                                                                 ?></td>
-                                                            <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price) : 0 ?></td>
-                                                        </tr>
+                                                                            <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null)) : 0 ?></td>
+                                                                </tr>
                                                     <?php elseif (!isset($model->orderItems[0]->product)):
 //                                                        throw new Exception(print_r($item, true));
                                                         ?>
@@ -703,16 +703,16 @@ $form = $this->beginWidget('CActiveForm', array(
                                                             <td><?php echo isset($item->product) ? $item->product->code : "####"; ?></td>
                                                             <td><?php echo isset($item->product) ? $item->product->name : "####"; ?></td>
                                                             <td><?php echo $item->area; ?></td>
-                                                            <td style="color:red"><?php echo isset($item->product) ? number_format($item->product->price, 2) : "####"; ?>
+                                                                            <td style="color:red"><?php echo isset($item->product) ? number_format($item->product->calProductPromotionPrice(null, null), 2) : "####"; ?>
 
                                                                 <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", isset($item->productId) ? $item->productId : ""); ?>
-                                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", isset($item->product->price) ? $item->product->price : ""); ?>
-                                                            </td>
+                                                                        <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", isset($item->product->price) ? $item->product->calProductPromotionPrice(null, null) : ""); ?>
+                                                                    </td>
                                                             <td style="width: 20%">
                                                                 <div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 0); ?></div></div>
                                                             </td>
-                                                            <td><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price, 0) : "####"; ?></td>
-                                                        </tr>
+                                                                            <td><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null), 0) : "####"; ?></td>
+                                                                </tr>
                                                         <?php
                                                     else:
 //                                                        throw new Exception(print_r($item, true));
@@ -724,16 +724,16 @@ $form = $this->beginWidget('CActiveForm', array(
                                                                 ?></td>
                                                             <td><?php echo isset($item->product) ? $item->product->code : "####"; ?></td>
                                                             <td><?php echo isset($item->product) ? $item->product->name : "####"; ?></td>
-                                                            <td style="color:red"><?php echo isset($item->product) ? number_format($item->product->price, 2) : "####"; ?>
+                                                                            <td style="color:red"><?php echo isset($item->product) ? number_format($item->product->calProductPromotionPrice(null, null), 2) : "####"; ?>
 
                                                                 <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", isset($item->productId) ? $item->productId : ""); ?>
-                                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", isset($item->product->price) ? $item->product->price : ""); ?>
-                                                            </td>
+                                                                        <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", isset($item->product->price) ? $item->product->calProductPromotionPrice(null, null) : ""); ?>
+                                                                    </td>
                                                             <td style="width: 20%">
                                                                 <div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 0); ?></div></div>
                                                             </td>
-                                                            <td><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price, 0) : "####"; ?></td>
-                                                        </tr>
+                                                                            <td><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null), 0) : "####"; ?></td>
+                                                                </tr>
                                                     <?php endif; ?>
                                                     <?php
                                                     $i++;

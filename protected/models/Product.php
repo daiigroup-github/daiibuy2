@@ -480,7 +480,7 @@ class Product extends ProductMaster {
             } else {
                 $price = $price * ((100 + $product->priceGroup->priceRate) / 100);
             }
-
+            
             return floor($price);
         } else {
             return 0;

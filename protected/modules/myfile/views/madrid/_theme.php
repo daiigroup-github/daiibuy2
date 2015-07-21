@@ -71,8 +71,8 @@
 
                                             <td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->productUnits : ""; ?></td>
                                 <?php
-                                echo CHtml::hiddenField("OrderItems[" . $item->orderItemsId . "][price]", isset($item->product) ? $item->product->price : "", array(
-                                    'id' => "priceHidden" . strtolower($item->groupName)));
+                                echo CHtml::hiddenField("OrderItems[" . $item->orderItemsId . "][price]", isset($item->product) ? $item->product->calProductPromotionPrice(null, null) : "", array(
+                                                            'id' => "priceHidden" . strtolower($item->groupName)));
                                 ?>
                                 <?php
                                 echo CHtml::hiddenField("OrderItems[" . $item->orderItemsId . "][productId]", isset($item->product) ? $item->product->productId : "", array(
@@ -93,7 +93,7 @@
                                         //													'class'=>'hide',
                                         'id' => 'quantityText_' . strtolower($item->groupName)));
                                     ?></td>
-                                                        <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price, 2) : 0 ?></td>
+                                <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null), 2) : 0 ?></td>
                                         </tr>
                             <?php
                         elseif (!isset($model->orderItems[0]->product)):
@@ -123,8 +123,8 @@
                                 <td id="productCode<?php echo $item->orderItemsId; ?>"><?php echo "####"; ?></td>
                                 <td id="productName<?php echo $item->orderItemsId; ?>"><?php echo "####"; ?></td>
                                 <td id="productArea<?php echo $item->orderItemsId; ?>"><?php echo $item->area; ?></td>
-                                <td id="productPrice<?php echo $item->orderItemsId; ?>" style="color:red; width: 5%">0.00<?php // echo number_format($item->product->price, 2);                                                                                                                                                    ?>
-                                    <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
+                                                        <td id="productPrice<?php echo $item->orderItemsId; ?>" style="color:red; width: 5%">0.00<?php // echo number_format($item->product->calProductPromotionPrice(null, null), 2);                                                                                                                                                     ?>
+                                                <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
                                     <?php // echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", "") ?>
                                             </td>
                                                         <?php
@@ -138,8 +138,8 @@
                                             ?></div></div>
                                 </td>
                                 <?php if ($this->action->id == "view"): ?>
-                                    <td style="color:red; width: 5%" id="total<?php echo $item->orderItemsId; ?>">0.00<?php // echo number_format($item->product->price * $item->quantity, 0)                                                                                                                                                     ?></td>
-                                <?php endif; ?>
+                                <td style="color:red; width: 5%" id="total<?php echo $item->orderItemsId; ?>">0.00<?php // echo number_format($item->product->calProductPromotionPrice(null, null) * $item->quantity, 0)                                                                                                                                                      ?></td>
+                                            <?php endif; ?>
                             </tr>
                             <?php
                         else:
@@ -152,11 +152,11 @@
                                                                          ?></td>
                                 <td><?php echo $item->product->code;                                                                                                                                                       ?></td>
                                 <td><?php echo $item->product->name;                                                                                                                                                       ?></td>
-                                <td style="color:red"><?php echo number_format($item->product->price, 2);                                                                                                                                                     ?>
-                                    <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
+                                                        <td style="color:red"><?php echo number_format($item->product->calProductPromotionPrice(null, null), 2); ?>
+                                                <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
                                                 <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", $item->productId) ?>
                                                 <?php
-                                    echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price, array(
+                                    echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->calProductPromotionPrice(null, null), array(
                                                     'id' => 'priceHidden_' . $i))
                                     ?>
                                 </td>
@@ -167,7 +167,7 @@
                                             ?></div></div>
                                 </td>
                                 <?php if ($this->action->id == "view"): ?>
-                                <td id="total<?php echo $i; ?>"><?php echo number_format($item->product->price * $item->quantity, 0); ?></td>
+                                                                <td id="total<?php echo $i; ?>"><?php echo number_format($item->product->calProductPromotionPrice(null, null) * $item->quantity, 0); ?></td>
                                             <?php endif; ?>
                             </tr>
                         <?php endif; ?>
@@ -224,8 +224,8 @@
                                     //													'class'=>'hide',
                                     'id' => 'quantityText_' . strtolower($k)));
                                 ?></td>
-                            <td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->price)                                                                                                                                                                                                                                                                       ?></td>
-                        </tr>
+                                            <td id="price<?php echo strtolower($k) ?>"><?php // echo number_format($item->quantity * $item->product->calProductPromotionPrice(null, null))                                                                                                                                                                                                                                                                        ?></td>
+                                </tr>
                         <?php
                         $i++;
                     endforeach;
