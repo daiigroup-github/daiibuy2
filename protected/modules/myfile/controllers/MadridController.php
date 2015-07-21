@@ -178,7 +178,7 @@ class MadridController extends MasterMyFileController {
 //            throw new Exception(print_r($_FILES['OrderFile'], true));
             try {
                 if (isset($_POST['Order'])) {
-                    throw new Exception(print_r($_POST["Order"], true));
+//                    throw new Exception(print_r($_POST["Order"], true));
                     $flag = false;
                     $transaction = Yii::app()->db->beginTransaction();
                     $model->attributes = $_POST['Order'];

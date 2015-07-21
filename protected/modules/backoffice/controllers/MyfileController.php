@@ -268,7 +268,7 @@ class MyfileController extends MasterBackofficeController {
                     $orderDetailValueModel->updateDateTime = new CDbExpression("NOW()");
                     $orderDetailValueModel->save();
                 }
-                throw new Exception(print_r($flag, true));
+//                throw new Exception(print_r($flag, true));
                 if ($flag) {
                     $model->status = 1;
                     if ($model->save()) {
