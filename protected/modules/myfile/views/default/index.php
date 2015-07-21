@@ -23,7 +23,8 @@ $this->breadcrumbs = array(
 		$key = $value->name;
 		?>
 		<?php
-		$class = 'col-lg-3 col-md-3 col-sm-12';
+		$class = 'col-lg-4 col-md-4 col-sm-12';
+		$class .= ($i==3) ? 'col-lg-offset-2 col-md-offset-2' : '';
 		//$class = ($i==0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-4 col-md-4 col-sm-12';
 		//$class = 'col-lg-6 col-md-6 col-sm-12';
 		?>
@@ -48,7 +49,7 @@ $this->breadcrumbs = array(
 				?>
 				<a href="<?php echo Yii::app()->createUrl('index.php/myfile/' . $url); ?>"><?php
 					echo CHtml::image(Yii::app()->baseUrl . $value->logo, $value->name, array(
-						"style"=>"height:130px"));
+						"style"=>"height:180px"));
 					?>
 					<div class="button blue" style="text-align: center;background-clip: border-box;color:white"><?php echo $value->name; ?></div>
 				</a>
