@@ -78,12 +78,17 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 						$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
 //					$("#quantityText_" + groupName).removeClass("hide");
 //                                                alert(estimateQuantity);
+                                                var price = 0.00;
                                                 if(estimateQuantity){
                                                     $("#quantityText_" + groupName).val(estimateQuantity);
+                                                    price = moneyFormat(data[groupName]["price"] * estimateQuantity);
                                                 }else{
                                                     $("#quantityText_" + groupName).val(1);
+                                                    price = moneyFormat(parseFloat(data[groupName]["price"]));
+                                                    
                                                 }
-						$("#price" + groupName).html(moneyFormat(data[groupName]["price"] * estimateQuantity));
+//                                                alert(estimateQuantity);
+						$("#price" + groupName).html(price);
 						$("#priceHidden" + groupName).val(data[groupName]["price"]);
 						$("#productId" + groupName).val(data[groupName]["productId"]);
 					}
@@ -187,7 +192,7 @@ function updatePrice()
 	{
 		var price = $("#priceHidden" + groupName).val();
 		var quantity = $("#quantityText_" + groupName).val();
-		$("#price" + groupName).html(price * quantity);
+		$("#price" + groupName).html(moneyFormat(price * quantity));
 	}
 }
 
