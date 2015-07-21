@@ -23,8 +23,8 @@
                             <th style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
                             <th>ปริมาณแก้ไข</th>
                         <?php else: ?>
-                            <th>ระบุจำนวน</th>
-                        <?php endif; ?>
+                                            <th>ระบุจำนวน(กล่อง)</th>
+                                <?php endif; ?>
                         <th>ราคารวม</th>
                         <?php
                     elseif (!isset($model->orderItems[0]->product)):
@@ -35,20 +35,21 @@
                         <th>รหัสสินค้า</th>
                         <th>ชื่อสินค้า</th>
                         <th>พื้นที่จากการ<br>ประเมิณ(ตร.ม.)</th>
-                        <th>ราคา/กล่อง</th>
-                        <th>จำนวน(กล่อง)</th>
-                        <th>ราคารวม</th>
-                        <?php
+                                <th>ราคา(บาท)/กล่อง</th>
+                            <th>จำนวน(กล่อง)</th>
+                                <th>ราคารวม(บาท)</th>
+                            <?php
                     else:
                         ?>
-                        <th>Product Image</th>
-                        <th>Code</th>
-                        <th>Title/Category</th>
-                        <th>Price</th>
-                        <th>Quantiry</th>
-                        <?php if ($this->action->id == "view"): ?>
-                            <th>Summary</th>
-                        <?php endif; ?>
+                            <th>ลำดำ</th>
+                            <th>รูปภาพสินค้า</th>
+                            <th>รหัสสินค้า</th>
+                            <th>ชื่อสินค้า</th>
+                                    <th>ราคา(บาท)/กล่อง</th>
+                            <th>จำนวน(กล่อง)จำนวน(กล่อง)</th>
+                            <?php if ($this->action->id == "view"): ?>
+                        <th>ราคารวม(บาท)</th>
+                            <?php endif; ?>
                     <?php endif; ?>
                 </tr>
             </thead>
@@ -145,20 +146,19 @@
                         else:
 //                            throw new Exception(print_r($model->orderItems, true));
                             ?>
-                            <tr>
-                                <td><?php
-//                                    throw new Exception(print_r($model->orderItems, true));
-//                                    echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(Yii::app()->baseUrl . $item->product->productImagesSort[0]->image, "", array(
-//                                                'style' => 'width:200px')) : "";
-                                    ?></td>
-                                <td><?php // echo $item->product->code;                                                                                                                                                       ?></td>
-                                <td><?php // echo $item->product->name;                                                                                                                                                       ?></td>
-                                <td style="color:red"><?php // echo number_format($item->product->price, 2);                                                                                                                                                     ?>
+                                         <tr>
+                                             <td><?php echo $i; ?></td>
+                                                         <td><?php
+                                    echo CHtml::image(Yii::app()->baseUrl . isset($item->product->productImages[0]) ? $item->product->productImages[0]->image : "");
+                                                                         ?></td>
+                                <td><?php echo $item->product->code;                                                                                                                                                       ?></td>
+                                <td><?php echo $item->product->name;                                                                                                                                                       ?></td>
+                                <td style="color:red"><?php echo number_format($item->product->price, 2);                                                                                                                                                     ?>
                                     <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
-                                    <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", "") ?>
-                                    <?php
-                                    echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", "", array(
-                                        'id' => 'priceHidden_' . $i))
+                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", $item->productId) ?>
+                                                <?php
+                                    echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price, array(
+                                                    'id' => 'priceHidden_' . $i))
                                     ?>
                                 </td>
                                 <td style="width: 20%">
@@ -168,8 +168,8 @@
                                             ?></div></div>
                                 </td>
                                 <?php if ($this->action->id == "view"): ?>
-                                    <td id="total<?php echo $i; ?>"><?php // echo number_format($item->product->price * $item->quantity, 0)                                                                                                                                                     ?></td>
-                                <?php endif; ?>
+                                <td id="total<?php echo $i; ?>"><?php echo number_format($item->product->price * $item->quantity, 0); ?></td>
+                                            <?php endif; ?>
                             </tr>
                         <?php endif; ?>
                         <?php

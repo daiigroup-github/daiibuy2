@@ -171,13 +171,13 @@ class MadridController extends MasterMyFileController {
           Yii::app()->end();
           }
          */
-//        throw new Exception(print_r($_POST["Order"]["createMyfileType"], true));
+
         if (isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2) {
 //			$planFile = $_FILES['OrderFile'];
 //            throw new Exception(print_r($_FILES['OrderFile'], true));
             try {
                 if (isset($_POST['Order'])) {
-//                    throw new Exception(print_r($_POST["Order"], true));
+                    throw new Exception(print_r($_POST["Order"], true));
                     $flag = false;
                     $transaction = Yii::app()->db->beginTransaction();
                     $model->attributes = $_POST['Order'];
@@ -279,11 +279,13 @@ class MadridController extends MasterMyFileController {
                 $model->type = 1;
                 $model->status = 1;
                 $model->supplierId = 3;
-                if ($_POST["Order"]["createMyfileType"] == 3) {
+                if ($_POST["Order"]["isTheme"] == 3) {
                     $model->isTheme = 0;
                 } else {
                     $model->isTheme = 1;
                 }
+//                throw new Exception(print_r($model, true));
+
                 $model->userId = Yii::app()->user->id;
                 $model->createDateTime = new CDbExpression("NOW()");
 //                throw new Exception(print_r($model, true));
@@ -296,7 +298,7 @@ class MadridController extends MasterMyFileController {
                     } else {
                         $flag = false;
                     }
-//                    throw new Exception(print_r($orderDetailModel, true));
+//                    throw new Exception(print_r($_POST["OrderItems"], true));
 
                     foreach ($_POST["OrderItems"] as $k => $v) {
 

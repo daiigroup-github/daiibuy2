@@ -407,7 +407,7 @@ function updateSetPrice(no)
 	{
 		var price = $("#priceHidden_" + i).val();
 		var quantity = $("#quantityText_" + i).val();
-		$("#total" + i).html(price * quantity);
+		$("#total" + i).html(moneyFormat(price * quantity));
 	}
 }
 

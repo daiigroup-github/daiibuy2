@@ -430,8 +430,8 @@ $form = $this->beginWidget('CActiveForm', array(
 //           
 //            throw new Exception(print_r($model->isTheme, true));
             if (($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1)):
-
-            if ($model->isTheme != 0):
+                throw new Exception(print_r($model->isTheme, true));
+    if ($model->isTheme != 0 && $model->isTheme != 3):
                     ?>
                 <div class="row sidebar-box red ">
                     <div class="col-sm-12">
@@ -545,7 +545,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <?php if (!$model->isNewRecord && $this->action->id == "view"): ?>
                         <a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme == 1) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
                     <?php endif; ?>
-                    <button id="nextToStep5" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
+                    <button id="nextToStep5" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
                 </div>
             </div>
         </div>
@@ -595,8 +595,10 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="col-md-12 wizard-control">
                     <?php if (!$model->isNewRecord && $this->action->id == "view"): ?>
                         <a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme == 1) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
-                    <?php endif; ?>
-                    <button id="nextToStep5tile" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
+                            <?php
+                        endif;
+                        ?>
+                        <button id="nextToStep5tile" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
                 </div>
             </div>
         </div>
