@@ -65,7 +65,8 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 						$("#productName" + groupName).html(data[groupName]["name"]);
 						$("#productUnits" + groupName).html(data[groupName]["productUnits"]);
 						$("#productArea" + groupName).html(data[groupName]["productArea"]);
-						var estimateQuantity = data[groupName]["productArea"] * $("#supplierArea" + groupName).val();
+						var estimateQuantity = Math.round($("#supplierArea" + groupName).val()  / data[groupName]["productArea"]);
+//                                                alert(data[groupName]["productArea"] + ', ' +$("#supplierArea" + groupName).val());
 						$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
 //					$("#quantityText_" + groupName).removeClass("hide");
 //                                                alert(estimateQuantity);

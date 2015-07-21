@@ -1094,13 +1094,23 @@ class Product extends ProductMaster {
     }
 
     public function findAllTileArray($category1Id) {
-        $res = array();
-        $cat = Category2ToProduct::model()->findAll('brandModelId = 19 AND status = 1 and category1Id = ' . $category1Id);
 
-        foreach ($cat as $item) {
-            $res[$item->productId] = $item->product->name;
+        $res = array();
+        $FavTiles = UserFavourite::model()->findAll('userId = ' . Yii::app()->user->id . ' and productId is not null');
+        foreach ($FavTiles as $fav) {
+            $productModel = Product::model()->findByPk($fav->productId);
+            if (isset($productModel->productId))
+                $res[$productModel->productId] = $productModel->name;
         }
         return $res;
+
+//        $res = array();
+//        $cat = Category2ToProduct::model()->findAll('brandModelId = 19 AND status = 1 and category1Id = ' . $category1Id);
+//
+//        foreach ($cat as $item) {
+//            $res[$item->productId] = $item->product->name;
+//        }
+//        return $res;
     }
 
 }

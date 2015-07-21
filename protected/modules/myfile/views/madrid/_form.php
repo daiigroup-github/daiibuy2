@@ -419,11 +419,12 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 
     <div class="row setup-content" id="step-4">
-        <?php $classTop = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12"; ?>
+        <?php $classTop = ($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12"; ?>
         <div class="<?php echo $classTop; ?>">
             <?php
 //           
-            if ($this->action->id == 'view' && $results["status"] == 1):
+//            throw new Exception(print_r($model->isTheme, true));
+            if (($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1)):
                 ?>
                 <div class="row sidebar-box red ">
                     <div class="col-sm-12">
@@ -432,18 +433,19 @@ $form = $this->beginWidget('CActiveForm', array(
                             <h4>Theme</h4>
                         </div>
                         <div class="sidebar-box-content" id="themeResult">
-                            <!--                        <ul>
+                            <!--<ul>-->
                             <?php
+//                            throw new Exception(print_r($results, true));
                             echo $results["themes"];
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                             ?>
-                                                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                           ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                           ?></li></a>
+    <!--                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                                                                                                       ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                                                       ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                                                       ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                                                       ?></li></a>-->
                             <?php
 //                                }
 //                            endforeach;
                             ?>
-                                                    </ul>-->
+                            <!--</ul>-->
                         </div>
                     </div>
                 </div>
@@ -454,11 +456,11 @@ $form = $this->beginWidget('CActiveForm', array(
                             <h4>Sanitary Set</h4>
                         </div>
                         <div class="sidebar-box-content" id="setResult">
-                            <!--                        <ul>
+                            <!--<ul>-->
                             <?php echo $results["sets"] // foreach ($sets as $set):           ?>
-                                                            <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                                                                                                             ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                             ?>)"><?php // echo $set->category2->title;                                                                                                                                                                                             ?></li></a>
+                                     <!--<li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                                                                                                                                         ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                                                         ?>)"><?php // echo $set->category2->title;                                                                                                                                                                                                                         ?></li></a>-->
                             <?php // endforeach;            ?>
-                                                    </ul>-->
+                            <!--</ul>-->
                         </div>
                     </div>
                 </div>
@@ -483,7 +485,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                                     ?>
-                                    <li><a href="#"  onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                          ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                          ?></li></a>
+                                    <li><a href="#"  onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                                                      ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                                                      ?></li></a>
                                     <?php
 //                                }
                                 endforeach;
@@ -562,7 +564,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                                                                    ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                    ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                    ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                    ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                                                                                                ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                                                ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                                                ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                                                ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -659,21 +661,27 @@ $form = $this->beginWidget('CActiveForm', array(
                                                             <td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->name : ""; ?></td>
                                                             <td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->productUnits : ""; ?></td>
                                                             <?php
-                                                            $productArea = isset($product->area) ? $product->area : $product->width * $product->height;
-                                                            $estimateQuantity = round($item->area / $productArea, $i, 'PHP_ROUND_HALF_UP');
+                                                            $product = Product::model()->findByPk($item->productId);
+//                                                            throw new Exception(print_r($item->product->area, true));
+                                                            if (isset($item->product)) {
+                                                                $productArea = isset($item->product->area) ? ($item->product->area != 0 ? $item->product->area : $item->product->width * $item->product->height) : $item->product->width * $item->product->height;
+                                                                if ($productArea == 0)
+                                                                    $productArea = $item->product->width * $item->product->height;
+                                                                if ($item->area != 0)
+                                                                    $estimateQuantity = round($item->area / $productArea, 0);
+                                                            }
                                                             ?>
 
                                                             <td  style="text-align: center" id="productArea<?php echo strtolower($item->groupName) ?>">
-                                                                <?php echo $productArea; ?>
+                                                                <?php echo isset($productArea) ? $productArea : ""; ?>
                                                             </td>
-                                                            <td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"><?php echo $estimateQuantity ?></td>
+                                                            <td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"><?php echo isset($estimateQuantity) ? $estimateQuantity : ""; ?></td>
                                                             <td id="quantity<?php echo strtolower($item->groupName) ?>"><?php
                                                                 echo $item->quantity;
                                                                 ?></td>
                                                             <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price) : 0 ?></td>
                                                         </tr>
-                                                        <?php
-                                                    elseif (!isset($model->orderItems[0]->product)):
+                                                    <?php elseif (!isset($model->orderItems[0]->product)):
 //                                                        throw new Exception(print_r($item, true));
                                                         ?>
                                                         <tr>
@@ -735,7 +743,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             <a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
                         <?php endif; ?>
                         <a id="" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-                        <a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
+                        <a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
                         <?php if ($model->type < 3): ?>
                             <a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
                         <?php endif; ?>
@@ -777,38 +785,38 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php // echo $form->errorSummary($model);                                                                    ?>
+<?php // echo $form->errorSummary($model);                                                                     ?>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'supplierId');                    ?>
+<?php // echo $form->labelEx($model, 'supplierId');                     ?>
 <?php // echo $form->textField($model, 'supplierId');              ?>
 <?php // echo $form->error($model, 'supplierId');                                                       ?>
         </div>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'type');                     ?>
+<?php // echo $form->labelEx($model, 'type');                      ?>
 <?php // echo $form->textField($model, 'type');              ?>
 <?php // echo $form->error($model, 'type');                                                       ?>
         </div>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'status');                     ?>
+<?php // echo $form->labelEx($model, 'status');                      ?>
 <?php // echo $form->textField($model, 'status');             ?>
 <?php // echo $form->error($model, 'status');                                                       ?>
         </div>
 
         <div class="row">
-<?php // echo $form->labelEx($model, 'title');                     ?>
+<?php // echo $form->labelEx($model, 'title');                      ?>
 <?php // echo $form->textField($model, 'title');            ?>
 <?php // echo $form->error($model, 'title');                                                        ?>
         </div>
 
 
         <div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                                                      ?>
+<?php // echo CHtml::submitButton('Submit');                                                                       ?>
         </div>
 
-<?php // $this->endWidget();                                                                      ?>
+<?php // $this->endWidget();                                                                       ?>
 
 </div>-->
 <!-- form -->

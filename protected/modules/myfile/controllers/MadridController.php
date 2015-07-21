@@ -69,20 +69,22 @@ class MadridController extends MasterMyFileController {
         $orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
         $orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
 
-        $orderDetailValueCat2 = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailId . ' AND orderDetailTemplateFieldId = 6');
+        $orderDetailValueCat2 = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailId . ' AND orderDetailTemplateFieldId = 9');
 //        throw new Exception(print_r($orderDetailTemplateFieldCat2, true));
         $category2Id = isset($orderDetailValueCat2->value) ? $orderDetailValueCat2->value : null;
-//        throw new Exception(print_r($category2Id, true));
+
 
         $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
         $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
+
+//        throw new Exception(print_r($themes, true));
         if (isset($category2Id)) {
             $resultTheme = "";
             $resultTheme .= "<ul>";
 
             foreach ($themes as $theme):
                 $url = '"' . Yii::app()->baseUrl . '"';
-                $resultTheme .= "<li><a href='#'  onclick='loadThemeItem(" . $theme->category2Id . "," . $url . "," . 0 . ")' > " . $theme->category2->title . "</li></a>";
+                $resultTheme .= "<li><a href='#'  onclick='loadThemeItem(" . $theme->category2Id . "," . $url . "," . (isset($model->orderId) ? $model->orderId : 0) . ")' > " . $theme->category2->title . "</li></a>";
             endforeach;
 
             $resultTheme .= "</ul>";
@@ -100,6 +102,7 @@ class MadridController extends MasterMyFileController {
             $results["themes"] = $resultTheme;
             $results["sets"] = $resultSets;
             $results["status"] = 1;
+//            throw new Exception(print_r($results, true));
         }else {
             $results["status"] = 0;
 //            throw new Exception(print_r($results["status"], true));
@@ -109,15 +112,24 @@ class MadridController extends MasterMyFileController {
         if (isset($_POST["OrderItems"])) {
 
             foreach ($_POST["OrderItems"] as $k => $v) {
-                if (!empty($v["quantity"])) {
+//                throw new Exception(print_r($_POST["OrderItems"], true));
+
+                if (empty($v["productId"])) {
                     $orderItems = OrderItems::model()->findByPk($k);
-                    $orderItems->quantity = $v["quantity"];
-                    $orderItems->price = $v["price"];
-                    $orderItems->productId = $v["productId"];
-                    $orderItems->total = $orderItems->quantity * $orderItems->price;
-                    if ($orderItems->save(FALSE)) {
-                        $model->status = 2;
-                        $model->save(false);
+                    $orderItems->delete();
+                } else if (!empty($v["quantity"])) {
+                    $orderItems = OrderItems::model()->findByPk($k);
+                    $productModel = Product::model()->findByPk($v["productId"]);
+                    if (isset($orderItems)) {
+                        $orderItems->title = $productModel->name;
+                        $orderItems->quantity = intval($v["quantity"]);
+                        $orderItems->price = $v["price"];
+                        $orderItems->productId = $v["productId"];
+                        $orderItems->total = $orderItems->quantity * $orderItems->price;
+                        if ($orderItems->save(FALSE)) {
+                            $model->status = 2;
+                            $model->save(false);
+                        }
                     }
                 }
             }
@@ -527,10 +539,11 @@ class MadridController extends MasterMyFileController {
                     $result[strtolower($item->groupName)]["name"] = $item->product->name;
                     $result[strtolower($item->groupName)]["width"] = $item->product->width;
                     $result[strtolower($item->groupName)]["height"] = $item->product->height;
-                    $result[strtolower($item->groupName)]["productArea"] = ($item->product->width * $item->product->width) / 10000;
+                    $result[strtolower($item->groupName)]["productArea"] = isset($item->product->area) ? $item->product->area : ($item->product->width * $item->product->width) / 1000;
                     $result[strtolower($item->groupName)]["price"] = $item->product->price;
                     $result[strtolower($item->groupName)]["productUnits"] = $item->product->productUnits;
                 }
+//                throw new Exception(print_r($result, true));
             } else {
                 $result["status"] = FALSE;
                 $result["errorMessage"] = "Cant' find Product Array";
@@ -707,6 +720,7 @@ class MadridController extends MasterMyFileController {
         $result[$productModel->productId]["productArea"] = $productModel->area;
         $result[$productModel->productId]["price"] = $productModel->price;
         $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
+        $result[$productModel->productId]["productImage"] = CHtml::image(Yii::app()->baseUrl . $productModel->productImages[0]->image);
 //        throw new Exception(print_r(count($cat2ToProduct), true));
 //        throw new Exception(print_r($result, true));
         echo CJSON::encode($result);
