@@ -197,7 +197,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         </a>
                     </div>
                 </div>
-                <?php echo CHtml::hiddenField("Order[isTheme]", 1); ?>
+                <?php // echo CHtml::hiddenField("Order[isTheme]", 1); ?>
                 <div class="row wizard-control">
                     <div class="pull-right">
                         <button id="nextToStep2" class="btn btn-primary btn-lg hidden"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>

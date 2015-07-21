@@ -241,7 +241,8 @@ $('.chooseStyle').click(function () {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
 	cate2Id = $(this).attr("name");
-                    alert(cate2Id);
+        $('#Order_isTheme').val(1);
+//                    alert(cate2Id);
 	$('#OrderDetailValue_9_value').val(cate2Id);
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/prepareThemeAndSet',
