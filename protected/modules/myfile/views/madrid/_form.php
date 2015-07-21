@@ -430,7 +430,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //           
 //            throw new Exception(print_r($model->isTheme, true));
             if (($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1)):
-                throw new Exception(print_r($model->isTheme, true));
+            //                throw new Exception(print_r($model->isTheme, true));
     if ($model->isTheme != 0 && $model->isTheme != 3):
                     ?>
                 <div class="row sidebar-box red ">
