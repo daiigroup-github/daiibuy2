@@ -1093,7 +1093,7 @@ class Product extends ProductMaster {
         return $res;
     }
 
-    public function findAllTileArray($category1Id) {
+    public function findAllTileArray() {
 
         $res = array();
         $FavTiles = UserFavourite::model()->findAll('userId = ' . Yii::app()->user->id . ' and productId is not null');

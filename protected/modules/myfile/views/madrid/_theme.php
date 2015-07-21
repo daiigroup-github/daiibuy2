@@ -100,8 +100,9 @@
 
                             //Estimate from backend
                             $orderDetailModel = OrderDetail::model()->find('orderId = ' . $model->orderId);
-                            $orderDetailValueModel = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailModel->orderDetailId . ' and orderDetailTemplateFieldId = 9');
-                            $productArray = Product::model()->findAllTileArray($orderDetailValueModel->value);
+                            if (isset($orderDetailValueModel))
+                                $orderDetailValueModel = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailModel->orderDetailId . ' and orderDetailTemplateFieldId = 9');
+                            $productArray = Product::model()->findAllTileArray();
 
 
 //                            throw new Exception(print_r($productArray, true));
@@ -278,7 +279,7 @@
 //                }
                 var areaId = "#productArea" + orderItemId;
                 var estimateArea = $(areaId).html();
-                var quantity = parseFloat(estimateArea) / parseFloat(data[productId]["productArea"]);
+                var quantity = Math.ceil(parseFloat(estimateArea) / parseFloat(data[productId]["productArea"]));
 //                alert(quantity);
                 $("#quantityText_" + orderItemId).val(quantity);
                 $("#productPrice" + orderItemId).html(data[productId]["price"]);

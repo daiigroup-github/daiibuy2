@@ -256,6 +256,7 @@ class MyfileController extends MasterBackofficeController {
                         }
                     }
                 endif;
+//                throw new Exception(print_r($flag, true));
                 if (isset($_POST["OrderItems"]["category1Id"][$k])) {
                     $category1Id = $_POST["OrderItems"]["category1Id"][$k];
                     $orderDetailModel = OrderDetail::model()->find('orderId = ' . $id);
@@ -267,7 +268,7 @@ class MyfileController extends MasterBackofficeController {
                     $orderDetailValueModel->updateDateTime = new CDbExpression("NOW()");
                     $orderDetailValueModel->save();
                 }
-//                throw new Exception(print_r($flag, true));
+                throw new Exception(print_r($flag, true));
                 if ($flag) {
                     $model->status = 1;
                     if ($model->save()) {

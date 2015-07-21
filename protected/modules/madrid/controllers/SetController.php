@@ -18,7 +18,7 @@ class SetController extends MasterMadridController {
         ));
         //$subCategorys = CHtml::listData($category->subCategorys, 'categoryId', 'categoryId');
         $subCategorysId = implode(',', CHtml::listData($categoryToSub, 'subCategoryId', 'subCategoryId'));
-
+//        throw new Exception(print_r($categoryToSub, true));
 //		$category2ToProducts = Category2ToProduct::model()->findAll(array(
 //			'condition'=>'category2Id IN (:category2Id)',
 //			'params'=>array(
