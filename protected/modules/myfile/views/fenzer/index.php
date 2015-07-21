@@ -19,12 +19,19 @@ $this->breadcrumbs = array(
 	</div>
 	<!-- /Heading -->
 </div>
+
 <div class="row">
-	<ul class="nav nav-tabs" role="tablist">
-		<li class="active green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer"; ?>"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
-		<li class="orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/create"; ?>"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
-	</ul>
-	<div style="margin-top: 2%">
+	<div class="col-md-12">
+		<ul class="nav nav-pills" role="tablist">
+			<li class="active green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer"; ?>"><h5 style="color: white;">ไฟล์ของฉัน</h5></a></li>
+			<li class="orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/fenzer/create"; ?>"><h5 style="color: white;">+ สร้างใหม่</h5></a></li>
+		</ul>
+	</div>
+</div>
+
+<br>
+<div class="row">
+	<div class="col-md-12">
 		<div class="tabs">
 			<div class="tab-heading">
 				<?php
@@ -38,6 +45,7 @@ $this->breadcrumbs = array(
 			</div>
 			<div class="page-content tab-content">
 				<div id="1">
+					<div class="row">
 					<?php $i = 0; ?>
 					<?php foreach($myfileArray as $myfile): ?>
 						<div class='col-lg-3 col-md-3 col-sm-12'>
@@ -72,8 +80,10 @@ $this->breadcrumbs = array(
 						</div>
 						<?php $i++; ?>
 					<?php endforeach; ?>
+					</div>
 				</div>
 				<div id="2">
+					<div class="row">
 					<?php $i = 0; ?>
 					<?php foreach($myfileHistoryArray as $myfile): ?>
 						<div class='col-lg-3 col-md-3 col-sm-12'>
@@ -89,6 +99,7 @@ $this->breadcrumbs = array(
 						</div>
 						<?php $i++; ?>
 					<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 

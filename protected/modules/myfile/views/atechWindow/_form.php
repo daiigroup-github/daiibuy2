@@ -29,20 +29,24 @@ $form = $this->beginWidget('CActiveForm', array(
 
         <div class="carousel-heading">
             <h4>My Files Atech : Create My File</h4>
+            <?php /*
             <div class="pull-right">
                 <a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-left button" onclick="javascript:history.back();"></a>
                 <a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-right button" onclick="javascript:history.forward();"></a>
             </div>
+            */?>
         </div>
 
     </div>
     <!-- /Heading -->
 </div>
-<div class="row" >
-    <ul class="nav nav-tabs" role="tablist" >
-        <li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
-        <li class="green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/create"; ?>"><h5 >+ สร้างใหม่</h5></a></li>
-    </ul>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-pills" role="tablist" >
+            <li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
+            <li class="green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/create"; ?>"><h5 >+ สร้างใหม่</h5></a></li>
+        </ul>
+    </div>
 </div>
 <!-- WIZARD -->
 <div class="myfile-main">

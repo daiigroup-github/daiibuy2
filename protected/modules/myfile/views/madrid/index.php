@@ -7,6 +7,7 @@ $this->breadcrumbs = array(
 ?>
 <?php $this->renderPartial("_navbar"); ?>
 <div class="row">
+	<div class="col-md-12">
 	<div style="margin-top: 2%">
 		<div class="tabs">
 			<div class="tab-heading">
@@ -21,6 +22,7 @@ $this->breadcrumbs = array(
 			</div>
 			<div class="page-content tab-content">
 				<div id="1">
+                    <div class="row">
 					<?php $i = 0; ?>
 					<?php foreach($myfileArray as $myfile): ?>
 						<div class='col-lg-3 col-md-3 col-sm-12'>
@@ -41,8 +43,10 @@ $this->breadcrumbs = array(
 						</div>
 						<?php $i++; ?>
 					<?php endforeach; ?>
+                    </div>
 				</div>
 				<div id="2">
+                    <div class="row">
 					<?php $i = 0; ?>
 					<?php foreach($myfileHistoryArray as $myfile): ?>
 						<div class='col-lg-3 col-md-3 col-sm-12'>
@@ -57,8 +61,10 @@ $this->breadcrumbs = array(
 						</div>
 						<?php $i++; ?>
 					<?php endforeach; ?>
+                    </div>
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </div>
