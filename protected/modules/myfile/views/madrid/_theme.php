@@ -126,12 +126,12 @@
                                 <td id="productPrice<?php echo $item->orderItemsId; ?>" style="color:red; width: 5%">0.00<?php // echo number_format($item->product->price, 2);                                                                                                                                                    ?>
                                     <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3)   ?>
                                     <?php // echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", "") ?>
-                                    <?php
-                                    echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", "", array(
-                                        'id' => 'priceHidden_' . $i))
-                                    ?>
-                                </td>
-                                <td style="width: 1%">
+                                            </td>
+                                                        <?php
+                                                        echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", "", array(
+                                                            'id' => 'priceHidden_' . $item->orderItemsId));
+                                                        ?>
+                                                        <td style="width: 1%">
                                     <div class="row"><div class="col-md-12"><?php
                                             echo CHtml::numberField("OrderItems[" . $item->orderItemsId . "][quantity]", isset($item->quantity) ? $item->quantity : 1, array(
                                                 "id" => "quantityText_" . $item->orderItemsId))
@@ -284,7 +284,7 @@
                 $("#productPrice" + orderItemId).html(data[productId]["price"]);
                 $("#total" + orderItemId).html(moneyFormat(data[productId]["price"] * quantity));
                 $("#productPic" + orderItemId).html(data[productId]["productImage"]);
-                $("#priceHidden" + orderItemId).val(data[productId]["price"] * quantity);
+                $("#priceHidden_" + orderItemId).val(data[productId]["price"]);
                 $("#productId" + orderItemId).val(data[productId]["productId"]);
             },
         });

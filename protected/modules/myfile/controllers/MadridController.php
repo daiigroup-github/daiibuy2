@@ -77,6 +77,7 @@ class MadridController extends MasterMyFileController {
         $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
         $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
 
+//        throw new Exception(print_r($_POST["OrderItems"], true));
 //        throw new Exception(print_r($themes, true));
         if (isset($category2Id)) {
             $resultTheme = "";
@@ -105,9 +106,9 @@ class MadridController extends MasterMyFileController {
 //            throw new Exception(print_r($results, true));
         }else {
             $results["status"] = 0;
-//            throw new Exception(print_r($results["status"], true));
         }
 
+            
 
         if (isset($_POST["OrderItems"])) {
 
