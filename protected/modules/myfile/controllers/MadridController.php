@@ -584,15 +584,16 @@ class MadridController extends MasterMyFileController {
         $products = UserFavourite::model()->findAll("userId = " . Yii::app()->user->id . " AND productId is not null ");
         $resultTheme = "";
         $resultTheme .= "<ul>";
-
+        $url = Yii::app()->baseUrl;
+//        throw new Exception(print_r($products, true));
         foreach ($products as $theme):
-            $url = '"' . Yii::app()->baseUrl . '"';
-            $resultTheme .= "<li><a href='#'  onclick='loadProductsFavItem(" . $theme->productId . "," . $url . "," . 0 . ")' > " . $theme->product->name . "</li></a>";
+            if (isset($theme->product->name) && isset($theme->productId)) {
+                $url = '"' . Yii::app()->baseUrl . '"';
+                $resultTheme .= "<li><a href='#'  onclick='loadProductsFavItem(" . $theme->productId . "," . $url . "," . 0 . ")' > " . $theme->product->name . "</li></a>";
+            }
         endforeach;
 
         $resultTheme .= "</ul>";
-
-
         $results = array();
         $results["products"] = $resultTheme;
         $results["status"] = TRUE;
