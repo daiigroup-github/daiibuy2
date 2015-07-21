@@ -34,6 +34,14 @@ $('.add-to-cart').click(function () {
 		}
 	});
 });
+
+function moneyFormat(num) {
+        var p = num.toFixed(2).split(".");
+        return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
+            return  num + (i && !(i % 3) ? "," : "") + acc;
+        }, "") + "." + p[1];
+    }
+
 function loadThemeItem(cat2Id, baseUrl, orderId)
 {
 
@@ -75,7 +83,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
                                                 }else{
                                                     $("#quantityText_" + groupName).val(1);
                                                 }
-						$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
+						$("#price" + groupName).html(moneyFormat(data[groupName]["price"] * estimateQuantity));
 						$("#priceHidden" + groupName).val(data[groupName]["price"]);
 						$("#productId" + groupName).val(data[groupName]["productId"]);
 					}

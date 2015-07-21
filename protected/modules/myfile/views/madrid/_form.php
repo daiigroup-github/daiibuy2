@@ -419,13 +419,20 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 
     <div class="row setup-content" id="step-4">
-        <?php $classTop = ($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12"; ?>
+        <?php
+
+                    //                            throw new Exception(print_r($model->isTheme, true));
+        //        $classTop = ($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1 && $model->isTheme = 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12";
+        $classTop = ($model->isTheme != 0) ? "col-xs-3" : "col-xs-12";
+        ?>
         <div class="<?php echo $classTop; ?>">
             <?php
 //           
 //            throw new Exception(print_r($model->isTheme, true));
             if (($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1)):
-                ?>
+
+            if ($model->isTheme != 0):
+                    ?>
                 <div class="row sidebar-box red ">
                     <div class="col-sm-12">
                         <div class="sidebar-box-heading">
@@ -465,7 +472,8 @@ $form = $this->beginWidget('CActiveForm', array(
                     </div>
                 </div>
 
-                <?php
+            <?php
+            endif;
             elseif ($this->action->id == 'create'):
 //             throw new Exception(print_r($results["themes"], true));
 //            throw new Exception(print_r($model->category2Id, true));
@@ -517,8 +525,8 @@ $form = $this->beginWidget('CActiveForm', array(
                 <?php
             endif;
 
-            $class = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-9" : "col-xs-12";
-            ?>
+            $class = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? ($model->isTheme != 0 ? "col-xs-9" : "col-xs-12") : "col-xs-12";
+?>
         </div>
         <div class="<?php echo $class ?>">
             <div class="row sidebar-box blue ">
