@@ -259,4 +259,72 @@ $('#nextCreate2').live('click', function () {
 $('#backCreate3').live('click', function () {
 	$('ul.setup-panel li a[href="#step-c2"]').trigger('click');
 });
+$('#finishCreate3').live('click', function () {
+	$.ajax({
+		type: 'POST',
+		url: baseUrl + 'index.php/myfile/ginzaTown/finish',
+		dataType: 'json',
+		data: $("#ginzatown-form").serialize(),
+		success: function (data) {
+			//alert success message
+			if (data.status)
+			{
+				$("#orderId").val(data.orderId)
+				$("#finishCreate3").addClass("hide");
+				$("#backCreate3").addClass("hide");
+				$("#requestSpecialCreate3").removeClass("hide");
+				$("#addToCartCreate3").removeClass("hide");
+			}
+			else
+			{
+				alert("ไม่สามารถบันทึกได้");
+			}
+		}
+	});
+});
+
+$('#addToCartCreate3').live('click', function () {
+	$.ajax({
+		type: 'POST',
+		url: baseUrl + 'index.php/myfile/ginzatown/addToCart',
+		dataType: 'json',
+		data: {'orderId': $("#orderId").val()},
+		success: function (data) {
+			//alert success message
+			if (data.status)
+			{
+//				$("#requestSpecialCreate3").removeClass("hide");
+				updateCartHeader();
+				$("#addToCartCreate3").addClass("hide");
+			}
+			else
+			{
+				alert("ไม่สามารถบันทึกได้");
+			}
+		}
+	});
+});
+
+$('#requestSpecialCreate3').live('click', function () {
+	$.ajax({
+		type: 'POST',
+		url: baseUrl + 'index.php/myfile/ginzatown/requestGinzatownSpacialProject',
+		dataType: 'json',
+		data: {'orderId': $("#orderId").val()},
+		success: function (data) {
+			//alert success message
+			if (data.status)
+			{
+				$("#requestSpecialCreate3").addClass("hide");
+				$("#spSending").removeClass("hide");
+				updateCartHeader();
+//				$("#addToCartCreate3").addClass("hide");
+			}
+			else
+			{
+				alert("ไม่สามารถบันทึกได้");
+			}
+		}
+	});
+});
 

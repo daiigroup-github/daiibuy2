@@ -258,9 +258,11 @@ class GinzaTownController extends MasterMyFileController
 			'conditionOrder'=>$conditionOrder), true);
 	}
 
-	public function actionRequestGinzatownSpacialProject($id)
+	public function actionRequestGinzatownSpacialProject()
 	{
-		$model = OrderGroup::model()->findByPk($id);
+		$result = array();
+		$id = $_POST["orderId"];
+		$model = Order::model()->findByPk($id);
 		$model->isRequestSpacialProject = 1;
 		if($model->save())
 		{
@@ -270,7 +272,7 @@ class GinzaTownController extends MasterMyFileController
 				$userSpacialProject = new UserSpacialProject();
 				$userSpacialProject->userId = Yii::app()->user->id;
 				$userSpacialProject->supplierId = $model->supplierId;
-				$userSpacialProject->orderGroupId = $id;
+				$userSpacialProject->orderId = $id;
 				$userSpacialProject->createDateTime = new CDbExpression("NOW()");
 			}
 			else
@@ -280,10 +282,14 @@ class GinzaTownController extends MasterMyFileController
 			$userSpacialProject->status = 1;
 			$userSpacialProject->updateDateTime = new CDbExpression("NOW()");
 			$userSpacialProject->save(false);
+			$result["status"] = TRUE;
 		}
-		$this->redirect(array(
-			'view',
-			'id'=>$id));
+		else
+		{
+			$result["status"] = FALSE;
+		}
+
+		echo CJSON::encode($result);
 	}
 
 	public function actionCreate()
@@ -422,6 +428,135 @@ class GinzaTownController extends MasterMyFileController
 				TRUE,
 				TRUE));
 		}
+	}
+
+	public function actionFinish()
+	{
+		$result = array();
+		$model = $this->saveMyfileGinzaTown($_POST);
+		if(isset($model))
+		{
+			$result["status"] = true;
+			$result["orderId"] = $model->orderId;
+		}
+		else
+		{
+			$result["status"] = false;
+		}
+
+		echo CJSON::encode($result);
+	}
+
+	public function actionAddToCart()
+	{
+		$result = array();
+//		$model = $this->saveMyfileGinzaTown($_POST);
+		if(isset($_POST["orderId"]) && !empty($_POST["orderId"]))
+		{
+			$orderId = $_POST["orderId"];
+			$model = Order::model()->findByPk($orderId);
+			$model->type = 3;
+			if($model->save())
+			{
+				$result["status"] = TRUE;
+			}
+			else
+			{
+				$result["status"] = FALSE;
+			}
+		}
+		else
+		{
+			$result["status"] = FALSE;
+		}
+		echo CJSON::encode($result);
+	}
+
+	public function saveMyfileGinzaTown($datas)
+	{
+		$orderModel = new Order();
+		$orderModel->userId = isset(Yii::app()->user->id) ? Yii::app()->user->id : 0;
+		if(isset($datas["Order"]["title"]))
+		{
+			$orderModel->title = $datas["Order"]["title"];
+		}
+		$orderModel->supplierId = 5;
+		$orderModel->provinceId = $datas["Order"]["provinceId"];
+		$orderModel->type = 1;
+		$orderModel->status = 2;
+		$orderModel->createDateTime = new CDbExpression("NOW()");
+		if($orderModel->save())
+		{
+			$orderId = Yii::app()->db->lastInsertID;
+			foreach($datas["OrderItems"]["brandModelId"] as $k=> $v)
+			{
+				$cat2ToProduct = Category2ToProduct::model()->find("brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id", array(
+					":brandModelId"=>$datas["OrderItems"]["brandModelId"][$k],
+					":category1Id"=>$datas["OrderItems"]["category1Id"][$k],
+					":category2Id"=>$datas["OrderItems"]["category2Id"][$k]));
+				if(isset($cat2ToProduct))
+				{
+					$orderItem = new OrderItems();
+					$orderItem->orderId = $orderId;
+					$orderItem->productId = $cat2ToProduct->productId;
+					$orderItem->title = $cat2ToProduct->product->name;
+					$orderItem->createDateTime = new CDbExpression("NOW()");
+					$price = Product::model()->ginzaPriceByCategory1IdAndCategory2Id($datas["OrderItems"]["category1Id"][$k], $datas["OrderItems"]["category2Id"][$k]);
+					$orderItem->price = $price;
+					$orderItem->quantity = $datas["OrderItems"]["quantity"][$k];
+					$orderItem->total = $price * $datas["OrderItems"]["quantity"][$k];
+					$orderItem->updateDateTime = new CDbExpression("NOW()");
+
+					if($orderItem->save())
+					{
+						$orderItemId = Yii::app()->db->lastInsertID;
+						$productOption = ProductOption::model()->findByPk($datas["OrderItems"]["productOptionId"][$k]);
+						$orderItemOption = new OrderItemOption();
+						$orderItemOption->orderItemId = $orderItemId;
+						$orderItemOption->productOptionGroupId = $productOption->productOptionGroupId;
+						$orderItemOption->productOptionId = $productOption->productOptionId;
+						if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
+						{
+							$orderItemOption->percent = $productOption->pricePercent;
+							$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+						}
+						else
+						{
+							$orderItemOption->percent = 0;
+							$orderItemOption->total = 0;
+						}
+						if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
+						{
+							$orderItemOption->value = $productOption->priceValue;
+							$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+						}
+						else
+						{
+							$orderItemOption->value = 0;
+							$orderItemOption->total += 0;
+						}
+						$orderItemOption->createDateTime = new CDbExpression("NOW()");
+						$orderItemOption->updateDateTime = new CDbExpression("NOW()");
+						if($orderItemOption->save())
+						{
+
+							$orderItem->total += $orderItemOption->total;
+							$orderItem->save(FALSE);
+						}
+						else
+						{
+							throw new Exception(print_r($orderItemOption->errors, true));
+						}
+					}
+				}
+				else
+				{
+					//Fail
+				}
+			}
+		}
+
+		return $orderModel;
 	}
 
 }
