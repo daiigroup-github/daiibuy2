@@ -29,7 +29,7 @@ $('#addToCartGinzaTown').live('click', function () {
 	if (confirm('Add To Cart?')) {
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + '/ginzatown/product/addToCart',
+			url: baseUrl + '/ginzaTown/product/addToCart',
 			dataType: 'json',
 			data: $('#ginzaHomeForm').serialize(),
 			success: function (data) {
