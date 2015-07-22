@@ -19,12 +19,14 @@ class GinzaTownController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
+		$orderArray = Order::model()->findAll("type in (2,3) AND supplierId = 5 AND userId = " . Yii::app()->user->id);
 		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null AND mainFurnitureId is null ", array(
 			":userId"=>isset(Yii::app()->user->id) ? Yii::app()->user->id : 0,
 			":supplierId"=>5
 		));
 		$this->render('index', array(
-			'myfileArray'=>$myfileArray));
+			'myfileArray'=>$myfileArray,
+			'orderArray'=>$orderArray));
 	}
 
 	public function actionView($id)

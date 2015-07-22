@@ -27,7 +27,7 @@
 					<h4 class="list-group-item-heading">Step 2 Create</h4>
 					<p class="list-group-item-text">Confirm Create Ginza Town Myfile</p>
 				</a></li>
-			<li><a href="#step-c3">
+			<li class="<?php echo (isset($model) && $model->type > 1) ? "active" : ""; ?>"><a href="#step-c3">
 					<h4 class="list-group-item-heading">Step 3 Create</h4>
 					<p class="list-group-item-text">Complete Create Ginza Town Myfile</p>
 				</a></li>

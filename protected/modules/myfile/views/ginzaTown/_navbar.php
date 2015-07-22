@@ -3,7 +3,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         <div class="carousel-heading">
-            <h4><?php echo ($this->action->id != "furniture") ? "My Files GINZA Town : Create My File" : "My Files GINZA Town : Buy Furniture" ?></h4>
+            <h4><?php echo ($this->action->id != "furniture") ? "My Files GINZA Town :  My File" : "My Files GINZA Town : Buy Furniture" ?></h4>
 			<?php /*
 			  <div class="pull-right">
 			  <a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-left button" onclick="javascript:history.back();"></a>
