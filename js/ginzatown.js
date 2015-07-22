@@ -14,7 +14,7 @@ $('#addToCartGinzaHome').live('click', function () {
 				if (data.result)
 				{
 					updateCartHeader();
-					alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
+					alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียบร้อยแล้ว");
 				}
 				else
 				{
@@ -37,7 +37,7 @@ $('#addToCartGinzaTown').live('click', function () {
 				if (data.result)
 				{
 					updateCartHeader();
-					alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียนร้อยแล้ว");
+					alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียบร้อยแล้ว");
 				}
 				else
 				{

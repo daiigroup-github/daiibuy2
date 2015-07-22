@@ -139,7 +139,8 @@ class ProductController extends MasterAtechwindowController {
 
         if (isset($color)) {
             $productOption = ProductOption::model()->findByPk($color);
-            $productOptionGroupArray = array($productOption->productOptionGroupId => $productOption->productOptionId);
+            if (isset($productOption))
+                $productOptionGroupArray = array($productOption->productOptionGroupId => $productOption->productOptionId);
         }
         $orderModel = Order::model()->findByTokenAndSupplierId($this->cookie->token, $supplier->supplierId);
         $orderItem = OrderItems::model()->saveByOrderIdAndProductId($orderModel->orderId, $productId, $qty, isset($productOptionGroupArray) ? $productOptionGroupArray : null);
