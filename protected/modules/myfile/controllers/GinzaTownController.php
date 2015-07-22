@@ -19,12 +19,14 @@ class GinzaTownController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
+		$orderArray = Order::model()->findAll("type in (1,2,3) AND supplierId = 5 AND userId = " . Yii::app()->user->id);
 		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null AND mainFurnitureId is null ", array(
 			":userId"=>isset(Yii::app()->user->id) ? Yii::app()->user->id : 0,
 			":supplierId"=>5
 		));
 		$this->render('index', array(
-			'myfileArray'=>$myfileArray));
+			'myfileArray'=>$myfileArray,
+			'orderArray'=>$orderArray));
 	}
 
 	public function actionView($id)
@@ -258,9 +260,11 @@ class GinzaTownController extends MasterMyFileController
 			'conditionOrder'=>$conditionOrder), true);
 	}
 
-	public function actionRequestGinzatownSpacialProject($id)
+	public function actionRequestGinzatownSpacialProject()
 	{
-		$model = OrderGroup::model()->findByPk($id);
+		$result = array();
+		$id = $_POST["orderId"];
+		$model = Order::model()->findByPk($id);
 		$model->isRequestSpacialProject = 1;
 		if($model->save())
 		{
@@ -270,7 +274,7 @@ class GinzaTownController extends MasterMyFileController
 				$userSpacialProject = new UserSpacialProject();
 				$userSpacialProject->userId = Yii::app()->user->id;
 				$userSpacialProject->supplierId = $model->supplierId;
-				$userSpacialProject->orderGroupId = $id;
+				$userSpacialProject->orderId = $id;
 				$userSpacialProject->createDateTime = new CDbExpression("NOW()");
 			}
 			else
@@ -280,10 +284,289 @@ class GinzaTownController extends MasterMyFileController
 			$userSpacialProject->status = 1;
 			$userSpacialProject->updateDateTime = new CDbExpression("NOW()");
 			$userSpacialProject->save(false);
+			$result["status"] = TRUE;
 		}
-		$this->redirect(array(
-			'view',
-			'id'=>$id));
+		else
+		{
+			$result["status"] = FALSE;
+		}
+
+		echo CJSON::encode($result);
+	}
+
+	public function actionCreate()
+	{
+		$this->layout = '//layouts/cl1';
+		if(isset($_GET["id"]))
+		{
+			$model = Order::model()->findByPk($_GET["id"]);
+		}
+		else
+		{
+			$model = new Order();
+		}
+
+		$this->render('create', array(
+			'model'=>$model));
+	}
+
+	public function actionFindCategory1()
+	{
+		if(isset($_POST['brandModelId']))
+		{
+			$res = '';
+			$styles = CategoryToSub::model()->findAll(array(
+				'condition'=>'brandModelId=:brandModelId',
+				'params'=>array(
+					':brandModelId'=>$_POST['brandModelId'],
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก แบบบ้าน --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->category->categoryId . '">' . $style->category->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindCategory2()
+	{
+		if(isset($_POST['category1Id']))
+		{
+			$res = '';
+			$cat2s = CategoryToSub::model()->findAll(array(
+				'condition'=>'categoryId=:categoryId',
+				'params'=>array(
+					':categoryId'=>$_POST['category1Id'],
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก ซีรีย์ --</option>';
+			foreach($cat2s as $cat2)
+			{
+				$res .= '<option value="' . $cat2->subCategory->categoryId . '">' . $cat2->subCategory->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindColor()
+	{
+		if(isset($_POST['category2Id']))
+		{
+			$res = '';
+			$styles = Category2ToProduct::model()->findAll(array(
+				'condition'=>'category1Id=:category1Id AND brandModelId = :brandModelId AND category2Id = :category2Id',
+				'params'=>array(
+					':category1Id'=>$_POST['category1Id'],
+					':category2Id'=>$_POST['category2Id'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก สี --</option>';
+			if(isset($styles[0]->product->productOptionGroups[0])):
+				foreach($styles[0]->product->productOptionGroups[0]->productOptions as $style)
+				{
+					$res .= '<option value="' . $style->productOptionId . '">' . $style->title . '</option>';
+				}
+			endif;
+
+			echo $res;
+		}
+	}
+
+	public function actionSumAllProductByCat2Id()
+	{
+		$result = array();
+		if(isset($_POST["category2Id"]))
+		{
+
+			$price = Product::model()->ginzaPriceByCategory1IdAndCategory2Id($_POST['category1Id'], $_POST['category2Id']);
+//			$data = Category2ToProduct::model()->findAll('category2Id=:category2Id AND category1Id = :category1Id', array(
+//				':category2Id'=>(int) $_POST['category2Id'],
+//				':category1Id'=>(int) $_POST["category1Id"]));
+			if(isset($price))
+			{
+				$result["summary"] = $price;
+			}
+			else
+			{
+				$result["summary"] = 0;
+			}
+		}
+
+		echo CJSON::encode($result);
+	}
+
+	public function actionPrepareMyfileItem()
+	{
+//		throw new Exception(print_r($_POST, TRUE));
+		$items = array();
+		if(isset($_POST) && $_POST != array())
+		{
+			$i = 1;
+			foreach($_POST["OrderItems"]["brandModelId"] as $k=> $v)
+			{
+				$cat2ToProduct = Category2ToProduct::model()->find("brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id", array(
+					":brandModelId"=>$_POST["OrderItems"]["brandModelId"][$k],
+					":category1Id"=>$_POST["OrderItems"]["category1Id"][$k],
+					":category2Id"=>$_POST["OrderItems"]["category2Id"][$k]));
+				if(isset($cat2ToProduct))
+				{
+					$item["name"] = $_POST["Order"]["title"];
+					$item["provinceId"] = $_POST["Order"]["provinceId"];
+					$province = Province::model()->findByPk($_POST["Order"]["provinceId"]);
+					$item["provinceName"] = $province->provinceName;
+					$productOption = ProductOption::model()->findByPk($_POST["OrderItems"]["productOptionId"][$k]);
+					$items[$i]["brandModelTitle"] = $cat2ToProduct->brandModel->title;
+					$items[$i]["category1Title"] = $cat2ToProduct->category->title;
+					$items[$i]["category2Title"] = $cat2ToProduct->category2->title;
+					$items[$i]["productOptionTitle"] = isset($productOption) ? $productOption->title : "";
+					$items[$i]["price"] = $_POST["OrderItems"]["price"][$k];
+					$items[$i]["quantity"] = $_POST["OrderItems"]["quantity"][$k];
+					$items[$i]["total"] = $_POST["OrderItems"]["total"][$k];
+				}
+				$i++;
+			}
+			echo $this->renderPartial("create_items", array(
+				'items'=>$items,
+				TRUE,
+				TRUE));
+		}
+	}
+
+	public function actionFinish()
+	{
+		$result = array();
+		$model = $this->saveMyfileGinzaTown($_POST);
+		if(isset($model))
+		{
+			$result["status"] = true;
+			$result["orderId"] = $model->orderId;
+		}
+		else
+		{
+			$result["status"] = false;
+		}
+
+		echo CJSON::encode($result);
+	}
+
+	public function actionAddToCart()
+	{
+		$result = array();
+//		$model = $this->saveMyfileGinzaTown($_POST);
+		if(isset($_POST["orderId"]) && !empty($_POST["orderId"]))
+		{
+			$orderId = $_POST["orderId"];
+			$model = Order::model()->findByPk($orderId);
+			$model->type = 3;
+			if($model->save())
+			{
+				$result["status"] = TRUE;
+			}
+			else
+			{
+				$result["status"] = FALSE;
+			}
+		}
+		else
+		{
+			$result["status"] = FALSE;
+		}
+		echo CJSON::encode($result);
+	}
+
+	public function saveMyfileGinzaTown($datas)
+	{
+		$orderModel = new Order();
+		$orderModel->userId = isset(Yii::app()->user->id) ? Yii::app()->user->id : 0;
+		if(isset($datas["Order"]["title"]))
+		{
+			$orderModel->title = $datas["Order"]["title"];
+		}
+		$orderModel->supplierId = 5;
+		$orderModel->provinceId = $datas["Order"]["provinceId"];
+		$orderModel->type = 1;
+		$orderModel->status = 2;
+		$orderModel->createDateTime = new CDbExpression("NOW()");
+		if($orderModel->save())
+		{
+			$orderId = Yii::app()->db->lastInsertID;
+			foreach($datas["OrderItems"]["brandModelId"] as $k=> $v)
+			{
+				$cat2ToProduct = Category2ToProduct::model()->find("brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id", array(
+					":brandModelId"=>$datas["OrderItems"]["brandModelId"][$k],
+					":category1Id"=>$datas["OrderItems"]["category1Id"][$k],
+					":category2Id"=>$datas["OrderItems"]["category2Id"][$k]));
+				if(isset($cat2ToProduct))
+				{
+					$orderItem = new OrderItems();
+					$orderItem->orderId = $orderId;
+					$orderItem->productId = $cat2ToProduct->productId;
+					$orderItem->title = $cat2ToProduct->product->name;
+					$orderItem->createDateTime = new CDbExpression("NOW()");
+					$price = Product::model()->ginzaPriceByCategory1IdAndCategory2Id($datas["OrderItems"]["category1Id"][$k], $datas["OrderItems"]["category2Id"][$k]);
+					$orderItem->price = $price;
+					$orderItem->quantity = $datas["OrderItems"]["quantity"][$k];
+					$orderItem->total = $price * $datas["OrderItems"]["quantity"][$k];
+					$orderItem->updateDateTime = new CDbExpression("NOW()");
+
+					if($orderItem->save())
+					{
+						$orderItemId = Yii::app()->db->lastInsertID;
+						$productOption = ProductOption::model()->findByPk($datas["OrderItems"]["productOptionId"][$k]);
+						$orderItemOption = new OrderItemOption();
+						$orderItemOption->orderItemId = $orderItemId;
+						$orderItemOption->productOptionGroupId = $productOption->productOptionGroupId;
+						$orderItemOption->productOptionId = $productOption->productOptionId;
+						if(isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0)
+						{
+							$orderItemOption->percent = $productOption->pricePercent;
+							$orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
+						}
+						else
+						{
+							$orderItemOption->percent = 0;
+							$orderItemOption->total = 0;
+						}
+						if(isset($productOption->priceValue) && intval($productOption->priceValue) > 0)
+						{
+							$orderItemOption->value = $productOption->priceValue;
+							$orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
+						}
+						else
+						{
+							$orderItemOption->value = 0;
+							$orderItemOption->total += 0;
+						}
+						$orderItemOption->createDateTime = new CDbExpression("NOW()");
+						$orderItemOption->updateDateTime = new CDbExpression("NOW()");
+						if($orderItemOption->save())
+						{
+
+							$orderItem->total += $orderItemOption->total;
+							$orderItem->save(FALSE);
+						}
+						else
+						{
+							throw new Exception(print_r($orderItemOption->errors, true));
+						}
+					}
+				}
+				else
+				{
+					//Fail
+				}
+			}
+		}
+
+		return $orderModel;
 	}
 
 }

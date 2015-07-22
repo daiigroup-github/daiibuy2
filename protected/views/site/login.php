@@ -75,9 +75,9 @@ $form = $this->beginWidget('CActiveForm', array(
 							<?php echo $form->error($model, 'username'); ?>
 						</div>
 					</div>
-					<br />
 					<div class="row">
 						<div class="col-md-12">
+
 							<?php
 							echo $form->passwordField($model, 'password', array(
 								'class'=>'form-control',
@@ -88,11 +88,11 @@ $form = $this->beginWidget('CActiveForm', array(
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<?php
-							echo $form->checkbox($model, 'rememberMe', array(
-								'class'=>'', 'id'=>'rememberMe'));
-							?>
-							<label class="checkbox-label" for="rememberMe"> Remember me
+							<label class="checkbox">
+								<?php
+								echo $form->checkbox($model, 'rememberMe', array(
+									'class'=>''));
+								?> Remember me
 							</label>
 						</div>
 					</div>

@@ -174,9 +174,7 @@ class AtechWindowController extends MasterMyFileController {
             }
             $res["total"] = $total;
             $res["brandModelId"] = $productModel->brandModelId;
-            $model->brandModelId = $productModel->brandModelId;
         }
-
 
         $this->layout = '//layouts/cl1';
         $this->render('view', array(
@@ -204,8 +202,6 @@ class AtechWindowController extends MasterMyFileController {
         if (isset($_POST['orderId']) && !($_POST['orderId'] == "")) {
             $orderId = $_POST['orderId'];
             $isNew = false;
-        } else {
-            $orderId = null;
         }
 
         if (isset($_POST['brandModelId'])) {
@@ -231,9 +227,7 @@ class AtechWindowController extends MasterMyFileController {
 //				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 //			}
         }
-
-        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
-
+        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
 
 
 //	throw new Exception(print_r($res,true));
@@ -257,7 +251,7 @@ class AtechWindowController extends MasterMyFileController {
                 $res['orderId'] = $newOrderId;
             }
 
-            $i = 0;
+
             foreach ($res['items'] as $productId => $item) {
 
                 if ($isNew) {
@@ -270,11 +264,6 @@ class AtechWindowController extends MasterMyFileController {
                 } else {
                     $orderItemModel = OrderItems::model()->find('orderId = ' . $orderId . ' AND productId = ' . $productId);
                 }
-                if (count($orderItemModel) < 1) {
-                    $orderItemModel = $model->orderItems[$i];
-                    $orderItemModel->productId = $productId;
-                }
-//                throw new Exception(print_r(substr($res['items'][$productId]['name'], 0, 44), true));
                 $orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
                 $orderItemModel->price = $res['items'][$productId]['price'];
                 $orderItemModel->quantity = $res['items'][$productId]['quantity'];
@@ -284,7 +273,6 @@ class AtechWindowController extends MasterMyFileController {
                 if (!($orderItemModel->save())) {
                     throw new Exception(print_r($orderItemModel->errors, True));
                 }
-                $i++;
             }
         } else {
             throw new Exception(print_r($model->errors, true));
@@ -343,11 +331,14 @@ class AtechWindowController extends MasterMyFileController {
             $index = $rowCount - 1;
 //			throw new Exception(print_r($rowCount+1,true));
         }
-        $categoryDropDownArray = Category::model()->findAllParentCategoryArray(2);
-
         echo '<tr>'
         . '<td>' . $rowCount . '</td>'
-        . '<td class="type">' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", $categoryDropDownArray, array(
+        . '<td class="cat">' . CHtml::dropDownList('Criteria[' . $index . '][category]', "category", Category::model()->findAllParentCategoryArray(2), array(
+            'class' => 'form-control',
+            'prompt' => 'เลือกประเภท',
+            'onchange' => 'findType(this)')) . '</td>'
+        . '<td class="type">' . CHtml::dropDownList('Criteria[' . $index . '][type]', "type", array(
+                ), array(
             'prompt' => 'เลือกรูปแบบ',
             'class' => 'form-control',
             'onchange' => 'findSize(this);',
@@ -361,7 +352,7 @@ class AtechWindowController extends MasterMyFileController {
         )) . '</td>'
         . '<td>' . CHtml::textField('Criteria[' . $index . '][quantity]', 1, array(
             'class' => 'edit-table-qty-input number')) . '</td>'
-        . '<td><button id="deleteRow" class="deleteRow btn btn-danger">ลบรายการ</button></td>'
+        . '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
         . '</tr>';
     }
 
@@ -386,9 +377,8 @@ class AtechWindowController extends MasterMyFileController {
 //			$height = $size[1];
 //		}
 
-        $brandModelArray = BrandModel::model()->findAll('supplierId = ' . 2);
-        $firstBrand = $brandModelArray[0];
-
+        $brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
+        $firstBrand = reset($brandModelArray);
         $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand->brandModelId, $provinceId);
 
 //		throw new Exception(print_r($itemSetArray,true));
@@ -454,7 +444,7 @@ class AtechWindowController extends MasterMyFileController {
 //            throw new Exception(print_r($productArray, true));
             $itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
         }
-//        throw new Exception(print_r($itemSetArray, true));
+//		throw new Exception(print_r($itemSetArray,true));
         echo $this->renderPartial('/atechWindow/_edit_product_result', array(
             'productResult' => $itemSetArray,
                 ), TRUE, TRUE);

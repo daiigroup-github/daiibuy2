@@ -10,7 +10,7 @@ $this->breadcrumbs = array(
     <div class="col-lg-12 col-md-12 col-sm-12">
 
         <div class="carousel-heading">
-            <h4><?php echo $category->title; ?></h4>
+            <h4><?php echo isset($category->brandModel) ? $category->brandModel->title : ""; ?></h4>
         </div>
 
     </div>
@@ -27,7 +27,7 @@ $this->breadcrumbs = array(
 			$category2ToProduct = Category2ToProduct::model()->find("category1Id =" . $category->categoryId);
 			if(count($category2ToProduct) > 0):
 				?>
-				<?php /*<div class="page-header"><h1><?php echo $category->title; ?> :: Spec</h1></div>*/?>
+				<div class="page-header"><h1><?php echo $category->title; ?> :: Spec</h1></div>
 				<div class="row">
 					<div class="col-md-4">
 						<?php
@@ -94,6 +94,7 @@ $this->breadcrumbs = array(
 					</tr>
 
 				</table>
+				<hr>
 				<?php
 			endif;
 			//endforeach;

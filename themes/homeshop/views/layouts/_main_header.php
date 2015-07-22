@@ -31,7 +31,7 @@
                 </li>
                 <li class="green">
                     <a href="#" id="changeProvince">
-                        <i class="icons fa fa-location-arrow"></i><span id="province"><?php echo isset($this->province) ? $this->province : 'กรุณาเลือกจังหวัด'; ?></span>
+                        <i class="icons fa fa-location-arrow"></i><span id="province"><?php echo isset($this->province) ? $this->province : ''; ?></span>
                     </a>
                 </li>
 				<?php

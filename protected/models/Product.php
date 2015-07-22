@@ -480,7 +480,7 @@ class Product extends ProductMaster {
             } else {
                 $price = $price * ((100 + $product->priceGroup->priceRate) / 100);
             }
-            
+
             return floor($price);
         } else {
             return 0;
@@ -959,10 +959,11 @@ class Product extends ProductMaster {
         return $res;
     }
 
-    public function calculatePriceFromEstimateAtech($brandModelId, $provinceId = 1, $productArray, $orderId = null) {
+    public function calculatePriceFromEstimateAtech($brandModelId, $provinceId = 1, $productArray, $orderId) {
         $res = array();
         $total = 0.00;
         $i = 0;
+
         if (isset($orderId) && ($orderId != 'undefined')) {
 //            throw new Exception(print_r($orderId, true));
             $orderDetailModel = OrderDetail::model()->find('orderId = ' . $orderId);
@@ -974,13 +975,13 @@ class Product extends ProductMaster {
         }
 
         foreach ($productArray as $item) {
-            $quantity = $item->quantity;
             if (isset($orderId)) {
                 $productModel = Product::model()->findByPk($item->productId);
                 $cate2ToProductItem = Category2ToProduct::model()->find('productId = ' . $item->productId);
                 $category2Id = $cate2ToProductItem->category1Id;
                 $width = $productModel->width;
                 $height = $productModel->height;
+
                 if (isset($category2Id)) {
                     $cate2ToProduct = Category2ToProduct::model()->findAll('category1Id = ' . $category2Id . ' AND brandModelId = ' . $brandModelId);
                     if (isset($cate2ToProduct)) {
@@ -1007,6 +1008,7 @@ class Product extends ProductMaster {
             $res["items"][$i]['description'] = $item->name;
             $res["items"][$i]['quantity'] = $quantity;
             $res["items"][$i]['name'] = $item->name;
+
             if (isset($productPromotion)) {
 //promotion price
                 $res["items"][$i]['price'] = $this->calProductPromotionTotalPrice($item->productId, 1, $provinceId);
@@ -1093,26 +1095,6 @@ class Product extends ProductMaster {
             $res[$item->productId] = $item->name . ' (' . $item->code . ')';
         }
         return $res;
-    }
-
-    public function findAllTileArray() {
-
-        $res = array();
-        $FavTiles = UserFavourite::model()->findAll('userId = ' . Yii::app()->user->id . ' and productId is not null');
-        foreach ($FavTiles as $fav) {
-            $productModel = Product::model()->findByPk($fav->productId);
-            if (isset($productModel->productId))
-                $res[$productModel->productId] = $productModel->name;
-        }
-        return $res;
-
-//        $res = array();
-//        $cat = Category2ToProduct::model()->findAll('brandModelId = 19 AND status = 1 and category1Id = ' . $category1Id);
-//
-//        foreach ($cat as $item) {
-//            $res[$item->productId] = $item->product->name;
-//        }
-//        return $res;
     }
 
 }

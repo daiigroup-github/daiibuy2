@@ -68,8 +68,7 @@ $pointToBaht = (float) $pointToBahtConfig->value;
         <?php
         if ((Yii::app()->controller->action->id != "printPayForm")) {
             ?>
-            <div class="panel">
-                <div class="panel-body">
+            <div class="img-rounded" style="background-color:white; border: 2px; border-color: #dddddd; border-style: solid;">
                 <?php if ($this->action->id != "view"): ?>
                     <?php
                     $this->renderPartial("_header", array(
@@ -92,7 +91,6 @@ $pointToBaht = (float) $pointToBahtConfig->value;
                     'user' => $user,
                 ));
                 ?>
-            </div>
             </div>
             <?php
         }

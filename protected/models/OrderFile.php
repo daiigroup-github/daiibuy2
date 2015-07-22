@@ -45,8 +45,6 @@ class OrderFile extends OrderFileMaster
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 		//code here
-			'fileName' => 'ชื่อไฟล์',
-			'filePath' => 'File Path',
 		));
 	}
 

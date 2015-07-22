@@ -32,11 +32,11 @@
                                 <i class="icons icon-eye-1"></i> Quick View
                             </a>
                         </div>
-                        <div class="product-info" style="height: 140px;">
+                        <div class="product-info">
                             <h5><a href="<?php echo $item['url']; ?>"><?php echo $item['name']; ?></a></h5>
                             <?php if ($item['promotionPrice'] > 0) { ?>
                                 <span >ราคา <del><?php echo number_format($item['price'], 2); ?></del> บาท</span><br>
-                                <span class="price">พิเศษ <?php echo number_format($item['promotionPrice'], 2); ?> บาท</span>
+                                <span class="price">ราคาพิเศษ <?php echo number_format($item['promotionPrice'], 2); ?> บาท</span>
                             <?php } else { ?>
                                 <span class="price">ราคา <?php echo number_format($item['price'], 2); ?> บาท</span>
                             <?php } ?>

@@ -80,8 +80,6 @@ class SiteController extends MasterController
 	 */
 	public function actionLogin()
 	{
-		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/daiibuy.js');
-
 		$this->layout = '//layouts/home';
 		$model = new LoginForm;
 		// if it is ajax validation request

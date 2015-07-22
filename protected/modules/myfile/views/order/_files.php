@@ -7,55 +7,53 @@ if(isset(Yii::app()->user->userType))
 		if(Yii::app()->user->userType == 4 || Yii::app()->user->userType == 5 || Yii::app()->user->userType == 1)
 		{
 			?>
-			<div class="panel panel-default">
-				<div class="panel-heading">ไฟล์แนบ</div>
-				<div class="panel-body">
-					<table class="table table-striped table-bordered table-condensed">
-						<thead>
-						<th width="5%">ลำดับ</th>
-						<th>ชื่อไฟล์</th>
-						<th width="15%">ประเภทผู้ใช้งาน</th>
-						<th width="5%">เอกสาร</th>
-						<th width="10%">วันที่สร้าง</th>
-						</thead>
-						<?php
-						foreach($model->orderGroupFiles as $file)
+			<div class="form-group">
+				<h4>ไฟล์แนบ</h4>
+				<table class="table table-striped table-bordered table-condensed">
+					<thead>
+					<th width="5%">ลำดับ</th>
+					<th>ชื่อไฟล์</th>
+					<th width="15%">ประเภทผู้ใช้งาน</th>
+					<th width="5%">เอกสาร</th>
+					<th width="10%">วันที่สร้าง</th>
+					</thead>
+					<?php
+					foreach($model->orderGroupFiles as $file)
+					{
+						$userType = "";
+						if(isset($file->userType))
 						{
-							$userType = "";
-							if(isset($file->userType))
-							{
 
-								switch($file->userType)
-								{
-									case 1:
-										$userType = "เอกสารของผู้สั่งซื้อ";
-										break;
-									case 2:
-										$userType = "เอกสารของตัวแทนกระจายสินค้า";
-										break;
-									case 3:
-										$userType = "เอกสารของผู้ผลิตสินค้า";
-										break;
-									case 4:
-										$userType = "เอกสารของผู้ดูแลระบบ";
-										break;
-								}
+							switch($file->userType)
+							{
+								case 1:
+									$userType = "เอกสารของผู้สั่งซื้อ";
+									break;
+								case 2:
+									$userType = "เอกสารของตัวแทนกระจายสินค้า";
+									break;
+								case 3:
+									$userType = "เอกสารของผู้ผลิตสินค้า";
+									break;
+								case 4:
+									$userType = "เอกสารของผู้ดูแลระบบ";
+									break;
 							}
-							?>
-							<tbody>
-							<td><?php echo $i . ". "; ?></td>
-							<td><?php echo $file->fileName; ?></td>
-							<td><?php echo!empty($userType) ? $userType : ""; ?></td>
-							<td class="text-center"><?php echo showImage($file->filePath, $file->fileName); ?></td>
-							<td><?php echo $this->dateThai($file->createDateTime, 2, TRUE); ?></td>
-							</tbody>
-							<br/>
-							<?php
-							$i++;
 						}
 						?>
-					</table>
-				</div>
+						<tbody>
+						<td><?php echo $i . ". "; ?></td>
+						<td><?php echo $file->fileName; ?></td>
+						<td><?php echo!empty($userType) ? $userType : ""; ?></td>
+						<td class="text-center"><?php echo showImage($file->filePath, $file->fileName); ?></td>
+						<td><?php echo $this->dateThai($file->createDateTime, 2, TRUE); ?></td>
+						</tbody>
+						<br/>
+						<?php
+						$i++;
+					}
+					?>
+				</table>
 			</div>
 			<!--			<div class="row">
 							<h4>หลักฐานการโอนเงิน ผู้ผลิต/ผู้กระจายสินค้า</h4>
@@ -93,35 +91,33 @@ if(isset(Yii::app()->user->userType))
 				if(count($customerReserve) > 0)
 				{
 					?>
-					<div class="panel panel-default">
-						<div class="panel-heading">รายชื่อผู้ที่สามารถรับสินค้าแทนได้</div>
-						<div class="panel-body">
-							<table class="table table-striped table-bordered table-condensed">
-								<thead>
-								<th width="5%">ลำดับ</th>
-								<th width="40%">ชื่อ-นามสกุล</th>
-								</thead>
-								<?php
-								$i = 0;
-								for(;
-								;
-								)
+					<div class="form-group">
+						<h4>รายชื่อผู้ที่สามารถรับสินค้าแทนได้</h4>
+						<table class="table table-striped table-bordered table-condensed">
+							<thead>
+							<th width="5%">ลำดับ</th>
+							<th width="40%">ชื่อ-นามสกุล</th>
+							</thead>
+							<?php
+							$i = 0;
+							for(;
+							;
+							)
+							{
+								if($i > (count($customerReserve) - 1))
 								{
-									if($i > (count($customerReserve) - 1))
-									{
-										break;
-									}
-									?>
-									<tbody>
-									<td><?php echo $i + 1; ?></td>
-									<td><?php echo $customerReserve[$i]; ?></td>
-									</tbody>
-									<?php
-									$i++;
+									break;
 								}
 								?>
-							</table>
-						</div>
+								<tbody>
+								<td><?php echo $i + 1; ?></td>
+								<td><?php echo $customerReserve[$i]; ?></td>
+								</tbody>
+								<?php
+								$i++;
+							}
+							?>
+						</table>
 					</div>
 					<?php
 				}
@@ -132,32 +128,30 @@ if(isset(Yii::app()->user->userType))
 			if(1 == 0)
 			{
 				?>
-				<div class="panel panel-default">
-					<div class="panel-heading">หลักฐานการโอนเงิน ผู้ผลิต/ผู้กระจายสินค้า</div>
-					<div class="panel-body">
-						<table class="table table-striped table-bordered table-condensed">
-							<thead>
-							<th width="5%">ลำดับ</th>
-							<th>ชื่อไฟล์</th>
-							<th width="15%">เอกสาร</th>
-							</thead>
-							<?php
-							$i = 1;
+				<div class="form-group">
+					<h4>หลักฐานการโอนเงิน ผู้ผลิต/ผู้กระจายสินค้า</h4>
+					<table class="table table-striped table-bordered table-condensed">
+						<thead>
+						<th width="5%">ลำดับ</th>
+						<th>ชื่อไฟล์</th>
+						<th width="15%">เอกสาร</th>
+						</thead>
+						<?php
+						$i = 1;
 
-							foreach($slipFile as $slip)
-							{
-								?>
-								<tbody>
-								<td><?php echo $i . ". "; ?></td>
-								<td><?php echo $slip['fileName'] ?></td>
-								<td><?php echo showImage($slip['file'], $slip['fileName']); ?></td>
-								</tbody>
-								<?php
-								$i++;
-							}
+						foreach($slipFile as $slip)
+						{
 							?>
-						</table>
-					</div>
+							<tbody>
+							<td><?php echo $i . ". "; ?></td>
+							<td><?php echo $slip['fileName'] ?></td>
+							<td><?php echo showImage($slip['file'], $slip['fileName']); ?></td>
+							</tbody>
+							<?php
+							$i++;
+						}
+						?>
+					</table>
 				</div>
 				<?php
 			}

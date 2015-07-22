@@ -29,24 +29,20 @@ $form = $this->beginWidget('CActiveForm', array(
 
         <div class="carousel-heading">
             <h4>My Files Atech : Create My File</h4>
-            <?php /*
             <div class="pull-right">
                 <a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-left button" onclick="javascript:history.back();"></a>
                 <a class="col-lg-6 col-md-6 col-sm-6 glyphicon glyphicon-chevron-right button" onclick="javascript:history.forward();"></a>
             </div>
-            */?>
         </div>
 
     </div>
     <!-- /Heading -->
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <ul class="nav nav-pills" role="tablist" >
-            <li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
-            <li class="green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/create"; ?>"><h5 >+ สร้างใหม่</h5></a></li>
-        </ul>
-    </div>
+<div class="row" >
+    <ul class="nav nav-tabs" role="tablist" >
+        <li class="active orange"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/"; ?>"><h5 >ไฟล์ของฉัน</h5></a></li>
+        <li class="green"><a href="<?php echo Yii::app()->request->baseUrl . "/index.php/myfile/atechWindow/create"; ?>"><h5 >+ สร้างใหม่</h5></a></li>
+    </ul>
 </div>
 <!-- WIZARD -->
 <div class="myfile-main">
@@ -124,7 +120,6 @@ $form = $this->beginWidget('CActiveForm', array(
                                 'id' => 'selectProvince',
                                 'prompt' => '--กรุณาเลือกจังหวัด--',
                             ));
-                            echo CHtml::hiddenField('Order[brandModelId]', $model->brandModelId, array('id' => 'selectBrandModel'));
                             ?>
                         </div>
                     </div>
@@ -327,7 +322,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row text-center">
                     <form id="aa">
-                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                                            ?>">
+                        <table id="criteriaTableAtech" class="table table-hover edit-table" style="background-color: #DDD" name="<?php // echo $productResult['categoryId'];                                                                       ?>">
                             <thead>
                                 <tr>ตารางแสดงรายละเอียดสินค้า</tr>
                                 <tr>
@@ -477,10 +472,10 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </tr>
         <!--			<tr>
                                         <td>2</td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                                            ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                                            ?></td>
-                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                                            ?></td>
-                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                                            ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][category]', "category", $categoryDropDownArray);                                                                       ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][type]', "type", $typeDropDownArray);                                                                       ?></td>
+                                        <td><?php // echo CHtml::dropDownList('Criteria[1][size]', "size", $sizeDropDownArray);                                                                       ?></td>
+                                        <td><?php // echo CHtml::textField('Criteria[1][quantity]', 1,array('class'=>'edit-table-qty-input'));                                                                       ?></td>
                                         <td><button id="deleteRow" class="btn btn-danger">remove</button></td>
                                 </tr>-->
 
@@ -569,7 +564,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 </div>
                                 <!--						<div class="btn-group-vertical" style="margin-top: 50px">
 
-                                                                                        <button name="<?php // echo $item->brandModelId;                                                                          ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                                          ?></button>
+                                                                                        <button name="<?php // echo $item->brandModelId;                                                                     ?>" type="button" style="width: 200px" class="btn btn-default brandModelButton"><?php // echo $item->title;                                                                     ?></button>
 
                                                                         </div>-->
                             </div>
