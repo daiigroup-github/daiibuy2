@@ -63,7 +63,7 @@ $this->breadcrumbs = array(
 											endif;
 											?>
 											<h3><?php echo $myfile->orderNo; ?><?php if(1 == 0): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
-											<!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                 ?></p>-->
+											<!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                     ?></p>-->
 											<p>วันที่แก้ไขล่าสุด :<?php echo $this->dateThai($myfile->updateDateTime, 3, TRUE) ?></p>
 											<p style="font-size: 17px">
 												<?php if($isComplete): ?>
@@ -96,16 +96,16 @@ $this->breadcrumbs = array(
 									<div class="blog-item">
 										<a class="btn-info col-md-12"  href="<?php echo Yii::app()->createUrl('/index.php/myfile/ginzaTown/create/id/' . $order->orderId); ?>">
 											<?php
-//								if(isset($myfile->orders[0]->orderItems[0]->product->productImagesSort[0])):
-//									echo CHtml::image(Yii::app()->baseUrl . $myfile->orders[0]->orderItems[0]->product->productImagesSort[0]->image, "", array());
-//								else:
-//									echo CHtml::image(Yii::app()->baseUrl . "/images/no-image.jpg", "", array());
-//								endif;
+											if(isset($order->orderItems[0]->product->productImagesSort[0])):
+												echo CHtml::image(Yii::app()->baseUrl . $order->orderItems[0]->product->productImagesSort[0]->image, "", array());
+											else:
+												echo CHtml::image(Yii::app()->baseUrl . "/images/no-image.jpg", "", array());
+											endif;
 											?>
 											<h3><?php echo $order->title; ?><?php if(1 == 0): ?><i class="fa fa-comments pull-left"></i><?php endif; ?></h3>
-											<!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                 ?></p>-->
+											<!--<p>วันที่สร้าง :<?php // echo $this->dateThai($myfile->createDateTime, 3, TRUE);                                                     ?></p>-->
 											<p>วันที่แก้ไขล่าสุด :<?php echo $this->dateThai($order->updateDateTime, 3, TRUE) ?></p>
-											<p style="font-size: 17px">
+											<p style="font-size: 17px" class="col-lg-12 text-center">
 												<?php if($order->isRequestSpacialProject): ?>
 													<span class="label label-danger">Spacial <?php echo (isset($myfile->sp[0]) && $myfile->sp[0]->status > 1) ? " อนุมัติแล้ว<i class='fa fa-check'></i>" : " รอการอนุมัติ<i class='fa fa-remove'></i>" ?></span>
 												<?php endif; ?>
