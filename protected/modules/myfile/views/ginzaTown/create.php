@@ -206,7 +206,7 @@ $form = $this->beginWidget('CActiveForm', array(
 							<a id="backCreate2" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 							<a id="nextCreate2" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-ok"></i> Next</a>
 							<!--<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>-->
-							<!--<a class="btn btn-warning btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId")                        ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>-->
+							<!--<a class="btn btn-warning btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId")                                                 ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>-->
 						</div>
 					</div>
 				</div>
@@ -216,16 +216,58 @@ $form = $this->beginWidget('CActiveForm', array(
 	<div class="row setup-content" id="step-c3">
 		<div class="col-xs-12">
 			<div class="col-md-12 well">
-				<div id="orderItems"></div>
+				<div id="orderItems">
+					<?php
+					if(!$model->isNewRecord):
+						$this->renderPartial("create_items", array(
+							'model'=>$model));
+					endif;
+					?>
+				</div>
 				<div class="row wizard-control">
 					<div class="pull-right">
-						<?php echo CHtml::hiddenField("orderId"); ?>
-						<a id="backCreate3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
-						<a id="finishCreate3" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-ok"></i> บันทึก</a>
-						<a id="requestSpecialCreate3" class="btn btn-info btn-lg hide" ><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
-						<span id="spSending" class="label label-danger hide">กำลังขออนุมัติ โปรเจ็คพิเศษ</span>
-						<span id="spApprove" class="label label-success hide">ได้รับอนุมัติ โปรเจ็คพิเศษ</span>
-						<a id="addToCartCreate3" class="btn btn-warning btn-lg hide" ><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+
+						<?php if($model->isNewRecord): ?>
+							<?php echo CHtml::hiddenField("orderId"); ?>
+							<a id="backCreate3" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
+							<a id="finishCreate3" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-ok"></i> บันทึก</a>
+							<a id="requestSpecialCreate3" class="btn btn-info btn-lg hide" ><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<span id="spSending" class="label label-danger hide">กำลังขออนุมัติ โปรเจ็คพิเศษ</span>
+							<span id="spApprove" class="label label-success hide">ได้รับอนุมัติ โปรเจ็คพิเศษ</span>
+							<a id="addToCartCreate3" class="btn btn-warning btn-lg hide" ><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php else: ?>
+							<?php echo CHtml::hiddenField("orderId", $model->orderId); ?>
+
+							<?php if(!$model->isRequestSpacialProject): ?>
+								<a id="requestSpecialCreate3" class="btn btn-info btn-lg" ><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+								<span id="spSending" class="label label-danger hide">กำลังขออนุมัติ โปรเจ็คพิเศษ</span>
+								<span id="spApprove" class="label label-success hide">ได้รับอนุมัติ โปรเจ็คพิเศษ</span>
+								<?php
+							else:
+								$spacial = UserSpacialProject::model()->find("orderId = $model->orderId ORDER BY userSpacialProjectId DESC ");
+								if(isset($spacial) && $spacial->status == 1)
+								{
+									?>
+									<span id="spSending" class="label label-danger">กำลังขออนุมัติ โปรเจ็คพิเศษ</span>
+									<?php
+								}
+								elseif($spacial->status == 2)
+								{
+									?>
+									<span id="spApprove" class="label label-success">ได้รับอนุมัติ โปรเจ็คพิเศษ</span>
+									<?php
+								}
+								else
+								{
+									?>
+									<span id="spApprove" class="label label-danger">ไม่ได้รับอนุมัติ โปรเจ็คพิเศษ</span>
+									<a id="requestSpecialCreate3" class="btn btn-info btn-lg" ><i class="glyphicon glyphicon-share"></i> Request Special Project Again</a>
+								<?php } ?>
+							<?php endif; ?>
+
+							<a id="addToCartCreate3" class="btn btn-warning btn-lg" ><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
+						<?php endif; ?>
+
 					</div>
 				</div>
 			</div>

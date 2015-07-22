@@ -19,7 +19,7 @@ class GinzaTownController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 
-		$orderArray = Order::model()->findAll("type in (2,3) AND supplierId = 5 AND userId = " . Yii::app()->user->id);
+		$orderArray = Order::model()->findAll("type in (1,2,3) AND supplierId = 5 AND userId = " . Yii::app()->user->id);
 		$myfileArray = OrderGroup::model()->findAll("status > 2 AND userId =:userId AND supplierId =:supplierId AND parentId is null AND mainFurnitureId is null ", array(
 			":userId"=>isset(Yii::app()->user->id) ? Yii::app()->user->id : 0,
 			":supplierId"=>5
@@ -297,7 +297,15 @@ class GinzaTownController extends MasterMyFileController
 	public function actionCreate()
 	{
 		$this->layout = '//layouts/cl1';
-		$model = new Order();
+		if(isset($_GET["id"]))
+		{
+			$model = Order::model()->findByPk($_GET["id"]);
+		}
+		else
+		{
+			$model = new Order();
+		}
+
 		$this->render('create', array(
 			'model'=>$model));
 	}
