@@ -96,6 +96,9 @@ class UserSpacialProject extends UserSpacialProjectMaster
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'t.createDateTime DESC',
+			),
 		));
 	}
 
