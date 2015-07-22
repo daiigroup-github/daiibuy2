@@ -308,7 +308,7 @@ $(".atechUpdate").click(function () {
 	var title = $("#Order_title").attr("value");
 	var provinceId = $("#selectProvince").attr("value");
 //		alert(brandModelId);
-//		alert(title + ", " + provinceId + ", " + brandModelId);
+//		alert(title + ", " + provinceId + ", " + brandModelId + ", " + orderId);
 	$.ajax({
 		url: base_url + '/myfile/atechWindow/updatePriceMyFile',
 		type: 'POST',

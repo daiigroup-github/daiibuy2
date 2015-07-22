@@ -415,6 +415,8 @@ class AtechWindowController extends MasterMyFileController {
             $brandModelId = $_POST['brandModelId'];
         }
 
+//        throw new Exception(print_r($_POST, true));
+
         if (isset($_POST['productItems']) && isset($_POST['Criteria'])) {
             $productItems = $_POST['productItems'];
             $i = 0;
