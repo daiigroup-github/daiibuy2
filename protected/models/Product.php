@@ -976,6 +976,7 @@ class Product extends ProductMaster {
 
         foreach ($productArray as $item) {
             if (isset($orderId)) {
+                $quantity = $item->quantity;
                 $productModel = Product::model()->findByPk($item->productId);
                 $cate2ToProductItem = Category2ToProduct::model()->find('productId = ' . $item->productId);
                 $category2Id = $cate2ToProductItem->category1Id;
