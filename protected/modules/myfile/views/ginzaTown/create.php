@@ -113,7 +113,7 @@ $form = $this->beginWidget('CActiveForm', array(
 						if(1 == 0):
 //					if((!$model->isRequestSpacialProject) && (count($child1->sup) == 0 && $child1->status < 1)):
 							?>
-							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/ginzatown/requestGinzatownSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
+							<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/ginzaTown/requestGinzatownSpacialProject/id/$model->orderId") ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>
 						<?php endif; ?>
 					</div>
 				</div>
@@ -206,7 +206,7 @@ $form = $this->beginWidget('CActiveForm', array(
 							<a id="backCreate2" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 							<a id="nextCreate2" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-ok"></i> Next</a>
 							<!--<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>-->
-							<!--<a class="btn btn-warning btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId")                                                 ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>-->
+							<!--<a class="btn btn-warning btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId")                                                  ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>-->
 						</div>
 					</div>
 				</div>
@@ -285,7 +285,7 @@ $form = $this->beginWidget('CActiveForm', array(
 		var brandModelId = obj.val();
 
 		$.ajax({
-			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzatown/findCategory1'); ?>',
+			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzaTown/findCategory1'); ?>',
 //			'dataType': 'json',
 			'type': 'POST',
 			'data': {'brandModelId': brandModelId},
@@ -302,7 +302,7 @@ $form = $this->beginWidget('CActiveForm', array(
 		var cat1Id = obj.val();
 
 		$.ajax({
-			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzatown/findCategory2'); ?>',
+			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzaTown/findCategory2'); ?>',
 //			'dataType': 'json',
 			'type': 'POST',
 			'data': {'category1Id': cat1Id},
@@ -319,7 +319,7 @@ $form = $this->beginWidget('CActiveForm', array(
 		var cat2Id = obj.val();
 
 		$.ajax({
-			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzatown/findColor'); ?>',
+			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzaTown/findColor'); ?>',
 //			'dataType': 'json',
 			'type': 'POST',
 			'data': {'brandModelId': $("#brandModelId").val(), 'category1Id': $("#category1Id").val(), 'category2Id': cat2Id},
@@ -336,7 +336,7 @@ $form = $this->beginWidget('CActiveForm', array(
 		var category1Id = obj.parent().parent().children('.cat1').children(".category1Id").val();
 		var category2Id = obj.parent().parent().children('.cat2').children(".category2Id").val();
 		$.ajax({
-			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzatown/sumAllProductByCat2Id'); ?>',
+			'url': '<?php echo Yii::app()->createUrl('/myfile/ginzaTown/sumAllProductByCat2Id'); ?>',
 			'dataType': 'json',
 			'type': 'POST',
 			'data': {'category2Id': category2Id, 'category1Id': category1Id},
