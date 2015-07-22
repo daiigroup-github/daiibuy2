@@ -45,6 +45,8 @@ class OrderGroupFile extends OrderGroupFileMaster
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 		//code here
+			'fileName' => 'ชื่อเอกสาร',
+			'filePath' => 'อัพโหลดเอกสาร',
 		));
 	}
 
