@@ -211,3 +211,52 @@ $('#furniture4Next').live('click', function () {
 	}
 });
 
+//Ginza Town Create
+$('#nextCreate1').live('click', function () {
+	if ($("#Order_title").val() != "" && $("#selectProvince").val() != "")
+	{
+		$('ul.setup-panel li a[href="#step-c2"]').trigger('click');
+	}
+	else
+	{
+		alert("กรุณาระบุชื่อ แฟ้มของฉัน และ เลือกจังหวัด");
+	}
+});
+$('#backCreate2').live('click', function () {
+	$('ul.setup-panel li a[href="#step-c1"]').trigger('click');
+});
+$('#nextCreate2').live('click', function () {
+	if ($("#category2Id").val() != "")
+	{
+		$.ajax({
+			type: 'POST',
+			url: baseUrl + 'index.php/myfile/ginzaTown/prepareMyfileItem',
+//			dataType: 'json',
+			data: $("#ginzatown-form").serialize(),
+			success: function (data) {
+				//alert success message
+				if (data)
+				{
+					$('ul.setup-panel li a[href="#step-c3"]').trigger('click');
+					$("#orderItems").html(data);
+//				$("#planName").html(data.planName);
+//				$("#planImage").html(data.planImage);
+				}
+				else
+				{
+					alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าสินค้าได้");
+				}
+			}
+		});
+
+
+	}
+	else
+	{
+		alert("กรุณาเลือกสินค้าเพื่อสร้าง Myfile");
+	}
+});
+$('#backCreate3').live('click', function () {
+	$('ul.setup-panel li a[href="#step-c2"]').trigger('click');
+});
+

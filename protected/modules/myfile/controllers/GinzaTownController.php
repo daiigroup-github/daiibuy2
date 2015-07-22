@@ -286,4 +286,142 @@ class GinzaTownController extends MasterMyFileController
 			'id'=>$id));
 	}
 
+	public function actionCreate()
+	{
+		$this->layout = '//layouts/cl1';
+		$model = new Order();
+		$this->render('create', array(
+			'model'=>$model));
+	}
+
+	public function actionFindCategory1()
+	{
+		if(isset($_POST['brandModelId']))
+		{
+			$res = '';
+			$styles = CategoryToSub::model()->findAll(array(
+				'condition'=>'brandModelId=:brandModelId',
+				'params'=>array(
+					':brandModelId'=>$_POST['brandModelId'],
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก แบบบ้าน --</option>';
+			foreach($styles as $style)
+			{
+				$res .= '<option value="' . $style->category->categoryId . '">' . $style->category->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindCategory2()
+	{
+		if(isset($_POST['category1Id']))
+		{
+			$res = '';
+			$cat2s = CategoryToSub::model()->findAll(array(
+				'condition'=>'categoryId=:categoryId',
+				'params'=>array(
+					':categoryId'=>$_POST['category1Id'],
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก ซีรีย์ --</option>';
+			foreach($cat2s as $cat2)
+			{
+				$res .= '<option value="' . $cat2->subCategory->categoryId . '">' . $cat2->subCategory->title . '</option>';
+			}
+
+			echo $res;
+		}
+	}
+
+	public function actionFindColor()
+	{
+		if(isset($_POST['category2Id']))
+		{
+			$res = '';
+			$styles = Category2ToProduct::model()->findAll(array(
+				'condition'=>'category1Id=:category1Id AND brandModelId = :brandModelId AND category2Id = :category2Id',
+				'params'=>array(
+					':category1Id'=>$_POST['category1Id'],
+					':category2Id'=>$_POST['category2Id'],
+					':brandModelId'=>$_POST["brandModelId"]
+				),
+//                'order' => 'amphurName'
+			));
+			$res .= '<option value="">-- เลือก สี --</option>';
+			if(isset($styles[0]->product->productOptionGroups[0])):
+				foreach($styles[0]->product->productOptionGroups[0]->productOptions as $style)
+				{
+					$res .= '<option value="' . $style->productOptionId . '">' . $style->title . '</option>';
+				}
+			endif;
+
+			echo $res;
+		}
+	}
+
+	public function actionSumAllProductByCat2Id()
+	{
+		$result = array();
+		if(isset($_POST["category2Id"]))
+		{
+
+			$price = Product::model()->ginzaPriceByCategory1IdAndCategory2Id($_POST['category1Id'], $_POST['category2Id']);
+//			$data = Category2ToProduct::model()->findAll('category2Id=:category2Id AND category1Id = :category1Id', array(
+//				':category2Id'=>(int) $_POST['category2Id'],
+//				':category1Id'=>(int) $_POST["category1Id"]));
+			if(isset($price))
+			{
+				$result["summary"] = $price;
+			}
+			else
+			{
+				$result["summary"] = 0;
+			}
+		}
+
+		echo CJSON::encode($result);
+	}
+
+	public function actionPrepareMyfileItem()
+	{
+//		throw new Exception(print_r($_POST, TRUE));
+		$items = array();
+		if(isset($_POST) && $_POST != array())
+		{
+			$i = 1;
+			foreach($_POST["OrderItems"]["brandModelId"] as $k=> $v)
+			{
+				$cat2ToProduct = Category2ToProduct::model()->find("brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id", array(
+					":brandModelId"=>$_POST["OrderItems"]["brandModelId"][$k],
+					":category1Id"=>$_POST["OrderItems"]["category1Id"][$k],
+					":category2Id"=>$_POST["OrderItems"]["category2Id"][$k]));
+				if(isset($cat2ToProduct))
+				{
+					$item["name"] = $_POST["Order"]["title"];
+					$item["provinceId"] = $_POST["Order"]["provinceId"];
+					$province = Province::model()->findByPk($_POST["Order"]["provinceId"]);
+					$item["provinceName"] = $province->provinceName;
+					$productOption = ProductOption::model()->findByPk($_POST["OrderItems"]["productOptionId"][$k]);
+					$items[$i]["brandModelTitle"] = $cat2ToProduct->brandModel->title;
+					$items[$i]["category1Title"] = $cat2ToProduct->category->title;
+					$items[$i]["category2Title"] = $cat2ToProduct->category2->title;
+					$items[$i]["productOptionTitle"] = isset($productOption) ? $productOption->title : "";
+					$items[$i]["price"] = $_POST["OrderItems"]["price"][$k];
+					$items[$i]["quantity"] = $_POST["OrderItems"]["quantity"][$k];
+					$items[$i]["total"] = $_POST["OrderItems"]["total"][$k];
+				}
+				$i++;
+			}
+			echo $this->renderPartial("create_items", array(
+				'items'=>$items,
+				TRUE,
+				TRUE));
+		}
+	}
+
 }
