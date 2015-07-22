@@ -206,7 +206,7 @@ $form = $this->beginWidget('CActiveForm', array(
 							<a id="backCreate2" class="btn btn-primary btn-lg" ><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
 							<a id="nextCreate2" class="btn btn-success btn-lg" ><i class="glyphicon glyphicon-ok"></i> Next</a>
 							<!--<a id="finishAtech" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>-->
-							<!--<a class="btn btn-warning btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId")             ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>-->
+							<!--<a class="btn btn-warning btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId")              ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>-->
 						</div>
 					</div>
 				</div>
