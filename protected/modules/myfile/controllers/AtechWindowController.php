@@ -173,7 +173,10 @@ class AtechWindowController extends MasterMyFileController {
                 $total = $subTotal + $total;
             }
             $res["total"] = $total;
-            $res["brandModelId"] = $productModel->brandModelId;
+            $cate2ToProduct = Category2ToProduct::model()->find('productId = ' . $productModel->productId);
+            $modelToCategory = ModelToCategory1::model()->find('categoryId = ' . $cate2ToProduct->category1Id);
+            $res["brandModelId"] = $modelToCategory->brandModelId;
+//            throw new Exception(print_r($res["brandModelId"], true));
         }
 
         $this->layout = '//layouts/cl1';
@@ -227,7 +230,14 @@ class AtechWindowController extends MasterMyFileController {
 //				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 //			}
         }
-        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
+        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
+        //disable foreign key
+        $transaction = Yii::app()->db->beginTransaction();
+        $sqlForeignKeyDisable = 'SET foreign_key_checks = 0;';
+        $command = Yii::app()->db->createCommand($sqlForeignKeyDisable);
+        $command->execute();
+        try {
+
 
 
 //	throw new Exception(print_r($res,true));
@@ -251,7 +261,7 @@ class AtechWindowController extends MasterMyFileController {
                 $res['orderId'] = $newOrderId;
             }
 
-
+            $i = 0;
             foreach ($res['items'] as $productId => $item) {
 
                 if ($isNew) {
@@ -259,25 +269,34 @@ class AtechWindowController extends MasterMyFileController {
                     $orderItemModel = new OrderItems();
                     $orderItemModel->orderId = $newOrderId;
                     $orderItemModel->productId = $productId;
-                    $orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
+                    $orderItemModel->title = substr($res['items'][$i]['name'], 0, 44);
                     $orderItemModel->createDateTime = new CDbExpression("NOW()");
                 } else {
-                    $orderItemModel = OrderItems::model()->find('orderId = ' . $orderId . ' AND productId = ' . $productId);
+                    $orderItemModels = OrderItems::model()->findAll('orderId = ' . $orderId);
+                    $orderItemModel = $orderItemModels[$i];
+                    $orderItemModel->productId = $productId;
                 }
-                $orderItemModel->title = substr($res['items'][$productId]['name'], 0, 44);
-                $orderItemModel->price = $res['items'][$productId]['price'];
-                $orderItemModel->quantity = $res['items'][$productId]['quantity'];
-                $orderItemModel->total = $res['items'][$productId]['price'] * $res['items'][$productId]['quantity'];
+//                throw new Exception(print_r($orderItemModel, true));
+                $orderItemModel->title = substr($res['items'][$i]['name'], 0, 44);
+                $orderItemModel->price = $res['items'][$i]['price'];
+                $orderItemModel->quantity = $res['items'][$i]['quantity'];
+                $orderItemModel->total = $res['items'][$i]['price'] * $res['items'][$i]['quantity'];
                 $orderItemModel->updateDateTime = new CDbExpression("NOW()");
 
                 if (!($orderItemModel->save())) {
                     throw new Exception(print_r($orderItemModel->errors, True));
                 }
+                $i++;
             }
         } else {
-            throw new Exception(print_r($model->errors, true));
+                throw new Exception(print_r($model->errors, true));
         }
-
+        } catch (Exception $exc) {
+            $transaction->rollback();
+            echo $exc->getTraceAsString();
+        }
+        
+        $transaction->commit();
         echo $this->renderPartial('/atechWindow/_confirm_product', array(
             'productResult' => $res,
                 ), TRUE, TRUE);

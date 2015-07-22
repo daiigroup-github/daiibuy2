@@ -295,8 +295,10 @@ $(".atechNav").click(function () {
 $(".atechUpdate").click(function () {
 	var base_url = baseUrl;
 	var brandModelId = $("#selectBrandModel").attr("value");
+//        $("#nextToStep4Atech").attr("value") = brandModelId;
         if (typeof brandModelId == 'undefined') {
             brandModelId = $(this).attr("name");
+            $("#nextToStep4Atech").attr("value",brandModelId);
         }
         if(typeof $(this).attr("value") != 'undefined'){
             var orderId = $(this).attr("value");
@@ -318,14 +320,21 @@ $(".atechUpdate").click(function () {
 //save order
 var atechSave = true;
 $('#nextToStep4Atech').live('click', function (e) {
-
+//    alert("yo");
 	if (atechSave == true)
 	{
 		var base_url = baseUrl;
-		var orderId = $(this).attr("name");
+                 if(typeof $(this).attr("value") != 'undefined'){
+                    var orderId = $(this).attr("name");
+                }
 		var title = $("#Order_title").attr("value");
 		var provinceId = $("#selectProvince").attr("value");
 		var brandModelId = $("#selectBrandModel").attr("value");
+                if (typeof brandModelId == 'undefined') {
+                    brandModelId = $(this).attr("value");
+                 }
+               
+//                alert(title + ", " + provinceId + ", " + brandModelId + ", " + orderId);
 		$.ajax({
 			url: base_url + '/myfile/atechWindow/saveMyFileAtech',
 			type: 'POST',

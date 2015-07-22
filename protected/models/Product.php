@@ -959,7 +959,7 @@ class Product extends ProductMaster {
         return $res;
     }
 
-    public function calculatePriceFromEstimateAtech($brandModelId, $provinceId = 1, $productArray, $orderId) {
+    public function calculatePriceFromEstimateAtech($brandModelId, $provinceId = 1, $productArray, $orderId = null) {
         $res = array();
         $total = 0.00;
         $i = 0;

@@ -588,9 +588,12 @@ $form = $this->beginWidget('CActiveForm', array(
                                 <div class="pull-left">
                                     <a id="backToStep2-2" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
                                 </div>
-                            <?php } ?>
+                            <?php }
+
+//                            throw new Exception(print_r($productResult["brandModelId"], true));
+                            ?>
                             <div class="pull-right">
-                                <a id="nextToStep4Atech" name="<?php echo $this->action->id == 'create' ? "" : $model->orderId; ?>" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
+                                <a id="nextToStep4Atech" name="<?php echo $this->action->id == 'create' ? "" : $model->orderId; ?>" value="<?php echo isset($productResult["brandModelId"]) ? $productResult["brandModelId"] : "" ?>" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</a>
                             </div>
                         </div>
                     </div>
