@@ -50,7 +50,6 @@ class MadridController extends MasterMyFileController {
                   ),
                  */
         );
-
         /*
           $result = array();
           return CMap::mergeArray(parent::rules(), $result);
@@ -68,66 +67,69 @@ class MadridController extends MasterMyFileController {
         $orderDetailId = $orderDetailModel->orderDetailId;
         $orderDetailModel->orderDetailTemplateId = OrderDetail::model()->getOrderDetailTemplateIdBySupplierId(3);
         $orderDetailTemplateField = OrderDetailTemplateField::model()->findAll('orderDetailTemplateId = ' . $orderDetailModel->orderDetailTemplateId . ' AND status = 1');
-
-        $orderDetailValueCat2 = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailId . ' AND orderDetailTemplateFieldId = 6');
+        $orderDetailValueCat2 = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailId . ' AND orderDetailTemplateFieldId = 9');
 //        throw new Exception(print_r($orderDetailTemplateFieldCat2, true));
         $category2Id = isset($orderDetailValueCat2->value) ? $orderDetailValueCat2->value : null;
-//        throw new Exception(print_r($category2Id, true));
-
         $themes = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, TRUE, $category2Id);
         $sets = UserFavourite::model()->findAllThemeAndSetByUserIdAndCate2Id(Yii::app()->user->id, FALSE);
+//        throw new Exception(print_r($_POST["OrderItems"], true));
+//        throw new Exception(print_r($themes, true));
         if (isset($category2Id)) {
             $resultTheme = "";
             $resultTheme .= "<ul>";
-
             foreach ($themes as $theme):
                 $url = '"' . Yii::app()->baseUrl . '"';
-                $resultTheme .= "<li><a href='#'  onclick='loadThemeItem(" . $theme->category2Id . "," . $url . "," . 0 . ")' > " . $theme->category2->title . "</li></a>";
+                $resultTheme .= "<li><a href='#'  onclick='loadThemeItem(" . $theme->category2Id . "," . $url . "," . (isset($model->orderId) ? $model->orderId : 0) . ")' > " . $theme->category2->title . "</li></a>";
             endforeach;
-
             $resultTheme .= "</ul>";
-
             $resultSets = "";
             $resultSets .= "<ul>";
-
             foreach ($sets as $set):
                 $resultSets .= "<li><a href='#' onclick='loadSetItem(" . $set->category2Id . ", " . $url . ")'>" . $set->category2->title . "</li></a>";
             endforeach;
-
             $resultSets .= "</ul>";
-
             $results = array();
             $results["themes"] = $resultTheme;
             $results["sets"] = $resultSets;
             $results["status"] = 1;
+//            throw new Exception(print_r($results, true));
         }else {
             $results["status"] = 0;
-//            throw new Exception(print_r($results["status"], true));
         }
-
-
+        
         if (isset($_POST["OrderItems"])) {
-
-            foreach ($_POST["OrderItems"] as $k => $v) {
-                if (!empty($v["quantity"])) {
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                foreach ($_POST["OrderItems"] as $k => $v) {
+//                throw new Exception(print_r($_POST["OrderItems"], true));
+                if (empty($v["productId"])) {
                     $orderItems = OrderItems::model()->findByPk($k);
-                    $orderItems->quantity = $v["quantity"];
-                    $orderItems->price = $v["price"];
-                    $orderItems->productId = $v["productId"];
-                    $orderItems->total = $orderItems->quantity * $orderItems->price;
-                    if ($orderItems->save(FALSE)) {
-                        $model->status = 2;
-                        $model->save(false);
+                    $orderItems->delete();
+                } else if (!empty($v["quantity"])) {
+                    $orderItems = OrderItems::model()->findByPk($k);
+                    $productModel = Product::model()->findByPk($v["productId"]);
+                    if (isset($orderItems)) {
+                        $orderItems->title = $productModel->name;
+                        $orderItems->quantity = intval($v["quantity"]);
+                        $orderItems->price = $v["price"];
+                        $orderItems->productId = $v["productId"];
+                        $orderItems->total = $orderItems->quantity * $orderItems->price;
+                        if ($orderItems->save(FALSE)) {
+                            $model->status = 2;
+                            $model->save(false);
+                        }
                     }
                 }
             }
+            } catch (Exception $exc) {
+                $transaction->rollback();
+                echo $exc->getTraceAsString();
+            }
+            $transaction->commit();
         }
         $categoryToSub = CategoryToSub::model()->findAll(array(
             'condition' => ' isType=1',
         ));
-
-
-
         $subCategorysId = implode(',', CHtml::listData($categoryToSub, 'categoryId', 'categoryId'));
         $categorys = Category::model()->findAll("categoryId IN (" . $subCategorysId . ")");
         $items = $this->showType($categorys);
@@ -159,12 +161,12 @@ class MadridController extends MasterMyFileController {
           Yii::app()->end();
           }
          */
-//        throw new Exception(print_r($_POST["Order"]["createMyfileType"], true));
         if (isset($_FILES['OrderFile']) && $_POST["Order"]["createMyfileType"] == 2) {
 //			$planFile = $_FILES['OrderFile'];
 //            throw new Exception(print_r($_FILES['OrderFile'], true));
             try {
                 if (isset($_POST['Order'])) {
+//                    throw new Exception(print_r($_POST["Order"], true));
                     $flag = false;
                     $transaction = Yii::app()->db->beginTransaction();
                     $model->attributes = $_POST['Order'];
@@ -176,15 +178,12 @@ class MadridController extends MasterMyFileController {
                     $model->createDateTime = new CDbExpression("NOW()");
 //                    throw new Exception(print_r($model, true));
                     if ($model->save()) {
-
                         $flag = TRUE;
                         $orderId = Yii::app()->db->lastInsertID;
                         $this->saveOrderDetail($orderId, $orderDetailModel->orderDetailTemplateId);
                         $folderimage = "orderFile";
-
                         for ($i = 0; $i <= sizeof($_FILES["OrderFile"]); $i++) {
                             $image = CUploadedFile::getInstanceByName("OrderFile[$i]");
-
                             if (isset($image) && !empty($image)) {
                                 $orderFileModel = new OrderFile();
                                 $imgType = explode('.', $image->name);
@@ -213,10 +212,8 @@ class MadridController extends MasterMyFileController {
                                 }
                             }
                         }
-
-
-
                         if ($flag) {
+//                            throw new Exception(print_r($_POST["OrderDetailValue"], true));
                             foreach ($_POST["OrderDetailValue"] as $k => $v) {
                                 if ($v["value"] <> "") {
                                     $orderFieldValue = new OrderDetailValue();
@@ -226,7 +223,6 @@ class MadridController extends MasterMyFileController {
                                     $orderFieldValue->createDateTime = new CDbExpression("NOW()");
                                     $orderFieldValue->updateDateTime = new CDbExpression("NOW()");
                                     if (!$orderFieldValue->save()) {
-
                                         $flag = FALSE;
                                         break;
                                     }
@@ -237,11 +233,7 @@ class MadridController extends MasterMyFileController {
 //                        throw new Exception(print_r($model, true));
                         $flag = FALSE;
                     }
-
-
-
                     if ($flag) {
-
                         $transaction->commit();
                         $this->redirect(array(
                             'view',
@@ -255,20 +247,19 @@ class MadridController extends MasterMyFileController {
                 $transaction->rollback();
             }
         } else {
-
             if (isset($_POST["Order"])) {
-
                 $transaction = Yii::app()->db->beginTransaction();
                 $flag = true;
                 $model->attributes = $_POST['Order'];
                 $model->type = 1;
                 $model->status = 1;
                 $model->supplierId = 3;
-                if ($_POST["Order"]["createMyfileType"] == 3) {
+                if ($_POST["Order"]["isTheme"] == 3) {
                     $model->isTheme = 0;
                 } else {
                     $model->isTheme = 1;
                 }
+//                throw new Exception(print_r($model, true));
                 $model->userId = Yii::app()->user->id;
                 $model->createDateTime = new CDbExpression("NOW()");
 //                throw new Exception(print_r($model, true));
@@ -281,10 +272,8 @@ class MadridController extends MasterMyFileController {
                     } else {
                         $flag = false;
                     }
-//                    throw new Exception(print_r($orderDetailModel, true));
-
+//                    throw new Exception(print_r($_POST["OrderItems"], true));
                     foreach ($_POST["OrderItems"] as $k => $v) {
-
                         if (!empty($v["productId"])) {
                             $product = Product::model()->findByPk($v["productId"]);
                             $orderItems = new OrderItems();
@@ -299,7 +288,6 @@ class MadridController extends MasterMyFileController {
                                 $orderItems->price = $price;
                             }
                             $orderItems->total = $price * $_POST["OrderItems"][$k]["quantity"];
-
                             if (!$orderItems->save(false)) {
                                 $flag = FALSE;
                                 break;
@@ -344,7 +332,6 @@ class MadridController extends MasterMyFileController {
                 }
             }
         }
-
         $categoryToSub = CategoryToSub::model()->findAll(array(
             'condition' => ' isType=1',
         ));
@@ -365,7 +352,6 @@ class MadridController extends MasterMyFileController {
         /*
           foreach ($this->scanDir(Yii::app()->basePath . '/../images/madrid/tile') as $file) {
           if(substr($file, 0, 1) == '.') continue;
-
           $items[$i] = [
           'id' => $i,
           'image' => Yii::app()->baseUrl . '/images/madrid/tile/' . $file,
@@ -377,7 +363,6 @@ class MadridController extends MasterMyFileController {
           ],
           'isQuickView'=>true
           ];
-
           $i++;
           }
          */
@@ -389,7 +374,6 @@ class MadridController extends MasterMyFileController {
                     break;
                 }
             }
-
             $items[$i] = array(
                 'id' => $category->categoryId,
                 'image' => Yii::app()->baseUrl . $category->image,
@@ -404,7 +388,6 @@ class MadridController extends MasterMyFileController {
             );
             $i++;
         }
-
         return $items;
     }
 
@@ -415,20 +398,16 @@ class MadridController extends MasterMyFileController {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-
         if (isset($_POST['Order'])) {
             $flag = false;
             $transaction = Yii::app()->db->beginTransaction();
             try {
                 $model->attributes = $_POST['Order'];
-
                 if ($model->save()) {
                     $flag = true;
                 }
-
                 if ($flag) {
                     $transaction->commit();
                     $this->redirect(array(
@@ -442,7 +421,6 @@ class MadridController extends MasterMyFileController {
                 $transaction->rollback();
             }
         }
-
         $this->render('update', array(
             'model' => $model,
         ));
@@ -455,7 +433,6 @@ class MadridController extends MasterMyFileController {
      */
     public function actionDelete($id) {
         $this->loadModel($id)->delete();
-
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
@@ -467,7 +444,6 @@ class MadridController extends MasterMyFileController {
      */
     public function actionIndex() {
         $this->layout = '//layouts/cl1';
-
         $myfileArray = Order::model()->findAllMyFileBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 3, $this->cookie->token);
         $myfileHistoryArray = Order::model()->findAllMyFileHistoryBySupplierId(isset(Yii::app()->user->id) ? Yii::app()->user->id : 0, 3, $this->cookie->token);
         $this->render('index', array(
@@ -502,7 +478,6 @@ class MadridController extends MasterMyFileController {
 
     public function actionLoadThemeItem() {
         $result = array();
-
         if (isset($_POST["orderId"]) && $_POST["orderId"] > 0) {
             $model = $this->loadModel($_POST["orderId"]);
         }
@@ -512,7 +487,6 @@ class MadridController extends MasterMyFileController {
         $model->isTheme = 1;
         $result['view'] = $this->renderPartial("_theme", array(
             'model' => $model), true);
-
         if (isset($_POST["category2Id"])) {
             $cat2ToProduct = Category2ToProduct::model()->findAll("category2Id = " . $_POST["category2Id"]);
 //            throw new Exception(print_r($cat2ToProduct, true));
@@ -525,10 +499,11 @@ class MadridController extends MasterMyFileController {
                     $result[strtolower($item->groupName)]["name"] = $item->product->name;
                     $result[strtolower($item->groupName)]["width"] = $item->product->width;
                     $result[strtolower($item->groupName)]["height"] = $item->product->height;
-                    $result[strtolower($item->groupName)]["productArea"] = ($item->product->width * $item->product->width) / 10000;
+                    $result[strtolower($item->groupName)]["productArea"] = isset($item->product->area) ? $item->product->area : ($item->product->width * $item->product->width) / 1000;
                     $result[strtolower($item->groupName)]["price"] = $item->product->price;
                     $result[strtolower($item->groupName)]["productUnits"] = $item->product->productUnits;
                 }
+//                throw new Exception(print_r($result, true));
             } else {
                 $result["status"] = FALSE;
                 $result["errorMessage"] = "Cant' find Product Array";
@@ -568,15 +543,15 @@ class MadridController extends MasterMyFileController {
         $products = UserFavourite::model()->findAll("userId = " . Yii::app()->user->id . " AND productId is not null ");
         $resultTheme = "";
         $resultTheme .= "<ul>";
-
+        $url = Yii::app()->baseUrl;
+//        throw new Exception(print_r($products, true));
         foreach ($products as $theme):
-            $url = '"' . Yii::app()->baseUrl . '"';
-            $resultTheme .= "<li><a href='#'  onclick='loadProductsFavItem(" . $theme->productId . "," . $url . "," . 0 . ")' > " . $theme->product->name . "</li></a>";
+            if (isset($theme->product->name) && isset($theme->productId)) {
+                $url = '"' . Yii::app()->baseUrl . '"';
+                $resultTheme .= "<li><a href='#'  onclick='loadProductsFavItem(" . $theme->productId . "," . $url . "," . 0 . ")' > " . $theme->product->name . "</li></a>";
+            }
         endforeach;
-
         $resultTheme .= "</ul>";
-
-
         $results = array();
         $results["products"] = $resultTheme;
         $results["status"] = TRUE;
@@ -623,23 +598,17 @@ class MadridController extends MasterMyFileController {
 //        throw new Exception(print_r($themes, true));
         $resultTheme = "";
         $resultTheme .= "<ul>";
-
         foreach ($themes as $theme):
             $url = '"' . Yii::app()->baseUrl . '"';
             $resultTheme .= "<li><a href='#'  onclick='loadThemeItem(" . $theme->category2Id . "," . $url . "," . 0 . ")' > " . $theme->category2->title . "</li></a>";
         endforeach;
-
         $resultTheme .= "</ul>";
-
         $resultSets = "";
         $resultSets .= "<ul>";
-
         foreach ($sets as $set):
             $resultSets .= "<li><a href='#' onclick='loadSetItem(" . $set->category2Id . ", " . $url . ")'>" . $set->category2->title . "</li></a>";
         endforeach;
-
         $resultSets .= "</ul>";
-
         $results = array();
         $results["themes"] = $resultTheme;
         $results["sets"] = $resultSets;
@@ -650,7 +619,6 @@ class MadridController extends MasterMyFileController {
 
     public function actionLoadProductFavItem() {
         $result = array();
-
         if (isset($_POST["orderId"]) && $_POST["orderId"] > 0) {
             $model = $this->loadModel($_POST["orderId"]);
         }
@@ -689,6 +657,26 @@ class MadridController extends MasterMyFileController {
 //            $result["errorMessage"] = "Cant' find POST Parameter";
 //        }
 //        echo CJSON::encode($result);
+    }
+
+    public function actionFindTileByProductId() {
+        $productId = $_POST["productId"];
+        $category1Id = $_POST["category1Id"];
+        $productModel = Product::model()->findByPk($productId);
+        $category2ToProduct = Category2ToProduct::model()->find('productId = ' . $productId . ' and category1Id = ' . $category1Id);
+//        throw new Exception(print_r($productModel, true));
+        $result[$productModel->productId]["productId"] = $productModel->productId;
+        $result[$productModel->productId]["productCode"] = $productModel->code;
+        $result[$productModel->productId]["name"] = $productModel->name;
+        $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
+        $result[$productModel->productId]["productArea"] = $productModel->area;
+//        throw new Exception(print_r($productModel->calProductPromotionPrice(null, null), true));
+        $result[$productModel->productId]["price"] = $productModel->calProductPromotionPrice(null, null);
+        $result[$productModel->productId]["productUnits"] = $productModel->productUnits;
+        $result[$productModel->productId]["productImage"] = CHtml::image(Yii::app()->baseUrl . $productModel->productImages[0]->image);
+//        throw new Exception(print_r(count($cat2ToProduct), true));
+//        throw new Exception(print_r($result, true));
+        echo CJSON::encode($result);
     }
 
 }

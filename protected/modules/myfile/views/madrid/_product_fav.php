@@ -13,7 +13,7 @@
                     <?php // endif; ?>
                     <th rowspan="2" style="text-align:center">รหัส</th>
                     <th rowspan="2" style="text-align:center">หน่วย</th>
-                    <th rowspan="2" style="text-align:center">จำนวน/หน่วย</th>
+                    <th rowspan="2" style="text-align:center">จำนวน(แผ่น)/หน่วย</th>
                     <th colspan="2" style="text-align:center">ขนาดพื้นที่</th>
                     <?php if ($this->action->id == "view" || $model->status == 1): ?>
                         <th rowspan="2" style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
@@ -75,11 +75,11 @@
                             ?></td>
                         <td><?php echo $model->product->code; ?></td>
                         <td><?php echo $model->product->name; ?></td>
-                        <td style="color:red"><?php echo number_format($model->product->price, 2); ?>
+                        <td style="color:red"><?php echo number_format($model->product->calProductPromotionPrice(null, null), 2); ?>
                             <?php // echo CHtml::hiddenField("Order[createMyfileType]", 3) ?>
                             <?php echo CHtml::hiddenField("OrderItems[$model->orderItemsId][productId]", $model->productId) ?>
                             <?php
-                            echo CHtml::hiddenField("OrderItems[$model->orderItemsId][price]", $model->product->price, array(
+                            echo CHtml::hiddenField("OrderItems[$model->orderItemsId][price]", $model->product->calProductPromotionPrice(null, null), array(
                                 'id' => 'priceHidden_' . $i))
                             ?>
                         </td>
@@ -97,9 +97,6 @@
                 <?php
                 if (1 == 1) {
 //                    echo CHtml::hiddenField("Order[createMyfileType]", 3);
-
-
-
                     $productArea = isset($product) ? ($product->width * $product->height) / 10000 : 0;
                     $estimateQuantity = ($product->area == 0) ? 0 : $productArea * $product->area;
                     ?>
@@ -107,7 +104,7 @@
                         <td><?php echo $i; ?></td>
                         <td><?php echo $product->name; ?></td>
                         <?php if ($this->action->id == "view" || $model->status == 1): ?>
-                            <td style="text-align: center"><?php // echo $model->area;                                                                                                                                                                                                                        ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $model->area);                                                                                                                                                                                                                        ?></td>
+                            <td style="text-align: center"><?php // echo $model->area;                                                                                                                                                                                                                         ?><?php // echo CHtml::hiddenField("supplierArea" . strtolower($k), $model->area);                                                                                                                                                                                                                         ?></td>
                             <td>ตร.เมตร</td>
                         <?php endif; ?>
 
@@ -115,7 +112,7 @@
                         <td id="productUnits"><?php echo $product->productUnits; ?></td>
                         <td id="noPerBox"><?php echo $product->noPerBox; ?></td>
                         <?php
-                        echo CHtml::hiddenField("OrderItems[" . $product->productId . "][price]", isset($product->productPromotion->price) ? $product->productPromotion->price : $product->price );
+                        echo CHtml::hiddenField("OrderItems[" . $product->productId . "][price]", $product->calProductPromotionPrice(null, null));
                         ?>
 
                         <?php
@@ -140,7 +137,7 @@
                                 //													'class'=>'hide',
                                 'id' => 'quantityText'));
                             ?></td>
-                        <td id="price"><?php echo number_format($product->price) ?></td>
+                        <td id="price"><?php echo number_format($product->calProductPromotionPrice(null, null), 2); ?></td>
                     </tr>
                     <?php
                 }

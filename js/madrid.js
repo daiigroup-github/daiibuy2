@@ -34,6 +34,14 @@ $('.add-to-cart').click(function () {
 		}
 	});
 });
+
+function moneyFormat(num) {
+        var p = num.toFixed(2).split(".");
+        return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
+            return  num + (i && !(i % 3) ? "," : "") + acc;
+        }, "") + "." + p[1];
+    }
+
 function loadThemeItem(cat2Id, baseUrl, orderId)
 {
 
@@ -65,16 +73,22 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 						$("#productName" + groupName).html(data[groupName]["name"]);
 						$("#productUnits" + groupName).html(data[groupName]["productUnits"]);
 						$("#productArea" + groupName).html(data[groupName]["productArea"]);
-						var estimateQuantity = data[groupName]["productArea"] * $("#supplierArea" + groupName).val();
+						var estimateQuantity = Math.ceil($("#supplierArea" + groupName).val()  / data[groupName]["productArea"]);
+//                                                alert(data[groupName]["productArea"] + ', ' +$("#supplierArea" + groupName).val());
 						$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
 //					$("#quantityText_" + groupName).removeClass("hide");
 //                                                alert(estimateQuantity);
+                                                var price = 0.00;
                                                 if(estimateQuantity){
                                                     $("#quantityText_" + groupName).val(estimateQuantity);
+                                                    price = moneyFormat(data[groupName]["price"] * estimateQuantity);
                                                 }else{
                                                     $("#quantityText_" + groupName).val(1);
+                                                    price = moneyFormat(parseFloat(data[groupName]["price"]));
+                                                    
                                                 }
-						$("#price" + groupName).html(data[groupName]["price"] * estimateQuantity);
+//                                                alert(estimateQuantity);
+						$("#price" + groupName).html(price);
 						$("#priceHidden" + groupName).val(data[groupName]["price"]);
 						$("#productId" + groupName).val(data[groupName]["productId"]);
 					}
@@ -178,7 +192,7 @@ function updatePrice()
 	{
 		var price = $("#priceHidden" + groupName).val();
 		var quantity = $("#quantityText_" + groupName).val();
-		$("#price" + groupName).html(price * quantity);
+		$("#price" + groupName).html(moneyFormat(price * quantity));
 	}
 }
 
@@ -240,8 +254,9 @@ $('.chooseStyle').click(function () {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
 	cate2Id = $(this).attr("name");
+        $('#Order_isTheme').val(1);
 //                    alert(cate2Id);
-	$('#OrderDetailValue_6_value').val(cate2Id);
+	$('#OrderDetailValue_9_value').val(cate2Id);
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/prepareThemeAndSet',
 		type: 'POST',
@@ -397,7 +412,7 @@ function updateSetPrice(no)
 	{
 		var price = $("#priceHidden_" + i).val();
 		var quantity = $("#quantityText_" + i).val();
-		$("#total" + i).html(price * quantity);
+		$("#total" + i).html(moneyFormat(price * quantity));
 	}
 }
 
@@ -479,5 +494,3 @@ function addFavouriteProduct(userId, productId, baseUrl)
 		},
 	});
 }
-
-

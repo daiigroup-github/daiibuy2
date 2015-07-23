@@ -149,7 +149,8 @@ $form = $this->beginWidget('CActiveForm', array(
                             <?php
                         endforeach;
                     }
-                    $field = OrderDetailTemplateField::model()->find('description = "cate2Id"');
+                    $field = OrderDetailTemplateField::model()->find('description = "cate1Id"');
+//                    throw new Exception(print_r($field, true));
                     ?>
 
                 </div>
@@ -196,7 +197,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         </a>
                     </div>
                 </div>
-                <?php echo CHtml::hiddenField("Order[isTheme]", 1); ?>
+                <?php // echo CHtml::hiddenField("Order[isTheme]", 1); ?>
                 <div class="row wizard-control">
                     <div class="pull-right">
                         <button id="nextToStep2" class="btn btn-primary btn-lg hidden"> ต่อไป <i class="glyphicon glyphicon-chevron-right"></i></button>
@@ -257,7 +258,10 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row">
                     <div class="col-md-12" id="upload_plan">
-                        <?php // $this->renderPartial('_upload_plan', array('model'=>$model));             ?>
+                        <?php
+                        // $this->renderPartial('_upload_plan', array('model'=>$model));   
+//                        echo CHtml::hiddenField("supplierArea" . strtolower($item->groupName), $item->area);
+                        ?>          
 
                         <div class="row">
                             <div class="col-sm-7">
@@ -381,25 +385,30 @@ $form = $this->beginWidget('CActiveForm', array(
                 </div>
                 <div class="row">
 
-                    <?php foreach ($orderDetailTemplateField as $field): ?>
-                        <div class="col-lg-1 control-label"><?php echo $field->description; ?></div>
-                        <div class="col-lg-11">
-                            <?php
-//                            throw new Exception(print_r($orderDetailTemplateField, true));
-                            if (isset($model->orderId)):
-                                $orderDetail = OrderDetail::model()->find("orderId = :orderId", array(
-                                    ":orderId" => $model->orderId));
-
-                                if (isset($orderDetail)) {
-                                    $fieldValue = OrderDetailValue::model()->find("orderDetailId = " . $orderDetail->orderDetailId . " AND orderDetailTemplateFieldId = " . $field->orderDetailTemplateFieldId);
-//                                    throw new Exception(print_r($fieldValue, true));
-                                    if (isset($fieldValue->value) && $fieldValue == "")
-                                        echo $fieldValue->value;
-                                }
-                            endif;
+                    <?php
+                    foreach ($orderDetailTemplateField as $field):
+                        if ($field->description == "คำร้อง") {
                             ?>
-                        </div>
-                    <?php endforeach; ?>
+                            <div class="col-lg-1 control-label"><?php echo $field->description; ?></div>
+                            <div class="col-lg-11 control-group">
+                                <?php
+//                            throw new Exception(print_r($orderDetailTemplateField, true));
+                                if (isset($model->orderId)):
+                                    $orderDetail = OrderDetail::model()->find("orderId = :orderId", array(
+                                        ":orderId" => $model->orderId));
+                                    if (isset($orderDetail)) {
+                                        $fieldValue = OrderDetailValue::model()->find("orderDetailId = " . $orderDetail->orderDetailId . " AND orderDetailTemplateFieldId = " . $field->orderDetailTemplateFieldId);
+//                                    throw new Exception(print_r($fieldValue, true));
+                                        if (isset($fieldValue->value) && $fieldValue != "")
+                                            echo CHtml::textArea("comment", $fieldValue->value, array('disabled' => true, 'style' => 'width:100%'));
+                                    }
+                                endif;
+                                ?>
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
 
                 </div>
 
@@ -408,51 +417,60 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 
     <div class="row setup-content" id="step-4">
-        <?php $classTop = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12"; ?>
+        <?php
+        //                            throw new Exception(print_r($model->isTheme, true));
+        //        $classTop = ($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1 && $model->isTheme = 1) || ($this->action->id == 'create') ? "col-xs-3" : "col-xs-12";
+        $classTop = ($model->isTheme != 0) ? "col-xs-3" : "col-xs-12";
+        ?>
         <div class="<?php echo $classTop; ?>">
             <?php
 //           
-            if ($this->action->id == 'view' && $results["status"] == 1):
-                ?>
-                <div class="row sidebar-box red ">
-                    <div class="col-sm-12">
-                        <div class="sidebar-box-heading">
-                            <i class="fa fa-heart"></i>
-                            <h4>Theme</h4>
-                        </div>
-                        <div class="sidebar-box-content" id="themeResult">
-                            <!--                        <ul>
-                            <?php
-                            echo $results["themes"];
+//            throw new Exception(print_r($model->isTheme, true));
+if (($this->action->id == 'view' && $model->isTheme == 1) || ($this->action->id == 'view' && $results["status"] == 1)):
+                //                throw new Exception(print_r($model->isTheme, true));
+                if ($model->isTheme != 0 && $model->isTheme != 3):
+                    ?>
+                    <div class="row sidebar-box red ">
+                        <div class="col-sm-12">
+                            <div class="sidebar-box-heading">
+                                <i class="fa fa-heart"></i>
+                                <h4>Theme</h4>
+                            </div>
+                            <div class="sidebar-box-content" id="themeResult">
+                                <!--<ul>-->
+                                <?php
+//                            throw new Exception(print_r($results, true));
+                                echo $results["themes"];
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
-                            ?>
-                                                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                  ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                  ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                  ?>)"><?php // echo $theme->category2->title;                                                                                                                                  ?></li></a>
-                            <?php
+                                ?>
+        <!--                            <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                                                                                                        ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                                                        ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                                                        ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                                                        ?></li></a>-->
+                                <?php
 //                                }
 //                            endforeach;
-                            ?>
-                                                    </ul>-->
+                                ?>
+                                <!--</ul>-->
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row sidebar-box orange ">
-                    <div class="col-sm-12">
-                        <div class="sidebar-box-heading">
-                            <i class="fa fa-heart"></i>
-                            <h4>Sanitary Set</h4>
-                        </div>
-                        <div class="sidebar-box-content" id="setResult">
-                            <!--                        <ul>
-                            <?php echo $results["sets"] // foreach ($sets as $set):      ?>
-                                                            <li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                                                    ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                    ?>)"><?php // echo $set->category2->title;                                                                                                                                    ?></li></a>
-                            <?php // endforeach;       ?>
-                                                    </ul>-->
+                    <div class="row sidebar-box orange ">
+                        <div class="col-sm-12">
+                            <div class="sidebar-box-heading">
+                                <i class="fa fa-heart"></i>
+                                <h4>Sanitary Set</h4>
+                            </div>
+                            <div class="sidebar-box-content" id="setResult">
+                                <!--<ul>-->
+                                <?php echo $results["sets"] // foreach ($sets as $set):           ?>
+                                         <!--<li><a href="#" onclick="loadSetItem(<?php // echo $set->category2Id;                                                                                                                                                                                                                          ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                                                          ?>)"><?php // echo $set->category2->title;                                                                                                                                                                                                                          ?></li></a>-->
+                                <?php // endforeach;            ?>
+                                <!--</ul>-->
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <?php
+                    <?php
+                endif;
             elseif ($this->action->id == 'create'):
 //             throw new Exception(print_r($results["themes"], true));
 //            throw new Exception(print_r($model->category2Id, true));
@@ -472,7 +490,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                 foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                                     ?>
-                                    <li><a href="#"  onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                 ?>)"><?php // echo $theme->category2->title;                                                                                                                                 ?></li></a>
+                                    <li><a href="#"  onclick="loadThemeItem(<?php echo $theme->category2Id; ?>,<?php echo "'" . Yii::app()->baseUrl . "'" ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                                                       ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                                                       ?></li></a>
                                     <?php
 //                                }
                                 endforeach;
@@ -503,8 +521,7 @@ $form = $this->beginWidget('CActiveForm', array(
 
                 <?php
             endif;
-
-            $class = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? "col-xs-9" : "col-xs-12";
+            $class = ($this->action->id == 'view' && $results["status"] == 1) || ($this->action->id == 'create') ? ($model->isTheme != 0 ? "col-xs-9" : "col-xs-12") : "col-xs-12";
             ?>
         </div>
         <div class="<?php echo $class ?>">
@@ -524,7 +541,7 @@ $form = $this->beginWidget('CActiveForm', array(
                     <?php if (!$model->isNewRecord && $this->action->id == "view"): ?>
                         <a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme == 1) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
                     <?php endif; ?>
-                    <button id="nextToStep5" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
+                    <button id="nextToStep5" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
                 </div>
             </div>
         </div>
@@ -551,7 +568,7 @@ $form = $this->beginWidget('CActiveForm', array(
 //                            foreach ($themes as $theme):
 //                                if($theme->category2Id == ) {
                         ?>
-                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                           ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                           ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                           ?>)"><?php // echo $theme->category2->title;                                                                                                                           ?></li></a>
+                                                        <li><a href="#"  onclick="loadThemeItem(<?php // echo $theme->category2Id;                                                                                                                                                                                                                 ?>,<?php // echo "'" . Yii::app()->baseUrl . "'"                                                                                                                                                                                                                 ?>, <?php // echo isset($model->orderId) ? $model->orderId : 0                                                                                                                                                                                                                 ?>)"><?php // echo $theme->category2->title;                                                                                                                                                                                                                 ?></li></a>
                         <?php
 //                                }
 //                            endforeach;
@@ -574,8 +591,10 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="col-md-12 wizard-control">
                     <?php if (!$model->isNewRecord && $this->action->id == "view"): ?>
                         <a class="btn btn-warning btn-lg col-lg-offset-3" onclick="<?php echo ($model->isTheme == 1) ? "updatePrice()" : "updateSetPrice(" . count($model->orderItems) . ")" ?>"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>
-                    <?php endif; ?>
-                    <button id="nextToStep5tile" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไปเลย</button>
+                        <?php
+                    endif;
+                    ?>
+                    <button id="nextToStep5tile" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>
                 </div>
             </div>
         </div>
@@ -609,6 +628,19 @@ $form = $this->beginWidget('CActiveForm', array(
                                                         <th style="width: 10%;text-align: center">ปริมาณจาก การประเมิณพื้นที่</th>
                                                         <th>ปริมาณแก้ไข</th>
                                                         <th>ราคารวม</th>
+
+                                                        <?php
+                                                    elseif (!isset($model->orderItems[0]->product)):
+//                                                        throw new Exception(print_r("gggg", true));
+                                                        ?>
+                                                        <th>Product</th>
+                                                        <th>Product Image</th>
+                                                        <th>Code</th>
+                                                        <th>Title/Category</th>
+                                                        <th>Estimate Area</th>
+                                                        <th>Price</th>
+                                                        <th>Quantiry</th>
+                                                        <th>Total</th>
                                                     <?php else: ?>
                                                         <th>Product Image</th>
                                                         <th>Code</th>
@@ -623,6 +655,7 @@ $form = $this->beginWidget('CActiveForm', array(
                                                 <?php
                                                 $i = 1;
                                                 foreach ($model->orderItems as $item):
+//                                                    throw new Exception(print_r($model->isTheme, true));
                                                     ?>
                                                     <?php if ($model->isTheme): ?>
                                                         <tr id="orderItem<?php echo strtolower($item->groupName); ?>">
@@ -634,36 +667,69 @@ $form = $this->beginWidget('CActiveForm', array(
                                                             <td id="productName<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->name : ""; ?></td>
                                                             <td id="productUnits<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? $item->product->productUnits : ""; ?></td>
                                                             <?php
-                                                            $productArea = isset($item->product) ? ($item->product->width * $item->product->height) / 10000 : 0;
-                                                            $estimateQuantity = $productArea * $item->area;
+                                                            $product = Product::model()->findByPk($item->productId);
+//                                                            throw new Exception(print_r($item->product->area, true));
+                                                            if (isset($item->product)) {
+                                                                $productArea = isset($item->product->area) ? ($item->product->area != 0 ? $item->product->area : $item->product->width * $item->product->height) : $item->product->width * $item->product->height;
+                                                                if ($productArea == 0)
+                                                                    $productArea = $item->product->width * $item->product->height;
+                                                                if ($item->area != 0)
+                                                                    $estimateQuantity = round($item->area / $productArea, 0);
+                                                            }
                                                             ?>
 
                                                             <td  style="text-align: center" id="productArea<?php echo strtolower($item->groupName) ?>">
-                                                                <?php echo $productArea; ?>
+                                                                <?php echo isset($productArea) ? $productArea : ""; ?>
                                                             </td>
-                                                            <td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"><?php echo $estimateQuantity ?></td>
+                                                            <td style="text-align: center" id="estimateAreaQuantity<?php echo strtolower($item->groupName) ?>"><?php echo isset($estimateQuantity) ? $estimateQuantity : ""; ?></td>
                                                             <td id="quantity<?php echo strtolower($item->groupName) ?>"><?php
                                                                 echo $item->quantity;
                                                                 ?></td>
-                                                            <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->price) : 0 ?></td>
+                                                            <td id="price<?php echo strtolower($item->groupName) ?>"><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null)) : 0 ?></td>
                                                         </tr>
-                                                    <?php else: ?>
+                                                    <?php
+                                                    elseif (!isset($model->orderItems[0]->product)):
+//                                                        throw new Exception(print_r($item, true));
+                                                        ?>
+                                                        <tr>
+                                                            <td>Product</td>
+                                                            <td><?php
+                                                                echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(isset($item->product) ? Yii::app()->baseUrl . $item->product->productImagesSort[0]->image : "", "", array(
+                                                                            'style' => "width:200px")) : "";
+                                                                ?></td>
+                                                            <td><?php echo isset($item->product) ? $item->product->code : "####"; ?></td>
+                                                            <td><?php echo isset($item->product) ? $item->product->name : "####"; ?></td>
+                                                            <td><?php echo $item->area; ?></td>
+                                                            <td style="color:red"><?php echo isset($item->product) ? number_format($item->product->calProductPromotionPrice(null, null), 2) : "####"; ?>
+
+                                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", isset($item->productId) ? $item->productId : ""); ?>
+        <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", isset($item->product->price) ? $item->product->calProductPromotionPrice(null, null) : ""); ?>
+                                                            </td>
+                                                            <td style="width: 20%">
+                                                                <div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 0); ?></div></div>
+                                                            </td>
+                                                            <td><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null), 0) : "####"; ?></td>
+                                                        </tr>
+                                                        <?php
+                                                    else:
+//                                                        throw new Exception(print_r($item, true));
+                                                        ?>
                                                         <tr>
                                                             <td><?php
                                                                 echo (isset($item->product->productImagesSort) && count($item->product->productImagesSort)) ? CHtml::image(isset($item->product) ? Yii::app()->baseUrl . $item->product->productImagesSort[0]->image : "", "", array(
                                                                             'style' => "width:200px")) : "";
                                                                 ?></td>
-                                                            <td><?php echo $item->product->code; ?></td>
-                                                            <td><?php echo $item->product->name; ?></td>
-                                                            <td style="color:red"><?php echo number_format($item->product->price, 2); ?>
+                                                            <td><?php echo isset($item->product) ? $item->product->code : "####"; ?></td>
+                                                            <td><?php echo isset($item->product) ? $item->product->name : "####"; ?></td>
+                                                            <td style="color:red"><?php echo isset($item->product) ? number_format($item->product->calProductPromotionPrice(null, null), 2) : "####"; ?>
 
-                                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", $item->productId) ?>
-                                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", $item->product->price) ?>
+                                                                <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][productId]", isset($item->productId) ? $item->productId : ""); ?>
+        <?php echo CHtml::hiddenField("OrderItems[$item->orderItemsId][price]", isset($item->product->price) ? $item->product->calProductPromotionPrice(null, null) : ""); ?>
                                                             </td>
                                                             <td style="width: 20%">
                                                                 <div class="row"><div class="col-md-12"><?php echo number_format($item->quantity, 0); ?></div></div>
                                                             </td>
-                                                            <td><?php echo number_format($item->quantity * $item->product->price, 0) ?></td>
+                                                            <td><?php echo isset($item->product) ? number_format($item->quantity * $item->product->calProductPromotionPrice(null, null), 0) : "####"; ?></td>
                                                         </tr>
                                                     <?php endif; ?>
                                                     <?php
@@ -682,9 +748,9 @@ $form = $this->beginWidget('CActiveForm', array(
                     <div class="pull-right">
                         <?php if (!$model->isRequestSpacialProject && $model->type == 1): ?>
                             <a id="backToStep3" class="btn btn-primary btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/backTo3/id/$model->orderId") ?>"><i class="glyphicon glyphicon-chevron-left"></i> ย้อนกลับ</a>
-                        <?php endif; ?>
+<?php endif; ?>
                         <a id="" class="btn btn-success btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/finish/id/$model->orderId") ?>"><i class="glyphicon glyphicon-ok"></i> เสร็จสิ้น</a>
-                        <a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/atechWindow/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
+                        <a id="" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/duplicateMyfile/id/$model->orderId") ?>"><i class="glyphicon glyphicon-plus"></i> สร้างสำเนา</a>
                         <?php if ($model->type < 3): ?>
                             <a class="btn btn-warning btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/addToCart/id/$model->orderId") ?>"><i class="glyphicon glyphicon-shopping-cart"></i> ใส่ตระกร้า</a>
                         <?php endif; ?>
@@ -700,7 +766,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             <?php elseif ($model->userSpacialProject[0]->status == 3): ?>
                                 <a id="requestSpecial" class="btn btn-danger btn-lg" href="<?php echo Yii::app()->createUrl("/myfile/madrid/requestSpacialProject/id/$model->orderId") ?>"> ไม่อนุมัติคำขอ Spacial Project -<i class="glyphicon glyphicon-share"></i> Request อีกครั้ง</a>
                             <?php endif; ?>
-                        <?php endif; ?>
+<?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -713,7 +779,6 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <!--********old code-->
 <!--<div class="form">
-
 <?php
 //	$form = $this->beginWidget('CActiveForm', array(
 //		'id'=>'order-create-form',
@@ -725,40 +790,31 @@ $form = $this->beginWidget('CActiveForm', array(
 //	));
 ?>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
-
-<?php // echo $form->errorSummary($model);                                                           ?>
-
+<?php // echo $form->errorSummary($model);                                                                      ?>
         <div class="row">
-<?php // echo $form->labelEx($model, 'supplierId');                ?>
+<?php // echo $form->labelEx($model, 'supplierId');                     ?>
 <?php // echo $form->textField($model, 'supplierId');              ?>
-<?php // echo $form->error($model, 'supplierId');                                                  ?>
+<?php // echo $form->error($model, 'supplierId');                                                        ?>
         </div>
-
         <div class="row">
-<?php // echo $form->labelEx($model, 'type');                 ?>
+<?php // echo $form->labelEx($model, 'type');                      ?>
 <?php // echo $form->textField($model, 'type');              ?>
-<?php // echo $form->error($model, 'type');                                                  ?>
+<?php // echo $form->error($model, 'type');                                                        ?>
         </div>
-
         <div class="row">
-<?php // echo $form->labelEx($model, 'status');                 ?>
+<?php // echo $form->labelEx($model, 'status');                      ?>
 <?php // echo $form->textField($model, 'status');             ?>
-<?php // echo $form->error($model, 'status');                                                  ?>
+<?php // echo $form->error($model, 'status');                                                        ?>
         </div>
-
         <div class="row">
-<?php // echo $form->labelEx($model, 'title');                 ?>
+<?php // echo $form->labelEx($model, 'title');                      ?>
 <?php // echo $form->textField($model, 'title');            ?>
-<?php // echo $form->error($model, 'title');                                                   ?>
+<?php // echo $form->error($model, 'title');                                                         ?>
         </div>
-
-
         <div class="row buttons">
-<?php // echo CHtml::submitButton('Submit');                                                             ?>
+<?php // echo CHtml::submitButton('Submit');                                                                        ?>
         </div>
-
-<?php // $this->endWidget();                                                             ?>
-
+<?php // $this->endWidget();                                                                        ?>
 </div>-->
 <!-- form -->
 
