@@ -84,14 +84,19 @@ $pointToBaht = (float) $pointToBahtConfig->value;
                         'user' => $user,
                     ));
                     ?>
-                    <?php endif; ?>
-                    <div class="col-lg-12">
+                    <?php
+                    endif;
+
+                    if (Yii::app()->controller->action->id != "print") {
+                        ?>
+                        <div class="col-lg-12">
                         <h2>
                                 <?php echo isset($model->paymentCompany) ? $model->paymentCompany : $model->paymentFirstname . " " . $model->paymentLastname; ?>
                             </h2>
                     </div>
-                    <?php
-                $this->renderPartial("_items", array(
+                        <?php
+                    }
+                    $this->renderPartial("_items", array(
                     'model' => $model,
                     'user' => $user,
                 ));

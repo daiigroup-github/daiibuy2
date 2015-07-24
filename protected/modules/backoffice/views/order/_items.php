@@ -307,7 +307,14 @@ else
 if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && (Yii::app()->user->userType == 3 || Yii::app()->user->userType == 7 ) && Yii::app()->controller->action->id == "print") || ($model->status > 1 && Yii::app()->controller->action->id == "print" && ($user->type == 1 || $user->type == 4 || $user->type == 5))) {
                                     if(isset(Yii::app()->user->id))
 	{
-		if($user->type == 2 || $user->type == 3 || $user->type == 7)
+        $paymentDate = $model->paymentDateTime;
+        $datetime1 = date_create($paymentDate);
+        $datetime2 = date_create('2015-08-01');
+        $interval = date_diff($datetime1, $datetime2);
+        $dateDiff = $interval->format('%R%a days');
+//        throw new Exception(print_r($dateDiff, true));
+
+        if($user->type == 2 || $user->type == 3 || $user->type == 7)
 		{
 			?>
 						<tr><td colspan = '6'>&nbsp;
@@ -368,8 +375,8 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
 							</td>
 						</tr>
 								<?php
-							} elseif ($user->type == 1 || $user->type == 4 || $user->type == 5) {
-                                                                                    ?>
+							} elseif (($user->type == 1 || $user->type == 4 || $user->type == 5) && $dateDiff <= 0) {
+                                                                                                                            ?>
                                     <!--                                                <tr><td colspan = '8'>&nbsp;
                                                                                         </td></tr>-->
                                                                         <tr><td colspan = '8' style="text-align: center"><b>
