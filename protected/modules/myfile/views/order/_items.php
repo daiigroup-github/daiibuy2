@@ -289,10 +289,16 @@
 					}
 					if($model->extraDiscount > 0)
 					{
-						?>
-						<tr>
-							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
-							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
+//                                                            throw new Exception(print_r(Yii::app()->user->id, true));
+                                                            if (isset($model->orderGroupToOrders[0])) {
+                                                                $userSpecialProjModel = UserSpacialProject::model()->find('orderId = ' . $model->orderGroupToOrders[0]->orderId . ' and userId = ' . $model->userId);
+                                                                if (isset($userSpecialProjModel->spacialPercent))
+                                                                    $specialPercent = $userSpecialProjModel->spacialPercent;
+                                                            }
+                                                            ?>
+                        						<tr>
+                                                                            <td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(<?php echo isset($specialPercent) ? $specialPercent : "10"; ?>%)</td>
+                                                                            <td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
 						</tr>
 					<?php }
 					?>
@@ -342,10 +348,15 @@
 					}
 					if($model->extraDiscount > 0)
 					{
-						?>
-						<tr>
-							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(10%)</td>
-							<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
+            if (isset($model->orderGroupToOrders[0])) {
+                $userSpecialProjModel = UserSpacialProject::model()->find('orderId = ' . $model->orderGroupToOrders[0]->orderId . ' and userId = ' . $model->userId);
+                if (isset($userSpecialProjModel->spacialPercent))
+                    $specialPercent = $userSpecialProjModel->spacialPercent;
+            }
+            ?>
+                        						<tr>
+                                                                            <td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพิเศษ/Extra Discount(<?php echo isset($specialPercent) ? $specialPercent : "10"; ?>%)</td>
+                                                                            <td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->extraDiscount, 2, ".", ","); ?></td>
 						</tr>
 					<?php }
 					?>
@@ -384,8 +395,7 @@
 				</tr>
 				<?php
 			}
-			if(!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print"))
-			{
+			if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $model->status == 99 ) || ($model->status == 3 && Yii::app()->user->userType == 3 && Yii::app()->controller->action->id == "print") || ($model->status > 1 && Yii::app()->controller->action->id == "print" && ($user->type == 1 || $user->type == 4 || $user->type == 5) )) {
 				if(isset(Yii::app()->user->id))
 				{
 					if($user->type == 2 || $user->type == 3)
@@ -449,8 +459,90 @@
 							</td>
 						</tr>
 						<?php
-					}
-				}
+					} elseif ($user->type == 1 || $user->type == 4 || $user->type == 5) {
+                                                            ?>
+                        <!--                                                <tr><td colspan = '8'>&nbsp;
+                                                                            </td></tr>-->
+                                                            <tr><td colspan = '8' style="text-align: center"><b>
+                                                                        ในนามบริษัท ไดอิ กรุ๊ป จำกัด (มหาชน)<br>
+                                                                                                For Daii Group Public Company Limited.
+                                                                                            </b>
+                                                                                        </td></tr>
+                                                                                    <tr>
+                                                                <td colspan = '8'>
+                                                                    <table width = '100%'>
+                                                                                    <tr>
+                                                                                        <td style = 'text-align: center'><?php echo CHtml::image(Yii::app()->baseUrl . '/images/signed/mks-signature.png', '', array('style' => 'width:100px;')); ?></td>
+                                                                                                    <td style = 'text-align: center'>วันที่ <?php echo $this->dateThai(date("Y-m-d", strtotime($model->paymentDateTime)), 3); ?></td>
+                                                                                                                            <td style = 'text-align: center'><?php echo CHtml::image(Yii::app()->baseUrl . '/images/signed/taweeporn.png', '', array('style' => 'width:100px;')); ?></td>
+                                                                                                                <td style = 'text-align: center'>วันที่ <?php echo $this->dateThai(date("Y-m-d", strtotime($model->paymentDateTime)), 3); ?></td>
+                                                                                    </tr>
+            <!--                                                                                                <tr>
+                                <td style = 'text-align: center'>__________________________</td>
+                                                                                                    <td style = 'text-align: center'>__________________________</td>
+                                                                                                                            <td style = 'text-align: center'>__________________________</td>
+                </tr>-->
+                                                                                                            <tr>
+                                                                                                                <td style = 'text-align: center'>__________________________</td>
+                                                                                                                            <td style = 'text-align: center'>__________________________</td>
+
+                                                                            <td style = 'text-align: center'>__________________________</td>
+                                                                                        <td style = 'text-align: center'>__________________________</td>
+
+                                                                                                                        </tr>
+                        <!--                                                                        <tr>
+                                                                                        <td style = 'text-align: center'>(__________________________)</td>
+                                                                            <td style = 'text-align: center'>(__________________________)</td>
+                                                                            <td style = 'text-align: center'>(__________________________)</td>
+                                                                                                </tr>-->
+                                    <!--                                                                                    <tr>
+                                                                                                                                                                
+                                                                                                                                        <td style = 'text-align: center'>วันที่ ____/____/____</td>
+                                                                                                                <td style = 'text-align: center'>วันที่ <?php // echo $model->paymentDateTime;  ?></td>
+                                                                                                                                        <td></td>
+                                                                                                            </tr>-->
+                                                                                    <tr>
+                                                                                                    <td style = 'text-align: center'>Authorized Signature</td>
+                                                                                                    <td style = 'text-align: center'>Date</td>
+                                                                                                                <td style = 'text-align: center'>Received By</td>
+                                                                                                                <td style = 'text-align: center'>Date</td>
+                                                                                                </tr>
+                                                                                    <tr>
+                                                                                        <td style = 'text-align: center'>ผู้อนุมัติ</td>
+                                                                                                                <td style = 'text-align: center'>วันที่</td>
+                                                                                                    <td style = 'text-align: center'>ผู้รับเงิน</td>
+                                                                                                    <td style = 'text-align: center'>วันที่</td>
+                                                                                                </tr>
+                                                                                    <tr>
+                                                                            <td style = 'text-align: center'>
+                                                                                <?php
+                                                //                                                                                if (isset($supplierAddr)) {
+//                                                                                    echo $supplierAddr->company;
+//                                                                                }
+            ?>
+                                                                            </td>
+                                                                            <td  style='text-align: center'>
+                                                                                <?php
+                                                                    //                                                                                if (isset($dealerAddr)) {
+//                                                                                    echo $dealerAddr->company;
+//                                                                                }
+            ?>
+                                                                            </td>
+                                                                            <td  style='text-align: center'>
+            <?php
+//            $userAddr = Address::model()->find("userId = :userId", array(
+//                ":userId" => $model->userId));
+//            if (isset($userAddr)) {
+//                echo $userAddr->company != "---" ? $userAddr->company : $model->paymentCompany;
+//            }
+            ?>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+            <?php
+                                                        }
+                                                    }
 			}
 			if(isset($user))
 			{
