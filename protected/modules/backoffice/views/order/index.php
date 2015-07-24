@@ -51,8 +51,8 @@ return false;
 			</div>
 		</div>
 	</div>
-
-	<?php
+    <div class="row col-lg-12">
+        <?php
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'order-grid',
 		'dataProvider'=>$searchFn,
@@ -65,7 +65,8 @@ return false;
 				'class'=>'IndexColumn'
 			),
 			'orderNo',
-			'invoiceNo',
+ 'paymentCompany',
+        'invoiceNo',
 			//'invoicePrefix',
 			//'userId',
 			'firstname',
@@ -156,6 +157,7 @@ return false;
 		),
 	));
 	?>
+    </div>
 
 </div>
 
