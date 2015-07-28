@@ -32,8 +32,10 @@ class AddressMaster extends MasterCActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
-	{
+    public $companyBranch;
+    public $companyBranchDetail;
+
+    public function tableName() {
 		return 'address';
 	}
 

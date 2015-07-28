@@ -116,6 +116,42 @@ Yii::app()->clientScript->registerScript("loadProvince", "
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
+                    <p>
+                        <?php
+                        echo CHtml::radioButton('companyBranch', false, array(
+                            'id' => 'isHeadQuater',
+                            'value' => 1,
+    'name' => "billing[companyBranch]"
+));
+?>
+                        <label class="radio-label" for="isHeadQuater">สำนักงานใหญ่</label>
+                    </p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <p>
+                        <?php
+                        echo CHtml::radioButton('companyBranch', false, array(
+    'id' => 'otherOffice',
+                            'value' => 2,
+                    'name' => "billing[companyBranch]"));
+                ?>
+                        <label class="radio-label" for="otherOffice">อื่นๆ (ระบุ)</label>
+                    </p>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <?php
+                    echo $form->textField($billingAddressModel, 'companyBranchDetail', array(
+                        'id' => 'otherBranch',
+                        'name' => 'billing[companyBranchDetail]'));
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
                     <p><?php echo $form->labelEx($billingAddressModel, 'address_1'); ?></p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
@@ -278,27 +314,29 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 				</div>
 			</div>
 			<hr />
-			<div class="row">
-				<div class="col-lg-4 col-md-4 col-sm-4">
+                       			<div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4">
 					<p>
 						<?php
-						echo CHtml::radioButton('shippingRadio', false, array(
+                    						echo CHtml::radioButton('shippingRadio', false, array(
 							'id'=>'newShippingRadio',
 							'value'=>2));
-						?>
+?>
 						<label class="radio-label" for="newShippingRadio">ที่อยู่ใหม่</label>
 					</p>
-				</div>
-				<div class="col-lg-8 col-md-8 col-sm-8">
+                                                        </div>
+                                        </div>
+                                        <!--
+                                           <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
-					echo CHtml::checkBox('sameAddress', false, array(
-						'id'=>'sameAddress',
-						'onclick'=>'ChkRadioShipAddress(2,null)'));
-					?>
+                                                //					echo CHtml::checkBox('sameAddress', false, array(
+//						'id'=>'sameAddress',
+//						'onclick'=>'ChkRadioShipAddress(2,null)'));
+?>
 					<label for="sameAddress">ใช้ที่อยู่เดียวกับใบเสร็จ</label>
 				</div>
-			</div>
-			<br />
+                                                </div>-->
+<br />
 			<div class="row">
 				<div class="col-lg-4 col-md-4 col-sm-4">
 					<p><?php echo $form->labelEx($shippingAddressModel, 'firstname'); ?></p>

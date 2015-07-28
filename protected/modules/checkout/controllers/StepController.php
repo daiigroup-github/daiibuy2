@@ -190,26 +190,48 @@ class StepController extends MasterCheckoutController
 
 		if(isset($_POST['Next']))
 		{
-			$this->writeToFile('/tmp/step2', print_r($_POST, true));
-//billing
-			if($_POST['billingRadio'] == 1)
-			{
-				Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
-			}
-			else
-			{
-//add new billing address
-				$billingAddressModel->attributes = $_POST['billing'];
-				$billingAddressModel->userId = Yii::app()->user->id;
-				if(!$billingAddressModel->save())
-				{
-					throw new Exception(print_r($billingAddressModel->errors, true));
-				}
-				else
-				{
-					Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
-				}
-			}
+        //            throw new Exception(print_r($_POST, true));
+            $this->writeToFile('/tmp/step2', print_r($_POST, true));
+//billing 
+
+            if ($_POST['billingRadio'] == 1) {
+                Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
+            } else {
+                //add new billing address  
+//                throw new Exception(print_r($_POST, true));
+                if (isset($_POST['billing']['company'])) {
+                    if (!isset($_POST['companyBranch'])) {
+                        throw new Exception(print_r(array(1 => 'กรุณาระบุ "สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน'), true));
+                    } elseif ($_POST['companyBranch'] == 2) {
+                        if (!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "") {
+                            throw new Exception(print_r(array(1 => "กรุณาระบุสาขาของบริษัทของท่าน"), true));
+                        }
+                    }
+                }
+
+                $billingAddressModel->attributes = $_POST['billing'];
+                if (isset($_POST['companyBranch'])) {
+                    if ($_POST['companyBranch'] == 1) {
+                        $billingAddressModel->company = $billingAddressModel->company . " (สำนักงานใหญ่)";
+                    } else {
+                        if (isset($_POST['billing']['companyBranchDetail'])) {
+                            $billingAddressModel->company = $billingAddressModel->company . " " . $_POST['billing']['companyBranchDetail'];
+                        } else {
+                            throw new Exception(print_r($billingAddressModel->errors, true));
+                        }
+                    }
+                }
+                if (!isset($billingAddressModel->taxNo) || $billingAddressModel->taxNo == "") {
+                    throw new Exception(print_r(array(1 => "กรุณาใส่เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)"), true));
+                }
+
+                $billingAddressModel->userId = Yii::app()->user->id;
+                    if (!$billingAddressModel->save()) {
+                        throw new Exception(print_r($billingAddressModel->errors, true));
+                    } else {
+                        Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
+                    }
+            }
 
 			if($_POST['shippingRadio'] == 1)
 			{
@@ -906,6 +928,7 @@ class StepController extends MasterCheckoutController
 				$oldOrder->updateDateTime = new CDbExpression("NOW()");
 			}
 		}
+        //                throw new Exception(print_r($oldOrder, true));
 //					$oldOrder->paymentDateTime = new CDbExpression('NOW()');
 		if($oldOrder->save())
 		{
