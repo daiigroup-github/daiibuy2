@@ -187,10 +187,15 @@ class StepController extends MasterCheckoutController
 		$billingAddressModel->type = Address::ADDRESS_TYPE_BILLING;
 		$shippingAddressModel = new Address();
 		$shippingAddressModel->type = Address::ADDRESS_TYPE_SHIPPING;
-
-		if(isset($_POST['Next']))
+                $flag = 0;
+        if(isset($_POST['Next']))
 		{
-        //            throw new Exception(print_r($_POST, true));
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+
+
+
+                //            throw new Exception(print_r($_POST, true));
             $this->writeToFile('/tmp/step2', print_r($_POST, true));
 //billing 
 
@@ -227,8 +232,10 @@ class StepController extends MasterCheckoutController
 
                 $billingAddressModel->userId = Yii::app()->user->id;
                     if (!$billingAddressModel->save()) {
+                        $flag = 0;
                         throw new Exception(print_r($billingAddressModel->errors, true));
                     } else {
+                        $flag = 1;
                         Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
                     }
             }
@@ -246,23 +253,39 @@ class StepController extends MasterCheckoutController
 				Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
 				if(!$shippingAddressModel->save())
 				{
-
-					throw new Exception(print_r($shippingAddressModel->errors, true));
+                                    $flag = 0;
+                        throw new Exception(print_r($shippingAddressModel->errors, true));
 				}
 				else
 				{
-					Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
+                        $flag = 1;
+                        Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
 				}
 			}
+            } catch (Exception $exc) {
+                $transaction->rollback();
+                $billingAddressModel->attributes = $_POST['billing'];
+                $shippingAddressModel->attributes = $_POST['shipping'];
+//                break;
+//                $this->render('step2', array(
+//                    'billingAddressModel' => $billingAddressModel,
+//                    'shippingAddressModel' => $shippingAddressModel,
+//                    'step' => 2,
+//                    'errors' => count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors,
+//                ));
+            }
+            if ($flag) {
+                $transaction->commit();
+                $this->redirect($this->createUrl(3));
+            }
+        }
 
-			$this->redirect($this->createUrl(3));
-		}
-
-		$this->render('step2', array(
-			'billingAddressModel'=>$billingAddressModel,
-			'shippingAddressModel'=>$shippingAddressModel,
-			'step'=>2
-		));
+        $this->render('step2', array(
+            'billingAddressModel' => $billingAddressModel,
+            'shippingAddressModel' => $shippingAddressModel,
+            'step' => 2,
+            'errors' => count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors,
+        ));
 //$this->redirect($this->createUrl(3));
 	}
 

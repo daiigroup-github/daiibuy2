@@ -295,6 +295,8 @@ $(".atechNav").click(function () {
 $(".atechUpdate").click(function () {
 	var base_url = baseUrl;
 	var brandModelId = $("#selectBrandModel").attr("value");
+        $(".atechUpdate").addClass("disabled");
+        $("#updateButton").addClass("disabled");
 //        $("#nextToStep4Atech").attr("value") = brandModelId;
         if (typeof brandModelId == 'undefined') {
             brandModelId = $(this).attr("name");
@@ -312,6 +314,8 @@ $(".atechUpdate").click(function () {
 		type: 'POST',
 		data: $("#editTableForm").serialize() + '&title=' + title + '&provinceId=' + provinceId + '&brandModelId=' + brandModelId + '&orderId=' + orderId,
 		success: function (data) {
+                        $("#updateButton").removeClass("disabled");
+                        $(".atechUpdate").removeClass("disabled");
 			$("#atech_result").html(data);
 		}
 	});

@@ -32,7 +32,18 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 	});
 ");
 ?>
-
+<?php
+//throw new Exception(print_r($errors, true));
+if (isset($errors)) {
+    ?>
+    <div class="row">
+    <div class="col-md-12 warning">
+            <?php foreach ($errors as $error): ?>
+                        <b> <?php echo $error; ?></b>
+            <?php endforeach; ?>
+        </div>
+        </div>
+<?php } ?>
 <div class="row">
 
     <div class="col-md-6 register-account">
