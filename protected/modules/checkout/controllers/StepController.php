@@ -206,11 +206,13 @@ class StepController extends MasterCheckoutController
 //                throw new Exception(print_r($_POST, true));
                 if (isset($_POST['billing']['company'])) {
                     if (!isset($_POST['companyBranch'])) {
-                        throw new Exception(print_r(array(1 => 'กรุณาระบุ "สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน'), true));
-                    } elseif ($_POST['companyBranch'] == 2) {
+                            $billingAddressModel->errors = array(1 => 'กรุณาระบุ "สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
+                            throw new Exception($billingAddressModel->errors);
+                        } elseif ($_POST['companyBranch'] == 2) {
                         if (!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "") {
-                            throw new Exception(print_r(array(1 => "กรุณาระบุสาขาของบริษัทของท่าน"), true));
-                        }
+                                $billingAddressModel->errors = array(1 => "กรุณาระบุสาขาของบริษัทของท่าน");
+                                throw new Exception($billingAddressModel->errors);
+                            }
                     }
                 }
 
@@ -227,8 +229,9 @@ class StepController extends MasterCheckoutController
                     }
                 }
                 if (!isset($billingAddressModel->taxNo) || $billingAddressModel->taxNo == "") {
-                    throw new Exception(print_r(array(1 => "กรุณาใส่เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)"), true));
-                }
+                        $billingAddressModel->errors = array(1 => "กรุณาใส่เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)");
+                        throw new Exception($billingAddressModel->errors);
+                    }
 
                 $billingAddressModel->userId = Yii::app()->user->id;
                     if (!$billingAddressModel->save()) {
@@ -263,6 +266,7 @@ class StepController extends MasterCheckoutController
 				}
 			}
             } catch (Exception $exc) {
+                throw new Exception(print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors, true));
                 $transaction->rollback();
                 $billingAddressModel->attributes = $_POST['billing'];
                 $shippingAddressModel->attributes = $_POST['shipping'];
