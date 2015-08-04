@@ -201,7 +201,8 @@ class StepController extends MasterCheckoutController
 
             if ($_POST['billingRadio'] == 1) {
                 Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
-            } else {
+                    $flag = 1;
+                } else {
                 //add new billing address  
 //                throw new Exception(print_r($_POST, true));
                 if (isset($_POST['billing']['company'])) {
@@ -246,7 +247,8 @@ class StepController extends MasterCheckoutController
 			if($_POST['shippingRadio'] == 1)
 			{
 				Yii::app()->session['shippingAddressId'] = $_POST['existingShippingAddress'];
-			}
+                    $flag = 1;
+                }
 			else
 			{
 //add new shipping address

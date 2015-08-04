@@ -651,6 +651,18 @@ class ProductController extends MasterBackofficeController {
     }
 
     public function actionSaveCategory2toProduct($category1Id = null, $productId = null, $category2Id = null, $brandModelId = null) {
+        if (isset($_POST['productId'])) {
+            $productId = $_POST['productId'];
+        }
+        if (isset($_POST['category1Id'])) {
+            $category1Id = $_POST['category1Id'];
+        }
+        if (isset($_POST['category2Id'])) {
+            $category2Id = $_POST['category2Id'];
+        }
+        if (isset($_POST['brandModelId'])) {
+            $brandModelId = $_POST['brandModelId'];
+        }
 //		throw new Exception(print_r($_REQUEST, true));
         $result = array();
         $model = new Category2ToProduct();
