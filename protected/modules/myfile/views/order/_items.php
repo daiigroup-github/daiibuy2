@@ -2,8 +2,9 @@
 	<table class="table table-striped table-bordered table-condensed">
 		<thead style="font-size:small">
 			<tr>
-				<?php
-				if(isset($user))
+                            <?php
+                            $supplier = Supplier::model()->findByPk($model->supplierId);
+                            if(isset($user))
 				{
 					if($model->status < 3 && ($user->type != 4 || $user->type != 3 || $user->type != 5 ))
 					{
@@ -471,8 +472,8 @@
                         <!--                                                <tr><td colspan = '8'>&nbsp;
                                                                             </td></tr>-->
                                                             <tr><td colspan = '8' style="text-align: center"><b>
-                                                                        ในนามบริษัท ไดอิ กรุ๊ป จำกัด (มหาชน)<br>
-                                                                                                For Daii Group Public Company Limited.
+                                                                        ในนาม <?php echo $supplier->companyName; ?><br>
+                                                                                    For Daii Group Public Company Limited.
                                                                                             </b>
                                                                                         </td></tr>
                                                                                     <tr>

@@ -100,8 +100,8 @@ return false;
 			),
 			array(
 				'header'=>'วันที่สั่งซื้อสินค้า',
-				'name'=>'createDateTime',
-				//'footer'=>'$data->total',
+				'name' => 'paymentDateTime',
+            //'footer'=>'$data->total',
 				'type'=>'text',
 				'htmlOptions'=>array(
 					'style'=>'text-align:center;width:15%'),

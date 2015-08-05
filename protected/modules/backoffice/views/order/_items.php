@@ -3,8 +3,9 @@
         <thead>
             <tr>
 
-				<?php
-				if(isset(Yii::app()->user->id))
+                <?php
+                $supplier = Supplier::model()->findByPk($model->supplierId);
+                if(isset(Yii::app()->user->id))
 				{
 					if(!($user->type == 2))
 					{
@@ -380,8 +381,8 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
                                     <!--                                                <tr><td colspan = '8'>&nbsp;
                                                                                         </td></tr>-->
                                                                         <tr><td colspan = '8' style="text-align: center"><b>
-                                                                                    ในนามบริษัท ไดอิ กรุ๊ป จำกัด (มหาชน)<br>
-                                                                                                            For Daii Group Public Company Limited.
+                                                                                    ในนาม <?php echo $supplier->companyName; ?><br>
+                                                                                                For Daii Group Public Company Limited.
                                                                                                         </b>
                                                                                                     </td></tr>
                                                                                                 <tr>
