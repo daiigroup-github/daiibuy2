@@ -403,10 +403,10 @@
         $datetime1 = date_create($paymentDate);
         $datetime2 = date_create('2015-08-01');
         $interval = date_diff($datetime1, $datetime2);
-        $dateDiff = $interval->format('%R%a days');
+        $dateDiff = $interval->format('%R%a');
 //        throw new Exception(print_r($dateDiff, true));
 
-        if($user->type == 2 || $user->type == 3)
+                                        if($user->type == 2 || $user->type == 3)
 					{
 						?>
 						<tr><td colspan = '6'>&nbsp;
@@ -466,15 +466,15 @@
 								</table>
 							</td>
 						</tr>
-						<?php
-					} elseif (($user->type == 1 || $user->type == 4 || $user->type == 5) && $dateDiff <= 0) {
+                                                            <?php
+                                                        } elseif (($user->type == 1 || $user->type == 4 || $user->type == 5) && $dateDiff <= 0) {
             ?>
                         <!--                                                <tr><td colspan = '8'>&nbsp;
                                                                             </td></tr>-->
                                                             <tr><td colspan = '8' style="text-align: center"><b>
                                                                         ในนาม <?php echo $supplier->companyName; ?><br>
-                                                                                    For Daii Group Public Company Limited.
-                                                                                            </b>
+                                                                        For <?php echo $supplier->companyNameEng; ?>.
+                                                                                </b>
                                                                                         </td></tr>
                                                                                     <tr>
                                                                 <td colspan = '8'>

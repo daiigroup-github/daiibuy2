@@ -312,7 +312,7 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
         $datetime1 = date_create($paymentDate);
         $datetime2 = date_create('2015-08-01');
         $interval = date_diff($datetime1, $datetime2);
-        $dateDiff = $interval->format('%R%a days');
+        $dateDiff = $interval->format('%R%a');
 //        throw new Exception(print_r($dateDiff, true));
 
         if($user->type == 2 || $user->type == 3 || $user->type == 7)
@@ -382,8 +382,8 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
                                                                                         </td></tr>-->
                                                                         <tr><td colspan = '8' style="text-align: center"><b>
                                                                                     ในนาม <?php echo $supplier->companyName; ?><br>
-                                                                                                For Daii Group Public Company Limited.
-                                                                                                        </b>
+                                                                                    For <?php echo $supplier->companyNameEng; ?>.
+                                                                                            </b>
                                                                                                     </td></tr>
                                                                                                 <tr>
                                                                             <td colspan = '8'>
