@@ -466,19 +466,30 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
 						if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99))
 						{
 							echo "
+                                            <tr>
+							<td colspan = '7' style = 'text-align: right'>
+					<span style = 'color:red'>*</span>เอกสารชิ้นนี้ถูกพิมพ์ขึ้นโดยระบบ.  
+					</td>
+					</tr>
 									<tr>
 							<td colspan = '7' style = 'text-align: right'>
-					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com ณ วันที่ " . $this->dateThai($model->paymentDateTime, 1) . " เรียบร้อยแล้ว
+					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com เรียบร้อยแล้ว ณ วันที่ " . $this->dateThai($model->paymentDateTime, 1) . "
 					</td>
-					</tr>";
-						}
+					</tr>
+                                        ";
+    }
 					}
 					else if($model->status > 2 && $model->status < 99)
 					{
 						echo "<tr><td colspan = '6'>&nbsp;</td></tr>
+                                                    <tr>
+							<td colspan = '6' style = 'text-align: right'>
+					<span style = 'color:red'>*</span>เอกสารนี้ถูกพิมพ์ขึ้นโดยระบบ.
+					</td>
+					</tr>
 						<tr>
 							<td colspan = '6' style = 'text-align: right'>
-					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com ณ วันที่ " . $this->dateThai($model->paymentDateTime, 1) . " เรียบร้อยแล้ว
+					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com เรียบร้อยแล้ว ณ วันที่ " . $this->dateThai($model->paymentDateTime, 1) . " 
 					</td>
 					</tr>";
 					}
