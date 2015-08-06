@@ -39,7 +39,7 @@ $this->breadcrumbs = array(
 								<div class="<?php echo $class; ?>">
 									<div class="blog-item">
 
-										<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . "/" . $supplier->logo); ?></a>
+										<a href="<?php echo Yii::app()->createUrl($supplier->url); ?>"><?php echo CHtml::image(Yii::app()->baseUrl . $supplier->logo); ?></a>
 
 										<div class="blog-info">
 											<h3>
