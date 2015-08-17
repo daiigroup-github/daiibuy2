@@ -14,16 +14,16 @@
         </li>
     </ul>
 </div>
-<!--<div id="product-carousel">
+<div id="product-carousel">
     <ul class="slides">
-<?php // foreach ($images as $id => $image): ?>
+<?php foreach ($images as $id => $image): ?>
             <li>
-                <a class="fancybox" rel="product-images" href="<?php // echo $image;  ?>"></a>
-                <img src="<?php // echo $image;  ?>" data-large="<?php // echo $image;  ?>" alt="" id="imageThumbnail<?php // echo $id;  ?>" />
+                <a class="fancybox" rel="product-images" href="<?php echo $image;  ?>"></a>
+                <img src="<?php echo $image;  ?>" data-large="<?php echo $image;  ?>" alt="" id="imageThumbnail<?php echo $id;  ?>" />
             </li>
-<?php // endforeach; ?>
+<?php endforeach; ?>
     </ul>
-<?php // if (sizeof($images) > 4): ?>
+<?php if (sizeof($images) > 4): ?>
         <div class="product-arrows">
             <div class="left-arrow">
                 <i class="icons icon-left-dir"></i>
@@ -32,5 +32,5 @@
                 <i class="icons icon-right-dir"></i>
             </div>
         </div>
-<?php // endif; ?>
-</div>-->
+<?php endif; ?>
+</div>
