@@ -110,10 +110,8 @@ $this->renderPartial("_navbar", array(
 						</div>
 					</div>
 				</div>
-
-
-				<div class="col-md-12">
-					<table class="table table-bordered table-hover" style="width:100%">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-hover" style="width:100%">
 						<thead>
 							<tr>
 								<th style="text-align:center">งวดที่</th>
@@ -386,39 +384,41 @@ $this->renderPartial("_navbar", array(
 									endforeach;
 								endif;
 							endif;
-							if(isset($child3)):
-								$child4 = $child3->child;
-								if(isset($child4)):
-									$parentId = $child4->orderGroupId;
-									if($child4->status < 3)
-									{
-										$isShowPayButton = FALSE;
-									}
-									foreach($child4->orders as $item):
-										?>
-										<tr>
-											<td><?php echo $i; ?></td>
-											<td><?php echo $item->orderItems[0]->product->name; ?><br><?php echo $this->getOrderPeriodText($i) ?></td>
-											<td><?php echo number_format($item->orderItems[0]->product->price); ?></td>
-											<td style="color:green;text-align: center"><?php echo OrderGroup::model()->showOrderStatus($child4->status); ?>
-											</td>
+//							if(isset($child3)):
+//								$child4 = $child3->child;
+//								if(isset($child4)):
+//									$parentId = $child4->orderGroupId;
+//									if($child4->status < 3)
+//									{
+//										$isShowPayButton = FALSE;
+//									}
+//									foreach($child4->orders as $item):
+//										
+                                                                                ?>
+<!--										<tr>
+                                                                                    <td>//<?php // echo $i;  ?></td>
+                                                                                    <td>//<?php // echo $item->orderItems[0]->product->name;  ?><br><?php // echo $this->getOrderPeriodText($i)  ?></td>
+                                                                                    <td>//<?php // echo number_format($item->orderItems[0]->product->price);  ?></td>
+                                                                                    <td style="color:green;text-align: center">//<?php // echo OrderGroup::model()->showOrderStatus($child4->status);  ?>
+                                                                                    </td>
 											<td style="width: 15%;text-align: center">
-												<?php if($child4->status >= 3): ?>
-													<span class="label label-success">อนุมัติ</span>
-												<?php else: ?>
-													<span class="label label-danger">รอการอนุมัติ</span>
-													<?php
-													echo $payButton;
-													?>
-												<?php endif; ?>
-											</td>
-										</tr>
-										<?php
-										$i++;
-									endforeach;
-								endif;
-							endif;
-							?>
+                                                                                            //<?php // if ($child4->status >= 3):  ?>
+                                                                                                <span class="label label-success">อนุมัติ</span>
+                                                                                                        //<?php // else:  ?>
+                                                                                                            <span class="label label-danger">รอการอนุมัติ</span>
+                                                                                                        //<?php
+//                                                                    //													echo $payButton;
+//                
+                                                                                                            ?>
+                                                                                                            //<?php // endif;  ?>
+                                                                                        </td>
+                                                                                </tr>-->
+                                                                                <?php
+//										$i++;
+//									endforeach;
+//								endif;
+//							endif;
+                                                                                ?>
 						</tbody>
 					</table>
 

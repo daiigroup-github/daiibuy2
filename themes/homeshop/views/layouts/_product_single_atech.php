@@ -133,10 +133,15 @@
     $categoryToProducts = Category2ToProduct::model()->findAll('category1Id = ' . $subCate->categoryId . ' and brandId = ' . $brandId);
 
 //    throw new Exception(print_r($categoryToProduct, true));
+    if (isset($categoryToProducts[0]->brandModelId))
+        $brandModel = BrandModel::model()->findByPk($categoryToProducts[0]->brandModelId);
+
+
+//    throw new Exception(print_r($categoryToProducts[0], true));
     ?>
     <div class="row sidebar-box-heading orange">
         <i class="icons <?php echo 'fa fa-file-o'; ?>"></i>
-        <h4><?php echo "Brand :: ATECH " . $categoryToProducts[0]->brandModel->title; ?></h4>
+        <h4><?php echo "Brand :: ATECH " . isset($brandModel->title) ? $brandModel->title : ""; ?></h4>
     </div>
 
     <!-- /Product -->

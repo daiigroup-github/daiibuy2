@@ -104,8 +104,15 @@ class GinzaHomeController extends MasterMyFileController
 
 	public function getOrderPeriodText($period)
 	{
-		return $this->findAllOrderPeriodArray[$period];
-	}
+        $supplierContentGroup = SupplierContentGroup::model()->find('title = "order_period"');
+        $i = 0;
+//        throw new Exception(print_r($supplierContentGroup->supplierContents, true));
+        foreach ($this->findAllOrderPeriodArray as $orderPeriodArray) {
+            $this->findAllOrderPeriodArray[($i + 1)] = $supplierContentGroup->supplierContents[$i]->description;
+            $i++;
+        }
+        return $this->findAllOrderPeriodArray[$period];
+    }
 
 	public function actionFindStyle()
 	{
