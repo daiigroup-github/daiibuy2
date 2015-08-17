@@ -39,9 +39,11 @@ class CartController extends MasterCheckoutController
 			{
 				$i = 0;
 				$order = $orders[0];
-				foreach($order->orderItems as $orderItem)
+                //                throw new Exception(print_r($order->orderItems, true));
+                foreach($order->orderItems as $orderItem)
 				{
-					$category = $orderItem->product->category2ToProducts[0]->category;
+//                    throw new Exception(print_r($orderItem->product->category2ToProducts, true));
+                    $category = $orderItem->product->category2ToProducts[0]->category;
 					$category2 = $orderItem->product->category2ToProducts[0]->category2;
 					$categoryToSub = CategoryToSub::model()->find(array(
 						'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
@@ -62,14 +64,16 @@ class CartController extends MasterCheckoutController
 //                $desc[$category->title.' : '.$category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
 					$desc[$i]['id'] = uniqid();
 					$desc[$i]['title'] = $category->title . ' : ' . $category2->title;
-					$desc[$i]['detail'] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $categoryToSub->payCondition);
+					$desc[$i]['detail'] = str_replace('{{pile}}', isset($categoryStakeProvinceModel->stake) ? $categoryStakeProvinceModel->stake : "", isset($categoryToSub->payCondition) ? $categoryToSub->payCondition : "");
 
-					$i++;
-				}
+                    $i++;
+                                        
+                }
 			}
 		}
+        //        throw new Exception(print_r($desc, true));
 
-		$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
+        $orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
         $supplierModel = Supplier::model()->findByPk($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
