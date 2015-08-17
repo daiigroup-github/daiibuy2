@@ -66,7 +66,30 @@ class CartController extends MasterCheckoutController
 					$desc[$i]['title'] = $category->title . ' : ' . $category2->title;
 					$desc[$i]['detail'] = str_replace('{{pile}}', isset($categoryStakeProvinceModel->stake) ? $categoryStakeProvinceModel->stake : "", isset($categoryToSub->payCondition) ? $categoryToSub->payCondition : "");
 
-                    $i++;
+					$j=1;
+					$category2ToProduct =$orderItem->product->category2ToProducts[0];
+					$brandId = $category2ToProduct->brandId;
+					$brandModelId = $category2ToProduct->brandModelId;
+					$category1Id = $category2ToProduct->category1Id;
+					$category2Id = $category2ToProduct->category2Id;
+
+					$category2ToProducts = Category2ToProduct::model()->findAll(array(
+						'condition'=>'brandId=:brandId and brandModelId=:brandModelId and category1Id=:category1Id and category2Id=:category2Id',
+						'params'=>array(
+							':brandId'=>$brandId,
+							':brandModelId'=>$brandModelId,
+							':category1Id'=>$category1Id,
+							':category2Id'=>$category2Id,
+						)
+					));
+
+					foreach ($category2ToProducts as $c2tp) {
+						$desc[$i]['detail'] = str_replace("{{"."price{$j}"."}}", $c2tp->product->calProductPrice());
+						$j++;
+					}
+
+
+					$i++;
                                         
                 }
 			}
