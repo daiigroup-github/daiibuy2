@@ -994,13 +994,13 @@ class Order extends OrderMaster
 //					}
 //				}
 //				$sumAll = $noOfBuy;
-			}
-			if($supplierId == 4 || $supplierId == 5)
-			{
-				$noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
+//			}
+//			if($supplierId == 4 || $supplierId == 5)
+//			{
+                                $noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
 
-//				throw new Exception(print_r($noOfUnitsBuy.', '. $noOfBuy,true));
-				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
+                //				throw new Exception(print_r($noOfUnitsBuy.', '. $noOfBuy,true));
+                $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
 			}
 			else
 			{
