@@ -84,8 +84,8 @@ class CartController extends MasterCheckoutController
 					));
 
 					foreach ($category2ToProducts as $c2tp) {
-						$desc[$i]['detail'] = str_replace("{{"."price{$j}"."}}", $c2tp->product->calProductPrice(), $desc[$i]['detail']);
-						$j++;
+						$desc[$i]['detail'] = str_replace("{{" . "price{$j}" . "}}", ($c2tp->product->calProductPriceGinza($order->orderId)), $desc[$i]['detail']);
+                        $j++;
 					}
 
 

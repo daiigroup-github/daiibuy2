@@ -436,6 +436,38 @@ class Product extends ProductMaster {
         return $result;
     }
 
+    public function calProductPriceGinza($orderId) {
+        $OrderModel = Order::model()->findByPk($orderId);
+        $condition = 'supplierId=:supplierId AND type&' . Order::ORDER_TYPE_CART . ' > 0';
+        $params = [':supplierId' => isset($supplierId) ? $supplierId : $OrderModel->supplierId];
+        $discountPercent = 0;
+
+        if (isset(Yii::app()->user->id)) {
+            $condition .= ' AND userId=:userId';
+            $params[':userId'] = Yii::app()->user->id;
+        } else {
+            $daiibuy = new DaiiBuy();
+            $daiibuy->loadCookie();
+            $condition .= " AND token='" . $daiibuy->token . "'";
+        }
+
+        $models = Order::model()->findAll(array(
+            'condition' => $condition,
+            'params' => $params,
+        ));
+        $noOfBuy = 0;
+        foreach ($models as $order) {
+            foreach ($order->orderItems as $item) {
+                $noOfBuy +=$item->quantity;
+            }
+        }
+        $noOfUnits = $OrderModel->countGinzaHomeAndGinzaTownUnits();
+        $productPrice = $this->calProductPrice();
+        $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($OrderModel->supplierId, $noOfUnits + $noOfBuy);
+        $discountPrice = $productPrice * $discountPercent / 100;
+        return Order::model()->formatMoney($productPrice - $discountPrice);
+    }
+
     public function calProductPrice($productId = NULL, $provinceId = NULL) {
 //		throw new Exception(print_r($provinceId,true));
         if (!isset($provinceId)) {
