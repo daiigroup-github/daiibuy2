@@ -82,14 +82,16 @@ class CartController extends MasterCheckoutController
 							':category2Id'=>$category2Id,
 						)
 					));
+                    //                                        throw new Exception(print_r($desc, true));
 
-					foreach ($category2ToProducts as $c2tp) {
-						$desc[$i]['detail'] = str_replace("{{" . "price{$j}" . "}}", ($c2tp->product->calProductPriceGinza($order->orderId)), $desc[$i]['detail']);
+
+                    foreach ($category2ToProducts as $c2tp) {
+						$desc[$i]['detail'] = str_replace("{{" . "price{$j}" . "}}", $c2tp->product->calProductPriceGinza($order->orderId), $desc[$i]['detail']);
                         $j++;
 					}
 
 
-					$i++;
+                    $i++;
                                         
                 }
 			}
