@@ -14,12 +14,12 @@
         </li>
     </ul>
 </div>
-<div id="product-carousel">
+<div id="product-carousel" >
     <ul class="slides">
-		<?php foreach($images->images as $id=> $image): ?>
+		<?php foreach($images->images as $image): ?>
 			<li>
-				<a class="fancybox" rel="product-images" href="<?php echo $image; ?>"></a>
-				<img src="<?php echo $image; ?>" data-large="<?php echo $image; ?>" alt="" id="imageThumbnail<?php echo $id; ?>" />
+				<a class="fancybox" rel="product-images" href="<?php echo $image->image; ?>"></a>
+				<img src="<?php echo $image->image; ?>" data-large="<?php echo $image->image; ?>" alt="" id="imageThumbnail<?php echo $image->categoryImageId; ?>" />
 			</li>
 		<?php endforeach; ?>
     </ul>
