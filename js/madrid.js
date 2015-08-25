@@ -6,9 +6,9 @@ $('.add-to-cart').click(function () {
 	var data = {};
 	var productId = $(this).data('productid');
 	var qty = $('#' + productId).val();
-        if(qty == 0){
-            qty = 1;
-        }
+	if (qty == 0) {
+		qty = 1;
+	}
 //        alert(qty);
 //	alert(productId + "," + qty);
 	var data = {productId: productId, qty: qty};
@@ -36,11 +36,11 @@ $('.add-to-cart').click(function () {
 });
 
 function moneyFormat(num) {
-        var p = num.toFixed(2).split(".");
-        return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
-            return  num + (i && !(i % 3) ? "," : "") + acc;
-        }, "") + "." + p[1];
-    }
+	var p = num.toFixed(2).split(".");
+	return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
+		return  num + (i && !(i % 3) ? "," : "") + acc;
+	}, "") + "." + p[1];
+}
 
 function loadThemeItem(cat2Id, baseUrl, orderId)
 {
@@ -60,7 +60,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 			if (data.status)
 			{
 				$("#action-button").removeClass('hide');
-                                
+
 				$("#item-table").removeClass("hide");
 				$("#item-table").html(data.view);
 
@@ -73,20 +73,20 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 						$("#productName" + groupName).html(data[groupName]["name"]);
 						$("#productUnits" + groupName).html(data[groupName]["productUnits"]);
 						$("#productArea" + groupName).html(data[groupName]["productArea"]);
-						var estimateQuantity = Math.ceil($("#supplierArea" + groupName).val()  / data[groupName]["productArea"]);
+						var estimateQuantity = Math.ceil($("#supplierArea" + groupName).val() / data[groupName]["productArea"]);
 //                                                alert(data[groupName]["productArea"] + ', ' +$("#supplierArea" + groupName).val());
 						$("#estimateAreaQuantity" + groupName).html(estimateQuantity);
 //					$("#quantityText_" + groupName).removeClass("hide");
 //                                                alert(estimateQuantity);
-                                                var price = 0.00;
-                                                if(estimateQuantity){
-                                                    $("#quantityText_" + groupName).val(estimateQuantity);
-                                                    price = moneyFormat(data[groupName]["price"] * estimateQuantity);
-                                                }else{
-                                                    $("#quantityText_" + groupName).val(1);
-                                                    price = moneyFormat(parseFloat(data[groupName]["price"]));
-                                                    
-                                                }
+						var price = 0.00;
+						if (estimateQuantity) {
+							$("#quantityText_" + groupName).val(estimateQuantity);
+							price = moneyFormat(data[groupName]["price"] * estimateQuantity);
+						} else {
+							$("#quantityText_" + groupName).val(1);
+							price = moneyFormat(parseFloat(data[groupName]["price"]));
+
+						}
 //                                                alert(estimateQuantity);
 						$("#price" + groupName).html(price);
 						$("#priceHidden" + groupName).val(data[groupName]["price"]);
@@ -123,7 +123,7 @@ function loadSetItem(cat2Id, baseUrl)
 {
 //	$("#item-table").html('');
 	$("#action-button").removeClass('hide');
-        
+
 	$.ajax({
 		url: baseUrl + '/myfile/madrid/loadSetItem',
 		type: 'POST',
@@ -135,7 +135,7 @@ function loadSetItem(cat2Id, baseUrl)
 		}
 	});
 }
-function loadProductsFavItem(productId, baseUrl, orderId)
+function loadProductsFavItem(productId, baseUrl, orderId, provinceId)
 {
 
 //    cate2Id = $('#Order_category2Id').attr("value");
@@ -147,14 +147,14 @@ function loadProductsFavItem(productId, baseUrl, orderId)
 		url: baseUrl + '/myfile/madrid/loadProductFavItem',
 		type: 'POST',
 //		dataType: 'JSON',
-		data: {productId: productId, orderId: orderId},
+		data: {productId: productId, orderId: orderId, provinceId: provinceId},
 		success: function (data) {
 			//alert success message
 //			if (data.status)
 //			{
-                            $("#action-button-tiles").removeClass('hide');
-				$("#product-fav-item").removeClass("hide");
-				$("#product-fav-item").html(data);
+			$("#action-button-tiles").removeClass('hide');
+			$("#product-fav-item").removeClass("hide");
+			$("#product-fav-item").html(data);
 //				$("#productCode").html(data["code"]);
 //				$("#code").html(data["code"]);
 //				$("#productName").html(data["name"]);
@@ -202,7 +202,7 @@ $('#manualQuantityMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
-                $('#Order_isTheme').val(1);
+		$('#Order_isTheme').val(1);
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
@@ -210,18 +210,18 @@ $('#manualQuantityMadrid').on('click', function () {
 });
 
 $('#manualQuantityTile').on('click', function () {
-    
-        
+
+
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
-            
+
 		$('ul.setup-panel li a[href="#step-4-1"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
-                $('#Order_isTheme').val(3);
+		$('#Order_isTheme').val(3);
 		$.ajax({
 			url: baseUrl + '/myfile/madrid/prepareProductsFav',
 			type: 'POST',
 			dataType: 'JSON',
-//			data: {productId: productId},
+			data: {provinceId: $("#selectProvince").select2('val')},
 			success: function (data) {
 				$("#productsFavResult").html(data.products);
 			}});
@@ -234,7 +234,7 @@ $('#uploadPlanMadrid').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
-                $('#Order_isTheme').val(1);
+		$('#Order_isTheme').val(1);
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
@@ -244,7 +244,7 @@ $('#uploadPlanTile').on('click', function () {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
-                $('#Order_isTheme').val(3);
+		$('#Order_isTheme').val(3);
 	} else {
 		alert("กรุณากรอกชื่อ และเลือกจังหวัดใหครบถ้วน");
 	}
@@ -254,7 +254,7 @@ $('.chooseStyle').click(function () {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
 	cate2Id = $(this).attr("name");
-        $('#Order_isTheme').val(1);
+	$('#Order_isTheme').val(1);
 //                    alert(cate2Id);
 	$('#OrderDetailValue_9_value').val(cate2Id);
 	$.ajax({
@@ -419,20 +419,20 @@ function updateSetPrice(no)
 function addFavourite(userId, category2Id, baseUrl, isTheme)
 {
 	var url = "";
-        var word = "";
+	var word = "";
 	if (isTheme == 1)
 	{
 		url = baseUrl + '/madrid/theme/addFavourite'
-                word = "Theme";
+		word = "Theme";
 	}
-	else if(isTheme == 0)
+	else if (isTheme == 0)
 	{
 		url = baseUrl + '/madrid/set/addFavourite'
-                word = "Set";
-	}else{
-            url = baseUrl + '/madrid/product/addFavourite'
-            word = "Floor Tile";
-        }
+		word = "Set";
+	} else {
+		url = baseUrl + '/madrid/product/addFavourite'
+		word = "Floor Tile";
+	}
 	$.ajax({
 		'url': url,
 		'dataType': 'json',
@@ -441,16 +441,16 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 		'success': function (data) {
 			if (data == 1)
 			{
-                            alert("เพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จ");
+				alert("เพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จ");
 			}
-			else if(data == 2)
+			else if (data == 2)
 			{
-                            alert("ไม่สามารถเพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
+				alert("ไม่สามารถเพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จได้ กรุณาลองใหม่อีกครั้ง");
 			}
-                        else
-                        {
-                            alert(word + " นี้ได้ถูกเพิ่มในรายการที่ชื่นชอบอยู่แล้ว");
-                        }
+			else
+			{
+				alert(word + " นี้ได้ถูกเพิ่มในรายการที่ชื่นชอบอยู่แล้ว");
+			}
 		},
 	});
 }
@@ -464,7 +464,7 @@ function checkComment()
 	}
 	else
 	{
-            $('#Order_createMyfileType').val(2);
+		$('#Order_createMyfileType').val(2);
 		return true;
 	}
 }
