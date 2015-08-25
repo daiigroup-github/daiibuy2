@@ -8,11 +8,11 @@ function include(url) {
 	//else
 	//	document.write('<script src="' + window.location.origin + '/' + url + '" type="text/javascript"></script>');
 
-    document.write('<script src="'+ baseUrl+url + '" type="text/javascript"></script>');
+	document.write('<script src="' + baseUrl + url + '" type="text/javascript"></script>');
 }
 
-include('themes/homeshop/assets/twitter/jquery.tweet.js'); // Twitter widget */
-include('themes/homeshop/assets/js/tinynav.min.js'); // Tiny nav
+include('/themes/homeshop/assets/twitter/jquery.tweet.js'); // Twitter widget */
+include('/themes/homeshop/assets/js/tinynav.min.js'); // Tiny nav
 //include('themes/homeshop/assets/js/wizard.create.myfile.js');// myfile js
 
 
@@ -55,7 +55,6 @@ $(document).ready(function () {
 	installNoUiSlider(); // Installs noUi Slider
 
 	singleProduct(); // Cloud Zoom
-
 
 
 
