@@ -211,8 +211,8 @@ $('#manualQuantityMadrid').on('click', function () {
 
 $('#manualQuantityTile').on('click', function () {
 
-
-	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
+//	alert($("#selectProvince").select2('val'));
+	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").val() == "")) {
 
 		$('ul.setup-panel li a[href="#step-4-1"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
@@ -221,7 +221,7 @@ $('#manualQuantityTile').on('click', function () {
 			url: baseUrl + '/myfile/madrid/prepareProductsFav',
 			type: 'POST',
 			dataType: 'JSON',
-			data: {provinceId: $("#selectProvince").select2('val')},
+			data: {provinceId: $("#selectProvince").val()},
 			success: function (data) {
 				$("#productsFavResult").html(data.products);
 			}});
