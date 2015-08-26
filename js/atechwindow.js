@@ -7,8 +7,8 @@ $('.addToCart').live('click', function () {
 	var productId = $(this).data('productid');
 //        alert($("#c2322").val());
 
-	var qty = $("#"+productId).val();
-        var color = $("#c"+productId).data('productoptionid');
+	var qty = $("#" + productId).val();
+	var color = $("#c" + productId).data('productoptionid');
 	var data = {productId: productId, qty: qty, color: color};
 //        alert(color);
 
@@ -27,7 +27,7 @@ $('.addToCart').live('click', function () {
 			if (data.result)
 			{
 				updateCartHeader();
-                                changeColorButton(productId);
+				changeColorButton(productId);
 				alert("เพิ่มสินค้าลงตะกร้าสินค้าเรียบร้อยแล้ว");
 			}
 			else
@@ -38,8 +38,8 @@ $('.addToCart').live('click', function () {
 	});
 });
 
-function changeColorButton(productId){
-    $('#b'+productId).removeClass("btn-primary").addClass("btn-danger");
+function changeColorButton(productId) {
+	$('#b' + productId).removeClass("btn-primary").addClass("btn-danger");
 }
 
 function checkComment()
@@ -51,7 +51,7 @@ function checkComment()
 	}
 	else
 	{
-            $('#Order_createMyfileType').val(2);
+		$('#Order_createMyfileType').val(2);
 		return true;
 	}
 }

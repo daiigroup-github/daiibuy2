@@ -40,6 +40,7 @@ class MasterMyFileController extends MasterController
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/daiibuy.js');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/themes/homeshop/assets/js/wizard.create.myfile.js');
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/madrid.js');
+
 //		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/ginzahome.js');
 
 		parent::init();

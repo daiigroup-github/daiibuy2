@@ -55,6 +55,15 @@ $this->breadcrumbs = array(
 					));
 					?>
 					<div role="tabpanel" class="tab-pane <?php echo ($i == 0) ? 'active' : ''; ?>" id="style_<?php echo $i; ?>">
+
+						<?php if(isset($style->category->description) && !empty($style->category->description)):?>
+						<div class="row">
+							<div class="col-md-12">
+								<p class="text-center alert alert-info"><?php echo $style->category->description;?></p>
+							</div>
+						</div>
+						<?php endif;?>
+
 						<div class="row">
 							<?php foreach($catToSubModels as $catToSubModel): ?>
 								<div class="col-md-4">
