@@ -1,7 +1,7 @@
 /**
  * Created by NPR on 8/13/14.
  */
-$('.add-to-cart').click(function () {
+$('.add-to-cart').click(function() {
 
 	var data = {};
 	var productId = $(this).data('productid');
@@ -17,10 +17,10 @@ $('.add-to-cart').click(function () {
 		type: 'POST',
 		dataType: 'JSON',
 		data: data,
-		beforeSend: function () {
+		beforeSend: function() {
 			return confirm('คุณต้องการเพิ่มสินค้าลงตะกร้าหรือไม่ ?')
 		},
-		success: function (data) {
+		success: function(data) {
 			//alert success message
 			if (data.result)
 			{
@@ -37,7 +37,7 @@ $('.add-to-cart').click(function () {
 
 function moneyFormat(num) {
 	var p = num.toFixed(2).split(".");
-	return p[0].split("").reverse().reduce(function (acc, num, i, orig) {
+	return p[0].split("").reverse().reduce(function(acc, num, i, orig) {
 		return  num + (i && !(i % 3) ? "," : "") + acc;
 	}, "") + "." + p[1];
 }
@@ -55,7 +55,7 @@ function loadThemeItem(cat2Id, baseUrl, orderId)
 		type: 'POST',
 		dataType: 'JSON',
 		data: {category2Id: cat2Id, orderId: orderId},
-		success: function (data) {
+		success: function(data) {
 			//alert success message
 			if (data.status)
 			{
@@ -129,7 +129,7 @@ function loadSetItem(cat2Id, baseUrl)
 		type: 'POST',
 //		dataType: 'JSON',
 		data: {category2Id: cat2Id},
-		success: function (data) {
+		success: function(data) {
 			$("#sanitary-item").removeClass("hide");
 			$("#sanitary-item").html(data);
 		}
@@ -148,7 +148,7 @@ function loadProductsFavItem(productId, baseUrl, orderId, provinceId)
 		type: 'POST',
 //		dataType: 'JSON',
 		data: {productId: productId, orderId: orderId, provinceId: provinceId},
-		success: function (data) {
+		success: function(data) {
 			//alert success message
 //			if (data.status)
 //			{
@@ -198,7 +198,7 @@ function updatePrice()
 
 
 
-$('#manualQuantityMadrid').on('click', function () {
+$('#manualQuantityMadrid').on('click', function() {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-4"]').trigger('click');
 		$('#Order_createMyfileType').val(1);
@@ -209,7 +209,7 @@ $('#manualQuantityMadrid').on('click', function () {
 
 });
 
-$('#manualQuantityTile').on('click', function () {
+$('#manualQuantityTile').on('click', function() {
 
 //	alert($("#selectProvince").select2('val'));
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").val() == "")) {
@@ -222,7 +222,7 @@ $('#manualQuantityTile').on('click', function () {
 			type: 'POST',
 			dataType: 'JSON',
 			data: {provinceId: $("#selectProvince").val()},
-			success: function (data) {
+			success: function(data) {
 				$("#productsFavResult").html(data.products);
 			}});
 	} else {
@@ -230,7 +230,7 @@ $('#manualQuantityTile').on('click', function () {
 	}
 
 });
-$('#uploadPlanMadrid').on('click', function () {
+$('#uploadPlanMadrid').on('click', function() {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
@@ -240,7 +240,7 @@ $('#uploadPlanMadrid').on('click', function () {
 	}
 });
 
-$('#uploadPlanTile').on('click', function () {
+$('#uploadPlanTile').on('click', function() {
 	if (!($("#Order_title").attr("value") == "") && !($("#selectProvince").select2('val') == "")) {
 		$('ul.setup-panel li a[href="#step-3"]').trigger('click');
 		$('#Order_createMyfileType').val(2);
@@ -250,7 +250,7 @@ $('#uploadPlanTile').on('click', function () {
 	}
 });
 
-$('.chooseStyle').click(function () {
+$('.chooseStyle').click(function() {
 //    alert($('#chooseStyle').attr("name"));
 //                 alert($('#Order_category2Id'));
 	cate2Id = $(this).attr("name");
@@ -262,7 +262,7 @@ $('.chooseStyle').click(function () {
 		type: 'POST',
 		dataType: 'JSON',
 		data: {category2Id: cate2Id},
-		success: function (data) {
+		success: function(data) {
 			//alert success message
 //			alert(data.themes);
 			if (data.status)
@@ -337,7 +337,7 @@ function findModelTile(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandId': brandId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.model').children('select').html(data);
 		},
 	});
@@ -353,7 +353,7 @@ function findModel(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandId': brandId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.model').children('select').html(data);
 		},
 	});
@@ -368,7 +368,7 @@ function findCat1(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'brandModelId': brandModelId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.cat1').children('select').html(data);
 		},
 	});
@@ -383,7 +383,7 @@ function findCat2Product(sel, baseUrl)
 //			'dataType': 'json',
 		'type': 'POST',
 		'data': {'cat1Id': cat1Id},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.product').children('select').html(data);
 		},
 	});
@@ -399,7 +399,7 @@ function chooseProduct(sel, baseUrl)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'productId': productId},
-		'success': function (data) {
+		'success': function(data) {
 			obj.parent().parent().children('.price').children('.priceText').html(data.price);
 			obj.parent().parent().children('.unit').children('.unitText').html(data.productUnits);
 		},
@@ -413,6 +413,7 @@ function updateSetPrice(no)
 		var price = $("#priceHidden_" + i).val();
 		var quantity = $("#quantityText_" + i).val();
 		$("#total" + i).html(moneyFormat(price * quantity));
+		alert(moneyFormat(price * quantity));
 	}
 }
 
@@ -438,7 +439,7 @@ function addFavourite(userId, category2Id, baseUrl, isTheme)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'userId': userId, 'category2Id': category2Id, },
-		'success': function (data) {
+		'success': function(data) {
 			if (data == 1)
 			{
 				alert("เพิ่ม " + word + " สู่รายการที่ชื่นชอบสำเร็จ");
@@ -478,7 +479,7 @@ function addFavouriteProduct(userId, productId, baseUrl)
 		'dataType': 'json',
 		'type': 'POST',
 		'data': {'userId': userId, 'productId': productId, },
-		'success': function (data) {
+		'success': function(data) {
 			if (data == 1)
 			{
 				alert("เพิ่ม สินค้า สู่รายการที่ชื่นชอบสำเร็จ");
