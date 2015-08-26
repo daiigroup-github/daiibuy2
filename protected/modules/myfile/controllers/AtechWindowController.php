@@ -202,10 +202,11 @@ class AtechWindowController extends MasterMyFileController {
         if (isset($_POST['title'])) {
             $title = $_POST['title'];
         }
-        if (isset($_POST['orderId']) && !($_POST['orderId'] == "")) {
-            $orderId = $_POST['orderId'];
-            $isNew = false;
-        }
+        if (isset($_POST['orderId']) && !($_POST['orderId'] == "") && !($_POST['orderId'] == NULL))
+		{
+			$orderId = $_POST['orderId'];
+            $isNew = FALSE;
+		}
 
         if (isset($_POST['brandModelId'])) {
             $brandModelId = $_POST['brandModelId'];
@@ -219,8 +220,8 @@ class AtechWindowController extends MasterMyFileController {
                 foreach ($z as $productId => $item) {
                     $productModel = Product::model()->findByPk($productId);
                     $productArray[$a] = $productModel;
-                    $productArray[$a]['quantity'] = $item["quantity"];
-                }
+                    $productArray[$a]['quantity'] = isset($item["quantity"]) ? $item["quantity"] : 1;
+				}
                 $a++;
             }
 //			foreach($productItems as $productId=> $item)
@@ -230,8 +231,9 @@ class AtechWindowController extends MasterMyFileController {
 //				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 //			}
         }
-        $res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
-        //disable foreign key
+
+		$res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, isset($orderId) ? $orderId : null );
+		//disable foreign key
         $transaction = Yii::app()->db->beginTransaction();
         $sqlForeignKeyDisable = 'SET foreign_key_checks = 0;';
         $command = Yii::app()->db->createCommand($sqlForeignKeyDisable);
@@ -241,9 +243,10 @@ class AtechWindowController extends MasterMyFileController {
 
 
 //	throw new Exception(print_r($res,true));
-        if (!$isNew) {
-            $model = Order::model()->findByPk($orderId);
-        } else {
+        if ($isNew == FALSE)
+			{
+				$model = Order::model()->findByPk($orderId);
+			} else {
             $model = new Order();
             $model->title = $title;
             $model->provinceId = $provinceId;
