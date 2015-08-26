@@ -1,5 +1,6 @@
 <?php
-if (isset($model->status)) {
+if (isset($model->status))
+{
 //	if ($model->status == 2)
 //	{
 //		$pCat = TRUE;
@@ -28,45 +29,45 @@ if (isset($model->status)) {
 //	}
 //	else
 //	{
-    $pCat = 0;
-    $pBrand = FALSE;
-    $pName = array(
-    );
-    $pCode = array(
-    );
-    $pQuantity = array(
-    );
-    $pPUnits = array(
-    );
-    $pPic = array(
-    );
-    $pPrice = array(
-    );
-    $pPriceGroup = array(
-    );
-    $pDescription = FALSE;
-    $pDateAvailable = array(
-    );
-    $pMargin = array(
-    );
-    $pWeight = array(
-        'min' => 0
-    );
-    $pDiWidth = array(
-        'class' => 'col-sm-2 input-sm',
-        'min' => 0);
-    $pDiHeight = array(
-        'class' => 'col-sm-2 input-sm',
-        'min' => 0);
-    $pDiLenght = array(
-        'class' => 'col-sm-2 input-sm',
-        'min' => 0);
-    $pDiUnits = array(
-    );
-    $pMeUnits = array(
-    );
-    $pSortOrder = array(
-    );
+	$pCat = 0;
+	$pBrand = FALSE;
+	$pName = array(
+		);
+	$pCode = array(
+		);
+	$pQuantity = array(
+		);
+	$pPUnits = array(
+		);
+	$pPic = array(
+		);
+	$pPrice = array(
+		);
+	$pPriceGroup = array(
+		);
+	$pDescription = FALSE;
+	$pDateAvailable = array(
+		);
+	$pMargin = array(
+		);
+	$pWeight = array(
+		'min' => 0
+	);
+	$pDiWidth = array(
+		'class' => 'col-sm-2 input-sm',
+		'min' => 0);
+	$pDiHeight = array(
+		'class' => 'col-sm-2 input-sm',
+		'min' => 0);
+	$pDiLenght = array(
+		'class' => 'col-sm-2 input-sm',
+		'min' => 0);
+	$pDiUnits = array(
+		);
+	$pMeUnits = array(
+		);
+	$pSortOrder = array(
+		);
 //}
 }
 ?>
@@ -74,129 +75,134 @@ if (isset($model->status)) {
     <div class="col-sm-6">
 
         <div class="form-group">
-            <?php
+			<?php
 //			echo $form->labelEx($model, 'categoryId', array(
 //				'class'=>'col-sm-3 control-label'));
-            ?>
+			?>
             <div class="col-sm-9">
-                <?php
-                if (!$pCat) {
+				<?php
+				if (!$pCat)
+				{
 //					echo $form->dropDownList($model, 'categoryId', Category::model()->getAllParentCategory(), array(
 //						'prompt'=>'----- Select Category ----',
 //						'class'=>'form-control'));
-                } else {
-                    $str = "";
-                    if (isset($model->category->parent)) {
-                        $str .= $model->category->parent->categoryName . "->";
-                    }
-                    if (isset($model->category)) {
-                        $str .= $model->category->categoryName;
-                    }
-                    echo $str;
-                }
-                ?>
-                <?php // echo $form->error($model, 'categoryId'); ?>
+				}
+				else
+				{
+					$str = "";
+					if (isset($model->category->parent))
+					{
+						$str .= $model->category->parent->categoryName . "->";
+					}
+					if (isset($model->category))
+					{
+						$str .= $model->category->categoryName;
+					}
+					echo $str;
+				}
+				?>
+				<?php // echo $form->error($model, 'categoryId'); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'name', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'name', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php echo $form->textField($model, 'name', $pName); ?>
-                <?php echo "<p><font color='#FFCC90' >ชื่อสินค้าไม่ควรมีความยาวเกิน 20 ตัวอักษร.</font></p>"; ?>
-                <?php echo $form->error($model, 'name');
-                ?>
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'code', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
-            <div class="col-sm-9">
-                <?php echo $form->textField($model, 'code', $pCode); ?>
-                <?php echo "<p><font color='#FFCC90' >รหัสสินค้าไม่ควรมีความยาวเกิน 20 ตัวอักษร.</font></p>"; ?>
-                <?php echo $form->error($model, 'name');
-                ?>
+				<?php echo $form->textField($model, 'name', $pName); ?>
+				<?php echo "<p><font color='#FFCC90' >ชื่อสินค้าไม่ควรมีความยาวเกิน 20 ตัวอักษร.</font></p>"; ?>
+				<?php echo $form->error($model, 'name');
+				?>
             </div>
 
         </div>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'quantity', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'code', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'quantity', array(
-                    'min' => 0));
-                ?>
-                <?php echo $form->error($model, 'quantity'); ?>
+				<?php echo $form->textField($model, 'code', $pCode); ?>
+				<?php echo "<p><font color='#FFCC90' >รหัสสินค้าไม่ควรมีความยาวเกิน 20 ตัวอักษร.</font></p>"; ?>
+				<?php echo $form->error($model, 'name');
+				?>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+			<?php
+			echo $form->labelEx($model, 'quantity', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
+            <div class="col-sm-9">
+				<?php
+				echo $form->numberField($model, 'quantity', array(
+					'min' => 0));
+				?>
+				<?php echo $form->error($model, 'quantity'); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'productUnits', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'productUnits', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php echo $form->textField($model, 'productUnits', $pPUnits); ?>
-                <?php echo $form->error($model, 'productUnits'); ?>
+				<?php echo $form->textField($model, 'productUnits', $pPUnits); ?>
+				<?php echo $form->error($model, 'productUnits'); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'noPerBox', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'noPerBox', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'noPerBox', array(
-                    'min' => 0));
-                ?> แผ่น/กล่อง
-                <?php echo $form->error($model, 'noPerBox'); ?>
+				<?php
+				echo $form->numberField($model, 'noPerBox', array(
+					'min' => 0));
+				?> แผ่น/กล่อง
+				<?php echo $form->error($model, 'noPerBox'); ?>
             </div>
         </div>
-        <?php // if(Yii::app()->supplier->supplierId){ ?>
+		<?php // if(Yii::app()->supplier->supplierId){  ?>
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'price', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'price', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'price', array(
-                    'class' => 'col-sm-8',
-                    'min' => 0,
-                    'step' => 'any'));
-                ?>
+				<?php
+				echo $form->numberField($model, 'price', array(
+					'class' => 'col-sm-8',
+					'min' => 0,
+					'step' => 'any'));
+				?>
                 <span class = "col-sm-1"> บาท/กล่อง
                 </span>
             </div>
             <p style="color: red;">***ราคาขายต้องรวม VAT 7% แล้วเท่านั้น***</p>
         </div>
-        <?php // } ?>
+		<?php // } ?>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'otherPrice', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'otherPrice', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'otherPrice', array(
-                    'class' => 'col-sm-8',
-                    'min' => 0,
-                    'step' => 'any'));
-                ?>
+				<?php
+				echo $form->numberField($model, 'otherPrice', array(
+					'class' => 'col-sm-8',
+					'min' => 0,
+					'step' => 'any'));
+				?>
                 <span class = "col-sm-1">บาท
                 </span>
             </div>
@@ -204,19 +210,22 @@ if (isset($model->status)) {
         </div>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'priceGroupId', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'priceGroupId', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                if ($pPriceGroup == FALSE) {
-                    echo $form->dropDownList($model, 'priceGroupId', PriceGroup::model()->getAllPriceGroup(Yii::app()->user->supplierId), array(
-                        'prompt' => 'Price Group'));
-                } else {
-                    echo $model->priceGroup->priceGroupName;
-                }
-                ?>
+				<?php
+				if ($pPriceGroup == FALSE)
+				{
+					echo $form->dropDownList($model, 'priceGroupId', PriceGroup::model()->getAllPriceGroup(Yii::app()->user->supplierId), array(
+						'prompt' => 'Price Group'));
+				}
+				else
+				{
+					echo $model->priceGroup->priceGroupName;
+				}
+				?>
             </div>
         </div>
 
@@ -225,38 +234,41 @@ if (isset($model->status)) {
     <div class="col-sm-6">
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'dateAvailable', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'dateAvailable', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                if ($pDateAvailable == FALSE) {
-                    $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-                        'model' => $model,
-                        'attribute' => 'dateAvailable',
-                        'options' => array(
-                            'dateFormat' => 'yy-mm-dd',
-                        ),
-                        'htmlOptions' => array(
-                            'size' => '10', // textField size
-                            'maxlength' => '10', // textField maxlength
-                        ),
-                    ));
-                } else {
-                    echo $model->dateAvailable;
-                }
-                ?>
+				<?php
+				if ($pDateAvailable == FALSE)
+				{
+					$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+						'model' => $model,
+						'attribute' => 'dateAvailable',
+						'options' => array(
+							'dateFormat' => 'yy-mm-dd',
+						),
+						'htmlOptions' => array(
+							'size' => '10', // textField size
+							'maxlength' => '10', // textField maxlength
+						),
+					));
+				}
+				else
+				{
+					echo $model->dateAvailable;
+				}
+				?>
 
             </div>
         </div>
         <!--<div class="form-group">-->
-        <?php
+		<?php
 //			echo $form->labelEx($model, 'marginId', array(
 //				'class'=>'col-sm-3 control-label'));
-        ?>
+		?>
         <!--<div class="col-sm-9">-->
-        <?php
+		<?php
 //				if($pMargin == FALSE)
 //				{
 //					echo $form->dropdownList($model, "marginId", UserCertificateFile::model()->getUserCertificateFileBySupplierId(Yii::app()->user->id)
@@ -266,37 +278,42 @@ if (isset($model->status)) {
 //				{
 //					echo $model->margin->name . " - " . $model->margin->value . "%";
 //				}
-        ?>
+		?>
         <!--</div>-->
         <!--</div>-->
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'weight', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'weight', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'weight', $pWeight);
-                ?>
-                <?php
-                if ($pMeUnits == FALSE) {
-                    echo $form->dropdownList($model, "metricUnits", Product::model()->getMetricUnits(), array(
-                        'class' => 'input-small',
-                        'prompt' => '-หน่วย-'));
-                } else {
-                    echo $model->getMetricText();
-                }
-                ?>
+				<?php
+				echo $form->numberField($model, 'weight', $pWeight);
+				?>
+				<?php
+				if ($pMeUnits == FALSE)
+				{
+					echo $form->dropdownList($model, "metricUnits", Product::model()->getMetricUnits(), array(
+						'class' => 'input-small',
+						'prompt' => '-หน่วย-'));
+				}
+				else
+				{
+					echo $model->getMetricText();
+				}
+				?>
             </div>
         </div>
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'area', array('class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'area', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'area', $pWeight) . " ตารางเมตร(ตร.ม.)";
-                ?>
+				<?php
+				echo $form->textField($model, 'area', $pWeight, array(
+					'step' => 'any')) . " ตารางเมตร(ตร.ม.)";
+				?>
             </div>
 
         </div>
@@ -304,44 +321,47 @@ if (isset($model->status)) {
         <div class="form-group">
             <label class="col-sm-3 control-label">Dimension (W x H x L)</label>
             <div class="col-sm-9">
-                <?php
-                echo $form->numberField($model, 'width', $pDiWidth, array(
-                    'step' => 'any'));
-                ?>
-                <?php echo $form->error($model, 'width'); ?>
-                <?php
-                echo $form->numberField($model, 'height', $pDiHeight, array(
-                    'step' => 'any'));
-                ?>
-                <?php echo $form->error($model, 'height'); ?>
-                <?php
-                echo $form->numberField($model, 'length', $pDiLenght, array(
-                    'step' => 'any'));
-                ?>
-                <?php echo $form->error($model, 'length'); ?>
+				<?php
+				echo $form->numberField($model, 'width', $pDiWidth, array(
+					'step' => 'any'));
+				?>
+				<?php echo $form->error($model, 'width'); ?>
+				<?php
+				echo $form->numberField($model, 'height', $pDiHeight, array(
+					'step' => 'any'));
+				?>
+				<?php echo $form->error($model, 'height'); ?>
+				<?php
+				echo $form->numberField($model, 'length', $pDiLenght, array(
+					'step' => 'any'));
+				?>
+				<?php echo $form->error($model, 'length'); ?>
 
-                <?php
-                if ($pDiUnits == FALSE) {
-                    echo $form->dropdownList($model, "dimensionUnits", Product::model()->getDimensionUnits(), array(
-                        'class' => 'input-small',
-                        'prompt' => '-หน่วย-'));
-                } else {
-                    echo $model->getDimensionText();
-                }
-                ?>
+				<?php
+				if ($pDiUnits == FALSE)
+				{
+					echo $form->dropdownList($model, "dimensionUnits", Product::model()->getDimensionUnits(), array(
+						'class' => 'input-small',
+						'prompt' => '-หน่วย-'));
+				}
+				else
+				{
+					echo $model->getDimensionText();
+				}
+				?>
             </div>
         </div>
 
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'sortOrder', array(
-                'class' => 'col-sm-3 control-label'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'sortOrder', array(
+				'class' => 'col-sm-3 control-label'));
+			?>
             <div class="col-sm-9">
-                <?php
-                echo $form->dropDownList($model, 'sortOrder', range(15, -15), array(
-                    'prompt' => '-- Select Sort Order --'));
-                ?>
+				<?php
+				echo $form->dropDownList($model, 'sortOrder', range(15, -15), array(
+					'prompt' => '-- Select Sort Order --'));
+				?>
             </div>
         </div>
     </div>
@@ -349,13 +369,14 @@ if (isset($model->status)) {
 <hr>
 <div class="row">
     <div class="form-group">
-        <?php
-        echo $form->labelEx($model, 'image', array(
-            'class' => 'col-sm-2 control-label'));
-        ?>
+		<?php
+		echo $form->labelEx($model, 'image', array(
+			'class' => 'col-sm-2 control-label'));
+		?>
         <div class="col-sm-5">
-            <?php
-            if ($this->action->id != 'create') {
+			<?php
+			if ($this->action->id != 'create')
+			{
 //					foreach($model->productImages as $image)
 //					{
 //						echo CHtml::image(Yii::app()->request->baseUrl . $image->image, 'image' . $image->productImageId, array(
@@ -388,74 +409,74 @@ if (isset($model->status)) {
 //						));
 //						echo '<br />';
 //					}
-                $dataProvider = ProductImage::model()->findAllProductImageProvider($model->productId);
-                $this->widget('zii.widgets.grid.CGridView', array(
-                    'id' => 'product-grid',
-                    'dataProvider' => $dataProvider,
-                    //'filter'=>$model,
-                    'itemsCssClass' => 'table table-striped table-bordered table-condensed table-hover',
-                    'columns' => array(
-                        array(
-                            'class' => 'IndexColumn'),
-                        array(
-                            'class' => 'SortColumn',
-                            'url' => 'backoffice/productImage/sortItem'),
-                        array(
-                            'name' => 'image',
-                            'type' => 'html',
-                            'value' => 'CHtml::image(Yii::app()->baseUrl.$data->image, "image", array("style"=>"width:200px;"))',
-                        ),
-                        array(
-                            'class' => 'CButtonColumn',
-                            'template' => '{delete}',
-                            'buttons' => array(
-                                'delete' => array(
-                                    'url' => 'Yii::app()->createUrl("/backoffice/product/deleteProductImage/id/".$data->productImageId)'
-                                ),
-                            )
-                        ),
-                    ),
-                ));
-            }
+				$dataProvider = ProductImage::model()->findAllProductImageProvider($model->productId);
+				$this->widget('zii.widgets.grid.CGridView', array(
+					'id' => 'product-grid',
+					'dataProvider' => $dataProvider,
+					//'filter'=>$model,
+					'itemsCssClass' => 'table table-striped table-bordered table-condensed table-hover',
+					'columns' => array(
+						array(
+							'class' => 'IndexColumn'),
+						array(
+							'class' => 'SortColumn',
+							'url' => 'backoffice/productImage/sortItem'),
+						array(
+							'name' => 'image',
+							'type' => 'html',
+							'value' => 'CHtml::image(Yii::app()->baseUrl.$data->image, "image", array("style"=>"width:200px;"))',
+						),
+						array(
+							'class' => 'CButtonColumn',
+							'template' => '{delete}',
+							'buttons' => array(
+								'delete' => array(
+									'url' => 'Yii::app()->createUrl("/backoffice/product/deleteProductImage/id/".$data->productImageId)'
+								),
+							)
+						),
+					),
+				));
+			}
 
 //				echo $form->fileField($model, 'image', array(
 //					'value' => $model->image,
 //				));
-            $this->widget('CMultiFileUpload', array(
-                'name' => 'images',
-                'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
-                'duplicate' => 'Duplicate file!', // useful, i think
-                'denied' => 'Invalid file type', // useful, i think
-            ));
-            ?>
+			$this->widget('CMultiFileUpload', array(
+				'name' => 'images',
+				'accept' => 'jpeg|jpg|gif|png', // useful for verifying files
+				'duplicate' => 'Duplicate file!', // useful, i think
+				'denied' => 'Invalid file type', // useful, i think
+			));
+			?>
             <p style="color: red;">**คุณสามารถอัพโหลดรูปได้ มากสุด 10 รูป**</p>
-            <?php echo $form->error($model, 'image'); ?>
+			<?php echo $form->error($model, 'image'); ?>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
         <div class="form-group">
-            <?php
-            echo $form->labelEx($model, 'description', array(
-                'class' => 'control-label col-sm-2'));
-            ?>
+			<?php
+			echo $form->labelEx($model, 'description', array(
+				'class' => 'control-label col-sm-2'));
+			?>
             <div class="col-sm-10">
-                <?php
+				<?php
 //				if ($pDescription == FALSE)
 //				{
-                $this->widget('ext.editMe.widgets.ExtEditMe', array(
-                    'model' => $model,
-                    'attribute' => 'description',
-                    //'filebrowserImageUploadUrl' => Yii::app()->createUrl('admin/product/uploadFile'),
-                    'filebrowserImageBrowseUrl' => Yii::app()->request->baseUrl . '/ext/kcfinder/browse.php?type=files&cms=yii',
-                ));
+				$this->widget('ext.editMe.widgets.ExtEditMe', array(
+					'model' => $model,
+					'attribute' => 'description',
+					//'filebrowserImageUploadUrl' => Yii::app()->createUrl('admin/product/uploadFile'),
+					'filebrowserImageBrowseUrl' => Yii::app()->request->baseUrl . '/ext/kcfinder/browse.php?type=files&cms=yii',
+				));
 //				}
 //				else
 //				{
 //					echo $model->description;
 //				}
-                ?>
+				?>
 
             </div>
         </div>
