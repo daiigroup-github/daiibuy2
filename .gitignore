@@ -14,3 +14,4 @@ images/orderFile
 images/brandImage
 protected/config/main.php
 /images
+protected/params.php
