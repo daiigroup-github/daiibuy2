@@ -42,7 +42,7 @@
 class Product extends ProductMaster
 {
 
-	const STATUS_WAITING_APPROVE = 1;
+//	const STATUS_WAITING_APPROVE = 1;
 //	const STATUS_APPROVED = 2;
 //	const STATUS_RETURN = 3;
 //	const STATUS_REJECT = 4;

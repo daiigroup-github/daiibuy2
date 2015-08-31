@@ -520,8 +520,8 @@ class ProductController extends MasterBackofficeController {
 
     public function actionReUse($id) {
         $model = $this->loadModel($id);
-        $model->status = Product::STATUS_WAITING_APPROVE;
-        $model->save();
+        $model->status = Product::STATUS_APPROVED;
+		$model->save();
 
 // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
