@@ -56,10 +56,10 @@ class CategoryController extends MasterAtechwindowController
 		if(count($defaultCategory2->images) > 0):
 			foreach($defaultCategory2->images as $image)
 			{
-				$images[] = $image->image;
+				$images[] = Yii::app()->baseUrl . $image->image;
 			}
 		else:
-			$images[] = $defaultCategory2->image;
+			$images[] = Yii::app()->baseUrl . $defaultCategory2->image;
 		endif;
 
 		//Create By Tong

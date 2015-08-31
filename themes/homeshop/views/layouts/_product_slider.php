@@ -4,7 +4,7 @@
 			<?php
 			if(isset($images)):
 				?>
-				<img class="cloud-zoom" src="<?php echo isset($images->image) ? Yii::app()->createUrl(Yii::app()->baseUrl . $images->image) : (isset($images[0]) ? Yii::app()->baseUrl . $images[0] : "" ); ?>" data-large="<?php echo isset($images->image) ? Yii::app()->createUrl(Yii::app()->baseUrl . $images->image) : (isset($images[0]) ? Yii::app()->baseUrl . $images[0] : "" ); ?>" alt="" />
+				<img class="cloud-zoom" src="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : (isset($images[0]) ? Yii::app()->baseUrl . $images[0] : "" ); ?>" data-large="<?php echo isset($images->image) ? Yii::app()->createUrl($images->image) : (isset($images[0]) ? Yii::app()->baseUrl . $images[0] : "" ); ?>" alt="" />
 				<a class="fullscreen-button" href="<?php echo isset($images->image) ? Yii::app()->createUrl(Yii::app()->baseUrl . $images->image) : (isset($images[0]) ? Yii::app()->baseUrl . $images[0] : "" ); ?>">
 					<div class="product-fullscreen">
 						<i class="icons icon-resize-full-1"></i>
