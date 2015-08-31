@@ -10,7 +10,7 @@ class CategoryController extends MasterFenzerController
 		if(isset($categoryModel->image) && !empty($categoryModel->image))
 		{
 			$i = 1;
-			$images[0] = $categoryModel->image;
+			$images[0] = Yii::app()->baseUrl . $categoryModel->image;
 		}
 		else
 		{
