@@ -168,11 +168,13 @@ class ProductController extends MasterGinzahomeController
 			)
 		));
 
-		foreach($productOptionGroupModel->productOptions as $productOptionModel)
+		if(isset($productOptionGroupModel->productOptions) && count($productOptionGroupModel->productOptions) > 0)
 		{
-			$images[$productOptionModel->productOptionId] = $productOptionModel->image;
+			foreach($productOptionGroupModel->productOptions as $productOptionModel)
+			{
+				$images[$productOptionModel->productOptionId] = $productOptionModel->image;
+			}
 		}
-
 
 		$tabs = array();
 		$j = 0;
