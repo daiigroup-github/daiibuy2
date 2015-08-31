@@ -10,7 +10,7 @@ class CategoryController extends MasterFenzerController
 		if(isset($categoryModel->image) && !empty($categoryModel->image))
 		{
 			$i = 1;
-			$images[0] = Yii::app()->baseUrl . $categoryModel->image;
+			$images[0] = $categoryModel->image;
 		}
 		else
 		{
@@ -20,7 +20,7 @@ class CategoryController extends MasterFenzerController
 		{
 			foreach($categoryModel->images as $catImage)
 			{
-				$images[$i] = Yii::app()->baseUrl . $catImage->image;
+				$images[$i] = $catImage->image;
 				$i++;
 			}
 		}
@@ -75,15 +75,15 @@ class CategoryController extends MasterFenzerController
 		);
 
 
-   
+
 		$fenzerArray = array();
-        foreach ($categoryModel->fenzerToProductsCategory1 as $f) {
-            $productModel = Product::model()->findByPk($f->productId);
-            if (isset($productModel))
-                if ($productModel->status <> 5)
-                    $fenzerArray[$f->productId] = $f->product->name;
-            
-        }
+		foreach($categoryModel->fenzerToProductsCategory1 as $f)
+		{
+			$productModel = Product::model()->findByPk($f->productId);
+			if(isset($productModel))
+				if($productModel->status <> 5)
+					$fenzerArray[$f->productId] = $f->product->name;
+		}
 
 		$this->render('index', array(
 			'product'=>$product,
