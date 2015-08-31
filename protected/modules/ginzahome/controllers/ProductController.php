@@ -170,7 +170,7 @@ class ProductController extends MasterGinzahomeController
 
 		foreach($productOptionGroupModel->productOptions as $productOptionModel)
 		{
-			$images[$productOptionModel->productOptionId] = Yii::app()->baseUrl . $productOptionModel->image;
+			$images[$productOptionModel->productOptionId] = $productOptionModel->image;
 		}
 
 
