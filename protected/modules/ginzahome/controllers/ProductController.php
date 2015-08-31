@@ -143,7 +143,7 @@ class ProductController extends MasterGinzahomeController
 			{
 				$imgIndex = 0;
 				foreach($category2ToProduct->product->productImages as $img):
-					$images[$imgIndex] = Yii::app()->baseUrl . $img->image;
+					$images[$imgIndex] = $img->image;
 					$imgIndex++;
 				endforeach;
 			}
