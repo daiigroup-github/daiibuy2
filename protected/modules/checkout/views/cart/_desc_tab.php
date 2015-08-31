@@ -6,13 +6,15 @@
                 $i = 1;
                 foreach($tabs as $tab)
                 {
-                    $title = $tab['title'];
-                    $tabId = isset($tab['id']) ? $tab['id'] : 'tab' . $i;
+				//													throw new Exception(print_r($tab, true));
+	$title = $tab["title"];
+	$tabId = isset($tab['id']) ? $tab['id'] : 'tab' . $i;
 
-                    echo CHtml::link($tab['title'] . ' ', '#' . $tabId, array(
-                        'class'=>'button big', 'style'=>'font-size:12px'));
-                    $i++;
-                }
+				echo CHtml::link($title . ' ', '#' . $tabId, array(
+		'class' => 'button big',
+				'style' => 'font-size:12px'));
+				$i++;
+}
                 ?>
             </div>
 

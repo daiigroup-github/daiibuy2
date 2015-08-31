@@ -190,23 +190,20 @@ class StepController extends MasterCheckoutController
                 $flag = 0;
         if(isset($_POST['Next']))
 		{
-            $transaction = Yii::app()->db->beginTransaction();
+//			throw new Exception(print_r($_POST['billing']['company'] != "", true));
+			$transaction = Yii::app()->db->beginTransaction();
             try {
-
-
-
-                //            throw new Exception(print_r($_POST, true));
             $this->writeToFile('/tmp/step2', print_r($_POST, true));
 //billing 
-
             if ($_POST['billingRadio'] == 1) {
                 Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
                     $flag = 1;
                 } else {
                 //add new billing address  
-//                throw new Exception(print_r($_POST, true));
-                if (isset($_POST['billing']['company'])) {
-                    if (!isset($_POST['companyBranch'])) {
+//                throw new Exception(print_r($_POST['billing']['company'], true));
+					if ($_POST['billing']['company'] != "")
+					{
+						if (!isset($_POST['companyBranch'])) {
                             $billingAddressModel->errors = array(1 => 'กรุณาระบุ "สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
                             throw new Exception($billingAddressModel->errors);
                         } elseif ($_POST['companyBranch'] == 2) {
