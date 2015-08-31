@@ -57,8 +57,11 @@ class OrderItems extends OrderItemsMaster {
         $daiibuy = new DaiiBuy();
         $daiibuy->loadCookie();
 //        throw new Exception(print_r($productOptionGroup, true));
-        $pOptionIds = implode(",", $productOptionGroup);
-        if (isset($pOptionIds) && !empty($pOptionIds)) {
+		if (count($productOptionGroup) > 0)
+		{
+			$pOptionIds = implode(",", $productOptionGroup);
+		}
+		if (isset($pOptionIds) && !empty($pOptionIds)) {
             $orderItem = $this->find(array(
                 'condition' => 't.orderId=:orderId AND t.productId=:productId AND o.productOptionId in(:pOptionIds)',
                 'join' => 'LEFT JOIN order_item_option o ON t.orderItemsId = o.orderItemId',
@@ -95,9 +98,9 @@ class OrderItems extends OrderItemsMaster {
         $orderItem->total = $orderItem->quantity * $orderItem->price;
         $orderItem->updateDateTime = new CDbExpression('NOW()');
         $orderItem->styleId = $styleId;
-        $orderItem->productOptionId = $pOptionIds;
+        $orderItem->productOptionId = isset($pOptionIds) ? $pOptionIds : null;
 
-        if ($orderItem->save(false)) {
+		if ($orderItem->save(false)) {
 //            throw new Exception(print_r($orderItem, true));
             $orderItemId = $orderItem->orderItemsId;
             if (isset($pOptionIds) && !empty($pOptionIds)) {
