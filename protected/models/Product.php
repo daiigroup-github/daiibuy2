@@ -1140,7 +1140,6 @@ class Product extends ProductMaster
 		{
 //            throw new Exception(print_r($orderId, true));
 			$orderDetailModel = OrderDetail::model()->find('orderId = ' . $orderId);
-//        throw new Exception(print_r($orderDetailModel, true));
 //            if (count($orderDetailModel) > 0) {
 //                $orderDetailTemplateValueModel = OrderDetailValue::model()->find('orderDetailId = ' . $orderDetailModel->orderDetailId . ' and orderDetailTemplateFieldId = 9');
 //                $category2Id = $orderDetailTemplateValueModel->value;
@@ -1186,7 +1185,7 @@ class Product extends ProductMaster
 //			$res["items"][$i]['category'] = $item['category'];
 //			$res["items"][$i]['type'] = $item['type'];
 			$res["items"][$i]['description'] = $item->name;
-			$res["items"][$i]['quantity'] = $quantity;
+			$res["items"][$i]['quantity'] = $item->quantity;
 			$res["items"][$i]['name'] = $item->name;
 
 			if(isset($productPromotion))

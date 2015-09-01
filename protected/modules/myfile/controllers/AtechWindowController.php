@@ -231,6 +231,7 @@ class AtechWindowController extends MasterMyFileController {
 //				$productArray[$productModel->productId]['quantity'] = $item["quantity"];
 //			}
         }
+//	throw new Exception(print_r($productArray, true));
 
 		$res = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, isset($orderId) ? $orderId : null );
 		//disable foreign key
@@ -239,10 +240,6 @@ class AtechWindowController extends MasterMyFileController {
         $command = Yii::app()->db->createCommand($sqlForeignKeyDisable);
         $command->execute();
         try {
-
-
-
-//	throw new Exception(print_r($res,true));
         if ($isNew == FALSE)
 			{
 				$model = Order::model()->findByPk($orderId);
@@ -401,9 +398,10 @@ class AtechWindowController extends MasterMyFileController {
 
         $brandModelArray = BrandModel::model()->findAllBrandModelArrayBySupplierId(2);
         $firstBrand = reset($brandModelArray);
-        $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand->brandModelId, $provinceId);
+//		throw new Exception(print_r($brandModelArray, true));
 
-//		throw new Exception(print_r($itemSetArray,true));
+		$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $firstBrand->brandModelId, $provinceId);
+
         echo $this->renderPartial('/atechWindow/_edit_product_result', array(
             'productResult' => $itemSetArray,
                 ), TRUE, TRUE);

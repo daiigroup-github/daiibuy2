@@ -96,7 +96,7 @@ class BrandModel extends BrandModelMaster
 
 		foreach($models as $item)
 		{
-			$res[$item->brandModelId] = $item->title;
+			$res[$item->brandModelId] = $item;
 		}
 		return $res;
 	}
