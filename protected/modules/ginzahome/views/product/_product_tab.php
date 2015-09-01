@@ -54,7 +54,7 @@ $tabContent = '';
 									<div class="carousel-heading no-margin">
 										<h4><?php echo $child->title; ?></h4>
 									</div>
-									<div class="page-content row">
+									<div class="row">
 										<?php foreach($child->productSpecs as $item):
 											?>
 											<div class="col-lg-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-md-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-sm-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?>">
