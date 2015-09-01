@@ -279,14 +279,14 @@ class StepController extends MasterCheckoutController
 				}
 			}
             } catch (Exception $exc) {
-				if (count($billingAddressModel->errors) > 0)
-				{
-					print_r($billingAddressModel->errors);
-				}
-				else if (count($shippingAddressModel->errors) > 0)
-				{
-					print_r($shippingAddressModel->errors);
-				}
+//				if (count($billingAddressModel->errors) > 0)
+//				{
+//					print_r($billingAddressModel->errors);
+//				}
+//				else if (count($shippingAddressModel->errors) > 0)
+//				{
+//					print_r($shippingAddressModel->errors);
+//				}
 //				print_r(count($billingAddressModel->errors) > 0 ? $billingAddressModel->errors : "อิอิ", true);
 //				print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : array(), true);
 
