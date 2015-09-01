@@ -2,16 +2,7 @@
 protected/runtime
 /nbproject
 /.idea
-images/fenzer
-images/madrid
-images/upload
-images/barcode
 protected/config/params.php
-images/userFile/*
-images/bank
-images/categoryImage
-images/orderFile
-images/brandImage
 protected/config/main.php
-/images
 protected/params.php
+images/*
