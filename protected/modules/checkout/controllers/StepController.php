@@ -193,7 +193,7 @@ class StepController extends MasterCheckoutController
 //			throw new Exception(print_r($_POST['billing']['company'] != "", true));
 			$transaction = Yii::app()->db->beginTransaction();
             try {
-            $this->writeToFile('/tmp/step2', print_r($_POST, true));
+			$this->writeToFile('/tmp/step2', print_r($_POST, true));
 //billing 
             if ($_POST['billingRadio'] == 1) {
                 Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
@@ -204,14 +204,19 @@ class StepController extends MasterCheckoutController
 					if ($_POST['billing']['company'] != "")
 					{
 						if (!isset($_POST['companyBranch'])) {
-                            $billingAddressModel->errors = array(1 => 'กรุณาระบุ "สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
-                            throw new Exception($billingAddressModel->errors);
-                        } elseif ($_POST['companyBranch'] == 2) {
-                        if (!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "") {
-                                $billingAddressModel->errors = array(1 => "กรุณาระบุสาขาของบริษัทของท่าน");
-                                throw new Exception($billingAddressModel->errors);
-                            }
-                    }
+                            $billingAddressModel->addError("paymentCompany", '"สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
+
+	//						throw new Exception(print_r($billingAddressModel->errors, true));
+					}
+					elseif ($_POST['companyBranch'] == 2)
+					{
+						if (!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "")
+						{
+							$billingAddressModel->addError("paymentCompany", "สาขาของบริษัทของท่าน.");
+//								2 => "กรุณาระบุสาขาของบริษัทของท่าน");
+//							throw new Exception($billingAddressModel->errors);
+								}
+					}
                 }
 
                 $billingAddressModel->attributes = $_POST['billing'];
@@ -227,19 +232,28 @@ class StepController extends MasterCheckoutController
                     }
                 }
                 if (!isset($billingAddressModel->taxNo) || $billingAddressModel->taxNo == "") {
-                        $billingAddressModel->errors = array(1 => "กรุณาใส่เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)");
-                        throw new Exception($billingAddressModel->errors);
-                    }
+                        $billingAddressModel->addError("paymentCompany", "เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)");
+//					throw new Exception($billingAddressModel->errors);
+					}
 
                 $billingAddressModel->userId = Yii::app()->user->id;
                     if (!$billingAddressModel->save()) {
                         $flag = 0;
                         throw new Exception(print_r($billingAddressModel->errors, true));
-                    } else {
-                        $flag = 1;
+					}
+					else if (count($billingAddressModel->errors) > 0)
+					{
+					throw new Exception(print_r($billingAddressModel->errors, true));
+				}
+				else
+				{
+					$flag = 1;
                         Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
                     }
             }
+
+//			throw new Exception(print_r($billingAddressModel->errors, true));
+
 
 			if($_POST['shippingRadio'] == 1)
 			{
@@ -265,20 +279,23 @@ class StepController extends MasterCheckoutController
 				}
 			}
             } catch (Exception $exc) {
-//                throw new Exception();
-				print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors, true);
+				if (count($billingAddressModel->errors) > 0)
+				{
+					print_r($billingAddressModel->errors);
+				}
+				else if (count($shippingAddressModel->errors) > 0)
+				{
+					print_r($shippingAddressModel->errors);
+				}
+//				print_r(count($billingAddressModel->errors) > 0 ? $billingAddressModel->errors : "อิอิ", true);
+//				print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : array(), true);
+
 				$transaction->rollback();
                 $billingAddressModel->attributes = $_POST['billing'];
                 $shippingAddressModel->attributes = $_POST['shipping'];
-//                break;
-//                $this->render('step2', array(
-//                    'billingAddressModel' => $billingAddressModel,
-//                    'shippingAddressModel' => $shippingAddressModel,
-//                    'step' => 2,
-//                    'errors' => count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors,
-//                ));
+//             
             }
-            if ($flag) {
+			if ($flag) {
                 $transaction->commit();
                 $this->redirect($this->createUrl(3));
             }

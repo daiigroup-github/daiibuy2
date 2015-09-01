@@ -37,13 +37,17 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 if (isset($errors)) {
     ?>
     <div class="row">
-    <div class="col-md-12 warning">
-			<?php
+		<div class="col-md-12 alert alert-danger" >
+				<?php
 			$i = 1;
-			foreach ($errors as $error):
-				?>
-		<p><b style="color: red"> <?php echo $i . ". " . $error[0];
-				?></b><p>
+//				throw new Exception(print_r($errors, true));
+				foreach ($errors as $error):
+//				throw new Exception(print_r(), true));
+					$stringCut = str_replace("cannot be blank.", "", $error[0]);
+					$errorMsg = 'กรุณากรอกข้อมูลในช่อง " ' . $stringCut . ' " ให้ครบถ้วน.';
+					?>
+			<p><b style="color: red"> <?php echo $i . ". " . $errorMsg;
+					?></b><p>
 					<?php endforeach; ?>
         </div>
         </div>
