@@ -35,7 +35,7 @@
 			<?php foreach($images as $id=> $image): ?>
 				<li>
 					<a class="fancybox" rel="product-images" href="<?php echo Yii::app()->baseUrl . $image; ?>"></a>
-					<img src="<?php echo Yii::app()->baseUrl . $image; ?>" data-large="<?php echo Yii::app()->baseUrl . $image; ?>" alt="" id="imageThumbnail<?php echo $image; ?>" />
+					<img src="<?php echo Yii::app()->baseUrl . $image; ?>" data-large="<?php echo Yii::app()->baseUrl . $image; ?>" alt="" id="imageThumbnail<?php echo $id; ?>" />
 				</li>
 				<?php
 			endforeach;
