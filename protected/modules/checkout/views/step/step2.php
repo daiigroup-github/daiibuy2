@@ -38,9 +38,13 @@ if (isset($errors)) {
     ?>
     <div class="row">
     <div class="col-md-12 warning">
-            <?php foreach ($errors as $error): ?>
-                        <b> <?php echo $error; ?></b>
-            <?php endforeach; ?>
+			<?php
+			$i = 1;
+			foreach ($errors as $error):
+				?>
+		<p><b style="color: red"> <?php echo $i . ". " . $error[0];
+				?></b><p>
+					<?php endforeach; ?>
         </div>
         </div>
 <?php } ?>

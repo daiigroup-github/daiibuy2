@@ -265,8 +265,9 @@ class StepController extends MasterCheckoutController
 				}
 			}
             } catch (Exception $exc) {
-                throw new Exception(print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors, true));
-                $transaction->rollback();
+//                throw new Exception();
+				print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors, true);
+				$transaction->rollback();
                 $billingAddressModel->attributes = $_POST['billing'];
                 $shippingAddressModel->attributes = $_POST['shipping'];
 //                break;
