@@ -11,6 +11,27 @@ class HomeController extends MasterController
 		$suppliers = Supplier::model()->findAll('status=1');
 		shuffle($suppliers);
 
+		/**
+		 * url
+		 * name
+		 * description
+		 * logo
+		 */
+		$sup = [];
+		$i = 0;
+		foreach ($suppliers as $supplier) {
+			$sup[$i] = [
+				'url'=>$supplier->url,
+				'name'=>$supplier->name,
+				'description'=>$supplier->description,
+				'logo'=>$supplier->logo
+			];
+			$i++;
+		}
+
+		$suppliers = $sup;
+
+
 		$this->render('index', array(
 			'suppliers'=>$suppliers));
 	}
