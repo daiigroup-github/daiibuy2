@@ -434,7 +434,7 @@ $this->renderPartial("_navbar", array(
 					<!--<a class="btn btn-warning btn-lg col-lg-offset-3" onclick="updatePrice()"><i class="glyphicon glyphicon-refresh"></i> อัพเดทราคา</a>-->
 					<!--<button id="nextToStep4" class="btn btn-primary btn-lg pull-right"><i class="glyphicon glyphicon-chevron-right"></i> ต่อไป</button>-->
 					<?php if((!$model->isRequestSpacialProject) && (count($child1->sup) == 0 && $child1->status < 1)): ?>
-								<!--<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/ginzaTown/requestGinzatownSpacialProject/id/$model->orderGroupId")   ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>-->
+									<!--<a id="requestSpecial" class="btn btn-info btn-lg" href="<?php // echo Yii::app()->createUrl("/myfile/ginzaTown/requestGinzatownSpacialProject/id/$model->orderGroupId")    ?>"><i class="glyphicon glyphicon-share"></i> Request Special Project</a>-->
 					<?php endif; ?>
 				</div>
 			</div>
