@@ -425,19 +425,23 @@ class AtechWindowController extends MasterMyFileController {
             $brandModelId = $_POST['brandModelId'];
         }
 
-//        throw new Exception(print_r($_POST, true));
+        throw new Exception(print_r($criteria[0]["quantity"], true));
 
-        if (isset($_POST['productItems']) && isset($_POST['Criteria'])) {
-            $productItems = $_POST['productItems'];
-            $i = 0;
-            foreach ($productItems as $item) {
-                foreach ($item as $p) {
-                    $criteria[$i]["quantity"] = $p["quantity"];
-                }
-                $i++;
-            }
-        } else if (isset($_POST['productItems'])) {
-            $productItems = $_POST['productItems'];
+//		if (isset($_POST['productItems']) && isset($_POST['Criteria'])) {
+//            $productItems = $_POST['productItems'];
+//            $i = 0;
+//            foreach ($productItems as $item) {
+//                foreach ($item as $p)
+//				{
+//					if ($criteria[$i]["quantity"] > $p["quantity"])
+//						$criteria[$i]["quantity"] = $p["quantity"];
+//				}
+//                $i++;
+//            }
+//        } else
+		if (isset($_POST['productItems']))
+		{
+			$productItems = $_POST['productItems'];
             $productArray = array();
             $a = 0;
             foreach ($productItems as $z) {
@@ -458,8 +462,8 @@ class AtechWindowController extends MasterMyFileController {
 //			$height = $size[1];
 //		}
         if (isset($criteria) && isset($brandModelId) && isset($provinceId)) {
-//            throw new Exception(print_r("criteria", true));
-            $itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
+//            throw new Exception(print_r($criteria, true));
+			$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
         } else {
 //            throw new Exception(print_r($productArray, true));
             $itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);

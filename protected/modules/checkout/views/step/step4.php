@@ -91,14 +91,31 @@ $form = $this->beginWidget('CActiveForm', array(
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['discount']; ?></span></td>
                         </tr>
 						<?php
-//						throw new Exception(print_r($orderSummary, true));
-						if(isset($orderSummary['extraDiscount'])):
-							$orderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
+								//															throw new Exception(print_r($orderSummary, true));
+						if (isset($orderSummary['extraDiscount'])):
+							if (($supplierModel->supplierId == 4 || $supplierModel->supplierId == 5) && isset($_GET["orderGroupId"]))
+							{
+								$orderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
+								$sumDiscountPercent = $orderSummary['extraDiscountArray'][$orderGroup->orderGroupId]['extraDiscountPercent'];
+							}
+							else
+							{
+								$i = 0;
+								foreach ($orderSummary['extraDiscountArray'] as $exDiscount)
+								{
+									if ($i == 0)
+									{
+										$sumDiscountPercent = $exDiscount['extraDiscountPercent'];
+									}
+									$i++;
+								}
+							}
+							$sumDiscount = $orderSummary['extraDiscount'];
 							?>
 							<tr>
-								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['extraDiscountArray'][$orderGroup->orderGroupId]['extraDiscountPercent']; ?></span>%)</span></td>
-								<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['extraDiscount']; ?></span></td>
-							</tr>
+								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $sumDiscountPercent; ?></span>%)</span></td>
+								<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $sumDiscount; ?></span></td>
+								</tr>
 						<?php endif; ?>
                         <tr>
                             <td class="align-right"><span class="price big">Grand Total</span></td>
