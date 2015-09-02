@@ -24,8 +24,8 @@
                     <!--Carousel Item -->
                     <div class="product">
                         <div class="product-image">
-                            <?php if ($item['promotionPrice'] > 0): ?>
-                                <span class="product-tag">Sale</span>
+								<?php if (isset($item['promotionPrice']) && $item['promotionPrice'] > 0): ?>
+									<span class="product-tag">Sale</span>
                             <?php endif; ?>
                             <img src="<?php echo isset($item['images'][0]->image) ? Yii::app()->baseUrl . $item['images'][0]->image : ''; ?>" alt="Product1">
                             <a href="<?php echo $item['url']; ?>" class="product-hover">
@@ -34,8 +34,9 @@
                         </div>
                         <div class="product-info">
                             <h5><a href="<?php echo $item['url']; ?>"><?php echo $item['name']; ?></a></h5>
-                            <?php if ($item['promotionPrice'] > 0) { ?>
-                                <span >ราคา <del><?php echo number_format($item['price'], 2); ?></del> บาท</span><br>
+								<?php if (isset($item['promotionPrice']) && $item['promotionPrice'] > 0)
+								{ ?>
+									<span >ราคา <del><?php echo number_format($item['price'], 2); ?></del> บาท</span><br>
                                 <span class="price">ราคาพิเศษ <?php echo number_format($item['promotionPrice'], 2); ?> บาท</span>
                             <?php } else { ?>
                                 <span class="price">ราคา <?php echo number_format($item['price'], 2); ?> บาท</span>
