@@ -91,14 +91,14 @@ class BrandModel extends BrandModelMaster
 
 	public function findAllBrandModelArrayBySupplierId($supplierId)
 	{
-		$res = array();
+//		$res = array();
 		$models = $this->findAll('supplierId = ' . $supplierId);
 
-		foreach($models as $item)
-		{
-			$res[$item->brandModelId] = $item;
-		}
-		return $res;
+//		foreach($models as $item)
+//		{
+//			$res[$item->brandModelId] = $item;
+//		}
+		return $models;
 	}
 
 }

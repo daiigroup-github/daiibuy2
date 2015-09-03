@@ -141,8 +141,8 @@ $form = $this->beginWidget('CActiveForm', array(
 							<tbody>
 								<tr  id="copy" class="copy">
 									<td><?php
-										echo CHtml::dropDownList("OrderItems[brandModelId][]", "", BrandModel::model()->findAllBrandModelArrayBySupplierId(5), array(
-											'prompt'=>'เลือกประเภทบ้าน',
+										echo CHtml::dropDownList("OrderItems[brandModelId][]", "", CHtml::listData(BrandModel::model()->findAll('supplierId = 5'), "brandModelId", "title"), array(
+	'prompt'=>'เลือกประเภทบ้าน',
 											'class'=>'form-control',
 											'onchange'=>'findCategory1(this);',
 											'id'=>'brandModelId',
