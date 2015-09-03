@@ -408,8 +408,8 @@ class AtechWindowController extends MasterMyFileController {
     }
 
     public function actionUpdatePriceMyFile() {
-//        throw new Exception(print_r($_GET['id'], true));
-        if (isset($_POST['orderId'])) {
+//        throw new Exception(print_r($_POST, true));
+		if (isset($_POST['orderId'])) {
             $orderId = $_POST['orderId'];
         }
         if (isset($_POST['Criteria'])) {
@@ -425,8 +425,7 @@ class AtechWindowController extends MasterMyFileController {
             $brandModelId = $_POST['brandModelId'];
         }
 
-        throw new Exception(print_r($criteria[0]["quantity"], true));
-
+//        throw new Exception(print_r($_POST['productItems'], true));
 //		if (isset($_POST['productItems']) && isset($_POST['Criteria'])) {
 //            $productItems = $_POST['productItems'];
 //            $i = 0;
@@ -453,7 +452,7 @@ class AtechWindowController extends MasterMyFileController {
                 $a++;
             }
         }
-//		throw new Exception(print_r($productItems,true));
+//		throw new Exception(print_r($productArray, true));
 //		if(isset($_POST['size']))
 //		{
 //			$value = $_POST['size'];
@@ -461,13 +460,36 @@ class AtechWindowController extends MasterMyFileController {
 //			$width = $size[0];
 //			$height = $size[1];
 //		}
-        if (isset($criteria) && isset($brandModelId) && isset($provinceId)) {
-//            throw new Exception(print_r($criteria, true));
+        if (isset($criteria) && isset($brandModelId) && isset($provinceId))
+		{
+//			throw new Exception(print_r($_POST['productItems'], true));
+			if (isset($_POST['productItems']))
+			{
+				$productItems = $_POST['productItems'];
+				$i = 1;
+				foreach ($_POST['productItems'] as $item)
+				{
+					foreach ($item as $itemId => $qty)
+					{
+//						throw new Exception(print_r($productItems[1][$itemId]["quantity"], true));
+						$criteria[$i - 1]["quantity"] = $productItems[$i][$itemId]["quantity"];
+					}
+					$i++;
+				}
+//				throw new Exception(print_r($criteria, true));
+			}
 			$itemSetArray = Product::model()->calculatePriceFromCriteriaAtech($criteria, $brandModelId, $provinceId);
         } else {
 //            throw new Exception(print_r($productArray, true));
-            $itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
-        }
+			if (isset($orderId))
+			{
+				$itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray, $orderId);
+			}
+			else
+			{
+				$itemSetArray = Product::model()->calculatePriceFromEstimateAtech($brandModelId, $provinceId, $productArray);
+			}
+		}
 //		throw new Exception(print_r($itemSetArray,true));
         echo $this->renderPartial('/atechWindow/_edit_product_result', array(
             'productResult' => $itemSetArray,

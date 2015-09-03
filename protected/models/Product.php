@@ -1148,6 +1148,9 @@ class Product extends ProductMaster
 
 		foreach($productArray as $item)
 		{
+
+//			throw new Exception(print_r($item->quantity, true));
+
 			if(isset($orderId))
 			{
 				$quantity = $item->quantity;
@@ -1185,7 +1188,7 @@ class Product extends ProductMaster
 //			$res["items"][$i]['category'] = $item['category'];
 //			$res["items"][$i]['type'] = $item['type'];
 			$res["items"][$i]['description'] = $item->name;
-			$res["items"][$i]['quantity'] = $item->quantity;
+			$res["items"][$i]['quantity'] = isset($quantity) ? $quantity : $item->quantity;
 			$res["items"][$i]['name'] = $item->name;
 
 			if(isset($productPromotion))
@@ -1204,12 +1207,12 @@ class Product extends ProductMaster
 			$total = $subTotal + $total;
 			$i++;
 		}
+//		throw new Exception(print_r($res["items"], true));
 
 
 		$res["total"] = $total;
 		$res["brandModelId"] = $brandModelId;
 
-//        throw new Exception(print_r($res, true));
 //		$res["brandModelId"] = $brand->brandModelId;
 //		$res["category1Id"] = $category1Id;
 //		$res["category2Id"] = $category2Id;

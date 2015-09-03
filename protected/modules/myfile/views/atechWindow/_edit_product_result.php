@@ -32,8 +32,10 @@
 
 						<?php
 						$i = 1;
-						if(isset($productResult['items'])){
-						foreach($productResult['items'] as $item): ?>
+						if (isset($productResult['items']))
+{
+//	throw new Exception(print_r($productResult['items'], true));
+	foreach($productResult['items'] as $item): ?>
 			<tr>
 				<td><?php echo $i; ?></td>
 				<td><?php echo $item['description']; ?></td>
