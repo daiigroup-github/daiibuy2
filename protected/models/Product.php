@@ -1057,6 +1057,8 @@ class Product extends ProductMaster
 //		throw new Exception(print_r($criteria,true));
 		foreach($criteria as $item)
 		{
+			$cate2ToProduct = null;
+			$productModel = null;
 //	throw new Exception(print_r($item,true));
 //			$categoryArray = $this->getCategory2IdByBrandModelIdAndCategory1($brandModelId, $item['category'], $item['type']);
 //			if(count($categoryArray) > 0)
@@ -1078,7 +1080,7 @@ class Product extends ProductMaster
 //				throw new Exception(print_r($cate2ToProduct,true));
 					foreach($cate2ToProduct as $cate2)
 					{
-						$product = Product::model()->findByPk($cate2->productId);
+						$product = $cate2->product;
 						if($product->width == $width && $product->height == $height)
 						{
 							$productModel = $product;
