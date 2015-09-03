@@ -164,7 +164,8 @@
 								<tr>
 									<td>แบบบ้าน</td>
 									<td><?php
-										echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $model->orders[0]->orderItems[0]->styleId), array(
+										if (isset($model->orders[0]->orderItems[0]->styleId))
+											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $model->orders[0]->orderItems[0]->styleId), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
 												'type'=>'POST',

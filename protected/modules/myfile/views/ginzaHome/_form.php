@@ -438,8 +438,8 @@ $this->renderPartial("_navbar", array(
 			<div class="row">
 				<div class="col-lg-12" id="conditionDiv">
 					<?php
-					if (isset($model->orders[0]->orderItems[0]->styleId))
-						$this->renderPartial("_condition", array(
+																				//					if (isset($model->orders[0]->orderItems[0]->styleId))
+					$this->renderPartial("_condition", array(
 						'model'=>$model,
 						'period'=>2,
 						'brandModels'=>$brandModels,
