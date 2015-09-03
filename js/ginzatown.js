@@ -230,7 +230,7 @@ $('#nextCreate2').live('click', function () {
 	{
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'index.php/myfile/ginzaTown/prepareMyfileItem',
+			url: baseUrl + '/index.php/myfile/ginzaTown/prepareMyfileItem',
 //			dataType: 'json',
 			data: $("#ginzatown-form").serialize(),
 			success: function (data) {

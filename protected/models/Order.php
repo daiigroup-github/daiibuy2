@@ -901,6 +901,53 @@ class Order extends OrderMaster
 		return $totalUnits;
 	}
 
+	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent)
+	{
+
+		$result = array();
+		$criteria = new CDbCriteria();
+		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent , t.totalIncVAT as totalIncVAT ";
+		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderId = t.orderId ";
+		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId AND type in (" . self::ORDER_TYPE_CART . "," . self::ORDER_TYPE_MYFILE_TO_CART . " ) ";
+		if (isset(Yii::app()->user->id))
+		{
+			$criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
+		}
+		else
+		{
+			$daiibuy = new DaiiBuy();
+			$daiibuy->loadCookie();
+			$criteria->condition .= " AND t.token ='" . $daiibuy->token . "'";
+		}
+
+		$models = $this->findAll($criteria);
+//				throw new Exception(print_r($models,true));
+		$extraDiscount = 0;
+		foreach ($models as $item)
+		{
+
+
+			$spacialValue = ($item->totalIncVAT * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
+//			throw new Exception(print_r($item, true));
+			$result[$item->orderId] = array(
+				'extraDiscountPercent' => $item->spacialPercent,
+				'extraDiscount' => $spacialValue,
+			);
+
+			$extraDiscount += $spacialValue;
+		}
+
+		$result["totalExtraDiscount"] = $extraDiscount;
+		if (count($models) > 0)
+		{
+			return $result;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	public function sumOrderTotalBySupplierId($supplierId = NULL)
 	{
 		$res = [];
@@ -1041,54 +1088,13 @@ class Order extends OrderMaster
 			$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
 		}
 		$res['grandTotal'] = number_format($grandTotal, 2);
+//		throw new Exception(print_r($res, true));
 		return $res;
 	}
 
 	public $spacialPercent;
 
-	public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent)
-	{
-
-		$result = array();
-		$criteria = new CDbCriteria();
-		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent , t.totalIncVAT as totalIncVAT ";
-		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderId = t.orderId ";
-		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId AND type in (" . self::ORDER_TYPE_CART . "," . self::ORDER_TYPE_MYFILE_TO_CART . " ) ";
-		if(isset(Yii::app()->user->id))
-		{
-			$criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
-		}
-		else
-		{
-			$daiibuy = new DaiiBuy();
-			$daiibuy->loadCookie();
-			$criteria->condition .= " AND t.token ='" . $daiibuy->token . "'";
-		}
-
-		$models = $this->findAll($criteria);
-//				throw new Exception(print_r($models,true));
-		$extraDiscount = 0;
-		foreach($models as $item)
-		{
-			$spacialValue = ($item->totalIncVAT * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
-			$result[$item->orderId] = array(
-				'extraDiscountPercent'=>$item->spacialPercent,
-				'extraDiscount'=>$spacialValue,
-			);
-
-			$extraDiscount += $spacialValue;
-		}
-
-		$result["totalExtraDiscount"] = $extraDiscount;
-		if(count($models) > 0)
-		{
-			return $result;
-		}
-		else
-		{
-			return null;
-		}
-	}
+	
 
 	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE, $orderGroupId = NULL)
 	{

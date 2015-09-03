@@ -97,9 +97,16 @@ class CartController extends MasterCheckoutController
 			}
 		}
         //        throw new Exception(print_r($desc, true));
-
-        $orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
-        $supplierModel = Supplier::model()->findByPk($id);
+		
+		if ($id == 5)
+		{
+			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(NULL, 0, $id, 100000, TRUE, NULL);
+		}
+		else
+		{
+			$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
+		}
+		$supplierModel = Supplier::model()->findByPk($id);
 		$this->render('cart', array(
 			'orders'=>$orders,
 			'orderSummary'=>$orderSummary,

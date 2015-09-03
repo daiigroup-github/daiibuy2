@@ -54,7 +54,7 @@ function payClick(period)
 	$('ul.setup-panel li a[href="#step-3-1"]').trigger('click');
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaHome/renderCondition',
+		url: baseUrl + '/myfile/ginzaHome/renderCondition',
 //		dataType: 'json',
 		data: $("#payForm" + period).serialize(),
 		success: function (data) {
@@ -114,7 +114,7 @@ $('#furniture1Next').live('click', function () {
 	{
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'index.php/myfile/ginzaHome/furnitureColor',
+			url: baseUrl + '/myfile/ginzaHome/furnitureColor',
 //			dataType: 'json',
 			data: {'furnitureGroupId': funitureGroupId, 'orderGroupId': $("#orderGroupId").val()},
 			success: function (data) {
@@ -146,7 +146,7 @@ $('#furniture2Next').live('click', function () {
 	{
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'index.php/myfile/ginzaHome/furnitureItem',
+			url: baseUrl + '/myfile/ginzaHome/furnitureItem',
 //			dataType: 'json',
 			data: {'furnitureId': funitureId},
 			success: function (data) {
@@ -170,7 +170,7 @@ function showFurnitureItemSub(furnitureItemId)
 {
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaHome/furnitureItemSub',
+		url: baseUrl + '/myfile/ginzaHome/furnitureItemSub',
 		dataType: 'json',
 		data: {'furnitureItemId': furnitureItemId},
 		success: function (data) {

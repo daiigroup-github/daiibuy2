@@ -497,6 +497,7 @@ class GinzaTownController extends MasterMyFileController
 		$orderModel->createDateTime = new CDbExpression("NOW()");
 		if($orderModel->save())
 		{
+			$totalIncVat = 0.00;
 			$orderId = Yii::app()->db->lastInsertID;
 			foreach($datas["OrderItems"]["brandModelId"] as $k=> $v)
 			{
@@ -552,6 +553,7 @@ class GinzaTownController extends MasterMyFileController
 
 							$orderItem->total += $orderItemOption->total;
 							$orderItem->save(FALSE);
+							$totalIncVat = $totalIncVat + $orderItem->total;
 						}
 						else
 						{
@@ -565,6 +567,9 @@ class GinzaTownController extends MasterMyFileController
 				}
 			}
 		}
+
+		$orderModel->totalIncVAT = $totalIncVat;
+		$orderModel->save(false);
 
 		return $orderModel;
 	}
