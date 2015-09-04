@@ -950,6 +950,7 @@ class Order extends OrderMaster
 
 	public function sumOrderTotalBySupplierId($supplierId = NULL)
 	{
+
 		$res = [];
 		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
 		$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
@@ -995,14 +996,17 @@ class Order extends OrderMaster
 				$noOfBuy +=$item->quantity;
 			}
 		}
+//                                            throw new Exception(print_r($noOfBuy,true));
+
 		if(!isset(Yii::app()->user->id))
 		{
 
 			if($supplierId == 4 || $supplierId == 5)
 			{
 				$noOfUnits = $this->countGinzaHomeAndGinzaTownUnits();
-//				throw new Exception(print_r($noOfBuy,true));
+//				throw new Exception(print_r($noOfUnits,true));
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits + $noOfBuy);
+                                
 			}
 			else
 			{
@@ -1044,9 +1048,10 @@ class Order extends OrderMaster
 //			}
 //			if($supplierId == 4 || $supplierId == 5)
 //			{
+                                
                                 $noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
 
-                //				throw new Exception(print_r($noOfUnitsBuy.', '. $noOfBuy,true));
+//                				throw new Exception(print_r($noOfUnitsBuy,true));
                 $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
 			}
 			else
@@ -1085,7 +1090,7 @@ class Order extends OrderMaster
 			$grandTotal -=$extraDiscountArray["totalExtraDiscount"];
 			$res["extraDiscount"] = number_format($extraDiscountArray["totalExtraDiscount"], 2);
 			$res["extraDiscountArray"] = $extraDiscountArray;
-			$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
+			$res['totalPostExtraDiscount'] = number_format($totalPostSupplierRangeDiscount, 2);
 		}
 		$res['grandTotal'] = number_format($grandTotal, 2);
 //		throw new Exception(print_r($res, true));
@@ -1126,7 +1131,7 @@ class Order extends OrderMaster
 		{
 			$noOfBuy = 0;
 //			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3"); // Discount when confirm by finance admin
-			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null ");
+			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null and status > 2 ");
 			if(isset($ogs) && count($ogs) > 0)
 			{
 				foreach($ogs as $og)
@@ -1140,11 +1145,14 @@ class Order extends OrderMaster
 					}
 				}
 			}
-			$sumAll = $noOfBuy;
+//			$sumAll = $noOfBuy;
 		}
+//                throw new Exception(print_r($noOfBuy,true));
+                if($noOfBuy>1)
+                    $useDiscount = TRUE;
 		if($useDiscount)
 		{
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumAll);
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy+1);
 		}
 		else
 		{

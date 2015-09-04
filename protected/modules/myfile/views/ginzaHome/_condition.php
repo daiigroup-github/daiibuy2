@@ -115,9 +115,15 @@
 								<tr>
 									<td>ชนิดบ้าน </td>
 									<td><?php
+                                                                        
+//                                                                                                                                    throw new Exception(print_r($category2ToProduct->brandModelId,true));
 										echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
-										$category2ToProduct = Category2ToProduct::model()->find("productId = " . $model->orders[0]->orderItems[0]->productId);
+										$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $model->orders[0]->orderItems[0]->productId . ' order by productId DESC');
+//                                                                                throw new Exception(print_r($category2ToProducts[1]->category1Id,true));
+                                                                                $category2ToProduct = isset($category2ToProducts[1])? $category2ToProducts[1] : $category2ToProducts[0];
+//                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
+                                                                                $cate2subCate = CategoryToSub::model()->find('subCategoryId = '. $category2ToProduct->category1Id);
 										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'id'=>'brandModelId',
@@ -140,8 +146,8 @@
 								<tr>
 									<td>รูปแบบ</td>
 									<td><?php
-										echo CHtml::dropDownList("styleId", $model->orders[0]->orderItems[0]->styleId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
-											'prompt'=>'-- เลือกแบบบ้าน --',
+										echo CHtml::dropDownList("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $category2ToProduct->category1Id, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
+											'prompt'=>'-- เลือก Style --',
 											'id'=>'styleId'
 											,
 											'ajax'=>array(
@@ -164,8 +170,8 @@
 								<tr>
 									<td>แบบบ้าน</td>
 									<td><?php
-										if (isset($model->orders[0]->orderItems[0]->styleId))
-											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $model->orders[0]->orderItems[0]->styleId), array(
+//										if (isset($model->orders[0]->orderItems[0]->styleId))
+											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $category2ToProduct->category1Id), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
 												'type'=>'POST',

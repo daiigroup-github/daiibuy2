@@ -1177,7 +1177,8 @@ class StepController extends MasterCheckoutController
 		try
 		{
 			$oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
-			$cat2ToProduct = Category2ToProduct::model()->find("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId);
+			$cat2ToProducts = Category2ToProduct::model()->findAll("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId. ' ORDER BY productId DESC');
+                        $cat2ToProduct = isset($cat2ToProducts[1])? $cat2ToProducts[1] : $cat2ToProducts[0] ;
 			$models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
 				":brandId"=>$cat2ToProduct->brandId,
 				':brandModelId'=>$cat2ToProduct->brandModelId,
@@ -1199,6 +1200,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
 				$orderGroup->parentId = isset($newOrderGroupId) ? $newOrderGroupId : $orderGroupId;
 				$orderGroup->status = 0;
+                                
 //Distributor Discount & Spacial Project Discount
 				if(isset($orderSummary['distributorDiscountPercent']))
 				{
@@ -1212,6 +1214,7 @@ class StepController extends MasterCheckoutController
 					$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
 				}
 //Distributor Discount & Spacial Project Discount
+//                                throw new Exception(print_r($orderSummary,true));
 
 				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
 				$orderGroup->vatValue = $orderGroup->calVatValue();

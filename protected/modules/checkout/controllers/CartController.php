@@ -68,7 +68,7 @@ class CartController extends MasterCheckoutController
 					$desc[$i]['detail'] = str_replace('{{pile}}', isset($categoryStakeProvinceModel->stake) ? $categoryStakeProvinceModel->stake : "", isset($categoryToSub->payCondition) ? $categoryToSub->payCondition : "");
 //					throw new Exception(print_r($desc[$i]['title'], true));
 					$j=1;
-					$category2ToProduct =$orderItem->product->category2ToProducts[0];
+					$category2ToProduct = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1] :$orderItem->product->category2ToProducts[0];
 					$brandId = $category2ToProduct->brandId;
 					$brandModelId = $category2ToProduct->brandModelId;
 					$category1Id = $category2ToProduct->category1Id;
