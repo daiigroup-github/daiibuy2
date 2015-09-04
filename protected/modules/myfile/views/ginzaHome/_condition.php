@@ -146,7 +146,11 @@
 								<tr>
 									<td>รูปแบบ</td>
 									<td><?php
-										echo CHtml::dropDownList("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $category2ToProduct->category1Id, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
+//                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
+										echo CHtml::dropDownList("styleId", 
+                                                                                        isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, 
+                                                                                        ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), 
+                                                                                        array(
 											'prompt'=>'-- เลือก Style --',
 											'id'=>'styleId'
 											,
@@ -171,7 +175,7 @@
 									<td>แบบบ้าน</td>
 									<td><?php
 //										if (isset($model->orders[0]->orderItems[0]->styleId))
-											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $category2ToProduct->category1Id), array(
+											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
 												'type'=>'POST',
@@ -216,6 +220,7 @@
 								<tr>
 									<td>สี</td>
 									<td><?php
+//                                                                                throw new Exception(print_r($model->orders[0]->orderItems[0],true));
 										echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
 											'prompt'=>'-- เลือกสี --'));
 										?></td>
