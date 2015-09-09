@@ -6,7 +6,7 @@ $('#addToCartGinzaHome').live('click', function () {
 	if (confirm('Add To Cart?')) {
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + '/ginzaTown/product/addToCart',
+			url: baseUrl + '/ginzatown/product/addToCart',
 			dataType: 'json',
 			data: $('#ginzaHomeForm').serialize(),
 			success: function (data) {
@@ -29,7 +29,7 @@ $('#addToCartGinzaTown').live('click', function () {
 	if (confirm('Add To Cart?')) {
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + '/ginzaTown/product/addToCart',
+			url: baseUrl + '/ginzatown/product/addToCart',
 			dataType: 'json',
 			data: $('#ginzaHomeForm').serialize(),
 			success: function (data) {
@@ -54,7 +54,7 @@ function payClick(period)
 	$('ul.setup-panel li a[href="#step-3-1"]').trigger('click');
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaTown/renderCondition',
+		url: baseUrl + '/myfile/ginzatown/renderCondition',
 //		dataType: 'json',
 		data: $("#payForm" + period).serialize(),
 		success: function (data) {
@@ -114,7 +114,7 @@ $('#furniture1Next').live('click', function () {
 	{
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'index.php/myfile/ginzaTown/furnitureColor',
+			url: baseUrl + '/myfile/ginzaTown/furnitureColor',
 //			dataType: 'json',
 			data: {'furnitureGroupId': funitureGroupId, 'orderGroupId': $("#orderGroupId").val()},
 			success: function (data) {
@@ -146,7 +146,7 @@ $('#furniture2Next').live('click', function () {
 	{
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + 'index.php/myfile/ginzaTown/furnitureItem',
+			url: baseUrl + '/myfile/ginzaTown/furnitureItem',
 //			dataType: 'json',
 			data: {'furnitureId': funitureId},
 			success: function (data) {
@@ -170,7 +170,7 @@ function showFurnitureItemSub(furnitureItemId)
 {
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaTown/furnitureItemSub',
+		url: baseUrl + '/myfile/ginzaTown/furnitureItemSub',
 		dataType: 'json',
 		data: {'furnitureItemId': furnitureItemId},
 		success: function (data) {
@@ -230,7 +230,7 @@ $('#nextCreate2').live('click', function () {
 	{
 		$.ajax({
 			type: 'POST',
-			url: baseUrl + '/index.php/myfile/ginzaTown/prepareMyfileItem',
+			url: baseUrl + '/myfile/ginzaTown/prepareMyfileItem',
 //			dataType: 'json',
 			data: $("#ginzatown-form").serialize(),
 			success: function (data) {
@@ -262,7 +262,7 @@ $('#backCreate3').live('click', function () {
 $('#finishCreate3').live('click', function () {
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaTown/finish',
+		url: baseUrl + '/myfile/ginzaTown/finish',
 		dataType: 'json',
 		data: $("#ginzatown-form").serialize(),
 		success: function (data) {
@@ -286,7 +286,7 @@ $('#finishCreate3').live('click', function () {
 $('#addToCartCreate3').live('click', function () {
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaTown/addToCart',
+		url: baseUrl + '/myfile/ginzaTown/addToCart',
 		dataType: 'json',
 		data: {'orderId': $("#orderId").val()},
 		success: function (data) {
@@ -308,7 +308,7 @@ $('#addToCartCreate3').live('click', function () {
 $('#requestSpecialCreate3').live('click', function () {
 	$.ajax({
 		type: 'POST',
-		url: baseUrl + 'index.php/myfile/ginzaTown/requestGinzatownSpacialProject',
+		url: baseUrl + '/myfile/ginzaTown/requestGinzatownSpacialProject',
 		dataType: 'json',
 		data: {'orderId': $("#orderId").val()},
 		success: function (data) {

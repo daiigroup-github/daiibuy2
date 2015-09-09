@@ -950,7 +950,6 @@ class Order extends OrderMaster
 
 	public function sumOrderTotalBySupplierId($supplierId = NULL)
 	{
-
 		$res = [];
 		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
 		$params = [':supplierId'=>isset($supplierId) ? $supplierId : $this->supplierId];
@@ -1127,7 +1126,7 @@ class Order extends OrderMaster
 		}
 		$sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
 		$sumAll = $sumTotal + $sumLastTwelveMonth;
-		if($supplierId == 4)
+		if($supplierId == 4 || $supplierId == 5)
 		{
 			$noOfBuy = 0;
 //			$ogs = OrderGroup::model()->findAll("supplierId =" . $supplierId . $user . " AND parentId is null AND status =3"); // Discount when confirm by finance admin
