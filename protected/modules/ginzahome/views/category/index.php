@@ -25,7 +25,7 @@ $this->breadcrumbs = array(
 
 			<?php
 			$category2ToProduct = Category2ToProduct::model()->find("category1Id =" . $category->categoryId);
-			if(count($category2ToProduct) > 0):
+if(count($category2ToProduct) > 0):
 				?>
 				<div class="page-header"><h1><?php echo $category->title; ?> :: Spec</h1></div>
 				<div class="row">
@@ -45,8 +45,14 @@ $this->breadcrumbs = array(
 				<table class="table table-bordered text-center ginzahome-compare">
 					<tr>
 						<td>Type</td>
-						<?php foreach($category->subCategorys as $subCategory): ?>
-							<td style="width: 20%"><?php echo $subCategory->title; ?></td>
+							<?php
+							$cate2Subs = CategoryToSub::model()->findAll('categoryId = ' . $category->categoryId . ' order by sortOrder');
+
+							foreach ($cate2Subs as $cate2Sub):
+								$subCategory = Category::model()->findByPk($cate2Sub->subCategoryId);
+								?>
+
+								<td style="width: 20%"><?php echo $subCategory->title; ?></td>
 						<?php endforeach; ?>
 					</tr>
 					<tr>

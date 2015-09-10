@@ -47,8 +47,8 @@ $this->breadcrumbs = array(
 				$i = 0;
 				foreach($styles as $style):
 					$catToSubModels = CategoryToSub::model()->findAll(array(
-						'condition'=>'categoryId=:categoryId AND brandModelId=:brandModelId',
-						'params'=>array(
+						'condition' => 'categoryId=:categoryId AND brandModelId=:brandModelId order by sortOrder',
+		'params'=>array(
 							':categoryId'=>$style->category->categoryId,
 							':brandModelId'=>$brandModelId
 						),
