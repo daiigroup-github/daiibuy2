@@ -109,22 +109,29 @@
 			<div class="row hide" id="changHouseDetail2">
 				<div class="col-md-12">
 					<form id="payForm2"  method="POST" class='form-horizontal' action="<?php echo Yii::app()->createUrl("/checkout/step/myfileGinzaStep?orderGroupId=" . $child1->orderGroupId); ?>">
-						รายละเอียดบ้านตามที่ลูกค้าเลือกปัจจุบัน
+						รายละเอียดบ้านตามที่ลูกค้าเลือกปัจจุบัน <?php echo count($child1->supPay) > 0 ? "<span style='color:red'> (ไม่สามารถเปลี่ยนแปลงรายการสินค้าได้เนื่องจากลูกค้าได้ชำระงวดที่ 2 ไปแล้วบางส่วน)</span>" : ""; ?>
 						<table class="table table-bordered">
 							<tbody>
 								<tr>
 									<td>ชนิดบ้าน </td>
 									<td><?php
-                                                                        
-//                                                                                                                                    throw new Exception(print_r($category2ToProduct->brandModelId,true));
-										echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
+						//																						throw new Exception(print_r(count($child1->supPay), true));
+										//
+										//
+										$isChangeHome = TRUE;
+										if (count($child1->supPay) > 0)
+											$isChangeHome = FALSE;
+//										throw new Exception(print_r($model->orders[0]->orderItems[0]->productId, true));
+											echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
 										$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $model->orders[0]->orderItems[0]->productId . ' order by productId DESC');
 //                                                                                throw new Exception(print_r($category2ToProducts[1]->category1Id,true));
                                                                                 $category2ToProduct = isset($category2ToProducts[1])? $category2ToProducts[1] : $category2ToProducts[0];
 //                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
-                                                                                $cate2subCate = CategoryToSub::model()->find('subCategoryId = '. $category2ToProduct->category1Id);
-										echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
+                                                                                $cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
+										if ($isChangeHome)
+										{
+											echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'id'=>'brandModelId',
 											'ajax'=>array(
@@ -141,13 +148,38 @@
 										//$("#billingDistrict").prop("disabled", true);
 										 }'))
 										);
+										}
+										else
+										{
+											echo CHtml::hiddenField("brandModelId", $category2ToProduct->brandModelId);
+											echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
+												'prompt' => '-- เลือกแบบบ้าน --',
+												'id' => 'brandModelId',
+												'disabled' => 'true',
+												'ajax' => array(
+													'type' => 'POST',
+													'data' => array(
+														'brandModelId' => 'js:this.value'),
+													'url' => $this->createUrl('/myfile/ginzaHome/findStyle'),
+													'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#styleId").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }'))
+											);
+										}
 										?></td>
 								</tr>
 								<tr>
 									<td>รูปแบบ</td>
 									<td><?php
 //                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
-										echo CHtml::dropDownList("styleId", 
+										if ($isChangeHome)
+										{
+											echo CHtml::dropDownList("styleId",
                                                                                         isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, 
                                                                                         ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), 
                                                                                         array(
@@ -169,12 +201,43 @@
 										//$("#billingDistrict").prop("disabled", true);
 										 }')
 										));
+										}
+										else
+										{
+											echo CHtml::hiddenField("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId);
+										echo CHtml::dropDownList("styleId",
+											isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId,
+											ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId),
+											array(
+											'prompt' => '-- เลือก Style --',
+											'disabled' => 'true',
+												'id' => 'styleId'
+											,
+											'ajax' => array(
+											'type' => 'POST',
+											'data' => array(
+											'categoryId' => 'js:this.value',
+											'brandModelId' => 'js:$("#brandModelId").val()'),
+											'url' => $this->createUrl('/myfile/ginzaHome/findHouseModel'),
+											'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category1Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')
+											));
+										}
 										?></td>
 								</tr>
 								<tr>
 									<td>แบบบ้าน</td>
 									<td><?php
-//										if (isset($model->orders[0]->orderItems[0]->styleId))
+										//										if (isset($model->orders[0]->orderItems[0]->styleId))
+										//throw new Exception(print_r($category2ToProduct->category1Id, true));
+										if ($isChangeHome)
+										{
 											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
@@ -191,13 +254,37 @@
 										//$("#billingDistrict").html("");
 										//$("#billingDistrict").prop("disabled", true);
 										 }')));
+										}
+										else
+										{
+											echo CHtml::hiddenField("category1Id", $category2ToProduct->category1Id);
+											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
+												'prompt' => '-- เลือกแบบบ้าน --',
+												'disabled' => 'true',
+												'ajax' => array(
+													'type' => 'POST',
+													'data' => array(
+														'category1Id' => 'js:this.value',
+														'brandModelId' => 'js:$("#brandModelId").val()'),
+													'url' => $this->createUrl('/myfile/ginzaHome/findHouseSeries'),
+													'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category2Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')));
+										}
 										?></td>
 								</tr>
 								<tr>
 									<td>ซีรีส์</td>
 									<td>
 										<?php
-										echo CHtml::dropDownList("category2Id", $category2ToProduct->category2Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
+										if ($isChangeHome)
+										{
+											echo CHtml::dropDownList("category2Id", $category2ToProduct->category2Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
 												'type'=>'POST',
@@ -214,6 +301,29 @@
 										//$("#billingDistrict").html("");
 										//$("#billingDistrict").prop("disabled", true);
 										 }')));
+										}
+										else
+										{
+											echo CHtml::hiddenField("category2Id", $category2ToProduct->category2Id);
+											echo CHtml::dropDownList("category2Id", $category2ToProduct->category2Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
+												'prompt' => '-- เลือกแบบบ้าน --',
+												'disabled' => 'true',
+												'ajax' => array(
+													'type' => 'POST',
+													'data' => array(
+														'category2Id' => 'js:this.value',
+														'category1Id' => 'js:$("#category1Id").val()',
+														'brandModelId' => 'js:$("#brandModelId").val()'),
+													'url' => $this->createUrl('/myfile/ginzaHome/findHouseColor'),
+													'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#productOptionId").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')));
+										}
 										?>
 									</td>
 								</tr>
@@ -221,15 +331,33 @@
 									<td>สี</td>
 									<td><?php
 //                                                                                throw new Exception(print_r($model->orders[0]->orderItems[0],true));
-										echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
-											'prompt'=>'-- เลือกสี --'));
+										if ($isChangeHome)
+										{
+											echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
+											'prompt' => '-- เลือกสี --'));
+										}
+										else
+										{
+											echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
+												'prompt' => '-- เลือกสี --',
+												'disabled' => 'true'));
+										}
 										?></td>
 								</tr>
 								<tr>
 									<td>จังหวัด</td>
 									<td><?php
-										echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
-											'prompt'=>'-- เลือกจังหวัด --'));
+										if ($isChangeHome)
+										{
+											echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
+											'prompt' => '-- เลือกจังหวัด --'));
+										}
+										else
+										{
+											echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
+												'prompt' => '-- เลือกจังหวัด --',
+												'disabled' => 'true'));
+										}
 										?></td>
 								</tr>
 							</tbody>

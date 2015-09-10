@@ -1,4 +1,4 @@
-var baseUrl = (window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin;
+var baseUrl = (window.location.host === '192.168.56.13') ? 'http://192.168.56.13/daiibuy2/' : window.location.origin;
 //----Include-Function----
 function include(url) {
 	"use strict";
