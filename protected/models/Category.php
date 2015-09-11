@@ -209,4 +209,21 @@ class Category extends CategoryMaster {
         return $res;
     }
 
+	public function findAllCategoryStakeProvinceTemplateArray()
+	{
+		$cspModel = CategoryStakeProvince::model()->findAll('status = 1 group by categoryId');
+		$categoryIds = "";
+		$i = 1;
+		foreach ($cspModel as $csp)
+		{
+			$categoryIds .= $csp->categoryId;
+			if ($i < count($cspModel))
+				$categoryIds .= ", ";
+			$i++;
+		}
+		$res = Category::model()->findAll('supplierId = 4 and categoryId in (' . $categoryIds . ')');
+//		throw new Exception(print_r($res, true));
+		return $res;
+	}
+
 }

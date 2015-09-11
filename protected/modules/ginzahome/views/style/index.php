@@ -30,7 +30,7 @@ $this->breadcrumbs = array(
 					?>
 					<li role="presentation" class="<?php echo ($i == 0) ? 'active' : ''; ?>">
 						<a href="#style_<?php echo $i; ?>" aria-controls="style_<?php echo $i; ?>" role="tab" data-toggle="tab"><?php
-							echo $style->category->title;
+							echo $style->title;
 							;
 							?></a>
 					</li>
@@ -49,25 +49,26 @@ $this->breadcrumbs = array(
 					$catToSubModels = CategoryToSub::model()->findAll(array(
 						'condition' => 'categoryId=:categoryId AND brandModelId=:brandModelId order by sortOrder',
 		'params'=>array(
-							':categoryId'=>$style->category->categoryId,
+							':categoryId'=>$style->categoryId,
 							':brandModelId'=>$brandModelId
 						),
 					));
+				//	throw new Exception(print_r($style->category->categoryId, true));
 					?>
 					<div role="tabpanel" class="tab-pane <?php echo ($i == 0) ? 'active' : ''; ?>" id="style_<?php echo $i; ?>">
 
-						<?php if(isset($style->category->description) && !empty($style->category->description)):?>
+						<?php if(isset($style->description) && !empty($style->description)):?>
 						<div class="row">
 							<div class="col-md-12">
-								<p class="text-center alert alert-info"><?php echo $style->category->description;?></p>
-							</div>
+								<p class="text-center alert alert-info"><?php echo $style->description; ?></p>
+									</div>
 						</div>
 						<?php endif;?>
 
 						<div class="row">
 							<?php foreach($catToSubModels as $catToSubModel): ?>
 								<div class="col-md-4">
-									<a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->category->categoryId); ?>">
+									<a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
 										<img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
 										<p><?php echo $catToSubModel->subCategory->title; ?></p>
 										<p><?php echo $catToSubModel->subCategory->description; ?></p>

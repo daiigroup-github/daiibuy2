@@ -14,14 +14,24 @@ class StyleController extends MasterGinzahomeController
 				':url'=>$this->module->id)));
 
 		//find all styles
-		$styles = CategoryToSub::model()->findAll(array(
-			'condition'=>'brandModelId=:brandModelId AND isTheme=1',
-			'params'=>array(
-				':brandModelId'=>$id,
-			),
-			'order'=>'sortOrder',
-			'select'=>'distinct categoryId'
+		$categoryIds = CategoryToSub::model()->findAll(array(
+			'condition' => 'brandModelId=' . $id . ' AND isTheme=1',
+			'order' => 'sortOrder',
+			'select' => 'distinct categoryId'
 		));
+		$catText = "";
+		$i = 1;
+		foreach ($categoryIds as $cat)
+		{
+			$catText = $catText . $cat->categoryId;
+			if ($i < count($categoryIds))
+				$catText .= ", ";
+			$i++;
+		}
+		$styles = Category::model()->findAll('categoryId in (' . $catText . ' ) order by sortOrder');
+
+
+
 
 		$this->render('index', array(
 			'supplierModel'=>$supplierModel,

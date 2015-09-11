@@ -12,7 +12,34 @@ $form = $this->beginWidget('CActiveForm', array(
 	),
 	));
 ?>
-<table class="table table-bordered table-hover">
+<div class="span10 offset1 alert alert-info">
+	<div class="form-group">
+		<div class="control-label col-lg-3">เลือก Template :</div>
+		<div class="col-lg-9">
+			<?php
+		echo Select2::dropDownList("categoryId", "categoryId", chtml::listData(Category::model()->findAllCategoryStakeProvinceTemplateArray(), "categoryId", "title"), array(
+			'prompt' => ' -- เลือกต้นแบบบ้าน --',
+	'id' => 'categoryId',
+	'style' => 'max-width:400px;
+	min-width:300px',
+	'select2Options' => array(
+		'maximumSelectionSize' => 1,),));
+?>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-lg-12">
+			<?php
+			echo CHtml::button("Replace", array(
+				'class' => 'btn btn-success btn-xs col-lg-offset-3',
+				'onclick' => 'replaceStakeByCategoryId()'))
+			?>
+		</div>
+	</div>
+</div>
+
+
+<table class="table table-bordered table-hover" id="stake_table">
 	<thead>
 		<tr class="alert alert-warning">
 			<th>จังหวัด</th>
@@ -51,3 +78,29 @@ $form = $this->beginWidget('CActiveForm', array(
 	</div>
 </div>
 <?php $this->endWidget(); ?>
+
+<script>
+				function replaceStakeByCategoryId()
+				{
+					$.ajax({
+						type: "POST",
+						dataType: "JSON",
+						url: '<?php echo Yii::app()->createUrl("backoffice/category/replaceStakeByCategoryId"); ?>',
+						beforeSend: function () {
+							if ($("#categoryId").val() == "")
+							{
+								alert("Please Choose Category");
+								return false;
+							}
+//							alert($("#furnitureGroupId").val());
+						},
+						data: {categoryId: $("#categoryId").val()},
+						success: function (data) {
+							if (data.status)
+							{
+								$.fn.yiiGridView.update("stake_table");
+							}
+						}
+					});
+				}
+</script>
