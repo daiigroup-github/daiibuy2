@@ -178,7 +178,9 @@ class ProductController extends MasterGinzahomeController
 
 		$tabs = array();
 		$j = 0;
-		foreach($productSortOrder1->productSpecGroupsTypeDetails as $detail)
+
+		$productOptionGroupDetails = ProductSpecGroup::model()->findAll('productId = ' . $productSortOrder1->productId . ' and parentId = 0 order by sortOrder');
+		foreach ($productOptionGroupDetails as $detail)
 		{
 			$tabs[$j] = array(
 				'id'=>$detail->productSpecGroupId,

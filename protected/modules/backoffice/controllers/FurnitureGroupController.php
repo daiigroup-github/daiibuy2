@@ -167,6 +167,114 @@ class FurnitureGroupController extends MasterBackofficeController
 		));
 	}
 
+	public function actionSaveChoosenFurniture()
+	{
+		if (isset($_POST['categoryId']))
+			$categoryId = $_POST['categoryId'];
+		if (isset($_POST['category2Id']))
+			$category2Id = $_POST['category2Id'];
+//		throw new Exception(print_r($_POST['furnitureGroupId'], true));
+		if (isset($_POST['furnitureGroupId']))
+		{
+				$oldFurnitureGroupId = $_POST['furnitureGroupId'];
+	//				throw new Exception(print_r($categoryId . ", " . $category2Id . ", " . $oldFurnitureGroupId, true));
+
+			$flag = false;
+				$transaction = Yii::app()->db->beginTransaction();
+				$oldModel = FurnitureGroup::model()->findByPk($oldFurnitureGroupId);
+	//			throw new Exception(print_r($oldModel, true));
+			$model = new FurnitureGroup;
+				$model->attributes = $oldModel->attributes;
+				$model->furnitureGroupId = NULL;
+				$model->categoryId = $categoryId;
+				$model->category2Id = $category2Id;
+				$model->createDateTime = new CDbExpression("NOW()");
+				$model->updateDateTime = new CDbExpression("NOW()");
+			if ($model->save())
+			{
+				$flag = true;
+				$newId = Yii::app()->db->lastInsertID;
+				$furnitureModels = Furniture::model()->findAll('furnitureGroupId = ' . $oldFurnitureGroupId);
+
+				foreach ($furnitureModels as $furModel)
+				{
+//					throw new Exception(print_r($furModel, true));
+					$furnitureModel = new Furniture;
+					$furnitureModel->attributes = $furModel->attributes;
+					$furnitureModel->furnitureGroupId = $newId;
+					$furnitureModel->createDateTime = new CDbExpression("NOW()");
+					$furnitureModel->updateDateTime = new CDbExpression("NOW()");
+					if ($furnitureModel->save())
+					{
+						$flag = true;
+						$newFurId = Yii::app()->db->lastInsertID;
+						$furnitureItemModels = FurnitureItem::model()->findAll('furnitureId = ' . $furModel->furnitureId);
+
+						foreach ($furnitureItemModels as $furItemModel)
+						{
+							$furnitureItemModel = new FurnitureItem;
+							$furnitureItemModel->attributes = $furItemModel->attributes;
+							$furnitureItemModel->furnitureId = $newFurId;
+							$furnitureItemModel->createDateTime = new CDbExpression("NOW()");
+							$furnitureItemModel->updateDateTime = new CDbExpression("NOW()");
+							if ($furnitureItemModel->save())
+							{
+								$flag = true;
+								$newFurItemId = Yii::app()->db->lastInsertID;
+								$furnitureItemSubModels = FurnitureItemSub::model()->findAll('furnitureItemId = ' . $furItemModel->furnitureItemId);
+//								throw new Exception(print_r($furnitureItemSubModels, true));
+
+								foreach ($furnitureItemSubModels as $furItemSubModel)
+								{
+									$furnitureItemSubModel = new FurnitureItemSub;
+									$furnitureItemSubModel->attributes = $furItemSubModel->attributes;
+									$furnitureItemSubModel->furnitureItemId = $newFurItemId;
+									$furnitureItemSubModel->createDateTime = new CDbExpression("NOW()");
+									$furnitureItemSubModel->updateDateTime = new CDbExpression("NOW()");
+									if ($furnitureItemSubModel->save())
+									{
+										$flag = true;
+									}
+									else
+									{
+										$flag = false;
+										throw new Exception(print_r("fail item sub", true));
+									}
+								}
+							}
+							else
+							{
+
+								$flag = false;
+								throw new Exception(print_r("fail item", true));
+							}
+						}
+					}
+					else
+					{
+						$flag = false;
+					}
+				}
+			}
+				else
+				{
+					$flag = false;
+				}
+				if ($flag)
+				{
+					$transaction->commit();
+					$result["status"] = true;
+					echo CJSON::encode($result);
+				}
+				else
+				{
+					$transaction->rollback();
+					$result["status"] = false;
+					echo CJSON::encode($result);
+				}
+		}
+	}
+
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

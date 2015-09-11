@@ -19,14 +19,14 @@ $this->menu = array(
 			'create')),
 );
 
-Yii::app()->clientScript->registerScript('search', "
-$('#search-form').submit(function(){
-$('#furniture-group-grid').yiiGridView('update', {
-data: $(this).serialize()
-});
-return false;
-});
-");
+//Yii::app()->clientScript->registerScript('search', "
+//$('#search-form').submit(function(){
+//$('#furniture-group-grid').yiiGridView('update', {
+//data: $(this).serialize()
+//});
+//return false;
+//});
+//");
 ?>
 
 <div class="panel panel-default">
@@ -96,6 +96,82 @@ return false;
 	));
 	?>
 
+
+
+	<div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Add New Furniture Group or Select Existing
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6" style="border-right: 1px solid">
+                            <h3>Choose Product..</h3>
+                            <div class="form-group">
+                                <div class="control-label col-lg-3">Furniture</div>
+                                <div class="col-lg-9">
+									<?php
+	//									throw new Exception(print_r($_GET["category2Id"], true));
+									echo Select2::dropDownList("furnitureGroupId", "", CHtml::listData(FurnitureGroup::model()->findAll('category2Id = ' . $_GET["categoryId"]), "furnitureGroupId", "title"), array(
+				'prompt' => ' --เลือก Furniture Set --',
+				'id' => 'furnitureGroupId',
+				'style' => 'max-width:400px;
+	min-width:300px',
+										'select2Options' => array(
+											'maximumSelectionSize' => 1,
+										),
+									));
+									?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-12">
+									<?php
+									echo CHtml::button("Save Choosen Furniture Set", array(
+				'class' => 'btn btn-success btn-xs col-lg-offset-3',
+										'onclick' => 'saveChooseFurniture()'))
+			?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 ">
+                            <h3>New Product</h3>
+							<?php
+							echo CHtml::link('<i class="icon-plus-sign"></i> Create', $this->createUrl("create?categoryId=" . $_GET["categoryId"] . "&category2Id=" . $_GET["category2Id"]), array(
+	'class' => 'btn btn-xs btn-primary'));
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+				function saveChooseFurniture()
+				{
+					$.ajax({
+						type: "POST",
+						dataType: "JSON",
+						url: '<?php echo Yii::app()->createUrl("backoffice/furnitureGroup/saveChoosenFurniture"); ?>',
+						beforeSend: function () {
+							if ($("#furnitureGroupId").val() == "")
+							{
+								alert("Please Choose Category");
+								return false;
+							}
+//							alert($("#furnitureGroupId").val());
+						},
+						data: {furnitureGroupId: $("#furnitureGroupId").val(), categoryId: <?php echo $_GET["categoryId"] ?>, category2Id: <?php echo $_GET["category2Id"] ?>},
+						success: function (data) {
+							if (data.status)
+							{
+								$.fn.yiiGridView.update("furniture-group-grid");
+							}
+						}
+					});
+				}
+			</script>
+        </div>
+    </div>
 </div>
 
 

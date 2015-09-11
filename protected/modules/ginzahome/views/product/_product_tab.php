@@ -45,8 +45,8 @@ $tabContent = '';
                         ?>
 
 						<?php
-						$detailChilds = ProductSpecGroup::model()->findAll("parentId = " . $tab["id"]);
-						foreach($detailChilds as $child):
+						$detailChilds = ProductSpecGroup::model()->findAll("parentId = " . $tab["id"] . " order by sortOrder");
+	foreach($detailChilds as $child):
 							?>
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-sm-12">
@@ -54,10 +54,22 @@ $tabContent = '';
 									<div class="carousel-heading no-margin">
 										<h4><?php echo $child->title; ?></h4>
 									</div>
-									<div class="row">
-										<?php foreach($child->productSpecs as $item):
-											?>
-											<div class="col-lg-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-md-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-sm-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?>">
+									
+											<?php
+											$x = 12;
+											foreach ($child->productSpecs as $item):
+												if (isset($item->spanWidth) && $item->spanWidth > 0)
+												{
+													if ($x == 12)
+													{
+														?>
+																			<div class="row">
+					<?php
+				}
+			}
+												?>
+												
+														<div class="col-lg-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-md-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-sm-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?>">
 
 													<h3><?php echo $item->title; ?></h3>
 													<?php if(isset($item->image)): ?>
@@ -71,16 +83,27 @@ $tabContent = '';
 														echo $item->videoEmbeded;
 														?></p>
 												<?php endif; ?>
-
 											</div>
 												<?php if(isset($item->description)): ?>
 													<div class="col-lg-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-md-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?> col-sm-<?php echo (isset($item->spanWidth) && $item->spanWidth > 0) ? " col-md-" . $item->spanWidth : "4"; ?>">
 													<?php echo $item->description; ?>
 													</div>
-												<?php endif; ?>
-											<?php // echo $child->description . "<br>";  ?>
-										<?php endforeach; ?>
-									</div>
+																<?php endif; ?>
+															
+																							<?php if (isset($item->spanWidth) && $item->spanWidth > 0)
+																							{
+															$x = $x - $item->spanWidth;
+															if ($x == 0)
+															{
+																?>
+																												</div>
+																<?php
+																$x = 12;
+															}
+														}
+																					endforeach;
+																					?>
+
 
 								</div>
 

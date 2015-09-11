@@ -60,32 +60,35 @@ class ProductSpec extends ProductSpecMaster
 
 		if(isset($this->searchText) && !empty($this->searchText))
 		{
-			$this->productSpecId = $this->searchText;
+//			$this->productSpecId = $this->searchText;
 			$this->productSpecGroupId = $this->searchText;
-			$this->title = $this->searchText;
-			$this->description = $this->searchText;
-			$this->image = $this->searchText;
-			$this->videoEmbeded = $this->searchText;
-			$this->sortOrder = $this->searchText;
-			$this->spanWidth = $this->searchText;
-			$this->ShowTitleType = $this->searchText;
-			$this->status = $this->searchText;
-			$this->createDateTime = $this->searchText;
-			$this->updateDateTime = $this->searchText;
+//			$this->title = $this->searchText;
+//			$this->description = $this->searchText;
+//			$this->image = $this->searchText;
+//			$this->videoEmbeded = $this->searchText;
+//			$this->sortOrder = $this->searchText;
+//			$this->spanWidth = $this->searchText;
+//			$this->ShowTitleType = $this->searchText;
+//			$this->status = $this->searchText;
+//			$this->createDateTime = $this->searchText;
+//			$this->updateDateTime = $this->searchText;
 		}
 
-		$criteria->compare('productSpecId', $this->productSpecId, true, 'OR');
-		$criteria->compare('productSpecGroupId', $this->productSpecGroupId, true, 'OR');
-		$criteria->compare('title', $this->title, true, 'OR');
-		$criteria->compare('description', $this->description, true, 'OR');
-		$criteria->compare('image', $this->image, true, 'OR');
-		$criteria->compare('videoEmbeded', $this->videoEmbeded, true, 'OR');
+		$criteria->compare('productSpecId', $this->productSpecId, false, 'OR');
+		$criteria->compare('productSpecGroupId', $this->productSpecGroupId, false, 'OR');
+		$criteria->compare('title', $this->title, false, 'OR');
+		$criteria->compare('description', $this->description, false, 'OR');
+		$criteria->compare('image', $this->image, false, 'OR');
+		$criteria->compare('videoEmbeded', $this->videoEmbeded, false, 'OR');
 		$criteria->compare('sortOrder', $this->sortOrder);
 		$criteria->compare('spanWidth', $this->spanWidth);
 		$criteria->compare('showTitleType', $this->showTitleType);
 		$criteria->compare('status', $this->status);
-		$criteria->compare('createDateTime', $this->createDateTime, true, 'OR');
-		$criteria->compare('updateDateTime', $this->updateDateTime, true, 'OR');
+		$criteria->compare('createDateTime', $this->createDateTime, false, 'OR');
+		$criteria->compare('updateDateTime', $this->updateDateTime, false, 'OR');
+
+//		throw new Exception(print_r($criteria, true));
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
