@@ -38,8 +38,8 @@ $form = $this->beginWidget('CActiveForm', array(
 	</div>
 </div>
 
-
-<table class="table table-bordered table-hover" id="stake_table">
+<div class="col-lg-12" id="stake_table">
+	<table class="table table-bordered table-hover">
 	<thead>
 		<tr class="alert alert-warning">
 			<th>จังหวัด</th>
@@ -65,7 +65,8 @@ $form = $this->beginWidget('CActiveForm', array(
 		endforeach;
 		?>
 	</tbody>
-</table>
+	</table>
+</div>
 <div class="form-group">
 	<div class="col-sm-offset-2 col-sm-9">
 		<?php
@@ -82,6 +83,8 @@ $form = $this->beginWidget('CActiveForm', array(
 <script>
 				function replaceStakeByCategoryId()
 				{
+
+//					alert($("#categoryId").val());s
 					$.ajax({
 						type: "POST",
 						dataType: "JSON",
@@ -98,8 +101,14 @@ $form = $this->beginWidget('CActiveForm', array(
 						success: function (data) {
 							if (data.status)
 							{
-								$.fn.yiiGridView.update("stake_table");
+								
+								$("#stake_table").html(data.stakeReplace);
+								alert("โหลดข้อมูลเสาจากบ้านต้นแบบเรียบร้อย!!!");
 							}
+							else
+			{
+				alert("ไม่สามารถดึงข้อมูลเสาจากบ้านต้นแบบได้");
+			}
 						}
 					});
 				}

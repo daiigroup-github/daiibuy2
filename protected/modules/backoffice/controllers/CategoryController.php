@@ -353,6 +353,26 @@ class CategoryController extends MasterBackofficeController
 		}
 	}
 
+	public function actionReplaceStakeByCategoryId()
+	{
+		$result = array();
+		$categoryId = $_POST["categoryId"];
+		$provinces = Province::model()->findAll();
+		if (isset($categoryId))
+		{
+			$result["status"] = TRUE;
+			$result["stakeReplace"] = $this->renderPartial("_stake_table", array(
+				'categoryId' => $categoryId,
+			'provinces' => $provinces), true);
+		}
+		else
+		{
+			$result["status"] = FALSE;
+		}
+
+		echo CJSON::encode($result);
+	}
+
 	public function actionStake()
 	{
 		$flag = true;
