@@ -31,11 +31,9 @@
  * @property string $taxNumber
  * @property string $parentId
  * @property string $partnerCode
+ * @property string $partnerDateTime
+ * @property integer $partnerType
  * @property string $createDateTime
- *
- * The followings are the available model relations:
- * @property Address[] $addresses
- * @property UserToSupplier[] $userToSuppliers
  */
 class UserMaster extends MasterCActiveRecord
 {
@@ -55,8 +53,8 @@ class UserMaster extends MasterCActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('status, approved, type', 'required'),
-			array('newsletter, status, approved, type, isFirstLogin, collectedPoint, collectedOrder', 'numerical', 'integerOnly'=>true),
+			array('firstname, lastname, email, telephone, fax, password, status, approved, type', 'required'),
+			array('newsletter, status, approved, type, isFirstLogin, collectedPoint, collectedOrder, partnerType', 'numerical', 'integerOnly'=>true),
 			array('firstname, lastname, telephone, fax', 'length', 'max'=>32),
 			array('email', 'length', 'max'=>96),
 			array('password', 'length', 'max'=>40),
@@ -67,11 +65,10 @@ class UserMaster extends MasterCActiveRecord
 			array('redirectURL', 'length', 'max'=>200),
 			array('taxNumber', 'length', 'max'=>45),
 			array('partnerCode', 'length', 'max'=>100),
-			array('cart, wishlist, description, logo, map, createDateTime', 'safe'),
-			array('createDateTime', 'default', 'value'=>new CDbExpression('NOW()'), 'on'=>'insert'),
+			array('cart, wishlist, description, logo, map, partnerDateTime, createDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('userId, firstname, lastname, email, telephone, fax, password, cart, wishlist, newsletter, ip, status, approved, token, type, isFirstLogin, description, logo, map, minimumOrder, referenceId, collectedPoint, collectedOrder, redirectURL, taxNumber, parentId, partnerCode, createDateTime', 'safe', 'on'=>'search'),
+			array('userId, firstname, lastname, email, telephone, fax, password, cart, wishlist, newsletter, ip, status, approved, token, type, isFirstLogin, description, logo, map, minimumOrder, referenceId, collectedPoint, collectedOrder, redirectURL, taxNumber, parentId, partnerCode, partnerDateTime, partnerType, createDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,8 +80,6 @@ class UserMaster extends MasterCActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'addresses' => array(self::HAS_MANY, 'Address', 'userId'),
-			'userToSuppliers' => array(self::HAS_MANY, 'UserToSupplier', 'userId'),
 		);
 	}
 
@@ -121,6 +116,8 @@ class UserMaster extends MasterCActiveRecord
 			'taxNumber' => 'Tax Number',
 			'parentId' => 'Parent',
 			'partnerCode' => 'Partner Code',
+			'partnerDateTime' => 'Partner Date Time',
+			'partnerType' => 'Partner Type',
 			'createDateTime' => 'Create Date Time',
 		);
 	}
@@ -142,38 +139,43 @@ class UserMaster extends MasterCActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-		$criteria->compare('LOWER(firstname)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(lastname)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(email)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(telephone)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(fax)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(password)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(cart)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(wishlist)',strtolower($this->searchText),true, 'OR');
+
+		$criteria->compare('userId',$this->userId,true);
+		$criteria->compare('firstname',$this->firstname,true);
+		$criteria->compare('lastname',$this->lastname,true);
+		$criteria->compare('email',$this->email,true);
+		$criteria->compare('telephone',$this->telephone,true);
+		$criteria->compare('fax',$this->fax,true);
+		$criteria->compare('password',$this->password,true);
+		$criteria->compare('cart',$this->cart,true);
+		$criteria->compare('wishlist',$this->wishlist,true);
 		$criteria->compare('newsletter',$this->newsletter);
-		$criteria->compare('LOWER(ip)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('ip',$this->ip,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('approved',$this->approved);
-		$criteria->compare('LOWER(token)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('token',$this->token,true);
 		$criteria->compare('type',$this->type);
 		$criteria->compare('isFirstLogin',$this->isFirstLogin);
-		$criteria->compare('LOWER(description)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(logo)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(map)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(minimumOrder)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(referenceId)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('logo',$this->logo,true);
+		$criteria->compare('map',$this->map,true);
+		$criteria->compare('minimumOrder',$this->minimumOrder,true);
+		$criteria->compare('referenceId',$this->referenceId,true);
 		$criteria->compare('collectedPoint',$this->collectedPoint);
 		$criteria->compare('collectedOrder',$this->collectedOrder);
-		$criteria->compare('LOWER(redirectURL)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(taxNumber)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('parentId',$this->parentId);
-		$criteria->compare('LOWER(partnerCode)',strtolower($this->searchText),true, 'OR');
-		$criteria->compare('LOWER(createDateTime)',strtolower($this->searchText),true, 'OR');
+		$criteria->compare('redirectURL',$this->redirectURL,true);
+		$criteria->compare('taxNumber',$this->taxNumber,true);
+		$criteria->compare('parentId',$this->parentId,true);
+		$criteria->compare('partnerCode',$this->partnerCode,true);
+		$criteria->compare('partnerDateTime',$this->partnerDateTime,true);
+		$criteria->compare('partnerType',$this->partnerType);
+		$criteria->compare('createDateTime',$this->createDateTime,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

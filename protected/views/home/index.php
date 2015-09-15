@@ -2,49 +2,51 @@
 /* @var $this HomeController */
 
 $this->breadcrumbs = array(
-    'Home',
+	'Home',
 );
 ?>
 
 <?php $this->renderPartial('//layouts/_ios_slider'); ?>
 
-    <div class="row">
-        <div class="col-md-12">
+<div class="row">
+	<div class="col-md-12">
 
-            <div class="row sidebar-box blue">
+		<div class="row sidebar-box blue">
 
-                <div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="col-lg-12 col-md-12 col-sm-12">
 
-                    <div class="carousel-heading no-margin">
-                        <h4>ผู้ผลิต</h4>
-                    </div>
+				<div class="carousel-heading no-margin">
+					<h4>ผู้ผลิต</h4>
+				</div>
 
-                    <div class="page-content">
+				<div class="page-content">
 
-                        <div class="row">
+					<div class="row">
 
-                            <div class="col-md-6">
-                                <?php echo $this->renderPartial('_supplier_box', array('supplier' => $suppliers[0])); ?>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <?php foreach ($suppliers as $k=>$supplier): ?>
-                                        <?php if ($k == 0) continue; ?>
-                                        <div class="col-md-6">
-                                            <?php echo $this->renderPartial('_supplier_box', array('supplier' => $supplier)); ?>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
+						<div class="col-md-6">
+							<?php echo $this->renderPartial('_supplier_box', array(
+								'supplier'=>$suppliers[0])); ?>
+						</div>
+						<div class="col-md-6">
+							<div class="row">
+								<?php foreach($suppliers as $k=> $supplier): ?>
+										<?php if($k == 0) continue; ?>
+									<div class="col-md-6">
+									<?php echo $this->renderPartial('_supplier_box', array(
+										'supplier'=>$supplier)); ?>
+									</div>
+<?php endforeach; ?>
+							</div>
+						</div>
 
-                        </div>
+					</div>
 
-                    </div>
+				</div>
 
-                </div>
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <?php
 /*

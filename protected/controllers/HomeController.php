@@ -19,7 +19,8 @@ class HomeController extends MasterController
 		 */
 		$sup = [];
 		$i = 0;
-		foreach ($suppliers as $supplier) {
+		foreach($suppliers as $supplier)
+		{
 			$sup[$i] = [
 				'url'=>$supplier->url,
 				'name'=>$supplier->name,
@@ -66,6 +67,8 @@ class HomeController extends MasterController
 			$user->type = 1;
 			$user->status = 1;
 			$user->partnerCode = $code;
+			$user->partnerDateTime = new CDbExpression("NOW()");
+			$user->partnerType = $partnerType;
 			if($user->save())
 			{
 				$this->redirect(array(
@@ -78,7 +81,8 @@ class HomeController extends MasterController
 			'partnerType'=>$partnerType,
 			'promotions'=>$promotions,
 			'login'=>$login,
-			'user'=>$user));
+			'user'=>$user,
+			'error'=>isset($_GET["error"]) ? $_GET["error"] : NULL));
 	}
 
 	// Uncomment the following methods and override them if needed
@@ -112,6 +116,51 @@ class HomeController extends MasterController
 	{
 		$daiibuy = new DaiiBuy();
 		$daiibuy->unsetCookie();
+	}
+
+	public function actionPartnerChangeConfirm()
+	{
+		$user = User::model()->findByPk($_GET["id"]);
+		$oldPartnerCode = $user->partnerCode;
+		$newPartnerCode = $_GET["code"];
+		$code = $_GET["code"];
+		$codeArray = explode("-", $code);
+		$partnerType = NULL;
+		if(strtolower($codeArray[0]) == "org")
+		{
+			$partnerType = 1;
+		}
+		else if(strtolower($codeArray[0]) == "wow")
+		{
+			$partnerType = 2;
+		}
+		else
+		{
+			$partnerType = 0;
+		}
+		if(isset($_POST["change"]) && !empty($_POST["change"]))
+		{
+			if($_POST["change"] == 1)
+			{
+				$user->partnerCode = $newPartnerCode;
+				$user->partnerDateTime = new CDbExpression("NOW()");
+				$user->partnerType = $partnerType;
+				$user->save(FALSE);
+				$this->redirect(array(
+					'home/partner',
+					'code'=>$newPartnerCode));
+			}
+			else
+			{
+				$this->redirect(array(
+					'home/partner',
+					'code'=>$oldPartnerCode));
+			}
+		}
+		$this->render("partnerChangeConfirm", array(
+			'partnerType'=>$partnerType,
+			'oldCode'=>$oldPartnerCode,
+			'newCode'=>$newPartnerCode));
 	}
 
 }

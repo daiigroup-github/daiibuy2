@@ -51,7 +51,7 @@
  * @property integer $isSentToCustomer
  * @property string $remark
  * @property string $supplierShippingDateTime
- * @property string $partnerId
+ * @property string $partnerCode
  * @property integer $partnerType
  * @property string $parentId
  * @property string $mainId
@@ -65,14 +65,6 @@
  *
  * The followings are the available model relations:
  * @property District $shippingDistrict
- * @property Amphur $paymentAmphur
- * @property District $paymentDistrict
- * @property Province $paymentProvince
- * @property Amphur $shippingAmphur
- * @property Province $shippingProvince
- * @property Supplier $supplier
- * @property OrderGroupFile[] $orderGroupFiles
- * @property OrderGroupToOrder[] $orderGroupToOrders
  */
 class OrderGroupMaster extends MasterCActiveRecord
 {
@@ -94,7 +86,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 		return array(
 			array('userId, total, totalIncVAT, discountPercent, discountValue, createDateTime, updateDateTime', 'required'),
 			array('paymentMethod, usedPoint, isSentToCustomer, partnerType, isRequestSpacialProject, status', 'numerical', 'integerOnly'=>true),
-			array('userId, supplierId, invoiceNo, telephone, partnerId, parentId, mainId, mainFurnitureId, furnitureGroupId, furnitureId', 'length', 'max'=>20),
+			array('userId, supplierId, invoiceNo, telephone, partnerCode, parentId, mainId, mainFurnitureId, furnitureGroupId, furnitureId', 'length', 'max'=>20),
 			array('orderNo, paymentTaxNo', 'length', 'max'=>45),
 			array('firstname, lastname, email, partnerDiscountCode, paymentCompany, paymentFirstname, paymentLastname, shippingCompany', 'length', 'max'=>200),
 			array('total, vatValue, totalIncVAT, discountValue, totalPostDiscount, distributorDiscount, totalPostDistributorDiscount, extraDiscount, partnerDiscountValue, summary', 'length', 'max'=>15),
@@ -103,7 +95,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			array('paymentDateTime, paymentAddress1, paymentAddress2, shippingAddress1, shippingAddress2, remark, supplierShippingDateTime', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, partnerDiscountCode, partnerDiscountPercent, partnerDiscountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, partnerId, partnerType, parentId, mainId, mainFurnitureId, furnitureGroupId, furnitureId, isRequestSpacialProject, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
+			array('orderGroupId, userId, supplierId, orderNo, invoiceNo, firstname, lastname, email, telephone, total, vatPercent, vatValue, totalIncVAT, discountPercent, discountValue, totalPostDiscount, distributorDiscountPercent, distributorDiscount, totalPostDistributorDiscount, extraDiscount, partnerDiscountCode, partnerDiscountPercent, partnerDiscountValue, summary, paymentDateTime, paymentCompany, paymentFirstname, paymentLastname, paymentAddress1, paymentAddress2, paymentDistrictId, paymentAmphurId, paymentProvinceId, paymentPostcode, paymentMethod, paymentTaxNo, shippingCompany, shippingAddress1, shippingAddress2, shippingDistrictId, shippingAmphurId, shippingProvinceId, shippingPostCode, usedPoint, isSentToCustomer, remark, supplierShippingDateTime, partnerCode, partnerType, parentId, mainId, mainFurnitureId, furnitureGroupId, furnitureId, isRequestSpacialProject, status, createDateTime, updateDateTime', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -116,14 +108,6 @@ class OrderGroupMaster extends MasterCActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'shippingDistrict' => array(self::BELONGS_TO, 'District', 'shippingDistrictId'),
-			'paymentAmphur' => array(self::BELONGS_TO, 'Amphur', 'paymentAmphurId'),
-			'paymentDistrict' => array(self::BELONGS_TO, 'District', 'paymentDistrictId'),
-			'paymentProvince' => array(self::BELONGS_TO, 'Province', 'paymentProvinceId'),
-			'shippingAmphur' => array(self::BELONGS_TO, 'Amphur', 'shippingAmphurId'),
-			'shippingProvince' => array(self::BELONGS_TO, 'Province', 'shippingProvinceId'),
-			'supplier' => array(self::BELONGS_TO, 'Supplier', 'supplierId'),
-			'orderGroupFiles' => array(self::HAS_MANY, 'OrderGroupFile', 'orderGroupId'),
-			'orderGroupToOrders' => array(self::HAS_MANY, 'OrderGroupToOrder', 'orderGroupId'),
 		);
 	}
 
@@ -180,7 +164,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 			'isSentToCustomer' => 'Is Sent To Customer',
 			'remark' => 'Remark',
 			'supplierShippingDateTime' => 'Supplier Shipping Date Time',
-			'partnerId' => 'Partner',
+			'partnerCode' => 'Partner Code',
 			'partnerType' => 'Partner Type',
 			'parentId' => 'Parent',
 			'mainId' => 'Main',
@@ -259,7 +243,7 @@ class OrderGroupMaster extends MasterCActiveRecord
 		$criteria->compare('isSentToCustomer',$this->isSentToCustomer);
 		$criteria->compare('remark',$this->remark,true);
 		$criteria->compare('supplierShippingDateTime',$this->supplierShippingDateTime,true);
-		$criteria->compare('partnerId',$this->partnerId,true);
+		$criteria->compare('partnerCode',$this->partnerCode,true);
 		$criteria->compare('partnerType',$this->partnerType);
 		$criteria->compare('parentId',$this->parentId,true);
 		$criteria->compare('mainId',$this->mainId,true);

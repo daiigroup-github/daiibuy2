@@ -33,6 +33,13 @@
 	</div>
 
 	<div class="col-lg-5">
+		<?php if(isset($error) && $error == 1): ?>
+			<div class="row">
+				<div class="col-lg-12 alert alert-danger" >
+					ไม่สามารถเปลี่ยน WOW ได้ เนื่องจาก คุณยังไม่เคยซื้อสินค้ากับ WOW ปัจจุบัน หรือ อายุการเป็น WOW ไม่ครบ 3 เดือน
+				</div>
+			</div>
+		<?php endif; ?>
 		<div class="row  sidebar-box green">
 			<div class="col-lg-12" >
 				<?php
@@ -65,6 +72,10 @@
 										echo $form->emailField($login, 'username', array(
 											'class'=>'form-control',
 											'placeholder'=>'Email'));
+										if(isset($_GET["code"]) && !empty($_GET["code"]))
+										{
+											echo CHtml::hiddenField("partnerCode", $_GET["code"]);
+										}
 										?>
 										<?php echo $form->error($login, 'username'); ?>
 									</div>

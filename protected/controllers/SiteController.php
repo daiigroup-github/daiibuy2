@@ -94,12 +94,84 @@ class SiteController extends MasterController
 			$model->attributes = $_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-//				if(User::model()->findByPk(Yii::app()->user->id)->isFirstLogin == 1)
-//					$this->redirect(Yii::app()->baseUrl . "/index.php/Site/changePassword");
-//				else
-//				{
+			{
+				if(isset($_POST["partnerCode"]) && !empty($_POST["partnerCode"]))
+				{
+					$user = User::model()->find("email = '" . $model->username . "'");
+					$codeArray = explode("-", $_POST["partnerCode"]);
+					$partnerType = NULL;
+					if(strtolower($codeArray[0]) == "org")
+					{
+						$partnerType = 1;
+					}
+					else if(strtolower($codeArray[0]) == "wow")
+					{
+						$partnerType = 2;
+					}
+					else
+					{
+						$partnerType = 0;
+					}
+					if($user->validatePassword($model->password))
+					{
+						if(!isset($user->partnerCode) || empty($user->partnerCode))
+						{
+							$user->partnerCode = $_POST["partnerCode"];
+							$user->partnerType = $partnerType;
+							$user->partnerDateTime = new CDbExpression("NOW()");
+						}
+						else
+						{
+							if($user->partnerCode != $_POST["partnerCode"])
+							{
+								if($partnerType == 2)
+								{
+									$partnerOrder = OrderGroup::model()->count("partnerCode = '" . $_POST["partnerCode"] . "'");
+									if($partnerOrder > 0)
+									{
+										// ถามว่าจะเปลี่ยนหรือเป่า
+										$this->redirect(array(
+											"home/partnerChangeConfirm",
+											'id'=>$user->userId,
+											'code'=>$_POST["partnerCode"]));
+									}
+									else
+									{
+
+										$date1 = new DateTime();
+										$date2 = new DateTime($user->partnerDateTime);
+										$diff = $date1->diff($date2);
+										$months = $diff->y * 12 + $diff->m + $diff->d / 30;
+										$monthDiff = round($months);
+										if($monthDiff > 3)
+										{
+											//เกิน 3 เดือน ถึงเปลี่ยนได้ถามก่อน
+											$this->redirect(array(
+												"home/partnerChangeConfirm",
+												'id'=>$user->userId,
+												'code'=>$_POST["partnerCode"]));
+										}
+										else
+										{
+											//Alert หน่อยว่า เปลี่ยน WOW ไม่ได้
+											$this->redirect(array(
+												'home/partner',
+												'code'=>$_POST["partnerCode"],
+												'error'=>1));
+										}
+									}
+								}
+								else if($partnerType == 1)
+								{
+									$user->partnerCode = $_POST["partnerCode"];
+								}
+							}
+						}
+						$user->save(FALSE);
+					}
+				}
 				$this->redirect(Yii::app()->user->returnUrl);
-//				}
+			}
 		}
 		// display the login form
 		$this->render('login', array(

@@ -127,6 +127,42 @@ class OrderGroup extends OrderGroupMaster
 					'UserSpacialProject',
 					array(
 						'orderGroupId')),
+//				'shippingDistrict'=>array(
+//					self::BELONGS_TO,
+//					'District',
+//					'shippingDistrictId'),
+//				'paymentAmphur'=>array(
+//					self::BELONGS_TO,
+//					'Amphur',
+//					'paymentAmphurId'),
+//				'paymentDistrict'=>array(
+//					self::BELONGS_TO,
+//					'District',
+//					'paymentDistrictId'),
+//				'paymentProvince'=>array(
+//					self::BELONGS_TO,
+//					'Province',
+//					'paymentProvinceId'),
+//				'shippingAmphur'=>array(
+//					self::BELONGS_TO,
+//					'Amphur',
+//					'shippingAmphurId'),
+//				'shippingProvince'=>array(
+//					self::BELONGS_TO,
+//					'Province',
+//					'shippingProvinceId'),
+//				'supplier'=>array(
+//					self::BELONGS_TO,
+//					'Supplier',
+//					'supplierId'),
+//				'orderGroupFiles'=>array(
+//					self::HAS_MANY,
+//					'OrderGroupFile',
+//					'orderGroupId'),
+//				'orderGroupToOrders'=>array(
+//					self::HAS_MANY,
+//					'OrderGroupToOrder',
+//					'orderGroupId'),
 		));
 	}
 
