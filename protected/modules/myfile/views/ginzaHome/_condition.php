@@ -36,7 +36,7 @@
 						<table class="table table-bordered table-condensed ">
 							<?php
 							$sendWorks = OrderGroupSendWork::model()->findAll("orderGroupId = $conditionOrder->orderGroupId ORDER BY seq ASC");
-							foreach($sendWorks as $sendWork):
+	foreach($sendWorks as $sendWork):
 								?>
 								<tr>
 									<td style="width:50%"><?php echo $sendWork->title; ?> </td><td><a href="<?php echo Yii::app()->baseUrl . $sendWork->image; ?>" class="fancybox"><span class="label label-primary">View Attech File</span></a></td>
@@ -118,19 +118,46 @@
 						//																						throw new Exception(print_r(count($child1->supPay), true));
 										//
 										//
-										$isChangeHome = TRUE;
-										if (count($child1->supPay) > 0)
-											$isChangeHome = FALSE;
-//										throw new Exception(print_r($model->orders[0]->orderItems[0]->productId, true));
-											echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
+										$isChangeHome = 1;
+if (isset($child1->parentId))
+	$oldChild1 = OrderGroup::model()->findByPk($child1->parentId);
+
+//throw new Exception(print_r($oldChild1, true));
+
+
+
+if (count($child1->supPay) > 0 || count($oldChild1->supPay) > 0)
+{
+	$isChangeHome = 0;
+
+	if (isset($child1->supPay[0]))
+	{
+		$model = $child1;
+		echo CHtml::hiddenField("orderGroupId", $model->supPay[0]->orderGroupId);
+		echo CHtml::hiddenField("period", 2);
+		$productId = isset($model->orders[0]->orderItems[0]->productId) ? $model->orders[0]->orderItems[0]->productId : $model->supPay[0]->orders[0]->orderItems[0]->productId;
+//		throw new Exception(print_r($isChangeHome, true));
+
+		$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $productId . ' order by productId DESC');
+//                                                                                throw new Exception(print_r($category2ToProducts[1]->category1Id,true));
+	$category2ToProduct = isset($category2ToProducts[1]) ? $category2ToProducts[1] : $category2ToProducts[0];
+//                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
+	$cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
+}
+}
+else
+{
+									
+	echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
 										$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $model->orders[0]->orderItems[0]->productId . ' order by productId DESC');
 //                                                                                throw new Exception(print_r($category2ToProducts[1]->category1Id,true));
                                                                                 $category2ToProduct = isset($category2ToProducts[1])? $category2ToProducts[1] : $category2ToProducts[0];
 //                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
                                                                                 $cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
-										if ($isChangeHome)
-										{
+}
+if ($isChangeHome == 1)
+{
 											echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'id'=>'brandModelId',
@@ -151,7 +178,8 @@
 										}
 										else
 										{
-											echo CHtml::hiddenField("brandModelId", $category2ToProduct->brandModelId);
+										//											throw new Exception(print_r($productId, true));
+	echo CHtml::hiddenField("brandModelId", $category2ToProduct->brandModelId);
 											echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
 												'prompt' => '-- เลือกแบบบ้าน --',
 												'id' => 'brandModelId',
@@ -177,8 +205,8 @@
 									<td>รูปแบบ</td>
 									<td><?php
 //                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
-										if ($isChangeHome)
-										{
+										if ($isChangeHome == 1)
+{
 											echo CHtml::dropDownList("styleId",
                                                                                         isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, 
                                                                                         ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), 
@@ -236,8 +264,8 @@
 									<td><?php
 										//										if (isset($model->orders[0]->orderItems[0]->styleId))
 										//throw new Exception(print_r($category2ToProduct->category1Id, true));
-										if ($isChangeHome)
-										{
+										if ($isChangeHome == 1)
+{
 											echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
@@ -282,8 +310,8 @@
 									<td>ซีรีส์</td>
 									<td>
 										<?php
-										if ($isChangeHome)
-										{
+										if ($isChangeHome == 1)
+{
 											echo CHtml::dropDownList("category2Id", $category2ToProduct->category2Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, $category2ToProduct->category1Id), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'ajax'=>array(
@@ -331,15 +359,17 @@
 									<td>สี</td>
 									<td><?php
 //                                                                                throw new Exception(print_r($model->orders[0]->orderItems[0],true));
-										if ($isChangeHome)
-										{
-											echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
+										if ($isChangeHome == 1)
+{
+//											throw new Exception(print_r($child1, true));
+	echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
 											'prompt' => '-- เลือกสี --'));
 										}
 										else
 										{
-											echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
-												'prompt' => '-- เลือกสี --',
+	if (isset($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions))
+		echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
+		'prompt' => '-- เลือกสี --',
 												'disabled' => 'true'));
 										}
 										?></td>
@@ -347,8 +377,8 @@
 								<tr>
 									<td>จังหวัด</td>
 									<td><?php
-										if ($isChangeHome)
-										{
+										if ($isChangeHome == 1)
+{
 											echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
 											'prompt' => '-- เลือกจังหวัด --'));
 										}
