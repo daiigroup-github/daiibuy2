@@ -421,6 +421,9 @@ class StepController extends MasterCheckoutController
 				$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
 				$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
 
+
+				
+
 				$userModel = User::model()->findByPk(Yii::app()->user->id);
 				$orderGroup->email = isset($userModel->email) ? $userModel->email : $oldOrderGroup->email;
 				$orderGroup->firstname = isset($userModel->firstname) ? $userModel->firstname : $oldOrderGroup->firstname;
@@ -436,9 +439,6 @@ class StepController extends MasterCheckoutController
 				$orderGroup->paymentAmphurId = isset($billingAddress->amphurId) ? $billingAddress->amphurId : $oldOrderGroup->paymentAmphurId;
 				$orderGroup->paymentProvinceId = isset($billingAddress->provinceId) ? $billingAddress->provinceId : $oldOrderGroup->paymentProvinceId;
 				$orderGroup->paymentPostcode = isset($billingAddress->postcode) ? $billingAddress->postcode : $oldOrderGroup->paymentPostcode;
-
-//				$orderGroup->shippingFirstname = $shippingAddress->firstname;
-//				$orderGroup->shippingLastname = $shippingAddress->lastname;
 				$orderGroup->shippingCompany = isset($shippingAddress->company) ? $shippingAddress->company : $oldOrderGroup->shippingCompany;
 				$orderGroup->shippingAddress1 = isset($shippingAddress->address_1) ? $shippingAddress->address_1 : $oldOrderGroup->shippingAddress1;
 				$orderGroup->shippingAddress2 = isset($shippingAddress->address_2) ? $shippingAddress->address_2 : $oldOrderGroup->shippingAddress2;
@@ -1332,6 +1332,7 @@ class StepController extends MasterCheckoutController
 
 	public function actionMyfileGinzaStep()
 	{
+
 		$orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
 		$rootOrderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
 		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, $orderGroup->supplierId, FALSE, $_GET["orderGroupId"]);
@@ -1360,7 +1361,6 @@ class StepController extends MasterCheckoutController
 						}
 						if($flag)
 						{
-
 //							$bankArray = Bank::model()->findAllBankModelBySupplier(4);
 //							$this->render('step4', array(
 //								'step'=>4,
@@ -1401,8 +1401,10 @@ class StepController extends MasterCheckoutController
 			}
 			if($orderGroup->totalIncVAT != $_POST["payValue"])
 			{
+
 				if($orderGroup->totalIncVAT >= ($_POST["payValue"] + $sumSupPay) && $_POST["payValue"] >= 1000)
 				{
+				
 					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"], FALSE, $_GET["orderGroupId"]);
 					$oldOrderGroup = $orderGroup;
 					$titleBlankOrderAndOrderItem = "รายการแบ่งชำระเงิน ของ" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
@@ -1661,7 +1663,12 @@ class StepController extends MasterCheckoutController
 
 	public function updateChangeSpecGinzaOrderGroup($orderGroup, $cat2ToProduct, $period)
 	{
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($cat2ToProduct[$period - 1]->productId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId);
+		$productId = $cat2ToProduct[$period - 1]->productId;
+		$qty = $orderGroup->orders[0]->orderItems[0]->quantity;
+		$supplierId = $orderGroup->supplierId;
+
+//		throw new Exception(print_r($gg, true));
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($productId, $qty, $supplierId);
 		$orderGroup->attributes = $orderGroup->attributes;
 		$orderGroup->orderNo = $orderGroup->genOrderNo($orderGroup->supplierId);
 		$orderGroup->invoiceNo = null;

@@ -127,6 +127,14 @@ class OrderGroup extends OrderGroupMaster
 					'UserSpacialProject',
 					array(
 						'orderGroupId')),
+				'orderGroupToOrders' => array(
+					self::HAS_MANY,
+					'OrderGroupToOrder',
+					'orderGroupId'),
+				'orderGroupFiles' => array(
+					self::HAS_MANY,
+					'OrderGroupFile',
+					'orderGroupId'),
 //				'shippingDistrict'=>array(
 //					self::BELONGS_TO,
 //					'District',

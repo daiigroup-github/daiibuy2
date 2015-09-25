@@ -273,6 +273,8 @@ class GinzaHomeController extends MasterMyFileController
 	public function actionRenderCondition()
 	{
 		$model = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
+//		throw new Exception(print_r($model, true));
+//		throw new Exception(print_r($_POST["orderGroupId"], true));
 		$child1 = $model->child;
 		$conditionOrder = null;
 		switch($_POST["period"])

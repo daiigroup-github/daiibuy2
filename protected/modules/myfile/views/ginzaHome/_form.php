@@ -172,7 +172,8 @@ $this->renderPartial("_navbar", array(
 													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
 												}
 											endif;
-											if(count($child1->supNotPays) > 0):
+									//		throw new Exception(print_r($child1->supPay, true));
+		if(count($child1->supNotPays) > 0):
 												?>
 												<p style='color:red'>รอยืนยันชำระ</p>
 												<?php

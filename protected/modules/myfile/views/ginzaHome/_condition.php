@@ -130,35 +130,61 @@ if (count($child1->supPay) > 0 || count($oldChild1->supPay) > 0)
 {
 	$isChangeHome = 0;
 
-	if (isset($child1->supPay[0]))
+	if (isset($child1->supPay[0]) || isset($oldChild1->supPay[0]))
 	{
-		$model = $child1;
+		if (isset($child1->supPay[0]))
+		{
+			$model = $child1;
+		}
+		else
+		{
+			$model = $oldChild1;
+		}
 		echo CHtml::hiddenField("orderGroupId", $model->supPay[0]->orderGroupId);
 		echo CHtml::hiddenField("period", 2);
 		$productId = isset($model->orders[0]->orderItems[0]->productId) ? $model->orders[0]->orderItems[0]->productId : $model->supPay[0]->orders[0]->orderItems[0]->productId;
 //		throw new Exception(print_r($isChangeHome, true));
-
-		$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $productId . ' order by productId DESC');
-//                                                                                throw new Exception(print_r($category2ToProducts[1]->category1Id,true));
-	$category2ToProduct = isset($category2ToProducts[1]) ? $category2ToProducts[1] : $category2ToProducts[0];
-//                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
-	$cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
-}
+		if (isset($productId))
+		{
+			$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $productId . ' order by productId DESC');
+		}
+		else
+		{
+			throw new Exception(print_r($productId, true));
+		}
+		$category2ToProduct = isset($category2ToProducts[1]) ? $category2ToProducts[1] : $category2ToProducts[0];
+		if (isset($category2ToProduct))
+		{
+			$cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
+		}
+		else
+		{
+			throw new Exception(print_r($category2ToProduct, true));
+		}
+	}
 }
 else
 {
-									
+							
 	echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
 										echo CHtml::hiddenField("period", 2);
 										$category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $model->orders[0]->orderItems[0]->productId . ' order by productId DESC');
 //                                                                                throw new Exception(print_r($category2ToProducts[1]->category1Id,true));
                                                                                 $category2ToProduct = isset($category2ToProducts[1])? $category2ToProducts[1] : $category2ToProducts[0];
-//                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
-                                                                                $cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
+																			//                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
+	if (isset($category2ToProduct))
+	{
+		$cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
+	}
+	else
+	{
+		throw new Exception(print_r($category2ToProduct, true));
+	}
 }
 if ($isChangeHome == 1)
 {
-											echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
+	
+	echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
 											'prompt'=>'-- เลือกแบบบ้าน --',
 											'id'=>'brandModelId',
 											'ajax'=>array(
@@ -178,7 +204,11 @@ if ($isChangeHome == 1)
 										}
 										else
 										{
-										//											throw new Exception(print_r($productId, true));
+	//											throw new Exception(print_r($productId, true));
+	if (!isset($category2ToProduct))
+	{
+		throw new Exception(print_r($oldChild1, true));
+	}
 	echo CHtml::hiddenField("brandModelId", $category2ToProduct->brandModelId);
 											echo CHtml::dropDownList("brandModelId", $category2ToProduct->brandModelId, CHtml::listData($brandModels, "brandModelId", "title"), array(
 												'prompt' => '-- เลือกแบบบ้าน --',
@@ -403,8 +433,8 @@ if ($isChangeHome == 1)
 							</thead>
 							<tbody>
 								<?php
-								echo CHtml::hiddenField("orderGroupId", $model->orderGroupId);
-								echo CHtml::hiddenField("period", 2);
+								echo CHtml::hiddenField("orderGroupId", $oldChild1->orderGroupId);
+echo CHtml::hiddenField("period", 2);
 								foreach($child1->orders as $item):
 									?>
 									<tr style="color:black">
@@ -417,24 +447,25 @@ if ($isChangeHome == 1)
 										<td style="font-size:24px">
 											<?php
 											echo "ยอดชำระ " . number_format($child1->totalIncVAT);
-											$sumSup = 0;
-											if(count($child1->supPay) > 0):
-												?>
+	$sumSup = 0;
+										//	throw new Exception(print_r($child1->supNotPays, true));
+	if (count($child1->supPay) > 0):
+	?>
 												<p style='color:green'>ชำระแล้ว</p>
 												<?php
-												foreach($child1->supPay as $sup)
-												{
+												foreach ($child1->supPay as $sup)
+		{
 													$sumSup +=$sup->totalIncVAT;
 													echo "<p style='color:green'>" . number_format($sup->totalIncVAT, 2) . "</p>";
 												}
 											endif;
 											$sumSupNotPay = 0;
-											if(count($child1->supNotPays) > 0):
-												?>
+											if (count($child1->supNotPays) > 0):
+		?>
 												<p style='color:red'>รอยืนยันชำระ</p>
 												<?php
-												foreach($child1->supNotPays as $supNotPay)
-												{
+												foreach ($child1->supNotPays as $supNotPay)
+		{
 													$sumSupNotPay +=$supNotPay->totalIncVAT;
 													echo "<p style='color:red'>" . number_format($supNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $supNotPay->orderGroupId), array(
 														'class'=>'btn btn-success',
@@ -446,7 +477,7 @@ if ($isChangeHome == 1)
 										<td>
 											<?php
 											echo CHtml::numberField("payValue", $child1->totalIncVAT - $sumSup - $sumSupNotPay, array(
-												'class'=>'input-form text-right',
+		'class'=>'input-form text-right',
 												'style'=>'border:2px solid black;color:blue;font-size:24px;width:250px',
 												'max'=>$child1->totalIncVAT - $sumSup - $sumSupNotPay))
 											?>
