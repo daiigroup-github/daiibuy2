@@ -18,7 +18,7 @@
 class OrderGroup extends OrderGroupMaster
 {
 
-	//Summary Report
+//Summary Report
 
 	public $paymentYear;
 	public $paymentMonth;
@@ -47,10 +47,10 @@ class OrderGroup extends OrderGroupMaster
 	 */
 	public function rules()
 	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
+// NOTE: you should only define rules for those attributes that
+// will receive user inputs.
 		return CMap::mergeArray(parent::rules(), array(
-				//code here
+//code here
 				array(
 					'maxCode',
 					'safe'),
@@ -66,10 +66,10 @@ class OrderGroup extends OrderGroupMaster
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
+// NOTE: you may need to adjust the relation name and the related
+// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
-				//code here
+//code here
 				'orders'=>array(
 					self::MANY_MANY,
 					'Order',
@@ -180,7 +180,7 @@ class OrderGroup extends OrderGroupMaster
 	public function attributeLabels()
 	{
 		return Cmap::mergeArray(parent::attributeLabels(), array(
-				//code here
+//code here
 		));
 	}
 
@@ -225,7 +225,7 @@ class OrderGroup extends OrderGroupMaster
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria = new CDbCriteria;
 
@@ -286,8 +286,8 @@ class OrderGroup extends OrderGroupMaster
 
 	public function findMaxOrderNo($supplierId = NULL)
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+// Warning: Please modify the following code to remove attributes that
+// should not be searched.
 //		$criteria = new CDbCriteria;
 //
 //		$criteria->select = 'max(RIGHT(orderNo,6)) as maxCode';
@@ -642,7 +642,7 @@ class OrderGroup extends OrderGroupMaster
 
 		if(isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2)
 		{
-			//edit 3 to other when change policy discount of distributor
+//edit 3 to other when change policy discount of distributor
 			$distributorDiscountPercent += 3;
 		}
 		$totalPostSupplierRangeDiscount = $grandTotal;
@@ -786,6 +786,37 @@ class OrderGroup extends OrderGroupMaster
 		}
 
 		return $orderGroup;
+	}
+
+	public function beforeSave()
+	{
+		if(parent::beforeSave())
+		{
+
+			if($this->isNewRecord)
+			{
+				if(isset($this->user->partnerCode) && !empty($this->user->partnerCode))
+				{
+					$code = $this->user->partnerCode;
+					$codeArray = explode("-", $code);
+					$partnerType = NULL;
+					if(strtolower($codeArray[0]) == "org")
+					{
+						$partnerType = 1;
+					}
+					else if(strtolower($codeArray[0]) == "wow")
+					{
+						$partnerType = 2;
+					}
+					else
+					{
+						$partnerType = 0;
+					}
+					$this->partnerCode = $this->user->partnerCode;
+					$this->partnerType = $partnerType;
+				}
+			}
+		}
 	}
 
 }
