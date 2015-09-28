@@ -2,8 +2,9 @@
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="tabs">
             <div class="tab-heading">
-                <?php
-                $i = 1;
+				<?php
+//				throw new Exception(print_r($tabs, true));
+				$i = 1;
                 foreach($tabs as $tab)
                 {
 				//													throw new Exception(print_r($tab, true));

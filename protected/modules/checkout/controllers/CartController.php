@@ -43,7 +43,7 @@ class CartController extends MasterCheckoutController
                 foreach($order->orderItems as $orderItem)
 				{
 //                    throw new Exception(print_r($orderItem->product->category2ToProducts, true));
-					$category = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1]->category : $orderItem->product->category2ToProducts[0]->category;
+					$category = (isset($orderItem->product->category2ToProducts[1]) && (!isset($orderItem->product->category2ToProducts[1]->type))) ? $orderItem->product->category2ToProducts[1]->category : $orderItem->product->category2ToProducts[0]->category;
 					$category2 = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1]->category2 : $orderItem->product->category2ToProducts[0]->category2;
 					$categoryToSub = CategoryToSub::model()->find(array(
 						'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
@@ -61,7 +61,7 @@ class CartController extends MasterCheckoutController
 							':provinceId'=>$daiibuy->provinceId
 						)
 					));
-
+//					throw new Exception(print_r($orderItem->product->category2ToProducts, true));
 //                $desc[$category->title . ' : ' . $category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
 					$desc[$i]['id'] = uniqid();
 					$desc[$i]["title"] = $category->title . ' : ' . $category2->title;
