@@ -73,7 +73,7 @@ class UserPartner extends UserPartnerMaster
 		return $partnerType;
 	}
 
-	public function findDiscountFromPartnerCode($userId, $supplierId, $summary)
+	public function findPartnerDiscount($userId, $supplierId, $summary)
 	{
 		$user = User::model()->findByPk($userId);
 		$partnerType = $this->findPartnerTypeByCode($user->partnerCode);
