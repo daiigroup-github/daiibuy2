@@ -957,6 +957,7 @@ class Order extends OrderMaster
 
 		if(isset(Yii::app()->user->id))
 		{
+			$userId = Yii::app()->user->id;
 			$condition .= ' AND userId=:userId';
 			$params[':userId'] = Yii::app()->user->id;
 		}
@@ -1069,20 +1070,43 @@ class Order extends OrderMaster
 		}
 		$totalPostSupplierRangeDiscount = $grandTotal;
 		$res['totalPostSupplierRangeDiscount'] = number_format($grandTotal, 2);
-		if($distributorDiscountPercent > 0)
+		if (isset($userId))
 		{
-			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
-			$grandTotal = $grandTotal - $distributorDiscount;
+			$partnerDiscount = UserPartner::model()->findPartnerDiscount($userId, $supplierId, $sumTotal);
+			if (isset($partnerDiscount))
+			{
+				if ($partnerDiscount["discountType"] == 2)
+				{
+					$partnerDiscountPercent = $partnerDiscount["discount"];
+					$partnerDiscountValue = $partnerDiscount["discount"] * $sumTotal / 100;
+				}
+				else
+				{
+					$partnerDiscountPercent = $partnerDiscount["discount"] / $sumTotal * 100;
+					$partnerDiscountValue = $partnerDiscount["discount"];
+				}
+				$partnerDiscountValue = $grandTotal * $partnerDiscountPercent / 100;
+				$grandTotal = $grandTotal - $partnerDiscountValue;
+				$res['partnerDiscountPercent'] = $partnerDiscountPercent;
+				$res['partnerDiscount'] = number_format($partnerDiscountValue, 2);
+				$res['totalPostPartnerDiscount'] = number_format($grandTotal, 2);
+			}
+			else
+			{
+				if ($distributorDiscountPercent > 0 && isset($distributorDiscount))
+				{
+					$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
+					$grandTotal = $grandTotal - $distributorDiscount;
+					$res['distributorDiscountPercent'] = $distributorDiscountPercent;
+					$res['distributorDiscount'] = number_format($distributorDiscount, 2);
+					$res['totalPostDistributorDiscount'] = number_format($grandTotal, 2);
+				}
+			}
+			$res['total'] = number_format($sumTotal, 2);
+			$res['discountPercent'] = $discountPercent;
+			$res['discount'] = number_format($discount, 2);
 		}
-		$res['total'] = number_format($sumTotal, 2);
-		$res['discountPercent'] = $discountPercent;
-		$res['discount'] = number_format($discount, 2);
-		if($distributorDiscountPercent > 0 && isset($distributorDiscount))
-		{
-			$res['distributorDiscountPercent'] = $distributorDiscountPercent;
-			$res['distributorDiscount'] = number_format($distributorDiscount, 2);
-			$res['totalPostDistributorDiscount'] = number_format($grandTotal, 2);
-		}
+
 		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $discountPercent);
 		if(isset($extraDiscountArray))
 		{
@@ -1092,7 +1116,6 @@ class Order extends OrderMaster
 			$res['totalPostExtraDiscount'] = number_format($totalPostSupplierRangeDiscount, 2);
 		}
 		$res['grandTotal'] = number_format($grandTotal, 2);
-//		throw new Exception(print_r($res, true));
 		return $res;
 	}
 

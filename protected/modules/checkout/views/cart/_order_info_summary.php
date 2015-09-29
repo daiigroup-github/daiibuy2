@@ -25,8 +25,28 @@
 				</tr>
 				</tr>
 
-				<?php if(isset(Yii::app()->user->id) && Yii::app()->user->userType == 2): ?>
-					<tr>
+				<?php
+				if (isset(Yii::app()->user->id) && Yii::app()->user->userType == 2):
+
+					if (isset($orderSummary['partnerDiscount']))
+					{
+						?>
+				<tr>
+					<td class="align-right"><span class="price big">ส่วนลด ORG(<span id="summaryDiscountPercent"><?php echo $orderSummary['partnerDiscountPercent']; ?></span>%)</span></td>
+							<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['partnerDiscount']; ?></span></td>
+						</tr>
+						<tr>
+							<td class="align-right"><span class="price big">รวมหลังหักส่วนลด ORG</span></span></td>
+									<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['totalPostPartnerDiscount']; ?></span></td>
+								</tr>
+
+
+		<?php
+	}
+	else if (isset($orderSummary['distributorDiscount']))
+	{
+		?>
+						<tr>
 						<td class="align-right"><span class="price big">ส่วนลดตัวแทนจำหน่าย (<span id="summaryDiscountPercent"><?php echo $orderSummary['distributorDiscountPercent']; ?></span>%)</span></td>
 						<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['distributorDiscount']; ?></span></td>
 					</tr>
@@ -34,7 +54,10 @@
 						<td class="align-right"><span class="price big">รวมหลังหักส่วนลดตัวแทนจำหน่าย</span></span></td>
 						<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['totalPostDistributorDiscount']; ?></span></td>
 					</tr>
-				<?php endif; ?>
+							<?php
+						}
+					endif;
+					?>
 
 				<?php if(isset($orderSummary["extraDiscount"])): ?>
 					<tr>

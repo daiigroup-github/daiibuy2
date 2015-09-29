@@ -41,7 +41,8 @@ class HomeController extends MasterController
 	{
 		$login = new LoginForm();
 		$user = new User();
-		$partnerType = UserPartner::model()->findPartnerTypeByCode($_GET["code"]);
+		$code = $_GET["code"];
+		$partnerType = UserPartner::model()->findPartnerTypeByCode($code);
 
 		$promotions = Promotion::model()->findAll("type = $partnerType AND now() BETWEEN startDateTime AND endDateTime");
 

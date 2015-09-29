@@ -91,7 +91,6 @@ class SupplierDiscountRange extends SupplierDiscountRangeMaster
                             ':supplierId' => $supplierId,
                         )
                     ));
-
                     return $model->percentDiscount;
                 }
             }
