@@ -72,7 +72,7 @@ class HomeController extends MasterController
 			}
 		}
 		$this->render('partner', array(
-			'code'=>$code,
+			'code'=>$_GET["code"],
 			'partnerType'=>$partnerType,
 			'promotions'=>$promotions,
 			'login'=>$login,
