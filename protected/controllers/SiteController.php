@@ -98,6 +98,7 @@ class SiteController extends MasterController
 				if(isset($_POST["partnerCode"]) && !empty($_POST["partnerCode"]))
 				{
 					$user = User::model()->find("email = '" . $model->username . "'");
+//					throw new Exception(print_r($_POST, true));
 					$partnerType = UserPartner::model()->findPartnerTypeByCode($_POST["partnerCode"]);
 					if($user->validatePassword($model->password))
 					{

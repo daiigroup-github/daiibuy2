@@ -76,6 +76,7 @@ class UserPartner extends UserPartnerMaster
 	public function findPartnerDiscount($userId, $supplierId, $summary)
 	{
 		$user = User::model()->findByPk($userId);
+		throw new Exception(print_r("find partner discount", true));
 		$partnerType = $this->findPartnerTypeByCode($user->partnerCode);
 
 		$result = array();

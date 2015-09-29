@@ -53,7 +53,7 @@ class HomeController extends MasterController
 			$user->approved = 1;
 			$user->type = 1;
 			$user->status = 1;
-			$user->partnerCode = $_POST["partnerCode"];
+			$user->partnerCode = isset($_POST["partnerCode"]) ? $_POST["partnerCode"] : $code;
 			$user->partnerType = $partnerType;
 			$user->partnerDateTime = new CDbExpression("NOW()");
 
