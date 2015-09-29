@@ -52,6 +52,8 @@ return array(
 		 */
 		// uncomment the following to use a MySQL database
 		'db'=>$params['db'],
+		'org'=>$params['org'],
+		'wow'=>$params['wow'],
 //		'dbDaiibuy1'=>$params['dbDaiibuy1'],
 		'mail'=>array(
 			'class'=>'application.extensions.yii-mail.YiiMail',

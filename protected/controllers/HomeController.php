@@ -41,21 +41,7 @@ class HomeController extends MasterController
 	{
 		$login = new LoginForm();
 		$user = new User();
-		$code = $_GET["code"];
-		$codeArray = explode("-", $code);
-		$partnerType = NULL;
-		if(strtolower($codeArray[0]) == "org")
-		{
-			$partnerType = 1;
-		}
-		else if(strtolower($codeArray[0]) == "wow")
-		{
-			$partnerType = 2;
-		}
-		else
-		{
-			$partnerType = 0;
-		}
+		$partnerType = UserPartner::model()->findPartnerTypeByCode($_GET["code"]);
 
 		$promotions = Promotion::model()->findAll("type = $partnerType AND now() BETWEEN startDateTime AND endDateTime");
 
@@ -66,11 +52,19 @@ class HomeController extends MasterController
 			$user->approved = 1;
 			$user->type = 1;
 			$user->status = 1;
-			$user->partnerCode = $code;
-			$user->partnerDateTime = new CDbExpression("NOW()");
+			$user->partnerCode = $_POST["partnerCode"];
 			$user->partnerType = $partnerType;
+			$user->partnerDateTime = new CDbExpression("NOW()");
+
 			if($user->save())
 			{
+				$up = new UserPartner();
+				$up->userId = Yii::app()->db->lastInsertID;
+				$up->partnerCode = $code;
+				$up->partnerType = $partnerType;
+//				$up->partnerId = "org Or wow Id";
+				$up->createDateTime = new CDbExpression("NOW()");
+				$up->updateDateTime = new CDbExpression("NOW()");
 				$this->redirect(array(
 					"site/login",
 					'message'=>'ลงทะเบียนเสร็จสมบูรณ์ กรุณา เข้าสู่ระบบ เพื่อสั่งซื้อสินค้า'));

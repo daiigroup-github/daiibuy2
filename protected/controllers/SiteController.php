@@ -98,20 +98,7 @@ class SiteController extends MasterController
 				if(isset($_POST["partnerCode"]) && !empty($_POST["partnerCode"]))
 				{
 					$user = User::model()->find("email = '" . $model->username . "'");
-					$codeArray = explode("-", $_POST["partnerCode"]);
-					$partnerType = NULL;
-					if(strtolower($codeArray[0]) == "org")
-					{
-						$partnerType = 1;
-					}
-					else if(strtolower($codeArray[0]) == "wow")
-					{
-						$partnerType = 2;
-					}
-					else
-					{
-						$partnerType = 0;
-					}
+					$partnerType = UserPartner::model()->findPartnerTypeByCode($_POST["partnerCode"]);
 					if($user->validatePassword($model->password))
 					{
 						if(!isset($user->partnerCode) || empty($user->partnerCode))
@@ -168,6 +155,15 @@ class SiteController extends MasterController
 							}
 						}
 						$user->save(FALSE);
+
+						UserPartner::model()->updateAll("status=0", "userId = $user->userId");
+						$up = new UserPartner();
+						$up->userId = Yii::app()->db->lastInsertID;
+						$up->partnerCode = $code;
+						$up->partnerType = $partnerType;
+//				$up->partnerId = "org Or wow Id";
+						$up->createDateTime = new CDbExpression("NOW()");
+						$up->updateDateTime = new CDbExpression("NOW()");
 					}
 				}
 				$this->redirect(Yii::app()->user->returnUrl);
