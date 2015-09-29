@@ -1579,7 +1579,9 @@ class StepController extends MasterCheckoutController
 			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $furnitureGroup->price, false);
 			$oldOrderGroup = $orderGroup;
 			$titleBlankOrderAndOrderItem = "Furniture Set " . $furnitureGroup->title . " " . $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
-			if(!isset($orderGroup->fur[0]))
+			
+
+			if (!isset($orderGroup->fur[0]))
 			{
 				$orderGroup = new OrderGroup();
 			}
@@ -1587,7 +1589,10 @@ class StepController extends MasterCheckoutController
 			{
 				$orderGroup = OrderGroup::model()->findByPk($orderGroup->fur[0]->orderGroupId);
 			}
+
+			
 			$orderGroup->attributes = $oldOrderGroup->attributes;
+//			throw new Exception(print_r($orderGroup, true));
 			$orderGroup->invoiceNo = null;
 			$orderGroup->mainFurnitureId = $_GET["orderGroupId"];
 			$orderGroup->furnitureGroupId = $_POST["furnitureGroupId"];
@@ -1620,7 +1625,13 @@ class StepController extends MasterCheckoutController
 			$orderGroup->mainId = $oldOrderGroup->orderGroupId;
 			$orderGroup->createDateTime = new CDbExpression("NOW()");
 			$orderGroup->updateDateTime = new CDbExpression("NOW()");
-			if($orderGroup->save(false))
+							
+//			$orderGroup = new OrderGroup;
+			if ($orderGroup->isNewRecord)
+			{
+				$orderGroup->orderGroupId = null;
+			}
+			if($orderGroup->save())
 			{
 				$this->saveBlankOrderAndOrderItem($_GET["orderGroupId"], $orderGroup->orderGroupId, $orderGroup->supplierId, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
 				$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
@@ -1630,6 +1641,18 @@ class StepController extends MasterCheckoutController
 					'orderSummary'=>$orderSummary,
 					'bankArray'=>$bankArray,
 					'supplierModel'=>$supplierModel
+				));
+			}
+			else
+			{
+				$this->saveBlankOrderAndOrderItem($_GET["orderGroupId"], $orderGroup->orderGroupId, $orderGroup->supplierId, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
+				$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
+				$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
+				$this->render('step4', array(
+					'step' => 4,
+					'orderSummary' => $orderSummary,
+					'bankArray' => $bankArray,
+					'supplierModel' => $supplierModel
 				));
 			}
 		}
