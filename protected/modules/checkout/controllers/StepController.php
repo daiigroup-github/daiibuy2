@@ -1690,8 +1690,8 @@ class StepController extends MasterCheckoutController
 		$qty = $orderGroup->orders[0]->orderItems[0]->quantity;
 		$supplierId = $orderGroup->supplierId;
 
-//		throw new Exception(print_r($gg, true));
-		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($productId, $qty, $supplierId);
+//		throw new Exception(print_r("change spec", true));
+		$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($productId, $qty, $supplierId, null, false, $orderGroup->orderGroupId);
 		$orderGroup->attributes = $orderGroup->attributes;
 		$orderGroup->orderNo = $orderGroup->genOrderNo($orderGroup->supplierId);
 		$orderGroup->invoiceNo = null;

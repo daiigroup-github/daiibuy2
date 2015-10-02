@@ -1125,6 +1125,8 @@ class Order extends OrderMaster
 
 	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE, $orderGroupId = NULL)
 	{
+		if (isset($orderGroupId))
+			$orderGroupModel = OrderGroup::model()->findByPk($orderGroupId);
 		$res = [];
 		if(isset(Yii::app()->user->id))
 		{
@@ -1172,9 +1174,13 @@ class Order extends OrderMaster
 //                throw new Exception(print_r($noOfBuy,true));
                 if($noOfBuy>1)
                     $useDiscount = TRUE;
-		if($useDiscount)
+		if ($useDiscount && !isset($orderGroupModel->parentId))
 		{
 			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy+1);
+		}
+		else if ($useDiscount)
+		{
+			$discountPercent = $orderGroupModel->discountPercent;
 		}
 		else
 		{

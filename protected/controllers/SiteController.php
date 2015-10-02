@@ -157,10 +157,11 @@ class SiteController extends MasterController
 						}
 						$user->save(FALSE);
 
-						UserPartner::model()->updateAll("status=0", "userId = $user->userId");
+						UserPartner::model()->updateAll(array(
+							'status' => 0), "userId = $user->userId");
 						$up = new UserPartner();
 						$up->userId = Yii::app()->db->lastInsertID;
-						$up->partnerCode = $code;
+						$up->partnerCode = $_POST["partnerCode"];
 						$up->partnerType = $partnerType;
 //				$up->partnerId = "org Or wow Id";
 						$up->createDateTime = new CDbExpression("NOW()");
