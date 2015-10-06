@@ -33,7 +33,6 @@
 							'success'=>'js:function(data){
                                 //update table
                                 $("#order' . $order->orderId . '").html(data.orderTotal);
-
                                 for (var i in data.orderItem) {
                                     $("#total"+i).html(data.orderItem[i].total);
                                 }
