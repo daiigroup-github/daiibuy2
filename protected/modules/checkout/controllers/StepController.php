@@ -392,7 +392,7 @@ class StepController extends MasterCheckoutController
 		$provinceId = $daiibuy['provinceId'];
 
 		$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplierId);
-//		throw new Exception(print_r($supplierId,true));
+//		throw new Exception(print_r($orderSummary, true));
 		if(isset($_POST['paymentMethod']))
 		{
 			$flag = false;
@@ -1223,7 +1223,13 @@ class StepController extends MasterCheckoutController
 				$orderGroup->status = 0;
 
 //Distributor Discount & Spacial Project Discount
-				if(isset($orderSummary['distributorDiscountPercent']))
+				if (isset($orderSummary['partnerDiscountPercent']))
+				{
+					$orderGroup->partnerDiscountPercent = str_replace(",", "", $orderSummary['partnerDiscountPercent']);
+					$orderGroup->partnerDiscountValue = str_replace(",", "", $orderSummary['partnerDiscount']);
+//					$orderGroup->totalPostPartnerDiscount = str_replace(",", "", $orderSummary['totalPostPartnerDiscount']);
+				}
+				else if (isset($orderSummary['distributorDiscountPercent']))
 				{
 					$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
 					$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);

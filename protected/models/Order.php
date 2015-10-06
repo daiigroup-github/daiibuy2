@@ -1226,7 +1226,7 @@ class Order extends OrderMaster
 			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
 			$grandTotal = $grandTotal - $distributorDiscount;
 		}
-		throw new Exception(print_r($sumTotal, true));
+//		throw new Exception(print_r($sumTotal, true));
 		$res['total'] = number_format($sumTotal, 2);
 		$res['discountPercent'] = $discountPercent;
 		$res['discount'] = number_format($discount, 2);
