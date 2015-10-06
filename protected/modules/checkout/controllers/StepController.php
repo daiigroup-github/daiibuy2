@@ -409,13 +409,13 @@ class StepController extends MasterCheckoutController
 				$orderGroup->total = number_format($orderGroup->totalIncVAT / 1.07, 2, ".", "");
 				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
 				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
-				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
+//				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
 //Distributor Discount & Spacial Project Discount
 				if (isset($orderSummary['partnerDiscountPercent']))
 				{
 					$orderGroup->partnerDiscountPercent = str_replace(",", "", $orderSummary['partnerDiscountPercent']);
-					$orderGroup->partnerDiscount = str_replace(",", "", $orderSummary['partnerDiscount']);
-					$orderGroup->totalPostPartnerDiscount = str_replace(",", "", $orderSummary['totalPostPartnerDiscount']);
+					$orderGroup->partnerDiscountValue = str_replace(",", "", $orderSummary['partnerDiscount']);
+//					$orderGroup->totalPostPartnerDiscount = str_replace(",", "", $orderSummary['totalPostPartnerDiscount']);
 				}
 				else if (isset($orderSummary['distributorDiscountPercent']))
 				{
