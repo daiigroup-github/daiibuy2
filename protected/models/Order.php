@@ -1109,11 +1109,13 @@ class Order extends OrderMaster
 					$res['totalPostDistributorDiscount'] = number_format($grandTotal, 2);
 				}
 			}
-			$res['total'] = number_format($sumTotal, 2);
-			$res['discountPercent'] = $discountPercent;
-			$res['discount'] = number_format($discount, 2);
-		}
+//			throw new Exception(print_r($sumTotal, true));
 
+			
+		}
+		$res['discountPercent'] = $discountPercent;
+		$res['discount'] = number_format($discount, 2);
+		$res['total'] = number_format($sumTotal, 2);
 		$extraDiscountArray = $this->sumExtraDiscount($supplierId, $discountPercent);
 		if(isset($extraDiscountArray))
 		{
@@ -1206,6 +1208,7 @@ class Order extends OrderMaster
 			$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
 			$grandTotal = $grandTotal - $distributorDiscount;
 		}
+		throw new Exception(print_r($sumTotal, true));
 		$res['total'] = number_format($sumTotal, 2);
 		$res['discountPercent'] = $discountPercent;
 		$res['discount'] = number_format($discount, 2);

@@ -105,6 +105,7 @@ class CartController extends MasterCheckoutController
 		else
 		{
 			$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
+//			throw new Exception(print_r($orderSummary, true));
 		}
 		$supplierModel = Supplier::model()->findByPk($id);
 		$this->render('cart', array(

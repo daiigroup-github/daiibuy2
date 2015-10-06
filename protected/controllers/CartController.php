@@ -23,7 +23,7 @@ class CartController extends MasterController
 			$orderSummary = array();
 			$orderSummary = Order::model()->sumOrderTotalBySupplierId($supplier->supplierId);
 
-			if(intval($orderSummary['total']) == 0)
+			if (isset($orderSummary['total']) && intval($orderSummary['total']) == 0)
 			{
 				continue;
 			}
