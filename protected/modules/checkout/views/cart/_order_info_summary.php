@@ -35,11 +35,11 @@
 					{
 						?>
 				<tr>
-					<td class="align-right"><span class="price big">ส่วนลด ORG(<span id="summaryDiscountPercent"><?php echo $orderSummary['partnerDiscountPercent']; ?></span>%)</span></td>
+					<td class="align-right"><span class="price big">ส่วนลดพาร์ทเนอร์(<span id="summaryDiscountPercent"><?php echo $orderSummary['partnerDiscountPercent']; ?></span>%)</span></td>
 							<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['partnerDiscount']; ?></span></td>
 						</tr>
 						<tr>
-							<td class="align-right"><span class="price big">รวมหลังหักส่วนลด ORG</span></span></td>
+							<td class="align-right"><span class="price big">รวมหลังหักส่วนลดพาร์ทเนอร์</span></span></td>
 									<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['totalPostPartnerDiscount']; ?></span></td>
 								</tr>
 

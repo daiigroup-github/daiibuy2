@@ -279,8 +279,17 @@
 						</tr>
 						<?php
 					}
-					if($model->distributorDiscount > 0)
-					{
+		if (isset($model->partnerDiscountValue) && $model->partnerDiscountValue > 0)
+		{
+			?>
+									<tr>
+										<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดพาร์ทเนอร์/Partner Discount(<?php echo $model->partnerDiscountPercent; ?>%)</td>
+													<td style="text-align: right;color: cornflowerblue;font-weight: bold;border-bottom-style: double;border-bottom-width: 2px" ><?php echo number_format($model->partnerDiscountValue, 2, ".", ","); ?></td>
+												</tr>
+			<?php
+		}
+		else if ($model->distributorDiscount > 0)
+		{
 						?>
 						<tr>
 							<td colspan="6" style="text-align: right;color: cornflowerblue;font-weight: bold;">ส่วนลดตัวแทนกระจายสินค้า/Distributor Discount(<?php echo $model->distributorDiscountPercent; ?>%)</td>
