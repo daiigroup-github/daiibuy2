@@ -992,6 +992,7 @@ class Order extends OrderMaster
 						$price += $option->total;
 					}
 				}
+				$priceHome = $price;
 				$sumTotal+=($price * $item->quantity);
 				$noOfBuy +=$item->quantity;
 			}
@@ -1093,10 +1094,27 @@ class Order extends OrderMaster
 					}
 				}
 				$partnerDiscountValue = $grandTotal * $partnerDiscountPercent / 100;
-				$grandTotal = $grandTotal - $partnerDiscountValue;
-				$res['partnerDiscountPercent'] = $partnerDiscountPercent;
-				$res['partnerDiscount'] = number_format($partnerDiscountValue, 2);
-				$res['totalPostPartnerDiscount'] = number_format($grandTotal, 2);
+				
+
+				if ($supplierId == 4 || $supplierId == 5)
+				{
+//					throw new Exception(print_r($noOfBuy, true));
+
+					if ($noOfBuy > 0 && !(($sumTotal / $noOfBuy) < 200000))
+					{
+						$grandTotal = $grandTotal - $partnerDiscountValue;
+						$res['partnerDiscountPercent'] = $partnerDiscountPercent;
+						$res['partnerDiscount'] = number_format($partnerDiscountValue, 2);
+						$res['totalPostPartnerDiscount'] = number_format($grandTotal, 2);
+					}
+				}
+				else
+				{
+					$grandTotal = $grandTotal - $partnerDiscountValue;
+					$res['partnerDiscountPercent'] = $partnerDiscountPercent;
+					$res['partnerDiscount'] = number_format($partnerDiscountValue, 2);
+					$res['totalPostPartnerDiscount'] = number_format($grandTotal, 2);
+				}
 			}
 			else
 			{
