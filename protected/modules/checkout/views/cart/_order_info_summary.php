@@ -26,7 +26,10 @@
 				</tr>
 
 				<?php
-				if (isset(Yii::app()->user->id) && Yii::app()->user->userType == 2):
+//				throw new Exception(print_r(, true));
+				if (isset(Yii::app()->user->id))
+					$user = User::model()->findByPk(Yii::app()->user->id);
+				if (isset(Yii::app()->user->id) && (Yii::app()->user->userType == 2 || isset($user->partnerCode))):
 
 					if (isset($orderSummary['partnerDiscount']))
 					{
