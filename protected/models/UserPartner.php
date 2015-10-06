@@ -79,7 +79,7 @@ class UserPartner extends UserPartnerMaster
 //		throw new Exception(print_r($user, true));
 
 		$partnerType = isset($user->partnerCode) ? $this->findPartnerTypeByCode($user->partnerCode) : 0;
-
+		$code = isset($user->partnerCode) ? $user->partnerCode : 0;
 		$result = array();
 		if($partnerType != 0)
 		{
@@ -88,13 +88,13 @@ class UserPartner extends UserPartnerMaster
 			//Type 2 = Amount
 			if($partnerType == 1)
 			{
-				$orgEmp = OrgEmployee::model()->find("lower(code) = " . strtolower($code));
+				$orgEmp = OrgEmployee::model()->find("lower(code) = '" . strtolower($code) . "'");
 				$result["discountType"] = 2;
 				$result["discount"] = $orgEmp->org->discountPercent;
 			}
 			else
 			{
-				$link = Link::model()->find("lower(code) = " . strtolower($code));
+				$link = Link::model()->find("lower(code) = '" . strtolower($code) . "'");
 				$linkItems = LinkItems::model()->find("linkId = $link->linkId AND supplierId = $supplierId");
 				$result["discountType"] = $linkItems->discountType;
 				if($linkItems->discountType == 1)
