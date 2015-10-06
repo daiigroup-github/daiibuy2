@@ -81,7 +81,7 @@ class UserPartner extends UserPartnerMaster
 //		throw new Exception(print_r($user, true));
 
 		$partnerType = isset($user->partnerCode) ? $this->findPartnerTypeByCode($user->partnerCode) : 0;
-
+		$code = isset($user->partnerCode) ? $user->partnerCode : 0;
 		$result = array();
 		if($partnerType != 0)
 		{
@@ -97,6 +97,7 @@ class UserPartner extends UserPartnerMaster
 			else
 			{
 				$link = Link::model()->find("lower(linkCode) = '" . strtolower($code) . "'");
+
 				$linkItems = LinkItems::model()->find("linkId = $link->linkId AND supplierId = $supplierId");
 				$result["discountType"] = $linkItems->discountType;
 				if($linkItems->discountType == 1)
