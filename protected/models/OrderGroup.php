@@ -127,14 +127,18 @@ class OrderGroup extends OrderGroupMaster
 					'UserSpacialProject',
 					array(
 						'orderGroupId')),
-				'orderGroupToOrders' => array(
+				'orderGroupToOrders'=>array(
 					self::HAS_MANY,
 					'OrderGroupToOrder',
 					'orderGroupId'),
-				'orderGroupFiles' => array(
+				'orderGroupFiles'=>array(
 					self::HAS_MANY,
 					'OrderGroupFile',
 					'orderGroupId'),
+				'user'=>array(
+					self::BELONGS_TO,
+					'User',
+					'userId'),
 //				'shippingDistrict'=>array(
 //					self::BELONGS_TO,
 //					'District',
@@ -792,7 +796,6 @@ class OrderGroup extends OrderGroupMaster
 	{
 		if(parent::beforeSave())
 		{
-
 			if($this->isNewRecord)
 			{
 				if(isset($this->user->partnerCode) && !empty($this->user->partnerCode))
@@ -816,6 +819,11 @@ class OrderGroup extends OrderGroupMaster
 					$this->partnerType = $partnerType;
 				}
 			}
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 

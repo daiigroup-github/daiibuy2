@@ -909,7 +909,7 @@ class Order extends OrderMaster
 		$criteria->select = "t.orderId as orderId , usp.spacialPercent as spacialPercent , t.totalIncVAT as totalIncVAT ";
 		$criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderId = t.orderId ";
 		$criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId AND type in (" . self::ORDER_TYPE_CART . "," . self::ORDER_TYPE_MYFILE_TO_CART . " ) ";
-		if (isset(Yii::app()->user->id))
+		if(isset(Yii::app()->user->id))
 		{
 			$criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
 		}
@@ -923,22 +923,22 @@ class Order extends OrderMaster
 		$models = $this->findAll($criteria);
 //				throw new Exception(print_r($models,true));
 		$extraDiscount = 0;
-		foreach ($models as $item)
+		foreach($models as $item)
 		{
 
 
 			$spacialValue = ($item->totalIncVAT * ((100 - $supplierDiscountRangePercent ) / 100)) * ($item->spacialPercent / 100);
 //			throw new Exception(print_r($item, true));
 			$result[$item->orderId] = array(
-				'extraDiscountPercent' => $item->spacialPercent,
-				'extraDiscount' => $spacialValue,
+				'extraDiscountPercent'=>$item->spacialPercent,
+				'extraDiscount'=>$spacialValue,
 			);
 
 			$extraDiscount += $spacialValue;
 		}
 
 		$result["totalExtraDiscount"] = $extraDiscount;
-		if (count($models) > 0)
+		if(count($models) > 0)
 		{
 			return $result;
 		}
@@ -1006,7 +1006,6 @@ class Order extends OrderMaster
 				$noOfUnits = $this->countGinzaHomeAndGinzaTownUnits();
 //				throw new Exception(print_r($noOfUnits,true));
 				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfUnits + $noOfBuy);
-                                
 			}
 			else
 			{
@@ -1048,11 +1047,11 @@ class Order extends OrderMaster
 //			}
 //			if($supplierId == 4 || $supplierId == 5)
 //			{
-                                
-                                $noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
+
+				$noOfUnitsBuy = $this->countGinzaHomeAndGinzaTownUnits();
 
 //                				throw new Exception(print_r($noOfUnitsBuy,true));
-                $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + $noOfUnitsBuy);
 			}
 			else
 			{
@@ -1070,20 +1069,28 @@ class Order extends OrderMaster
 		}
 		$totalPostSupplierRangeDiscount = $grandTotal;
 		$res['totalPostSupplierRangeDiscount'] = number_format($grandTotal, 2);
-		if (isset($userId))
+		if(isset($userId))
 		{
 			$partnerDiscount = UserPartner::model()->findPartnerDiscount($userId, $supplierId, $sumTotal);
-			if (isset($partnerDiscount))
+			if(isset($partnerDiscount))
 			{
-				if ($partnerDiscount["discountType"] == 2)
+				if($partnerDiscount["discountType"] == 2)
 				{
 					$partnerDiscountPercent = $partnerDiscount["discount"];
 					$partnerDiscountValue = $partnerDiscount["discount"] * $sumTotal / 100;
 				}
 				else
 				{
-					$partnerDiscountPercent = $partnerDiscount["discount"] / $sumTotal * 100;
-					$partnerDiscountValue = $partnerDiscount["discount"];
+					if(isset($sumTotal) && $sumTotal > 0)
+					{
+						$partnerDiscountPercent = ($partnerDiscount["discount"] * 100) / $sumTotal;
+						$partnerDiscountValue = $partnerDiscount["discount"];
+					}
+					else
+					{
+						$partnerDiscountPercent = $partnerDiscount["discount"];
+						$partnerDiscountValue = $partnerDiscount["discount"] * $sumTotal / 100;
+					}
 				}
 				$partnerDiscountValue = $grandTotal * $partnerDiscountPercent / 100;
 				$grandTotal = $grandTotal - $partnerDiscountValue;
@@ -1093,7 +1100,7 @@ class Order extends OrderMaster
 			}
 			else
 			{
-				if ($distributorDiscountPercent > 0 && isset($distributorDiscount))
+				if($distributorDiscountPercent > 0 && isset($distributorDiscount))
 				{
 					$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
 					$grandTotal = $grandTotal - $distributorDiscount;
@@ -1121,11 +1128,9 @@ class Order extends OrderMaster
 
 	public $spacialPercent;
 
-	
-
 	public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE, $orderGroupId = NULL)
 	{
-		if (isset($orderGroupId))
+		if(isset($orderGroupId))
 			$orderGroupModel = OrderGroup::model()->findByPk($orderGroupId);
 		$res = [];
 		if(isset(Yii::app()->user->id))
@@ -1172,13 +1177,13 @@ class Order extends OrderMaster
 //			$sumAll = $noOfBuy;
 		}
 //                throw new Exception(print_r($noOfBuy,true));
-                if($noOfBuy>1)
-                    $useDiscount = TRUE;
-		if ($useDiscount && !isset($orderGroupModel->parentId))
+		if($noOfBuy > 1)
+			$useDiscount = TRUE;
+		if($useDiscount && !isset($orderGroupModel->parentId))
 		{
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy+1);
+			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + 1);
 		}
-		else if ($useDiscount)
+		else if($useDiscount)
 		{
 			$discountPercent = $orderGroupModel->discountPercent;
 		}

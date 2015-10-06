@@ -187,98 +187,114 @@ class StepController extends MasterCheckoutController
 		$billingAddressModel->type = Address::ADDRESS_TYPE_BILLING;
 		$shippingAddressModel = new Address();
 		$shippingAddressModel->type = Address::ADDRESS_TYPE_SHIPPING;
-                $flag = 0;
-        if(isset($_POST['Next']))
+		$flag = 0;
+		if(isset($_POST['Next']))
 		{
 //			throw new Exception(print_r($_POST['billing']['company'] != "", true));
 			$transaction = Yii::app()->db->beginTransaction();
-            try {
-			$this->writeToFile('/tmp/step2', print_r($_POST, true));
-//billing 
-            if ($_POST['billingRadio'] == 1) {
-                Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
-                    $flag = 1;
-                } else {
-                //add new billing address  
-//                throw new Exception(print_r($_POST['billing']['company'], true));
-					if ($_POST['billing']['company'] != "")
-					{
-						if (!isset($_POST['companyBranch'])) {
-                            $billingAddressModel->addError("paymentCompany", '"สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
-
-	//						throw new Exception(print_r($billingAddressModel->errors, true));
-					}
-					elseif ($_POST['companyBranch'] == 2)
-					{
-						if (!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "")
-						{
-							$billingAddressModel->addError("paymentCompany", "สาขาของบริษัทของท่าน.");
-//								2 => "กรุณาระบุสาขาของบริษัทของท่าน");
-//							throw new Exception($billingAddressModel->errors);
-								}
-					}
-                }
-
-                $billingAddressModel->attributes = $_POST['billing'];
-                if (isset($_POST['companyBranch'])) {
-                    if ($_POST['companyBranch'] == 1) {
-                        $billingAddressModel->company = $billingAddressModel->company . " (สำนักงานใหญ่)";
-                    } else {
-                        if (isset($_POST['billing']['companyBranchDetail'])) {
-                            $billingAddressModel->company = $billingAddressModel->company . " " . $_POST['billing']['companyBranchDetail'];
-                        } else {
-                            throw new Exception(print_r($billingAddressModel->errors, true));
-                        }
-                    }
-                }
-                if (!isset($billingAddressModel->taxNo) || $billingAddressModel->taxNo == "") {
-                        $billingAddressModel->addError("paymentCompany", "เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)");
-//					throw new Exception($billingAddressModel->errors);
-					}
-
-                $billingAddressModel->userId = Yii::app()->user->id;
-                    if (!$billingAddressModel->save()) {
-                        $flag = 0;
-                        throw new Exception(print_r($billingAddressModel->errors, true));
-					}
-					else if (count($billingAddressModel->errors) > 0)
-					{
-					throw new Exception(print_r($billingAddressModel->errors, true));
+			try
+			{
+				$this->writeToFile('/tmp/step2', print_r($_POST, true));
+//billing
+				if($_POST['billingRadio'] == 1)
+				{
+					Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
+					$flag = 1;
 				}
 				else
 				{
-					$flag = 1;
-                        Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
-                    }
-            }
+					//add new billing address
+//                throw new Exception(print_r($_POST['billing']['company'], true));
+					if($_POST['billing']['company'] != "")
+					{
+						if(!isset($_POST['companyBranch']))
+						{
+							$billingAddressModel->addError("paymentCompany", '"สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
+
+							//						throw new Exception(print_r($billingAddressModel->errors, true));
+						}
+						elseif($_POST['companyBranch'] == 2)
+						{
+							if(!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "")
+							{
+								$billingAddressModel->addError("paymentCompany", "สาขาของบริษัทของท่าน.");
+//								2 => "กรุณาระบุสาขาของบริษัทของท่าน");
+//							throw new Exception($billingAddressModel->errors);
+							}
+						}
+					}
+
+					$billingAddressModel->attributes = $_POST['billing'];
+					if(isset($_POST['companyBranch']))
+					{
+						if($_POST['companyBranch'] == 1)
+						{
+							$billingAddressModel->company = $billingAddressModel->company . " (สำนักงานใหญ่)";
+						}
+						else
+						{
+							if(isset($_POST['billing']['companyBranchDetail']))
+							{
+								$billingAddressModel->company = $billingAddressModel->company . " " . $_POST['billing']['companyBranchDetail'];
+							}
+							else
+							{
+								throw new Exception(print_r($billingAddressModel->errors, true));
+							}
+						}
+					}
+					if(!isset($billingAddressModel->taxNo) || $billingAddressModel->taxNo == "")
+					{
+						$billingAddressModel->addError("paymentCompany", "เลขที่ผู้เสียภาษีของท่าน (ในกรณีที่เป็นบุคคลธรรมดากรุณากรอกเลขประจำตัวประชาชน 13 หลัก)");
+//					throw new Exception($billingAddressModel->errors);
+					}
+
+					$billingAddressModel->userId = Yii::app()->user->id;
+					if(!$billingAddressModel->save())
+					{
+						$flag = 0;
+						throw new Exception(print_r($billingAddressModel->errors, true));
+					}
+					else if(count($billingAddressModel->errors) > 0)
+					{
+						throw new Exception(print_r($billingAddressModel->errors, true));
+					}
+					else
+					{
+						$flag = 1;
+						Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
+					}
+				}
 
 //			throw new Exception(print_r($billingAddressModel->errors, true));
 
 
-			if($_POST['shippingRadio'] == 1)
-			{
-				Yii::app()->session['shippingAddressId'] = $_POST['existingShippingAddress'];
-                    $flag = 1;
-                }
-			else
-			{
-//add new shipping address
-				$shippingAddressModel->attributes = $_POST['shipping'];
-				$shippingAddressModel->provinceId = $this->cookie->provinceId;
-				$shippingAddressModel->userId = Yii::app()->user->id;
-				Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
-				if(!$shippingAddressModel->save())
+				if($_POST['shippingRadio'] == 1)
 				{
-                                    $flag = 0;
-                        throw new Exception(print_r($shippingAddressModel->errors, true));
+					Yii::app()->session['shippingAddressId'] = $_POST['existingShippingAddress'];
+					$flag = 1;
 				}
 				else
 				{
-                        $flag = 1;
-                        Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
+//add new shipping address
+					$shippingAddressModel->attributes = $_POST['shipping'];
+					$shippingAddressModel->provinceId = $this->cookie->provinceId;
+					$shippingAddressModel->userId = Yii::app()->user->id;
+					Yii::app()->session['shippingAddressId'] = $shippingAddressModel->attributes;
+					if(!$shippingAddressModel->save())
+					{
+						$flag = 0;
+						throw new Exception(print_r($shippingAddressModel->errors, true));
+					}
+					else
+					{
+						$flag = 1;
+						Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
+					}
 				}
 			}
-            } catch (Exception $exc) {
+			catch(Exception $exc)
+			{
 //				if (count($billingAddressModel->errors) > 0)
 //				{
 //					print_r($billingAddressModel->errors);
@@ -291,22 +307,23 @@ class StepController extends MasterCheckoutController
 //				print_r(count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : array(), true);
 
 				$transaction->rollback();
-                $billingAddressModel->attributes = $_POST['billing'];
-                $shippingAddressModel->attributes = $_POST['shipping'];
-//             
-            }
-			if ($flag) {
-                $transaction->commit();
-                $this->redirect($this->createUrl(3));
-            }
-        }
+				$billingAddressModel->attributes = $_POST['billing'];
+				$shippingAddressModel->attributes = $_POST['shipping'];
+//
+			}
+			if($flag)
+			{
+				$transaction->commit();
+				$this->redirect($this->createUrl(3));
+			}
+		}
 
-        $this->render('step2', array(
-            'billingAddressModel' => $billingAddressModel,
-            'shippingAddressModel' => $shippingAddressModel,
-            'step' => 2,
-            'errors' => count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors,
-        ));
+		$this->render('step2', array(
+			'billingAddressModel'=>$billingAddressModel,
+			'shippingAddressModel'=>$shippingAddressModel,
+			'step'=>2,
+			'errors'=>count($shippingAddressModel->errors) > 0 ? $shippingAddressModel->errors : $billingAddressModel->errors,
+		));
 //$this->redirect($this->createUrl(3));
 	}
 
@@ -364,7 +381,6 @@ class StepController extends MasterCheckoutController
 
 	public function step4()
 	{
-
 //		throw new Exception(print_r($_POST["orderGroupId"],true));
 		if(isset($_POST["orderGroupId"]))
 		{
@@ -390,7 +406,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->orderNo = $orderGroup->genOrderNo($supplierId);
 				$orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
 				$orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
-				$orderGroup->total = $orderGroup->totalIncVAT / 1.07;
+				$orderGroup->total = number_format($orderGroup->totalIncVAT / 1.07, 2, ".", "");
 				$orderGroup->discountPercent = str_replace(",", "", $orderSummary['discountPercent']);
 				$orderGroup->discountValue = str_replace(",", "", $orderSummary['discount']);
 				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
@@ -408,21 +424,17 @@ class StepController extends MasterCheckoutController
 				}
 //Distributor Discount & Spacial Project Discount
 				$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
-				$orderGroup->vatValue = $orderGroup->calVatValue();
+				$orderGroup->vatValue = number_format($orderGroup->calVatValue(), 2, ".", "");
 				$orderGroup->userId = Yii::app()->user->id;
 				$orderGroup->paymentMethod = $_POST['paymentMethod'];
 				$orderGroup->createDateTime = new CDbExpression("NOW()");
 				$orderGroup->updateDateTime = new CDbExpression("NOW()");
-
 
 				/**
 				 * Todo:: billing & shipping address
 				 */
 				$billingAddress = Address::model()->findByPk(Yii::app()->session['billingAddressId']);
 				$shippingAddress = Address::model()->findByPk(Yii::app()->session['shippingAddressId']);
-
-
-				
 
 				$userModel = User::model()->findByPk(Yii::app()->user->id);
 				$orderGroup->email = isset($userModel->email) ? $userModel->email : $oldOrderGroup->email;
@@ -449,7 +461,7 @@ class StepController extends MasterCheckoutController
 				/**
 				 * TODO:: remove false after add address
 				 */
-				if($orderGroup->save(false))
+				if($orderGroup->save(FALSE))
 				{
 					$orderGroupId = Yii::app()->db->getLastInsertID();
 
@@ -510,6 +522,10 @@ class StepController extends MasterCheckoutController
 						$flag = $this->saveGinzaOrder($supplierId, $orderGroupId);
 					}
 				}
+				else
+				{
+					throw new Exception(print_r($orderGroup->errors, true));
+				}
 //				throw new Exception($flag);
 				if($flag)
 				{
@@ -546,8 +562,8 @@ class StepController extends MasterCheckoutController
 			}
 			catch(Exception $e)
 			{
-				throw new Exception($e->getMessage());
 				$transaction->rollback();
+				throw new Exception($e->getMessage());
 			}
 		}
 
@@ -972,7 +988,7 @@ class StepController extends MasterCheckoutController
 				$oldOrder->updateDateTime = new CDbExpression("NOW()");
 			}
 		}
-        //                throw new Exception(print_r($oldOrder, true));
+		//                throw new Exception(print_r($oldOrder, true));
 //					$oldOrder->paymentDateTime = new CDbExpression('NOW()');
 		if($oldOrder->save())
 		{
@@ -1177,8 +1193,8 @@ class StepController extends MasterCheckoutController
 		try
 		{
 			$oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
-			$cat2ToProducts = Category2ToProduct::model()->findAll("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId. ' ORDER BY productId DESC');
-                        $cat2ToProduct = isset($cat2ToProducts[1])? $cat2ToProducts[1] : $cat2ToProducts[0] ;
+			$cat2ToProducts = Category2ToProduct::model()->findAll("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId . ' ORDER BY productId DESC');
+			$cat2ToProduct = isset($cat2ToProducts[1]) ? $cat2ToProducts[1] : $cat2ToProducts[0];
 			$models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
 				":brandId"=>$cat2ToProduct->brandId,
 				':brandModelId'=>$cat2ToProduct->brandModelId,
@@ -1200,7 +1216,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
 				$orderGroup->parentId = isset($newOrderGroupId) ? $newOrderGroupId : $orderGroupId;
 				$orderGroup->status = 0;
-                                
+
 //Distributor Discount & Spacial Project Discount
 				if(isset($orderSummary['distributorDiscountPercent']))
 				{
@@ -1404,7 +1420,7 @@ class StepController extends MasterCheckoutController
 
 				if($orderGroup->totalIncVAT >= ($_POST["payValue"] + $sumSupPay) && $_POST["payValue"] >= 1000)
 				{
-				
+
 					$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"], FALSE, $_GET["orderGroupId"]);
 					$oldOrderGroup = $orderGroup;
 					$titleBlankOrderAndOrderItem = "รายการแบ่งชำระเงิน ของ" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
@@ -1579,9 +1595,9 @@ class StepController extends MasterCheckoutController
 			$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $furnitureGroup->price, false);
 			$oldOrderGroup = $orderGroup;
 			$titleBlankOrderAndOrderItem = "Furniture Set " . $furnitureGroup->title . " " . $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->product->name;
-			
 
-			if (!isset($orderGroup->fur[0]))
+
+			if(!isset($orderGroup->fur[0]))
 			{
 				$orderGroup = new OrderGroup();
 			}
@@ -1590,7 +1606,7 @@ class StepController extends MasterCheckoutController
 				$orderGroup = OrderGroup::model()->findByPk($orderGroup->fur[0]->orderGroupId);
 			}
 
-			
+
 			$orderGroup->attributes = $oldOrderGroup->attributes;
 //			throw new Exception(print_r($orderGroup, true));
 			$orderGroup->invoiceNo = null;
@@ -1625,9 +1641,9 @@ class StepController extends MasterCheckoutController
 			$orderGroup->mainId = $oldOrderGroup->orderGroupId;
 			$orderGroup->createDateTime = new CDbExpression("NOW()");
 			$orderGroup->updateDateTime = new CDbExpression("NOW()");
-							
+
 //			$orderGroup = new OrderGroup;
-			if ($orderGroup->isNewRecord)
+			if($orderGroup->isNewRecord)
 			{
 				$orderGroup->orderGroupId = null;
 			}
@@ -1649,10 +1665,10 @@ class StepController extends MasterCheckoutController
 				$bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
 				$supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
 				$this->render('step4', array(
-					'step' => 4,
-					'orderSummary' => $orderSummary,
-					'bankArray' => $bankArray,
-					'supplierModel' => $supplierModel
+					'step'=>4,
+					'orderSummary'=>$orderSummary,
+					'bankArray'=>$bankArray,
+					'supplierModel'=>$supplierModel
 				));
 			}
 		}

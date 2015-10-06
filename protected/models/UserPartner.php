@@ -75,7 +75,9 @@ class UserPartner extends UserPartnerMaster
 
 	public function findPartnerDiscount($userId, $supplierId, $summary)
 	{
+		$percent = 0;
 		$user = User::model()->findByPk($userId);
+		$code = $user->partnerCode;
 //		throw new Exception(print_r($user, true));
 
 		$partnerType = isset($user->partnerCode) ? $this->findPartnerTypeByCode($user->partnerCode) : 0;
@@ -88,13 +90,13 @@ class UserPartner extends UserPartnerMaster
 			//Type 2 = Amount
 			if($partnerType == 1)
 			{
-				$orgEmp = OrgEmployee::model()->find("lower(code) = " . strtolower($code));
+				$orgEmp = OrgEmployee::model()->find("lower(code) = '" . strtolower($code) . "'");
 				$result["discountType"] = 2;
 				$result["discount"] = $orgEmp->org->discountPercent;
 			}
 			else
 			{
-				$link = Link::model()->find("lower(code) = " . strtolower($code));
+				$link = Link::model()->find("lower(linkCode) = '" . strtolower($code) . "'");
 				$linkItems = LinkItems::model()->find("linkId = $link->linkId AND supplierId = $supplierId");
 				$result["discountType"] = $linkItems->discountType;
 				if($linkItems->discountType == 1)
@@ -103,8 +105,11 @@ class UserPartner extends UserPartnerMaster
 				}
 				else
 				{
-					$percent = ($linkItems->value * 100) / $summary;
-					$result["discount"] = $percent;
+//					if((!empty($linkItems->value) && $linkItems->value > 0) && (isset($summary) && $summary > 0))
+//					{
+//						$percent = number_format(($linkItems->value * 100) / $summary, 2);
+//					}
+					$result["discount"] = $linkItems->value;
 				}
 			}
 			return $result;
