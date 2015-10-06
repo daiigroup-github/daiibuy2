@@ -116,8 +116,19 @@ $form = $this->beginWidget('CActiveForm', array(
 								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $sumDiscountPercent; ?></span>%)</span></td>
 								<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $sumDiscount; ?></span></td>
 								</tr>
-						<?php endif; ?>
-                        <tr>
+								<?php
+								endif;
+								if (isset($orderSummary["partnerDiscount"]))
+								{
+									?>
+								<tr>
+									<td class="align-right"><span class="price big">Partner Discount(<span id="partnerDiscountPercent"><?php echo $orderSummary["partnerDiscountPercent"]; ?></span>%)</span></td>
+									<td class="align-right" style="width: 169px;"><span class="price big" id="partnerDiscount"><?php echo $orderSummary["partnerDiscount"]; ?></span></td>
+									</tr>
+									<?php
+								}
+								?>
+								<tr>
                             <td class="align-right"><span class="price big">Grand Total</span></td>
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryGrandTotal"><?php echo $orderSummary['grandTotal']; ?></span></td>
                         </tr>
