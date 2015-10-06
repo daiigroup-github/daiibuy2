@@ -41,6 +41,9 @@
                                 $("#summaryDiscount").html(data.summary.discount);
                                 $("#summaryGrandTotal").html(data.summary.grandTotal);
                                 $("#summaryDiscountPercent").html(data.summary.discountPercent);
+								$("#partnerDiscount").html(data.summary.partnerDiscount);
+								$("#partnerDiscountPercent").html(data.summary.partnerDiscountPercent);
+								$("#totalPostPartnerDiscount").html(data.summary.totalPostPartnerDiscount);
 								if(parseInt(data.summary.total.replace(",", "")) < ' . $minValue . '){
 									$("#checkoutBtn").addClass("hidden");
 								}else{
