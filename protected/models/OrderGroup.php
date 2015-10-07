@@ -275,11 +275,11 @@ class OrderGroup extends OrderGroupMaster
 //		{
 		if ($supplierUser->supplierId = 1 || $supplierUser->supplierId = 3)
 		{
-			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = 1 AND supplierId = 3 AND paymentMethod = ' . $model->paymentMethod;
+			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 1 OR supplierId = 3) AND paymentMethod = ' . $model->paymentMethod;
 		}
 		else if ($supplierUser->supplierId = 4 || $supplierUser->supplierId = 5)
 		{
-			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = 4 AND supplierId = 5 AND paymentMethod = ' . $model->paymentMethod;
+			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 4 OR supplierId = 5) AND paymentMethod = ' . $model->paymentMethod;
 		}
 		else
 		{
