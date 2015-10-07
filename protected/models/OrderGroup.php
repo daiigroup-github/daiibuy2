@@ -273,7 +273,18 @@ class OrderGroup extends OrderGroupMaster
 		$criteria->select = 'max(RIGHT(invoiceNo,6)) as maxCode';
 //		if(isset($supplierUser->redirectURL))
 //		{
-		$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->supplierId . ' AND paymentMethod = ' . $model->paymentMethod;
+		if ($supplierUser->supplierId = 1 || $supplierUser->supplierId = 3)
+		{
+			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = 1 AND supplierId = 3 AND paymentMethod = ' . $model->paymentMethod;
+		}
+		else if ($supplierUser->supplierId = 4 || $supplierUser->supplierId = 5)
+		{
+			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = 4 AND supplierId = 5 AND paymentMethod = ' . $model->paymentMethod;
+		}
+		else
+		{
+			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->supplierId . ' AND paymentMethod = ' . $model->paymentMethod;
+		}
 //		}
 //		else
 //		{
@@ -288,7 +299,7 @@ class OrderGroup extends OrderGroupMaster
 		return isset($result->data[0]) ? $result->data[0]->maxCode : 0;
 	}
 
-	public function findMaxOrderNo($supplierId = NULL)
+	public function findMaxOrderNo($prefix = NULL)
 	{
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
@@ -306,9 +317,9 @@ class OrderGroup extends OrderGroupMaster
 
 		$orderGroupModel = OrderGroup::model()->find(array(
 			'select'=>'max(RIGHT(orderNo,6)) as maxCode',
-			'condition'=>'supplierId=:supplierId',
+			'condition' => 'substr(orderNo,1,2)=:prefix',
 			'params'=>array(
-				':supplierId'=>$supplierId,
+				':prefix' => $prefix,
 			),
 			'order'=>'orderNo desc',
 			'limit'=>'1'
@@ -464,7 +475,7 @@ class OrderGroup extends OrderGroupMaster
 	{
 		$supplierModel = Supplier::model()->findByPk($supplierId);
 		$prefix = $supplierModel->prefix;
-		$max_code = intval($this->findMaxOrderNo($supplierId));
+		$max_code = intval($this->findMaxOrderNo($prefix));
 		$max_code += 1;
 		return $prefix . date("Ym") . "-" . str_pad($max_code, 6, "0", STR_PAD_LEFT);
 	}
