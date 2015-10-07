@@ -273,11 +273,11 @@ class OrderGroup extends OrderGroupMaster
 		$criteria->select = 'max(RIGHT(invoiceNo,6)) as maxCode';
 //		if(isset($supplierUser->redirectURL))
 //		{
-		if ($supplierUser->supplierId = 1 || $supplierUser->supplierId = 3)
+		if ($supplierUser->supplierId == 1 || $supplierUser->supplierId == 3)
 		{
 			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 1 OR supplierId = 3) AND paymentMethod = ' . $model->paymentMethod;
 		}
-		else if ($supplierUser->supplierId = 4 || $supplierUser->supplierId = 5)
+		else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5)
 		{
 			$criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 4 OR supplierId = 5) AND paymentMethod = ' . $model->paymentMethod;
 		}
