@@ -111,7 +111,6 @@ class OrderGroupMaster extends MasterCActiveRecord
 				self::BELONGS_TO,
 				'District',
 				'shippingDistrictId'),
-			
 		);
 	}
 

@@ -70,6 +70,7 @@ class OrderGroup extends OrderGroupMaster
 // class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 //code here
+
 				'orders'=>array(
 					self::MANY_MANY,
 					'Order',
@@ -143,18 +144,18 @@ class OrderGroup extends OrderGroupMaster
 //					self::BELONGS_TO,
 //					'District',
 //					'shippingDistrictId'),
-//				'paymentAmphur'=>array(
-//					self::BELONGS_TO,
-//					'Amphur',
-//					'paymentAmphurId'),
-//				'paymentDistrict'=>array(
-//					self::BELONGS_TO,
-//					'District',
-//					'paymentDistrictId'),
-//				'paymentProvince'=>array(
-//					self::BELONGS_TO,
-//					'Province',
-//					'paymentProvinceId'),
+				'paymentAmphur'=>array(
+					self::BELONGS_TO,
+					'Amphur',
+					'paymentAmphurId'),
+				'paymentDistrict'=>array(
+					self::BELONGS_TO,
+					'District',
+					'paymentDistrictId'),
+				'paymentProvince'=>array(
+					self::BELONGS_TO,
+					'Province',
+					'paymentProvinceId'),
 //				'shippingAmphur'=>array(
 //					self::BELONGS_TO,
 //					'Amphur',
@@ -163,10 +164,10 @@ class OrderGroup extends OrderGroupMaster
 //					self::BELONGS_TO,
 //					'Province',
 //					'shippingProvinceId'),
-//				'supplier'=>array(
-//					self::BELONGS_TO,
-//					'Supplier',
-//					'supplierId'),
+				'supplier'=>array(
+					self::BELONGS_TO,
+					'Supplier',
+					'supplierId'),
 //				'orderGroupFiles'=>array(
 //					self::HAS_MANY,
 //					'OrderGroupFile',
