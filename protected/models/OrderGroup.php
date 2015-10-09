@@ -140,10 +140,10 @@ class OrderGroup extends OrderGroupMaster
 					self::BELONGS_TO,
 					'User',
 					'userId'),
-//				'shippingDistrict'=>array(
-//					self::BELONGS_TO,
-//					'District',
-//					'shippingDistrictId'),
+				'shippingDistrict'=>array(
+					self::BELONGS_TO,
+					'District',
+					'shippingDistrictId'),
 				'paymentAmphur'=>array(
 					self::BELONGS_TO,
 					'Amphur',
@@ -156,26 +156,26 @@ class OrderGroup extends OrderGroupMaster
 					self::BELONGS_TO,
 					'Province',
 					'paymentProvinceId'),
-//				'shippingAmphur'=>array(
-//					self::BELONGS_TO,
-//					'Amphur',
-//					'shippingAmphurId'),
-//				'shippingProvince'=>array(
-//					self::BELONGS_TO,
-//					'Province',
-//					'shippingProvinceId'),
+				'shippingAmphur'=>array(
+					self::BELONGS_TO,
+					'Amphur',
+					'shippingAmphurId'),
+				'shippingProvince'=>array(
+					self::BELONGS_TO,
+					'Province',
+					'shippingProvinceId'),
 				'supplier'=>array(
 					self::BELONGS_TO,
 					'Supplier',
 					'supplierId'),
-//				'orderGroupFiles'=>array(
-//					self::HAS_MANY,
-//					'OrderGroupFile',
-//					'orderGroupId'),
-//				'orderGroupToOrders'=>array(
-//					self::HAS_MANY,
-//					'OrderGroupToOrder',
-//					'orderGroupId'),
+				'orderGroupFiles'=>array(
+					self::HAS_MANY,
+					'OrderGroupFile',
+					'orderGroupId'),
+				'orderGroupToOrders'=>array(
+					self::HAS_MANY,
+					'OrderGroupToOrder',
+					'orderGroupId'),
 		));
 	}
 
