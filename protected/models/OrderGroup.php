@@ -140,10 +140,10 @@ class OrderGroup extends OrderGroupMaster
 					self::BELONGS_TO,
 					'User',
 					'userId'),
-				'shippingDistrict'=>array(
-					self::BELONGS_TO,
-					'District',
-					'shippingDistrictId'),
+//				'shippingDistrict'=>array(
+//					self::BELONGS_TO,
+//					'District',
+//					'shippingDistrictId'),
 				'paymentAmphur'=>array(
 					self::BELONGS_TO,
 					'Amphur',
