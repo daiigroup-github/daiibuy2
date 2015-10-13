@@ -402,10 +402,29 @@ echo $form->dropDownList($addressModel, 'districtId', array(), array(
 			email.focus();
 			return false;
 		} else {
-			email.style.backgroundColor = goodColor;
-			message.style.color = goodColor;
+			var url = '<?php echo $this->createUrl("isValidEmail"); ?>';
+
+			$.ajax({
+						type: "POST",
+						dataType: "JSON",
+						url: url,
+						data: {email: email.value},
+						success: function (data) {
+							if(data.status){
+				email.style.backgroundColor = goodColor;
+				message.style.color = goodColor;
+				message.style.fontSize = '12px';
+				message.innerHTML = "<b>คุณสามารถใช้อีเมลล์นี้ได้.</b>";
+			}else{
+				email.style.backgroundColor = badColor;
+			message.style.color = badColor;
 			message.style.fontSize = '12px';
-			message.innerHTML = "<b>คุณสามารถใช้อีเมลล์นี้ได้.</b>";
+			message.innerHTML = "<b>อีเมลล์นี้มีอยู่แล้วในระบบ ไม่สามารถใช้งานได้.</b>";
+			email.focus();
+			return false;
+	}
+						}
+					});
 		}
 	}
 </script>

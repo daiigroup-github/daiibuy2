@@ -1974,4 +1974,13 @@ class StepController extends MasterCheckoutController
 		));
 	}
 
+	public function actionIsValidEmail()
+	{
+		$email = $_POST['email'];
+		$res = User::model()->findAll('email = "' . $email . '"');
+
+		$result["status"] = count($res) > 0 ? false : true;
+		echo CJSON::encode($result);
+	}
+
 }
