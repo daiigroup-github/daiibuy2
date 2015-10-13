@@ -403,7 +403,6 @@ echo $form->dropDownList($addressModel, 'districtId', array(), array(
 			return false;
 		} else {
 			var url = '<?php echo $this->createUrl("isValidEmail"); ?>';
-
 			$.ajax({
 						type: "POST",
 						dataType: "JSON",
