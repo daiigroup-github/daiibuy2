@@ -115,7 +115,8 @@ return CMap::mergeArray(
 			'ginzahome',
 			'ginzatown',
 			'myfile',
-			'backoffice'
+			'backoffice',
+			'sales',
 		),
 		'params'=>array(
 		// this is used in contact page
