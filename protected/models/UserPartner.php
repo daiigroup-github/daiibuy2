@@ -80,15 +80,15 @@ class UserPartner extends UserPartnerMaster
 		$code = $user->partnerCode;
 //		throw new Exception(print_r($user, true));
 
-		$partnerType = isset($user->partnerCode) ? $this->findPartnerTypeByCode($user->partnerCode) : 0;
-		$code = isset($user->partnerCode) ? $user->partnerCode : 0;
+		$partnerType = (isset($user->partnerCode) && !($user->partnerCode == "")) ? $this->findPartnerTypeByCode($user->partnerCode) : 0;
+//		$code = isset($user->partnerCode) ? $user->partnerCode : 0;
 		$result = array();
 		if($partnerType != 0)
 		{
 			// Discount Type
 			//Type 1 = %
 			//Type 2 = Amount
-			if($partnerType == 1)
+			if ($partnerType == 1)
 			{
 				$orgEmp = OrgEmployee::model()->find("lower(code) = '" . strtolower($code) . "'");
 				$result["discountType"] = 2;

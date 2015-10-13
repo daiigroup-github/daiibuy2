@@ -95,6 +95,7 @@ class StepController extends MasterCheckoutController
 				$userModel->approved = 1;
 				$userModel->password = $userModel->hashPassword($userModel->email, $userModel->password);
 				$userModel->createDateTime = new CDbExpression('NOW()');
+//				$userModel->partnerType = 0;
 				if($userModel->save())
 				{
 					$addressModel->userId = Yii::app()->db->getlastInsertID();

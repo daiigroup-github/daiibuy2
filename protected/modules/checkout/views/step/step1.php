@@ -267,7 +267,8 @@ $form = $this->beginWidget('CActiveForm', array(
 <?php
 echo $form->dropDownList($addressModel, 'amphurId', array(), array(
 //                            'class'=>'chosen-select-full-width',
-	'id'=>'shippingAmphur',
+	'id' => 'shippingAmphur',
+	'prompt' => '--- เลือกอำเภอ ---',
 	'ajax'=>array(
 		'type'=>'POST',
 		'data'=>array(
@@ -291,7 +292,8 @@ echo $form->dropDownList($addressModel, 'amphurId', array(), array(
 <?php
 echo $form->dropDownList($addressModel, 'districtId', array(), array(
 //                            'class'=>'chosen-select-full-width',
-	'id'=>'shippingDistrict',
+	'id' => 'shippingDistrict',
+	'prompt' => '--- เลือกตำบล ---',
 	)
 );
 ?>

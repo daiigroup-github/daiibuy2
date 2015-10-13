@@ -242,8 +242,9 @@ if (isset($errors)) {
 						array(), array(
 //                            'class'=>'chosen-select-full-width',
 						'id'=>'billingAmphur',
-						'name'=>'billing[amphurId]',
-						'ajax'=>array(
+						'name' => 'billing[amphurId]',
+	'prompt' => '--- เลือกอำเภอ ---',
+	'ajax'=>array(
 							'type'=>'POST',
 							'data'=>array(
 								'amphurId'=>'js:this.value'),
@@ -269,8 +270,9 @@ if (isset($errors)) {
 						array(), array(
 //                            'class'=>'chosen-select-full-width',
 						'id'=>'billingDistrict',
-						'name'=>'billing[districtId]'
-						)
+						'name' => 'billing[districtId]',
+	'prompt' => '--- เลือกตำบล ---',
+	)
 					);
 					?>
 				</div>
@@ -429,8 +431,9 @@ if (isset($errors)) {
 					echo $form->dropDownList($shippingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
 						'id'=>'shippingProvince',
 						'name'=>'shipping[provinceId]',
-						'disabled'=>'disabled'));
-//						'prompt'=>'--- เลือกจังหวัด ---',
+						'disabled' => 'disabled',
+	'prompt' => '--- เลือกจังหวัด ---',));
+
 //						'ajax'=>array(
 //							'type'=>'POST',
 //							'data'=>array(
