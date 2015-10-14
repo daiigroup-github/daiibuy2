@@ -1072,7 +1072,9 @@ class Order extends OrderMaster
 		$res['totalPostSupplierRangeDiscount'] = number_format($grandTotal, 2);
 		if(isset($userId))
 		{
-			$partnerDiscount = UserPartner::model()->findPartnerDiscount($userId, $supplierId, $sumTotal);
+			$user = User::model()->findByPk($userId);
+			if (isset($user->partnerCode))
+				$partnerDiscount = UserPartner::model()->findPartnerDiscount($userId, $supplierId, $sumTotal);
 			if(isset($partnerDiscount))
 			{
 				if($partnerDiscount["discountType"] == 2)

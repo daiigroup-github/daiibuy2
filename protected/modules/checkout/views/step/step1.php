@@ -264,8 +264,8 @@ $form = $this->beginWidget('CActiveForm', array(
 					<p><?php echo $form->labelEx($addressModel, 'amphurId'); ?></p>
 				</div>
 				<div class="col-lg-8 col-md-8 col-sm-8">
-<?php
-echo $form->dropDownList($addressModel, 'amphurId', array(), array(
+										<?php
+					echo $form->dropDownList($addressModel, 'amphurId', array(), array(
 //                            'class'=>'chosen-select-full-width',
 	'id' => 'shippingAmphur',
 	'prompt' => '--- เลือกอำเภอ ---',
