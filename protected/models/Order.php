@@ -111,7 +111,6 @@ class Order extends OrderMaster
 
 	public function findAllMyFileBySupplierId($userId, $supplierId, $token)
 	{
-
 		$criteria = new CDbCriteria();
 		if(($userId != 0))
 		{
@@ -135,7 +134,6 @@ class Order extends OrderMaster
 		}
 		else
 		{
-
 			if($supplierId == 4)
 			{
 
@@ -149,9 +147,7 @@ class Order extends OrderMaster
 				':token'=>$token,
 				':supplierId'=>$supplierId,);
 		}
-
 		$res = $this->findAll($criteria);
-
 		return $res;
 	}
 

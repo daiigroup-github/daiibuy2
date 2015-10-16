@@ -51,8 +51,9 @@ class GinzaHomeController extends MasterMyFileController
 			}
 		}
 
-		$cat2ToProduct = Category2ToProduct::model()->find("productId = :productId", array(
-			":productId"=>$model->orders[0]->orderItems[0]->productId));
+		$cat2ToProduct = Category2ToProduct::model()->find("productId = :productId and type = 1", array(
+			":productId" => $model->orders[0]->orderItems[0]->productId));
+		$cat2ToProductReal = $cat2ToProduct;
 		$cat2ToProducts = Category2ToProduct::model()->findAll("category1Id = :catgory1Id AND category2Id=:category2Id", array(
 			":catgory1Id"=>$cat2ToProduct->category1Id,
 			':category2Id'=>$cat2ToProduct->category2Id));
@@ -78,7 +79,7 @@ class GinzaHomeController extends MasterMyFileController
 		$this->render('view', array(
 			'model'=>$model,
 			'productWithOutPay'=>$productWithOutPay,
-			'cat2ToProduct'=>$cat2ToProduct,
+			'cat2ToProduct' => $cat2ToProductReal,
 			'price'=>$price,
 			'brandModels'=>$brandModels,
 			'errorMessage'=>isset($_GET["errorMessage"]) ? $_GET["errorMessage"] : NULL
