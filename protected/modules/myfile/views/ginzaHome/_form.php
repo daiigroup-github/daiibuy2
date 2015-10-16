@@ -55,7 +55,11 @@ $this->renderPartial("_navbar", array(
 							<table class="table table-bordered">
 								<tr>
 									<td>House</td>
-									<td><?php echo $cat2ToProduct->category->title; ?></td>
+									<td><?php
+
+							//										throw new Exception(print_r($cat2ToProduct, true));
+										echo $cat2ToProduct->category->title;
+										?></td>
 								</tr>
 								<tr>
 									<td>Price</td>

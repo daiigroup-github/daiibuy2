@@ -53,6 +53,7 @@ class GinzaHomeController extends MasterMyFileController
 
 		$cat2ToProduct = Category2ToProduct::model()->find("productId = :productId and type = 1", array(
 			":productId" => $model->orders[0]->orderItems[0]->productId));
+//		throw new Exception(print_r($model->orders[0]->orderItems[0]->productId, true));
 		$cat2ToProductReal = $cat2ToProduct;
 		$cat2ToProducts = Category2ToProduct::model()->findAll("category1Id = :catgory1Id AND category2Id=:category2Id", array(
 			":catgory1Id"=>$cat2ToProduct->category1Id,
