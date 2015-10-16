@@ -40,7 +40,7 @@ $form = $this->beginWidget('CActiveForm', array(
 								<h4>ขั้นตอนการใช้งาน</h4>
 							</div>
 
-							<div class="sidebar-box-content sidebar-padding-box">
+							<div class="sidebar-box-content sidebar-padding-box"   style="border: 1px black solid">
 								<div >
 									<p style="color: green"><i class="icons icon-edit" style="font-size: 26px"></i> กรอก <strong>Username</strong> และ <strong>Password</strong> ที่ใช้ Login ระบบ Intranet <br><br><span style="font-size: 14px;color: red">***หมายเหตุ รหัสผ่าน ของพนักงาน ถือเป็นความลับ ของ บริษัท และเพื่อความปลอดภัยของข้อมูลบริษัท จึงไม่ควรบอกแก่บุคคลอื่น</span></p>
 									<hr>
@@ -67,39 +67,46 @@ $form = $this->beginWidget('CActiveForm', array(
 								<i class="icons icon-box-2"></i>
 								<h4>ข้อมูลพนักงาน</h4>
 							</div>
-							<div class="row">
-								<div class="col-md-12 text-danger">
-									<?php echo isset($message) ? $message : ""; ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<?php
-									echo $form->emailField($model, 'username', array(
-										'class'=>'form-control',
-										'placeholder'=>'Username'));
-									?>
-									<?php echo $form->error($model, 'username'); ?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
 
-									<?php
-									echo $form->passwordField($model, 'password', array(
-										'class'=>'form-control',
-										'placeholder'=>'Password'));
-									?>
-									<?php echo $form->error($model, 'password'); ?>
+							<div class="sidebar-box-content sidebar-padding-box" style="border: 1px black solid">
+								<div class="row">
+									<div class="col-md-12 text-danger">
+										<?php echo isset($message) ? $message : ""; ?>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<button class="btn btn-lg btn-primary btn-block" type="submit">ตรวจสอบ</button>
+								<div class="row">
+									<div class="col-md-12">
+										<?php
+										echo $form->emailField($model, 'username', array(
+											'class'=>'form-control',
+											'placeholder'=>'Username'));
+										?>
+										<?php echo $form->error($model, 'username'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+
+										<?php
+										echo $form->passwordField($model, 'password', array(
+											'class'=>'form-control',
+											'placeholder'=>'Password'));
+										?>
+										<?php echo $form->error($model, 'password'); ?>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<button class="btn btn-lg btn-primary btn-block" type="submit">ตรวจสอบ</button>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+					<?php
+					$this->renderPartial("_user_search", array(
+						'model'=>$model));
+					?>
 				</div>
 			</div>
 		</div>
