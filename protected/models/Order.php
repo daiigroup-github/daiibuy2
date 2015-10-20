@@ -1069,7 +1069,7 @@ class Order extends OrderMaster
 		if(isset($userId))
 		{
 			$user = User::model()->findByPk($userId);
-			if (isset($user->partnerCode))
+			if(isset($user->partnerCode))
 				$partnerDiscount = UserPartner::model()->findPartnerDiscount($userId, $supplierId, $sumTotal);
 			if(isset($partnerDiscount))
 			{
@@ -1092,13 +1092,13 @@ class Order extends OrderMaster
 					}
 				}
 				$partnerDiscountValue = $grandTotal * $partnerDiscountPercent / 100;
-				
 
-				if ($supplierId == 4 || $supplierId == 5)
+
+				if($supplierId == 4 || $supplierId == 5)
 				{
 //					throw new Exception(print_r($noOfBuy, true));
 
-					if ($noOfBuy > 0 && !(($sumTotal / $noOfBuy) < 200000))
+					if($noOfBuy > 0 && !(($sumTotal / $noOfBuy) < 200000))
 					{
 						$grandTotal = $grandTotal - $partnerDiscountValue;
 						$res['partnerDiscountPercent'] = $partnerDiscountPercent;
@@ -1116,7 +1116,7 @@ class Order extends OrderMaster
 			}
 			else
 			{
-				if($distributorDiscountPercent > 0 && isset($distributorDiscount))
+				if($distributorDiscountPercent > 0)
 				{
 					$distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
 					$grandTotal = $grandTotal - $distributorDiscount;
@@ -1126,8 +1126,6 @@ class Order extends OrderMaster
 				}
 			}
 //			throw new Exception(print_r($sumTotal, true));
-
-			
 		}
 		$res['discountPercent'] = $discountPercent;
 		$res['discount'] = number_format($discount, 2);
