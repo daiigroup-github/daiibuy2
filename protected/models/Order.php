@@ -1192,8 +1192,8 @@ class Order extends OrderMaster
 			}
 //			$sumAll = $noOfBuy;
 		}
-//                throw new Exception(print_r($noOfBuy,true));
-		if($noOfBuy > 1)
+//                throw new Exception(print_r($orderGroupModel, true));
+		if ($noOfBuy > 0)
 			$useDiscount = TRUE;
 		if($useDiscount)
 		{
@@ -1203,8 +1203,7 @@ class Order extends OrderMaster
 			}
 			else
 			{
-				$orderGroupParent = OrderGroup::model()->findByPk($orderGroupModel->parentId);
-				$discountPercent = $orderGroupParent->discountPercent;
+				$discountPercent = $orderGroupModel->discountPercent;
 			}
 		}
 		else

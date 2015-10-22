@@ -1209,7 +1209,8 @@ class StepController extends MasterCheckoutController
 				":productId"=>$oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId));
 			foreach($models as $model)
 			{
-				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($model->productId, $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $supplierId);
+//				throw new Exception(print_r($oldOrderGroup, true));
+				$orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($model->productId, $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $supplierId, null, null, $orderGroupId);
 				$orderGroup = new OrderGroup();
 				$orderGroup->attributes = $oldOrderGroup->attributes;
 				$orderGroup->supplierId = $supplierId;
