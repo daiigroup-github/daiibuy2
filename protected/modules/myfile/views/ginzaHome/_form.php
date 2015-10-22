@@ -55,11 +55,10 @@ $this->renderPartial("_navbar", array(
 							<table class="table table-bordered">
 								<tr>
 									<td>House</td>
-									<td><?php
-
-							//										throw new Exception(print_r($cat2ToProduct, true));
-										echo $cat2ToProduct->category->title;
-										?></td>
+									<?php
+									$cate2ProductNow = Category2ToProduct::model()->find('productId = ' . $model->child->orders[0]->orderItems[0]->product->productId);
+									?>
+									<td><?php echo $cate2ProductNow->category->title; ?></td>
 								</tr>
 								<tr>
 									<td>Price</td>
@@ -486,7 +485,15 @@ $this->renderPartial("_navbar", array(
 						<table class="table table-bordered">
 							<tr>
 								<td>House</td>
-								<td><?php echo $cat2ToProduct->category->title; ?></td>
+								<!--<td><?php // echo $cat2ToProduct->category->title;  ?></td>-->
+								<?php
+								foreach ($child2->orders as $item)
+								{
+									$cate2ProductNow = Category2ToProduct::model()->find('productId = ' . $item->orderItems[0]->product->productId);
+									?> 
+								<?php }
+								?>
+								<td><?php echo $cate2ProductNow->category->title; ?></td>
 							</tr>
 							<tr>
 								<td>Price</td>
