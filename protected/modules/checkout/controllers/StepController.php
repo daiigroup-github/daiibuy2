@@ -1528,7 +1528,7 @@ class StepController extends MasterCheckoutController
 						'step'=>4,
 						'orderSummary'=>$orderSummary,
 						'bankArray'=>$bankArray,
-						'supplierModel'=>$supplierModel
+						'supplierModel' => $supplierModel,
 					));
 				}
 			}

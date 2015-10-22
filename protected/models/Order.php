@@ -1203,7 +1203,8 @@ class Order extends OrderMaster
 			}
 			else
 			{
-				$discountPercent = $orderGroupModel->discountPercent;
+				$orderGroupParent = OrderGroup::model()->findByPk($orderGroupModel->parentId);
+				$discountPercent = $orderGroupParent->discountPercent;
 			}
 		}
 		else
