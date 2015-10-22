@@ -156,16 +156,18 @@ function getOrderShippingAddress($model) {
 }
 
 function getOrderPaymentAddress($model) {
-//	throw new Exception(print_r($model->paymentFirstname,true));
     $res = "";
-    if (isset($model->paymentCompany) && !empty($model->paymentCompany)) {
-        $res.= $model->paymentCompany;
-    } else {
-        $res.=" คุณ" . $model->paymentFirstname . " " . $model->paymentLastname;
-    }
-    $res .= (isset($model->paymentTaxNo) ? "<br>เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "") . "<br>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . "<br>โทรศัพท์ :  " . $model->telephone;
-//	throw new Exception(print_r($res,true));
-    return $res;
+	if (isset($model->paymentCompany) && !empty($model->paymentCompany) && !(str_replace(" ", "", $model->paymentCompany) == ""))
+	{
+		$res .= $model->paymentCompany;
+	}
+	else
+	{
+		$res = $res . " คุณ" . $model->paymentFirstname . " " . $model->paymentLastname;
+	}
+
+	$res .= (isset($model->paymentTaxNo) ? "<br>เลขที่ประจำตัวผู้เสียภาษี : " . $model->paymentTaxNo : "") . "<br>" . $model->paymentAddress1 . $model->paymentAddress2 . " " . $model->paymentDistrict->districtName . " " . (isset($model->paymentAmphur->amphurName) ? $model->paymentAmphur->amphurName : "" ) . " " . $model->paymentProvince->provinceName . " " . $model->paymentPostcode . "<br>โทรศัพท์ :  " . $model->telephone;
+	return $res;
 }
 
 function getOrderSupplierBillingAddress($model, $isFull = false) {

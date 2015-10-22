@@ -1195,13 +1195,16 @@ class Order extends OrderMaster
 //                throw new Exception(print_r($noOfBuy,true));
 		if($noOfBuy > 1)
 			$useDiscount = TRUE;
-		if($useDiscount && !isset($orderGroupModel->parentId))
+		if($useDiscount)
 		{
-			$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + 1);
-		}
-		else if($useDiscount)
-		{
-			$discountPercent = $orderGroupModel->discountPercent;
+			if(!isset($orderGroupModel->parentId))
+			{
+				$discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $noOfBuy + 1);
+			}
+			else
+			{
+				$discountPercent = $orderGroupModel->discountPercent;
+			}
 		}
 		else
 		{
