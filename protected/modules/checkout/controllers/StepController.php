@@ -1619,6 +1619,10 @@ class StepController extends MasterCheckoutController
 				$orderGroup = OrderGroup::model()->findByPk($orderGroup->fur[0]->orderGroupId);
 			}
 
+			$orderSummary['grandTotal'] = $furnitureGroup->price;
+			$orderSummary['total'] = $furnitureGroup->price;
+			$orderSummary['discountPercent'] = 0;
+			$orderSummary['discount'] = 0;
 
 			$orderGroup->attributes = $oldOrderGroup->attributes;
 //			throw new Exception(print_r($orderGroup, true));
@@ -1635,17 +1639,17 @@ class StepController extends MasterCheckoutController
 			$orderGroup->totalPostDiscount = str_replace(",", "", $orderSummary['total']) - str_replace(",", "", $orderSummary['discount']);
 			$orderGroup->status = 1;
 //Distributor Discount & Spacial Project Discount
-			if(isset($orderSummary['distributorDiscountPercent']))
-			{
-				$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
-				$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
-
-				$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
-			}
-			if(isset($orderSummary['extraDiscount']))
-			{
-				$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
-			}
+//			if(isset($orderSummary['distributorDiscountPercent']))
+//			{
+//				$orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
+//				$orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
+//
+//				$orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
+//			}
+//			if(isset($orderSummary['extraDiscount']))
+//			{
+//				$orderGroup->extraDiscount = str_replace(",", "", $orderSummary['extraDiscount']);
+//			}
 //Distributor Discount & Spacial Project Discount
 
 			$orderGroup->vatPercent = OrderGroup::VAT_PERCENT;
