@@ -43,7 +43,7 @@ class CartController extends MasterCheckoutController
                 foreach($order->orderItems as $orderItem)
 				{
 //                    throw new Exception(print_r($orderItem->product->category2ToProducts, true));
-					$category = (isset($orderItem->product->category2ToProducts[1]) && (!isset($orderItem->product->category2ToProducts[1]->type))) ? $orderItem->product->category2ToProducts[1]->category : $orderItem->product->category2ToProducts[0]->category;
+					$category = (isset($orderItem->product->category2ToProducts[1]) && (isset($orderItem->product->category2ToProducts[1]->type))) ? $orderItem->product->category2ToProducts[1]->category : $orderItem->product->category2ToProducts[0]->category;
 					$category2 = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1]->category2 : $orderItem->product->category2ToProducts[0]->category2;
 					$categoryToSub = CategoryToSub::model()->find(array(
 						'condition'=>'categoryId=:categoryId AND subCategoryId=:subCategoryId',
@@ -66,14 +66,14 @@ class CartController extends MasterCheckoutController
 					$desc[$i]['id'] = uniqid();
 					$desc[$i]["title"] = $category->title . ' : ' . $category2->title;
 					$desc[$i]['detail'] = str_replace('{{pile}}', isset($categoryStakeProvinceModel->stake) ? $categoryStakeProvinceModel->stake : "", isset($categoryToSub->payCondition) ? $categoryToSub->payCondition : "");
-//					throw new Exception(print_r($desc[$i]['title'], true));
+//					throw new Exception(print_r($categoryToSub->payCondition, true));
 					$j=1;
 					$category2ToProduct = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1] :$orderItem->product->category2ToProducts[0];
 					$brandId = $category2ToProduct->brandId;
 					$brandModelId = $category2ToProduct->brandModelId;
 					$category1Id = $category2ToProduct->category1Id;
 					$category2Id = $category2ToProduct->category2Id;
-
+				
 					$category2ToProducts = Category2ToProduct::model()->findAll(array(
 						'condition'=>'brandId=:brandId and brandModelId=:brandModelId and category1Id=:category1Id and category2Id=:category2Id',
 						'params'=>array(
@@ -85,7 +85,9 @@ class CartController extends MasterCheckoutController
 					));
 
 
-					foreach ($category2ToProducts as $c2tp) {
+					foreach ($category2ToProducts as $c2tp)
+					{
+//						throw new Exception(print_r($desc[$i]['detail'], true));
 						$desc[$i]['detail'] = str_replace("{{" . "price{$j}" . "}}", $c2tp->product->calProductPriceGinza($order->orderId), $desc[$i]['detail']);
                         $j++;
 					}

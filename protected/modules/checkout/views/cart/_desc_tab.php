@@ -4,7 +4,7 @@
             <div class="tab-heading">
 				<?php
 //				throw new Exception(print_r($tabs, true));
-				$i = 1;
+$i = 1;
                 foreach($tabs as $tab)
                 {
 				//													throw new Exception(print_r($tab, true));
