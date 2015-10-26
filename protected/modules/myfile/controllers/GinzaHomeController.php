@@ -219,9 +219,10 @@ class GinzaHomeController extends MasterMyFileController
 	{
 		$this->layout = '//layouts/cl1';
 		$model = OrderGroup::model()->findByPk($id);
-		$cat2ToProduct = $model->orders[0]->orderItems[0]->product->category2ToProducts[0];
+		$cat2ToProduct = (isset($model->orders[0]->orderItems[0]->product->category2ToProducts[1]) && isset($model->orders[0]->orderItems[0]->product->category2ToProducts[1]->type)) ? $model->orders[0]->orderItems[0]->product->category2ToProducts[1] : $model->orders[0]->orderItems[0]->product->category2ToProducts[0];
+
 		$furnitureGroups = FurnitureGroup::model()->findAll("categoryId =  $cat2ToProduct->category1Id   AND category2Id =   $cat2ToProduct->category2Id");
-//		throw new Exception(print_r($cat2ToProduct->category1Id . ", " . $cat2ToProduct->category2Id, true));
+//		throw new Exception(print_r($cat2ToProduct, true));
 		$this->render(
 			'_furniture', array(
 			'model'=>$model,
