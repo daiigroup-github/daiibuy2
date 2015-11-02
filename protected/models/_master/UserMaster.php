@@ -66,8 +66,7 @@ class UserMaster extends MasterCActiveRecord
 			array('taxNumber', 'length', 'max'=>45),
 			array('partnerCode', 'length', 'max'=>100),
 			array(
-				'cart, wishlist, description, logo, map, partnerDateTime, createDateTime',
-				'fax',
+				'cart, wishlist, description, logo, map, partnerDateTime, createDateTime, fax',
 				'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
