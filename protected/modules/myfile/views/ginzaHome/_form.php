@@ -56,7 +56,11 @@ $this->renderPartial("_navbar", array(
 								<tr>
 									<td>House</td>
 									<?php
+
+							//																throw new Exception(print_r($model->child->orders[0]->orderItems[0]->product->productId, true));
 									$cate2ProductNow = Category2ToProduct::model()->find('productId = ' . $model->child->orders[0]->orderItems[0]->product->productId);
+									if (!isset($cate2ProductNow->category))
+										$cate2ProductNow = Category2ToProduct::model()->find('productId = ' . $model->child->orders[0]->orderItems[0]->product->productId . ' and type = 1');
 									?>
 									<td><?php echo $cate2ProductNow->category->title; ?></td>
 								</tr>
