@@ -42,7 +42,7 @@ class CartController extends MasterCheckoutController
 				//                throw new Exception(print_r($order->orderItems, true));
 				foreach ($order->orderItems as $orderItem)
 				{
-//					throw new Exception(print_r($orderItem->product->category2ToProducts, true));
+//					throw new Exception(print_r($orderItem->product->productId, true));
 					$category = (isset($orderItem->product->category2ToProducts[1]) && (isset($orderItem->product->category2ToProducts[1]->type))) ? $orderItem->product->category2ToProducts[1]->category : $orderItem->product->category2ToProducts[0]->category;
 					$category2 = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1]->category2 : $orderItem->product->category2ToProducts[0]->category2;
 					$categoryToSub = CategoryToSub::model()->find(array(
@@ -97,7 +97,7 @@ class CartController extends MasterCheckoutController
 				}
 			}
 		}
-		//        throw new Exception(print_r($desc, true));
+//		throw new Exception(print_r($desc, true));
 
 		if ($id == 5)
 		{
@@ -106,8 +106,8 @@ class CartController extends MasterCheckoutController
 		else
 		{
 			$orderSummary = Order::model()->sumOrderTotalBySupplierId($id);
-//			throw new Exception(print_r($orderSummary, true));
 		}
+
 		$supplierModel = Supplier::model()->findByPk($id);
 		$this->render('cart', array(
 			'orders' => $orders,
