@@ -1,15 +1,15 @@
 <?php
 $this->renderPartial('_step_header', array(
-	'step'=>$step));
+	'step' => $step));
 ?>
 <?php
 $form = $this->beginWidget('CActiveForm', array(
-	'id'=>'address-form',
+	'id' => 'address-form',
 	//'enableClientValidation' => true,
 //'clientOptions' => array('validateOnSubmit' => true,),
-	'htmlOptions'=>array(
-		'class'=>'form-horizontal',
-		'role'=>'form'),
+	'htmlOptions' => array(
+		'class' => 'form-horizontal',
+		'role' => 'form'),
 	));
 Yii::app()->clientScript->registerScript("loadProvince", "
 	$(document).ready(function(){
@@ -34,25 +34,26 @@ Yii::app()->clientScript->registerScript("loadProvince", "
 ?>
 <?php
 //throw new Exception(print_r($errors, true));
-if (isset($errors)) {
-    ?>
-    <div class="row">
+if (isset($errors))
+{
+	?>
+	<div class="row">
 		<div class="col-md-12 alert alert-warning" >
-				<?php
+			<?php
 			$i = 1;
 //				throw new Exception(print_r($errors, true));
-				foreach ($errors as $error):
+			foreach ($errors as $error):
 //				throw new Exception(print_r(), true));
-					$stringCut = str_replace("cannot be blank.", "", $error[0]);
-					$errorMsg = 'กรุณากรอกข้อมูลในช่อง " ' . $stringCut . ' " ให้ครบถ้วน.';
-					?>
-			<p><b style="color: red"> <?php
-							echo $i . ". " . $errorMsg;
-							$i++;
-							?></b><p>
-					<?php endforeach; ?>
-        </div>
-        </div>
+				$stringCut = str_replace("cannot be blank.", "", $error[0]);
+				$errorMsg = 'กรุณากรอกข้อมูลในช่อง " ' . $stringCut . ' " ให้ครบถ้วน.';
+				?>
+				<p><b style="color: red"> <?php
+						echo $i . ". " . $errorMsg;
+						$i++;
+						?></b><p>
+				<?php endforeach; ?>
+		</div>
+	</div>
 <?php } ?>
 <div class="row">
 
@@ -67,8 +68,8 @@ if (isset($errors)) {
                     <p>
 						<?php
 						echo CHtml::radioButton('billingRadio', false, array(
-							'id'=>'billingRadio',
-							'value'=>1));
+							'id' => 'billingRadio',
+							'value' => 1));
 						?>
                         <label class="radio-label" for="billingRadio">เลือก</label>
                     </p>
@@ -76,9 +77,9 @@ if (isset($errors)) {
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo CHtml::dropDownList('existingBillingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_BILLING), array(
-						'class'=>'chosen-select-full-width',
-						'prompt'=>' --- Select ---',
-						'onchange'=>'ChkRadioBillAddress(1,this)'));
+						'class' => 'chosen-select-full-width',
+						'prompt' => ' --- Select ---',
+						'onchange' => 'ChkRadioBillAddress(1,this)'));
 					?>
                 </div>
             </div>
@@ -88,8 +89,8 @@ if (isset($errors)) {
                     <p>
 						<?php
 						echo CHtml::radioButton('billingRadio', false, array(
-							'id'=>'newBillingRadio',
-							'value'=>2));
+							'id' => 'newBillingRadio',
+							'value' => 2));
 						?>
                         <label class="radio-label" for="newBillingRadio">ที่อยู่ใหม่</label>
                     </p>
@@ -105,9 +106,9 @@ if (isset($errors)) {
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'firstname', array(
-						'id'=>'billingFirstName',
-						'name'=>'billing[firstname]',
-						'onchange'=>'ChkRadioBillAddress(2,null)'));
+						'id' => 'billingFirstName',
+						'name' => 'billing[firstname]',
+						'onchange' => 'ChkRadioBillAddress(2,null)'));
 					?>
                 </div>
             </div>
@@ -118,8 +119,8 @@ if (isset($errors)) {
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'lastname', array(
-						'id'=>'billingLastName',
-						'name'=>'billing[lastname]'));
+						'id' => 'billingLastName',
+						'name' => 'billing[lastname]'));
 					?>
                 </div>
             </div>
@@ -130,21 +131,21 @@ if (isset($errors)) {
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'company', array(
-						'id'=>'billingCompany',
-						'name'=>'billing[company]'));
+						'id' => 'billingCompany',
+						'name' => 'billing[company]'));
 					?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
                     <p>
-                        <?php
-                        echo CHtml::radioButton('companyBranch', false, array(
-                            'id' => 'isHeadQuater',
-                            'value' => 1,
-    'name' => "billing[companyBranch]"
-));
-?>
+						<?php
+						echo CHtml::radioButton('companyBranch', false, array(
+							'id' => 'isHeadQuater',
+							'value' => 1,
+							'name' => "billing[companyBranch]"
+						));
+						?>
                         <label class="radio-label" for="isHeadQuater">สำนักงานใหญ่</label>
                     </p>
                 </div>
@@ -154,21 +155,21 @@ if (isset($errors)) {
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4">
                     <p>
-                        <?php
-                        echo CHtml::radioButton('companyBranch', false, array(
-    'id' => 'otherOffice',
-                            'value' => 2,
-                    'name' => "billing[companyBranch]"));
-                ?>
+						<?php
+						echo CHtml::radioButton('companyBranch', false, array(
+							'id' => 'otherOffice',
+							'value' => 2,
+							'name' => "billing[companyBranch]"));
+						?>
                         <label class="radio-label" for="otherOffice">อื่นๆ (ระบุ)</label>
                     </p>
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <?php
-                    echo $form->textField($billingAddressModel, 'companyBranchDetail', array(
-                        'id' => 'otherBranch',
-                        'name' => 'billing[companyBranchDetail]'));
-                    ?>
+					<?php
+					echo $form->textField($billingAddressModel, 'companyBranchDetail', array(
+						'id' => 'otherBranch',
+						'name' => 'billing[companyBranchDetail]'));
+					?>
                 </div>
             </div>
             <div class="row">
@@ -178,8 +179,8 @@ if (isset($errors)) {
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'address_1', array(
-						'id'=>'billingAddress1',
-						'name'=>'billing[address_1]'));
+						'id' => 'billingAddress1',
+						'name' => 'billing[address_1]'));
 					?>
                 </div>
             </div>
@@ -190,8 +191,8 @@ if (isset($errors)) {
                 <div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'address_2', array(
-						'id'=>'billingAddress2',
-						'name'=>'billing[address_2]'));
+						'id' => 'billingAddress2',
+						'name' => 'billing[address_2]'));
 					?>
                 </div>
             </div>
@@ -204,22 +205,19 @@ if (isset($errors)) {
 //					$province = Province::model()->findByPk($this->cookie->provinceId);
 //					echo $province->provinceName;
 					echo $form->dropDownList($billingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
-						'id'=>'billingProvince',
-						'name'=>'billing[provinceId]',
+						'id' => 'billingProvince',
+						'name' => 'billing[provinceId]',
 //						'disabled'=>'disabled'
 //						));
-						'prompt'=>' --- เลือกจังหวัด ---',
-						'ajax'=>array(
-							'type'=>'POST',
-							'data'=>array(
-								'provinceId'=>'js:this.value'),
-							'url'=>$this->createUrl('findAmphur'),
-							'success'=>'js:function(data){
-
-//									if(chooseProvince == this.value)
+						'prompt' => ' --- เลือกจังหวัด ---',
+						'ajax' => array(
+							'type' => 'POST',
+							'data' => array(
+								'provinceId' => 'js:this.value'),
+							'url' => $this->createUrl('findAmphur'),
+							'success' => 'js:function(data){
+									if(chooseProvince == this.value)
 										$("#sameAddress").prop("disabled", true);
-
-
                                     $("#billingAmphur").html(data);
                                     $("#billingAmphur").prop("disabled", false);
                                     $("#billingDistrict").html("");
@@ -241,15 +239,15 @@ if (isset($errors)) {
 						//CHtml::listData($billingAddressModel->province->amphurs, 'amphurId', 'amphurName'),
 						array(), array(
 //                            'class'=>'chosen-select-full-width',
-						'id'=>'billingAmphur',
+						'id' => 'billingAmphur',
 						'name' => 'billing[amphurId]',
-	'prompt' => '--- เลือกอำเภอ ---',
-	'ajax'=>array(
-							'type'=>'POST',
-							'data'=>array(
-								'amphurId'=>'js:this.value'),
-							'url'=>$this->createUrl('findDistrict'),
-							'success'=>'js:function(data){
+						'prompt' => '--- เลือกอำเภอ ---',
+						'ajax' => array(
+							'type' => 'POST',
+							'data' => array(
+								'amphurId' => 'js:this.value'),
+							'url' => $this->createUrl('findDistrict'),
+							'success' => 'js:function(data){
                                     $("#billingDistrict").html(data);
                                     $("#billingDistrict").prop("disabled", false);
                                 }',
@@ -269,10 +267,10 @@ if (isset($errors)) {
 						//CHtml::listData($billingAddressModel->amphur->districts, 'districtId', 'districtName'),
 						array(), array(
 //                            'class'=>'chosen-select-full-width',
-						'id'=>'billingDistrict',
+						'id' => 'billingDistrict',
 						'name' => 'billing[districtId]',
-	'prompt' => '--- เลือกตำบล ---',
-	)
+						'prompt' => '--- เลือกตำบล ---',
+						)
 					);
 					?>
 				</div>
@@ -284,8 +282,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'postcode', array(
-						'id'=>'billingPostcode',
-						'name'=>'billing[postcode]'));
+						'id' => 'billingPostcode',
+						'name' => 'billing[postcode]'));
 					?>
 				</div>
 			</div>
@@ -296,8 +294,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($billingAddressModel, 'taxNo', array(
-						'id'=>'billingTaxNo',
-						'name'=>'billing[taxNo]'));
+						'id' => 'billingTaxNo',
+						'name' => 'billing[taxNo]'));
 					?>
 				</div>
 			</div>
@@ -321,8 +319,8 @@ if (isset($errors)) {
 					<p>
 						<?php
 						echo CHtml::radioButton('shippingRadio', false, array(
-							'id'=>'shippingRadio',
-							'value'=>1));
+							'id' => 'shippingRadio',
+							'value' => 1));
 						?>
 						<label class="radio-label" for="shippingRadio">เลือก</label>
 					</p>
@@ -330,36 +328,36 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo CHtml::dropDownList('existingShippingAddress', '', $shippingAddressModel->getAllAddressByType(Address::ADDRESS_TYPE_SHIPPING, $this->cookie->provinceId), array(
-						'class'=>'chosen-select-full-width',
-						'prompt'=>'--- Select ---',
-						'onchange'=>'ChkRadioShipAddress(1,this)'));
+						'class' => 'chosen-select-full-width',
+						'prompt' => '--- Select ---',
+						'onchange' => 'ChkRadioShipAddress(1,this)'));
 					?>
 				</div>
 			</div>
 			<hr />
-                       			<div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4">
+			<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-4">
 					<p>
 						<?php
-                    						echo CHtml::radioButton('shippingRadio', false, array(
-							'id'=>'newShippingRadio',
-							'value'=>2));
-?>
+						echo CHtml::radioButton('shippingRadio', false, array(
+							'id' => 'newShippingRadio',
+							'value' => 2));
+						?>
 						<label class="radio-label" for="newShippingRadio">ที่อยู่ใหม่</label>
 					</p>
-                                                        </div>
-                                        </div>
-                                        <!--
-                                           <div class="col-lg-8 col-md-8 col-sm-8">
-					<?php
-                                                //					echo CHtml::checkBox('sameAddress', false, array(
+				</div>
+			</div>
+			<!--
+			   <div class="col-lg-8 col-md-8 col-sm-8">
+			<?php
+			//					echo CHtml::checkBox('sameAddress', false, array(
 //						'id'=>'sameAddress',
 //						'onclick'=>'ChkRadioShipAddress(2,null)'));
-?>
-					<label for="sameAddress">ใช้ที่อยู่เดียวกับใบเสร็จ</label>
-				</div>
-                                                </div>-->
-<br />
+			?>
+<label for="sameAddress">ใช้ที่อยู่เดียวกับใบเสร็จ</label>
+</div>
+					</div>-->
+			<br />
 			<div class="row">
 				<div class="col-lg-4 col-md-4 col-sm-4">
 					<p><?php echo $form->labelEx($shippingAddressModel, 'firstname'); ?></p>
@@ -367,9 +365,9 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($shippingAddressModel, 'firstname', array(
-						'id'=>'shippingFirstName',
-						'name'=>'shipping[firstname]',
-						'onchange'=>'ChkRadioShipAddress(2,null)'));
+						'id' => 'shippingFirstName',
+						'name' => 'shipping[firstname]',
+						'onchange' => 'ChkRadioShipAddress(2,null)'));
 					?>
 				</div>
 			</div>
@@ -380,8 +378,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($shippingAddressModel, 'lastname', array(
-						'id'=>'shippingLastName',
-						'name'=>'shipping[lastname]'));
+						'id' => 'shippingLastName',
+						'name' => 'shipping[lastname]'));
 					?>
 				</div>
 			</div>
@@ -392,8 +390,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($shippingAddressModel, 'company', array(
-						'id'=>'shippingCompany',
-						'name'=>'shipping[company]'));
+						'id' => 'shippingCompany',
+						'name' => 'shipping[company]'));
 					?>
 				</div>
 			</div>
@@ -404,8 +402,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($shippingAddressModel, 'address_1', array(
-						'id'=>'shippingAddress1',
-						'name'=>'shipping[address_1]'));
+						'id' => 'shippingAddress1',
+						'name' => 'shipping[address_1]'));
 					?>
 				</div>
 			</div>
@@ -416,8 +414,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($shippingAddressModel, 'address_2', array(
-						'id'=>'shippingAddress2',
-						'name'=>'shipping[address_2]'));
+						'id' => 'shippingAddress2',
+						'name' => 'shipping[address_2]'));
 					?>
 				</div>
 			</div>
@@ -428,11 +426,11 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 //					echo $province->provinceName;
-					echo $form->dropDownList($shippingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = '. $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
-						'id'=>'shippingProvince',
-						'name'=>'shipping[provinceId]',
+					echo $form->dropDownList($shippingAddressModel, 'provinceId', CHtml::listData(Province::model()->findAll('provinceId = ' . $this->cookie->provinceId), 'provinceId', 'provinceName'), array(
+						'id' => 'shippingProvince',
+						'name' => 'shipping[provinceId]',
 						'disabled' => 'disabled',
-	'prompt' => '--- เลือกจังหวัด ---',));
+						'prompt' => '--- เลือกจังหวัด ---',));
 
 //						'ajax'=>array(
 //							'type'=>'POST',
@@ -458,15 +456,15 @@ if (isset($errors)) {
 					<?php
 					echo $form->dropDownList($shippingAddressModel, 'amphurId', array(), array(
 //                            'class'=>'chosen-select-full-width',
-						'id'=>'shippingAmphur',
-						'name'=>'shipping[amphurId]',
-						'disabled'=>'disabled',
-						'ajax'=>array(
-							'type'=>'POST',
-							'data'=>array(
-								'amphurId'=>'js:this.value'),
-							'url'=>$this->createUrl('findDistrict'),
-							'success'=>'js:function(data){
+						'id' => 'shippingAmphur',
+						'name' => 'shipping[amphurId]',
+						'disabled' => 'disabled',
+						'ajax' => array(
+							'type' => 'POST',
+							'data' => array(
+								'amphurId' => 'js:this.value'),
+							'url' => $this->createUrl('findDistrict'),
+							'success' => 'js:function(data){
                                     $("#shippingDistrict").html(data);
                                     $("#shippingDistrict").prop("disabled", false);
                                 }',
@@ -484,9 +482,9 @@ if (isset($errors)) {
 					<?php
 					echo $form->dropDownList($shippingAddressModel, 'districtId', array(), array(
 //                            'class'=>'chosen-select-full-width',
-						'id'=>'shippingDistrict',
-						'name'=>'shipping[districtId]',
-						'disabled'=>'disabled'
+						'id' => 'shippingDistrict',
+						'name' => 'shipping[districtId]',
+						'disabled' => 'disabled'
 						)
 					);
 					?>
@@ -499,8 +497,8 @@ if (isset($errors)) {
 				<div class="col-lg-8 col-md-8 col-sm-8">
 					<?php
 					echo $form->textField($shippingAddressModel, 'postcode', array(
-						'id'=>'shippingPostcode',
-						'name'=>'shipping[postcode]'));
+						'id' => 'shippingPostcode',
+						'name' => 'shipping[postcode]'));
 					?>
 				</div>
 			</div>
@@ -513,13 +511,13 @@ if (isset($errors)) {
         <div class="col-lg-12 col-md-12 col-sm-12">
 			<?php
 			echo CHtml::link('&lt; Back', 'javascript:window.history.back();', array(
-				'class'=>'button orange',
-				'name'=>'Back'));
+				'class' => 'button orange',
+				'name' => 'Back'));
 			?>
 			<?php
 			echo CHtml::submitButton('Next >', array(
-				'class'=>'big green pull-right',
-				'name'=>'Next'));
+				'class' => 'big green pull-right',
+				'name' => 'Next'));
 			?>
         </div>
     </div>

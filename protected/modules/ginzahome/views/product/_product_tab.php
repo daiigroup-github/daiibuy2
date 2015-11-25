@@ -49,7 +49,6 @@ $tabContent = '';
 									echo $tab['detail'];
 								}
 
-
 								$detailChilds = ProductSpecGroup::model()->findAll("parentId = " . $tab["id"] . " order by sortOrder");
 								foreach ($detailChilds as $child):
 									?>
