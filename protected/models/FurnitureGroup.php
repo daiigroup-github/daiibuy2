@@ -32,11 +32,11 @@ class FurnitureGroup extends FurnitureGroupMaster
 		// class name for the relations automatically generated below.
 		return CMap::mergeArray(parent::relations(), array(
 				//code here
-				'category'=>array(
+				'category' => array(
 					self::BELONGS_TO,
 					'Category',
 					'categoryId'),
-				'category2'=>array(
+				'category2' => array(
 					self::BELONGS_TO,
 					'Category',
 					'category2Id',),
@@ -51,6 +51,20 @@ class FurnitureGroup extends FurnitureGroupMaster
 		return Cmap::mergeArray(parent::attributeLabels(), array(
 				//code here
 		));
+	}
+
+	public function findAllFunitureGroupArray($categoryId)
+	{
+		$res = array();
+		$furnitureGroup = FurnitureGroup::model()->findAll('categoryId = ' . $categoryId);
+		foreach ($furnitureGroup as $fur)
+		{
+			$cate = Category::model()->findByPk($fur->categoryId);
+			$cate2 = Category::model()->findByPk($fur->category2Id);
+			$res[$fur->furnitureGroupId] = $cate2->title . " " . $fur->title;
+		}
+//		throw new Exception(print_r($res, true));
+		return $res;
 	}
 
 	/**
