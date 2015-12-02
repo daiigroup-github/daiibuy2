@@ -216,13 +216,12 @@ if (isset($errors))
 								'provinceId' => 'js:this.value'),
 							'url' => $this->createUrl('findAmphur'),
 							'success' => 'js:function(data){
-									if(chooseProvince == this.value)
-										$("#sameAddress").prop("disabled", true);
+//									if(chooseProvince == this.value)
+//										$("#sameAddress").prop("disabled", true);
                                     $("#billingAmphur").html(data);
                                     $("#billingAmphur").prop("disabled", false);
                                     $("#billingDistrict").html("");
                                     $("#billingDistrict").prop("disabled", true);
-
                                 }',
 						),
 					));
