@@ -463,8 +463,8 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
 					}
 					if(isset($user))
 					{
-						if(!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99))
-						{
+    if (!($model->status == 1 || $model->status == 2 || $model->status == 98 || $model->status == 99) && isset($model->paymentDateTime))
+    {
 							echo "
                                             <tr>
 							<td colspan = '7' style = 'text-align: right'>
@@ -473,13 +473,13 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
 					</tr>
 									<tr>
 							<td colspan = '7' style = 'text-align: right'>
-					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com เรียบร้อยแล้ว ณ วันที่ " . isset($this->paymentDateTime) ? $this->dateThai($model->paymentDateTime, 1) : "" . "
+					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com เรียบร้อยแล้ว ณ วันที่ " . isset($model->paymentDateTime) ? $this->dateThai($model->paymentDateTime, 1) : "" . "
 					</td>
 					</tr>
                                         ";
     }
 					}
-					else if ($model->status > 2 && $model->status < 99)
+					else if ($model->status > 2 && $model->status < 99 && isset($model->paymentDateTime))
 {
 						echo "<tr><td colspan = '6'>&nbsp;</td></tr>
                                                     <tr>
@@ -489,7 +489,7 @@ if (!($model->status == 1 || $model->status == 2 || $model->status == 3 || $mode
 					</tr>
 						<tr>
 							<td colspan = '6' style = 'text-align: right'>
-					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com เรียบร้อยแล้ว ณ วันที่ " . isset($this->paymentDateTime) ? $this->dateThai($model->paymentDateTime, 1) : "" . "
+					<span style = 'color:red'>**</span>สั่งซื้อและชำระเงินผ่านทาง daiiBuy.com เรียบร้อยแล้ว ณ วันที่ " . isset($model->paymentDateTime) ? $this->dateThai($model->paymentDateTime, 1) : "" . "
 					</td>
 					</tr>";
 					}
