@@ -1098,16 +1098,16 @@ class StepController extends MasterCheckoutController
 	public function actionConfirmation($id)
 	{
 		$model = OrderGroup::model()->findByPk($id);
-		$this->render("e_payment/payment_confirmation", array(
-			'model'=>$model));
+            $model->status = 97; //sending to e-payment
+        $this->render("e_payment/payment_confirmation", array(
+            'model'=>$model));
 	}
 
 	public function actionConfirmCheckout($id)
 	{
 		$model = OrderGroup::model()->findByPk($id);
-
 		$this->render("confirm_checkout", array(
-			'model'=>$model));
+            'model'=>$model));
 	}
 
 	public function splitGinzaOrder($item)
