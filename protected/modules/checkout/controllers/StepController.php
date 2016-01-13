@@ -607,6 +607,7 @@ class StepController extends MasterCheckoutController
         {
 //			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
 //			{
+            $request = $_REQUEST;
             if ($_REQUEST["decision"] == "ACCEPT")
             {
                 $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
@@ -711,7 +712,7 @@ class StepController extends MasterCheckoutController
                     }
                     if ($oldOrder->save())
                     {
-                        $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($_REQUEST, $oldOrder);
+                        $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
                         $flag = TRUE;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
@@ -833,7 +834,7 @@ class StepController extends MasterCheckoutController
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
-                        $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($_REQUEST, $oldOrder);
+                        $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
                         $flag = TRUE;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
@@ -855,7 +856,8 @@ class StepController extends MasterCheckoutController
                     $oldOrder->status = 97;
                     $oldOrder->save();
                     $this->saveOrderGroupLog($_REQUEST, $oldOrder);
-                    $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($_REQUEST, $oldOrder);
+
+                    $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
 //                    $emailObj = new Email();
 //                    $sentMail = new EmailSend();
 //                    $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
@@ -869,7 +871,8 @@ class StepController extends MasterCheckoutController
                         ":orderNo" => $_REQUEST["req_reference_number"]));
                     $oldOrder->status = 97;
                     $oldOrder->save();
-                    $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($_REQUEST, $oldOrder);
+
+                    $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
                 }
             }
         }
@@ -883,14 +886,14 @@ class StepController extends MasterCheckoutController
             'model' => $order));
     }
 
-    public function saveOrderGroupLog($_REQUEST, $orderGroup)
+    public function saveOrderGroupLog($request, $orderGroup)
     {
-        $description = OrderGroup::model()->getReasonCode($_REQUEST["reasonCode"]);
+        $description = OrderGroup::model()->getReasonCode($request["reasonCode"]);
         $orderGroupHistory = new OrderGroupHistory();
         $orderGroupHistory->orderGroupId = $orderGroup->orderGroupId;
-        $orderGroupHistory->reasonCode = $_REQUEST["reasonCode"];
+        $orderGroupHistory->reasonCode = $request["reasonCode"];
         $orderGroupHistory->description = $description;
-        $orderGroupHistory->decision = $_REQUEST["decision"];
+        $orderGroupHistory->decision = $request["decision"];
         $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
         $orderGroupHistory->save();
         return $description;
