@@ -576,7 +576,7 @@ reviewed the transaction status in the Business Center.";
     public function findAllFinanceAdminOrder()
     {
         $criteria = new CDbCriteria();
-        $criteria->condition = "status in (2 , 5 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98 ) ";
+        $criteria->condition = "status in (2 , 5 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98,97 ) ";
         $criteria->compare('invoiceNo', $this->invoiceNo, true);
         $criteria->compare('orderNo', $this->orderNo, true);
         $criteria->compare('firstname', $this->firstname, true);
