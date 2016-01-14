@@ -571,7 +571,6 @@ class StepController extends MasterCheckoutController
                                                     $newOrderItem->total = $newOrderItem->price;
                                                     if ($newOrderItem->save()) {
                                                         $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-                                                        throw new Exception($flag);
                                                     } else {
                                                         $flag = FALSE;
                                                         throw new Exception(111);
@@ -608,6 +607,7 @@ class StepController extends MasterCheckoutController
                         $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                     }
                     if ($oldOrder->save()) {
+                        throw new Exception(555);
                         $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
                         $flag = TRUE;
                         $emailObj = new Email();
