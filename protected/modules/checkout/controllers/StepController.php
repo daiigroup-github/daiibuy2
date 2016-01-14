@@ -547,14 +547,8 @@ class StepController extends MasterCheckoutController
                                         $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
                                         $newOrderGroup->orderGroupId = NULL;
 
-                                        throw new Exception("Kamon");
-
                                         $newOrderItem = new OrderItems();
                                         $newOrderItem->attributes = $item->attributes;
-
-
-//						throw new Exception(print_r($newOrderItem->attributes, true));
-
                                         if ($newOrderGroup->save()) {
                                             $newOrderGroupId = Yii::app()->db->getLastInsertID();
                                             $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
@@ -576,6 +570,7 @@ class StepController extends MasterCheckoutController
                                                     $newOrderItem->quantity = 1;
                                                     $newOrderItem->total = $newOrderItem->price;
                                                     if ($newOrderItem->save()) {
+                                                        throw new Exception("Kamon");
                                                         $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
                                                     } else {
                                                         $flag = FALSE;
