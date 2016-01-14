@@ -529,91 +529,92 @@ class StepController extends MasterCheckoutController
             if ($_REQUEST["decision"] == "ACCEPT") {
                 $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
                     ":orderNo" => $_REQUEST["req_reference_number"]));
-                throw new Exception($_REQUEST["req_reference_number"] . "<br>" . print_r($oldOrder, true));
                 if (isset($oldOrder)) {
                     if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
-                        foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
-                            for ($i = 1;; $i++) {
-                                $transaction = Yii::app()->db->beginTransaction();
-                                try {
-                                    $newOrderGroup = new OrderGroup();
-                                    $newOrderGroup->attributes = $oldOrder->attributes;
-                                    $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
-                                    $newOrderGroup->totalIncVAT = $item->price;
-                                    $newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
-                                    $newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
-                                    $newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
-                                    $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
-                                    $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
-                                    $newOrderGroup->orderGroupId = NULL;
+                        if (isset($oldOrder->orderGroupToOrders[0]->order->orderItems)) {
+                            foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
+                                for ($i = 1;; $i++) {
+                                    $transaction = Yii::app()->db->beginTransaction();
+                                    try {
+                                        $newOrderGroup = new OrderGroup();
+                                        $newOrderGroup->attributes = $oldOrder->attributes;
+                                        $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
+                                        $newOrderGroup->totalIncVAT = $item->price;
+                                        $newOrderGroup->total = $newOrderGroup->totalIncVAT / (1 + ($newOrderGroup->vatPercent / 100));
+                                        $newOrderGroup->vatValue = $newOrderGroup->totalIncVAT - $newOrderGroup->total;
+                                        $newOrderGroup->discountValue = ($newOrderGroup->totalIncVAT * $newOrderGroup->discountPercent) / 100;
+                                        $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
+                                        $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
+                                        $newOrderGroup->orderGroupId = NULL;
 
 
 
-                                    $newOrderItem = new OrderItems();
-                                    $newOrderItem->attributes = $item->attributes;
+                                        $newOrderItem = new OrderItems();
+                                        $newOrderItem->attributes = $item->attributes;
 
 
 //						throw new Exception(print_r($newOrderItem->attributes, true));
 
-                                    if ($newOrderGroup->save()) {
-                                        $newOrderGroupId = Yii::app()->db->getLastInsertID();
-                                        $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
-                                        $newOrder = new Order();
-                                        $newOrder->attributes = $tempOrder->attributes;
-                                        $newOrder->orderId = NULL;
-                                        $newOrder->totalIncVAT = $item->price;
-                                        $newOrder->total = $newOrderGroup->total;
-                                        if ($newOrder->save()) {
-                                            $newOrderId = Yii::app()->db->getLastInsertID();
-                                            $orderGroupToOrder = new OrderGroupToOrder();
-                                            $orderGroupToOrder->orderGroupId = $newOrderGroupId;
-                                            $orderGroupToOrder->orderId = $newOrderId;
-                                            if ($orderGroupToOrder->save()) {
-                                                $newOrderItem = new OrderItems();
-                                                $newOrderItem->attributes = $item->attributes;
-                                                $newOrderItem->productId = $item->productId;
-                                                $newOrderItem->orderId = $newOrderId;
-                                                $newOrderItem->quantity = 1;
-                                                $newOrderItem->total = $newOrderItem->price;
-                                                if ($newOrderItem->save()) {
-                                                    $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                        if ($newOrderGroup->save()) {
+                                            $newOrderGroupId = Yii::app()->db->getLastInsertID();
+                                            $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
+                                            $newOrder = new Order();
+                                            $newOrder->attributes = $tempOrder->attributes;
+                                            $newOrder->orderId = NULL;
+                                            $newOrder->totalIncVAT = $item->price;
+                                            $newOrder->total = $newOrderGroup->total;
+                                            if ($newOrder->save()) {
+                                                $newOrderId = Yii::app()->db->getLastInsertID();
+                                                $orderGroupToOrder = new OrderGroupToOrder();
+                                                $orderGroupToOrder->orderGroupId = $newOrderGroupId;
+                                                $orderGroupToOrder->orderId = $newOrderId;
+                                                if ($orderGroupToOrder->save()) {
+                                                    $newOrderItem = new OrderItems();
+                                                    $newOrderItem->attributes = $item->attributes;
+                                                    $newOrderItem->productId = $item->productId;
+                                                    $newOrderItem->orderId = $newOrderId;
+                                                    $newOrderItem->quantity = 1;
+                                                    $newOrderItem->total = $newOrderItem->price;
+                                                    if ($newOrderItem->save()) {
+                                                        $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                    } else {
+                                                        $flag = FALSE;
+                                                        throw new Exception(111);
+                                                        throw new Exception;
+                                                    }
                                                 } else {
                                                     $flag = FALSE;
-                                                    throw new Exception(111);
+                                                    throw new Exception(222);
                                                     throw new Exception;
                                                 }
                                             } else {
                                                 $flag = FALSE;
-                                                throw new Exception(222);
+                                                throw new Exception(333);
                                                 throw new Exception;
                                             }
                                         } else {
                                             $flag = FALSE;
-                                            throw new Exception(333);
+                                            throw new Exception(444);
                                             throw new Exception;
                                         }
-                                    } else {
+                                    } catch (Exception $ex) {
                                         $flag = FALSE;
-                                        throw new Exception(444);
-                                        throw new Exception;
+                                        $transaction->rollback();
+                                        throw new Exception(555);
+                                        throw new Exception($ex->getMessage());
                                     }
-                                } catch (Exception $ex) {
-                                    $flag = FALSE;
-                                    $transaction->rollback();
-                                    throw new Exception(555);
-                                    throw new Exception($ex->getMessage());
-                                }
 
-                                if ($flag) {
-                                    $transaction->commit();
-                                } else {
-                                    $transaction->rollback();
-                                }
+                                    if ($flag) {
+                                        $transaction->commit();
+                                    } else {
+                                        $transaction->rollback();
+                                    }
 
-                                if ($i == $item->quantity) {
-                                    $oldOrder->status = -1;
-                                    $oldOrder->paymentDateTime = new CDbExpression('NOW()');
-                                    break;
+                                    if ($i == $item->quantity) {
+                                        $oldOrder->status = -1;
+                                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                                        break;
+                                    }
                                 }
                             }
                         }
