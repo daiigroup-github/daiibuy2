@@ -591,22 +591,21 @@ class StepController extends MasterCheckoutController
                                             throw new Exception(444);
                                             throw new Exception;
                                         }
+                                        if ($flag) {
+                                            $transaction->commit();
+                                        } else {
+                                            $transaction->rollback();
+                                        }
+                                        throw new Exception("Kamon1");
+                                        if ($i == $item->quantity) {
+                                            $oldOrder->status = -1;
+                                            $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                                            break;
+                                        }
                                     } catch (Exception $ex) {
                                         $flag = FALSE;
                                         $transaction->rollback();
                                         throw new Exception($ex->getMessage());
-                                    }
-
-                                    if ($flag) {
-                                        $transaction->commit();
-                                    } else {
-                                        $transaction->rollback();
-                                    }
-
-                                    if ($i == $item->quantity) {
-                                        $oldOrder->status = -1;
-                                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
-                                        break;
                                     }
                                 }
                             }
