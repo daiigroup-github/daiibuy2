@@ -533,7 +533,7 @@ class StepController extends MasterCheckoutController
                     if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
                         if (isset($oldOrder->orderGroupToOrders[0]->order->orderItems)) {
                             foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
-                                for ($i = 1;; $i++) {
+                                for ($i = 1; $i <= $item->quantity; $i++) {
                                     $transaction = Yii::app()->db->beginTransaction();
                                     try {
                                         $newOrderGroup = new OrderGroup();
