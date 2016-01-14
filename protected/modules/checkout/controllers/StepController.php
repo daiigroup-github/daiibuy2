@@ -607,8 +607,9 @@ class StepController extends MasterCheckoutController
                         $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                     }
                     if ($oldOrder->save()) {
-                        throw new Exception(555);
+
                         $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                        throw new Exception(666);
                         $flag = TRUE;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
