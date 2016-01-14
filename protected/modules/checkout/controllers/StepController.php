@@ -591,8 +591,7 @@ class StepController extends MasterCheckoutController
                                             throw new Exception(444);
                                             throw new Exception;
                                         }
-
-                                        throw new Exception("Kamon1");
+                                        throw new Exception($i);
                                         if ($i == $item->quantity) {
                                             $oldOrder->status = -1;
                                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
