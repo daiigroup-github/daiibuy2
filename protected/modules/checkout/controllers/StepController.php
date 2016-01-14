@@ -525,6 +525,7 @@ class StepController extends MasterCheckoutController
 //			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
 //			{
             $request = $_REQUEST;
+            throw new Exception(print_r($_REQUEST, true));
             if ($_REQUEST["decision"] == "ACCEPT") {
                 $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
                     ":orderNo" => $_REQUEST["req_reference_number"]));
