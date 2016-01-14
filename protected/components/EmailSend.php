@@ -37,34 +37,28 @@ class EmailSend
     private function prepareMailInfo($mailObj)
     {
 
-        if (isset($mailObj->userId))
-        {
+        if (isset($mailObj->userId)) {
             $user = new User();
             $this->userModel = $user->findByPk($mailObj->userId);
         }
-        if (isset($mailObj->dealerId))
-        {
+        if (isset($mailObj->dealerId)) {
             $dealer = new User();
             $this->dealerModel = $dealer->findByPk($mailObj->dealerId);
         }
-        if (isset($mailObj->supplierId))
-        {
+        if (isset($mailObj->supplierId)) {
             $this->supplierModel = Supplier::model()->findByPk($mailObj->supplierId);
             $supplierToUser = UserToSupplier::model()->findAll('supplierId = ' . $mailObj->supplierId);
             $i = 0;
-            foreach ($supplierToUser as $sup)
-            {
+            foreach ($supplierToUser as $sup) {
                 $this->suppliers[$i] = User::model()->findByPk($sup->userId);
                 $i++;
             }
         }
-        if (isset($mailObj->orderId))
-        {
+        if (isset($mailObj->orderId)) {
             $order = new OrderGroup();
             $this->orderModel = $order->findByPk($mailObj->orderId);
         }
-        if (isset($mailObj->productId))
-        {
+        if (isset($mailObj->productId)) {
             $product = new Product();
             $this->productModel = $product->findByPk($mailObj->productId);
         }
@@ -125,14 +119,12 @@ class EmailSend
         $message->addTo($this->userModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 //mail to Admin
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'newAccountToAdmin';
@@ -144,8 +136,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -170,14 +161,12 @@ class EmailSend
         $message->addTo($this->userModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 //mail to Admin
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'newAccountToAdmin';
@@ -190,8 +179,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -201,8 +189,7 @@ class EmailSend
     {
 //mail to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'mailRequestApproveTranferToAdmin';
@@ -218,14 +205,12 @@ class EmailSend
         $message->addTo($admin->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 
-        foreach ($this->adminFinance as $adminFinance)
-        {
+        foreach ($this->adminFinance as $adminFinance) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'mailRequestApproveTranferToAdmin';
@@ -238,8 +223,7 @@ class EmailSend
             $message->addTo($adminFinance->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -249,8 +233,7 @@ class EmailSend
     {
         $this->prepareMailInfo($mailObj);
 
-        if ($this->orderModel->paymentMethod == 1)
-        {
+        if ($this->orderModel->paymentMethod == 1) {
             $message = new YiiMailMessage();
             $message->view = 'reviewOrderEPayment';
             $message->setBody(array(
@@ -262,15 +245,13 @@ class EmailSend
             $message->addTo($this->userModel->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
 //mail to Admin
 
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'reviewOrderEPaymentAdmin';
@@ -283,44 +264,41 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
 
         //Finance Admin
-
-        foreach ($this->adminFinance as $adminFinance)
-        {
-            $message = null;
-            $message = new YiiMailMessage();
-            $message->view = 'reviewOrderEPaymentFinanceAdmin';
-            $message->setBody(array(
-                "name" => $adminFinance->firstname . " " . $adminFinance->lastname,
-                "documentUrl" => $mailObj->documentUrl,
-                "orderID" => $this->orderModel->orderId,
-                "invoiceNo" => $this->orderModel->orderNo,
-                "supplierName" => isset($this->supplierModel->businessAddress->company) ? $this->supplierModel->businessAddress->company : $this->supplierModel->firstname . " " . $this->supplierModel->lastname,
-                "dealerName" => isset($this->dealerModel->businessAddress->company) ? $this->dealerModel->businessAddress->company : $this->dealerModel->firstname . " " . $this->dealerModel->lastname), 'text/html', 'utf-8');
-
-            $message->subject = "จดหมายแจ้งผู้ดูแลระบบ กรุณาตรวจสอบเอกสารประกอบการจ่ายเงิน";
-            $message->addTo($adminFinance->email);
-            $message->setFrom(array(
-                'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
-                Yii::app()->mail->send($message);
-            }
-        }
+//        foreach ($this->adminFinance as $adminFinance)
+//        {
+//            $message = null;
+//            $message = new YiiMailMessage();
+//            $message->view = 'reviewOrderEPaymentFinanceAdmin';
+//            $message->setBody(array(
+//                "name" => $adminFinance->firstname . " " . $adminFinance->lastname,
+//                "documentUrl" => $mailObj->documentUrl,
+//                "orderID" => $this->orderModel->orderId,
+//                "invoiceNo" => $this->orderModel->orderNo,
+//                "supplierName" => isset($this->supplierModel->businessAddress->company) ? $this->supplierModel->businessAddress->company : $this->supplierModel->firstname . " " . $this->supplierModel->lastname,
+//                "dealerName" => isset($this->dealerModel->businessAddress->company) ? $this->dealerModel->businessAddress->company : $this->dealerModel->firstname . " " . $this->dealerModel->lastname), 'text/html', 'utf-8');
+//
+//            $message->subject = "จดหมายแจ้งผู้ดูแลระบบ กรุณาตรวจสอบเอกสารประกอบการจ่ายเงิน";
+//            $message->addTo($adminFinance->email);
+//            $message->setFrom(array(
+//                'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
+//            if (Yii::app()->getParams()->sendEmail)
+//            {
+//                Yii::app()->mail->send($message);
+//            }
+//        }
     }
 
     public function mailCompleteOrderCustomer($mailObj)
     {
         $this->prepareMailInfo($mailObj);
 
-        if ($this->orderModel->paymentMethod == 1)
-        {
+        if ($this->orderModel->paymentMethod == 1) {
             $message = new YiiMailMessage();
             $message->view = 'completeOrderCustomer';
             $message->setBody(array(
@@ -332,13 +310,10 @@ class EmailSend
             $message->addTo($this->userModel->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
-        }
-        elseif ($this->orderModel->paymentMethod == 2)
-        {
+        } elseif ($this->orderModel->paymentMethod == 2) {
             $message = new YiiMailMessage();
             $message->view = 'completeOrderCustomer';
             $message->setBody(array(
@@ -351,15 +326,13 @@ class EmailSend
             $message->addTo($this->userModel->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
 //mail to Admin
 
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'completeOrderCustomerToAdmin';
@@ -372,8 +345,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -393,13 +365,11 @@ class EmailSend
             "orderID" => $this->orderModel->orderGroupId), 'text/html', 'utf-8');
 
         $message->subject = "จดหมายแจ้งการสั่งซื้อสินค้าผ่านบริการระบบซื้อสินค้าออนไลน์ DaiiBuy.com";
-        foreach ($this->suppliers as $sup)
-        {
+        foreach ($this->suppliers as $sup) {
             $message->addTo($sup->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -436,8 +406,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -458,8 +427,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -480,8 +448,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -489,8 +456,7 @@ class EmailSend
     public function mailAddNewProductEditedToAdmin($mailObj)
     {
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
 
             $message = new YiiMailMessage();
             $message->view = 'addNewProductEditedToAdmin';
@@ -504,8 +470,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
             $message = null;
@@ -515,8 +480,7 @@ class EmailSend
     public function mailAddNewProductToAdmin($mailObj)
     {
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
 
             $message = new YiiMailMessage();
             $message->view = 'addNewProductToAdmin';
@@ -531,8 +495,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
             $message = null;
@@ -552,8 +515,7 @@ class EmailSend
     {
         //admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'mailReturnProduct';
@@ -570,8 +532,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -604,8 +565,7 @@ class EmailSend
         $message->addTo($this->orderModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -652,15 +612,13 @@ class EmailSend
         $message->addTo($this->dealerModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 //to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'readyToShipProduct';
@@ -675,8 +633,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -700,8 +657,7 @@ class EmailSend
         $message->addTo($this->orderModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
@@ -720,15 +676,13 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 //to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'dealerRecievedProduct';
@@ -742,8 +696,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -765,15 +718,13 @@ class EmailSend
         $message->addTo($this->orderModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 //to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
 //$message = null;
             $message = new YiiMailMessage();
             $message->view = 'customerReceivedConfirm';
@@ -787,8 +738,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -808,8 +758,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -833,10 +782,8 @@ class EmailSend
 
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
-            if (Yii::app()->mail->send($message))
-            {
+        if (Yii::app()->getParams()->sendEmail) {
+            if (Yii::app()->mail->send($message)) {
                 $rere = true;
             }
         }
@@ -858,18 +805,15 @@ class EmailSend
         $message->addTo($this->orderModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
-            if (Yii::app()->mail->send($message))
-            {
+        if (Yii::app()->getParams()->sendEmail) {
+            if (Yii::app()->mail->send($message)) {
                 $rere = true;
             }
         }
 
 //to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'customerReceivedNotConfirm';
@@ -883,8 +827,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -904,8 +847,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
@@ -924,8 +866,7 @@ class EmailSend
         $message->addTo($this->dealerModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -934,8 +875,7 @@ class EmailSend
     {
 //to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'mailAdminToApproveSupplierDealerDocument';
@@ -951,14 +891,12 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
 
-        foreach ($this->adminFinance as $adminFinance)
-        {
+        foreach ($this->adminFinance as $adminFinance) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'mailAdminToApproveSupplierDealerDocument';
@@ -974,8 +912,7 @@ class EmailSend
             $message->addTo($adminFinance->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -998,8 +935,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1021,8 +957,7 @@ class EmailSend
         $message->addTo($this->dealerModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1045,8 +980,7 @@ class EmailSend
         $message->addTo($this->dealerModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
@@ -1065,15 +999,13 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
 
 //to Admin
         $this->prepareMailInfo($mailObj);
-        foreach ($this->admins as $admin)
-        {
+        foreach ($this->admins as $admin) {
             $message = null;
             $message = new YiiMailMessage();
             $message->view = 'mailApproveSupplierDealerDocument';
@@ -1087,8 +1019,7 @@ class EmailSend
             $message->addTo($admin->email);
             $message->setFrom(array(
                 'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-            if (Yii::app()->getParams()->sendEmail)
-            {
+            if (Yii::app()->getParams()->sendEmail) {
                 Yii::app()->mail->send($message);
             }
         }
@@ -1108,8 +1039,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1131,8 +1061,7 @@ class EmailSend
         $message->addTo($this->supplierModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1152,8 +1081,7 @@ class EmailSend
         $message->addTo($this->dealerModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1173,8 +1101,7 @@ class EmailSend
         $message->addTo($this->userModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1194,8 +1121,7 @@ class EmailSend
         $message->addTo($this->userModel->email);
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
+        if (Yii::app()->getParams()->sendEmail) {
             Yii::app()->mail->send($message);
         }
     }
@@ -1244,10 +1170,8 @@ class EmailSend
 
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
-        if (Yii::app()->getParams()->sendEmail)
-        {
-            if (Yii::app()->mail->send($message))
-            {
+        if (Yii::app()->getParams()->sendEmail) {
+            if (Yii::app()->mail->send($message)) {
                 $rere = true;
             }
         }
