@@ -614,10 +614,10 @@ class StepController extends MasterCheckoutController
                         $sentMail = new EmailSend();
                         $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
                         $emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
-                        $sentMail->mailReviewEPayment($emailObj);
+//                        $sentMail->mailReviewEPayment($emailObj);
+////                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+//                        $sentMail->mailCompleteOrderCustomer($emailObj);
 //                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
-                        $sentMail->mailCompleteOrderCustomer($emailObj);
-                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
                     }
                 } else {
                     echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
@@ -757,7 +757,6 @@ class StepController extends MasterCheckoutController
         $orderGroupHistory->decision = $request["decision"];
         $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
         $orderGroupHistory->save();
-        throw new Exception("Kamon2");
         return $description;
     }
 
