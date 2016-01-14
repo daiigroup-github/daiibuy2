@@ -630,7 +630,7 @@ class StepController extends MasterCheckoutController
                             $oldOrder->status = 2;
                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                         }
-                        if ($falg) {
+                        if ($flag) {
                             $oldOrder->status = 2;
                         }
                         if ($oldOrder->save()) {
