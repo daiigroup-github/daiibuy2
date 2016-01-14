@@ -591,11 +591,7 @@ class StepController extends MasterCheckoutController
                                             throw new Exception(444);
                                             throw new Exception;
                                         }
-                                        if ($flag) {
-                                            $transaction->commit();
-                                        } else {
-                                            $transaction->rollback();
-                                        }
+
                                         throw new Exception("Kamon1");
                                         if ($i == $item->quantity) {
                                             $oldOrder->status = -1;
@@ -606,6 +602,12 @@ class StepController extends MasterCheckoutController
                                         $flag = FALSE;
                                         $transaction->rollback();
                                         throw new Exception($ex->getMessage());
+                                    }
+
+                                    if ($flag) {
+                                        $transaction->commit();
+                                    } else {
+                                        $transaction->rollback();
                                     }
                                 }
                             }
