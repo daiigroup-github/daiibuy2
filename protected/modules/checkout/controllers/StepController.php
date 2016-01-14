@@ -574,7 +574,7 @@ class StepController extends MasterCheckoutController
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
-                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
                                                     $transaction->commit();
                                                 } else {
                                                     throw new Exception;
@@ -664,7 +664,7 @@ class StepController extends MasterCheckoutController
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
-                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
                                                     $transaction->commit();
                                                 } else {
                                                     throw new Exception;
@@ -811,7 +811,7 @@ class StepController extends MasterCheckoutController
                                             $newOrderItem->quantity = 1;
                                             $newOrderItem->total = $newOrderItem->price;
                                             if ($newOrderItem->save()) {
-                                                $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
                                             } else {
                                                 $flag = FALSE;
                                             }
