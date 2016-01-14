@@ -750,6 +750,7 @@ class StepController extends MasterCheckoutController
     public function saveOrderGroupLog($request, $orderGroup)
     {
         $description = OrderGroup::model()->getReasonCode($request["reason_code"]);
+        throw new Exception($description . " " . $orderGroup->orderGroupId . " " . $request["reason_code"] . " " . $request["decision"] . " " . new CDbExpression('NOW()'));
         $orderGroupHistory = new OrderGroupHistory();
         $orderGroupHistory->orderGroupId = $orderGroup->orderGroupId;
         $orderGroupHistory->reasonCode = $request["reason_code"];
@@ -757,6 +758,7 @@ class StepController extends MasterCheckoutController
         $orderGroupHistory->decision = $request["decision"];
         $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
         $orderGroupHistory->save();
+
         return $description;
     }
 
