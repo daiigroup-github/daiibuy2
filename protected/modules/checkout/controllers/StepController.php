@@ -532,9 +532,9 @@ class StepController extends MasterCheckoutController
                 if (isset($oldOrder)) {
                     if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
                         if (isset($oldOrder->orderGroupToOrders[0]->order->orderItems)) {
+                            $transaction = Yii::app()->db->beginTransaction();
                             foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
                                 for ($i = 1; $i <= $item->quantity; $i++) {
-                                    $transaction = Yii::app()->db->beginTransaction();
                                     try {
                                         $newOrderGroup = new OrderGroup();
                                         $newOrderGroup->attributes = $oldOrder->attributes;
@@ -571,7 +571,6 @@ class StepController extends MasterCheckoutController
                                                     $newOrderItem->total = $newOrderItem->price;
                                                     if ($newOrderItem->save()) {
                                                         $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-                                                        throw new Exception(000);
                                                     } else {
                                                         $flag = FALSE;
                                                         throw new Exception(111);
@@ -593,13 +592,12 @@ class StepController extends MasterCheckoutController
                                         $transaction->rollback();
                                         throw new Exception("Code = " . $ex->getCode() . " Line = " . $ex->getLine() . " File = " . $ex->getFile() . " Message = " . $ex->getMessage());
                                     }
-
-                                    if ($flag) {
-                                        $transaction->commit();
-                                    } else {
-                                        $transaction->rollback();
-                                    }
                                 }
+                            }
+                            if ($flag) {
+                                $transaction->commit();
+                            } else {
+                                $transaction->rollback();
                             }
                             $oldOrder->status = -1;
                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
