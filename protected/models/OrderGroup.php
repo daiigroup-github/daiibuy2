@@ -244,6 +244,7 @@ class OrderGroup extends OrderGroupMaster
      */
     public function getReasonCode($reasonCode)
     {
+        throw new Exception($reasonCode);
         switch ($reasonCode) {
             case REASON_SUCCESS://User
                 return "100 : Successful transaction.";
