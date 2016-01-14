@@ -11,7 +11,8 @@ class StepController extends MasterCheckoutController
             }
         }
 
-        switch ($id) {
+        switch ($id)
+        {
             case 1:
                 $this->step1();
                 break;
@@ -65,7 +66,8 @@ class StepController extends MasterCheckoutController
                     $order->save(false);
                 }
                 $this->redirect($this->createUrl(2));
-            } else {
+            }
+            else {
                 $loginModel->addError('username', 'Log in failed.');
             }
         }
@@ -78,7 +80,8 @@ class StepController extends MasterCheckoutController
 
             $flag = false;
             $transaction = Yii::app()->db->beginTransaction();
-            try {
+            try
+            {
                 $userModel->type = 1;
                 $userModel->status = 1;
                 $userModel->approved = 1;
@@ -105,10 +108,12 @@ class StepController extends MasterCheckoutController
                             $order->save(false);
                         }
                         $flag = true;
-                    } else {
+                    }
+                    else {
                         throw new Exception(print_r($addressModel->errors, true));
                     }
-                } else {
+                }
+                else {
                     throw new Exception(print_r($userModel->errors, true));
                 }
                 if ($flag) {
@@ -137,7 +142,9 @@ class StepController extends MasterCheckoutController
                         $this->redirect($this->createUrl(2));
                     }
                 }
-            } catch (Exception $e) {
+            }
+            catch (Exception $e)
+            {
                 throw new Exception($e->getMessage());
                 $transaction->rollback();
             }
@@ -169,13 +176,15 @@ class StepController extends MasterCheckoutController
         if (isset($_POST['Next'])) {
 //			throw new Exception(print_r($_POST['billing']['company'] != "", true));
             $transaction = Yii::app()->db->beginTransaction();
-            try {
+            try
+            {
                 $this->writeToFile('/tmp/step2', print_r($_POST, true));
 //billing
                 if ($_POST['billingRadio'] == 1) {
                     Yii::app()->session['billingAddressId'] = $_POST['existingBillingAddress'];
                     $flag = 1;
-                } else {
+                }
+                else {
 //add new billing address
 //                throw new Exception(print_r($_POST['billing']['company'], true));
                     if ($_POST['billing']['company'] != "") {
@@ -183,7 +192,8 @@ class StepController extends MasterCheckoutController
                             $billingAddressModel->addError("paymentCompany", '"สำนักงานใหญ่" หรือ "สาขา" ของบริษัทท่าน');
 
 //						throw new Exception(print_r($billingAddressModel->errors, true));
-                        } elseif ($_POST['companyBranch'] == 2) {
+                        }
+                        elseif ($_POST['companyBranch'] == 2) {
                             if (!isset($_POST['billing']['companyBranchDetail']) || $_POST['billing']['companyBranchDetail'] == "") {
                                 $billingAddressModel->addError("paymentCompany", "สาขาของบริษัทของท่าน.");
 //								2 => "กรุณาระบุสาขาของบริษัทของท่าน");
@@ -196,10 +206,12 @@ class StepController extends MasterCheckoutController
                     if (isset($_POST['companyBranch'])) {
                         if ($_POST['companyBranch'] == 1) {
                             $billingAddressModel->company = $billingAddressModel->company . " (สำนักงานใหญ่)";
-                        } else {
+                        }
+                        else {
                             if (isset($_POST['billing']['companyBranchDetail'])) {
                                 $billingAddressModel->company = $billingAddressModel->company . " " . $_POST['billing']['companyBranchDetail'];
-                            } else {
+                            }
+                            else {
                                 throw new Exception(print_r($billingAddressModel->errors, true));
                             }
                         }
@@ -213,9 +225,11 @@ class StepController extends MasterCheckoutController
                     if (!$billingAddressModel->save()) {
                         $flag = 0;
                         throw new Exception(print_r($billingAddressModel->errors, true));
-                    } else if (count($billingAddressModel->errors) > 0) {
+                    }
+                    else if (count($billingAddressModel->errors) > 0) {
                         throw new Exception(print_r($billingAddressModel->errors, true));
-                    } else {
+                    }
+                    else {
                         $flag = 1;
                         Yii::app()->session['billingAddressId'] = Yii::app()->db->getLastInsertID();
                     }
@@ -227,7 +241,8 @@ class StepController extends MasterCheckoutController
                 if ($_POST['shippingRadio'] == 1) {
                     Yii::app()->session['shippingAddressId'] = $_POST['existingShippingAddress'];
                     $flag = 1;
-                } else {
+                }
+                else {
 //add new shipping address
                     $shippingAddressModel->attributes = $_POST['shipping'];
                     $shippingAddressModel->provinceId = $this->cookie->provinceId;
@@ -236,12 +251,15 @@ class StepController extends MasterCheckoutController
                     if (!$shippingAddressModel->save()) {
                         $flag = 0;
                         throw new Exception(print_r($shippingAddressModel->errors, true));
-                    } else {
+                    }
+                    else {
                         $flag = 1;
                         Yii::app()->session['shippingAddressId'] = Yii::app()->db->getLastInsertID();
                     }
                 }
-            } catch (Exception $exc) {
+            }
+            catch (Exception $exc)
+            {
 //				if (count($billingAddressModel->errors) > 0)
 //				{
 //					print_r($billingAddressModel->errors);
@@ -291,7 +309,8 @@ class StepController extends MasterCheckoutController
                 ),
                 'order' => 'type, orderId'
             ));
-        } else {
+        }
+        else {
             $orders = Order::model()->findAll(array(
                 'condition' => 'type&' . Order::ORDER_TYPE_CART . ' > 0 AND token=:token AND supplierId=:supplierId',
                 'params' => array(
@@ -338,7 +357,8 @@ class StepController extends MasterCheckoutController
         if (isset($_POST['paymentMethod'])) {
             $flag = false;
             $transaction = Yii::app()->db->beginTransaction();
-            try {
+            try
+            {
 //code here
 //new order group
                 $orderGroup = new OrderGroup();
@@ -355,7 +375,8 @@ class StepController extends MasterCheckoutController
                     $orderGroup->partnerDiscountPercent = str_replace(",", "", $orderSummary['partnerDiscountPercent']);
                     $orderGroup->partnerDiscountValue = str_replace(",", "", $orderSummary['partnerDiscount']);
 //					$orderGroup->totalPostPartnerDiscount = str_replace(",", "", $orderSummary['totalPostPartnerDiscount']);
-                } else if (isset($orderSummary['distributorDiscountPercent'])) {
+                }
+                else if (isset($orderSummary['distributorDiscountPercent'])) {
                     $orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
                     $orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
                     $orderGroup->totalPostDistributorDiscount = str_replace(",", "", $orderSummary['totalPostDistributorDiscount']);
@@ -455,7 +476,8 @@ class StepController extends MasterCheckoutController
                     if ($supplierId == 4 || $supplierId == 5) {
                         $flag = $this->saveGinzaOrder($supplierId, $orderGroupId);
                     }
-                } else {
+                }
+                else {
                     throw new Exception(print_r($orderGroup->errors, true));
                 }
 //				throw new Exception($flag);
@@ -470,7 +492,8 @@ class StepController extends MasterCheckoutController
                         $this->redirect(array(
                             "confirmCheckout",
                             'id' => $orderGroupId));
-                    } else {
+                    }
+                    else {
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
                         $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
@@ -482,10 +505,13 @@ class StepController extends MasterCheckoutController
                             "id" => $orderGroupId,
                         ));
                     }
-                } else {
+                }
+                else {
                     $transaction->rollback();
                 }
-            } catch (Exception $e) {
+            }
+            catch (Exception $e)
+            {
                 $transaction->rollback();
                 throw new Exception($e->getMessage());
             }
@@ -525,17 +551,19 @@ class StepController extends MasterCheckoutController
 //			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
 //			{
             $request = $_REQUEST;
+            $transaction = Yii::app()->db->beginTransaction();
 //            throw new Exception(print_r($_REQUEST, true));
-            if ($_REQUEST["decision"] == "ACCEPT") {
-                $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
-                    ":orderNo" => $_REQUEST["req_reference_number"]));
-                if (isset($oldOrder)) {
-                    if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
-                        if (isset($oldOrder->orderGroupToOrders[0]->order->orderItems)) {
-                            $transaction = Yii::app()->db->beginTransaction();
-                            foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
-                                for ($i = 1; $i <= $item->quantity; $i++) {
-                                    try {
+            try
+            {
+                if ($_REQUEST["decision"] == "ACCEPT") {
+                    $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
+                        ":orderNo" => $_REQUEST["req_reference_number"]));
+                    if (isset($oldOrder)) {
+                        if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
+                            if (isset($oldOrder->orderGroupToOrders[0]->order->orderItems)) {
+                                foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
+                                    for ($i = 1; $i <= $item->quantity; $i++) {
+
                                         $newOrderGroup = new OrderGroup();
                                         $newOrderGroup->attributes = $oldOrder->attributes;
                                         $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
@@ -571,68 +599,63 @@ class StepController extends MasterCheckoutController
                                                     $newOrderItem->total = $newOrderItem->price;
                                                     if ($newOrderItem->save()) {
                                                         $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-                                                    } else {
+                                                    }
+                                                    else {
                                                         $flag = FALSE;
                                                         throw new Exception(111);
                                                     }
-                                                } else {
+                                                }
+                                                else {
                                                     $flag = FALSE;
                                                     throw new Exception(222);
                                                 }
-                                            } else {
+                                            }
+                                            else {
                                                 $flag = FALSE;
                                                 throw new Exception(333);
                                             }
-                                        } else {
+                                        }
+                                        else {
                                             $flag = FALSE;
                                             throw new Exception(444);
                                         }
-                                    } catch (Exception $ex) {
-                                        $flag = FALSE;
-                                        $transaction->rollback();
-                                        throw new Exception("Code = " . $ex->getCode() . " Line = " . $ex->getLine() . " File = " . $ex->getFile() . " Message = " . $ex->getMessage());
                                     }
                                 }
+                                $oldOrder->status = -1;
+                                $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                             }
-                            if ($flag) {
-                                $transaction->commit();
-                            } else {
-                                $transaction->rollback();
-                            }
-                            $oldOrder->status = -1;
+                        }
+                        else {
+                            $oldOrder->status = 2;
                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                         }
-                    } else {
-                        $oldOrder->status = 2;
-                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
-                    }
-                    if ($oldOrder->save()) {
-
-                        $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
-                        $flag = TRUE;
-                        $emailObj = new Email();
-                        $sentMail = new EmailSend();
-                        $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-                        $emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+                        if ($oldOrder->save()) {
+                            Throw new Exception(print_r($oldOrder, true));
+                            $request["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                            $flag = TRUE;
+                            $emailObj = new Email();
+                            $sentMail = new EmailSend();
+                            $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+                            $emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
 //                        $sentMail->mailReviewEPayment($emailObj);
 ////                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
 //                        $sentMail->mailCompleteOrderCustomer($emailObj);
 //                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+                        }
                     }
-                } else {
-                    echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+                    else {
+                        echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+                    }
                 }
-            } else {
+                else {
 // Email จ่ายไม่ผ่าน
-                if ($_REQUEST["decision"] == "REVIEW") {
-                    $order = OrderGroup::model()->find("orderNo =:orderNo", array(
-                        ":orderNo" => $_REQUEST["req_reference_number"]));
-                    if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
-                        foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
-                            for ($i = 1;
-                            ; $i++) {
-                                $transaction = Yii::app()->db->beginTransaction();
-                                try {
+                    if ($_REQUEST["decision"] == "REVIEW") {
+                        $order = OrderGroup::model()->find("orderNo =:orderNo", array(
+                            ":orderNo" => $_REQUEST["req_reference_number"]));
+                        if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
+                            foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
+                                for ($i = 1;
+                                ; $i++) {
                                     $newOrderGroup = new OrderGroup();
                                     $newOrderGroup->attributes = $oldOrder->attributes;
                                     $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
@@ -668,81 +691,96 @@ class StepController extends MasterCheckoutController
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
                                                     $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-                                                    $transaction->commit();
-                                                } else {
+                                                }
+                                                else {
                                                     throw new Exception;
                                                 }
-                                            } else {
+                                            }
+                                            else {
                                                 throw new Exception;
                                             }
-                                        } else {
+                                        }
+                                        else {
                                             throw new Exception;
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         throw new Exception;
                                     }
-                                } catch (Exception $ex) {
-                                    throw new Exception($e->getMessage());
-                                    $transaction->rollback();
-                                }
 
-                                if ($i == $item->quantity) {
-                                    $oldOrder->status = -1;
-                                    $oldOrder->paymentDateTime = new CDbExpression('NOW()');
-                                    break;
+
+                                    if ($i == $item->quantity) {
+                                        $oldOrder->status = -1;
+                                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    } else {
-                        $oldOrder->status = 2;
-                        $oldOrder->paymentDateTime = new CDbExpression('NOW()');
-                    }
-                    if ($oldOrder->save()) {
+                        else {
+                            $oldOrder->status = 2;
+                            $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                        }
+                        if ($oldOrder->save()) {
 //						$this->cutProductStock($order);
 //						unset($daiibuy->cart[$order->supplierId]);
 //						unset($daiibuy->order[$order->supplierId]);
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
-                        $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
-                        $flag = TRUE;
+                            $request["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                            $flag = TRUE;
+                            $emailObj = new Email();
+                            $sentMail = new EmailSend();
+                            $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
+                            $emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
+                            $sentMail->mailReviewEPayment($emailObj);
+//                        $sentMail->mailCompleteOrderCustomer($emailObj);
+                            $sentMail->mailConfirmOrderSupplierDealer($emailObj);
+                        }
+                        else {
+                            echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
+                        }
+                    }
+                    else if ($_REQUEST["decision"] == "REJECT") {
+                        $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
+                            ":orderNo" => $_REQUEST["req_reference_number"]));
+                        $oldOrder->status = 97;
+                        $oldOrder->save();
+                        $this->saveOrderGroupLog($request, $oldOrder);
+
+                        $request["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                        $flag = false;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
                         $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
                         $emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
-                        $sentMail->mailReviewEPayment($emailObj);
-//                        $sentMail->mailCompleteOrderCustomer($emailObj);
+                        $sentMail->mailCompleteOrderCustomer($emailObj);
                         $sentMail->mailConfirmOrderSupplierDealer($emailObj);
-                    } else {
-                        echo "ไม่สามารถ ปรับปรุงรายการสั่งซื้อสินค้าของท่านได้";
                     }
-                } else if ($_REQUEST["decision"] == "REJECT") {
-                    $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
-                        ":orderNo" => $_REQUEST["req_reference_number"]));
-                    $oldOrder->status = 97;
-                    $oldOrder->save();
-                    $this->saveOrderGroupLog($_REQUEST, $oldOrder);
-
-                    $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
-//                    $emailObj = new Email();
-//                    $sentMail = new EmailSend();
-//                    $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-//                    $emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
-//                    $sentMail->mailCompleteOrderCustomer($emailObj);
-//                    $sentMail->mailConfirmOrderSupplierDealer($emailObj);
-                } else if ($_REQUEST["decision"] == "ERROR") {
-                    $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
-                        ":orderNo" => $_REQUEST["req_reference_number"]));
-                    $oldOrder->status = 97;
-                    $oldOrder->save();
-
-                    $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                    else if ($_REQUEST["decision"] == "ERROR") {
+                        $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
+                            ":orderNo" => $_REQUEST["req_reference_number"]));
+                        $oldOrder->status = 97;
+                        $oldOrder->save();
+                        $flag = false;
+                        $request["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                    }
                 }
             }
-        } else {
-//$flag = TRUE;
+            catch (Exception $ex)
+            {
+                throw new Exception($e->getMessage());
+                $transaction->rollback();
+            }
+        }
+        if ($flag) {
+            $transaction->commit();
+        }
+        else {
+            $transaction->rollback();
         }
         $this->render("step5", array(
-            'result' => $_REQUEST,
+            'result' => $request,
             'flag' => $flag,
             'model' => $order));
     }
@@ -777,7 +815,8 @@ class StepController extends MasterCheckoutController
                     foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
                         for ($i = 1; $i <= $item->quantity; $i++) {
 
-                            try {
+                            try
+                            {
                                 $newOrderGroup = new OrderGroup();
                                 $newOrderGroup->attributes = $oldOrder->attributes;
                                 $newOrderGroup->orderNo = OrderGroup::model()->genOrderNo($newOrderGroup->supplierId);
@@ -815,19 +854,25 @@ class StepController extends MasterCheckoutController
                                             $newOrderItem->total = $newOrderItem->price;
                                             if ($newOrderItem->save()) {
                                                 $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-                                            } else {
+                                            }
+                                            else {
                                                 $flag = FALSE;
                                             }
-                                        } else {
+                                        }
+                                        else {
                                             $flag = FALSE;
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         $flag = FALSE;
                                     }
-                                } else {
+                                }
+                                else {
                                     $flag = FALSE;
                                 }
-                            } catch (Exception $ex) {
+                            }
+                            catch (Exception $ex)
+                            {
                                 throw new Exception($ex->getMessage());
                                 $transaction->rollback();
                             }
@@ -843,7 +888,8 @@ class StepController extends MasterCheckoutController
                         $oldOrder->updateDateTime = new CDbExpression("NOW()");
                         $transaction->commit();
                     }
-                } else {
+                }
+                else {
 //					$oldOrder->status = 1;
                 }
 //					$oldOrder->totalIncVAT = $oldOrder->totalIncVAT / $splitNo;
@@ -853,7 +899,8 @@ class StepController extends MasterCheckoutController
 //					$oldOrder->vatValue = $oldOrder->totalIncVAT - $oldOrder->total;
 //					$oldOrder->orderGroupId = NULL;
 //						$oldOrder->orderNo = $oldOrder->order->findMaxOrderNo();
-            } else {
+            }
+            else {
                 $oldOrder->status = 1;
                 $oldOrder->updateDateTime = new CDbExpression("NOW()");
             }
@@ -868,7 +915,8 @@ class StepController extends MasterCheckoutController
 //						$daiibuy->saveCookie();
             if ($oldOrder->status < 0) {
                 $orderToSentMail = $oldOrder;
-            } else {
+            }
+            else {
                 $orderToSentMail = isset($newOrderGroup) ? $newOrderGroup : $oldOrder;
             }
             $emailObj = new Email();
@@ -982,7 +1030,8 @@ class StepController extends MasterCheckoutController
 //							$order->paymentDateTime = new CDbExpression('NOW()');
         if ($order->save()) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -1022,13 +1071,16 @@ class StepController extends MasterCheckoutController
                     $newOrderItem->orderId = $newOrderId;
                     if ($newOrderItem->save()) {
                         return true;
-                    } else {
+                    }
+                    else {
                         return false;
                     }
-                } else {
+                }
+                else {
                     return false;
                 }
-            } else {
+            }
+            else {
                 return false;
             }
         }
@@ -1038,7 +1090,8 @@ class StepController extends MasterCheckoutController
     {
         $flag = false;
         $newOrderGroupId = null;
-        try {
+        try
+        {
 
             $oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
 //            throw new Exception(print_r($oldOrderGroup->orderGroupToOrders[0]->order->orderItems, true));
@@ -1071,7 +1124,8 @@ class StepController extends MasterCheckoutController
                     $orderGroup->partnerDiscountPercent = str_replace(",", "", $orderSummary['partnerDiscountPercent']);
                     $orderGroup->partnerDiscountValue = str_replace(",", "", $orderSummary['partnerDiscount']);
 //					$orderGroup->totalPostPartnerDiscount = str_replace(",", "", $orderSummary['totalPostPartnerDiscount']);
-                } else if (isset($orderSummary['distributorDiscountPercent'])) {
+                }
+                else if (isset($orderSummary['distributorDiscountPercent'])) {
                     $orderGroup->distributorDiscountPercent = str_replace(",", "", $orderSummary['distributorDiscountPercent']);
                     $orderGroup->distributorDiscount = str_replace(",", "", $orderSummary['distributorDiscount']);
 
@@ -1133,14 +1187,16 @@ class StepController extends MasterCheckoutController
                                     if (isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0) {
                                         $orderItemOption->percent = $productOption->pricePercent;
                                         $orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
-                                    } else {
+                                    }
+                                    else {
                                         $orderItemOption->percent = 0;
                                         $orderItemOption->total = 0;
                                     }
                                     if (isset($productOption->priceValue) && intval($productOption->priceValue) > 0) {
                                         $orderItemOption->value = $productOption->priceValue;
                                         $orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
-                                    } else {
+                                    }
+                                    else {
                                         $orderItemOption->value = 0;
                                         $orderItemOption->total += 0;
                                     }
@@ -1149,7 +1205,8 @@ class StepController extends MasterCheckoutController
                                     if ($orderItemOption->save()) {
                                         $orderItems->total +=$orderItemOption->total;
                                         $orderItems->save(FALSE);
-                                    } else {
+                                    }
+                                    else {
 
                                     }
                                 }
@@ -1168,10 +1225,13 @@ class StepController extends MasterCheckoutController
             }
             if ($flag) {
                 return TRUE;
-            } else {
+            }
+            else {
                 return FALSE;
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             throw new Exception($e->getMessage());
             $transaction->rollback();
         }
@@ -1191,7 +1251,8 @@ class StepController extends MasterCheckoutController
 //				throw new Exception(print_r($cat2p->attributes, true));
                 if ($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || (isset($orderGroup->orders[0]->orderItems[0]->styleId) && $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])) {
 
-                    try {
+                    try
+                    {
                         $cat2ToProduct = Category2ToProduct::model()->findAll("brandModelId = " . $_POST["brandModelId"] . " AND category1Id = " . $_POST["category1Id"] . " AND category2Id =" . $_POST["category2Id"]);
                         if (isset($cat2ToProduct)) {
                             $this->updateChangeSpecGinzaOrderGroup($orderGroup, $cat2ToProduct, 2);
@@ -1208,14 +1269,18 @@ class StepController extends MasterCheckoutController
 //								'orderSummary'=>$orderSummary,
 //								'bankArray'=>$bankArray,
 //							));
-                        } else {
+                        }
+                        else {
                             $transaction->rollback();
                         }
-                    } catch (Exception $e) {
+                    }
+                    catch (Exception $e)
+                    {
                         throw new Exception($e->getMessage());
                         $transaction->rollback();
                     }
-                } else {
+                }
+                else {
 //					$bankArray = Bank::model()->findAllBankModelBySupplier(4);
 //					$this->render('step4', array(
 //						'step'=>4,
@@ -1283,13 +1348,15 @@ class StepController extends MasterCheckoutController
                             'supplierModel' => $supplierModel
                         ));
                     }
-                } else {
+                }
+                else {
                     $this->redirect(array(
                         "/myfile/ginzaHome/view",
                         'id' => $orderGroup->parent->orderGroupId,
                         'errorMessage' => 'ไม่สามารถชำระยอดเงินเกินที่กำหนด หรือ ต้องชำระตั้งแต่ 1,000 บาทขึ้นไป  !!!'));
                 }
-            } else {
+            }
+            else {
                 $orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $_POST["payValue"], FALSE, $_GET["orderGroupId"]);
                 $orderGroup->summary = str_replace(",", "", $orderSummary['grandTotal']);
                 $orderGroup->totalIncVAT = str_replace(",", "", $orderSummary['total']);
@@ -1335,7 +1402,8 @@ class StepController extends MasterCheckoutController
                 $this->redirect(array(
                     "confirmCheckout",
                     'id' => isset($orderGroup->supNotPay) ? $orderGroup->supNotPay->orderGroupId : $orderGroup->orderGroupId));
-            } else {
+            }
+            else {
                 $orderGroup->paymentMethod = 2;
                 $orderGroup->save(false);
                 $emailObj = new Email();
@@ -1362,7 +1430,8 @@ class StepController extends MasterCheckoutController
 
                 if ($orderItem->quantity == $quantity) {
                     continue;
-                } else {
+                }
+                else {
                     $orderItem->quantity = $quantity;
                     $orderItem->total = $orderItem->quantity * $orderItem->price;
                     $orderItem->save(FALSE);
@@ -1394,7 +1463,8 @@ class StepController extends MasterCheckoutController
 
             if (!isset($orderGroup->fur[0])) {
                 $orderGroup = new OrderGroup();
-            } else {
+            }
+            else {
                 $orderGroup = OrderGroup::model()->findByPk($orderGroup->fur[0]->orderGroupId);
             }
 
@@ -1452,7 +1522,8 @@ class StepController extends MasterCheckoutController
                     'bankArray' => $bankArray,
                     'supplierModel' => $supplierModel
                 ));
-            } else {
+            }
+            else {
                 $this->saveBlankOrderAndOrderItem($_GET["orderGroupId"], $orderGroup->orderGroupId, $orderGroup->supplierId, str_replace(",", "", $orderSummary['total']), $titleBlankOrderAndOrderItem);
                 $bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
                 $supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
@@ -1471,7 +1542,8 @@ class StepController extends MasterCheckoutController
                 $this->redirect(array(
                     "confirmCheckout",
                     'id' => $orderGroup->fur[0]->orderGroupId));
-            } else {
+            }
+            else {
                 $orderGroup->paymentMethod = 2;
                 $orderGroup->save(false);
                 $emailObj = new Email();
@@ -1555,14 +1627,16 @@ class StepController extends MasterCheckoutController
                             if (isset($productOption->pricePercent) && intval($productOption->pricePercent) > 0) {
                                 $orderItemOption->percent = $productOption->pricePercent;
                                 $orderItemOption->total = $orderItem->total * ($productOption->pricePercent / 100);
-                            } else {
+                            }
+                            else {
                                 $orderItemOption->percent = 0;
                                 $orderItemOption->total = 0;
                             }
                             if (isset($productOption->priceValue) && intval($productOption->priceValue) > 0) {
                                 $orderItemOption->value = $productOption->priceValue;
                                 $orderItemOption->total = $productOption->priceValue * $orderItem->quantity;
-                            } else {
+                            }
+                            else {
                                 $orderItemOption->value = 0;
                                 $orderItemOption->total += 0;
                             }
@@ -1571,7 +1645,8 @@ class StepController extends MasterCheckoutController
                             if ($orderItemOption->save()) {
                                 $orderItems->total += $orderItemOption->total;
                                 $orderItems->save(FALSE);
-                            } else {
+                            }
+                            else {
 
                             }
                         }
@@ -1592,7 +1667,8 @@ class StepController extends MasterCheckoutController
         $newOrderGroup = OrderGroup::model()->findByPk($newOrderGroupId);
         if (isset($newOrderGroup) && isset($newOrderGroup->orderGroupToOrders[0]->order)) {
             $order = $newOrderGroup->orderGroupToOrders[0]->order;
-        } else {
+        }
+        else {
             $order = new Order();
         }
         $order->userId = Yii::app()->user->id;
@@ -1610,7 +1686,8 @@ class StepController extends MasterCheckoutController
             if (!isset($orderItems)) {
                 $orderId = Yii::app()->db->lastInsertID;
                 $orderItems = new OrderItems();
-            } else {
+            }
+            else {
                 $orderId = $order->orderId;
             }
             $orderItems->title = $title;
@@ -1697,7 +1774,8 @@ class StepController extends MasterCheckoutController
                 $this->redirect(array(
                     "confirmCheckout",
                     'id' => isset($orderGroup->supNotPay) ? $orderGroup->supNotPay->orderGroupId : $orderGroup->orderGroupId));
-            } else {
+            }
+            else {
                 $orderGroup->paymentMethod = 2;
                 $orderGroup->save(false);
                 $emailObj = new Email();

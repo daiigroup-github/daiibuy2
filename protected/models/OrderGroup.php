@@ -90,13 +90,13 @@ class OrderGroup extends OrderGroupMaster
 // will receive user inputs.
         return CMap::mergeArray(parent::rules(), array(
 //code here
-            array(
-                'maxCode',
-                'safe'),
-            array(
-                ' paymentYear, paymentMonth, startDate, endDate',
-                'safe',
-                'on' => 'search'),
+                array(
+                    'maxCode',
+                    'safe'),
+                array(
+                    ' paymentYear, paymentMonth, startDate, endDate',
+                    'safe',
+                    'on' => 'search'),
         ));
     }
 
@@ -110,103 +110,103 @@ class OrderGroup extends OrderGroupMaster
         return CMap::mergeArray(parent::relations(), array(
 //code here
 
-            'orders' => array(
-                self::MANY_MANY,
-                'Order',
-                'order_group_to_order(orderGroupId, orderId)'
-            ),
-            'child' => array(
-                self::BELONGS_TO,
-                'OrderGroup',
-                array(
-                    'orderGroupId' => 'parentId')),
-            'supNotPay' => array(
-                self::BELONGS_TO,
-                'OrderGroup',
-                array(
-                    'orderGroupId' => 'mainId',
+                'orders' => array(
+                    self::MANY_MANY,
+                    'Order',
+                    'order_group_to_order(orderGroupId, orderId)'
                 ),
-                'on' => 'status=0'),
-            'supNotPays' => array(
-                self::HAS_MANY,
-                'OrderGroup',
-                array(
-                    'mainId',
+                'child' => array(
+                    self::BELONGS_TO,
+                    'OrderGroup',
+                    array(
+                        'orderGroupId' => 'parentId')),
+                'supNotPay' => array(
+                    self::BELONGS_TO,
+                    'OrderGroup',
+                    array(
+                        'orderGroupId' => 'mainId',
+                    ),
+                    'on' => 'status=0'),
+                'supNotPays' => array(
+                    self::HAS_MANY,
+                    'OrderGroup',
+                    array(
+                        'mainId',
+                    ),
+                    'on' => 'status<3'),
+                'sup' => array(
+                    self::HAS_MANY,
+                    'OrderGroup',
+                    array(
+                        'mainId')
                 ),
-                'on' => 'status<3'),
-            'sup' => array(
-                self::HAS_MANY,
-                'OrderGroup',
-                array(
-                    'mainId')
-            ),
-            'supPay' => array(
-                self::HAS_MANY,
-                'OrderGroup',
-                array(
-                    'mainId'),
-                'on' => 'status > 2'
-            ),
-            'fur' => array(
-                self::HAS_MANY,
-                'OrderGroup',
-                array(
-                    'mainFurnitureId')),
-            'sendWorks' => array(
-                self::HAS_MANY,
-                'OrderGroupSendWork',
-                array(
-                    'orderGroupId')),
-            'parent' => array(
-                self::BELONGS_TO,
-                'OrderGroup',
-                array(
-                    'parentId' => 'orderGroupId')),
-            'sp' => array(
-                self::HAS_MANY,
-                'UserSpacialProject',
-                array(
-                    'orderGroupId')),
-            'orderGroupToOrders' => array(
-                self::HAS_MANY,
-                'OrderGroupToOrder',
-                'orderGroupId'),
-            'orderGroupFiles' => array(
-                self::HAS_MANY,
-                'OrderGroupFile',
-                'orderGroupId'),
-            'user' => array(
-                self::BELONGS_TO,
-                'User',
-                'userId'),
+                'supPay' => array(
+                    self::HAS_MANY,
+                    'OrderGroup',
+                    array(
+                        'mainId'),
+                    'on' => 'status > 2'
+                ),
+                'fur' => array(
+                    self::HAS_MANY,
+                    'OrderGroup',
+                    array(
+                        'mainFurnitureId')),
+                'sendWorks' => array(
+                    self::HAS_MANY,
+                    'OrderGroupSendWork',
+                    array(
+                        'orderGroupId')),
+                'parent' => array(
+                    self::BELONGS_TO,
+                    'OrderGroup',
+                    array(
+                        'parentId' => 'orderGroupId')),
+                'sp' => array(
+                    self::HAS_MANY,
+                    'UserSpacialProject',
+                    array(
+                        'orderGroupId')),
+                'orderGroupToOrders' => array(
+                    self::HAS_MANY,
+                    'OrderGroupToOrder',
+                    'orderGroupId'),
+                'orderGroupFiles' => array(
+                    self::HAS_MANY,
+                    'OrderGroupFile',
+                    'orderGroupId'),
+                'user' => array(
+                    self::BELONGS_TO,
+                    'User',
+                    'userId'),
 //				'shippingDistrict'=>array(
 //					self::BELONGS_TO,
 //					'District',
 //					'shippingDistrictId'),
-            'paymentAmphur' => array(
-                self::BELONGS_TO,
-                'Amphur',
-                'paymentAmphurId'),
-            'paymentDistrict' => array(
-                self::BELONGS_TO,
-                'District',
-                'paymentDistrictId'),
-            'paymentProvince' => array(
-                self::BELONGS_TO,
-                'Province',
-                'paymentProvinceId'),
-            'shippingAmphur' => array(
-                self::BELONGS_TO,
-                'Amphur',
-                'shippingAmphurId'),
-            'shippingProvince' => array(
-                self::BELONGS_TO,
-                'Province',
-                'shippingProvinceId'),
-            'supplier' => array(
-                self::BELONGS_TO,
-                'Supplier',
-                'supplierId'),
+                'paymentAmphur' => array(
+                    self::BELONGS_TO,
+                    'Amphur',
+                    'paymentAmphurId'),
+                'paymentDistrict' => array(
+                    self::BELONGS_TO,
+                    'District',
+                    'paymentDistrictId'),
+                'paymentProvince' => array(
+                    self::BELONGS_TO,
+                    'Province',
+                    'paymentProvinceId'),
+                'shippingAmphur' => array(
+                    self::BELONGS_TO,
+                    'Amphur',
+                    'shippingAmphurId'),
+                'shippingProvince' => array(
+                    self::BELONGS_TO,
+                    'Province',
+                    'shippingProvinceId'),
+                'supplier' => array(
+                    self::BELONGS_TO,
+                    'Supplier',
+                    'supplierId'),
 //				'orderGroupFiles'=>array(
 //					self::HAS_MANY,
 //					'OrderGroupFile',
@@ -244,11 +244,12 @@ class OrderGroup extends OrderGroupMaster
      */
     public function getReasonCode($reasonCode)
     {
-        switch ($reasonCode) {
-            case self::REASON_SUCCESS://User
+        switch ($reasonCode)
+        {
+            case self::REASON_SUCCESS ://User
                 return "100 : Successful transaction.";
                 break;
-            case self::REASON_AUTHORIZE_SUCCESS://User
+            case self::REASON_AUTHORIZE_SUCCESS ://User
                 return "110 : Authorization was partially approved.";
                 break;
             case self::REVIEW_QUESTION_ABOUT_REQUEST://User
@@ -257,118 +258,118 @@ API reply, but you may receive one verbally by calling the processor.
 Possible action: Call your processor or the issuing bank to obtain a verbal authorization code. For
 contact phone numbers, refer to your merchant bank information.";
                 break;
-            case REVIEW_ADDRESS_FAIL_VERIFY://User
+            case self::REVIEW_ADDRESS_FAIL_VERIFY://User
                 return "200 : The authorization request was approved by the issuing bank but declined by CyberSource because it
 did not pass the Address Verification Service (AVS) check. Possible action: You can capture the authorization, but consider reviewing the order for possible fraud.";
                 break;
-            case REVIEW_CARD_VERIFY_NUMBER://User
+            case self::REVIEW_CARD_VERIFY_NUMBER://User
                 return "230 : The authorization request was approved by the issuing bank but
 declined by CyberSource because it
 did not pass the card verification number check.";
                 break;
-            case REVIEW_SMART_AUTHORIZE://User
+            case self::REVIEW_SMART_AUTHORIZE://User
                 return "520 : The authorization request was approved by the issuing bank but declined by CyberSource based on
 your Smart Authorization settings.
 Possible action: Do not capture the authorization without further review. Review the ccAuthReply_
 avsCode, ccAuthReply_cvCode, and ccAuthReply_authFactorCode fields to determine why
 CyberSource rejected the request.";
                 break;
-            case REJECT_FIELD_MISSING://User
+            case self::REJECT_FIELD_MISSING://User
                 return "102 : One or more fields in the request are missing or invalid.
 Possible action: See the reply fields InvalidField0...N and MissingField0...N for the invalid or
 missing fields. Resend the request with the correct information. Important In the other API services, this reason code is split between 101 (missing fields) and 102
 (invalid fields).";
                 break;
-            case REJECT_CARD_EXPIRED://User
+            case self::REJECT_CARD_EXPIRED://User
                 return "202 : The card is expired.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_CARD_DECLINED://User
+            case self::REJECT_CARD_DECLINED://User
                 return "203 : The card was declined. No other information was provided by the issuing bank.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_INSUFFICIENT_FUNDS://User
+            case self::REJECT_INSUFFICIENT_FUNDS://User
                 return "204 : The account has insufficient funds.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_CARD_STOLEN://User
+            case self::REJECT_CARD_STOLEN://User
                 return "205 : The card was stolen or lost.
 Possible action: Review the customer’s information to determine if you want to request a different";
                 break;
-            case REJECT_BANK_UNAVAILABLE://User
+            case self::REJECT_BANK_UNAVAILABLE://User
                 return "207 : The issuing bank was unavailable.
 Possible action: Wait a few minutes and resend the request.";
                 break;
-            case REJECT_CARD_INACTIVE://User
+            case self::REJECT_CARD_INACTIVE://User
                 return "208 : The card is inactive or not authorized for card-not-present transactions.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_CREDIT_LIMIT_REACHED://User
+            case self::REJECT_CREDIT_LIMIT_REACHED://User
                 return "210 : The credit limit for the card has been reached.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_VALIFICATION_NO_INVALID://User
+            case self::REJECT_VALIFICATION_NO_INVALID://User
                 return "211 : The card verification number is invalid.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_NEGATIVE_FILE://User
+            case self::REJECT_NEGATIVE_FILE://User
                 return "221 : The customer matched an entry on the processor’s negative file.
 Possible action: Review the order and contact the payment processor.";
                 break;
-            case REJECT_ACC_FROZEN://User
+            case self::REJECT_ACC_FROZEN://User
                 return "222 : The customer’s bank account is frozen.
 Possible action: Review the order or request a different form of payment.";
                 break;
-            case REJECT_CARD_VERIFY_NUMBER://User
+            case self::REJECT_CARD_VERIFY_NUMBER://User
                 return "230 : The authorization request was approved by the issuing bank but
 declined by CyberSource because it did not pass the card verification number check.";
                 break;
-            case REJECT_ACC_NO_INVALID://User
+            case self::REJECT_ACC_NO_INVALID://User
                 return "231 : The account number is invalid.
 Possible action: Request a different card or other form of payment.";
                 break;
-            case REJECT_CARD_TYPE_NOT_ACCEPTED://User
+            case self::REJECT_CARD_TYPE_NOT_ACCEPTED://User
                 return "232 : The card type is not accepted by the payment processor.
 Possible action: Request a different card or other form of payment, and/or check with CyberSource
 Customer Support to make sure that your account is configured correctly.";
                 break;
-            case REJECT_ISSUE_WITH_REQUEST://User
+            case self::REJECT_ISSUE_WITH_REQUEST://User
                 return "233 : The processor declined the request based on an issue with the request itself.
 Possible action: Request a different form of payment.";
                 break;
-            case REJECT_ABOUT_CONFIGURATION://User
+            case self::REJECT_ABOUT_CONFIGURATION://User
                 return "234 : There is a problem with your CyberSource merchant configuration.
 Possible action: Do not resend the request. Contact Customer Support to correct the configuration problem.";
                 break;
-            case REJECT_PROCESSOR_FAILURE_OCCURRED://User
+            case self::REJECT_PROCESSOR_FAILURE_OCCURRED://User
                 return "236 : A processor failure occurred. Possible action: Wait a few minutes and resend the request.";
                 break;
-            case REJECT_CARD_TYPE_INVALID://User
+            case self::REJECT_CARD_TYPE_INVALID://User
                 return "240 : The card type sent is invalid or does not correlate with the credit card number.
 Possible action: Ask your customer to verify that the card is really the type indicated in your Web store, and resend the request..";
                 break;
-            case REJECT_CUSTOMER_NOT_AUTHENTICATED://User
+            case self::REJECT_CUSTOMER_NOT_AUTHENTICATED://User
                 return "476 : The customer cannot be authenticated. Possible action: Review the customer's order..";
                 break;
-            case REJECT_PAYER_AUTHENTICATION://User
+            case self::REJECT_PAYER_AUTHENTICATION://User
                 return "475 : The customer is enrolled in payer authentication.
 Possible action: Authenticate the cardholder before continuing with the transaction.";
                 break;
-            case ERROR_GENERAL_SYS_ERR://User
+            case self::ERROR_GENERAL_SYS_ERR://User
                 return "150 : Error: General system failure. Possible action: Wait a few minutes and resend the request.";
                 break;
-            case ERROR_SRV_TIMEOUT_OCCUR://User
+            case self::ERROR_SRV_TIMEOUT_OCCUR://User
                 return "151 : Error: The request was received, but a server time-out occurred.
 This error does not include time-outs between the client and the server.
 Possible action: To avoid duplicating the order, do not resend the request until you have reviewed the
 order status in the Business Center.";
                 break;
-            case ERROR_SYS_NOT_FINISH_IN_TIME://User
+            case self::ERROR_SYS_NOT_FINISH_IN_TIME://User
                 return "152 : Error: The request was received, but a service did not finish running in time.
 Possible action: To avoid duplicating the order, do not resend the request until you have reviewed the
 order status in the Business Center.";
                 break;
-            case ERROR_TIMEOUT_PAYMENT_PROCESSOR://User
+            case self::ERROR_TIMEOUT_PAYMENT_PROCESSOR://User
                 return "250 : Error: The request was received, but a time-out occurred with the payment processor.
 Possible action: To avoid duplicating the transaction, do not resend the request until you have
 reviewed the transaction status in the Business Center.";
@@ -448,9 +449,11 @@ reviewed the transaction status in the Business Center.";
 //		{
         if ($supplierUser->supplierId == 1 || $supplierUser->supplierId == 3) {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 1 OR supplierId = 3) AND paymentMethod = ' . $model->paymentMethod;
-        } else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5) {
+        }
+        else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5) {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 4 OR supplierId = 5) AND paymentMethod = ' . $model->paymentMethod;
-        } else {
+        }
+        else {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->supplierId . ' AND paymentMethod = ' . $model->paymentMethod;
         }
 //		}
@@ -660,7 +663,8 @@ reviewed the transaction status in the Business Center.";
 
     public function showOrderStatus($status)
     {
-        switch ($status) {
+        switch ($status)
+        {
             case 99:
                 return "ชำระเงินไม่สำเร็จ(กรุณาชำระเงินอีกครั้ง)";
                 break;
@@ -698,7 +702,8 @@ reviewed the transaction status in the Business Center.";
         if (isset($this->startDate) && isset($this->endDate)) {
             $criteria->addBetweenCondition('paymentDateTime', $this->startDate, $this->endDate, 'AND');
             $this->writeToFile('/tmp/startEndDate', print_r($this->startDate, true));
-        } else {
+        }
+        else {
             $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
             $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
             $this->writeToFile('/tmp/YearMonth', print_r($this->startDate, true));
@@ -744,7 +749,8 @@ reviewed the transaction status in the Business Center.";
         if (isset($this->startDate) && isset($this->endDate)) {
             $criteria->addBetweenCondition('paymentDateTime', $this->startDate, $this->endDate, 'AND');
             $this->writeToFile('/tmp/startEndDate', print_r($this->startDate, true));
-        } else {
+        }
+        else {
             $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
             $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
             $this->writeToFile('/tmp/YearMonth', print_r($this->startDate, true));
@@ -786,7 +792,8 @@ reviewed the transaction status in the Business Center.";
                 $sumTotal = 0;
             }
             $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
-        } else {
+        }
+        else {
             $sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
             $sumAll = $sumTotal + $sumLastTwelveMonth;
             if ($supplierId == 4) {
@@ -834,7 +841,8 @@ reviewed the transaction status in the Business Center.";
         $orderGroup->summary = $grandTotal;
         if ($orderGroup->save()) {
             return TRUE;
-        } else {
+        }
+        else {
             return FALSE;
         }
     }
@@ -873,7 +881,8 @@ reviewed the transaction status in the Business Center.";
         $criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
         if (isset($orderGroup)) {
             $criteria->condition.= " AND usp.orderGroupId = " . $orderGroup->orderGroupId;
-        } else {
+        }
+        else {
             if (isset($orderGroupId)) {
                 $criteria->condition.= " AND orderGroupId = " . $orderGroupId;
             }
@@ -895,7 +904,8 @@ reviewed the transaction status in the Business Center.";
         $result["totalExtraDiscount"] = $extraDiscount;
         if (isset($item) > 0) {
             return $result;
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -906,10 +916,12 @@ reviewed the transaction status in the Business Center.";
         if (isset($orderGroup)) {
             if (isset($orderGroup->mainId)) {
                 $ogId = $orderGroup->mainId;
-            } else {
+            }
+            else {
                 if (isset($orderGroup->parentId)) {
                     $ogId = $orderGroup->parentId;
-                } else {
+                }
+                else {
                     $ogId = $orderGroup->orderGroupId;
                 }
             }
@@ -922,7 +934,8 @@ reviewed the transaction status in the Business Center.";
                     $orderGroup = OrderGroup::model()->findByPk($orderGroup->parentId);
                 }
             }
-        } else {
+        }
+        else {
             $orderGroup = NULL;
         }
 
@@ -939,9 +952,11 @@ reviewed the transaction status in the Business Center.";
                     $partnerType = NULL;
                     if (strtolower($codeArray[0]) == "org") {
                         $partnerType = 1;
-                    } else if (strtolower($codeArray[0]) == "wow") {
+                    }
+                    else if (strtolower($codeArray[0]) == "wow") {
                         $partnerType = 2;
-                    } else {
+                    }
+                    else {
                         $partnerType = 0;
                     }
                     $this->partnerCode = $this->user->partnerCode;
@@ -949,7 +964,8 @@ reviewed the transaction status in the Business Center.";
                 }
             }
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
