@@ -704,6 +704,7 @@ class StepController extends MasterCheckoutController
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
                         $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
+                        throw new Exception("Kamon2");
                         $flag = TRUE;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
@@ -750,7 +751,6 @@ class StepController extends MasterCheckoutController
     public function saveOrderGroupLog($request, $orderGroup)
     {
         $description = OrderGroup::model()->getReasonCode($request["reason_code"]);
-        throw new Exception($description . " " . $orderGroup->orderGroupId . " " . $request["reason_code"] . " " . $request["decision"] . " " . new CDbExpression('NOW()'));
         $orderGroupHistory = new OrderGroupHistory();
         $orderGroupHistory->orderGroupId = $orderGroup->orderGroupId;
         $orderGroupHistory->reasonCode = $request["reason_code"];
