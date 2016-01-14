@@ -773,7 +773,7 @@ class StepController extends MasterCheckoutController
             }
             catch (Exception $ex)
             {
-                throw new Exception(print_r($oldOrder, true));
+                throw new Exception($ex->getMessage());
                 $transaction->rollback();
             }
         }
