@@ -246,13 +246,13 @@ class OrderGroup extends OrderGroupMaster
     {
         throw new Exception($reasonCode);
         switch ($reasonCode) {
-            case REASON_SUCCESS://User
+            case self::REASON_SUCCESS://User
                 return "100 : Successful transaction.";
                 break;
-            case REASON_AUTHORIZE_SUCCESS://User
+            case self::REASON_AUTHORIZE_SUCCESS://User
                 return "110 : Authorization was partially approved.";
                 break;
-            case REVIEW_QUESTION_ABOUT_REQUEST://User
+            case self::REVIEW_QUESTION_ABOUT_REQUEST://User
                 return "201 : The issuing bank has questions about the request. You cannot receive an authorization code in the
 API reply, but you may receive one verbally by calling the processor.
 Possible action: Call your processor or the issuing bank to obtain a verbal authorization code. For
