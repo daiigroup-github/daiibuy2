@@ -1036,8 +1036,9 @@ class StepController extends MasterCheckoutController
         $flag = false;
         $newOrderGroupId = null;
         try {
-            throw new Exception($orderGroupId);
+
             $oldOrderGroup = OrderGroup::model()->findByPk($orderGroupId);
+            throw new Exception(print_r($oldOrderGroup->orderGroupToOrders[0], true));
             $cat2ToProducts = Category2ToProduct::model()->findAll("productId=" . $oldOrderGroup->orderGroupToOrders[0]->order->orderItems[0]->productId . ' ORDER BY productId DESC');
             $cat2ToProduct = isset($cat2ToProducts[1]) ? $cat2ToProducts[1] : $cat2ToProducts[0];
             $models = Category2ToProduct::model()->findAll("brandId= :brandId AND brandModelId = :brandModelId AND category1Id = :category1Id AND category2Id =:category2Id AND productId != :productId ORDER BY sortOrder", array(
