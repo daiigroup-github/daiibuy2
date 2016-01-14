@@ -90,13 +90,13 @@ class OrderGroup extends OrderGroupMaster
 // will receive user inputs.
         return CMap::mergeArray(parent::rules(), array(
 //code here
-                array(
-                    'maxCode',
-                    'safe'),
-                array(
-                    ' paymentYear, paymentMonth, startDate, endDate',
-                    'safe',
-                    'on' => 'search'),
+            array(
+                'maxCode',
+                'safe'),
+            array(
+                ' paymentYear, paymentMonth, startDate, endDate',
+                'safe',
+                'on' => 'search'),
         ));
     }
 
@@ -110,103 +110,103 @@ class OrderGroup extends OrderGroupMaster
         return CMap::mergeArray(parent::relations(), array(
 //code here
 
-                'orders' => array(
-                    self::MANY_MANY,
-                    'Order',
-                    'order_group_to_order(orderGroupId, orderId)'
+            'orders' => array(
+                self::MANY_MANY,
+                'Order',
+                'order_group_to_order(orderGroupId, orderId)'
+            ),
+            'child' => array(
+                self::BELONGS_TO,
+                'OrderGroup',
+                array(
+                    'orderGroupId' => 'parentId')),
+            'supNotPay' => array(
+                self::BELONGS_TO,
+                'OrderGroup',
+                array(
+                    'orderGroupId' => 'mainId',
                 ),
-                'child' => array(
-                    self::BELONGS_TO,
-                    'OrderGroup',
-                    array(
-                        'orderGroupId' => 'parentId')),
-                'supNotPay' => array(
-                    self::BELONGS_TO,
-                    'OrderGroup',
-                    array(
-                        'orderGroupId' => 'mainId',
-                    ),
-                    'on' => 'status=0'),
-                'supNotPays' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainId',
-                    ),
-                    'on' => 'status<3'),
-                'sup' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainId')
+                'on' => 'status=0'),
+            'supNotPays' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainId',
                 ),
-                'supPay' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainId'),
-                    'on' => 'status > 2'
-                ),
-                'fur' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainFurnitureId')),
-                'sendWorks' => array(
-                    self::HAS_MANY,
-                    'OrderGroupSendWork',
-                    array(
-                        'orderGroupId')),
-                'parent' => array(
-                    self::BELONGS_TO,
-                    'OrderGroup',
-                    array(
-                        'parentId' => 'orderGroupId')),
-                'sp' => array(
-                    self::HAS_MANY,
-                    'UserSpacialProject',
-                    array(
-                        'orderGroupId')),
-                'orderGroupToOrders' => array(
-                    self::HAS_MANY,
-                    'OrderGroupToOrder',
-                    'orderGroupId'),
-                'orderGroupFiles' => array(
-                    self::HAS_MANY,
-                    'OrderGroupFile',
-                    'orderGroupId'),
-                'user' => array(
-                    self::BELONGS_TO,
-                    'User',
-                    'userId'),
+                'on' => 'status<3'),
+            'sup' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainId')
+            ),
+            'supPay' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainId'),
+                'on' => 'status > 2'
+            ),
+            'fur' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainFurnitureId')),
+            'sendWorks' => array(
+                self::HAS_MANY,
+                'OrderGroupSendWork',
+                array(
+                    'orderGroupId')),
+            'parent' => array(
+                self::BELONGS_TO,
+                'OrderGroup',
+                array(
+                    'parentId' => 'orderGroupId')),
+            'sp' => array(
+                self::HAS_MANY,
+                'UserSpacialProject',
+                array(
+                    'orderGroupId')),
+            'orderGroupToOrders' => array(
+                self::HAS_MANY,
+                'OrderGroupToOrder',
+                'orderGroupId'),
+            'orderGroupFiles' => array(
+                self::HAS_MANY,
+                'OrderGroupFile',
+                'orderGroupId'),
+            'user' => array(
+                self::BELONGS_TO,
+                'User',
+                'userId'),
 //				'shippingDistrict'=>array(
 //					self::BELONGS_TO,
 //					'District',
 //					'shippingDistrictId'),
-                'paymentAmphur' => array(
-                    self::BELONGS_TO,
-                    'Amphur',
-                    'paymentAmphurId'),
-                'paymentDistrict' => array(
-                    self::BELONGS_TO,
-                    'District',
-                    'paymentDistrictId'),
-                'paymentProvince' => array(
-                    self::BELONGS_TO,
-                    'Province',
-                    'paymentProvinceId'),
-                'shippingAmphur' => array(
-                    self::BELONGS_TO,
-                    'Amphur',
-                    'shippingAmphurId'),
-                'shippingProvince' => array(
-                    self::BELONGS_TO,
-                    'Province',
-                    'shippingProvinceId'),
-                'supplier' => array(
-                    self::BELONGS_TO,
-                    'Supplier',
-                    'supplierId'),
+            'paymentAmphur' => array(
+                self::BELONGS_TO,
+                'Amphur',
+                'paymentAmphurId'),
+            'paymentDistrict' => array(
+                self::BELONGS_TO,
+                'District',
+                'paymentDistrictId'),
+            'paymentProvince' => array(
+                self::BELONGS_TO,
+                'Province',
+                'paymentProvinceId'),
+            'shippingAmphur' => array(
+                self::BELONGS_TO,
+                'Amphur',
+                'shippingAmphurId'),
+            'shippingProvince' => array(
+                self::BELONGS_TO,
+                'Province',
+                'shippingProvinceId'),
+            'supplier' => array(
+                self::BELONGS_TO,
+                'Supplier',
+                'supplierId'),
 //				'orderGroupFiles'=>array(
 //					self::HAS_MANY,
 //					'OrderGroupFile',
@@ -242,10 +242,9 @@ class OrderGroup extends OrderGroupMaster
      * @param string $className active record class name.
      * @return OrderGroup the static model class
      */
-    public function getReasonCode($REQUEST)
+    public function getReasonCode($reasonCode)
     {
-        switch ($REQUEST->reasonCode)
-        {
+        switch ($reasonCode) {
             case REASON_SUCCESS://User
                 return "100 : Successful transaction.";
                 break;
@@ -408,8 +407,7 @@ reviewed the transaction status in the Business Center.";
 
         $criteria = new CDbCriteria;
 
-        if (isset($this->searchText) && !empty($this->searchText))
-        {
+        if (isset($this->searchText) && !empty($this->searchText)) {
             $this->orderNo = $this->searchText;
             $this->type = $this->searchText;
         }
@@ -448,16 +446,11 @@ reviewed the transaction status in the Business Center.";
         $criteria->select = 'max(RIGHT(invoiceNo,6)) as maxCode';
 //		if(isset($supplierUser->redirectURL))
 //		{
-        if ($supplierUser->supplierId == 1 || $supplierUser->supplierId == 3)
-        {
+        if ($supplierUser->supplierId == 1 || $supplierUser->supplierId == 3) {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 1 OR supplierId = 3) AND paymentMethod = ' . $model->paymentMethod;
-        }
-        else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5)
-        {
+        } else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5) {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 4 OR supplierId = 5) AND paymentMethod = ' . $model->paymentMethod;
-        }
-        else
-        {
+        } else {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->supplierId . ' AND paymentMethod = ' . $model->paymentMethod;
         }
 //		}
@@ -667,8 +660,7 @@ reviewed the transaction status in the Business Center.";
 
     public function showOrderStatus($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 99:
                 return "ชำระเงินไม่สำเร็จ(กรุณาชำระเงินอีกครั้ง)";
                 break;
@@ -703,13 +695,10 @@ reviewed the transaction status in the Business Center.";
 //				throw new Exception(print_r($this->paymentYear.', '.$this->paymentMonth.', '.$this->supplierId,true));
         $criteria = new CDbCriteria;
 
-        if (isset($this->startDate) && isset($this->endDate))
-        {
+        if (isset($this->startDate) && isset($this->endDate)) {
             $criteria->addBetweenCondition('paymentDateTime', $this->startDate, $this->endDate, 'AND');
             $this->writeToFile('/tmp/startEndDate', print_r($this->startDate, true));
-        }
-        else
-        {
+        } else {
             $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
             $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
             $this->writeToFile('/tmp/YearMonth', print_r($this->startDate, true));
@@ -752,13 +741,10 @@ reviewed the transaction status in the Business Center.";
     {
         $criteria = new CDbCriteria;
         $criteria->select = "sum(summary) as totalSummary";
-        if (isset($this->startDate) && isset($this->endDate))
-        {
+        if (isset($this->startDate) && isset($this->endDate)) {
             $criteria->addBetweenCondition('paymentDateTime', $this->startDate, $this->endDate, 'AND');
             $this->writeToFile('/tmp/startEndDate', print_r($this->startDate, true));
-        }
-        else
-        {
+        } else {
             $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
             $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
             $this->writeToFile('/tmp/YearMonth', print_r($this->startDate, true));
@@ -778,8 +764,7 @@ reviewed the transaction status in the Business Center.";
         $criteria->compare("status", ">2");
         $criteria->compare("paymentDateTime", "<>''");
         $criteria->group = "YEAR(paymentDateTime)";
-        foreach ($this->findAll($criteria) as $item)
-        {
+        foreach ($this->findAll($criteria) as $item) {
             $result[$item->paymentYear] = $item->paymentYear;
         }
         return $result;
@@ -789,33 +774,25 @@ reviewed the transaction status in the Business Center.";
     {
         $orderGroup = OrderGroup::model()->findByPk($orderGroupId);
         $sumTotal = 0;
-        foreach ($orderGroup->orders as $order)
-        {
-            foreach ($order->orderItems as $item)
-            {
+        foreach ($orderGroup->orders as $order) {
+            foreach ($order->orderItems as $item) {
                 $price = ($item->product->calProductPromotionPrice() != 0) ? $item->product->calProductPromotionPrice() : $item->product->calProductPrice();
 
                 $sumTotal += ($price * $item->quantity);
             }
         }
-        if (!isset(Yii::app()->user->id))
-        {
-            if ($supplierId == 4)
-            {
+        if (!isset(Yii::app()->user->id)) {
+            if ($supplierId == 4) {
                 $sumTotal = 0;
             }
             $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
-        }
-        else
-        {
+        } else {
             $sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
             $sumAll = $sumTotal + $sumLastTwelveMonth;
-            if ($supplierId == 4)
-            {
+            if ($supplierId == 4) {
                 $noOfBuy = 0;
                 $og = OrderGroup::model()->findAll("supplierId =" . $supplierId . " AND userId=" . Yii::app()->user->id . " AND parentId is null");
-                foreach ($og->orders[0]->orderItems as $item)
-                {
+                foreach ($og->orders[0]->orderItems as $item) {
                     $noOfBuy += $item->quantity;
                 }
                 $sumAll = $noOfBuy;
@@ -830,41 +807,34 @@ reviewed the transaction status in the Business Center.";
         $orderGroup->vatValue = $orderGroup->calVatValue();
         $orderGroup->userId = Yii::app()->user->id;
 
-        if (isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2)
-        {
+        if (isset(Yii::app()->user->userType) && Yii::app()->user->userType == 2) {
 //edit 3 to other when change policy discount of distributor
             $distributorDiscountPercent += 3;
         }
         $totalPostSupplierRangeDiscount = $grandTotal;
-        if ($distributorDiscountPercent > 0)
-        {
+        if ($distributorDiscountPercent > 0) {
             $distributorDiscount = $grandTotal * $distributorDiscountPercent / 100;
             $grandTotal = $grandTotal - $distributorDiscount;
         }
 
         $orderGroup->discountPercent = $discountPercent;
         $orderGroup->discountValue = number_format($discount, 2);
-        if ($distributorDiscountPercent > 0 && isset($distributorDiscount))
-        {
+        if ($distributorDiscountPercent > 0 && isset($distributorDiscount)) {
             $orderGroup->distributorDiscountPercent = $distributorDiscountPercent;
             $orderGroup->distributorDiscount = number_format($distributorDiscount, 2);
             $orderGroup->totalPostDistributorDiscount = number_format($grandTotal, 2);
         }
         $extraDiscountArray = $this->sumExtraDiscount($supplierId, $discountPercent);
-        if (isset($extraDiscountArray))
-        {
+        if (isset($extraDiscountArray)) {
             $grandTotal -= $extraDiscountArray["totalExtraDiscount"];
             $orderGroup->extraDiscount = number_format($extraDiscountArray["totalExtraDiscount"], 2);
 //			$res["extraDiscountArray"] = $extraDiscountArray;
 //			$res['totalPostExtraDiscount'] = number_format($grandTotal, 2);
         }
         $orderGroup->summary = $grandTotal;
-        if ($orderGroup->save())
-        {
+        if ($orderGroup->save()) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             return FALSE;
         }
     }
@@ -872,8 +842,7 @@ reviewed the transaction status in the Business Center.";
     public function findAllPayGinzaMyfile()
     {
         $criteria = new CDbCriteria();
-        if (Yii::app()->user->userType != 4)
-        {
+        if (Yii::app()->user->userType != 4) {
             $criteria->select = " (t.totalIncVAT + child1.totalIncVAT + child2.totalIncVAT + child3.totalIncVAT) as total ,t.orderGroupId , t.userId , t.orderNo , t.invoiceNo , t.status , t.createDateTime , t.updateDateTime ";
             $criteria->condition = " t.parentId is null AND t.status = 3 AND t.status >=0  AND t.mainFurnitureId is null AND t.supplierId =" . Yii::app()->user->supplierId;
             $criteria->join = "LEFT JOIN order_group child1 ON child1.parentId = t.orderGroupId ";
@@ -902,14 +871,10 @@ reviewed the transaction status in the Business Center.";
         $criteria->join = "INNER JOIN user_spacial_project usp ON usp.orderGroupId = t.orderGroupId ";
         $criteria->condition = "usp.status = 2 AND t.supplierId = $supplierId ";
         $criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
-        if (isset($orderGroup))
-        {
+        if (isset($orderGroup)) {
             $criteria->condition.= " AND usp.orderGroupId = " . $orderGroup->orderGroupId;
-        }
-        else
-        {
-            if (isset($orderGroupId))
-            {
+        } else {
+            if (isset($orderGroupId)) {
                 $criteria->condition.= " AND orderGroupId = " . $orderGroupId;
             }
         }
@@ -928,12 +893,9 @@ reviewed the transaction status in the Business Center.";
         endif;
 
         $result["totalExtraDiscount"] = $extraDiscount;
-        if (isset($item) > 0)
-        {
+        if (isset($item) > 0) {
             return $result;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -941,37 +903,26 @@ reviewed the transaction status in the Business Center.";
     public function findRootOrderGroup($orderGroupId)
     {
         $orderGroup = OrderGroup::model()->findByPk($orderGroupId);
-        if (isset($orderGroup))
-        {
-            if (isset($orderGroup->mainId))
-            {
+        if (isset($orderGroup)) {
+            if (isset($orderGroup->mainId)) {
                 $ogId = $orderGroup->mainId;
-            }
-            else
-            {
-                if (isset($orderGroup->parentId))
-                {
+            } else {
+                if (isset($orderGroup->parentId)) {
                     $ogId = $orderGroup->parentId;
-                }
-                else
-                {
+                } else {
                     $ogId = $orderGroup->orderGroupId;
                 }
             }
 
             $orderGroup = OrderGroup::model()->findByPk($ogId);
 
-            if (isset($orderGroup->parent))
-            {
+            if (isset($orderGroup->parent)) {
                 $orderGroup = OrderGroup::model()->findByPk($orderGroup->parentId);
-                if (isset($orderGroup->parent))
-                {
+                if (isset($orderGroup->parent)) {
                     $orderGroup = OrderGroup::model()->findByPk($orderGroup->parentId);
                 }
             }
-        }
-        else
-        {
+        } else {
             $orderGroup = NULL;
         }
 
@@ -980,25 +931,17 @@ reviewed the transaction status in the Business Center.";
 
     public function beforeSave()
     {
-        if (parent::beforeSave())
-        {
-            if ($this->isNewRecord)
-            {
-                if (isset($this->user->partnerCode) && !empty($this->user->partnerCode))
-                {
+        if (parent::beforeSave()) {
+            if ($this->isNewRecord) {
+                if (isset($this->user->partnerCode) && !empty($this->user->partnerCode)) {
                     $code = $this->user->partnerCode;
                     $codeArray = explode("-", $code);
                     $partnerType = NULL;
-                    if (strtolower($codeArray[0]) == "org")
-                    {
+                    if (strtolower($codeArray[0]) == "org") {
                         $partnerType = 1;
-                    }
-                    else if (strtolower($codeArray[0]) == "wow")
-                    {
+                    } else if (strtolower($codeArray[0]) == "wow") {
                         $partnerType = 2;
-                    }
-                    else
-                    {
+                    } else {
                         $partnerType = 0;
                     }
                     $this->partnerCode = $this->user->partnerCode;
@@ -1006,9 +949,7 @@ reviewed the transaction status in the Business Center.";
                 }
             }
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }

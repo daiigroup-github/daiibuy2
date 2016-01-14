@@ -609,7 +609,6 @@ class StepController extends MasterCheckoutController
                     if ($oldOrder->save()) {
 
                         $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
-                        throw new Exception(666);
                         $flag = TRUE;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
