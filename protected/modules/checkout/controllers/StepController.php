@@ -527,9 +527,9 @@ class StepController extends MasterCheckoutController
             $request = $_REQUEST;
 //            throw new Exception(print_r($_REQUEST, true));
             if ($_REQUEST["decision"] == "ACCEPT") {
-                throw new Exception("ACCEPT");
                 $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
                     ":orderNo" => $_REQUEST["req_reference_number"]));
+                throw new Exception($_REQUEST["req_reference_number"] . "<br>" . print_r($oldOrder, true));
                 if (isset($oldOrder)) {
                     if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
                         foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
