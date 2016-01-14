@@ -591,16 +591,9 @@ class StepController extends MasterCheckoutController
                                             throw new Exception(444);
                                             throw new Exception;
                                         }
-                                        throw new Exception("i = " . $i . " Quantity = " . $item->quantity);
-                                        if ($i == $item->quantity) {
-                                            $oldOrder->status = -1;
-                                            $oldOrder->paymentDateTime = new CDbExpression('NOW()');
-                                            break;
-                                        }
                                     } catch (Exception $ex) {
                                         $flag = FALSE;
                                         $transaction->rollback();
-
                                         throw new Exception($ex->getMessage());
                                     }
 
@@ -611,6 +604,8 @@ class StepController extends MasterCheckoutController
                                     }
                                 }
                             }
+                            $oldOrder->status = -1;
+                            $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                         }
                     } else {
                         $oldOrder->status = 2;
