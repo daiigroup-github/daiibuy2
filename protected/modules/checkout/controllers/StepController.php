@@ -704,7 +704,6 @@ class StepController extends MasterCheckoutController
 //						$daiibuy->usedPoint = 0;
 //						$daiibuy->saveCookie();
                         $_REQUEST["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
-                        throw new Exception("Kamon2");
                         $flag = TRUE;
                         $emailObj = new Email();
                         $sentMail = new EmailSend();
@@ -758,7 +757,7 @@ class StepController extends MasterCheckoutController
         $orderGroupHistory->decision = $request["decision"];
         $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
         $orderGroupHistory->save();
-
+        throw new Exception("Kamon2");
         return $description;
     }
 
