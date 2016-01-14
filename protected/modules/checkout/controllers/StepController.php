@@ -594,7 +594,7 @@ class StepController extends MasterCheckoutController
                                     } catch (Exception $ex) {
                                         $flag = FALSE;
                                         $transaction->rollback();
-                                        throw new Exception($ex->getMessage());
+                                        throw new Exception(print_r($ex->getTrace(), true));
                                     }
 
                                     if ($flag) {
