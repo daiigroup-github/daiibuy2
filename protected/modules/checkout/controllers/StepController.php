@@ -525,7 +525,7 @@ class StepController extends MasterCheckoutController
 //			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
 //			{
             $request = $_REQUEST;
-            throw new Exception(print_r($_REQUEST, true));
+//            throw new Exception(print_r($_REQUEST, true));
             if ($_REQUEST["decision"] == "ACCEPT") {
                 $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
                     ":orderNo" => $_REQUEST["req_reference_number"]));
@@ -747,10 +747,10 @@ class StepController extends MasterCheckoutController
 
     public function saveOrderGroupLog($request, $orderGroup)
     {
-        $description = OrderGroup::model()->getReasonCode($request["reasonCode"]);
+        $description = OrderGroup::model()->getReasonCode($request["reason_code"]);
         $orderGroupHistory = new OrderGroupHistory();
         $orderGroupHistory->orderGroupId = $orderGroup->orderGroupId;
-        $orderGroupHistory->reasonCode = $request["reasonCode"];
+        $orderGroupHistory->reasonCode = $request["reason_code"];
         $orderGroupHistory->description = $description;
         $orderGroupHistory->decision = $request["decision"];
         $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
