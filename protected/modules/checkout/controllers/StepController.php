@@ -571,25 +571,22 @@ class StepController extends MasterCheckoutController
                                                     $newOrderItem->total = $newOrderItem->price;
                                                     if ($newOrderItem->save()) {
                                                         $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
+                                                        throw new Exception(000);
                                                     } else {
                                                         $flag = FALSE;
                                                         throw new Exception(111);
-                                                        throw new Exception;
                                                     }
                                                 } else {
                                                     $flag = FALSE;
                                                     throw new Exception(222);
-                                                    throw new Exception;
                                                 }
                                             } else {
                                                 $flag = FALSE;
                                                 throw new Exception(333);
-                                                throw new Exception;
                                             }
                                         } else {
                                             $flag = FALSE;
                                             throw new Exception(444);
-                                            throw new Exception;
                                         }
                                     } catch (Exception $ex) {
                                         $flag = FALSE;
