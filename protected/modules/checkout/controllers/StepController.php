@@ -600,7 +600,7 @@ class StepController extends MasterCheckoutController
                                     } catch (Exception $ex) {
                                         $flag = FALSE;
                                         $transaction->rollback();
-                                        throw new Exception($i);
+                                        throw new Exception("i = " . $i . " Quantity = " . $item->quantity);
                                         throw new Exception($ex->getMessage());
                                     }
 
