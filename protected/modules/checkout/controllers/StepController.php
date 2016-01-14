@@ -578,24 +578,28 @@ class StepController extends MasterCheckoutController
                                                     $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
                                                 } else {
                                                     $flag = FALSE;
+                                                    throw new Exception(111);
                                                     throw new Exception;
                                                 }
                                             } else {
                                                 $flag = FALSE;
+                                                throw new Exception(222);
                                                 throw new Exception;
                                             }
                                         } else {
                                             $flag = FALSE;
+                                            throw new Exception(333);
                                             throw new Exception;
                                         }
                                     } else {
                                         $flag = FALSE;
+                                        throw new Exception(444);
                                         throw new Exception;
                                     }
                                 } catch (Exception $ex) {
                                     $flag = FALSE;
                                     $transaction->rollback();
-                                    throw new Exception(111);
+                                    throw new Exception(555);
                                     throw new Exception($ex->getMessage());
                                 }
 
