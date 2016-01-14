@@ -525,7 +525,7 @@ class StepController extends MasterCheckoutController
 //			if(in_array($_REQUEST["decision"], $decisionArray) && in_array($_REQUEST["reason_code"], $resonCode))
 //			{
             $request = $_REQUEST;
-            throw new Exception(print_r($_REQUEST, true));
+//            throw new Exception(print_r($_REQUEST, true));
             if ($_REQUEST["decision"] == "ACCEPT") {
                 $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
                     ":orderNo" => $_REQUEST["req_reference_number"]));
@@ -570,12 +570,13 @@ class StepController extends MasterCheckoutController
                                             if ($orderGroupToOrder->save()) {
                                                 $newOrderItem = new OrderItems();
                                                 $newOrderItem->attributes = $item->attributes;
+                                                $newOrderItem->productId = $item->productId;
                                                 $newOrderItem->orderId = $newOrderId;
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
 
-                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
+                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
                                                     $transaction->commit();
                                                 } else {
                                                     throw new Exception;
@@ -590,8 +591,8 @@ class StepController extends MasterCheckoutController
                                         throw new Exception;
                                     }
                                 } catch (Exception $ex) {
-                                    throw new Exception($ex->getMessage());
                                     $transaction->rollback();
+                                    throw new Exception($ex->getMessage());
                                 }
 
                                 if ($i == $item->quantity) {
@@ -665,7 +666,7 @@ class StepController extends MasterCheckoutController
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
-                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
+                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
                                                     $transaction->commit();
                                                 } else {
                                                     throw new Exception;
@@ -812,7 +813,7 @@ class StepController extends MasterCheckoutController
                                             $newOrderItem->quantity = 1;
                                             $newOrderItem->total = $newOrderItem->price;
                                             if ($newOrderItem->save()) {
-                                                $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
+                                                $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
                                             } else {
                                                 $flag = FALSE;
                                             }
