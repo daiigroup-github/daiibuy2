@@ -623,14 +623,18 @@ class StepController extends MasterCheckoutController
                                 }
                                 $oldOrder->status = -1;
                                 $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                                $flag = true;
                             }
                         }
                         else {
                             $oldOrder->status = 2;
                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                         }
+                        if ($falg) {
+                            $oldOrder->status = 2;
+                        }
                         if ($oldOrder->save()) {
-                            Throw new Exception(print_r($oldOrder, true));
+//                            Throw new Exception(print_r($oldOrder, true));
                             $request["reasonDescription"] = $this->saveOrderGroupLog($request, $oldOrder);
                             $flag = TRUE;
                             $emailObj = new Email();
@@ -1423,7 +1427,7 @@ class StepController extends MasterCheckoutController
     public function actionUpdateCart()
     {
         if (isset($_POST['quantity'])) {
-            $res = [];
+            $res = array();
 
             foreach ($_POST['quantity'] as $orderItemsId => $quantity) {
                 $orderItem = OrderItems::model()->findByPk($orderItemsId);
