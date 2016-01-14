@@ -532,8 +532,7 @@ class StepController extends MasterCheckoutController
                 if (isset($oldOrder)) {
                     if ($oldOrder->supplierId == 4 || $oldOrder->supplierId == 5) {
                         foreach ($oldOrder->orderGroupToOrders[0]->order->orderItems as $item) {
-                            for ($i = 1;
-                            ; $i++) {
+                            for ($i = 1;; $i++) {
                                 $transaction = Yii::app()->db->beginTransaction();
                                 try {
                                     $newOrderGroup = new OrderGroup();
@@ -575,6 +574,7 @@ class StepController extends MasterCheckoutController
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
+
                                                     $this->saveGinzaOrder($newOrderGroup->supplierId, $oldOrder->orderGroupId);
                                                     $transaction->commit();
                                                 } else {
@@ -590,7 +590,7 @@ class StepController extends MasterCheckoutController
                                         throw new Exception;
                                     }
                                 } catch (Exception $ex) {
-                                    throw new Exception($ex->getMessage());
+                                    throw new Exception($ex->getTraceAsString());
                                     $transaction->rollback();
                                 }
 
