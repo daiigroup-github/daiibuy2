@@ -575,24 +575,32 @@ class StepController extends MasterCheckoutController
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
-
-                                                    $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
-                                                    $transaction->commit();
+                                                    $flag = $this->saveGinzaOrder($newOrderGroup->supplierId, $newOrderGroupId);
                                                 } else {
+                                                    $flag = FALSE;
                                                     throw new Exception;
                                                 }
                                             } else {
+                                                $flag = FALSE;
                                                 throw new Exception;
                                             }
                                         } else {
+                                            $flag = FALSE;
                                             throw new Exception;
                                         }
                                     } else {
+                                        $flag = FALSE;
                                         throw new Exception;
                                     }
                                 } catch (Exception $ex) {
-                                    $transaction->rollback();
+                                    $flag = FALSE;
                                     throw new Exception($ex->getMessage());
+                                }
+
+                                if ($flag) {
+                                    $transaction->commit();
+                                } else {
+                                    $transaction->rollback();
                                 }
 
                                 if ($i == $item->quantity) {
