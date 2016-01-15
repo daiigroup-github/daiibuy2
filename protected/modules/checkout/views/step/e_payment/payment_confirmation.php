@@ -58,7 +58,7 @@ foreach ($_REQUEST as $name => $value) {
 
 </div>
 
-<?php echo $ePayment->ePaymentUrl; ?>
+<?php // echo $ePayment->ePaymentUrl; ?>
 <form id="confirmationForm" action="<?php echo $ePayment->ePaymentUrl; ?>" method="post">
     <?php
     foreach ($params as $name => $value) {

@@ -590,7 +590,7 @@ class StepController extends MasterCheckoutController
                                                 if ($orderGroupToOrder->save()) {
                                                     $newOrderItem = new OrderItems();
                                                     $newOrderItem->attributes = $item->attributes;
-                                                    if (!isset($newOrderItem->title)) {
+                                                    if ($newOrderItem->title == null) {
                                                         $newOrderItem->title = $tempOrder->title;
                                                     }
                                                     $newOrderItem->productId = $item->productId;
@@ -686,7 +686,7 @@ class StepController extends MasterCheckoutController
                                             if ($orderGroupToOrder->save()) {
                                                 $newOrderItem = new OrderItems();
                                                 $newOrderItem->attributes = $item->attributes;
-                                                if (!isset($newOrderItem->title)) {
+                                                if ($newOrderItem->title == null) {
                                                     $newOrderItem->title = $tempOrder->title;
                                                 }
                                                 $newOrderItem->quantity = 1;
