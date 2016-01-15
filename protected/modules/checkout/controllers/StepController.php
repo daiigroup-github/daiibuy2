@@ -800,7 +800,7 @@ class StepController extends MasterCheckoutController
         $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
         $orderGroupHistory->updateDateTime = new CDbExpression('NOW()');
         $orderGroupHistory->save();
-        throw new Exception(print_r($orderGroupHistory, true));
+//        throw new Exception(print_r($orderGroupHistory, true));
         return $description;
     }
 
