@@ -774,8 +774,8 @@ class StepController extends MasterCheckoutController
             }
             catch (Exception $ex)
             {
-                throw new Exception(print_r("NewOrder title : " . $newOrder->title . " OldOrder title : " . $tempOrder->title . ", orderItem title : " . $newOrderItem->title, true));
-//                throw new Exception($ex->getMessage());
+//                throw new Exception(print_r("NewOrder title : " . $newOrder->title . " OldOrder title : " . $tempOrder->title . ", orderItem title : " . $newOrderItem->title, true));
+                throw new Exception($ex->getMessage());
                 $transaction->rollback();
             }
         }
