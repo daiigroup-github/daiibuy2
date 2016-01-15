@@ -594,7 +594,7 @@ class StepController extends MasterCheckoutController
                                                     $newOrderItem = new OrderItems();
                                                     $newOrderItem->attributes = $item->attributes;
                                                     if (!isset($newOrderItem->title)) {
-                                                        $newOrderItem->title = $newOrder->title;
+                                                        $newOrderItem->title = $tempOrder->title;
                                                     }
                                                     $newOrderItem->productId = $item->productId;
                                                     $newOrderItem->orderId = $newOrderId;
@@ -693,6 +693,9 @@ class StepController extends MasterCheckoutController
                                             if ($orderGroupToOrder->save()) {
                                                 $newOrderItem = new OrderItems();
                                                 $newOrderItem->attributes = $item->attributes;
+                                                if (!isset($newOrderItem->title)) {
+                                                    $newOrderItem->title = $tempOrder->title;
+                                                }
                                                 $newOrderItem->orderId = $newOrderId;
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
@@ -776,8 +779,8 @@ class StepController extends MasterCheckoutController
             }
             catch (Exception $ex)
             {
-                throw new Exception(print_r($tempOrder, true));
-//                throw new Exception($ex->getMessage());
+//                throw new Exception(print_r($tempOrder, true));
+                throw new Exception($ex->getMessage());
                 $transaction->rollback();
             }
         }
