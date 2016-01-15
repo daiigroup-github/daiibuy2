@@ -603,22 +603,22 @@ class StepController extends MasterCheckoutController
                                                     }
                                                     else {
                                                         $flag = FALSE;
-                                                        throw new Exception(111);
+                                                        throw new Exception("cannot save order item.");
                                                     }
                                                 }
                                                 else {
                                                     $flag = FALSE;
-                                                    throw new Exception(222);
+                                                    throw new Exception("cannot save order to order group.");
                                                 }
                                             }
                                             else {
                                                 $flag = FALSE;
-                                                throw new Exception(333);
+                                                throw new Exception("cannot save order.");
                                             }
                                         }
                                         else {
                                             $flag = FALSE;
-                                            throw new Exception(444);
+                                            throw new Exception("cannot save order group.");
                                         }
                                     }
                                 }
@@ -774,8 +774,8 @@ class StepController extends MasterCheckoutController
             }
             catch (Exception $ex)
             {
-//                throw new Exception(print_r("NewOrder title : " . $newOrder->title . " OldOrder title : " . $tempOrder->title . ", orderItem title : " . $newOrderItem->title, true));
-                throw new Exception($ex->getMessage());
+                throw new Exception(print_r("NewOrder title : " . $newOrder->title . " OldOrder title : " . $tempOrder->title . ", orderItem title : " . $newOrderItem->title, true));
+//                throw new Exception($ex->getMessage());
                 $transaction->rollback();
             }
         }

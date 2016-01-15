@@ -1,11 +1,11 @@
-<?php // include 'e_payment/security.php'                                                                         ?>
+<?php // include 'e_payment/security.php'                                                                          ?>
 <script>
 //	function checkMinimum(subTotal)
 //	{
 //		subTotal = subTotal.replace(",", "");
-//		var minimun = <?php // echo number_format($model->supplier->minimumOrder, 2, ".", "");                            ?>;
-//		lblMinError = document.getElementById("lblMinimumError<?php // echo $model->supplier->supplierId;                            ?>");
-//		btnCheckout = document.getElementById("btnCheckout<?php // echo $model->supplier->supplierId;                            ?>");
+//		var minimun = <?php // echo number_format($model->supplier->minimumOrder, 2, ".", "");                             ?>;
+//		lblMinError = document.getElementById("lblMinimumError<?php // echo $model->supplier->supplierId;                             ?>");
+//		btnCheckout = document.getElementById("btnCheckout<?php // echo $model->supplier->supplierId;                             ?>");
 //		if (subTotal >= minimun)
 //		{
 //			lblMinError.style.display = "none";
@@ -27,8 +27,8 @@
 //		'class'=>'btn btn-warning',
 //		'target'=>'_blank',));
 $ePayment = Supplier::model()->findEpaymentByConfig($model->supplierId);
-echo $ePayment->ePaymentUrl . "<br>";
-echo $model->paymentMethod;
+//echo $ePayment->ePaymentUrl . "<br>";
+//echo $model->paymentMethod;
 ?>
 <form class="form" <?php echo ($model->paymentMethod == 1) ? 'action="' . Yii::app()->createUrl("checkout/step/confirmation/id/" . $model->orderGroupId) . '"' : ""; ?>  method="post">
     <div class="row">
