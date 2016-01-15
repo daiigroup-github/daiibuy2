@@ -574,9 +574,6 @@ class StepController extends MasterCheckoutController
                                         $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
                                         $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
                                         $newOrderGroup->orderGroupId = NULL;
-
-                                        $newOrderItem = new OrderItems();
-                                        $newOrderItem->attributes = $item->attributes;
                                         if ($newOrderGroup->save()) {
                                             $newOrderGroupId = Yii::app()->db->getLastInsertID();
                                             $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
@@ -593,7 +590,9 @@ class StepController extends MasterCheckoutController
                                                 if ($orderGroupToOrder->save()) {
                                                     $newOrderItem = new OrderItems();
                                                     $newOrderItem->attributes = $item->attributes;
-                                                    $newOrderItem->title = $tempOrder->title;
+                                                    if (!isset($newOrderItem->title)) {
+                                                        $newOrderItem->title = $tempOrder->title;
+                                                    }
                                                     $newOrderItem->productId = $item->productId;
                                                     $newOrderItem->orderId = $newOrderId;
                                                     $newOrderItem->quantity = 1;
@@ -671,10 +670,6 @@ class StepController extends MasterCheckoutController
                                     $newOrderGroup->totalPostDiscount = $newOrderGroup->totalIncVAT - $newOrderGroup->discountValue;
                                     $newOrderGroup->summary = $newOrderGroup->totalPostDiscount;
                                     $newOrderGroup->orderGroupId = NULL;
-
-                                    $newOrderItem = new OrderItems();
-                                    $newOrderItem->attributes = $item->attributes;
-//						throw new Exception(print_r($newOrderItem->attributes, true));
                                     if ($newOrderGroup->save()) {
                                         $newOrderGroupId = Yii::app()->db->getLastInsertID();
                                         $tempOrder = $oldOrder->orderGroupToOrders[0]->order;
@@ -691,7 +686,9 @@ class StepController extends MasterCheckoutController
                                             if ($orderGroupToOrder->save()) {
                                                 $newOrderItem = new OrderItems();
                                                 $newOrderItem->attributes = $item->attributes;
-                                                $newOrderItem->title = $tempOrder->title;
+                                                if (!isset($newOrderItem->title)) {
+                                                    $newOrderItem->title = $tempOrder->title;
+                                                }
                                                 $newOrderItem->quantity = 1;
                                                 $newOrderItem->total = $newOrderItem->price;
                                                 if ($newOrderItem->save()) {
@@ -774,8 +771,8 @@ class StepController extends MasterCheckoutController
             }
             catch (Exception $ex)
             {
-//                throw new Exception(print_r("NewOrder title : " . $newOrder->title . " OldOrder title : " . $tempOrder->title . ", orderItem title : " . $newOrderItem->title, true));
-                throw new Exception(print_r($newOrderItem, true));
+                throw new Exception(print_r("NewOrder title : " . $newOrder->title . " OldOrder title : " . $tempOrder->title . ", orderItem title : " . $newOrderItem->title, true));
+//                throw new Exception(print_r($newOrderItem, true));
                 throw new Exception($ex->getMessage());
                 $transaction->rollback();
             }
