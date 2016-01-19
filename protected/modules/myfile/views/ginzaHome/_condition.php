@@ -2,7 +2,7 @@
 <div class="col-md-12">
     <!--						<div class="sidebar-box-heading">
                                 <i class="fa fa-tdst"></i>
-                                <h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ?></h4>
+                                <h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ?></h4>
                             </div>-->
     <div class="row sidebox-content ">
         <?php
@@ -126,32 +126,30 @@
 
 
 
-                                        if ($child1->status > 2 || (count($child1->supPay) > 0 || count($oldChild1->supPay) > 0)) {
+                                        if (count($child1->supPay) > 0 || count($oldChild1->supPay) > 0) {
                                             $isChangeHome = 0;
 
                                             if (isset($child1->supPay[0]) || isset($oldChild1->supPay[0])) {
-                                                if (!isset($child1->supPay[0])) {
-                                                    $model = $oldChild1;
-                                                } else {
+                                                if (isset($child1->supPay[0])) {
                                                     $model = $child1;
-                                                    echo CHtml::hiddenField("orderGroupId", $model->supPay[0]->orderGroupId);
+                                                } else {
+                                                    $model = $oldChild1;
                                                 }
-
+                                                echo CHtml::hiddenField("orderGroupId", $model->supPay[0]->orderGroupId);
                                                 echo CHtml::hiddenField("period", 2);
-                                            }
-
-                                            $productId = isset($model->orders[0]->orderItems[0]->productId) ? $model->orders[0]->orderItems[0]->productId : $model->supPay[0]->orders[0]->orderItems[0]->productId;
+                                                $productId = isset($model->orders[0]->orderItems[0]->productId) ? $model->orders[0]->orderItems[0]->productId : $model->supPay[0]->orders[0]->orderItems[0]->productId;
 //		throw new Exception(print_r($isChangeHome, true));
-                                            if (isset($productId)) {
-                                                $category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $productId . ' order by productId DESC');
-                                            } else {
-                                                throw new Exception(print_r($productId, true));
-                                            }
-                                            $category2ToProduct = isset($category2ToProducts[1]) ? $category2ToProducts[1] : $category2ToProducts[0];
-                                            if (isset($category2ToProduct)) {
-                                                $cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
-                                            } else {
-                                                throw new Exception(print_r($category2ToProduct, true));
+                                                if (isset($productId)) {
+                                                    $category2ToProducts = Category2ToProduct::model()->findAll("productId = " . $productId . ' order by productId DESC');
+                                                } else {
+                                                    throw new Exception(print_r($productId, true));
+                                                }
+                                                $category2ToProduct = isset($category2ToProducts[1]) ? $category2ToProducts[1] : $category2ToProducts[0];
+                                                if (isset($category2ToProduct)) {
+                                                    $cate2subCate = CategoryToSub::model()->find('subCategoryId = ' . $category2ToProduct->category1Id);
+                                                } else {
+                                                    throw new Exception(print_r($category2ToProduct, true));
+                                                }
                                             }
                                         } else {
 
@@ -217,49 +215,49 @@
                                     <td>รูปแบบ</td>
                                     <td><?php
 //                                                                                throw new Exception(print_r($category2ToProduct->category1Id,true));
-//                                        if ($isChangeHome == 1) {
-//                                            echo CHtml::dropDownList("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
-//                                                'prompt' => '-- เลือก Style --',
-//                                                'id' => 'styleId'
-//                                                ,
-//                                                'ajax' => array(
-//                                                    'type' => 'POST',
-//                                                    'data' => array(
-//                                                        'categoryId' => 'js:this.value',
-//                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
-//                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseModel'),
-//                                                    'success' => 'js:function(data){
-//
-//										//$("#sameAddress").prop("disabled", true);
-//										$("#category1Id").html(data);
-//										//$("#billingAmphur").prop("disabled", false);
-//										//$("#billingDistrict").html("");
-//										//$("#billingDistrict").prop("disabled", true);
-//										 }')
-//                                            ));
-//                                        } else {
-//                                            echo CHtml::hiddenField("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId);
-//                                            echo CHtml::dropDownList("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
-//                                                'prompt' => '-- เลือก Style --',
-//                                                'disabled' => 'true',
-//                                                'id' => 'styleId'
-//                                                ,
-//                                                'ajax' => array(
-//                                                    'type' => 'POST',
-//                                                    'data' => array(
-//                                                        'categoryId' => 'js:this.value',
-//                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
-//                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseModel'),
-//                                                    'success' => 'js:function(data){
-//
-//										//$("#sameAddress").prop("disabled", true);
-//										$("#category1Id").html(data);
-//										//$("#billingAmphur").prop("disabled", false);
-//										//$("#billingDistrict").html("");
-//										//$("#billingDistrict").prop("disabled", true);
-//										 }')
-//                                            ));
-//                                        }
+                                        if ($isChangeHome == 1) {
+                                            echo CHtml::dropDownList("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
+                                                'prompt' => '-- เลือก Style --',
+                                                'id' => 'styleId'
+                                                ,
+                                                'ajax' => array(
+                                                    'type' => 'POST',
+                                                    'data' => array(
+                                                        'categoryId' => 'js:this.value',
+                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
+                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseModel'),
+                                                    'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category1Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')
+                                            ));
+                                        } else {
+                                            echo CHtml::hiddenField("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId);
+                                            echo CHtml::dropDownList("styleId", isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId, ModelToCategory1::model()->findAllCatArrayFromBrandModelId($category2ToProduct->brandModelId), array(
+                                                'prompt' => '-- เลือก Style --',
+                                                'disabled' => 'true',
+                                                'id' => 'styleId'
+                                                ,
+                                                'ajax' => array(
+                                                    'type' => 'POST',
+                                                    'data' => array(
+                                                        'categoryId' => 'js:this.value',
+                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
+                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseModel'),
+                                                    'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category1Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')
+                                            ));
+                                        }
                                         ?></td>
                                 </tr>
                                 <tr>
@@ -267,43 +265,43 @@
                                     <td><?php
                                         //										if (isset($model->orders[0]->orderItems[0]->styleId))
                                         //throw new Exception(print_r($category2ToProduct->category1Id, true));
-//                                        if ($isChangeHome == 1) {
-//                                            echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
-//                                                'prompt' => '-- เลือกแบบบ้าน --',
-//                                                'ajax' => array(
-//                                                    'type' => 'POST',
-//                                                    'data' => array(
-//                                                        'category1Id' => 'js:this.value',
-//                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
-//                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseSeries'),
-//                                                    'success' => 'js:function(data){
-//
-//										//$("#sameAddress").prop("disabled", true);
-//										$("#category2Id").html(data);
-//										//$("#billingAmphur").prop("disabled", false);
-//										//$("#billingDistrict").html("");
-//										//$("#billingDistrict").prop("disabled", true);
-//										 }')));
-//                                        } else {
-//                                            echo CHtml::hiddenField("category1Id", $category2ToProduct->category1Id);
-//                                            echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
-//                                                'prompt' => '-- เลือกแบบบ้าน --',
-//                                                'disabled' => 'true',
-//                                                'ajax' => array(
-//                                                    'type' => 'POST',
-//                                                    'data' => array(
-//                                                        'category1Id' => 'js:this.value',
-//                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
-//                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseSeries'),
-//                                                    'success' => 'js:function(data){
-//
-//										//$("#sameAddress").prop("disabled", true);
-//										$("#category2Id").html(data);
-//										//$("#billingAmphur").prop("disabled", false);
-//										//$("#billingDistrict").html("");
-//										//$("#billingDistrict").prop("disabled", true);
-//										 }')));
-//                                        }
+                                        if ($isChangeHome == 1) {
+                                            echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
+                                                'prompt' => '-- เลือกแบบบ้าน --',
+                                                'ajax' => array(
+                                                    'type' => 'POST',
+                                                    'data' => array(
+                                                        'category1Id' => 'js:this.value',
+                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
+                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseSeries'),
+                                                    'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category2Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')));
+                                        } else {
+                                            echo CHtml::hiddenField("category1Id", $category2ToProduct->category1Id);
+                                            echo CHtml::dropDownList("category1Id", $category2ToProduct->category1Id, CategoryToSub::model()->findSubCatArrayByBrandModelIdAndCategoryId($category2ToProduct->brandModelId, isset($model->orders[0]->orderItems[0]->styleId) ? $model->orders[0]->orderItems[0]->styleId : $cate2subCate->categoryId), array(
+                                                'prompt' => '-- เลือกแบบบ้าน --',
+                                                'disabled' => 'true',
+                                                'ajax' => array(
+                                                    'type' => 'POST',
+                                                    'data' => array(
+                                                        'category1Id' => 'js:this.value',
+                                                        'brandModelId' => 'js:$("#brandModelId").val()'),
+                                                    'url' => $this->createUrl('/myfile/ginzaHome/findHouseSeries'),
+                                                    'success' => 'js:function(data){
+
+										//$("#sameAddress").prop("disabled", true);
+										$("#category2Id").html(data);
+										//$("#billingAmphur").prop("disabled", false);
+										//$("#billingDistrict").html("");
+										//$("#billingDistrict").prop("disabled", true);
+										 }')));
+                                        }
                                         ?></td>
                                 </tr>
                                 <tr>
@@ -393,11 +391,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                echo CHtml::hiddenField("orderGroupId", $oldChild1->orderGroupId);
-                                echo CHtml::hiddenField("period", 2);
-                                foreach ($child1->orders as $item):
-                                    ?>
+                                        <?php
+                                        echo CHtml::hiddenField("orderGroupId", $oldChild1->orderGroupId);
+                                        echo CHtml::hiddenField("period", 2);
+                                        foreach ($child1->orders as $item):
+                                            ?>
                                     <tr style="color:black">
                                         <td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 2</span></td>
                                         <td>
@@ -406,12 +404,12 @@
                                             ?>
                                         </td>
                                         <td style="font-size:24px">
-                                            <?php
-                                            echo "ยอดชำระ " . number_format($child1->totalIncVAT);
-                                            $sumSup = 0;
-                                            //	throw new Exception(print_r($child1->supNotPays, true));
-                                            if (count($child1->supPay) > 0):
-                                                ?>
+    <?php
+    echo "ยอดชำระ " . number_format($child1->totalIncVAT);
+    $sumSup = 0;
+    //	throw new Exception(print_r($child1->supNotPays, true));
+    if (count($child1->supPay) > 0):
+        ?>
                                                 <p style='color:green'>ชำระแล้ว</p>
                                                 <?php
                                                 foreach ($child1->supPay as $sup) {
@@ -423,23 +421,23 @@
                                             if (count($child1->supNotPays) > 0):
                                                 ?>
                                                 <p style='color:red'>รอยืนยันชำระ</p>
-                                                <?php
-                                                foreach ($child1->supNotPays as $supNotPay) {
-                                                    $sumSupNotPay +=$supNotPay->totalIncVAT;
-                                                    echo "<p style='color:red'>" . number_format($supNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $supNotPay->orderGroupId), array(
-                                                        'class' => 'btn btn-success',
-                                                        'target' => '_blank')) . "</p>";
-                                                }
-                                            endif;
-                                            ?>
+        <?php
+        foreach ($child1->supNotPays as $supNotPay) {
+            $sumSupNotPay +=$supNotPay->totalIncVAT;
+            echo "<p style='color:red'>" . number_format($supNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $supNotPay->orderGroupId), array(
+                'class' => 'btn btn-success',
+                'target' => '_blank')) . "</p>";
+        }
+    endif;
+    ?>
                                         </td>
                                         <td>
-                                            <?php
-                                            echo CHtml::numberField("payValue", $child1->totalIncVAT - $sumSup - $sumSupNotPay, array(
-                                                'class' => 'input-form text-right',
-                                                'style' => 'border:2px solid black;color:blue;font-size:24px;width:250px',
-                                                'max' => $child1->totalIncVAT - $sumSup - $sumSupNotPay))
-                                            ?>
+                                    <?php
+                                    echo CHtml::numberField("payValue", $child1->totalIncVAT - $sumSup - $sumSupNotPay, array(
+                                        'class' => 'input-form text-right',
+                                        'style' => 'border:2px solid black;color:blue;font-size:24px;width:250px',
+                                        'max' => $child1->totalIncVAT - $sumSup - $sumSupNotPay))
+                                    ?>
                                             <!--<a onclick="backToStep2()" class="btn btn-success">Back</a>-->
                                             <?php
 //											echo CHtml::link("ชำระเงิน", "", array(
@@ -448,7 +446,7 @@
                                             ?>
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
+                                        <?php endforeach; ?>
                             </tbody>
                         </table>
                     </form>
@@ -464,7 +462,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center" style="font-weight: bold;color: black">
                             ข้าพเจ้าได้อ่านและทำความเข้าใจรายละเอียดตามข้อตกลงและเงื่อนไขข้างต้นดีแล้ว<br>
-                            <?php echo CHtml::radioButton("accept", TRUE) ?>
+                                        <?php echo CHtml::radioButton("accept", TRUE) ?>
                             <label class="radio-label" for="accept">ยอมรับ</label>
                         </div>
                     </div>
@@ -476,30 +474,30 @@
 <div class="row hide" id="submit2">
     <div class="col-lg-12 text-center">
         <a onclick="backToStep3()" class="btn btn-success">Back</a>
-        <?php
-        echo CHtml::link('ยอมรับ และ ชำระเงิน', "", array(
-            'class' => 'btn btn-primary',
-            'onClick' => 'goToStepSplit(2)'));
-        ?>
+                                        <?php
+                                        echo CHtml::link('ยอมรับ และ ชำระเงิน', "", array(
+                                            'class' => 'btn btn-primary',
+                                            'onClick' => 'goToStepSplit(2)'));
+                                        ?>
     </div>
 </div>
 <div class="row hide" id="submit3">
     <div class="col-lg-12 text-center">
         <a onclick="backToStep3()" class="btn btn-success">Back</a>
-        <?php
-        echo CHtml::link('Accept', "", array(
-            'class' => 'btn btn-primary',
-            'onClick' => 'goToStepSplit(3)'));
-        ?>
+                                        <?php
+                                        echo CHtml::link('Accept', "", array(
+                                            'class' => 'btn btn-primary',
+                                            'onClick' => 'goToStepSplit(3)'));
+                                        ?>
     </div>
 </div>
 <div class="row hide" id="submit4">
     <div class="col-lg-12 text-center">
         <a onclick="backToStep3()" class="btn btn-success">Back</a>
-        <?php
-        echo CHtml::link('Accept', "", array(
-            'class' => 'btn btn-primary',
-            'onClick' => 'goToStepSplit(4)'));
-        ?>
+<?php
+echo CHtml::link('Accept', "", array(
+    'class' => 'btn btn-primary',
+    'onClick' => 'goToStepSplit(4)'));
+?>
     </div>
 </div>
