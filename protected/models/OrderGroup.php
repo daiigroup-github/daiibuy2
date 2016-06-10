@@ -944,18 +944,30 @@ reviewed the transaction status in the Business Center.";
                     } else {
                         $partnerType = 0;
                     }
-                    $userSale = UserSale::model()->find("userId=" . $this->userId . " and supplierId=" . $this->supplierId);
-                    if (empty($userSale)) {
-                        //$saleSup=
-                        $userSale->supplierId = $this->supplierId;
-                        $userSale->userId = $this->userId;
-                        $userSale->saleId = '1234';
-                        $userSale->save();
-                    }
-
                     //throw new Exception($this->userId);
                     $this->partnerCode = $this->user->partnerCode;
                     $this->partnerType = $partnerType;
+
+                    $userSale = UserSale::model()->find("userId=" . $this->userId . " and supplierId=" . $this->supplierId);
+
+                    if (!isset($userSale)) {
+                        $saleGroup = SaleGroupQueue::model()->find("supplierId=" . $this->supplierId);
+                        $saleId = SaleQueue::model()->find("saleGroupQueueId=" . $saleGroup->saleGroupQueueId . " and status=1");
+                        $userSale = new UserSale();
+                        $userSale->supplierId = $this->supplierId;
+                        $userSale->userId = $this->userId;
+                        $userSale->saleId = $saleId->employeeId;
+                        $userSale->createDateTime = new CDbExpression('NOW()');
+                        $sale = $saleId->employeeId;
+                        if ($userSale->save()) {
+                            $saleGroupQueueId = $saleGroup->saleGroupQueueId;
+                            $sortOrder = $saleId->sortOrder;
+                            $saleGroup->nextQueue($saleGroupQueueId, $sortOrder);
+                        }
+                    } else {
+                        $sale = $userSale->saleId;
+                    }
+                    $this->saleId = $sale;
                 }
             }
             return true;
