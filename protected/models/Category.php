@@ -209,21 +209,30 @@ class Category extends CategoryMaster {
         return $res;
     }
 
-	public function findAllCategoryStakeProvinceTemplateArray()
-	{
-		$cspModel = CategoryStakeProvince::model()->findAll('status = 1 group by categoryId');
-		$categoryIds = "";
-		$i = 1;
-		foreach ($cspModel as $csp)
-		{
-			$categoryIds .= $csp->categoryId;
-			if ($i < count($cspModel))
-				$categoryIds .= ", ";
-			$i++;
-		}
-		$res = Category::model()->findAll('supplierId = 4 and categoryId in (' . $categoryIds . ')');
-//		throw new Exception(print_r($res, true));
-		return $res;
-	}
+    public function findAllCategoryStakeProvinceTemplateArray() {
+        $cspModel = CategoryStakeProvince::model()->findAll('status = 1 group by categoryId');
+        $categoryIds = "";
+        $i = 1;
+        foreach ($cspModel as $csp) {
+            $categoryIds .= $csp->categoryId;
+            if ($i < count($cspModel))
+                $categoryIds .= ", ";
+            $i++;
+        }
+        $res = Category::model()->findAll('supplierId = 4 and categoryId in (' . $categoryIds . ')');
+        // throw new Exception(print_r($categoryIds, true));
+        return $res; //subCategoryId in categoryToSub(show in dropdownList)
+    }
+
+    public function getTextName() {
+        // throw new Exception($this->categoryId);
+        $category = Category::model()->find('categoryId=' . $this->categoryId);
+        if (!empty($category->fullName)) {
+            $text = $category->fullName;
+        } else {
+            $text = $category->title;
+        }
+        return $text;
+    }
 
 }

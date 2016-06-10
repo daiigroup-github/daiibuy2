@@ -122,7 +122,7 @@ class ProductController extends MasterAtechwindowController {
     }
 
     public function actionAddToCart() {
-        $this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
+        // $this->writeToFile('/tmp/atechAddToCart', print_r($_POST, true));
 
         $productId = $_POST['productId'];
         $qty = isset($_POST['qty']) ? $_POST['qty'] : 1;

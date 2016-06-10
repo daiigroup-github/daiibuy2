@@ -5,8 +5,7 @@
  * LoginForm is the data structure for keeping
  * user login form data. It is used by the 'login' action of 'SiteController'.
  */
-class DaiiBuy extends CFormModel
-{
+class DaiiBuy extends CFormModel {
 
     public $cartTotal = 0;
     public $usedPoint = 0;
@@ -24,8 +23,7 @@ class DaiiBuy extends CFormModel
      * The rules state that username and password are required,
      * and password needs to be authenticated.
      */
-    public function rules()
-    {
+    public function rules() {
         return array(
 //			// username and password are required
 //			array('email, password', 'required'),
@@ -39,20 +37,18 @@ class DaiiBuy extends CFormModel
     /**
      * Declares attribute labels.
      */
-    public function attributeLabels()
-    {
-        return array( //			'rememberMe'=>'Remember me next time',
+    public function attributeLabels() {
+        return array(//			'rememberMe'=>'Remember me next time',
         );
     }
 
-    public function loadCookie()
-    {
+    public function loadCookie() {
         //unsetCookie();
         if (isset(Yii::app()->request->cookies['daiibuy'])) {
             $daiibuy = json_decode(Yii::app()->request->cookies['daiibuy'], true);
-            $handle = fopen('/tmp/loadCookie', 'w+');
-            fwrite($handle, print_r($daiibuy, true));
-            fclose($handle);
+//            $handle = fopen('/tmp/loadCookie', 'w+');
+//            fwrite($handle, print_r($daiibuy, true));
+//            fclose($handle);
             $this->amphurId = $daiibuy['amphurId'];
             $this->cart = $daiibuy['cart'];
             $this->usedPoint = $daiibuy['usedPoint'];
@@ -61,23 +57,22 @@ class DaiiBuy extends CFormModel
                 $this->order = $daiibuy['order'];
 
             /*
-            if(isset($daiibuy['cart']))
-            {
-                $cart = Product::model()->cartSummary($daiibuy['cart'], $this->amphurId);
-                $this->cartTotal = $cart['cartTotal'];
-                $this->discount = $daiibuy['discount'];
-                $this->cartItems = $cart['cartItems'];
-                $this->cartRowTotal = $cart['cartRowTotal'];
-            }
-            */
+              if(isset($daiibuy['cart']))
+              {
+              $cart = Product::model()->cartSummary($daiibuy['cart'], $this->amphurId);
+              $this->cartTotal = $cart['cartTotal'];
+              $this->discount = $daiibuy['discount'];
+              $this->cartItems = $cart['cartItems'];
+              $this->cartRowTotal = $cart['cartRowTotal'];
+              }
+             */
 
             $this->token = $daiibuy['token'];
         }
         //return array('cartTotal'=>$cartTotal, 'cartItems'=>$cartItems);
     }
 
-    public function saveCookie()
-    {
+    public function saveCookie() {
         $daiibuy['cart'] = $this->cart;
         $daiibuy['amphurId'] = $this->amphurId;
         $daiibuy['order'] = $this->order;
@@ -94,13 +89,11 @@ class DaiiBuy extends CFormModel
         Yii::app()->request->cookies['daiibuy'] = $cookie;
     }
 
-    public function unsetCookie()
-    {
+    public function unsetCookie() {
         unset(Yii::app()->request->cookies['daiibuy']);
     }
 
-    public function getTotalDiscount()
-    {
+    public function getTotalDiscount() {
         $res = 0.00;
         foreach ($this->discount as $supplierId => $value) {
             $res += $value;
@@ -108,4 +101,5 @@ class DaiiBuy extends CFormModel
 
         return $res;
     }
+
 }

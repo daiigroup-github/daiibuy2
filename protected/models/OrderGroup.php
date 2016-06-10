@@ -90,13 +90,13 @@ class OrderGroup extends OrderGroupMaster
 // will receive user inputs.
         return CMap::mergeArray(parent::rules(), array(
 //code here
-                array(
-                    'maxCode',
-                    'safe'),
-                array(
-                    ' paymentYear, paymentMonth, startDate, endDate',
-                    'safe',
-                    'on' => 'search'),
+            array(
+                'maxCode',
+                'safe'),
+            array(
+                ' paymentYear, paymentMonth, startDate, endDate',
+                'safe',
+                'on' => 'search'),
         ));
     }
 
@@ -110,103 +110,103 @@ class OrderGroup extends OrderGroupMaster
         return CMap::mergeArray(parent::relations(), array(
 //code here
 
-                'orders' => array(
-                    self::MANY_MANY,
-                    'Order',
-                    'order_group_to_order(orderGroupId, orderId)'
+            'orders' => array(
+                self::MANY_MANY,
+                'Order',
+                'order_group_to_order(orderGroupId, orderId)'
+            ),
+            'child' => array(
+                self::BELONGS_TO,
+                'OrderGroup',
+                array(
+                    'orderGroupId' => 'parentId')),
+            'supNotPay' => array(
+                self::BELONGS_TO,
+                'OrderGroup',
+                array(
+                    'orderGroupId' => 'mainId',
                 ),
-                'child' => array(
-                    self::BELONGS_TO,
-                    'OrderGroup',
-                    array(
-                        'orderGroupId' => 'parentId')),
-                'supNotPay' => array(
-                    self::BELONGS_TO,
-                    'OrderGroup',
-                    array(
-                        'orderGroupId' => 'mainId',
-                    ),
-                    'on' => 'status=0'),
-                'supNotPays' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainId',
-                    ),
-                    'on' => 'status<3'),
-                'sup' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainId')
+                'on' => 'status=0'),
+            'supNotPays' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainId',
                 ),
-                'supPay' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainId'),
-                    'on' => 'status > 2'
-                ),
-                'fur' => array(
-                    self::HAS_MANY,
-                    'OrderGroup',
-                    array(
-                        'mainFurnitureId')),
-                'sendWorks' => array(
-                    self::HAS_MANY,
-                    'OrderGroupSendWork',
-                    array(
-                        'orderGroupId')),
-                'parent' => array(
-                    self::BELONGS_TO,
-                    'OrderGroup',
-                    array(
-                        'parentId' => 'orderGroupId')),
-                'sp' => array(
-                    self::HAS_MANY,
-                    'UserSpacialProject',
-                    array(
-                        'orderGroupId')),
-                'orderGroupToOrders' => array(
-                    self::HAS_MANY,
-                    'OrderGroupToOrder',
-                    'orderGroupId'),
-                'orderGroupFiles' => array(
-                    self::HAS_MANY,
-                    'OrderGroupFile',
-                    'orderGroupId'),
-                'user' => array(
-                    self::BELONGS_TO,
-                    'User',
-                    'userId'),
+                'on' => 'status<3'),
+            'sup' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainId')
+            ),
+            'supPay' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainId'),
+                'on' => 'status > 2'
+            ),
+            'fur' => array(
+                self::HAS_MANY,
+                'OrderGroup',
+                array(
+                    'mainFurnitureId')),
+            'sendWorks' => array(
+                self::HAS_MANY,
+                'OrderGroupSendWork',
+                array(
+                    'orderGroupId')),
+            'parent' => array(
+                self::BELONGS_TO,
+                'OrderGroup',
+                array(
+                    'parentId' => 'orderGroupId')),
+            'sp' => array(
+                self::HAS_MANY,
+                'UserSpacialProject',
+                array(
+                    'orderGroupId')),
+            'orderGroupToOrders' => array(
+                self::HAS_MANY,
+                'OrderGroupToOrder',
+                'orderGroupId'),
+            'orderGroupFiles' => array(
+                self::HAS_MANY,
+                'OrderGroupFile',
+                'orderGroupId'),
+            'user' => array(
+                self::BELONGS_TO,
+                'User',
+                'userId'),
 //				'shippingDistrict'=>array(
 //					self::BELONGS_TO,
 //					'District',
 //					'shippingDistrictId'),
-                'paymentAmphur' => array(
-                    self::BELONGS_TO,
-                    'Amphur',
-                    'paymentAmphurId'),
-                'paymentDistrict' => array(
-                    self::BELONGS_TO,
-                    'District',
-                    'paymentDistrictId'),
-                'paymentProvince' => array(
-                    self::BELONGS_TO,
-                    'Province',
-                    'paymentProvinceId'),
-                'shippingAmphur' => array(
-                    self::BELONGS_TO,
-                    'Amphur',
-                    'shippingAmphurId'),
-                'shippingProvince' => array(
-                    self::BELONGS_TO,
-                    'Province',
-                    'shippingProvinceId'),
-                'supplier' => array(
-                    self::BELONGS_TO,
-                    'Supplier',
-                    'supplierId'),
+            'paymentAmphur' => array(
+                self::BELONGS_TO,
+                'Amphur',
+                'paymentAmphurId'),
+            'paymentDistrict' => array(
+                self::BELONGS_TO,
+                'District',
+                'paymentDistrictId'),
+            'paymentProvince' => array(
+                self::BELONGS_TO,
+                'Province',
+                'paymentProvinceId'),
+            'shippingAmphur' => array(
+                self::BELONGS_TO,
+                'Amphur',
+                'shippingAmphurId'),
+            'shippingProvince' => array(
+                self::BELONGS_TO,
+                'Province',
+                'shippingProvinceId'),
+            'supplier' => array(
+                self::BELONGS_TO,
+                'Supplier',
+                'supplierId'),
 //				'orderGroupFiles'=>array(
 //					self::HAS_MANY,
 //					'OrderGroupFile',
@@ -244,8 +244,7 @@ class OrderGroup extends OrderGroupMaster
      */
     public function getReasonCode($reasonCode)
     {
-        switch ($reasonCode)
-        {
+        switch ($reasonCode) {
             case self::REASON_SUCCESS ://User
                 return "100 : Successful transaction.";
                 break;
@@ -449,11 +448,9 @@ reviewed the transaction status in the Business Center.";
 //		{
         if ($supplierUser->supplierId == 1 || $supplierUser->supplierId == 3) {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 1 OR supplierId = 3) AND paymentMethod = ' . $model->paymentMethod;
-        }
-        else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5) {
+        } else if ($supplierUser->supplierId == 4 || $supplierUser->supplierId == 5) {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND (supplierId = 4 OR supplierId = 5) AND paymentMethod = ' . $model->paymentMethod;
-        }
-        else {
+        } else {
             $criteria->condition = 'YEAR(updateDateTime) = YEAR(NOW()) AND supplierId = ' . $supplierUser->supplierId . ' AND paymentMethod = ' . $model->paymentMethod;
         }
 //		}
@@ -663,8 +660,7 @@ reviewed the transaction status in the Business Center.";
 
     public function showOrderStatus($status)
     {
-        switch ($status)
-        {
+        switch ($status) {
             case 99:
                 return "ชำระเงินไม่สำเร็จ(กรุณาชำระเงินอีกครั้ง)";
                 break;
@@ -702,8 +698,7 @@ reviewed the transaction status in the Business Center.";
         if (isset($this->startDate) && isset($this->endDate)) {
             $criteria->addBetweenCondition('paymentDateTime', $this->startDate, $this->endDate, 'AND');
             $this->writeToFile('/tmp/startEndDate', print_r($this->startDate, true));
-        }
-        else {
+        } else {
             $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
             $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
             $this->writeToFile('/tmp/YearMonth', print_r($this->startDate, true));
@@ -749,8 +744,7 @@ reviewed the transaction status in the Business Center.";
         if (isset($this->startDate) && isset($this->endDate)) {
             $criteria->addBetweenCondition('paymentDateTime', $this->startDate, $this->endDate, 'AND');
             $this->writeToFile('/tmp/startEndDate', print_r($this->startDate, true));
-        }
-        else {
+        } else {
             $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
             $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, FALSE, "AND");
             $this->writeToFile('/tmp/YearMonth', print_r($this->startDate, true));
@@ -792,8 +786,7 @@ reviewed the transaction status in the Business Center.";
                 $sumTotal = 0;
             }
             $discountPercent = SupplierDiscountRange::model()->findDiscountPercent($supplierId, $sumTotal);
-        }
-        else {
+        } else {
             $sumLastTwelveMonth = OrderGroup::model()->sumOrderLastTwelveMonth();
             $sumAll = $sumTotal + $sumLastTwelveMonth;
             if ($supplierId == 4) {
@@ -841,8 +834,7 @@ reviewed the transaction status in the Business Center.";
         $orderGroup->summary = $grandTotal;
         if ($orderGroup->save()) {
             return TRUE;
-        }
-        else {
+        } else {
             return FALSE;
         }
     }
@@ -881,8 +873,7 @@ reviewed the transaction status in the Business Center.";
         $criteria->condition .= " AND t.userId =" . Yii::app()->user->id;
         if (isset($orderGroup)) {
             $criteria->condition.= " AND usp.orderGroupId = " . $orderGroup->orderGroupId;
-        }
-        else {
+        } else {
             if (isset($orderGroupId)) {
                 $criteria->condition.= " AND orderGroupId = " . $orderGroupId;
             }
@@ -904,8 +895,7 @@ reviewed the transaction status in the Business Center.";
         $result["totalExtraDiscount"] = $extraDiscount;
         if (isset($item) > 0) {
             return $result;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -916,12 +906,10 @@ reviewed the transaction status in the Business Center.";
         if (isset($orderGroup)) {
             if (isset($orderGroup->mainId)) {
                 $ogId = $orderGroup->mainId;
-            }
-            else {
+            } else {
                 if (isset($orderGroup->parentId)) {
                     $ogId = $orderGroup->parentId;
-                }
-                else {
+                } else {
                     $ogId = $orderGroup->orderGroupId;
                 }
             }
@@ -934,8 +922,7 @@ reviewed the transaction status in the Business Center.";
                     $orderGroup = OrderGroup::model()->findByPk($orderGroup->parentId);
                 }
             }
-        }
-        else {
+        } else {
             $orderGroup = NULL;
         }
 
@@ -952,20 +939,27 @@ reviewed the transaction status in the Business Center.";
                     $partnerType = NULL;
                     if (strtolower($codeArray[0]) == "org") {
                         $partnerType = 1;
-                    }
-                    else if (strtolower($codeArray[0]) == "wow") {
+                    } else if (strtolower($codeArray[0]) == "wow") {
                         $partnerType = 2;
-                    }
-                    else {
+                    } else {
                         $partnerType = 0;
                     }
+                    $userSale = UserSale::model()->find("userId=" . $this->userId . " and supplierId=" . $this->supplierId);
+                    if (empty($userSale)) {
+                        //$saleSup=
+                        $userSale->supplierId = $this->supplierId;
+                        $userSale->userId = $this->userId;
+                        $userSale->saleId = '1234';
+                        $userSale->save();
+                    }
+
+                    //throw new Exception($this->userId);
                     $this->partnerCode = $this->user->partnerCode;
                     $this->partnerType = $partnerType;
                 }
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
