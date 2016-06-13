@@ -968,6 +968,12 @@ reviewed the transaction status in the Business Center.";
                         $sale = $userSale->saleId;
                     }
                     $this->saleId = $sale;
+                    //mail to sales.
+                    //$mailToSale = new EmailSend();
+//                    $employee = Employee::model()->find("employeeId=" . $sale);
+//                    $tomail = $employee->email;
+//                    $name = $employee->fnTh . ' ' . $employee->lnTh;
+//                    $mailTosale->mailSaleQueueSupplier($tomail, $name);
                 }
             }
             return true;

@@ -55,6 +55,7 @@ return array(
         'db' => $params['db'],
         'org' => $params['org'],
         'wow' => $params['wow'],
+        'dbDaiichi' => $params['dbDaiichi'],
 //		'dbDaiibuy1'=>$params['dbDaiibuy1'],
         'mail' => array(
             'class' => 'application.extensions.yii-mail.YiiMail',
