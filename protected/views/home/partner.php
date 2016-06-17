@@ -146,6 +146,7 @@
                 <?php $this->endWidget(); ?>
             </div>
         </div>
+        <font style="color: #ff0000"> * กรณีเป็นสมาชิกของ Daiibuy.com แล้ว ให้เข้าสู่ระบบ</font>
         <?php if (Yii::app()->user->isGuest): ?>
             <div class="row sidebar-box blue">
                 <div class="col-lg-12">
@@ -158,6 +159,7 @@
                             'class' => 'form-horizontal'),
                     ));
                     ?>
+
                     <div class="sidebar-box-heading" style="margin-top: 30px">
                         <i class="fa fa-file"></i>
                         <h4>ลงทะเบียน</h4>
