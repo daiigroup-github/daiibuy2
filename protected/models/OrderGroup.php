@@ -969,11 +969,14 @@ reviewed the transaction status in the Business Center.";
                     }
                     $this->saleId = $sale;
                     //mail to sales.
-                    //$mailToSale = new EmailSend();
-//                    $employee = Employee::model()->find("employeeId=" . $sale);
-//                    $tomail = $employee->email;
-//                    $name = $employee->fnTh . ' ' . $employee->lnTh;
-//                    $mailTosale->mailSaleQueueSupplier($tomail, $name);
+                    $mailToSale = new EmailSend();
+                    $employee = Employee::model()->find("employeeId=" . $sale);
+                    $tomail = $employee->email;
+                    $name = $employee->fnTh . ' ' . $employee->lnTh;
+                    $customName = $this->firstname . ' ' . $this->lastname;
+                    $tel = $this->telephone;
+                    $email = $this->email;
+                    $mailToSale->mailSaleQueueSupplier($tomail, $name, $customName, $tel, $email);
                 }
             }
             return true;

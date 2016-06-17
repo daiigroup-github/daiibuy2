@@ -1196,16 +1196,38 @@ class EmailSend
         // throw new Exception($message->subject);
     }
 
-    public function mailSaleQueueSupplier($tomail, $name)
+    public function mailSaleQueueSupplier($tomail, $name, $customName, $tel, $email)
     {
         $message = new YiiMailMessage();
         $message->view = 'saleQueueSupplier';
         $message->setBody(array(
             "name" => $name,
+            "customName" => $customName,
+            "email" => $email,
+            "tel" => $tel
         ), 'text/html', 'utf-8'
         );
         $message->addTo($tomail);
         $message->subject = "ลูกค้าสั่งซื้อผ่าน Daiibuy.com (คิว)";
+        $message->setFrom(array(
+            'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
+
+        Yii::app()->mail->send($message);
+    }
+
+    public function mailPartnerAlert($tomail, $customName, $supplierName, $partnerName, $url)
+    {
+        $message = new YiiMailMessage();
+        $message->view = 'partnerAlert';
+        $message->setBody(array(
+            "customName" => $customName,
+            "supplierName" => $supplierName,
+            "partnerName" => $partnerName,
+            "url" => $url
+        ), 'text/html', 'utf-8'
+        );
+        $message->addTo($tomail);
+        $message->subject = "ลูกค้าสั่งซื้อของ Daiibuy.com ผ่านลิงค์";
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
 

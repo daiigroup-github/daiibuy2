@@ -1,17 +1,17 @@
 <?php
 $this->renderPartial('_step_header', array(
-	'step'=>$step));
+    'step' => $step));
 ?>
 
 <?php
 $form = $this->beginWidget('CActiveForm', array(
-	'id'=>'payment-form',
-	//'enableClientValidation' => true,
-	//'clientOptions' => array('validateOnSubmit' => true,),
-	'htmlOptions'=>array(
-		'class'=>'',
-		'role'=>'form'),
-	));
+    'id' => 'payment-form',
+    //'enableClientValidation' => true,
+    //'clientOptions' => array('validateOnSubmit' => true,),
+    'htmlOptions' => array(
+        'class' => '',
+        'role' => 'form'),
+));
 ?>
 <div class="row">
     <div class="col-lg-8 col-md-8 col-sm-8">
@@ -52,12 +52,11 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <p>
                             <ul>
-								<?php
-								foreach($bankArray as $bank)
-								{
-									?>
-									<li><?php echo BankName::model()->getBankNameByBankNameId($bank->bankNameId) . " ชื่อบัญชี : " . $bank->accName ?></li>
-								<?php } ?>
+                                <?php
+                                foreach ($bankArray as $bank) {
+                                    ?>
+                                    <li><?php echo BankName::model()->getBankNameByBankNameId($bank->bankNameId) . " ชื่อบัญชี : " . $bank->accName ?></li>
+                                <?php } ?>
                             </ul>
                             </p>
                         </div>
@@ -90,45 +89,48 @@ $form = $this->beginWidget('CActiveForm', array(
                             <td class="align-right"><span class="price big">Discount (<span id="summaryDiscountPercent"><?php echo $orderSummary['discountPercent']; ?></span>%)</span></td>
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $orderSummary['discount']; ?></span></td>
                         </tr>
-						<?php
-								//															throw new Exception(print_r($orderSummary, true));
-						if (isset($orderSummary['extraDiscount'])):
-							if (($supplierModel->supplierId == 4 || $supplierModel->supplierId == 5) && isset($_GET["orderGroupId"]))
-							{
-								$orderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
-								$sumDiscountPercent = $orderSummary['extraDiscountArray'][$orderGroup->orderGroupId]['extraDiscountPercent'];
-							}
-							else
-							{
-								$i = 0;
-								foreach ($orderSummary['extraDiscountArray'] as $exDiscount)
-								{
-									if ($i == 0)
-									{
-										$sumDiscountPercent = $exDiscount['extraDiscountPercent'];
-									}
-									$i++;
-								}
-							}
-							$sumDiscount = $orderSummary['extraDiscount'];
-							?>
-							<tr>
-								<td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $sumDiscountPercent; ?></span>%)</span></td>
-								<td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $sumDiscount; ?></span></td>
-								</tr>
-								<?php
-								endif;
-								if (isset($orderSummary["partnerDiscount"]))
-								{
-									?>
-								<tr>
-									<td class="align-right"><span class="price big">Partner Discount(<span id="partnerDiscountPercent"><?php echo $orderSummary["partnerDiscountPercent"]; ?></span>%)</span></td>
-									<td class="align-right" style="width: 169px;"><span class="price big" id="partnerDiscount"><?php echo $orderSummary["partnerDiscount"]; ?></span></td>
-									</tr>
-									<?php
-								}
-								?>
-								<tr>
+                        <?php
+                        //															throw new Exception(print_r($orderSummary, true));
+                        if (isset($orderSummary['extraDiscount'])):
+                            if (($supplierModel->supplierId == 4 || $supplierModel->supplierId == 5) && isset($_GET["orderGroupId"])) {
+                                $orderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
+                                $sumDiscountPercent = $orderSummary['extraDiscountArray'][$orderGroup->orderGroupId]['extraDiscountPercent'];
+                            } else {
+                                $i = 0;
+                                foreach ($orderSummary['extraDiscountArray'] as $exDiscount) {
+                                    if ($i == 0) {
+                                        $sumDiscountPercent = $exDiscount['extraDiscountPercent'];
+                                    }
+                                    $i++;
+                                }
+                            }
+                            $sumDiscount = $orderSummary['extraDiscount'];
+                            ?>
+                            <tr>
+                                <td class="align-right"><span class="price big">Spacial Discount (<span id="summaryDiscountPercent"><?php echo $sumDiscountPercent; ?></span>%)</span></td>
+                                <td class="align-right" style="width: 169px;"><span class="price big" id="summaryDiscount"><?php echo $sumDiscount; ?></span></td>
+                            </tr>
+                            <?php
+                        endif;
+                        if (isset($orderSummary["partnerDiscount"])) {
+                            //throw new Exception($orderSummary['partnerDiscountPercent']);
+                            if ($orderSummary['partnerDiscountPercent'] == '-1') {
+                                ?>
+                                <tr>
+                                    <td class="align-right"><span class="price big">Partner Discount(<span id="partnerDiscountPercent">เงินสด</span>)</span></td>
+                                    <td class="align-right" style="width: 169px;"><span class="price big" id="partnerDiscount"><?php echo $orderSummary["partnerDiscount"]; ?></span></td>
+                                </tr>
+                            <?php } else {
+                                ?>
+                                <tr>
+                                    <td class="align-right"><span class="price big">Partner Discount(<span id="partnerDiscountPercent"><?php echo $orderSummary["partnerDiscountPercent"]; ?></span>%)</span></td>
+                                    <td class="align-right" style="width: 169px;"><span class="price big" id="partnerDiscount"><?php echo $orderSummary["partnerDiscount"]; ?></span></td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
+                        <tr>
                             <td class="align-right"><span class="price big">Grand Total</span></td>
                             <td class="align-right" style="width: 169px;"><span class="price big" id="summaryGrandTotal"><?php echo $orderSummary['grandTotal']; ?></span></td>
                         </tr>
@@ -142,66 +144,66 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 </div>
 <div class="row">
-	<div class="col-md-12">
-		<div class="carousel-heading">
+    <div class="col-md-12">
+        <div class="carousel-heading">
             <h4>กรุณาอ่านและยอมรับ ข้อตกลงและเงื่อนไขการชำระเงิน</h4>
-		</div>
+        </div>
 
-		<div class="page-content">
+        <div class="page-content">
 
-			<?php
-			$orderSummary['grandTotal'] = str_replace(",", "", $orderSummary['grandTotal']);
-			if(doubleval($supplierModel->minimumOrder) > doubleval($orderSummary['grandTotal'])):
-				?>
-				<br />
-				<p class="alert alert-danger text-center">
-					เนื่องจากยอดซื้อของลูกค้า <?php echo number_format(doubleval($orderSummary['grandTotal']), 2); ?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format(doubleval($supplierModel->minimumOrder), 2); ?> บาท
-					ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
-				</p>
-				<br />
-			<?php endif; ?>
+            <?php
+            $orderSummary['grandTotal'] = str_replace(",", "", $orderSummary['grandTotal']);
+            if (doubleval($supplierModel->minimumOrder) > doubleval($orderSummary['grandTotal'])):
+                ?>
+                <br />
+                <p class="alert alert-danger text-center">
+                    เนื่องจากยอดซื้อของลูกค้า <?php echo number_format(doubleval($orderSummary['grandTotal']), 2); ?> บาท ไม่ถึงจำนวนเงินขั้นต่ำของผู้ขายกำหนด <?php echo number_format(doubleval($supplierModel->minimumOrder), 2); ?> บาท
+                    ผู้ขายจะจัดส่งสินค้าไปที่ศูนย์กระจายสินค้าประจำจังหวัด เพื่อให้ลูกค้ามารับด้วยตนเอง
+                </p>
+                <br />
+            <?php endif; ?>
 
-			<input type="checkbox" name="accept" id="accept" />
-			<label class="checkbox-label" for="accept"> ฉันได้อ่านและยอมรับ <a id="readTermCondition" style="text-decoration: underline;color: red" href="#" >ข้อตกลงและเงื่อนไข</a> การสั่งซื้อสินค้า ของ www.daiibuy.com</label>
-		</div>
-	</div>
+            <input type="checkbox" name="accept" id="accept" />
+            <label class="checkbox-label" for="accept"> ฉันได้อ่านและยอมรับ <a id="readTermCondition" style="text-decoration: underline;color: red" href="#" >ข้อตกลงและเงื่อนไข</a> การสั่งซื้อสินค้า ของ www.daiibuy.com</label>
+        </div>
+    </div>
 </div>
 <div class="modal fade " id="termAndConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	 aria-hidden="true">
-	<div class="modal-dialog" style="width:900px">
-		<?php $content = Content::model()->findByPk(16); ?>
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="carousel-heading">
-					<?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>   ?>
-					<h4 class="modal-title" id="myModalLabel"><?php echo $content->title; ?></h4>
-				</div>
-			</div>
-			<div class="modal-body">
-				<?php echo $content->description; ?>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-success" data-dismiss="modal" id="acceptModal">Accept</button>
-				<?php //<button type="button" class="btn btn-primary">Save changes</button>   ?>
-			</div>
-		</div>
-	</div>
+     aria-hidden="true">
+    <div class="modal-dialog" style="width:900px">
+        <?php $content = Content::model()->findByPk(16); ?>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="carousel-heading">
+                    <?php //<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>    ?>
+                    <h4 class="modal-title" id="myModalLabel"><?php echo $content->title; ?></h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <?php echo $content->description; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="acceptModal">Accept</button>
+                <?php //<button type="button" class="btn btn-primary">Save changes</button>    ?>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="page-content">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-			<?php
-			echo CHtml::link('&lt; Back', 'javascript:window.history.back();', array(
-				'class'=>'button orange',
-				'name'=>'Register'));
-			?>
-			<?php
-			echo CHtml::submitButton('Payment', array(
-				'class'=>'big green pull-right',
-				'name'=>'Payment',
-				'onClick'=>'return checkAcceptAgreement()'));
-			?>
+            <?php
+            echo CHtml::link('&lt; Back', 'javascript:window.history.back();', array(
+                'class' => 'button orange',
+                'name' => 'Register'));
+            ?>
+            <?php
+            echo CHtml::submitButton('Payment', array(
+                'class' => 'big green pull-right',
+                'name' => 'Payment',
+                'onClick' => 'return checkAcceptAgreement()'));
+            ?>
         </div>
     </div>
 </div>

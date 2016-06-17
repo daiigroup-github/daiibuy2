@@ -470,6 +470,8 @@ class OrderController extends MasterBackofficeController
                     $configExpiredDate = Configuration::model()->getRewardExpiredDate();
 //					$interval = new DateInterval('P' . $configExpiredDate->value . 'Y');
 //					$userReward->expiredDate = $datetime->add($interval);
+
+
                     $userReward->expiredDate = new CDbExpression('DATE_ADD(NOW(), INTERVAL ' . $configExpiredDate->value . ' YEAR)');
                     if ($userReward->save()) {
                         if ($model->save()) {
@@ -477,8 +479,19 @@ class OrderController extends MasterBackofficeController
                             $sentMail = new EmailSend();
                             $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/order/" . $id;
                             $emailObj->Setmail($model->userId, null, $model->supplierId, $model->orderGroupId, null, $documentUrl);
+                            $partner = Partner::model()->find("partnerCode ='" . $model->partnerCode . "'");
+                            if (isset($partner)) {
+                                $customName = $model->firstname . ' ' . $model->lastname;
+                                $supplier = Supplier::model()->find("supplierId=" . $model->supplierId);
+                                $supplierName = $supplier->name;
+                                $tomail = $partner->email;
+                                $partnerName = $partner->firstName . ' ' . $partner->lastName;
+                                $url = "http://" . Yii::app()->request->getServerName() . "/wow.daiigroup.com";
+                                $sentMail->mailPartnerAlert($tomail, $customName, $supplierName, $partnerName, $url);
+                            }
 //							$sentMail->mailCompleteOrderCustomer($emailObj);
-//							$sentMail->mailConfirmOrderSupplierDealer($emailObj);
+//							$sentMail->mailConfirmOrderSupplierDealer($emailObj);////////////sentmail to partner
+
                             $transaction->commit();
                             $this->redirect(array(
                                 'index'));

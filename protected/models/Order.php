@@ -17,7 +17,8 @@
  * @property OrderGroupToOrder[] $orderGroupToOrders
  * @property integer $sumTotal
  */
-class Order extends OrderMaster {
+class Order extends OrderMaster
+{
 
     public $maxCode;
     public $searchText;
@@ -37,14 +38,16 @@ class Order extends OrderMaster {
     /**
      * @return string the associated database table name
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
 // NOTE: you should only define rules for those attributes that
 // will receive user inputs.
         return CMap::mergeArray(parent::rules(), array(
@@ -55,56 +58,59 @@ class Order extends OrderMaster {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
 // NOTE: you may need to adjust the relation name and the related
 // class name for the relations automatically generated below.
         return CMap::mergeArray(parent::relations(), array(
 //code here
-                    'shippingAmphur' => array(
-                        self::BELONGS_TO,
-                        'Amphur',
-                        array(
-                            'shippingAmphurId' => 'amphurId'),),
-                    'shippingProvince' => array(
-                        self::BELONGS_TO,
-                        'Province',
-                        array(
-                            'shippingProvinceId' => 'provinceId'),),
-                    'shippingDistrict' => array(
-                        self::BELONGS_TO,
-                        'District',
-                        array(
-                            'shippingDistrictId' => 'districtId'),),
-                    'orderItemsSum' => array(
-                        self::STAT,
-                        'OrderItems',
-                        'orderId',
-                        'select' => 'sum(total)'
-                    ),
-                    'user' => array(
-                        self::BELONGS_TO,
-                        'User',
-                        'userId'),
-                    'orderGroups' => array(
-                        self::MANY_MANY,
-                        'OrderGroup',
-                        'order_group_to_order(orderId,orderGroupId)'
-                    ),
-                    'userSpacialProject' => array(
-                        self::HAS_MANY,
-                        'UserSpacialProject',
-                        'orderId'),
+            'shippingAmphur' => array(
+                self::BELONGS_TO,
+                'Amphur',
+                array(
+                    'shippingAmphurId' => 'amphurId'),),
+            'shippingProvince' => array(
+                self::BELONGS_TO,
+                'Province',
+                array(
+                    'shippingProvinceId' => 'provinceId'),),
+            'shippingDistrict' => array(
+                self::BELONGS_TO,
+                'District',
+                array(
+                    'shippingDistrictId' => 'districtId'),),
+            'orderItemsSum' => array(
+                self::STAT,
+                'OrderItems',
+                'orderId',
+                'select' => 'sum(total)'
+            ),
+            'user' => array(
+                self::BELONGS_TO,
+                'User',
+                'userId'),
+            'orderGroups' => array(
+                self::MANY_MANY,
+                'OrderGroup',
+                'order_group_to_order(orderId,orderGroupId)'
+            ),
+            'userSpacialProject' => array(
+                self::HAS_MANY,
+                'UserSpacialProject',
+                'orderId'),
         ));
     }
 
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return Cmap::mergeArray(parent::attributeLabels(), array());
     }
 
-    public function findAllMyFileBySupplierId($userId, $supplierId, $token) {
+    public function findAllMyFileBySupplierId($userId, $supplierId, $token)
+    {
         $criteria = new CDbCriteria();
         if (($userId != 0)) {
             if ($supplierId == 4) {
@@ -134,7 +140,8 @@ class Order extends OrderMaster {
         return $res;
     }
 
-    public function isAddThisModel($productId, $provinceId, $userId = NULL, $token = NULL) {
+    public function isAddThisModel($productId, $provinceId, $userId = NULL, $token = NULL)
+    {
         $res = true;
         if (isset($userId)) {
             $orders = Order::model()->findAll('supplierId = 4 AND userId = ' . $userId . ' AND provinceId = ' . $provinceId . ' AND type = 2');
@@ -150,7 +157,8 @@ class Order extends OrderMaster {
         return $res;
     }
 
-    public function findAllMyFileHistoryBySupplierId($userId, $supplierId, $token) {
+    public function findAllMyFileHistoryBySupplierId($userId, $supplierId, $token)
+    {
 
         $criteria = new CDbCriteria();
         if (($userId != 0)) {
@@ -198,7 +206,8 @@ class Order extends OrderMaster {
      * @param string $className active record class name.
      * @return Order the static model class
      */
-    public function findMaxInvoiceNo($model) {
+    public function findMaxInvoiceNo($model)
+    {
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
         $supplierUser = User::model()->findByPk($model->supplierId);
@@ -223,7 +232,8 @@ class Order extends OrderMaster {
         return isset($result->data[0]) ? $result->data[0]->maxCode : 0;
     }
 
-    public function findMaxOrderNo() {
+    public function findMaxOrderNo()
+    {
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
 
@@ -238,7 +248,8 @@ class Order extends OrderMaster {
         return isset($result->data[0]) ? $result->data[0]->maxCode : 0;
     }
 
-    public function findAllUserOrder() {
+    public function findAllUserOrder()
+    {
         $criteria = new CDbCriteria();
         $criteria->compare("userId", Yii::app()->user->id);
         $criteria->compare('invoiceNo', $this->invoiceNo, true);
@@ -258,7 +269,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findAllDealerOrder() {
+    public function findAllDealerOrder()
+    {
         $criteria = new CDbCriteria();
         $criteria->compare("dealerId", Yii::app()->user->id);
         $criteria->compare('invoiceNo', $this->invoiceNo, true);
@@ -282,7 +294,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findAllSupplierMyfile() {
+    public function findAllSupplierMyfile()
+    {
         $criteria = new CDbCriteria();
         if (Yii::app()->user->userType != 4) {
             $criteria->compare("supplierId", Yii::app()->user->supplierId);
@@ -300,7 +313,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findAllSupplierOrder() {
+    public function findAllSupplierOrder()
+    {
         $criteria = new CDbCriteria();
         $criteria->compare("supplierId", Yii::app()->user->supplierId);
         $criteria->compare('invoiceNo', $this->invoiceNo, true);
@@ -322,7 +336,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findAllFinanceAdminOrder() {
+    public function findAllFinanceAdminOrder()
+    {
         $criteria = new CDbCriteria();
         $criteria->condition = "status in (1 , 4 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98 ) ";
         $criteria->compare('invoiceNo', $this->invoiceNo, true);
@@ -345,7 +360,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findAllFinanceAdminOrderPay() {
+    public function findAllFinanceAdminOrderPay()
+    {
         $criteria = new CDbCriteria();
         $criteria->condition = "status > 1 AND paymentDateTime is not NULL";
         $criteria->compare('invoiceNo', $this->invoiceNo, true);
@@ -366,7 +382,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findGuestOrder() {
+    public function findGuestOrder()
+    {
         $criteria = new CDbCriteria();
         $criteria->compare("orderNo", $this->orderNo, FALSE, "AND");
         $criteria->compare("email", $this->email, FALSE, "AND");
@@ -384,7 +401,8 @@ class Order extends OrderMaster {
     }
 
 //Use in report
-    public function getNotpaySupplierOrder() {
+    public function getNotpaySupplierOrder()
+    {
         $criteria = new CDbCriteria();
         if (isset($this->supplierId)) {
             $criteria->compare("supplierId", $this->supplierId);
@@ -398,7 +416,8 @@ class Order extends OrderMaster {
         return $this->findAll($criteria);
     }
 
-    public function getNotpayDealerOrder() {
+    public function getNotpayDealerOrder()
+    {
         $criteria = new CDbCriteria();
         if (isset($this->dealerId)) {
             $criteria->compare("dealerId", $this->dealerId);
@@ -412,56 +431,62 @@ class Order extends OrderMaster {
         return $this->findAll($criteria);
     }
 
-    public function getSumOrderBySupplier($supplierId) {
+    public function getSumOrderBySupplier($supplierId)
+    {
         $totals = Yii::app()->db->createCommand()
-                ->select('sum(total+pointToBaht) as totals')
-                ->from('order')
-                ->where('supplierId = ' . $supplierId . ' AND ' . '(order.orderStatusid = 11 OR order.orderStatusid = 13 OR order.orderStatusid = 16) ')
-                ->queryRow();
+        ->select('sum(total+pointToBaht) as totals')
+        ->from('order')
+        ->where('supplierId = ' . $supplierId . ' AND ' . '(order.orderStatusid = 11 OR order.orderStatusid = 13 OR order.orderStatusid = 16) ')
+        ->queryRow();
         return $totals;
     }
 
-    public function getSumOrderBySupplierTransferd($supplierId) {
+    public function getSumOrderBySupplierTransferd($supplierId)
+    {
         $totals = Yii::app()->db->createCommand()
-                ->select('sum(total+pointToBaht) as totals')
-                ->from('order')
-                ->where('supplierId = ' . $supplierId . ' AND ' . '(order.orderStatusid = 12 OR order.orderStatusid = 14 OR order.orderStatusid = 15 OR order.orderStatusid = 16) ')
-                ->queryRow();
+        ->select('sum(total+pointToBaht) as totals')
+        ->from('order')
+        ->where('supplierId = ' . $supplierId . ' AND ' . '(order.orderStatusid = 12 OR order.orderStatusid = 14 OR order.orderStatusid = 15 OR order.orderStatusid = 16) ')
+        ->queryRow();
         return $totals;
     }
 
-    public function getSumOrderByDealerTransferd($dealerId) {
+    public function getSumOrderByDealerTransferd($dealerId)
+    {
         $totals = Yii::app()->db->createCommand()
-                ->select('sum(total+pointToBaht) as totals')
-                ->from('order')
-                ->where('dealerId = ' . $dealerId . ' AND ' . '(order.orderStatusid = 13 OR order.orderStatusid = 14 OR order.orderStatusid = 16 OR order.orderStatusid = 15) ')
-                ->queryRow();
+        ->select('sum(total+pointToBaht) as totals')
+        ->from('order')
+        ->where('dealerId = ' . $dealerId . ' AND ' . '(order.orderStatusid = 13 OR order.orderStatusid = 14 OR order.orderStatusid = 16 OR order.orderStatusid = 15) ')
+        ->queryRow();
         return $totals;
     }
 
-    public function getSumMarginDealer($dealerId) {
+    public function getSumMarginDealer($dealerId)
+    {
         $totalDealerMargin = Yii::app()->db->createCommand()
-                ->select('sum((((order.total+order.pointToBaht)*user_certificate_file.value)/100)) as sumMarginDealer')
-                ->from('order')
-                ->join('user_certificate_file', 'order.supplierId = user_certificate_file.userId AND user_certificate_file.forUserType = 2 ')
-                ->join('user_certificate_file ucf', 'order.supplierId = ucf.userId AND ucf.forUserType = 3 ')
-                ->where('order.dealerId = ' . $dealerId . ' AND ' . '(order.orderStatusid = 11 OR order.orderStatusid = 12 OR order.orderStatusid = 15) AND user_certificate_file.status = 1 ')
-                ->queryRow();
+        ->select('sum((((order.total+order.pointToBaht)*user_certificate_file.value)/100)) as sumMarginDealer')
+        ->from('order')
+        ->join('user_certificate_file', 'order.supplierId = user_certificate_file.userId AND user_certificate_file.forUserType = 2 ')
+        ->join('user_certificate_file ucf', 'order.supplierId = ucf.userId AND ucf.forUserType = 3 ')
+        ->where('order.dealerId = ' . $dealerId . ' AND ' . '(order.orderStatusid = 11 OR order.orderStatusid = 12 OR order.orderStatusid = 15) AND user_certificate_file.status = 1 ')
+        ->queryRow();
         return $totalDealerMargin;
     }
 
-    public function getSumMargin($supplierId) {
+    public function getSumMargin($supplierId)
+    {
         $totalMargin = Yii::app()->db->createCommand()
-                ->select('sum(((order_product.total*1.07)*user_certificate_file.value)/100) as totalMargin')
-                ->from('order')
-                ->join('order_product', 'order.orderId = order_product.orderId')
-                ->join('user_certificate_file', 'order_product.marginId = user_certificate_file.id')
-                ->where('order.supplierId = ' . $supplierId . ' AND ' . '(order.orderStatusid = 11 OR order.orderStatusid = 13 OR order.orderStatusid = 16) AND user_certificate_file.forUserType = 3 ')
-                ->queryRow();
+        ->select('sum(((order_product.total*1.07)*user_certificate_file.value)/100) as totalMargin')
+        ->from('order')
+        ->join('order_product', 'order.orderId = order_product.orderId')
+        ->join('user_certificate_file', 'order_product.marginId = user_certificate_file.id')
+        ->where('order.supplierId = ' . $supplierId . ' AND ' . '(order.orderStatusid = 11 OR order.orderStatusid = 13 OR order.orderStatusid = 16) AND user_certificate_file.forUserType = 3 ')
+        ->queryRow();
         return $totalMargin;
     }
 
-    public function findOrderBySupplierId($supplierId) {
+    public function findOrderBySupplierId($supplierId)
+    {
         $criteria = new CDbCriteria();
         $criteria->compare("supplierId", $supplierId);
         $criteria->addInCondition("orderStatusid", array(
@@ -473,7 +498,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findOrderByDealerId($dealerId) {
+    public function findOrderByDealerId($dealerId)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = "t.orderId,
 					t.invoiceNo,
@@ -498,7 +524,8 @@ class Order extends OrderMaster {
             'criteria' => $criteria));
     }
 
-    public function findOrderBySupplierIdTransfered($supplierId) {
+    public function findOrderBySupplierIdTransfered($supplierId)
+    {
         $criteria = new CDbCriteria();
         $criteria->compare("supplierId", $supplierId);
         $criteria->addInCondition("orderStatusid", array(
@@ -511,7 +538,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findOrderByDealerIdTransfered($dealerId) {
+    public function findOrderByDealerIdTransfered($dealerId)
+    {
         $criteria = new CDbCriteria();
         $criteria->select = "t.orderId,t.invoiceNo,
 					t.orderNo,
@@ -534,14 +562,15 @@ class Order extends OrderMaster {
             'criteria' => $criteria));
     }
 
-    public function getSupplierRewardPoint() {
+    public function getSupplierRewardPoint()
+    {
 
         $margin = Yii::app()->db->createCommand()
-                ->select('value as userReward')
-                ->from('user_certificate_file')
-                ->where('supplierId = :id and status = 1', array(
-                    'id' => $this->supplierId))
-                ->queryRow();
+        ->select('value as userReward')
+        ->from('user_certificate_file')
+        ->where('supplierId = :id and status = 1', array(
+            'id' => $this->supplierId))
+        ->queryRow();
         return $margin;
     }
 
@@ -559,7 +588,8 @@ class Order extends OrderMaster {
 //		return $totals;
 //	}
 
-    public function getCollectedOrderView($userId) {
+    public function getCollectedOrderView($userId)
+    {
         $value = Configuration::model()->getOrderExpiredDate();
         $orders = Order::model()->findAll('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND orderStatusid < 99 AND userId = ' . $userId);
         $res = 0;
@@ -576,7 +606,8 @@ class Order extends OrderMaster {
         return $res;
     }
 
-    public function getCollectedOrder($userId) {
+    public function getCollectedOrder($userId)
+    {
         $value = Configuration::model()->getOrderExpiredDate();
         $orders = Order::model()->findAll('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND userId = ' . $userId);
         $res = 0.00;
@@ -595,17 +626,19 @@ class Order extends OrderMaster {
         return $res;
     }
 
-    public function clearCollectedOrder($userId) {
+    public function clearCollectedOrder($userId)
+    {
         $value = Configuration::model()->getOrderExpiredDate();
         $res = Yii::app()->db->createCommand()
-                ->select('sum(total) as collectedOrder')
-                ->from('order')
-                ->where('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND userId = ' . $userId)
-                ->queryRow();
+        ->select('sum(total) as collectedOrder')
+        ->from('order')
+        ->where('DATE_ADD(createDateTime, INTERVAL ' . $value->value . ' YEAR) >= NOW() AND orderStatusid > 1 AND userId = ' . $userId)
+        ->queryRow();
         return $res['collectedOrder'] == null ? 0 : $res['collectedOrder'];
     }
 
-    public function showOrderStatus($status) {
+    public function showOrderStatus($status)
+    {
         $user = User::model()->findByPk(Yii::app()->user->id);
         switch ($status) {
             case 0:
@@ -617,7 +650,8 @@ class Order extends OrderMaster {
         }
     }
 
-    public function showOrderType($type) {
+    public function showOrderType($type)
+    {
         switch ($type) {
             case 1:
                 return "Myfile";
@@ -631,7 +665,8 @@ class Order extends OrderMaster {
         }
     }
 
-    public function formatMoney($number, $fractional = false) {
+    public function formatMoney($number, $fractional = false)
+    {
         if ($fractional) {
             $number = sprintf('%.2f', $number);
         }
@@ -646,7 +681,8 @@ class Order extends OrderMaster {
         return $number;
     }
 
-    public function beforeSave() {
+    public function beforeSave()
+    {
 
         if (!$this->isNewRecord) {
             $this->updateDateTime = new CDbExpression("NOW()");
@@ -661,7 +697,8 @@ class Order extends OrderMaster {
     public $paymentMonth;
     public $totalSummary;
 
-    public function findAllSummaryReport() {
+    public function findAllSummaryReport()
+    {
 // Warning: Please modify the following code to remove attributes that
 // should not be searched.
         $criteria = new CDbCriteria;
@@ -681,7 +718,8 @@ class Order extends OrderMaster {
         ));
     }
 
-    public function findTotalSummaryReport() {
+    public function findTotalSummaryReport()
+    {
         $criteria = new CDbCriteria;
         $criteria->select = "sum(totalIncVat) as totalSummary";
         $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, FALSE, 'AND');
@@ -692,7 +730,8 @@ class Order extends OrderMaster {
         return $this->find($criteria)->totalSummary;
     }
 
-    public function search() {
+    public function search()
+    {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
@@ -720,7 +759,8 @@ class Order extends OrderMaster {
     /**
      * Front
      */
-    public function findByTokenAndSupplierId($token, $supplierId) {
+    public function findByTokenAndSupplierId($token, $supplierId)
+    {
         $daiibuy = new DaiiBuy();
         $daiibuy->loadCookie();
 
@@ -759,7 +799,8 @@ class Order extends OrderMaster {
         return $model;
     }
 
-    public function countGinzaHomeAndGinzaTownUnits() {
+    public function countGinzaHomeAndGinzaTownUnits()
+    {
 //		$cartUnits = 0;
 //
 //		$condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
@@ -806,7 +847,8 @@ class Order extends OrderMaster {
         return $totalUnits;
     }
 
-    public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent) {
+    public function sumExtraDiscount($supplierId, $supplierDiscountRangePercent)
+    {
 
         $result = array();
         $criteria = new CDbCriteria();
@@ -845,7 +887,8 @@ class Order extends OrderMaster {
         }
     }
 
-    public function sumOrderTotalBySupplierId($supplierId = NULL) {
+    public function sumOrderTotalBySupplierId($supplierId = NULL)
+    {
         $res = [];
         $condition = 'supplierId=:supplierId AND type&' . self::ORDER_TYPE_CART . ' > 0';
         $params = [':supplierId' => isset($supplierId) ? $supplierId : $this->supplierId];
@@ -1022,7 +1065,8 @@ class Order extends OrderMaster {
 
     public $spacialPercent;
 
-    public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE, $orderGroupId = NULL) {
+    public function sumOrderTotalByProductIdAndQuantity($productId = null, $quantity, $supplierId, $payValue = NULL, $useDiscount = FALSE, $orderGroupId = NULL)
+    {
         if (isset($orderGroupId))
             $orderGroupModel = OrderGroup::model()->findByPk($orderGroupId);
         $res = [];
