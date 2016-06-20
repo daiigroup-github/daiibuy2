@@ -1,42 +1,47 @@
 <?php
 
-class UserPartner extends UserPartnerMaster {
+class UserPartner extends UserPartnerMaster
+{
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return Product the static model class
      */
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return CMap::mergeArray(parent::rules(), array(
-                        //code here
+        //code here
         ));
     }
 
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return CMap::mergeArray(parent::relations(), array(
-                        //code here
+        //code here
         ));
     }
 
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return Cmap::mergeArray(parent::attributeLabels(), array(
-                        //code here
+        //code here
         ));
     }
 
@@ -47,7 +52,8 @@ class UserPartner extends UserPartnerMaster {
       {
       }
      */
-    public function findPartnerTypeByCode($code) {
+    public function findPartnerTypeByCode($code)
+    {
         $code = $code;
         $codeArray = explode("-", $code);
         $partnerType = NULL;
@@ -62,7 +68,8 @@ class UserPartner extends UserPartnerMaster {
         return $partnerType;
     }
 
-    public function findPartnerDiscount($userId, $supplierId, $summary) {
+    public function findPartnerDiscount($userId, $supplierId, $summary)
+    {
         $percent = 0;
         $user = User::model()->findByPk($userId);
         $code = $user->partnerCode;
@@ -82,7 +89,6 @@ class UserPartner extends UserPartnerMaster {
                 $result["discount"] = $orgEmp->org->discountPercent;
             } else {
                 $link = Link::model()->find("lower(linkCode) = '" . strtolower($code) . "'");
-
                 $linkItems = LinkItems::model()->find("linkId = $link->linkId AND supplierId = $supplierId");
                 //throw new Exception($code);
                 //throw new Exception(print_r($linkItems->attributes, true));
