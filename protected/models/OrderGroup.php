@@ -941,11 +941,11 @@ reviewed the transaction status in the Business Center.";
                     //mail to sales.
                     $mailToSale = new EmailSend();
                     $employee = Employee::model()->find("employeeId=" . $sale);
-                    $tomail = $employee->email;
+                    $tomail = $employee->email . '@daiigroup.com';
                     $name = $employee->fnTh . ' ' . $employee->lnTh;
                     $customName = $this->firstname . ' ' . $this->lastname;
                     $tel = $this->telephone;
-                    $email = $this->email . '@daiigroup.com';
+                    $email = $this->email;
                     $mailToSale->mailSaleQueueSupplier($tomail, $name, $customName, $tel, $email);
                 }
             }
