@@ -1,8 +1,10 @@
 <?php
 
-class ProductController extends MasterFenzerController {
+class ProductController extends MasterFenzerController
+{
 
-    public function actionIndex($id) {
+    public function actionIndex($id)
+    {
         $product = array(
             'title' => 'Madrid Sanitary #1',
             'code' => 'PBS173',
@@ -70,7 +72,8 @@ class ProductController extends MasterFenzerController {
       }
      */
 
-    public function actionCalculateProductItems() {
+    public function actionCalculateProductItems()
+    {
         if (isset($_POST)) {
             $res = '';
 
@@ -78,7 +81,11 @@ class ProductController extends MasterFenzerController {
 
             $category2Model = Category::model()->findByPk($_POST['categoryH']);
             $length = $_POST['l'];
-            $noSpan = ceil($length / Product::SPAN_FENZER);
+            if ($_POST["categoryId"] != 111) {
+                $noSpan = ceil($length / Product::SPAN_FENZER);
+            } else {
+                $noSpan = ceil($length / Product::SPAN_ZEN);
+            }
 
             //Comment by tong change find product solution with cat1 and cat2
 //			foreach($category2Model->fenzerToProducts as $fenzerProduct)
@@ -95,7 +102,8 @@ class ProductController extends MasterFenzerController {
         }
     }
 
-    public function actionAddProductItem() {
+    public function actionAddProductItem()
+    {
         if (isset($_POST)) {
             $this->writeToFile('/tmp/fenzerAddItems', print_r($_POST, true));
             echo $this->generateTrByProductId($_POST['productId'], $_POST['qty']);
@@ -105,28 +113,30 @@ class ProductController extends MasterFenzerController {
     /**
      * Generate TR by productId
      */
-    private function generateTrByProductId($productId, $qty = 1) {
+    private function generateTrByProductId($productId, $qty = 1)
+    {
         $product = Product::model()->findByPk($productId);
 
         $price = ($product->calProductPromotionPrice() != 0) ? $product->calProductPromotionPrice() : $product->calProductPrice();
 
         return '<tr>' .
-                '<td>' . $product->code . '</td>' .
-                '<td>' . $product->name . '</td>' .
-                '<td>' . number_format($product->calProductPrice(), 2) . '</td>' .
-                '<td>' .
-                '<div class="numeric-input full-width">' .
-                '<input type="text" value="' . $qty . '" name="qty[' . $product->productId . ']"/>' .
-                '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
-                '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
-                '</div>' .
-                '</td>' .
-                '<td>' . number_format($qty * $price, 2) . '</td>' .
-                '<td><a class="btn btn-danger btn-xs removeProductItem"><i class="fa fa-ban"></i></a></td>' .
-                '</tr>';
+        '<td>' . $product->code . '</td>' .
+        '<td>' . $product->name . '</td>' .
+        '<td>' . number_format($product->calProductPrice(), 2) . '</td>' .
+        '<td>' .
+        '<div class="numeric-input full-width">' .
+        '<input type="text" value="' . $qty . '" name="qty[' . $product->productId . ']"/>' .
+        '<span class="arrow-up"><i class="icons icon-up-dir"></i></span>' .
+        '<span class="arrow-down"><i class="icons icon-down-dir"></i></span>' .
+        '</div>' .
+        '</td>' .
+        '<td>' . number_format($qty * $price, 2) . '</td>' .
+        '<td><a class="btn btn-danger btn-xs removeProductItem"><i class="fa fa-ban"></i></a></td>' .
+        '</tr>';
     }
 
-    public function actionAddToCart() {
+    public function actionAddToCart()
+    {
         //$this->writeToFile('/tmp/addToCartFenzer', print_r($_POST, true));
 
         $res = array();
