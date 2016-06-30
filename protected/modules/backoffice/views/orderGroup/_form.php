@@ -146,7 +146,7 @@
 //					echo $province->provinceName;
             echo $form->dropDownList($model, 'paymentProvinceId', CHtml::listData(Province::model()->findAll(), 'provinceId', 'provinceName'), array(
                 'id' => 'billingProvince',
-                'name' => 'OrderGroup[provinceId]',
+                'name' => 'OrderGroup[paymentProvinceId]',
 //						'disabled'=>'disabled'
 //						));
                 'prompt' => ' --- เลือกจังหวัด ---',
@@ -181,7 +181,7 @@
             array(), array(
 //                            'class'=>'chosen-select-full-width',
                 'id' => 'billingAmphur',
-                'name' => 'OrderGroup[amphurId]',
+                'name' => 'OrderGroup[paymentAmphurId]',
                 'prompt' => '--- เลือกอำเภอ ---',
                 'ajax' => array(
                     'type' => 'POST',
@@ -209,7 +209,7 @@
             array(), array(
 //                            'class'=>'chosen-select-full-width',
                 'id' => 'billingDistrict',
-                'name' => 'OrderGroup[districtId]',
+                'name' => 'OrderGroup[paymentDistrictId]',
                 'prompt' => '--- เลือกตำบล ---',
             )
             );
