@@ -65,7 +65,7 @@ return false;
             array(
                 'name' => 'subCategoryId',
                 'type' => 'html',
-                'value' => 'Chtml::image(Yii::app()->baseUrl.$data->subCategory->image,"",array("style"=>"width:150px"))."<br>".$data->subCategory->title',
+                'value' => 'isset($data->subCategory)?Chtml::image(Yii::app()->baseUrl.$data->subCategory->image,"",array("style"=>"width:150px"))."<br>".$data->subCategory->title:""',
                 'htmlOptions' => array(
                     "style" => 'width:150px',
                     "class" => 'text-center')
