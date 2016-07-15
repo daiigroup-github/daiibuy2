@@ -1,7 +1,6 @@
 <?php
 
-class OrderController extends MasterBackofficeController
-{
+class OrderController extends MasterBackofficeController {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -12,8 +11,7 @@ class OrderController extends MasterBackofficeController
     /**
      * @return array action filters
      */
-    public function filters()
-    {
+    public function filters() {
         return array(
             'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
@@ -25,26 +23,25 @@ class OrderController extends MasterBackofficeController
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules()
-    {
+    public function accessRules() {
         return array(
-        /*
-          array('allow',  // allow all users to perform 'index' and 'view' actions
-          'actions'=>array('index','view'),
-          'users'=>array('*'),
-          ),
-          array('allow', // allow authenticated user to perform 'create' and 'update' actions
-          'actions'=>array('create','update'),
-          'users'=>array('@'),
-          ),
-          array('allow', // allow admin user to perform 'admin' and 'delete' actions
-          'actions'=>array('admin','delete'),
-          'users'=>array('admin'),
-          ),
-          array('deny',  // deny all users
-          'users'=>array('*'),
-          ),
-         */
+                /*
+                  array('allow',  // allow all users to perform 'index' and 'view' actions
+                  'actions'=>array('index','view'),
+                  'users'=>array('*'),
+                  ),
+                  array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                  'actions'=>array('create','update'),
+                  'users'=>array('@'),
+                  ),
+                  array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                  'actions'=>array('admin','delete'),
+                  'users'=>array('admin'),
+                  ),
+                  array('deny',  // deny all users
+                  'users'=>array('*'),
+                  ),
+                 */
         );
 
         /*
@@ -57,8 +54,7 @@ class OrderController extends MasterBackofficeController
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView($id, $token = null)
-    {
+    public function actionView($id, $token = null) {
 //		$model = $this->loadModel($id);
         $model = OrderGroup::model()->findByPk($id);
 //		if(!isset(Yii::app()->user->id) && $model->userId != 0)
@@ -102,8 +98,7 @@ class OrderController extends MasterBackofficeController
         ));
     }
 
-    public function actionViewOrder($id)
-    {
+    public function actionViewOrder($id) {
         $model = OrderGroup::model()->findByPk($id);
         $this->layout = '//layouts/print';
         $daiibuy = new DaiiBuy();
@@ -119,8 +114,7 @@ class OrderController extends MasterBackofficeController
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Order;
 
         // Uncomment the following line if AJAX validation is needed
@@ -160,8 +154,7 @@ class OrderController extends MasterBackofficeController
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
@@ -201,21 +194,19 @@ class OrderController extends MasterBackofficeController
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->loadModel($id)->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(
-                'admin'));
+                        'admin'));
     }
 
     /**
      * Lists all models.
      */
-    public function actionAdmin()
-    {
+    public function actionAdmin() {
         $dataProvider = new CActiveDataProvider('Order');
         $this->render('admin', array(
             'dataProvider' => $dataProvider,
@@ -225,8 +216,7 @@ class OrderController extends MasterBackofficeController
     /**
      * Manages all models.
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
 
         $model = new OrderGroup('search');
         $model->unsetAttributes(); // clear any default values
@@ -264,8 +254,7 @@ class OrderController extends MasterBackofficeController
             'searchFn' => $serchFn));
     }
 
-    public function actionOrderHistory()
-    {
+    public function actionOrderHistory() {
         $model = new OrderGroup('search');
         $model->unsetAttributes(); // clear any default values
         if (isset($_GET['OrderGroup']))
@@ -293,8 +282,7 @@ class OrderController extends MasterBackofficeController
      * @return Order the loaded model
      * @throws CHttpException
      */
-    public function loadModel($id)
-    {
+    public function loadModel($id) {
         $model = Order::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
@@ -305,16 +293,14 @@ class OrderController extends MasterBackofficeController
      * Performs the AJAX validation.
      * @param Order $model the model to be validated
      */
-    protected function performAjaxValidation($model)
-    {
+    protected function performAjaxValidation($model) {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'order-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
 
-    public function actionPrint($id)
-    {
+    public function actionPrint($id) {
         $model = OrderGroup::model()->findByPk($id);
         $this->layout = '//layouts/print';
         $daiibuy = new DaiiBuy();
@@ -326,8 +312,7 @@ class OrderController extends MasterBackofficeController
         ));
     }
 
-    public function actionPrintPayForm($id)
-    {
+    public function actionPrintPayForm($id) {
         $model = OrderGroup::model()->findByPk($id);
         $this->layout = '//layouts/print';
         $daiibuy = new DaiiBuy();
@@ -339,8 +324,7 @@ class OrderController extends MasterBackofficeController
         ));
     }
 
-    public function actionUserConfirmTransfer($id)
-    {
+    public function actionUserConfirmTransfer($id) {
         $order = OrderGroup::model()->findByPk($id);
         $orderFile = new OrderGroupFile();
         if (isset($order)) {
@@ -418,8 +402,7 @@ class OrderController extends MasterBackofficeController
         }
     }
 
-    public function actionAdminDefinePaymentDateTime($id, $paymentDateTime)
-    {
+    public function actionAdminDefinePaymentDateTime($id, $paymentDateTime) {
 //		throw new Exception(print_r(date_create($paymentDateTime),true));
         $order = OrderGroup::model()->findByPk($id);
         //throw new Exception($order->type);
@@ -440,12 +423,38 @@ class OrderController extends MasterBackofficeController
         }
     }
 
-    public function actionAdminApproveConfirmTransfer($id)
-    {
+    public function actionAdminApproveConfirmTransfer($id) {
         $model = OrderGroup::model()->findByPk($id);
 //        if (isset($model->status)) {
 //            throw new Exception($model->status);
 //        }
+        // throw new Exception($id);
+        $period = $model->getPeriod($id);
+        //throw new Exception($model->period);
+        if ($period == 1) {
+            $group1 = 'daiibuy-ginza-a1@daiigroup.com';
+            $group2 = 'daiibuy-ginza-s1@daiigroup.com';
+        } else if ($period == 2) {
+            $group1 = 'daiibuy-ginza-a2@daiigroup.com';
+            $group2 = 'daiibuy-ginza-s2@daiigroup.com';
+        } else if ($period == 3) {
+            $group1 = 'daiibuy-ginza-a3@daiigroup.com';
+            $group2 = 'daiibuy-ginza-s3@daiigroup.com';
+        } else if ($period == 4) {
+            $group1 = 'daiibuy-ginza-a4@daiigroup.com';
+            $group2 = 'daiibuy-ginza-s4@daiigroup.com';
+        }
+        $group3 = $model->email;
+        $template = "period" . $period;
+        $mail = new EmailSend();
+        $custom = $model->firstname . " " . $model->lastname;
+        $total = $model->summary;
+        $text = "Daiibuy : ลูกค้าชำระเงินงวดที่ " . $period;
+        $text2 = "Daiibuy : ยืนยันการชำระเงินงวดที่ " . $period . " เรียบร้อย";
+        $mail->mailPay($custom, $total, $text, $template . "_1", $group1);
+        $mail->mailPay($custom, $total, $text, $template . "_2", $group2);
+        $mail->mailPay($custom, $total, $text2, $template . "_3", $group3);
+        throw new Exception('mailsened');
         $model->status = 3;
         $model->invoiceNo = OrderGroup::model()->genInvNo($model);
 //			$model->paymentDateTime = new CDbExpression('NOW()');
@@ -537,8 +546,7 @@ class OrderController extends MasterBackofficeController
             'orderModel' => $model));
     }
 
-    public function actionAdminRejectConfirmTransfer($id, $remark)
-    {
+    public function actionAdminRejectConfirmTransfer($id, $remark) {
 //		if (isset($_POST["remark"]))
 //			$remark = $_POST["remark"];
         $model = OrderGroup::model()->findByPk($id);
@@ -560,8 +568,7 @@ class OrderController extends MasterBackofficeController
             'index'));
     }
 
-    public function actionSupplierShipping($id)
-    {
+    public function actionSupplierShipping($id) {
         $order = OrderGroup::model()->findByPk($id);
         if (isset($order)) {
             if (isset($_POST["OrderGroup"]["supplierShippingDateTime"])) {
@@ -603,16 +610,14 @@ class OrderController extends MasterBackofficeController
         }
     }
 
-    public function actionSupplierShippingNotice($id)
-    {
+    public function actionSupplierShippingNotice($id) {
         $model = OrderGroup::model()->findByPk($id);
         $this->render("_supplier_shipping_notice", array(
             "model" => $model
         ));
     }
 
-    public function actionPrintProductList($id)
-    {
+    public function actionPrintProductList($id) {
         $model = OrderGroup::model()->findByPk($id);
         $this->layout = '//layouts/print';
         $daiibuy = new DaiiBuy();
@@ -624,8 +629,7 @@ class OrderController extends MasterBackofficeController
         ));
     }
 
-    public function selectPageTitle($model = null)
-    {
+    public function selectPageTitle($model = null) {
         $user = User::model()->findByPk(Yii::app()->user->id);
 //return Array to use in view.php
         $userOrder = User::model()->findByPk($model->userId);
@@ -677,11 +681,11 @@ class OrderController extends MasterBackofficeController
                         'comfirmText' => 'ต้องการยืนยันโอนเงิน ?',
                         'actionUrl' => "order/UserConfirmTransfer",
                         'description' => "รอการยืนยันโอนเงินจากลูกค้า"
-                    ) : array(
+                            ) : array(
                         'pageTitle' => "แบบร่างใบสั่งซื้อสินค้า",
                         'defaultStatus' => '0',
                         'description' => "รอยืนยันการโอนเงินจากลูกค้า"
-                    ),
+                            ),
                     '2' => array(
                         'pageTitle' => "แบบร่างใบสั่งซื้อสินค้า",
                         'defaultStatus' => '2',
@@ -703,7 +707,7 @@ class OrderController extends MasterBackofficeController
                         'actionUrl' => "order/DealerReceived",
                         'optionButtonText2' => 'ตีกลับสินค้า',
                         'description' => "เมื่อสินค้าถูกส่งมาถึง กรุณาตรวจสอบความถูกต้องสมบูรณ์ของสินค้าก่อนรับสินค้า หากสินค้าแตกหักเสียหาย หรือไม่สมบูรณ์กรุณาส่งคืนแล้วกดปุ่ม 'ตีกลับสินค้า' หากตรวจสอบถูกต้องเรียบร้อยดีให้กดยืนยันรับสินค้า."
-                    ),
+                            ),
                     '98' => array(
                         'pageTitle' => "ใบสั่งซื้อสินค้า",
                         'defaultStatus' => '98',
@@ -847,8 +851,7 @@ class OrderController extends MasterBackofficeController
         }
     }
 
-    public function actionFindTileModelByBrandIdAjax()
-    {
+    public function actionFindTileModelByBrandIdAjax() {
         $data = BrandModel::model()->findAll('brandId=:brandId AND title = "MADRID TILE"', array(
             ':brandId' => (int) $_POST['brandId']));
 
@@ -864,8 +867,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllModelByBrandIdAjax()
-    {
+    public function actionFindAllModelByBrandIdAjax() {
         $data = BrandModel::model()->findAll('brandId=:brandId', array(
             ':brandId' => (int) $_POST['brandId']));
 
@@ -881,8 +883,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllCat1ByBrandModelIdAjax()
-    {
+    public function actionFindAllCat1ByBrandModelIdAjax() {
         $data = ModelToCategory1::model()->findAll('brandModelId=:brandModelId', array(
             ':brandModelId' => (int) $_POST['brandModelId']));
 //		$result = array(
@@ -897,8 +898,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllCat2AndProductByBrandCat1IdAjax()
-    {
+    public function actionFindAllCat2AndProductByBrandCat1IdAjax() {
         $data = CategoryToSub::model()->findAll('categoryId=:categoryId', array(
             ':categoryId' => (int) $_POST['cat1Id']));
 //		$result = array(
@@ -913,8 +913,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllProductInCat2Cat1IdAjax()
-    {
+    public function actionFindAllProductInCat2Cat1IdAjax() {
         $data = Category2ToProduct::model()->findAll('category1Id=:category1Id', array(
             ':category1Id' => (int) $_POST['cat1Id']));
 //		$result = array(
@@ -929,8 +928,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllProductByCat1IdAjax()
-    {
+    public function actionFindAllProductByCat1IdAjax() {
         $data = Category2ToProduct::model()->findAll('category1Id=:category1Id and status = 1 and brandId=:brandId', array(
             ':category1Id' => (int) $_POST['cat1Id'],
             ':brandId' => (int) $_POST['brandId']));
@@ -946,8 +944,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllProductByCat2IdAjax()
-    {
+    public function actionFindAllProductByCat2IdAjax() {
         $data = Category2ToProduct::model()->findAll('category2Id=:category2Id', array(
             ':category2Id' => (int) $_POST['cat2Id']));
 //		$result = array(
@@ -962,8 +959,7 @@ class OrderController extends MasterBackofficeController
 //		echo CJSON::encode($result);
     }
 
-    public function actionFindAllGroupNameByCat2IdAjax()
-    {
+    public function actionFindAllGroupNameByCat2IdAjax() {
         $data = Category2ToProduct::model()->findAll('category2Id=:category2Id AND groupName is not null', array(
             ':category2Id' => (int) $_POST['cat2Id']));
 //		$result = array(

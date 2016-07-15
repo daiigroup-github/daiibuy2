@@ -1,7 +1,6 @@
 <?php
 
-class EmailSend
-{ //extends Controller
+class EmailSend { //extends Controller
 // Example for send Email
 //$this->mailsend("Tong","Tong","kamy_jap@hotmail.com","TEst Test Test","Test Test","SSSSSSSS");
 //private $website = Yii::app()->getParams()->websiteUrl;
@@ -34,8 +33,7 @@ class EmailSend
         "12" => "ธันวาคม"
     );
 
-    private function prepareMailInfo($mailObj)
-    {
+    private function prepareMailInfo($mailObj) {
 
         if (isset($mailObj->userId)) {
             $user = new User();
@@ -104,8 +102,7 @@ class EmailSend
 //		  //$this->refresh(); */
 //	}
 
-    public function mailNewAccount($mailObj)
-    {
+    public function mailNewAccount($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'newAccount';
@@ -147,8 +144,7 @@ class EmailSend
           //$this->refresh(); */
     }
 
-    public function mailNewSupplierDealer($mailObj)
-    {
+    public function mailNewSupplierDealer($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'newSupplierDealer';
@@ -185,8 +181,7 @@ class EmailSend
         }
     }
 
-    public function mailRequestApproveTranferToAdmin($mailObj)
-    {
+    public function mailRequestApproveTranferToAdmin($mailObj) {
 //mail to Admin
         $this->prepareMailInfo($mailObj);
         foreach ($this->admins as $admin) {
@@ -229,8 +224,7 @@ class EmailSend
         }
     }
 
-    public function mailReviewEPayment($mailObj)
-    {
+    public function mailReviewEPayment($mailObj) {
         $this->prepareMailInfo($mailObj);
 
         if ($this->orderModel->paymentMethod == 1) {
@@ -294,8 +288,7 @@ class EmailSend
 //        }
     }
 
-    public function mailCompleteOrderCustomer($mailObj)
-    {
+    public function mailCompleteOrderCustomer($mailObj) {
         $this->prepareMailInfo($mailObj);
 
         if ($this->orderModel->paymentMethod == 1) {
@@ -351,8 +344,7 @@ class EmailSend
         }
     }
 
-    public function mailConfirmOrderSupplierDealer($mailObj)
-    {
+    public function mailConfirmOrderSupplierDealer($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'completeOrderSupplierDealer';
@@ -390,8 +382,7 @@ class EmailSend
 //		}
     }
 
-    public function mailAddNewProductCompleted($mailObj)
-    {
+    public function mailAddNewProductCompleted($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'addNewProductCompleted';
@@ -411,8 +402,7 @@ class EmailSend
         }
     }
 
-    public function mailAddNewProductEdit($mailObj)
-    {
+    public function mailAddNewProductEdit($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'addNewProductEdit';
@@ -432,8 +422,7 @@ class EmailSend
         }
     }
 
-    public function mailAddNewProductRejected($mailObj)
-    {
+    public function mailAddNewProductRejected($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'addNewProductRejected';
@@ -453,8 +442,7 @@ class EmailSend
         }
     }
 
-    public function mailAddNewProductEditedToAdmin($mailObj)
-    {
+    public function mailAddNewProductEditedToAdmin($mailObj) {
         $this->prepareMailInfo($mailObj);
         foreach ($this->admins as $admin) {
 
@@ -477,8 +465,7 @@ class EmailSend
         }
     }
 
-    public function mailAddNewProductToAdmin($mailObj)
-    {
+    public function mailAddNewProductToAdmin($mailObj) {
         $this->prepareMailInfo($mailObj);
         foreach ($this->admins as $admin) {
 
@@ -502,8 +489,7 @@ class EmailSend
         }
     }
 
-    public function thai_date($time)
-    {
+    public function thai_date($time) {
         $thai_date_return = "วันที่ " . date("j", $time);
         $thai_date_return.=" " . $this->thai_month_arr[date("n", $time)];
         $thai_date_return.= " " . (date("Y", $time) + 543);
@@ -511,8 +497,7 @@ class EmailSend
         return $thai_date_return;
     }
 
-    public function mailReturnProductToSupplier($mailObj)
-    {
+    public function mailReturnProductToSupplier($mailObj) {
         //admin
         $this->prepareMailInfo($mailObj);
         foreach ($this->admins as $admin) {
@@ -540,8 +525,7 @@ class EmailSend
         //supplier
     }
 
-    public function mailReadyToShipToCustomer($mailObj)
-    {
+    public function mailReadyToShipToCustomer($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'mailVerifyCodeToCustomer';
@@ -570,8 +554,7 @@ class EmailSend
         }
     }
 
-    public function mailReadyToShipProduct($mailObj)
-    {
+    public function mailReadyToShipProduct($mailObj) {
 //to Customer
 //		$this->prepareMailInfo($mailObj);
 //		$message = new YiiMailMessage();
@@ -639,8 +622,7 @@ class EmailSend
         }
     }
 
-    public function mailDealerRecievedProduct($mailObj)
-    {
+    public function mailDealerRecievedProduct($mailObj) {
 
 //to Customer
         $this->prepareMailInfo($mailObj);
@@ -702,8 +684,7 @@ class EmailSend
         }
     }
 
-    public function mailCustomerRecievedProduct($mailObj)
-    {
+    public function mailCustomerRecievedProduct($mailObj) {
 //to Customer
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
@@ -763,8 +744,7 @@ class EmailSend
         }
     }
 
-    public function mailRequestCustomerConfirmTranfer($mailObj)
-    {
+    public function mailRequestCustomerConfirmTranfer($mailObj) {
 //to Customer
         $this->prepareMailInfo($mailObj);
         $bankList = Bank::model()->findAll("supplierId = " . $this->orderModel->supplierId . " and status = 1");
@@ -789,8 +769,7 @@ class EmailSend
         }
     }
 
-    public function mailUserConfirmRecievedProduct($mailObj)
-    {
+    public function mailUserConfirmRecievedProduct($mailObj) {
 //to Customer
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
@@ -871,8 +850,7 @@ class EmailSend
         }
     }
 
-    public function mailRequestAdminToApproveSupplierDealerDocument($mailObj)
-    {
+    public function mailRequestAdminToApproveSupplierDealerDocument($mailObj) {
 //to Admin
         $this->prepareMailInfo($mailObj);
         foreach ($this->admins as $admin) {
@@ -918,8 +896,7 @@ class EmailSend
         }
     }
 
-    public function mailToSupplierToReuploadDocument($mailObj)
-    {
+    public function mailToSupplierToReuploadDocument($mailObj) {
 //to supplier
         $this->prepareMailInfo($mailObj);
         $message = null;
@@ -940,8 +917,7 @@ class EmailSend
         }
     }
 
-    public function mailToDealerToReuploadDocument($mailObj)
-    {
+    public function mailToDealerToReuploadDocument($mailObj) {
 //to dealer
         $this->prepareMailInfo($mailObj);
         $message = null;
@@ -962,8 +938,7 @@ class EmailSend
         }
     }
 
-    public function mailRequestSupplierDealerComeToBilling($mailObj)
-    {
+    public function mailRequestSupplierDealerComeToBilling($mailObj) {
         $this->prepareMailInfo($mailObj);
 
 //to dealer
@@ -1025,8 +1000,7 @@ class EmailSend
         }
     }
 
-    public function mailConfirmPaymentToSupplier($mailObj)
-    {
+    public function mailConfirmPaymentToSupplier($mailObj) {
 //to Supplier
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
@@ -1044,8 +1018,7 @@ class EmailSend
         }
     }
 
-    public function mailWarningSupplierProductQuantity($mailObj)
-    {
+    public function mailWarningSupplierProductQuantity($mailObj) {
 //to Supplier
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
@@ -1066,8 +1039,7 @@ class EmailSend
         }
     }
 
-    public function mailConfirmPaymentToDealer($mailObj)
-    {
+    public function mailConfirmPaymentToDealer($mailObj) {
 //to Dealer
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
@@ -1086,8 +1058,7 @@ class EmailSend
         }
     }
 
-    public function mailSentNewPwdToUser($mailObj)
-    {
+    public function mailSentNewPwdToUser($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'mailSentNewPwdToUser';
@@ -1106,8 +1077,7 @@ class EmailSend
         }
     }
 
-    public function mailSentNewPwdToNewUser($mailObj)
-    {
+    public function mailSentNewPwdToNewUser($mailObj) {
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
         $message->view = 'mailSentNewPwdToNewUser';
@@ -1152,8 +1122,7 @@ class EmailSend
 //		}
 //	}
 
-    public function mailRejectConfirmTransferToCustomer($mailObj)
-    {
+    public function mailRejectConfirmTransferToCustomer($mailObj) {
 //to Customer
         $this->prepareMailInfo($mailObj);
         $message = new YiiMailMessage();
@@ -1177,15 +1146,14 @@ class EmailSend
         }
     }
 
-    public function mailForgetPassword($tomail, $password, $username, $documentUrl)
-    {
+    public function mailForgetPassword($tomail, $password, $username, $documentUrl) {
         $message = new YiiMailMessage();
         $message->view = 'forgotPassword';
         $message->setBody(array(
             "name" => $username,
             "password" => $password,
             "documentUrl" => $documentUrl,
-        ), 'text/html', 'utf-8'
+                ), 'text/html', 'utf-8'
         );
         $message->addTo($tomail);
         $message->subject = "รหัสผ่านใหม่ Daiibuy.com";
@@ -1196,8 +1164,7 @@ class EmailSend
         // throw new Exception($message->subject);
     }
 
-    public function mailSaleQueueSupplier($tomail, $name, $customName, $tel, $email)
-    {
+    public function mailSaleQueueSupplier($tomail, $name, $customName, $tel, $email) {
         $message = new YiiMailMessage();
         $message->view = 'saleQueueSupplier';
         $message->setBody(array(
@@ -1205,7 +1172,7 @@ class EmailSend
             "customName" => $customName,
             "email" => $email,
             "tel" => $tel
-        ), 'text/html', 'utf-8'
+                ), 'text/html', 'utf-8'
         );
         $message->addTo($tomail);
         $message->subject = "ลูกค้าสั่งซื้อผ่าน Daiibuy.com (คิว)";
@@ -1215,8 +1182,7 @@ class EmailSend
         Yii::app()->mail->send($message);
     }
 
-    public function mailPartnerAlert($tomail, $customName, $supplierName, $partnerName, $url)
-    {
+    public function mailPartnerAlert($tomail, $customName, $supplierName, $partnerName, $url) {
         $message = new YiiMailMessage();
         $message->view = 'partnerAlert';
         $message->setBody(array(
@@ -1224,10 +1190,27 @@ class EmailSend
             "supplierName" => $supplierName,
             "partnerName" => $partnerName,
             "url" => $url
-        ), 'text/html', 'utf-8'
+                ), 'text/html', 'utf-8'
         );
         $message->addTo($tomail);
         $message->subject = "ลูกค้าสั่งซื้อของ Daiibuy.com ผ่านลิงค์";
+        $message->setFrom(array(
+            'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
+
+        Yii::app()->mail->send($message);
+    }
+
+    public function mailPay($custom, $total, $text, $template, $mail) {
+        //throw new Exception($template);
+        $message = new YiiMailMessage();
+        $message->view = $template;
+        $message->setBody(array(
+            "custom" => $custom,
+            "summary" => $total,
+                ), 'text/html', 'utf-8'
+        );
+        $message->addTo($mail);
+        $message->subject = $text;
         $message->setFrom(array(
             'No-Reply@daiibuy.com' => 'แจ้งเตือน DaiiBuy'));
 

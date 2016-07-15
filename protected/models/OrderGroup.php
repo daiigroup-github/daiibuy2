@@ -34,6 +34,10 @@ class OrderGroup extends OrderGroupMaster {
     const STATUS_SUPPLIER_SHIPPING = 4;
     const STATUS_SENDING_EPAYMENT = 97;
     const VAT_PERCENT = 7;
+    const EMAILPERIOD1 = "";
+    const EMAILPERIOD2 = "";
+    const EMAILPERIOD3 = "";
+    const EMAILPERIOD4 = "";
     //
     //E Payment Reason Code
     //Accept Trans.
@@ -953,6 +957,19 @@ reviewed the transaction status in the Business Center.";
         } else {
             return false;
         }
+    }
+
+    public function getPeriod() {
+        $order = OrderGroup::model()->find("orderGroupId='" . $this->orderGroupId . "'");
+        for ($i = 1; $i <= 4; $i++) {
+            if (!isset($order->parentId)) {
+                break;
+            } else {
+                $order = OrderGroup::model()->find("orderGroupId='" . $order->parentId . "'");
+            }
+        }
+
+        return $i;
     }
 
 }
