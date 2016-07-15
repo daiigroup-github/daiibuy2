@@ -432,6 +432,7 @@ class OrderController extends MasterBackofficeController {
         $period = $model->getPeriod($id);
         //throw new Exception($model->period);
         if ($period == 1) {
+            $group1 = 'surasak.n@daiigroup.com';
             $group1 = 'daiibuy-ginza-a1@daiigroup.com';
             $group2 = 'daiibuy-ginza-s1@daiigroup.com';
         } else if ($period == 2) {
@@ -445,6 +446,9 @@ class OrderController extends MasterBackofficeController {
             $group2 = 'daiibuy-ginza-s4@daiigroup.com';
         }
         $group3 = $model->email;
+        $group1 = 'surasak.n@daiigroup.com';
+        $group2 = 'surasak.n@daiigroup.com';
+        $group3 = 'surasak.n@daiigroup.com';
         $template = "period" . $period;
         $mail = new EmailSend();
         $custom = $model->firstname . " " . $model->lastname;
@@ -454,7 +458,7 @@ class OrderController extends MasterBackofficeController {
         $mail->mailPay($custom, $total, $text, $template . "_1", $group1);
         $mail->mailPay($custom, $total, $text, $template . "_2", $group2);
         $mail->mailPay($custom, $total, $text2, $template . "_3", $group3);
-        throw new Exception('mailsened');
+        // throw new Exception('mailsened');
         $model->status = 3;
         $model->invoiceNo = OrderGroup::model()->genInvNo($model);
 //			$model->paymentDateTime = new CDbExpression('NOW()');
