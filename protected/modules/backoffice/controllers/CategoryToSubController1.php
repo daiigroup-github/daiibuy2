@@ -301,8 +301,6 @@ class CategoryToSubController extends MasterBackofficeController {
         if (isset($_GET["brandModelId"])) {
             $model->brandModelId = $_GET["brandModelId"];
         }
-
-
         $this->render('index', array(
             'model' => $model,
         ));

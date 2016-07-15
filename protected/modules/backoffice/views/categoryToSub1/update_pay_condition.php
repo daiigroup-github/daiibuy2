@@ -20,7 +20,7 @@
 		),
 	));
 	?>
-	<hr><h3 class="alert alert-info">Sub Category Description</h3>
+	<hr><h3 class="alert alert-info">Update Pay Condition</h3>
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 	<?php
 	echo $form->errorSummary($model, '', '', array(
@@ -29,7 +29,7 @@
 
 	<div class="form-group">
 		<?php
-		echo $form->labelEx($model, 'description', array(
+		echo $form->labelEx($model, 'payCondition', array(
 			'class'=>'control-label col-sm-2'));
 		?>
 		<div class="col-sm-10">
@@ -38,7 +38,7 @@
 //				{
 			$this->widget('ext.editMe.widgets.ExtEditMe', array(
 				'model'=>$model,
-				'attribute'=>'description',
+				'attribute'=>'payCondition',
 				//'filebrowserImageUploadUrl' => Yii::app()->createUrl('admin/product/uploadFile'),
 				'filebrowserImageBrowseUrl'=>Yii::app()->request->baseUrl . '/ext/kcfinder/browse.php?type=files&cms=yii',
 			));

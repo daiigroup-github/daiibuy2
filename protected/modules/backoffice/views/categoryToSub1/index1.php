@@ -54,7 +54,7 @@ return false;
     <?php
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'category-to-sub-grid',
-        'dataProvider' => $model->search() != null ? $model->search() : '' ,
+        'dataProvider' => $model->search() != null ? $model->search() : '',
 //		'filter'=>$model,
         'itemsCssClass' => 'table table-striped table-bordered table-hover',
         'columns' => array(
@@ -65,7 +65,7 @@ return false;
             array(
                 'name' => 'subCategoryId',
                 'type' => 'html',
-                'value' => 'isset($data->subCategory)?Chtml::image(Yii::app()->baseUrl.$data->subCategory->image,"",array("style"=>"width:150px"))."<br>".$data->subCategory->title:""',
+                'value' => 'Chtml::image(Yii::app()->baseUrl.$data->subCategory->image,"",array("style"=>"width:150px"))."<br>".$data->subCategory->title',
                 'htmlOptions' => array(
                     "style" => 'width:150px',
                     "class" => 'text-center')
