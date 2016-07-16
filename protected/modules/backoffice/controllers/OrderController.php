@@ -446,9 +446,6 @@ class OrderController extends MasterBackofficeController {
             $group2 = 'daiibuy-ginza-s4@daiigroup.com';
         }
         $group3 = $model->email;
-        $group1 = 'surasak.n@daiigroup.com';
-        $group2 = 'surasak.n@daiigroup.com';
-        $group3 = 'surasak.n@daiigroup.com';
         $template = "period" . $period;
         $mail = new EmailSend();
         $custom = $model->firstname . " " . $model->lastname;
