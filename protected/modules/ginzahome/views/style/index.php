@@ -82,16 +82,18 @@ $uid = uniqid(time());
                                 <div role="tabpanel" class="tab-pane active" id="<?php echo 'style_' . $i; ?>_0">
                                     <?php
                                     foreach ($catToSubModels as $catToSubModel):
-                                        ?>
-                                        <div class="col-lg-4" >
-                                            <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
-                                                <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image;
-                                        ?>" alt=""/>
-                                                <p><?php echo $catToSubModel->subCategory->title; ?></p>
-                                                <p><?php echo $catToSubModel->subCategory->description; ?></p>
-                                            </a>
-                                        </div>
-                                        <?php
+                                        if (isset($catToSubModel->subCategory)):
+                                            ?>
+                                            <div class="col-lg-4" >
+                                                <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
+                                                    <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image;
+                                            ?>" alt=""/>
+                                                    <p><?php echo $catToSubModel->subCategory->title; ?></p>
+                                                    <p><?php echo $catToSubModel->subCategory->description; ?></p>
+                                                </a>
+                                            </div>
+                                            <?php
+                                        endif;
                                     endforeach;
                                     ?>
                                 </div>
@@ -99,21 +101,21 @@ $uid = uniqid(time());
                                     <?php
                                     $haveItem = FALSE;
                                     foreach ($catToSubModels as $catToSubModel):
-
-                                        $health = (strtolower(substr($catToSubModel->subCategory->title, -6)) == "health") ? 1 : 0;
-                                        if ($health) {
-                                            $haveItem = true;
-                                            ?>
-                                            <div class="col-lg-4" >
-                                                <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
-                                                    <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
-                                                    <p><?php echo $catToSubModel->subCategory->title; ?></p>
-                                                    <p><?php echo $catToSubModel->subCategory->description; ?></p>
-                                                </a>
-                                            </div>
-                                            <?php
-                                        }
-
+                                        if (isset($catToSubModel->subCategory)):
+                                            $health = (strtolower(substr($catToSubModel->subCategory->title, -6)) == "health") ? 1 : 0;
+                                            if ($health) {
+                                                $haveItem = true;
+                                                ?>
+                                                <div class="col-lg-4" >
+                                                    <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
+                                                        <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
+                                                        <p><?php echo $catToSubModel->subCategory->title; ?></p>
+                                                        <p><?php echo $catToSubModel->subCategory->description; ?></p>
+                                                    </a>
+                                                </div>
+                                                <?php
+                                            }
+                                        endif;
                                     endforeach;
                                     if (!$haveItem) {
                                         ?>
@@ -128,20 +130,21 @@ $uid = uniqid(time());
                                     <?php
                                     $haveItem = FALSE;
                                     foreach ($catToSubModels as $catToSubModel):
-                                        $a = (strtolower(substr($catToSubModel->subCategory->title, -1)) == "a") ? 1 : 0;
-                                        if ($a) {
-                                            $haveItem = true;
-                                            ?>
-                                            <div class="col-lg-4" >
-                                                <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
-                                                    <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
-                                                    <p><?php echo $catToSubModel->subCategory->title; ?></p>
-                                                    <p><?php echo $catToSubModel->subCategory->description; ?></p>
-                                                </a>
-                                            </div>
-                                            <?php
-                                        }
-
+                                        if (isset($catToSubModel->subCategory)):
+                                            $a = (strtolower(substr($catToSubModel->subCategory->title, -1)) == "a") ? 1 : 0;
+                                            if ($a) {
+                                                $haveItem = true;
+                                                ?>
+                                                <div class="col-lg-4" >
+                                                    <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
+                                                        <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
+                                                        <p><?php echo $catToSubModel->subCategory->title; ?></p>
+                                                        <p><?php echo $catToSubModel->subCategory->description; ?></p>
+                                                    </a>
+                                                </div>
+                                                <?php
+                                            }
+                                        endif;
                                     endforeach;
                                     if (!$haveItem) {
                                         ?>
@@ -156,21 +159,22 @@ $uid = uniqid(time());
                                     <?php
                                     $haveItem = FALSE;
                                     foreach ($catToSubModels as $catToSubModel):
-                                        $health = (strtolower(substr($catToSubModel->subCategory->title, -6)) == "health") ? 1 : 0;
-                                        $a = (strtolower(substr($catToSubModel->subCategory->title, -1)) == "a") ? 1 : 0;
-                                        if (!$health && !$a) {
-                                            $haveItem = true;
-                                            ?>
-                                            <div class="col-lg-4" >
-                                                <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
-                                                    <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
-                                                    <p><?php echo $catToSubModel->subCategory->title; ?></p>
-                                                    <p><?php echo $catToSubModel->subCategory->description; ?></p>
-                                                </a>
-                                            </div>
-                                            <?php
-                                        }
-
+                                        if (isset($catToSubModel->subCategory)):
+                                            $health = (strtolower(substr($catToSubModel->subCategory->title, -6)) == "health") ? 1 : 0;
+                                            $a = (strtolower(substr($catToSubModel->subCategory->title, -1)) == "a") ? 1 : 0;
+                                            if (!$health && !$a) {
+                                                $haveItem = true;
+                                                ?>
+                                                <div class="col-lg-4" >
+                                                    <a class="thumbnail" href="<?php echo $this->createUrl('category/index/id/' . $catToSubModel->subCategory->categoryId . "/s/" . $style->categoryId); ?>">
+                                                        <img src="<?php echo Yii::app()->baseUrl . $catToSubModel->subCategory->image; ?>" alt=""/>
+                                                        <p><?php echo $catToSubModel->subCategory->title; ?></p>
+                                                        <p><?php echo $catToSubModel->subCategory->description; ?></p>
+                                                    </a>
+                                                </div>
+                                                <?php
+                                            }
+                                        endif;
                                     endforeach;
                                     if (!$haveItem) {
                                         ?>
