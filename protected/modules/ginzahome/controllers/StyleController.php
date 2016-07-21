@@ -1,8 +1,10 @@
 <?php
 
-class StyleController extends MasterGinzahomeController {
+class StyleController extends MasterGinzahomeController
+{
 
-    public function actionIndex($id) {
+    public function actionIndex($id)
+    {
         /**
          * Ginza style CategoryToSub::isTheme=1
          */
@@ -14,7 +16,7 @@ class StyleController extends MasterGinzahomeController {
         //find all styles
         $categoryIds = CategoryToSub::model()->findAll(array(
             'condition' => 'brandModelId=' . $id . ' AND isTheme=1',
-            'order' => 'sortOrder',
+            'order' => 'sortOrder ASC',
             'select' => 'distinct categoryId'
         ));
         $catText = "";
@@ -36,8 +38,8 @@ class StyleController extends MasterGinzahomeController {
                 $catText .= ", ";
             $i++;
         }
-
-        $styles = Category::model()->findAll('categoryId in (' . $catText . ' ) order by sortOrder ASC');
+//        throw new Exception($catText);
+        $styles = Category::model()->findAll('categoryId in (' . $catText . ' ) AND isRoot = 1 order by sortOrder ASC');
         $this->render('index', array(
             'supplierModel' => $supplierModel,
             'styles' => $styles,
@@ -45,7 +47,8 @@ class StyleController extends MasterGinzahomeController {
         ));
     }
 
-    public function actionChangeStyle() {
+    public function actionChangeStyle()
+    {
         $result = [];
         if (isset($_POST['categoryId']) && isset($_POST['filter'])) {
             $categoryId = $_POST['categoryId'];
@@ -94,11 +97,13 @@ class StyleController extends MasterGinzahomeController {
       );
       }
      */
-    public function actionTest() {
+    public function actionTest()
+    {
         $this->render("/test/test");
     }
 
-    public function actionChangeType() {
+    public function actionChangeType()
+    {
         $result = [];
         if (isset($_POST['type']) && isset($_POST['categoryId'])) {
             $type = $_POST['type'];
