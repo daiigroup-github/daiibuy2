@@ -43,7 +43,7 @@ class CartController extends MasterCheckoutController
                         'condition' => 'categoryId=:categoryId AND subCategoryId=:subCategoryId',
                         'params' => array(
                             ':categoryId' => $category->categoryId,
-                            ':subCategoryId' => $category2->categoryId
+                            ':subCategoryId' => isset($category2->categoryId) ? $category2->categoryId : 0
                         )
                     ));
                     //throw new Exception(print_r($category->categoryId . ", " . $category2->categoryId, true));
@@ -51,14 +51,14 @@ class CartController extends MasterCheckoutController
                     $categoryStakeProvinceModel = CategoryStakeProvince::model()->find(array(
                         'condition' => 'categoryId=:categoryId AND provinceId=:provinceId',
                         'params' => array(
-                            ':categoryId' => $category2->categoryId,
+                            ':categoryId' => isset($category2->categoryId) ? $category2->categoryId : 0,
                             ':provinceId' => $daiibuy->provinceId
                         )
                     ));
 //					throw new Exception(print_r($orderItem->product->category2ToProducts, true));
 //                $desc[$category->title . ' : ' . $category2->title] = str_replace('{{pile}}', $categoryStakeProvinceModel->stake, $category2->description);
                     $desc[$i]['id'] = uniqid();
-                    $desc[$i]["title"] = $category->title . ' : ' . $category2->title;
+                    $desc[$i]["title"] = isset($category2) ? $category->title . ' : ' . $category2->title : $category->title;
                     $desc[$i]['detail'] = str_replace('{{pile}}', isset($categoryStakeProvinceModel->stake) ? $categoryStakeProvinceModel->stake : "", isset($categoryToSub->payCondition) ? $categoryToSub->payCondition : "");
 //					throw new Exception(print_r($categoryToSub->payCondition, true));
                     $j = 1;
