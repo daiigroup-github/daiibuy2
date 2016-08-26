@@ -432,7 +432,6 @@ class OrderController extends MasterBackofficeController {
         $period = $model->getPeriod($id);
         //throw new Exception($model->period);
         if ($period == 1) {
-            $group1 = 'surasak.n@daiigroup.com';
             $group1 = 'daiibuy-ginza-a1@daiigroup.com';
             $group2 = 'daiibuy-ginza-s1@daiigroup.com';
         } else if ($period == 2) {
@@ -452,8 +451,10 @@ class OrderController extends MasterBackofficeController {
         $total = $model->summary;
         $text = "Daiibuy : ลูกค้าชำระเงินงวดที่ " . $period;
         $text2 = "Daiibuy : ยืนยันการชำระเงินงวดที่ " . $period . " เรียบร้อย";
-        $mail->mailPay($custom, $total, $text, $template . "_1", $group1);
-        $mail->mailPay($custom, $total, $text, $template . "_2", $group2);
+        if ($model->supplierId == 4 || $model->supplierId == 5) {
+            $mail->mailPay($custom, $total, $text, $template . "_1", $group1);
+            $mail->mailPay($custom, $total, $text, $template . "_2", $group2);
+        }
         $mail->mailPay($custom, $total, $text2, $template . "_3", $group3);
         // throw new Exception('mailsened');
         $model->status = 3;

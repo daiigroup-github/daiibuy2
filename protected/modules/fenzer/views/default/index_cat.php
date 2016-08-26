@@ -2,7 +2,7 @@
 /* @var $this DefaultController */
 
 $this->breadcrumbs = array(
-	$this->module->id,
+    $this->module->id,
 );
 /*
   $this->renderPartial('_product_list', array(
@@ -15,21 +15,22 @@ $this->breadcrumbs = array(
 ?>
 
 <div class="row">
-	<!-- Heading -->
-	<div class="col-lg-12 col-md-12 col-sm-12">
+    <!-- Heading -->
+    <div class="col-lg-12 col-md-12 col-sm-12">
 
-		<div class="carousel-heading">
-			<h4><?php echo $brandModel->title; ?></h4>
-		</div>
+        <div class="carousel-heading">
+            <h4><?php echo $brandModel->title; ?></h4>
+        </div>
 
-	</div>
-	<!-- /Heading -->
+    </div>
+    <!-- /Heading -->
 </div>
 
 <?php
-foreach($brandModel->categorys as $category)
-{
-	$this->renderPartial('_product_item', array(
-		'category'=>$category));
+foreach ($brandModel->categorys as $category) {
+    if ($category->status == 1) {
+        $this->renderPartial('_product_item', array(
+            'category' => $category));
+    }
 }
 ?>

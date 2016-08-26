@@ -15,7 +15,7 @@ $tabContent = '';
                     $title = $tab['title'];
                     $tabId = isset($tab['id']) ? $tab['id'] : 'tab' . $i;
 
-                    echo CHtml::link($tab['title'] . $tab['sort'], '#' . $tabId, array(
+                    echo CHtml::link($tab['title'], '#' . $tabId, array(
                         'class' => 'button big'));
                     $i++;
                 }
