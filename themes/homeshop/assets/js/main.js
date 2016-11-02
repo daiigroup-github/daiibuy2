@@ -10,7 +10,7 @@
  */
 
 /* global $, window */
-var baseUrl = (window.location.host === 'localhost') ? 'http://localhost/daiibuy2/' : window.location.origin;
+var baseUrl = (window.location.host === 'localhost') ? 'http://localhost/daiibuy2/' : ((window.location.host === 'dev') ? 'http://dev/daiibuy2/' : window.location.origin);
 $(function () {
     'use strict';
 

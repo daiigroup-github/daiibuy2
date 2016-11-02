@@ -1,8 +1,10 @@
 <?php
 
-class StepController extends MasterCheckoutController {
+class StepController extends MasterCheckoutController
+{
 
-    public function actionIndex($id) {
+    public function actionIndex($id)
+    {
         if ($id > 1) {
             if (!isset(Yii::app()->user->id)) {
                 $this->redirect($this->createUrl(1));
@@ -30,7 +32,8 @@ class StepController extends MasterCheckoutController {
 //$this->render('index', array('step' => $id, 'userModel' => $userModel, 'addressModel' => $addressModel));
     }
 
-    public function step1() {
+    public function step1()
+    {
         if (Yii::app()->user->id) {
             $this->redirect($this->createUrl(2));
         }
@@ -147,7 +150,8 @@ class StepController extends MasterCheckoutController {
         ));
     }
 
-    public function step2() {
+    public function step2()
+    {
         /*
           $billingAddressModel = Address::model()->find(array(
           'condition' => 'type=:type AND userId=:userId',
@@ -269,7 +273,8 @@ class StepController extends MasterCheckoutController {
 //$this->redirect($this->createUrl(3));
     }
 
-    public function step3() {
+    public function step3()
+    {
         $supplierId = Yii::app()->session['supplierId'];
         $userId = Yii::app()->user->id;
         $daiibuy = new DaiiBuy();
@@ -317,7 +322,8 @@ class StepController extends MasterCheckoutController {
 //$this->redirect($this->createUrl(4));
     }
 
-    public function step4() {
+    public function step4()
+    {
 //		throw new Exception(print_r($_POST["orderGroupId"],true));
         if (isset($_POST["orderGroupId"])) {
             $oldOrderGroup = OrderGroup::model()->findByPk($_POST["orderGroupId"]);
@@ -497,7 +503,8 @@ class StepController extends MasterCheckoutController {
 //        $this->redirect($this->createUrl(5));
     }
 
-    public function step5() {
+    public function step5()
+    {
         $daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
         $order = new OrderGroup();
@@ -737,7 +744,8 @@ class StepController extends MasterCheckoutController {
             'model' => $order));
     }
 
-    public function saveOrderGroupLog($request, $orderGroup) {
+    public function saveOrderGroupLog($request, $orderGroup)
+    {
         $description = OrderGroup::model()->getReasonCode($request["reason_code"]);
         $orderGroupHistory = new OrderGroupHistory();
         $orderGroupHistory->orderGroupId = $orderGroup->orderGroupId;
@@ -751,7 +759,8 @@ class StepController extends MasterCheckoutController {
         return $description;
     }
 
-    public function actionStep6($id) {
+    public function actionStep6($id)
+    {
 //		$daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
         $flag = TRUE;
@@ -901,7 +910,8 @@ class StepController extends MasterCheckoutController {
             'model' => $oldOrder));
     }
 
-    public function actionFindAmphur() {
+    public function actionFindAmphur()
+    {
         if (isset($_POST['provinceId'])) {
             $res = '';
             $amphurs = Amphur::model()->findAll(array(
@@ -920,7 +930,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function actionFindDistrict() {
+    public function actionFindDistrict()
+    {
         if (isset($_POST['amphurId'])) {
             $res = '';
             $districts = District::model()->findAll(array(
@@ -938,20 +949,23 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function actionConfirmation($id) {
+    public function actionConfirmation($id)
+    {
         $model = OrderGroup::model()->findByPk($id);
         $model->status = 97; //sending to e-payment
         $this->render("e_payment/payment_confirmation", array(
             'model' => $model));
     }
 
-    public function actionConfirmCheckout($id) {
+    public function actionConfirmCheckout($id)
+    {
         $model = OrderGroup::model()->findByPk($id);
         $this->render("confirm_checkout", array(
             'model' => $model));
     }
 
-    public function splitGinzaOrder($item) {
+    public function splitGinzaOrder($item)
+    {
         $oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
         $order = new OrderGroup();
         $order->attributes = $oldOrder->attributes;
@@ -972,7 +986,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function copyGinzaOrder($oldOrderGroupId, $splitNo) {
+    public function copyGinzaOrder($oldOrderGroupId, $splitNo)
+    {
         $oldOrder = OrderGroup::model()->findByPk($oldOrderGroupId);
         $order = new OrderGroup();
         $order->attributes = $oldOrder->attributes;
@@ -1018,7 +1033,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function saveGinzaOrder($supplierId, $orderGroupId) {
+    public function saveGinzaOrder($supplierId, $orderGroupId)
+    {
         $flag = false;
         $newOrderGroupId = null;
         try {
@@ -1160,18 +1176,18 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function actionMyfileGinzaStep() {
+    public function actionMyfileGinzaStep()
+    {
 
         $orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
         $rootOrderGroup = OrderGroup::model()->findRootOrderGroup($_GET["orderGroupId"]);
         $orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity($orderGroup->orders[0]->orderItems[0]->productId, $orderGroup->orders[0]->orderItems[0]->quantity, $orderGroup->supplierId, FALSE, $_GET["orderGroupId"]);
-
         if (isset($_POST["period"])) {
             if ($_POST["period"] == 2) {
                 $cat2p = $orderGroup->orders[0]->orderItems[0]->product->category2ToProducts[0];
 //				throw new Exception(print_r($_POST, true));
 //				throw new Exception(print_r($cat2p->attributes, true));
-                if ($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"] || (isset($orderGroup->orders[0]->orderItems[0]->styleId) && $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])) {
+                if ($cat2p->brandModelId != $_POST["brandModelId"] || $cat2p->category1Id != $_POST["category1Id"] || $cat2p->category2Id != $_POST["category2Id"] || $orderGroup->shippingProvinceId != $_POST["provinceId"] || (isset($_POST["productOptionId"]) && $orderGroup->orders[0]->orderItems[0]->productOptionId != $_POST["productOptionId"]) || (isset($orderGroup->orders[0]->orderItems[0]->styleId) && $orderGroup->orders[0]->orderItems[0]->styleId != $_POST["styleId"])) {
 
                     try {
                         $cat2ToProduct = Category2ToProduct::model()->findAll("brandModelId = " . $_POST["brandModelId"] . " AND category1Id = " . $_POST["category1Id"] . " AND category2Id =" . $_POST["category2Id"]);
@@ -1334,7 +1350,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function actionUpdateCart() {
+    public function actionUpdateCart()
+    {
         if (isset($_POST['quantity'])) {
             $res = array();
 
@@ -1362,7 +1379,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function actionMyfileFurnitureStep() {
+    public function actionMyfileFurnitureStep()
+    {
         $orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
         if (isset($_POST["furnitureGroupId"])) {
             $furnitureGroup = FurnitureGroup::model()->findByPk($_POST["furnitureGroupId"]);
@@ -1468,7 +1486,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function updateChangeSpecGinzaOrderGroup($orderGroup, $cat2ToProduct, $period) {
+    public function updateChangeSpecGinzaOrderGroup($orderGroup, $cat2ToProduct, $period)
+    {
         $productId = $cat2ToProduct[$period - 1]->productId;
         $qty = $orderGroup->orders[0]->orderItems[0]->quantity;
         $supplierId = $orderGroup->supplierId;
@@ -1560,7 +1579,8 @@ class StepController extends MasterCheckoutController {
         }
     }
 
-    public function saveBlankOrderAndOrderItem($oldOrderGroupId, $newOrderGroupId, $supplierId, $price, $title) {
+    public function saveBlankOrderAndOrderItem($oldOrderGroupId, $newOrderGroupId, $supplierId, $price, $title)
+    {
 
         $flag = TRUE;
         $orderGroup = OrderGroup::model()->findByPk($oldOrderGroupId);
@@ -1660,8 +1680,10 @@ class StepController extends MasterCheckoutController {
     }
 
 // Use This Function for Pay OrderGroup Status 0
-    public function actionPayWrongOrder() {
+    public function actionPayWrongOrder()
+    {
         $orderGroup = OrderGroup::model()->findByPk($_GET["orderGroupId"]);
+//        throw new Exception(print_r($orderGroup, true));
         $orderSummary = Order::model()->sumOrderTotalByProductIdAndQuantity(null, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->quantity, $orderGroup->supplierId, $orderGroup->orderGroupToOrders[0]->order->orderItems[0]->price, false, $_GET["orderGroupId"]);
         $bankArray = Bank::model()->findAllBankModelBySupplier($orderGroup->supplierId);
         $supplierModel = Supplier::model()->findByPk($orderGroup->supplierId);
@@ -1697,7 +1719,8 @@ class StepController extends MasterCheckoutController {
         ));
     }
 
-    public function actionIsValidEmail() {
+    public function actionIsValidEmail()
+    {
         $email = $_POST['email'];
         $res = User::model()->findAll('email = "' . $email . '"');
 

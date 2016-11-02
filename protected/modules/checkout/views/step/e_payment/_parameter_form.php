@@ -7,7 +7,7 @@ $merchantId = $ePayment->ePaymentMerchantId;
 <p style="background:url(https://h.online-metrix.net/fp/clear.png?org_id=<?php echo $orgId; ?>&amp;session_id=<?php echo $merchantId . $session_id ?>&amp;m=1)"></p>
 <img src="https://h.online-metrix.net/fp/clear.png?org_id=<?php echo $orgId; ?>&amp;session_id=<?php echo $merchantId . $session_id ?>&amp;m=2" alt="">
 <object type="application/x-shockwave-flash" data="https://h.online-metrix.net/fp/fp.swf?org_id=<?php echo $orgId; ?>&amp;session_id=<?php echo $merchantId . $session_id ?>" width="1" height="1" id="thm_fp">
-	<param name="movie" value="https://h.online-metrix.net/fp/fp.swf?org_id=<?php echo $orgId; ?>&amp;session_id=<?php echo $merchantId . $session_id ?>" />
+    <param name="movie" value="https://h.online-metrix.net/fp/fp.swf?org_id=<?php echo $orgId; ?>&amp;session_id=<?php echo $merchantId . $session_id ?>" />
 </object>
 <script src="https://h.online-metrix.net/fp/check.js?org_id=<?php echo $orgId; ?>&amp;session_id=<?php echo $merchantId . $session_id ?>"
 type="text/javascript"></script>
@@ -16,20 +16,20 @@ echo CHtml::hiddenField("access_key", $ePayment->ePaymentAccessKey);
 echo CHtml::hiddenField("profile_id", $ePayment->ePaymentProfileId);
 echo CHtml::hiddenField("transaction_uuid", uniqid());
 echo CHtml::hiddenField("signed_field_names", "access_key,profile_id,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount"
-	. ",currency"
-	//. ", override_custom_receipt_page"
-	//. ", item_0_name, item_1_name"
+ . ",currency"
+//. ", override_custom_receipt_page"
+//. ", item_0_name, item_1_name"
 );
 //Product Parameter
 $unsignedField = ""
-	. "bill_to_address_city,bill_to_address_country,bill_to_address_line1,bill_to_address_line2,bill_to_address_postal_code"
-	. ",bill_to_address_state,bill_to_email,bill_to_forename,bill_to_phone,bill_to_surname,bill_to_address_country"
-	. ",device_fingerprint_id,customer_ip_address,consumer_id"
-	. ",ship_to_address_city,ship_to_address_country,ship_to_address_line1,ship_to_address_line2,ship_to_address_postal_code"
-	. ",ship_to_address_state,ship_to_forename,ship_to_phone,ship_to_surname,shipping_method"
+ . "bill_to_address_city,bill_to_address_country,bill_to_address_line1,bill_to_address_line2,bill_to_address_postal_code"
+ . ",bill_to_address_state,bill_to_email,bill_to_forename,bill_to_phone,bill_to_surname,bill_to_address_country"
+ . ",device_fingerprint_id,customer_ip_address,consumer_id"
+ . ",ship_to_address_city,ship_to_address_country,ship_to_address_line1,ship_to_address_line2,ship_to_address_postal_code"
+ . ",ship_to_address_state,ship_to_forename,ship_to_phone,ship_to_surname,shipping_method"
 //	. ", item_0_name, item_1_name"
-	. ",merchant_defined_data1,merchant_defined_data2,merchant_defined_data3,merchant_defined_data4,merchant_defined_data5,merchant_defined_data6,merchant_defined_data7,merchant_defined_data8,merchant_defined_data9"
-	. ",merchant_defined_data10,merchant_defined_data11,line_item_count";
+ . ",merchant_defined_data1,merchant_defined_data2,merchant_defined_data3,merchant_defined_data4,merchant_defined_data5,merchant_defined_data6,merchant_defined_data7,merchant_defined_data8,merchant_defined_data9"
+ . ",merchant_defined_data10,merchant_defined_data11,line_item_count";
 
 echo CHtml::hiddenField("transaction_type", "sale");
 echo CHtml::hiddenField("signed_date_time", gmdate("Y-m-d\TH:i:s\Z"));
@@ -77,7 +77,7 @@ echo CHtml::hiddenField("shipping_method", "other");
 
 <?php
 //echo CHtml::hiddenField("override_custom_receipt_page", "Web");
-echo CHtml::hiddenField("customer_ip_address", CHttpRequest::getUserHostAddress());
+echo CHtml::hiddenField("customer_ip_address", Yii::app()->request->userHostAddress);
 echo CHtml::hiddenField("consumer_id", (isset($model->userId) && $model->userId > 0) ? $model->userId : 1);
 echo CHtml::hiddenField("device_fingerprint_id", $session_id);
 //Customer Parameter
@@ -98,20 +98,18 @@ echo CHtml::hiddenField("merchant_defined_data10", $ePayment->ePaymentTel);
 //Merchant Parameter
 //
 $i = 0;
-foreach ($model->orders as $order)
-{
+foreach ($model->orders as $order) {
 //	throw new Exception(print_r($order->orderItems, true));
-	foreach ($order->orderItems as $item)
-	{
-		$unsignedField .=",item_" . $i . "_unit_price,item_" . $i . "_tax_amount,item_" . $i . "_code,item_" . $i . "_name,item_" . $i . "_sku,item_" . $i . "_quantity";
-		echo CHtml::hiddenField("item_" . $i . "_unit_price", number_format($item->price, 2, ".", ""));
-		echo CHtml::hiddenField("item_" . $i . "_tax_amount", number_format(($item->total / 1.07), 2, ".", ""));
-		echo CHtml::hiddenField("item_" . $i . "_code", "default");
-		echo CHtml::hiddenField("item_" . $i . "_name", isset($item->product->name) ? $item->product->name : $item->title);
-		echo CHtml::hiddenField("item_" . $i . "_sku", isset($item->product->name) ? $item->product->name : "-");
-		echo CHtml::hiddenField("item_" . $i . "_quantity", $item->quantity);
-		$i++;
-	}
+    foreach ($order->orderItems as $item) {
+        $unsignedField .=",item_" . $i . "_unit_price,item_" . $i . "_tax_amount,item_" . $i . "_code,item_" . $i . "_name,item_" . $i . "_sku,item_" . $i . "_quantity";
+        echo CHtml::hiddenField("item_" . $i . "_unit_price", number_format($item->price, 2, ".", ""));
+        echo CHtml::hiddenField("item_" . $i . "_tax_amount", number_format(($item->total / 1.07), 2, ".", ""));
+        echo CHtml::hiddenField("item_" . $i . "_code", "default");
+        echo CHtml::hiddenField("item_" . $i . "_name", isset($item->product->name) ? $item->product->name : $item->title);
+        echo CHtml::hiddenField("item_" . $i . "_sku", isset($item->product->name) ? $item->product->name : "-");
+        echo CHtml::hiddenField("item_" . $i . "_quantity", $item->quantity);
+        $i++;
+    }
 }
 echo CHtml::hiddenField("unsigned_field_names", $unsignedField
 );

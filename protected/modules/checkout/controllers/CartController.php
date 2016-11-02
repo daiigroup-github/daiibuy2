@@ -36,8 +36,11 @@ class CartController extends MasterCheckoutController
                 $order = $orders[0];
                 //  throw new Exception(print_r($id, true));
                 foreach ($order->orderItems as $orderItem) {
-                    // throw new Exception(print_r($orderItem->product->productId, true));
+//                    throw new Exception(print_r($orderItem->product->productId, true));
                     $category = (isset($orderItem->product->category2ToProducts[1]) && (isset($orderItem->product->category2ToProducts[1]->type))) ? $orderItem->product->category2ToProducts[1]->category : $orderItem->product->category2ToProducts[0]->category;
+                    if (!isset($category)) {
+//                        throw new Exception($orderItem->product);
+                    }
                     $category2 = isset($orderItem->product->category2ToProducts[1]) ? $orderItem->product->category2ToProducts[1]->category2 : $orderItem->product->category2ToProducts[0]->category2;
                     $categoryToSub = CategoryToSub::model()->find(array(
                         'condition' => 'categoryId=:categoryId AND subCategoryId=:subCategoryId',
@@ -146,7 +149,7 @@ class CartController extends MasterCheckoutController
 
     public function actionDeleteCart($id)
     {
-        $model = Order::model()->findByPk($id);
+        $model = OrderGroupToOrder::model()->findByPk($id);
         $supplierId = $model->supplierId;
         if ($model->type & 1 > 0) {
             $model->type = 1;

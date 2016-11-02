@@ -96,6 +96,6 @@ return array(
         // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
         'sendEmail' => false,
-        'ePaymentServerType' => 2
+        'ePaymentServerType' => 1
     ),
 );

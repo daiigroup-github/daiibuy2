@@ -66,6 +66,7 @@ foreach ($_REQUEST as $name => $value) {
     }
 
     echo "<input type=\"hidden\" id=\"signature\" name=\"signature\" value=\"" . sign($params) . "\"/>\n";
+//    throw new Exception(print_r($params, true));
     ?>
 
     <!--<input type="submit" id="submit" value="submit" />-->

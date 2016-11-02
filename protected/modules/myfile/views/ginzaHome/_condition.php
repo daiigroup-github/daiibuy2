@@ -2,7 +2,7 @@
 <div class="col-md-12">
     <!--						<div class="sidebar-box-heading">
                                 <i class="fa fa-tdst"></i>
-                                <h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ?></h4>
+                                <h4>ข้อตกลงและเงื่อนไข <?php // echo $model->title;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ?></h4>
                             </div>-->
     <div class="row sidebox-content ">
         <?php
@@ -359,10 +359,12 @@
                                             echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
                                                 'prompt' => '-- เลือกสี --'));
                                         } else {
-                                            if (isset($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions))
+                                            if (isset($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions)) {
+                                                echo CHtml::hiddenField("productOptionId", $model->orders[0]->orderItems[0]->productOptionId);
                                                 echo CHtml::dropDownList("productOptionId", $model->orders[0]->orderItems[0]->productOptionId, CHtml::listData($model->orders[0]->orderItems[0]->product->productOptionGroups[0]->productOptions, "productOptionId", "title"), array(
                                                     'prompt' => '-- เลือกสี --',
                                                     'disabled' => 'true'));
+                                            }
                                         }
                                         ?></td>
                                 </tr>
@@ -373,6 +375,7 @@
                                             echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
                                                 'prompt' => '-- เลือกจังหวัด --'));
                                         } else {
+                                            echo CHtml::hiddenField("provinceId", $model->shippingProvinceId);
                                             echo CHtml::dropDownList("provinceId", $model->shippingProvinceId, Province::model()->findAllProvinceArray(), array(
                                                 'prompt' => '-- เลือกจังหวัด --',
                                                 'disabled' => 'true'));
@@ -391,11 +394,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                        <?php
-                                        echo CHtml::hiddenField("orderGroupId", $oldChild1->orderGroupId);
-                                        echo CHtml::hiddenField("period", 2);
-                                        foreach ($child1->orders as $item):
-                                            ?>
+                                <?php
+                                echo CHtml::hiddenField("orderGroupId", $oldChild1->orderGroupId);
+                                echo CHtml::hiddenField("period", 2);
+                                foreach ($child1->orders as $item):
+                                    ?>
                                     <tr style="color:black">
                                         <td  style="font-size:24px"><span style="margin-top:50px">งวดที่ 2</span></td>
                                         <td>
@@ -404,12 +407,12 @@
                                             ?>
                                         </td>
                                         <td style="font-size:24px">
-    <?php
-    echo "ยอดชำระ " . number_format($child1->totalIncVAT);
-    $sumSup = 0;
-    //	throw new Exception(print_r($child1->supNotPays, true));
-    if (count($child1->supPay) > 0):
-        ?>
+                                            <?php
+                                            echo "ยอดชำระ " . number_format($child1->totalIncVAT);
+                                            $sumSup = 0;
+                                            //	throw new Exception(print_r($child1->supNotPays, true));
+                                            if (count($child1->supPay) > 0):
+                                                ?>
                                                 <p style='color:green'>ชำระแล้ว</p>
                                                 <?php
                                                 foreach ($child1->supPay as $sup) {
@@ -421,23 +424,23 @@
                                             if (count($child1->supNotPays) > 0):
                                                 ?>
                                                 <p style='color:red'>รอยืนยันชำระ</p>
-        <?php
-        foreach ($child1->supNotPays as $supNotPay) {
-            $sumSupNotPay +=$supNotPay->totalIncVAT;
-            echo "<p style='color:red'>" . number_format($supNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $supNotPay->orderGroupId), array(
-                'class' => 'btn btn-success',
-                'target' => '_blank')) . "</p>";
-        }
-    endif;
-    ?>
+                                                <?php
+                                                foreach ($child1->supNotPays as $supNotPay) {
+                                                    $sumSupNotPay +=$supNotPay->totalIncVAT;
+                                                    echo "<p style='color:red'>" . number_format($supNotPay->totalIncVAT, 2) . " " . CHtml::link("ยืนยัน", Yii::app()->createUrl("/myfile/order/view/id/" . $supNotPay->orderGroupId), array(
+                                                        'class' => 'btn btn-success',
+                                                        'target' => '_blank')) . "</p>";
+                                                }
+                                            endif;
+                                            ?>
                                         </td>
                                         <td>
-                                    <?php
-                                    echo CHtml::numberField("payValue", $child1->totalIncVAT - $sumSup - $sumSupNotPay, array(
-                                        'class' => 'input-form text-right',
-                                        'style' => 'border:2px solid black;color:blue;font-size:24px;width:250px',
-                                        'max' => $child1->totalIncVAT - $sumSup - $sumSupNotPay))
-                                    ?>
+                                            <?php
+                                            echo CHtml::numberField("payValue", $child1->totalIncVAT - $sumSup - $sumSupNotPay, array(
+                                                'class' => 'input-form text-right',
+                                                'style' => 'border:2px solid black;color:blue;font-size:24px;width:250px',
+                                                'max' => $child1->totalIncVAT - $sumSup - $sumSupNotPay))
+                                            ?>
                                             <!--<a onclick="backToStep2()" class="btn btn-success">Back</a>-->
                                             <?php
 //											echo CHtml::link("ชำระเงิน", "", array(
@@ -446,7 +449,7 @@
                                             ?>
                                         </td>
                                     </tr>
-                                        <?php endforeach; ?>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </form>
@@ -462,7 +465,7 @@
                     <div class="row">
                         <div class="col-md-12 text-center" style="font-weight: bold;color: black">
                             ข้าพเจ้าได้อ่านและทำความเข้าใจรายละเอียดตามข้อตกลงและเงื่อนไขข้างต้นดีแล้ว<br>
-                                        <?php echo CHtml::radioButton("accept", TRUE) ?>
+                            <?php echo CHtml::radioButton("accept", TRUE) ?>
                             <label class="radio-label" for="accept">ยอมรับ</label>
                         </div>
                     </div>
@@ -474,30 +477,30 @@
 <div class="row hide" id="submit2">
     <div class="col-lg-12 text-center">
         <a onclick="backToStep3()" class="btn btn-success">Back</a>
-                                        <?php
-                                        echo CHtml::link('ยอมรับ และ ชำระเงิน', "", array(
-                                            'class' => 'btn btn-primary',
-                                            'onClick' => 'goToStepSplit(2)'));
-                                        ?>
+        <?php
+        echo CHtml::link('ยอมรับ และ ชำระเงิน', "", array(
+            'class' => 'btn btn-primary',
+            'onClick' => 'goToStepSplit(2)'));
+        ?>
     </div>
 </div>
 <div class="row hide" id="submit3">
     <div class="col-lg-12 text-center">
         <a onclick="backToStep3()" class="btn btn-success">Back</a>
-                                        <?php
-                                        echo CHtml::link('Accept', "", array(
-                                            'class' => 'btn btn-primary',
-                                            'onClick' => 'goToStepSplit(3)'));
-                                        ?>
+        <?php
+        echo CHtml::link('Accept', "", array(
+            'class' => 'btn btn-primary',
+            'onClick' => 'goToStepSplit(3)'));
+        ?>
     </div>
 </div>
 <div class="row hide" id="submit4">
     <div class="col-lg-12 text-center">
         <a onclick="backToStep3()" class="btn btn-success">Back</a>
-<?php
-echo CHtml::link('Accept', "", array(
-    'class' => 'btn btn-primary',
-    'onClick' => 'goToStepSplit(4)'));
-?>
+        <?php
+        echo CHtml::link('Accept', "", array(
+            'class' => 'btn btn-primary',
+            'onClick' => 'goToStepSplit(4)'));
+        ?>
     </div>
 </div>
