@@ -149,7 +149,7 @@ class CartController extends MasterCheckoutController
 
     public function actionDeleteCart($id)
     {
-        $model = OrderGroupToOrder::model()->findByPk($id);
+        $model = Order::model()->findByPk($id);
         $supplierId = $model->supplierId;
         if ($model->type & 1 > 0) {
             $model->type = 1;
