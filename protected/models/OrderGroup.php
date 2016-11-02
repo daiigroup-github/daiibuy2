@@ -514,7 +514,9 @@ reviewed the transaction status in the Business Center.";
         $criteria->compare('email', $this->email, true);
         $criteria->compare('telephone', $this->telephone, true);
         $criteria->addCondition("status > 0");
-        $criteria->addCondition(" supplierId = " . $this->supplierId);
+        if (isset($this->supplierId) && !empty($this->supplierId)) {
+            $criteria->addCondition(" supplierId = " . $this->supplierId);
+        }
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
