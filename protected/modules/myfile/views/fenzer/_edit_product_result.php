@@ -18,7 +18,7 @@
                     </thead>
                     <tbody >
                         <?php foreach ($productResult['items'] as $item): ?>
-                            <tr>
+                            <tr id="<?php echo $item->productId; ?>">
                                 <td><?php echo $item->code; ?></td>
                                 <td><?php echo $item->name; ?></td>
                                 <td><?php echo $item->productUnits; ?></td>
@@ -26,45 +26,22 @@
                                 <td><?php echo FenzerController::formatMoney($item->price / intval($item->quantity), true); ?></td>
                                 <td><?php echo FenzerController::formatMoney($item->price, true); ?></td>
                                 <td><?php echo FenzerController::formatMoney(($item->price / $item->quantity) / 3, true); ?></td>
-                                <td><button id="deleteRow" class="btn btn-danger">remove</button></td>
+    <!--                                <td><button id="deleteRow" class="btn btn-danger">remove</button></td>-->
+                                <td><a  class="btn btn-danger" onclick="removeRow(<?php echo $item->productId; ?>)">remove</a></td>
                             </tr>
                         <?php endforeach; ?>
 
-<!--			<tr>
-                                <td><?php
-// echo CHtml::dropDownList('productId', 'selectedCode',
-//					CHtml::listData(Product::model()->findAll('supplierId ='. 176 .' AND Status = 1'), 'productId', 'code'),
-//					array('id'=>'itemCode',
-//						'prompt'=>'เลือกรหัส',
-//						'ajax'=>array(
-//									'type'=>'POST',
-//									'url'=>CController::createUrl('fenzer/addNewProductItem'), //url to call.
-////									'update'=>'#height_content', //selector to update
-//									'dataType'=>'html',
-//									'data'=>array(
-//										"productId"=>"js:this.value",
-//										"categoryId"=>$productResult['categoryId']),
-//										"length"=>0,
-//									'success'=>'js:function(data){
-//										alert("Yo");
-//										$("#result_content").html(data);
-//									}',
-//								),
-//					));
-                        ?></td>
-                                <td><?php // echo '';          ?></td>
-                                <td><?php // echo '';          ?></td>
-                                <td><?php // echo CHtml::textField('quantity', '',array('id'=>'qty','style'=>'width:100px;text-align:Right;'));          ?></td>
-                                <td><?php // echo '';          ?></td>
-                                <td><?php // echo '';          ?></td>
-                                <td><?php // echo '';          ?></td>
-                        </tr>-->
                     </tbody>
                 </table>
+                <script>
+                    function removeRow(code)
+                    {
+                        $("#" + code).remove();
+                    }
+                </script>
             </form>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-sm-1">
@@ -75,8 +52,8 @@
 
                 <?php
                 echo Select2::dropDownList('productId', 'selectedCode', CHtml::listData(Product::model()->findAll('supplierId = 1 and status = 2'), 'productId', function($model) {
-                            return $model->code . " " . $model->name;
-                        }), array('class' => 'form-control',
+                    return $model->code . " " . $model->name;
+                }), array('class' => 'form-control',
                     'id' => 'itemCode',
                     'prompt' => 'เลือกรหัสสินค้า',
                     'style' => 'text-align: center;',
