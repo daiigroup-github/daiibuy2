@@ -36,7 +36,9 @@
                 <script>
                     function removeRow(code)
                     {
-                        $("#" + code).remove();
+                        if (confirm('ยืนยันเพื่อลบรายการสินค้านี้?')) {
+                            $("#" + code).remove();
+                        }
                     }
                 </script>
             </form>
