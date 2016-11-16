@@ -1,13 +1,16 @@
 <?php
 
-class FenzerController extends MasterMyFileController {
+class FenzerController extends MasterMyFileController
+{
 
-    public function init() {
+    public function init()
+    {
 
         parent::init();
     }
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->layout = '//layouts/cl1';
 
         $myfileArray = Order::model()->findAllMyFileBySupplierId(Yii::app()->user->id, 1, null);
@@ -17,7 +20,8 @@ class FenzerController extends MasterMyFileController {
             'myfileHistoryArray' => $myfileHistoryArray));
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $this->layout = '//layouts/cl1';
 
         $model = new Order;
@@ -66,7 +70,8 @@ class FenzerController extends MasterMyFileController {
         }
     }
 
-    public function actionShowFenzerProductResultByHeight() {
+    public function actionShowFenzerProductResultByHeight()
+    {
 //		if(isset($value))
 //		{
         $status = 1;
@@ -122,7 +127,8 @@ class FenzerController extends MasterMyFileController {
 //		}
     }
 
-    public function actionShowProductSelected() {
+    public function actionShowProductSelected()
+    {
 //		throw new Exception(print_r($_REQUEST, true));
 
         if (isset($_POST['categoryId'])) {
@@ -139,7 +145,8 @@ class FenzerController extends MasterMyFileController {
         }
     }
 
-    public function actionShowProductOrder() {
+    public function actionShowProductOrder()
+    {
         $orderModel = new Order();
         $orderDetailTemplate = OrderDetailTemplate::model()->findOrderDetailTemplateBySupplierId(1);
         if (isset($_POST['Order'])) {
@@ -170,10 +177,11 @@ class FenzerController extends MasterMyFileController {
 //		throw new Exception(print_r($itemSetArray,true));
         echo $this->renderPartial('/fenzer/_edit_product_result', array(
             'productResult' => $itemSetArray,
-                ), TRUE, TRUE);
+        ), TRUE, TRUE);
     }
 
-    public function actionAddNewProductItem() {
+    public function actionAddNewProductItem()
+    {
         if (isset($_POST['Order'])) {
             $provinceId = $_POST['Order']['provinceId'];
             $title = $_POST['Order']['title'];
@@ -182,7 +190,7 @@ class FenzerController extends MasterMyFileController {
             $productId = $_POST['productId'];
         }
         $itemSetArray = Product::model()->calculateNewItemFenzer($productId, $provinceId);
-        echo '<tr>'
+        echo '<tr id="' . $itemSetArray['item']['productId'] . '">'
         . '<td>' . $itemSetArray['item']['code'] . '</td>'
         . '<td>' . $itemSetArray['item']['name'] . '</td>'
         . '<td>' . $itemSetArray['item']['productUnits'] . '</td>'
@@ -191,7 +199,7 @@ class FenzerController extends MasterMyFileController {
         . '<td>' . $this->formatMoney($itemSetArray['item']['price'] / $itemSetArray['item']['quantity'], true) . '</td>'
         . '<td>' . $this->formatMoney($itemSetArray['item']['price'], true) . '</td>'
         . '<td>' . $this->formatMoney(($itemSetArray['item']['price'] / $itemSetArray['item']['quantity']) / 3, true) . '</td>'
-        . '<td><button id="deleteRow" class="deleteRow btn btn-danger">remove</button></td>'
+        . '<td><a onclick="removeRow(' . $itemSetArray['item']['productId'] . ')" class="deleteRow btn btn-danger">remove</a></td>'
         . '</tr>';
 
         //echo CJSON::encode($itemSetArray);
@@ -201,7 +209,8 @@ class FenzerController extends MasterMyFileController {
 //				),TRUE, TRUE);
     }
 
-    public function actionUpdatePrice() {
+    public function actionUpdatePrice()
+    {
 //		$daiibuy = new DaiiBuy();
 //		$daiibuy->loadCookie();
 //		$provinceId = $daiibuy->provinceId;
@@ -232,10 +241,11 @@ class FenzerController extends MasterMyFileController {
 
         echo $this->renderPartial('/fenzer/_edit_product_result', array(
             'productResult' => $itemSetArray,
-                ), TRUE, TRUE);
+        ), TRUE, TRUE);
     }
 
-    public function actionSaveOrderMyFile() {
+    public function actionSaveOrderMyFile()
+    {
         $productItems = array();
         $orderId = NULL;
 
@@ -268,7 +278,7 @@ class FenzerController extends MasterMyFileController {
 
         echo $this->renderPartial('/fenzer/_confirm_order_myfile', array(
             'productResult' => $itemSetArray,
-                ), TRUE, TRUE);
+        ), TRUE, TRUE);
     }
 
 // Uncomment the following methods and override them if needed
@@ -298,7 +308,8 @@ class FenzerController extends MasterMyFileController {
       }
      */
 
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $this->layout = '//layouts/cl1';
 
         $model = Order::model()->findByPk($id);
@@ -324,7 +335,8 @@ class FenzerController extends MasterMyFileController {
         }
     }
 
-    public function findLengthHeigtByOrderId($orderId) {
+    public function findLengthHeigtByOrderId($orderId)
+    {
         $res = array();
         $orderDetail = OrderDetail::model()->find('orderId = ' . $orderId);
 //		throw new Exception(print_r($orderDetail,true));
@@ -352,7 +364,8 @@ class FenzerController extends MasterMyFileController {
         return $res;
     }
 
-    public function prepareProductItems($model) {
+    public function prepareProductItems($model)
+    {
         $res = array();
         $orderItems = $model->orderItems;
         $provinceId = $model->provinceId;
@@ -391,7 +404,8 @@ class FenzerController extends MasterMyFileController {
         return $res;
     }
 
-    public function actionAddToCart() {
+    public function actionAddToCart()
+    {
         if (isset($_POST['orderId']) && !empty($_POST['orderId'])) {
             $orderId = $_POST['orderId'];
             $model = Order::model()->findByPk($orderId);
@@ -403,7 +417,8 @@ class FenzerController extends MasterMyFileController {
         echo 'fail';
     }
 
-    public function actionFinish($id) {
+    public function actionFinish($id)
+    {
 //		$model = Order::model()->findByPk($id);
 //		$model->status = 3;
 //		$model->save();
