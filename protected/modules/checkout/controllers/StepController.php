@@ -595,7 +595,8 @@ class StepController extends MasterCheckoutController
                                 $flag = true;
                             }
                         } else {
-                            $oldOrder->status = 2;
+                            $oldOrder->status = 3;
+                            $oldOrder->invoiceNo = OrderGroup::model()->genInvNo($oldOrder);
                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
                         }
                         if ($flag) {

@@ -28,6 +28,7 @@ class OrderGroup extends OrderGroupMaster
     public $maxCode;
     public $sumTotal;
     public $spacialPercent;
+    public $type;
 
     const STATUS_ORDER = 1;
     const STATUS_COMFIRM_TRANSFER = 2;
@@ -39,17 +40,17 @@ class OrderGroup extends OrderGroupMaster
     const EMAILPERIOD2 = "";
     const EMAILPERIOD3 = "";
     const EMAILPERIOD4 = "";
-    //
-    //E Payment Reason Code
-    //Accept Trans.
+//
+//E Payment Reason Code
+//Accept Trans.
     const REASON_SUCCESS = 100;
     const REASON_AUTHORIZE_SUCCESS = 110;
-    //Review Trans.
+//Review Trans.
     const REVIEW_QUESTION_ABOUT_REQUEST = 201;
     const REVIEW_ADDRESS_FAIL_VERIFY = 200;
     const REVIEW_CARD_VERIFY_NUMBER = 230;
     const REVIEW_SMART_AUTHORIZE = 520;
-    //Reject Error Cancel Trans.
+//Reject Error Cancel Trans.
     const REJECT_FIELD_MISSING = 102;
     const REJECT_ADDRESS_FAIL_VERIFY = 200;
     const REJECT_CARD_EXPIRED = 202;
@@ -71,7 +72,7 @@ class OrderGroup extends OrderGroupMaster
     const REJECT_CARD_TYPE_INVALID = 240;
     const REJECT_CUSTOMER_NOT_AUTHENTICATED = 476;
     const REJECT_PAYER_AUTHENTICATION = 475;
-    //ERROR trans.
+//ERROR trans.
     const ERROR_GENERAL_SYS_ERR = 150;
     const ERROR_SRV_TIMEOUT_OCCUR = 151;
     const ERROR_SYS_NOT_FINISH_IN_TIME = 152;
@@ -98,7 +99,7 @@ class OrderGroup extends OrderGroupMaster
                 'maxCode',
                 'safe'),
             array(
-                ' paymentYear, paymentMonth, startDate, endDate',
+                'paymentYear, paymentMonth, startDate, endDate',
                 'safe',
                 'on' => 'search'),
         ));
@@ -411,18 +412,27 @@ reviewed the transaction status in the Business Center.";
         $criteria = new CDbCriteria;
 
         if (isset($this->searchText) && !empty($this->searchText)) {
+//            throw new Exception($this->searchText);
             $this->orderNo = $this->searchText;
-            $this->type = $this->searchText;
+            $this->firstname = $this->searchText;
+            $this->lastname = $this->searchText;
+            $this->invoiceNo = $this->searchText;
+//            $this->type = $this->searchText;
         }
 
-
+//        throw new Exception($this->searchText);
 //		throw new Exception(print_r($this->paymentMonth.', '.$this->paymentYear.', '.$this->supplierSelected,true));
-        $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, true, 'OR');
-        $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
-        $criteria->compare('supplierId', $this->supplierId, true, 'OR');
-        $criteria->compare('orderNo', $this->orderNo, true, 'OR');
+        if (Yii::app()->controller->id != "order" && Yii::app()->controller->action->id != "orderAll") {
+            $criteria->compare('YEAR(paymentDateTime)', $this->paymentYear, true, 'OR');
+            $criteria->compare('MONTH(paymentDateTime)', $this->paymentMonth, true, 'OR');
+            $criteria->compare('supplierId', $this->supplierId, FALSE, 'OR');
+        }
+        $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
+        $criteria->compare('firstname', $this->firstname, true, 'OR');
+        $criteria->compare('lastname', $this->lastname, true, 'OR');
+        $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
+        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
 
-        $criteria->addCondition(" supplierId = " . $this->supplierId);
 //		$criteria->compare('title', $this->title, true, 'OR');
 
         return new CActiveDataProvider($this, array(
@@ -505,14 +515,20 @@ reviewed the transaction status in the Business Center.";
 
     public function findAllUserOrder()
     {
+        if (isset($this->searchText) && !empty($this->searchText)) {
+//            throw new Exception($this->searchText);
+            $this->orderNo = $this->searchText;
+            $this->firstname = $this->searchText;
+            $this->lastname = $this->searchText;
+            $this->invoiceNo = $this->searchText;
+//            $this->type = $this->searchText;
+        }
         $criteria = new CDbCriteria();
-        $criteria->compare("userId", Yii::app()->user->id);
-        $criteria->compare('invoiceNo', $this->invoiceNo, true);
-        $criteria->compare('orderNo', $this->orderNo, true);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('telephone', $this->telephone, true);
+        $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
+        $criteria->compare('firstname', $this->firstname, true, 'OR');
+        $criteria->compare('lastname', $this->lastname, true, 'OR');
+        $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
+        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
         $criteria->addCondition("status > 0");
         if (isset($this->supplierId) && !empty($this->supplierId)) {
             $criteria->addCondition(" supplierId = " . $this->supplierId);
@@ -530,14 +546,20 @@ reviewed the transaction status in the Business Center.";
 
     public function findAllDealerOrder()
     {
+        if (isset($this->searchText) && !empty($this->searchText)) {
+//            throw new Exception($this->searchText);
+            $this->orderNo = $this->searchText;
+            $this->firstname = $this->searchText;
+            $this->lastname = $this->searchText;
+            $this->invoiceNo = $this->searchText;
+//            $this->type = $this->searchText;
+        }
         $criteria = new CDbCriteria();
-        $criteria->compare("dealerId", Yii::app()->user->id);
-        $criteria->compare('invoiceNo', $this->invoiceNo, true);
-        $criteria->compare('orderNo', $this->orderNo, true);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('telephone', $this->telephone, true);
+        $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
+        $criteria->compare('firstname', $this->firstname, true, 'OR');
+        $criteria->compare('lastname', $this->lastname, true, 'OR');
+        $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
+        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
 //		$criteria->compare("status", ">2");
 //		$criteria->compare("status", "<99");
         $criteria->addCondition(" (status = 0 AND userId = " . Yii::app()->user->id . ") OR ( status >2 AND status < 99) ");
@@ -556,14 +578,20 @@ reviewed the transaction status in the Business Center.";
 
     public function findAllSupplierOrder()
     {
+        if (isset($this->searchText) && !empty($this->searchText)) {
+//            throw new Exception($this->searchText);
+            $this->orderNo = $this->searchText;
+            $this->firstname = $this->searchText;
+            $this->lastname = $this->searchText;
+            $this->invoiceNo = $this->searchText;
+//            $this->type = $this->searchText;
+        }
         $criteria = new CDbCriteria();
-        $criteria->compare("supplierId", Yii::app()->user->supplierId);
-        $criteria->compare('invoiceNo', $this->invoiceNo, true);
-        $criteria->compare('orderNo', $this->orderNo, true);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('telephone', $this->telephone, true);
+        $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
+        $criteria->compare('firstname', $this->firstname, true, 'OR');
+        $criteria->compare('lastname', $this->lastname, true, 'OR');
+        $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
+        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
         $criteria->compare("status", ">2");
         $criteria->compare("status", "<99");
         $criteria->addCondition(" supplierId = " . $this->supplierId);
@@ -580,17 +608,23 @@ reviewed the transaction status in the Business Center.";
 
     public function findAllFinanceAdminOrder()
     {
+        if (isset($this->searchText) && !empty($this->searchText)) {
+//            throw new Exception($this->searchText);
+            $this->orderNo = $this->searchText;
+            $this->firstname = $this->searchText;
+            $this->lastname = $this->searchText;
+            $this->invoiceNo = $this->searchText;
+//            $this->type = $this->searchText;
+        }
         $criteria = new CDbCriteria();
-        $criteria->condition = "status in (2 , 5 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98,97 ) ";
-        $criteria->compare('invoiceNo', $this->invoiceNo, true);
-        $criteria->compare('orderNo', $this->orderNo, true);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('telephone', $this->telephone, true);
-        $criteria->compare('paymentMethod', $this->paymentMethod, true);
+        $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
+        $criteria->compare('firstname', $this->firstname, true, 'OR');
+        $criteria->compare('lastname', $this->lastname, true, 'OR');
+        $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
+        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
         $criteria->compare("status", ">0");
         $criteria->compare("status", "<99");
+        $criteria->condition = "status in (2 , 5 , 6 , 7 , 8 , 11 , 12 ,13, 14 ,15 ,16,98,97 ) ";
 //        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
         $criteria->addCondition(" supplierId = " . $this->supplierId);
         return new CActiveDataProvider($this, array(
@@ -606,16 +640,23 @@ reviewed the transaction status in the Business Center.";
 
     public function findAllFinanceAdminOrderPay()
     {
+        if (isset($this->searchText) && !empty($this->searchText)) {
+//            throw new Exception($this->searchText);
+            $this->orderNo = $this->searchText;
+            $this->firstname = $this->searchText;
+            $this->lastname = $this->searchText;
+            $this->invoiceNo = $this->searchText;
+//            $this->type = $this->searchText;
+        }
         $criteria = new CDbCriteria();
-        $criteria->condition = "status > 2 AND paymentDateTime is not NULL";
-        $criteria->compare('invoiceNo', $this->invoiceNo, true);
-        $criteria->compare('orderNo', $this->orderNo, true);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('telephone', $this->telephone, true);
-        $criteria->compare("status", ">1");
-        $criteria->addCondition(" supplierId = " . $this->supplierId);
+        $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
+        $criteria->compare('firstname', $this->firstname, true, 'OR');
+        $criteria->compare('lastname', $this->lastname, true, 'OR');
+        $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
+        $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
+        $criteria->addCondition("status > 2 AND paymentDateTime is not NULL");
+//        $criteria->compare("status", ">1");
+//        $criteria->addCondition(" supplierId = " . $this->supplierId);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
@@ -959,7 +1000,7 @@ reviewed the transaction status in the Business Center.";
                     } else {
                         $partnerType = 0;
                     }
-                    //throw new Exception($this->userId);
+//throw new Exception($this->userId);
                     $this->partnerCode = $this->user->partnerCode;
                     $this->partnerType = $partnerType;
 
@@ -983,7 +1024,7 @@ reviewed the transaction status in the Business Center.";
                         $sale = $userSale->saleId;
                     }
                     $this->saleId = $sale;
-                    //mail to sales.
+//mail to sales.
                     $mailToSale = new EmailSend();
                     $employee = Employee::model()->find("employeeId=" . $sale);
                     $tomail = $employee->email . '@daiigroup.com';

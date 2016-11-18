@@ -121,7 +121,7 @@ class OrderController extends MasterBackofficeController
      */
     public function actionCreate()
     {
-        $model = new Order;
+        $model = new OrderGroupToOrder;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -235,8 +235,8 @@ class OrderController extends MasterBackofficeController
         $model = new OrderGroup('search');
 
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['OrderGroup'])) {
-            $model->attributes = $_GET['OrderGroup'];
+        if (isset($_GET['searchText'])) {
+            $model->searchText = $_GET['searchText'];
         }
 
         $model->supplierId = $supplierId;
@@ -283,8 +283,8 @@ class OrderController extends MasterBackofficeController
         }
         $model = new OrderGroup('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['OrderGroup'])) {
-            $model->attributes = $_GET['OrderGroup'];
+        if (isset($_GET['searchText'])) {
+            $model->searchText = $_GET['searchText'];
         }
 
         $model->supplierId = $supplierId;
@@ -310,12 +310,12 @@ class OrderController extends MasterBackofficeController
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Order the loaded model
+     * @return OrderGroupToOrder the loaded model
      * @throws CHttpException
      */
     public function loadModel($id)
     {
-        $model = Order::model()->findByPk($id);
+        $model = OrderGroupToOrder::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -323,7 +323,7 @@ class OrderController extends MasterBackofficeController
 
     /**
      * Performs the AJAX validation.
-     * @param Order $model the model to be validated
+     * @param OrderGroupToOrder $model the model to be validated
      */
     protected function performAjaxValidation($model)
     {
@@ -1025,6 +1025,42 @@ class OrderController extends MasterBackofficeController
                 'value' => $item->groupName), CHtml::encode($item->groupName), true);
         }
 //		echo CJSON::encode($result);
+    }
+
+    public function actionOrderAll()
+    {
+        $suppliers = Supplier::model()->findAll("status = 1");
+        $supplierId = 1;
+        if (isset($_GET["supplierId"])) {
+            $supplierId = $_GET["supplierId"];
+        }
+        $model = new OrderGroup('search');
+//        throw new Exception(print_r($model->attributes, true));
+//        $model->unsetAttributes(); // clear any default values
+        if (isset($_GET['searchText'])) {
+//            throw new Exception($_GET['searchText']);
+            $model->searchText = $_GET['searchText'];
+        }
+
+        $model->supplierId = $supplierId;
+
+        if (Yii::app()->user->id != 0) {
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            if ($user->type == 6) {
+                throw new CHttpException("คุณไม่สามารถดูรายการสั่งซื้อได้", 'เนื่องจากคุณเป็นสมาชิกประเภท Assign Admin');
+            }
+//            throw new Exception(print_r($model->attributes, true));
+            $serchFn = $model->search();
+        } else {
+            $this->redirect(array(
+                "/backoffice/login"));
+        }
+
+        $this->render('all', array(
+            'model' => $model,
+            'searchFn' => $serchFn,
+            'suppliers' => $suppliers,
+            'supplierId' => $supplierId));
     }
 
 }
