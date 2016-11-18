@@ -63,6 +63,21 @@
     </div>
     <div class="form-group">
         <?php
+        echo $form->labelEx($model, 'paymentDateTime', array(
+            'class' => 'col-sm-2 control-label'));
+        ?>
+        <div class="col-sm-10">
+            <?php
+            echo $form->textField($model, 'paymentDateTime', array(
+                'class' => 'form-control',
+//				'disabled' => true
+            ));
+            ?>
+            <?php echo $form->error($model, 'invoiceNo'); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php
         echo $form->labelEx($model, 'paymentCompany', array(
             'class' => 'col-sm-2 control-label'));
         ?>
