@@ -1068,7 +1068,7 @@ class OrderController extends MasterBackofficeController
 
         if (isset($_POST["orderId"])) {
             $model = OrderGroup::model()->find("orderGroupId = " . $_POST["orderId"]);
-            if (!isset($model->invoiceNo) && !empty($model->invoiceNo)) {
+            if (!isset($model->invoiceNo)) {
                 $model->invoiceNo = OrderGroup::model()->genInvNo($model);
             }
             $model->status = 3;
