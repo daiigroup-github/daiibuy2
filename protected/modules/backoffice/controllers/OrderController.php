@@ -1063,27 +1063,34 @@ class OrderController extends MasterBackofficeController
             'supplierId' => $supplierId));
     }
 
-    public function actionPaySuccess($id)
+    public function actionPaySuccess()
     {
-        $model = OrderGroup::model()->find("orderGroupId = $id");
-        if (!isset($model->invoiceNo) && !empty($model->invoiceNo)) {
-            $model->invoiceNo = OrderGroup::model()->genInvNo($model);
-        }
-        $model->status = 3;
-        $model->paymentDateTime = new CDbExpression('NOW()');
-        if ($model->save()) {
-            $orderGroupHistory = new OrderGroupHistory();
-            $orderGroupHistory->orderGroupId = $id;
-            $orderGroupHistory->reasonCode = "000";
-            $orderGroupHistory->description = "MANUAL";
-            $orderGroupHistory->decision = "ACCEPT";
-            $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
-            $orderGroupHistory->updateDateTime = new CDbExpression('NOW()');
-            $orderGroupHistory->save();
 
-            $this->redirect(array(
-                "/backoffice/order/index?supplpierId=" . $model->supplierId));
+        if (isset($_POST["orderId"])) {
+            $model = OrderGroup::model()->find("orderGroupId = " . $_POST["orderId"]);
+            if (!isset($model->invoiceNo) && !empty($model->invoiceNo)) {
+                $model->invoiceNo = OrderGroup::model()->genInvNo($model);
+            }
+            $model->status = 3;
+            $model->paymentDateTime = new CDbExpression('NOW()');
+            if ($model->save()) {
+                $orderGroupHistory = new OrderGroupHistory();
+                $orderGroupHistory->orderGroupId = $id;
+                $orderGroupHistory->reasonCode = "000";
+                $orderGroupHistory->description = "MANUAL";
+                $orderGroupHistory->decision = "ACCEPT";
+                $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
+                $orderGroupHistory->updateDateTime = new CDbExpression('NOW()');
+                $orderGroupHistory->save();
+
+                $this->redirect(array(
+                    "/backoffice/order/index?supplpierId=" . $model->supplierId));
+            }
         }
+
+        $this->render('pay_success', array(
+        )
+        );
     }
 
 }

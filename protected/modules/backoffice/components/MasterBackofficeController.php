@@ -69,7 +69,7 @@ class MasterBackofficeController extends MasterController
             array(
                 'label' => 'Update Order',
                 'url' => array(
-                    '/backoffice/order/paySuccess/id/',
+                    '/backoffice/order/paySuccess',
                 ),
                 'visible' => !Yii::app()->user->isGuest && (Yii::app()->user->name == "daiichi-its@daiigroup.com")),
             array(
