@@ -1066,7 +1066,10 @@ class OrderController extends MasterBackofficeController
     public function actionPaySuccess($id)
     {
         $model = OrderGroup::model()->find("orderGroupId = $id");
-        $model->invoiceNo = OrderGroup::model()->genInvNo($model);
+        if (!isset($model->invoiceNo) && !empty($model->invoiceNo)) {
+            $model->invoiceNo = OrderGroup::model()->genInvNo($model);
+        }
+        $model->status = 3;
         $model->paymentDateTime = new CDbExpression('NOW()');
         if ($model->save()) {
             $orderGroupHistory = new OrderGroupHistory();
