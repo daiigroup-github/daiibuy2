@@ -1068,11 +1068,11 @@ class OrderController extends MasterBackofficeController
 
         if (isset($_POST["orderId"])) {
             $model = OrderGroup::model()->find("orderGroupId = " . $_POST["orderId"]);
+            $model->status = 3;
+            $model->paymentDateTime = new CDbExpression('NOW()');
             if (!isset($model->invoiceNo)) {
                 $model->invoiceNo = OrderGroup::model()->genInvNo($model);
             }
-            $model->status = 3;
-            $model->paymentDateTime = new CDbExpression('NOW()');
             if ($model->save()) {
                 $orderGroupHistory = new OrderGroupHistory();
                 $orderGroupHistory->orderGroupId = $_POST["orderId"];
