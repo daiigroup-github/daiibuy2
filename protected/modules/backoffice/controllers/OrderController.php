@@ -1063,4 +1063,21 @@ class OrderController extends MasterBackofficeController
             'supplierId' => $supplierId));
     }
 
+    public function actionPaySuccess($id)
+    {
+        $model = OrderGroup::model()->find("orderGroupId = $id");
+        $model->invoiceNo = OrderGroup::model()->genInvNo($model);
+        $model->paymentDateTime = new CDbExpression('NOW()');
+        if ($model->save()) {
+            $orderGroupHistory = new OrderGroupHistory();
+            $orderGroupHistory->orderGroupId = $id;
+            $orderGroupHistory->reasonCode = "000";
+            $orderGroupHistory->description = "MANUAL";
+            $orderGroupHistory->decision = "ACCEPT";
+            $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
+            $orderGroupHistory->updateDateTime = new CDbExpression('NOW()');
+            $orderGroupHistory->save();
+        }
+    }
+
 }
