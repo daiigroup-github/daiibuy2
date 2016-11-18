@@ -1082,7 +1082,7 @@ class OrderController extends MasterBackofficeController
             $orderGroupHistory->save();
 
             $this->redirect(array(
-                "/backoffice/order/orderHistory"));
+                "/backoffice/order/index?supplpierId=" . $model->supplierId));
         }
     }
 
