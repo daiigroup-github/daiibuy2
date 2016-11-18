@@ -1077,6 +1077,9 @@ class OrderController extends MasterBackofficeController
             $orderGroupHistory->createDateTime = new CDbExpression('NOW()');
             $orderGroupHistory->updateDateTime = new CDbExpression('NOW()');
             $orderGroupHistory->save();
+
+            $this->redirect(array(
+                "/backoffice/order/orderHistory"));
         }
     }
 
