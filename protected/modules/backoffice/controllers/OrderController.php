@@ -1075,7 +1075,7 @@ class OrderController extends MasterBackofficeController
             $model->paymentDateTime = new CDbExpression('NOW()');
             if ($model->save()) {
                 $orderGroupHistory = new OrderGroupHistory();
-                $orderGroupHistory->orderGroupId = $id;
+                $orderGroupHistory->orderGroupId = $_POST["orderId"];
                 $orderGroupHistory->reasonCode = "000";
                 $orderGroupHistory->description = "MANUAL";
                 $orderGroupHistory->decision = "ACCEPT";
