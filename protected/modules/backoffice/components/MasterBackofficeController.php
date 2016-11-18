@@ -67,6 +67,12 @@ class MasterBackofficeController extends MasterController
 //                ),
 //                'visible' => !Yii::app()->user->isGuest && (Yii::app()->user->userType == 5 || Yii::app()->user->userType == 7)),
             array(
+                'label' => 'Update Order',
+                'url' => array(
+                    '/backoffice/order/paySuccess/id/',
+                ),
+                'visible' => !Yii::app()->user->isGuest && (Yii::app()->user->name == "daiichi-its@daiigroup.com")),
+            array(
                 'label' => 'Myfile',
                 'url' => array(
                     '/backoffice/myfile',
