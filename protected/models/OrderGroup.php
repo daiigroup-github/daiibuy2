@@ -525,7 +525,13 @@ reviewed the transaction status in the Business Center.";
         }
 
         $criteria = new CDbCriteria();
-        $criteria->compare('userId', $this->userId, FALSE, 'AND');
+        if (!Yii::app()->user->isGuest) {
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            if ($user->type == 1 || $user->type == 2) {
+                $criteria->compare('userId', $user->userId, FALSE, 'AND');
+            }
+        }
+
         $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
         $criteria->compare('firstname', $this->firstname, true, 'OR');
         $criteria->compare('lastname', $this->lastname, true, 'OR');
