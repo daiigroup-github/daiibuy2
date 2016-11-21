@@ -523,16 +523,20 @@ reviewed the transaction status in the Business Center.";
             $this->invoiceNo = $this->searchText;
 //            $this->type = $this->searchText;
         }
+
         $criteria = new CDbCriteria();
+        $criteria->compare('userId', $this->userId, FALSE, 'AND');
         $criteria->compare('orderNo', $this->orderNo, FALSE, 'OR');
         $criteria->compare('firstname', $this->firstname, true, 'OR');
         $criteria->compare('lastname', $this->lastname, true, 'OR');
+
         $criteria->compare('invoiceNo', $this->invoiceNo, true, 'OR');
         $criteria->compare('supplierId', $this->supplierId, FALSE, 'AND');
         $criteria->addCondition("status > 0");
         if (isset($this->supplierId) && !empty($this->supplierId)) {
             $criteria->addCondition(" supplierId = " . $this->supplierId);
         }
+
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => array(
