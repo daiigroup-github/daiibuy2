@@ -96,7 +96,7 @@ class OrderGroup extends OrderGroupMaster
         return CMap::mergeArray(parent::rules(), array(
 //code here
             array(
-                'maxCode',
+                'maxCode,sumTotal',
                 'safe'),
             array(
                 'paymentYear, paymentMonth, startDate, endDate',
@@ -395,7 +395,6 @@ reviewed the transaction status in the Business Center.";
                 ':lastYear' => $lastYear,
             ),
         ));
-
         return isset($model) ? $model->sumTotal : 0;
     }
 
