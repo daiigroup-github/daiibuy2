@@ -526,7 +526,7 @@ class StepController extends MasterCheckoutController
 //			{
             $request = $_REQUEST;
             $transaction = Yii::app()->db->beginTransaction();
-//            throw new Exception(print_r($_REQUEST, true));
+            throw new Exception(print_r($_REQUEST, true));
             try {
                 if ($_REQUEST["decision"] == "ACCEPT") {
                     $oldOrder = OrderGroup::model()->find("orderNo =:orderNo", array(
