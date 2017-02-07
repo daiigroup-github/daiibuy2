@@ -598,6 +598,7 @@ class StepController extends MasterCheckoutController
                             $oldOrder->status = 3;
                             $oldOrder->invoiceNo = OrderGroup::model()->genInvNo($oldOrder);
                             $oldOrder->paymentDateTime = new CDbExpression('NOW()');
+                            $flag = true;
                         }
                         if ($flag) {
                             $oldOrder->status = 3;
@@ -609,7 +610,7 @@ class StepController extends MasterCheckoutController
                             $emailObj = new Email();
                             $sentMail = new EmailSend();
                             $documentUrl = "http://" . Yii::app()->request->getServerName() . Yii::app()->baseUrl . "/index.php/myfile/";
-                            $emailObj->Setmail($order->userId, null, $order->supplierId, $order->orderGroupId, null, $documentUrl);
+                            $emailObj->Setmail($oldOrder->userId, null, $oldOrder->supplierId, $oldOrder->orderGroupId, null, $documentUrl);
 //                        $sentMail->mailReviewEPayment($emailObj);
 ////                        $sentMail->mailConfirmOrderSupplierDealer($emailObj);
 //                        $sentMail->mailCompleteOrderCustomer($emailObj);
